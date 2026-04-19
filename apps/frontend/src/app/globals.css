@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #22c55e;
+  --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
+  --accent-weak: color-mix(in srgb, var(--accent) 8%, transparent);
+  --bg-base: #0b0d10;
+  --bg-card: rgba(22, 26, 32, 0.72);
+  --bg-card-solid: #171b22;
+  --bg-soft: #12151a;
+  --bg-softer: #1a1e25;
+  --border-soft: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --text: #e6e8eb;
+  --text-dim: #9aa1ac;
+  --text-faint: #626a75;
+  --danger: #ef4444;
+}
+
+html, body {
+  background: var(--bg-base);
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent scrolling in focus mode. */
+body.focus-mode {
+  overflow: hidden;
+}
+
+/* Ambient gradient glow behind content. Fixed so it tracks viewport. */
+.app-shell {
+  position: relative;
+  min-height: 100dvh;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, color-mix(in srgb, #6366f1 14%, transparent), transparent 55%),
+    radial-gradient(700px 400px at 50% 110%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%),
+    var(--bg-base);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.app-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(400px 200px at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%);
+}
+
+/* Glass card surface. */
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 12px 40px -14px rgba(0,0,0,0.6);
+}
+
+/* Subtle accent outline/glow — used on interactive focus states. */
+.accent-ring {
+  box-shadow: 0 0 0 1px var(--accent-soft), 0 8px 24px -10px var(--accent-soft);
+}
+
+/* Chess board piece drag cursor hint. */
+.board-square[data-draggable="true"] {
+  cursor: grab;
+}
+.board-square.dragging {
+  cursor: grabbing;
+}
+
+/* Hide scrollbars on horizontal scroll rows. */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Fancy slider. */
+input[type="range"].ticks {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+}
+input[type="range"].ticks::-webkit-slider-runnable-track {
+  height: 6px;
+  background: linear-gradient(90deg, var(--accent) var(--pct, 50%), var(--bg-softer) var(--pct, 50%));
+  border-radius: 999px;
+}
+input[type="range"].ticks::-moz-range-track {
+  height: 6px;
+  background: linear-gradient(90deg, var(--accent) var(--pct, 50%), var(--bg-softer) var(--pct, 50%));
+  border-radius: 999px;
+}
+input[type="range"].ticks::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  background: var(--text);
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 4px 10px -2px rgba(0,0,0,.5), 0 0 0 6px var(--accent-weak);
+  cursor: pointer;
+}
+input[type="range"].ticks::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--text);
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 4px 10px -2px rgba(0,0,0,.5);
+  cursor: pointer;
+}
+
+/* Animated pulse for timer warning. */
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); }
+  50%      { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+}
+.pulse-red { animation: pulse-red 1.2s ease-in-out infinite; }

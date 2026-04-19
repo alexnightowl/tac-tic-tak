@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: taktic_postgres
+    environment:
+      POSTGRES_USER: taktic
+      POSTGRES_PASSWORD: taktic
+      POSTGRES_DB: taktic
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taktic"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: taktic_redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: taktic_backend
+    environment:
+      DATABASE_URL: postgresql://taktic:taktic@postgres:5432/taktic?schema=public
+      REDIS_URL: redis://redis:6379
+      PORT: 4000
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in root .env}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    profiles: ["app"]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-/api}
+    container_name: taktic_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    profiles: ["app"]
+
+  nginx:
+    image: nginx:alpine
+    container_name: taktic_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    profiles: ["app"]
+
+volumes:
+  pgdata:
+  redisdata:

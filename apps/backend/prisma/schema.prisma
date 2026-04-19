@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(cuid())
+  nickname       String   @unique
+  passwordHash   String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  settings       UserSetting?
+  progression    UserProgression?
+  sessions       TrainingSession[]
+  attempts       TrainingAttempt[]
+  puzzleHistory  UserPuzzleHistory[]
+  reviewItems    ReviewItem[]
+}
+
+model UserSetting {
+  userId          String  @id
+  focusMode       Boolean @default(true)
+  accentColor     String  @default("#22c55e")
+  boardTheme      String  @default("green")
+  pieceSet        String  @default("cburnett")
+  soundEnabled    Boolean @default(true)
+  soundPack       String  @default("classic")
+  language        String  @default("en")
+  fixedColor      String  @default("auto") // auto | white | black
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserProgression {
+  userId              String @id
+  startPuzzleRating   Int    @default(1200)
+  currentPuzzleRating Int    @default(1200)
+  unlockedStartRating Int    @default(1200)
+  updatedAt           DateTime @updatedAt
+  user                User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Puzzle {
+  id               String  @id
+  fen              String
+  moves            String
+  rating           Int
+  ratingDeviation  Int
+  popularity       Int
+  nbPlays          Int
+  gameUrl          String?
+  themes           PuzzleTheme[]
+  attempts         TrainingAttempt[]
+  history          UserPuzzleHistory[]
+  reviewItems      ReviewItem[]
+
+  @@index([rating])
+  @@index([rating, popularity])
+}
+
+model Theme {
+  id       Int           @id @default(autoincrement())
+  slug     String        @unique
+  puzzles  PuzzleTheme[]
+}
+
+model PuzzleTheme {
+  puzzleId String
+  themeId  Int
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  theme    Theme  @relation(fields: [themeId], references: [id], onDelete: Cascade)
+
+  @@id([puzzleId, themeId])
+  @@index([themeId])
+}
+
+model TrainingSession {
+  id              String   @id @default(cuid())
+  userId          String
+  mode            String   // "mixed" | "theme"
+  theme           String?
+  startRating     Int
+  durationSec     Int
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+  solvedCount     Int      @default(0)
+  failedCount     Int      @default(0)
+  peakRating      Int      @default(0)
+  accuracy        Float    @default(0)
+  avgResponseMs   Int      @default(0)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempts        TrainingAttempt[]
+
+  @@index([userId, startedAt])
+}
+
+model TrainingAttempt {
+  id              String   @id @default(cuid())
+  sessionId       String
+  userId          String
+  puzzleId        String
+  puzzleRating    Int
+  correct         Boolean
+  responseMs      Int
+  createdAt       DateTime @default(now())
+  session         TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle          Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([userId, createdAt])
+}
+
+model UserPuzzleHistory {
+  userId     String
+  puzzleId   String
+  lastSeenAt DateTime @default(now())
+  seenCount  Int      @default(1)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle     Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, puzzleId])
+  @@index([userId, lastSeenAt])
+}
+
+model ReviewItem {
+  id         String   @id @default(cuid())
+  userId     String
+  puzzleId   String
+  createdAt  DateTime @default(now())
+  resolvedAt DateTime?
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle     Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, puzzleId])
+  @@index([userId, resolvedAt])
+}
