@@ -25,6 +25,16 @@ function sqName(file: number, rank: number): Square {
   return `${FILES[file]}${rank + 1}` as Square;
 }
 
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  const n = parseInt(full, 16);
+  const r = (n >> 16) & 0xff;
+  const g = (n >> 8) & 0xff;
+  const b = n & 0xff;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 export function Chessboard({
   fen,
   orientation = 'white',
@@ -201,31 +211,34 @@ export function Chessboard({
                 data-square={s}
                 data-draggable={!!piece}
               >
-                {/* overlay: highlights (full cell colouring, per spec) */}
+                {/* highlight fill — renders BEHIND the piece, so the piece stays fully opaque */}
                 {(isLast || isHighlighted || isSelected) && (
-                  <div className="absolute inset-0 pointer-events-none"
-                       style={{
-                         background: isHighlighted
-                           ? 'rgba(235, 97, 80, 0.75)'
-                           : isLast
-                             ? 'rgba(155, 199, 0, 0.5)'
-                             : 'rgba(255, 255, 0, 0.4)',
-                       }} />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      zIndex: 0,
+                      background: isHighlighted
+                        ? 'rgba(208, 90, 77, 0.75)'
+                        : isSelected
+                          ? hexToRgba(colors.highlight, 0.72)
+                          : hexToRgba(colors.lastMove, 0.58),
+                    }}
+                  />
                 )}
-                {/* legal move indicator */}
+                {/* legal move indicator — also behind piece */}
                 {isLegalTarget && (
                   piece
-                    ? <div className="absolute inset-0 border-4 border-black/25 pointer-events-none rounded-[2px]" />
-                    : <div className="absolute w-1/3 h-1/3 rounded-full bg-black/25 pointer-events-none" />
+                    ? <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, boxShadow: 'inset 0 0 0 3px rgba(0,0,0,0.35)' }} />
+                    : <div className="absolute w-1/3 h-1/3 rounded-full bg-black/25 pointer-events-none" style={{ zIndex: 1 }} />
                 )}
-                {/* piece — stays fully opaque even while being dragged; the ghost follows the cursor */}
+                {/* piece — explicit z-index so it sits on top of any overlay */}
                 {piece && (
                   <img
                     src={pieceUrl(pieceSet, piece.color, piece.type as any)}
                     alt=""
                     draggable={false}
-                    className="w-full h-full pointer-events-none"
-                    style={{ padding: '5%' }}
+                    className="w-full h-full pointer-events-none relative"
+                    style={{ padding: '5%', zIndex: 2 }}
                   />
                 )}
                 {/* coordinates */}

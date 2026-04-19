@@ -37,7 +37,6 @@ export default function PlayRunner() {
   const [remaining, setRemaining] = useState<string[]>([]);
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
-  const [flash, setFlash] = useState<'correct' | 'fail' | null>(null);
   const [endsAt, setEndsAt] = useState<number | null>(null);
   const [durationSec, setDurationSec] = useState<number>(0);
   const [now, setNow] = useState(Date.now());
@@ -102,7 +101,6 @@ export default function PlayRunner() {
   async function afterAttempt(correct: boolean) {
     if (!puzzle) return;
     const responseMs = Date.now() - attemptStart.current;
-    setFlash(correct ? 'correct' : 'fail');
     if (correct) setSolvedCount((c) => c + 1); else setFailedCount((c) => c + 1);
     if (settings.soundEnabled) playSound(settings.soundPack, correct ? 'correct' : 'fail');
     try {
@@ -111,10 +109,8 @@ export default function PlayRunner() {
       });
       setProgression((prev) => prev ? { ...prev, currentPuzzleRating: r.newRating } : prev);
     } catch {}
-    setTimeout(async () => {
-      setFlash(null);
-      await nextPuzzle();
-    }, correct ? 250 : 400);
+    // No visual flash — sound carries the feedback, next puzzle loads right away.
+    setTimeout(() => { nextPuzzle(); }, correct ? 220 : 360);
   }
 
   async function nextPuzzle() {
@@ -236,10 +232,6 @@ export default function PlayRunner() {
             theme={settings.boardTheme as BoardTheme}
             pieceSet={settings.pieceSet}
           />
-        )}
-        {flash && (
-          <div className={cn('absolute inset-0 pointer-events-none rounded-xl',
-            flash === 'correct' ? 'bg-green-400/20' : 'bg-red-500/30')} />
         )}
       </div>
 
