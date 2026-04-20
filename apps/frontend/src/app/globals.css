@@ -130,3 +130,9 @@ input[type="range"].ticks::-moz-range-thumb {
 }
 .pulse-red { animation: pulse-red 1.2s ease-in-out infinite; }
 
+/* Piece slide animation from a source square to a destination square. */
+@keyframes slide-piece {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(var(--dx), var(--dy)); }
+}
+

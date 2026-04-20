@@ -37,6 +37,7 @@ export default function PlayRunner() {
   const [remaining, setRemaining] = useState<string[]>([]);
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
+  const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [endsAt, setEndsAt] = useState<number | null>(null);
   const [durationSec, setDurationSec] = useState<number>(0);
   const [now, setNow] = useState(Date.now());
@@ -83,19 +84,33 @@ export default function PlayRunner() {
   }, [sessionId]);
 
   function loadPuzzle(p: ServerPuzzle, currentRating: number) {
-    const { chess, remaining, playerColor, opponentSetup } = initPuzzle(p);
+    const init = initPuzzle(p);
     setPuzzle(p);
-    setChess(new Chess(chess.fen()));
-    setRemaining(remaining);
+    setChess(new Chess(init.preFen));
+    setRemaining(init.remaining);
 
-    let side: 'white' | 'black' = playerColor === 'w' ? 'white' : 'black';
+    let side: 'white' | 'black' = init.playerColor === 'w' ? 'white' : 'black';
     if (settings.fixedColor === 'white') side = 'white';
     else if (settings.fixedColor === 'black') side = 'black';
     setOrientation(side);
 
-    setLastMove(opponentSetup);
+    setLastMove(null);
+    setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
     setProgression((prev) => prev ? { ...prev, currentPuzzleRating: currentRating } : prev);
-    attemptStart.current = Date.now();
+
+    // Let the setup piece slide, then swap in the post-setup position.
+    if (init.setupMove) {
+      const mv = init.setupMove;
+      if (settings.soundEnabled) playSound(settings.soundPack, 'move');
+      setTimeout(() => {
+        setChess(new Chess(init.postFen));
+        setLastMove({ from: mv.from, to: mv.to });
+        setAnimateMove(null);
+        attemptStart.current = Date.now();
+      }, 300);
+    } else {
+      attemptStart.current = Date.now();
+    }
   }
 
   async function afterAttempt(correct: boolean) {
@@ -229,6 +244,8 @@ export default function PlayRunner() {
             orientation={orientation}
             onMove={handleMove}
             lastMove={lastMove}
+            animateMove={animateMove}
+            allowMoves={!animateMove}
             theme={settings.boardTheme as BoardTheme}
             pieceSet={settings.pieceSet}
           />

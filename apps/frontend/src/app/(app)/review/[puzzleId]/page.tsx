@@ -25,6 +25,7 @@ export default function ReviewPuzzle() {
   const [remaining, setRemaining] = useState<string[]>([]);
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
+  const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [feedback, setFeedback] = useState<'wrong' | 'correct' | null>(null);
   const [solved, setSolved] = useState(false);
 
@@ -32,21 +33,32 @@ export default function ReviewPuzzle() {
     (async () => {
       const p = await http.get<ServerPuzzle>(`/review/${puzzleId}`);
       setPuzzle(p);
-      const { chess, remaining, playerColor, opponentSetup } = initPuzzle(p);
-      setChess(new Chess(chess.fen()));
-      setRemaining(remaining);
-      setOrientation(playerColor === 'w' ? 'white' : 'black');
-      setLastMove(opponentSetup);
+      startFrom(p);
     })();
   }, [puzzleId]);
 
+  function startFrom(p: ServerPuzzle) {
+    const init = initPuzzle(p);
+    setChess(new Chess(init.preFen));
+    setRemaining(init.remaining);
+    setOrientation(init.playerColor === 'w' ? 'white' : 'black');
+    setLastMove(null);
+    setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
+    setSolved(false);
+    if (init.setupMove) {
+      const mv = init.setupMove;
+      if (settings.soundEnabled) playSound(settings.soundPack, 'move');
+      setTimeout(() => {
+        setChess(new Chess(init.postFen));
+        setLastMove({ from: mv.from, to: mv.to });
+        setAnimateMove(null);
+      }, 300);
+    }
+  }
+
   function reset() {
     if (!puzzle) return;
-    const { chess, remaining, opponentSetup } = initPuzzle(puzzle);
-    setChess(new Chess(chess.fen()));
-    setRemaining(remaining);
-    setLastMove(opponentSetup);
-    setSolved(false);
+    startFrom(puzzle);
   }
 
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
@@ -103,6 +115,8 @@ export default function ReviewPuzzle() {
           orientation={orientation}
           onMove={handleMove}
           lastMove={lastMove}
+          animateMove={animateMove}
+          allowMoves={!animateMove}
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}
         />

@@ -17,22 +17,35 @@ export type PuzzleState = {
 };
 
 /**
- * Initialises a puzzle: applies the opponent's setup move, leaving it for
- * the solver to play next. Returns the side the solver plays as.
+ * Initialises a puzzle. Returns both FENs (before / after the opponent's
+ * setup move) so the UI can animate the setup move sliding on the board.
  */
-export function initPuzzle(p: ServerPuzzle): { chess: Chess; remaining: string[]; playerColor: 'w' | 'b'; opponentSetup: { from: Square; to: Square } | null } {
-  const chess = new Chess(p.fen);
+export type InitResult = {
+  preFen: string;
+  postFen: string;
+  setupMove: { from: Square; to: Square; promotion?: string } | null;
+  remaining: string[];
+  playerColor: 'w' | 'b';
+};
+
+export function initPuzzle(p: ServerPuzzle): InitResult {
+  const post = new Chess(p.fen);
   const [setup, ...rest] = p.moves;
-  let opponentSetup: { from: Square; to: Square } | null = null;
+  let setupMove: { from: Square; to: Square; promotion?: string } | null = null;
   if (setup) {
     const from = setup.slice(0, 2) as Square;
     const to = setup.slice(2, 4) as Square;
     const promotion = setup.length > 4 ? setup.slice(4) : undefined;
-    chess.move({ from, to, promotion });
-    opponentSetup = { from, to };
+    post.move({ from, to, promotion });
+    setupMove = { from, to, promotion };
   }
-  const playerColor = chess.turn();
-  return { chess, remaining: rest, playerColor, opponentSetup };
+  return {
+    preFen: p.fen,
+    postFen: post.fen(),
+    setupMove,
+    remaining: rest,
+    playerColor: post.turn(),
+  };
 }
 
 export function uciFromMove(m: { from: Square; to: Square; promotion?: string }) {
