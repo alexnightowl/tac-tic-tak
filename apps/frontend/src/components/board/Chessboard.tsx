@@ -17,6 +17,8 @@ type Props = {
   allowMoves?: boolean;
   theme?: BoardTheme;
   pieceSet?: string;
+  /** If set, a piece slides from `from` to `to` while this prop is non-null. */
+  animateMove?: { from: Square; to: Square } | null;
 };
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
@@ -35,6 +37,16 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+/** Board position → grid row/col indices under the current orientation. */
+function gridPos(sq: Square, orientation: 'white' | 'black') {
+  const file = sq.charCodeAt(0) - 97;
+  const rank = Number(sq[1]) - 1;
+  return {
+    col: orientation === 'white' ? file : 7 - file,
+    row: orientation === 'white' ? 7 - rank : rank,
+  };
+}
+
 export function Chessboard({
   fen,
   orientation = 'white',
@@ -43,6 +55,7 @@ export function Chessboard({
   allowMoves = true,
   theme = 'green',
   pieceSet = 'cburnett',
+  animateMove,
 }: Props) {
   const chess = useMemo(() => new Chess(fen), [fen]);
   const ref = useRef<HTMLDivElement>(null);
@@ -80,6 +93,22 @@ export function Chessboard({
 
   const rows = orientation === 'white' ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
   const cols = orientation === 'white' ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];
+
+  // Square of the king currently in check (if any).
+  const checkSquare: Square | null = useMemo(() => {
+    if (!chess.inCheck()) return null;
+    const color = chess.turn();
+    const board = chess.board();
+    for (let r = 0; r < 8; r++) {
+      for (let c = 0; c < 8; c++) {
+        const cell = board[r][c];
+        if (cell && cell.type === 'k' && cell.color === color) {
+          return sqName(c, 7 - r);
+        }
+      }
+    }
+    return null;
+  }, [chess]);
 
   const pointToSquare = useCallback((clientX: number, clientY: number): Square | null => {
     if (!ref.current || !size) return null;
@@ -196,8 +225,10 @@ export function Chessboard({
             const isSelected = selected === s;
             const isLegalTarget = legal.has(s);
             const isHighlighted = highlights.has(s);
+            const isCheck = checkSquare === s;
             const piece = chess.get(s);
             const isDragging = dragFrom === s;
+            const isAnimatingSource = animateMove?.from === s;
             return (
               <div
                 key={s}
@@ -211,7 +242,14 @@ export function Chessboard({
                 data-square={s}
                 data-draggable={!!piece}
               >
-                {/* highlight fill — renders BEHIND the piece, so the piece stays fully opaque */}
+                {/* check indicator — radial red glow under piece */}
+                {isCheck && (
+                  <div className="absolute inset-0 pointer-events-none" style={{
+                    zIndex: 0,
+                    background: 'radial-gradient(circle, rgba(239, 68, 68, 0.85) 10%, rgba(239, 68, 68, 0.35) 55%, transparent 80%)',
+                  }} />
+                )}
+                {/* highlight fill — renders BEHIND the piece */}
                 {(isLast || isHighlighted || isSelected) && (
                   <div
                     className="absolute inset-0 pointer-events-none"
@@ -225,14 +263,14 @@ export function Chessboard({
                     }}
                   />
                 )}
-                {/* legal move indicator — also behind piece */}
+                {/* legal move indicator */}
                 {isLegalTarget && (
                   piece
                     ? <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, boxShadow: 'inset 0 0 0 3px rgba(0,0,0,0.35)' }} />
                     : <div className="absolute w-1/3 h-1/3 rounded-full bg-black/25 pointer-events-none" style={{ zIndex: 1 }} />
                 )}
-                {/* piece — explicit z-index so it sits on top of any overlay */}
-                {piece && (
+                {/* piece (skipped if this is the source cell of an ongoing slide animation) */}
+                {piece && !isAnimatingSource && (
                   <img
                     src={pieceUrl(pieceSet, piece.color, piece.type as any)}
                     alt=""
@@ -243,12 +281,12 @@ export function Chessboard({
                 )}
                 {/* coordinates */}
                 {file === (orientation === 'white' ? 0 : 7) && (
-                  <span className="absolute top-0.5 left-1 text-[10px] font-medium" style={{ color: isLight ? colors.dark : colors.light }}>
+                  <span className="absolute top-0.5 left-1 text-[10px] font-medium" style={{ color: isLight ? colors.dark : colors.light, zIndex: 2 }}>
                     {rank + 1}
                   </span>
                 )}
                 {rank === (orientation === 'white' ? 0 : 7) && (
-                  <span className="absolute bottom-0.5 right-1 text-[10px] font-medium" style={{ color: isLight ? colors.dark : colors.light }}>
+                  <span className="absolute bottom-0.5 right-1 text-[10px] font-medium" style={{ color: isLight ? colors.dark : colors.light, zIndex: 2 }}>
                     {FILES[file]}
                   </span>
                 )}
@@ -258,7 +296,35 @@ export function Chessboard({
         )}
       </div>
 
-      {/* Drag ghost — floating piece that tracks the pointer. */}
+      {/* Sliding piece for setup / reply animations. */}
+      {animateMove && size > 0 && (() => {
+        const p = chess.get(animateMove.from);
+        if (!p) return null;
+        const from = gridPos(animateMove.from, orientation);
+        const to = gridPos(animateMove.to, orientation);
+        return (
+          <img
+            key={`${animateMove.from}-${animateMove.to}-${fen}`}
+            src={pieceUrl(pieceSet, p.color, p.type as any)}
+            alt=""
+            draggable={false}
+            className="absolute pointer-events-none"
+            style={{
+              width: sq,
+              height: sq,
+              padding: '5%',
+              left: from.col * sq,
+              top: from.row * sq,
+              ['--dx' as any]: `${(to.col - from.col) * sq}px`,
+              ['--dy' as any]: `${(to.row - from.row) * sq}px`,
+              animation: 'slide-piece 280ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+              zIndex: 3,
+            }}
+          />
+        );
+      })()}
+
+      {/* Drag ghost */}
       {dragFrom && dragPos && size > 0 && (() => {
         const piece = chess.get(dragFrom);
         if (!piece) return null;
@@ -285,6 +351,7 @@ export function Chessboard({
       {promotion && (
         <PromotionPicker
           size={size}
+          square={promotion.to}
           orientation={orientation}
           color={chess.turn()}
           pieceSet={pieceSet}
@@ -304,25 +371,76 @@ export function Chessboard({
   );
 }
 
-function PromotionPicker({ size, color, pieceSet, onPick, onCancel }: {
+function PromotionPicker({ size, square, orientation, color, pieceSet, onPick, onCancel }: {
   size: number;
+  square: Square;
   orientation: 'white' | 'black';
   color: 'w' | 'b';
   pieceSet: string;
-  onPick: (p: 'q' | 'r' | 'b' | 'n') => void;
+  onPick: (p: 'q' | 'n' | 'r' | 'b') => void;
   onCancel: () => void;
 }) {
-  const pieces: Array<'q' | 'r' | 'b' | 'n'> = ['q', 'r', 'b', 'n'];
+  // Ignore pointer events that arrive immediately after mount (otherwise the
+  // same tap that triggered the promotion closes the modal).
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setReady(true), 250);
+    return () => clearTimeout(id);
+  }, []);
+
   const sq = size / 8;
+  const pos = gridPos(square, orientation);
+  // Promotion squares are always on the top visible edge, but guard anyway.
+  const downward = pos.row <= 3;
+  const baseTop = downward ? pos.row * sq : (pos.row - 3) * sq;
+  const order: Array<'q' | 'n' | 'r' | 'b'> = downward ? ['q', 'n', 'r', 'b'] : ['b', 'r', 'n', 'q'];
+
+  const pickHandler = (p: 'q' | 'n' | 'r' | 'b') => (e: React.PointerEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onPick(p);
+  };
+
   return (
-    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 flex items-center justify-center" onClick={onCancel}>
-      <div className="flex bg-[var(--bg-card-solid)] border border-[var(--border)] rounded-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-        {pieces.map((p) => (
-          <button key={p} onClick={() => onPick(p)} className="hover:bg-white/10" style={{ width: sq, height: sq }}>
-            <img src={pieceUrl(pieceSet, color, p)} alt={p} className="w-full h-full" style={{ padding: '10%' }} />
+    <>
+      <div
+        className="absolute inset-0"
+        style={{ zIndex: 30, background: 'rgba(0,0,0,0.35)' }}
+        onPointerDown={(e) => {
+          if (!ready) return;
+          e.stopPropagation();
+          onCancel();
+        }}
+      />
+      <div
+        className="absolute shadow-2xl rounded-lg overflow-hidden ring-1 ring-black/15"
+        style={{
+          zIndex: 40,
+          left: pos.col * sq,
+          top: baseTop,
+          width: sq,
+          height: sq * 4,
+          background: 'rgba(252, 252, 252, 0.98)',
+        }}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        {order.map((p) => (
+          <button
+            key={p}
+            className="block w-full hover:bg-black/10 active:bg-black/20"
+            style={{ height: sq, touchAction: 'manipulation' }}
+            onPointerDown={pickHandler(p)}
+          >
+            <img
+              src={pieceUrl(pieceSet, color, p)}
+              alt={p}
+              draggable={false}
+              className="w-full h-full"
+              style={{ padding: '8%' }}
+            />
           </button>
         ))}
       </div>
-    </div>
+    </>
   );
 }
