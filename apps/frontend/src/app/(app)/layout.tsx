@@ -2,12 +2,15 @@
 
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { getToken } from '@/lib/api';
 import { Nav } from '@/components/nav';
+import { PullToRefresh } from '@/components/PullToRefresh';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const qc = useQueryClient();
   // Hide chrome on the play runner itself (focus mode) — just show content.
   const inPlayRunner = pathname?.startsWith('/play/') && pathname.split('/').length >= 3;
 
@@ -19,10 +22,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return <div className="relative min-h-dvh">{children}</div>;
   }
 
+  const refresh = async () => {
+    await qc.invalidateQueries();
+  };
+
   return (
-    <div className="relative min-h-dvh pb-24 md:pb-0">
-      <Nav />
-      <main className="relative max-w-5xl mx-auto px-4 md:px-6 py-4 md:py-6">{children}</main>
-    </div>
+    <PullToRefresh onRefresh={refresh}>
+      <div className="relative min-h-dvh pb-24 md:pb-0">
+        <Nav />
+        <main className="relative max-w-5xl mx-auto px-4 md:px-6 py-4 md:py-6">{children}</main>
+      </div>
+    </PullToRefresh>
   );
 }

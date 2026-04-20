@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
 import { SessionsService } from './sessions.service';
@@ -25,7 +25,17 @@ export class SessionsController {
   }
 
   @Post(':id/finish')
-  finish(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
-    return this.sessions.finish(u.id, id);
+  finish(@CurrentUser() u: AuthedUser, @Param('id') id: string, @Query('save') save?: string) {
+    return this.sessions.finish(u.id, id, { save: save !== 'false' });
+  }
+
+  @Get(':id')
+  detail(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
+    return this.sessions.detail(u.id, id);
+  }
+
+  @Delete(':id')
+  remove(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
+    return this.sessions.remove(u.id, id);
   }
 }
