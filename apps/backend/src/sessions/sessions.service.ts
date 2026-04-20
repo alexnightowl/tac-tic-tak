@@ -140,9 +140,17 @@ export class SessionsService {
     return { newRating: next, step };
   }
 
-  async finish(userId: string, sessionId: string) {
+  async finish(userId: string, sessionId: string, opts: { save?: boolean } = {}) {
+    const save = opts.save !== false;
     const session = await this.ownedSession(userId, sessionId);
     if (session.endedAt) return this.summary(session.id);
+
+    // User chose to discard — wipe the session and its attempts entirely.
+    if (!save) {
+      await this.buffer.clearSession(sessionId);
+      await this.prisma.trainingSession.delete({ where: { id: sessionId } });
+      return { discarded: true } as const;
+    }
 
     const attempts = await this.prisma.trainingAttempt.findMany({ where: { sessionId } });
     const stats = deriveSessionStats(attempts, session.startRating);
@@ -170,6 +178,45 @@ export class SessionsService {
 
     await this.buffer.clearSession(sessionId);
     return { ...(await this.summary(sessionId)), unlocked };
+  }
+
+  /** Delete a finished session (used by the list's swipe-to-delete). */
+  async remove(userId: string, sessionId: string) {
+    const session = await this.ownedSession(userId, sessionId);
+    await this.prisma.trainingSession.delete({ where: { id: session.id } });
+    return { ok: true };
+  }
+
+  /** Detailed view of a single session: headline stats + attempt breakdown. */
+  async detail(userId: string, sessionId: string) {
+    const session = await this.ownedSession(userId, sessionId);
+    const attempts = await this.prisma.trainingAttempt.findMany({
+      where: { sessionId },
+      orderBy: { createdAt: 'asc' },
+      select: {
+        id: true, puzzleId: true, puzzleRating: true,
+        correct: true, responseMs: true, createdAt: true,
+      },
+    });
+    const endRating = attempts.length > 0
+      ? (attempts[attempts.length - 1].correct ? attempts[attempts.length - 1].puzzleRating : session.peakRating)
+      : session.startRating;
+    return {
+      id: session.id,
+      startedAt: session.startedAt,
+      endedAt: session.endedAt,
+      mode: session.mode,
+      theme: session.theme,
+      durationSec: session.durationSec,
+      startRating: session.startRating,
+      endRating,
+      peakRating: session.peakRating,
+      solved: session.solvedCount,
+      failed: session.failedCount,
+      accuracy: session.accuracy,
+      avgResponseMs: session.avgResponseMs,
+      attempts,
+    };
   }
 
   private async ownedSession(userId: string, sessionId: string) {

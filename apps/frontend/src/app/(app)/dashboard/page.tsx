@@ -1,28 +1,38 @@
 'use client';
 
 import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Swords } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
+import { SessionList, SessionRow } from '@/components/SessionList';
 
 type Overview = {
-  recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
+  recentSessions: SessionRow[];
   allTimePeak: number;
 };
 
 export default function DashboardPage() {
   const user = useAppStore((s) => s.user);
   const progression = useAppStore((s) => s.progression);
+  const language = useAppStore((s) => s.settings.language);
   const t = useT();
+  const qc = useQueryClient();
   const { data } = useQuery({
     queryKey: ['overview'],
     queryFn: () => http.get<Overview>('/analytics'),
     enabled: !!user,
   });
+
+  async function onDelete(id: string) {
+    await http.del(`/sessions/${id}`).catch(() => {});
+    qc.invalidateQueries({ queryKey: ['overview'] });
+    qc.invalidateQueries({ queryKey: ['analytics'] });
+    qc.invalidateQueries({ queryKey: ['analytics-themes'] });
+  }
 
   return (
     <div className="space-y-6">
@@ -61,22 +71,12 @@ export default function DashboardPage() {
 
       <div>
         <h2 className="text-lg font-medium mb-2">{t('dashboard.recent')}</h2>
-        <div className="grid gap-2">
-          {(data?.recentSessions ?? []).map((s) => (
-            <Card key={s.id} className="flex items-center justify-between">
-              <div className="text-sm">
-                <div className="font-medium">{new Date(s.startedAt).toLocaleString()}</div>
-                <div className="text-zinc-400 mt-0.5">
-                  {s.solved}✓ · {s.failed}✗ · {(s.accuracy * 100).toFixed(0)}% · peak {s.peakRating}
-                </div>
-              </div>
-              <div className="text-zinc-500 text-xs tabular-nums">{Math.round(s.avgResponseMs)}ms</div>
-            </Card>
-          ))}
-          {data?.recentSessions.length === 0 && (
-            <p className="text-sm text-zinc-500">{t('dashboard.empty')}</p>
-          )}
-        </div>
+        <SessionList
+          sessions={data?.recentSessions ?? []}
+          onDelete={onDelete}
+          language={language}
+          emptyLabel={t('dashboard.empty')}
+        />
       </div>
     </div>
   );

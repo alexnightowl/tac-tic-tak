@@ -43,6 +43,7 @@ export default function PlayRunner() {
   const [durationSec, setDurationSec] = useState<number>(0);
   const [now, setNow] = useState(Date.now());
   const [summary, setSummary] = useState<FinishResponse | null>(null);
+  const [confirmExit, setConfirmExit] = useState(false);
   const [solvedCount, setSolvedCount] = useState(0);
   const [failedCount, setFailedCount] = useState(0);
   const [opponentBusy, setOpponentBusy] = useState(false);
@@ -153,14 +154,30 @@ export default function PlayRunner() {
     }
   }
 
-  async function finish() {
+  async function finish(opts: { save?: boolean } = {}) {
     if (finishing.current) return;
     finishing.current = true;
+    const save = opts.save !== false;
     try {
-      const r = await http.post<FinishResponse>(`/sessions/${sessionId}/finish`);
+      const r = await http.post<FinishResponse & { discarded?: boolean }>(
+        `/sessions/${sessionId}/finish${save ? '' : '?save=false'}`,
+      );
+      if ((r as any).discarded) {
+        router.replace('/dashboard');
+        return;
+      }
       setSummary(r);
     } catch {
       setSummary({ sessionId, solved: 0, failed: 0, accuracy: 0, avgResponseMs: 0, peakRating: 0 });
+    }
+  }
+
+  function requestExit() {
+    // If the user has made at least one attempt, ask whether to save or discard.
+    if (solvedCount + failedCount > 0) {
+      setConfirmExit(true);
+    } else {
+      finish({ save: false });
     }
   }
 
@@ -223,7 +240,7 @@ export default function PlayRunner() {
           <Button
             variant="glass"
             size="sm"
-            onClick={finish}
+            onClick={requestExit}
             className="!px-3"
             aria-label={t('play.exit')}
           >
@@ -274,6 +291,46 @@ export default function PlayRunner() {
       </div>
 
       <div className="h-2" />
+
+      {confirmExit && (
+        <ExitDialog
+          onSave={() => { setConfirmExit(false); finish({ save: true }); }}
+          onDiscard={() => { setConfirmExit(false); finish({ save: false }); }}
+          onCancel={() => setConfirmExit(false)}
+          language={settings.language}
+        />
+      )}
+    </div>
+  );
+}
+
+function ExitDialog({ onSave, onDiscard, onCancel, language }: {
+  onSave: () => void; onDiscard: () => void; onCancel: () => void; language: string;
+}) {
+  const uk = language === 'uk';
+  return (
+    <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-end md:items-center justify-center p-4" onClick={onCancel}>
+      <div className="glass rounded-2xl p-5 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+        <div className="text-base font-medium">
+          {uk ? 'Завершити сесію?' : 'End session?'}
+        </div>
+        <div className="text-xs text-zinc-400 mt-1">
+          {uk
+            ? 'Ви вийшли достроково. Зберегти результат у статистику чи відкинути його?'
+            : 'Leaving early. Save this session to your stats, or discard it?'}
+        </div>
+        <div className="flex flex-col gap-2 mt-4">
+          <button onClick={onSave} className="h-11 rounded-xl bg-[var(--accent)] text-black font-semibold text-sm">
+            {uk ? 'Зберегти' : 'Save'}
+          </button>
+          <button onClick={onDiscard} className="h-11 rounded-xl border border-rose-500/40 text-rose-300 text-sm">
+            {uk ? 'Відкинути' : 'Discard'}
+          </button>
+          <button onClick={onCancel} className="h-11 rounded-xl border border-[var(--border)] text-zinc-300 text-sm">
+            {uk ? 'Продовжити' : 'Keep playing'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
