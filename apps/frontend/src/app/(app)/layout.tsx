@@ -26,12 +26,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     await qc.invalidateQueries();
   };
 
+  // Nav renders OUTSIDE the pull-to-refresh wrapper because its mobile tab
+  // bar is position:fixed — a transformed ancestor would trap it (fixed
+  // children anchor to the nearest transformed ancestor, not the viewport).
   return (
-    <PullToRefresh onRefresh={refresh}>
-      <div className="relative min-h-dvh pb-24 md:pb-0">
-        <Nav />
+    <div className="relative min-h-dvh pb-24 md:pb-0">
+      <Nav />
+      <PullToRefresh onRefresh={refresh}>
         <main className="relative max-w-5xl mx-auto px-4 md:px-6 py-4 md:py-6">{children}</main>
-      </div>
-    </PullToRefresh>
+      </PullToRefresh>
+    </div>
   );
 }

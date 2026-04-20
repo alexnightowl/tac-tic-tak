@@ -78,10 +78,12 @@ function startOfDay(d: Date) {
 function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (id: string) => void; language: string }) {
   const [dx, setDx] = useState(0);
   const [confirming, setConfirming] = useState(false);
+  const [animating, setAnimating] = useState(false);
   const startX = useRef(0);
   const startY = useRef(0);
   const axis = useRef<'h' | 'v' | null>(null);
   const REVEAL = 88;
+  const R = 16; // matches Tailwind rounded-2xl
 
   const time = new Date(s.startedAt).toLocaleTimeString(language === 'uk' ? 'uk-UA' : 'en-US', {
     hour: '2-digit', minute: '2-digit',
@@ -93,6 +95,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
     startX.current = e.clientX;
     startY.current = e.clientY;
     axis.current = null;
+    setAnimating(false);
   };
   const onPointerMove = (e: React.PointerEvent) => {
     const ddx = e.clientX - startX.current;
@@ -102,26 +105,45 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
       axis.current = Math.abs(ddx) > Math.abs(ddy) ? 'h' : 'v';
     }
     if (axis.current !== 'h') return;
-    // Allow only leftward swipe (to reveal delete).
     const next = Math.max(-REVEAL, Math.min(0, ddx));
     setDx(next);
   };
   const onPointerUp = () => {
     if (axis.current === 'h') {
+      setAnimating(true);
       setDx(dx < -REVEAL / 2 ? -REVEAL : 0);
     }
     axis.current = null;
   };
 
-  const reset = () => setDx(0);
+  const reset = () => { setAnimating(true); setDx(0); };
+
+  // Animate border-radius in sync with the swipe so the card's right edge
+  // locks cleanly against the delete button once fully revealed.
+  const progress = Math.min(1, Math.abs(dx) / REVEAL);
+  const innerRadius = R * (1 - progress);
+  // Fade the delete button in with the swipe — at rest it's invisible, so
+  // no red ever bleeds through the card's frosted glass.
+  const buttonOpacity = Math.min(1, Math.abs(dx) / 28);
+  const cardTransition = animating ? 'transform 200ms ease, border-radius 200ms ease' : 'none';
+  const buttonTransition = animating ? 'opacity 200ms ease, border-radius 200ms ease' : 'opacity 120ms linear';
 
   return (
-    <div className="relative overflow-hidden rounded-2xl">
-      {/* delete action revealed behind the card */}
+    <div className="relative">
+      {/* Delete action — hidden at rest, fades in as the swipe progresses. */}
       <button
         className="absolute inset-y-0 right-0 w-[88px] bg-red-500/90 text-white text-xs flex flex-col items-center justify-center gap-1"
         onClick={() => setConfirming(true)}
-        aria-label="Delete"
+        aria-label={language === 'uk' ? 'Видалити' : 'Delete'}
+        style={{
+          opacity: buttonOpacity,
+          pointerEvents: buttonOpacity > 0.5 ? 'auto' : 'none',
+          borderTopLeftRadius: innerRadius,
+          borderBottomLeftRadius: innerRadius,
+          borderTopRightRadius: R,
+          borderBottomRightRadius: R,
+          transition: buttonTransition,
+        }}
       >
         <Trash2 size={18} />
         <span>{language === 'uk' ? 'Видалити' : 'Delete'}</span>
@@ -129,8 +151,16 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
 
       <Link
         href={`/sessions/${s.id}`}
-        className="relative block glass rounded-2xl transition-transform"
-        style={{ transform: `translateX(${dx}px)`, willChange: 'transform' }}
+        className="relative block glass"
+        style={{
+          transform: `translateX(${dx}px)`,
+          willChange: 'transform',
+          borderTopLeftRadius: R,
+          borderBottomLeftRadius: R,
+          borderTopRightRadius: innerRadius,
+          borderBottomRightRadius: innerRadius,
+          transition: cardTransition,
+        }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
