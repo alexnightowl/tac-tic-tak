@@ -4,7 +4,8 @@ export class CreateSessionDto {
   @IsInt() @Min(400) @Max(3000)
   startRating!: number;
 
-  @IsInt() @IsIn([300, 600, 1200])
+  // Accept any duration between 1 minute and 1 hour.
+  @IsInt() @Min(60) @Max(3600)
   durationSec!: number;
 
   @IsIn(['mixed', 'theme'])
