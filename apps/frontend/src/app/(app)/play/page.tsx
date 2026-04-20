@@ -25,7 +25,7 @@ export default function PlaySetup() {
   const [startRating, setStartRating] = useState<number>(progression?.currentPuzzleRating ?? 1200);
   const [duration, setDuration] = useState<number>(600);
   const [customDuration, setCustomDuration] = useState<boolean>(false);
-  const [customMinutes, setCustomMinutes] = useState<number>(15);
+  const [customMinutes, setCustomMinutes] = useState<string>('15');
   const [mode, setMode] = useState<'mixed' | 'theme'>('mixed');
   const [theme, setTheme] = useState('fork');
   const [err, setErr] = useState<string | null>(null);
@@ -47,7 +47,9 @@ export default function PlaySetup() {
     [],
   );
 
-  const effectiveDuration = customDuration ? Math.max(60, Math.min(3600, Math.round(customMinutes * 60))) : duration;
+  const customMinutesNum = Math.max(1, Math.min(60, Math.floor(Number(customMinutes) || 0)));
+  const effectiveDuration = customDuration ? customMinutesNum * 60 : duration;
+  const customInvalid = customDuration && (customMinutes === '' || customMinutesNum < 1);
 
   const start = async () => {
     setErr(null);
@@ -105,11 +107,20 @@ export default function PlaySetup() {
           {customDuration && (
             <div className="flex items-center gap-2 mt-3">
               <Input
-                type="number"
-                min={1}
-                max={60}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 value={customMinutes}
-                onChange={(e) => setCustomMinutes(Number(e.target.value))}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  // Allow empty (so the user can clear the field) or 1-2 digits.
+                  if (v === '' || /^\d{1,2}$/.test(v)) setCustomMinutes(v);
+                }}
+                onBlur={() => {
+                  // Clamp on blur so the final value is always 1-60.
+                  if (customMinutes === '') setCustomMinutes('15');
+                  else setCustomMinutes(String(customMinutesNum));
+                }}
                 className="max-w-[120px]"
               />
               <span className="text-sm text-zinc-400">{t('play.minutes')}</span>
@@ -145,7 +156,7 @@ export default function PlaySetup() {
           className="w-full"
           size="lg"
           onClick={start}
-          disabled={loading || (mode === 'theme' && !theme)}
+          disabled={loading || customInvalid || (mode === 'theme' && !theme)}
         >
           <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
         </Button>

@@ -1,19 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+
+export type CachedPuzzle = {
+  id: string;
+  fen: string;
+  moves: string[];
+  rating: number;
+  themes: string[];
+  gameUrl: string | null;
+};
 
 /**
  * Redis-backed puzzle selector.
  *
+ * Queue entries now hold FULL puzzle JSON — the /next hot path is a single
+ * RPOP with zero Postgres round-trips after the queue is warmed.
+ *
  * Keys:
- *   session:{sid}:queue   — List of puzzle IDs pre-fetched for a session (RPOP)
+ *   session:{sid}:queue   — List of pre-serialised puzzles for a session
  *   session:{sid}:seen    — Set of puzzle IDs already shown in this session
  *   user:{uid}:recent     — Sorted set (score=timestamp) of recent puzzle IDs
  */
 @Injectable()
 export class PuzzleBufferService {
-  private readonly BUFFER_SIZE = 12;
-  private readonly REFILL_BELOW = 4;
+  private readonly log = new Logger(PuzzleBufferService.name);
+
+  private readonly TARGET_SIZE = 12;
+  private readonly REFILL_BELOW = 6;
   private readonly RECENT_TTL_S = 60 * 60 * 24 * 30;
 
   constructor(
@@ -25,27 +39,42 @@ export class PuzzleBufferService {
   private seenKey(sid: string) { return `session:${sid}:seen`; }
   private recentKey(uid: string) { return `user:${uid}:recent`; }
 
+  /** Returns the next puzzle, pre-parsed. Triggers a background refill when low. */
   async getNext(opts: {
     sessionId: string;
     userId: string;
     rating: number;
     theme?: string | null;
-  }): Promise<string | null> {
+  }): Promise<CachedPuzzle | null> {
     const { sessionId } = opts;
-    const len = await this.redis.client.llen(this.queueKey(sessionId));
-    if (len <= this.REFILL_BELOW) await this.preload(opts);
-    const id = await this.redis.client.rpop(this.queueKey(sessionId));
-    if (id) {
-      await this.redis.client.sadd(this.seenKey(sessionId), id);
-      await this.redis.client.zadd(this.recentKey(opts.userId), Date.now(), id);
-      await this.redis.client.expire(this.recentKey(opts.userId), this.RECENT_TTL_S);
+    let len = await this.redis.client.llen(this.queueKey(sessionId));
+    if (len === 0) {
+      // Queue cold — must wait for a refill.
+      await this.preload(opts);
+      len = await this.redis.client.llen(this.queueKey(sessionId));
     }
-    return id;
+    const json = await this.redis.client.rpop(this.queueKey(sessionId));
+    if (!json) return null;
+    const puzzle = JSON.parse(json) as CachedPuzzle;
+    await this.redis.client.sadd(this.seenKey(sessionId), puzzle.id);
+    await this.redis.client.zadd(this.recentKey(opts.userId), Date.now(), puzzle.id);
+    await this.redis.client.expire(this.recentKey(opts.userId), this.RECENT_TTL_S);
+
+    // After serving, check depth and kick off a background refill if needed.
+    if (len - 1 <= this.REFILL_BELOW) {
+      this.preload(opts).catch((e) => this.log.error(`background preload failed: ${e?.message}`));
+    }
+    return puzzle;
   }
 
-  async markSeen(sessionId: string, userId: string, puzzleId: string) {
-    await this.redis.client.sadd(this.seenKey(sessionId), puzzleId);
-    await this.redis.client.zadd(this.recentKey(userId), Date.now(), puzzleId);
+  /** Public entry-point used on session creation to warm the queue ahead of the first /next. */
+  async warmSession(opts: {
+    sessionId: string;
+    userId: string;
+    rating: number;
+    theme?: string | null;
+  }): Promise<void> {
+    await this.preload(opts);
   }
 
   async clearSession(sessionId: string) {
@@ -53,12 +82,13 @@ export class PuzzleBufferService {
   }
 
   /**
-   * Fetches a fresh bucket of puzzle IDs into the session queue.
+   * Picks IDs by rating windows, loads the full puzzle data in one Postgres
+   * round-trip, then stores serialised JSON in the session queue.
    *
-   * Distribution follows the spec:
+   * Distribution matches the spec:
    *   60% normal (rating±40)
-   *   25% easier (rating-40..rating+60 shifted down)
-   *   15% harder
+   *   25% easier (rating-120..rating-40)
+   *   15% harder (rating+60..rating+180)
    */
   private async preload(opts: {
     sessionId: string;
@@ -67,9 +97,9 @@ export class PuzzleBufferService {
     theme?: string | null;
   }) {
     const { sessionId, userId, rating, theme } = opts;
-    const normal = Math.round(this.BUFFER_SIZE * 0.6);
-    const easier = Math.round(this.BUFFER_SIZE * 0.25);
-    const harder = this.BUFFER_SIZE - normal - easier;
+    const normal = Math.round(this.TARGET_SIZE * 0.6);
+    const easier = Math.round(this.TARGET_SIZE * 0.25);
+    const harder = this.TARGET_SIZE - normal - easier;
 
     const [sessionSeen, recent] = await Promise.all([
       this.redis.client.smembers(this.seenKey(sessionId)),
@@ -77,18 +107,44 @@ export class PuzzleBufferService {
     ]);
     const exclude = new Set<string>([...sessionSeen, ...recent]);
 
-    const picks = await Promise.all([
-      this.pick({ min: rating - 40, max: rating + 60, count: normal, theme, exclude }),
-      this.pick({ min: rating - 120, max: rating - 40, count: easier, theme, exclude }),
-      this.pick({ min: rating + 60, max: rating + 180, count: harder, theme, exclude }),
+    const idGroups = await Promise.all([
+      this.pickIds({ min: rating - 40, max: rating + 60, count: normal, theme, exclude }),
+      this.pickIds({ min: rating - 120, max: rating - 40, count: easier, theme, exclude }),
+      this.pickIds({ min: rating + 60, max: rating + 180, count: harder, theme, exclude }),
     ]);
-    const ids = picks.flat();
+    const ids = idGroups.flat();
     if (ids.length === 0) return;
-    // LPUSH so RPOP drains in insertion order.
-    await this.redis.client.lpush(this.queueKey(sessionId), ...ids);
+
+    // One Postgres query to hydrate them all.
+    const rows = await this.prisma.puzzle.findMany({
+      where: { id: { in: ids } },
+      select: {
+        id: true, fen: true, moves: true, rating: true, gameUrl: true,
+        themes: { include: { theme: true } },
+      },
+    });
+
+    // Preserve the picked ordering so difficulty buckets interleave by natural order.
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    const payloads: string[] = [];
+    for (const id of ids) {
+      const r = byId.get(id);
+      if (!r) continue;
+      const cached: CachedPuzzle = {
+        id: r.id,
+        fen: r.fen,
+        moves: r.moves.split(' '),
+        rating: r.rating,
+        gameUrl: r.gameUrl,
+        themes: r.themes.map((pt) => pt.theme.slug),
+      };
+      payloads.push(JSON.stringify(cached));
+    }
+    if (payloads.length === 0) return;
+    await this.redis.client.lpush(this.queueKey(sessionId), ...payloads);
   }
 
-  private async pick(opts: {
+  private async pickIds(opts: {
     min: number;
     max: number;
     count: number;
@@ -96,7 +152,6 @@ export class PuzzleBufferService {
     exclude: Set<string>;
   }): Promise<string[]> {
     if (opts.count <= 0) return [];
-    // Over-fetch to tolerate exclusions, then filter locally.
     const take = opts.count * 4;
 
     const rows = await this.prisma.$queryRawUnsafe<{ id: string }[]>(
@@ -126,7 +181,7 @@ export class PuzzleBufferService {
     const picked: string[] = [];
     for (const r of rows) {
       if (opts.exclude.has(r.id)) continue;
-      opts.exclude.add(r.id); // prevent duplicates across buckets
+      opts.exclude.add(r.id);
       picked.push(r.id);
       if (picked.length >= opts.count) break;
     }
