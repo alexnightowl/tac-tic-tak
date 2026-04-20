@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle } from 'lucide-react';
+import { X, Check, XCircle, Loader2 } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -33,7 +33,8 @@ export default function PlayRunner() {
   const focusMode = settings.focusMode;
 
   const [puzzle, setPuzzle] = useState<ServerPuzzle | null>(null);
-  const [chess, setChess] = useState<Chess | null>(null);
+  const [chess, setChess] = useState<Chess | null>(() => new Chess());
+  const [loadingFirst, setLoadingFirst] = useState(true);
   const [remaining, setRemaining] = useState<string[]>([]);
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
@@ -76,6 +77,7 @@ export default function PlayRunner() {
         setDurationSec(r.session.durationSec);
         setEndsAt(new Date(r.session.startedAt).getTime() + r.session.durationSec * 1000);
         loadPuzzle(r.puzzle, r.currentRating);
+        setLoadingFirst(false);
       } catch (e: any) {
         setSummary({ sessionId, solved: 0, failed: 0, accuracy: 0, avgResponseMs: 0, peakRating: 0 });
       }
@@ -197,7 +199,7 @@ export default function PlayRunner() {
 
   const remainingSec = endsAt ? Math.max(0, Math.round((endsAt - now) / 1000)) : 0;
   const warnThreshold = Math.min(30, Math.max(10, Math.round(durationSec * 0.1)));
-  const warning = remainingSec <= warnThreshold && remainingSec > 0;
+  const warning = !loadingFirst && remainingSec <= warnThreshold && remainingSec > 0;
   const turn = chess?.turn() === 'w' ? 'White' : 'Black';
   const isPlayerTurn = chess && ((orientation === 'white' && chess.turn() === 'w') || (orientation === 'black' && chess.turn() === 'b'));
 
@@ -223,7 +225,7 @@ export default function PlayRunner() {
               ? 'bg-red-500/15 border-red-400/60 text-red-300 pulse-red'
               : 'glass text-white',
           )}>
-            {fmtDuration(remainingSec)}
+            {loadingFirst ? '--:--' : fmtDuration(remainingSec)}
           </div>
 
           <div className="w-[72px]" />
@@ -245,10 +247,17 @@ export default function PlayRunner() {
             onMove={handleMove}
             lastMove={lastMove}
             animateMove={animateMove}
-            allowMoves={!animateMove}
+            allowMoves={!animateMove && !loadingFirst}
             theme={settings.boardTheme as BoardTheme}
             pieceSet={settings.pieceSet}
           />
+        )}
+        {loadingFirst && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="glass rounded-full h-14 w-14 flex items-center justify-center shadow-lg">
+              <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
+            </div>
+          </div>
         )}
       </div>
 

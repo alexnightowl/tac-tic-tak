@@ -1,7 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
-import { PuzzlesService } from '../puzzles/puzzles.service';
 import { AttemptDto, CreateSessionDto } from './dto';
 import { computeRatingStep, deriveSessionStats } from './rating';
 
@@ -11,18 +10,16 @@ const MAX_RATING = 3000;
 
 @Injectable()
 export class SessionsService {
+  private readonly log = new Logger(SessionsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly buffer: PuzzleBufferService,
-    private readonly puzzles: PuzzlesService,
   ) {}
 
   async create(userId: string, dto: CreateSessionDto) {
     const progression = await this.prisma.userProgression.findUnique({ where: { userId } });
     if (!progression) throw new BadRequestException('progression missing');
-    if (dto.startRating < progression.unlockedStartRating) {
-      // allow starting below unlocked, but cap cannot be exceeded
-    }
     if (dto.startRating > progression.unlockedStartRating + 200) {
       throw new BadRequestException(`startRating exceeds unlocked cap (${progression.unlockedStartRating})`);
     }
@@ -39,6 +36,17 @@ export class SessionsService {
       where: { userId },
       data: { currentPuzzleRating: dto.startRating, startPuzzleRating: dto.startRating },
     });
+
+    // Warm the session queue up-front so the very first /next returns fast.
+    this.buffer
+      .warmSession({
+        sessionId: session.id,
+        userId,
+        rating: dto.startRating,
+        theme: dto.theme ?? null,
+      })
+      .catch((e) => this.log.error(`initial warm failed: ${e?.message}`));
+
     return { sessionId: session.id, startedAt: session.startedAt, durationSec: session.durationSec };
   }
 
@@ -47,20 +55,34 @@ export class SessionsService {
     if (session.endedAt) throw new BadRequestException('session ended');
 
     const progression = await this.prisma.userProgression.findUniqueOrThrow({ where: { userId } });
-    const puzzleId = await this.buffer.getNext({
+
+    // First call after create: reset startedAt to NOW so the timer starts when
+    // the user actually sees the first puzzle (not when the session row was
+    // persisted).
+    const attemptCount = await this.prisma.trainingAttempt.count({ where: { sessionId } });
+    let startedAt = session.startedAt;
+    if (attemptCount === 0) {
+      startedAt = new Date();
+      await this.prisma.trainingSession.update({
+        where: { id: sessionId },
+        data: { startedAt },
+      });
+    }
+
+    const puzzle = await this.buffer.getNext({
       sessionId,
       userId,
       rating: progression.currentPuzzleRating,
       theme: session.theme,
     });
-    if (!puzzleId) throw new NotFoundException('no puzzles available');
-    const puzzle = await this.puzzles.getForPlay(puzzleId);
+    if (!puzzle) throw new NotFoundException('no puzzles available');
+
     return {
       puzzle,
       currentRating: progression.currentPuzzleRating,
       session: {
         id: session.id,
-        startedAt: session.startedAt,
+        startedAt,
         durationSec: session.durationSec,
       },
     };
@@ -84,14 +106,12 @@ export class SessionsService {
       },
     });
 
-    // Update history.
     await this.prisma.userPuzzleHistory.upsert({
       where: { userId_puzzleId: { userId, puzzleId: dto.puzzleId } },
       create: { userId, puzzleId: dto.puzzleId },
       update: { lastSeenAt: new Date(), seenCount: { increment: 1 } },
     });
 
-    // On fail: queue as review item.
     if (!dto.correct) {
       await this.prisma.reviewItem.upsert({
         where: { userId_puzzleId: { userId, puzzleId: dto.puzzleId } },
@@ -100,7 +120,6 @@ export class SessionsService {
       });
     }
 
-    // Update rating via rolling window.
     const windowAttempts = await this.prisma.trainingAttempt.findMany({
       where: { sessionId },
       orderBy: { createdAt: 'desc' },
@@ -139,7 +158,6 @@ export class SessionsService {
       },
     });
 
-    // Unlock check: per spec — delta>=100, accuracy>=72%, avgResponse<=9s, solved>=15 → +50 unlockedStartRating.
     const progression = await this.prisma.userProgression.findUniqueOrThrow({ where: { userId } });
     const delta = stats.peakRating - session.startRating;
     const unlocked = delta >= 100 && stats.accuracy >= 0.72 && stats.avgResponseMs <= 9000 && stats.solved >= 15;
