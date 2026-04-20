@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
 import { X, Check, XCircle, Loader2 } from 'lucide-react';
 import { http } from '@/lib/api';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Chessboard } from '@/components/board/Chessboard';
 import { Button } from '@/components/ui/button';
@@ -75,7 +75,9 @@ export default function PlayRunner() {
       try {
         const r = await http.post<NextResponse>(`/sessions/${sessionId}/next`);
         setDurationSec(r.session.durationSec);
-        setEndsAt(new Date(r.session.startedAt).getTime() + r.session.durationSec * 1000);
+        // Use the client's clock as the anchor so no seconds are lost to
+        // network round-trips.
+        setEndsAt(Date.now() + r.session.durationSec * 1000);
         loadPuzzle(r.puzzle, r.currentRating);
         setLoadingFirst(false);
       } catch (e: any) {
@@ -100,16 +102,24 @@ export default function PlayRunner() {
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
     setProgression((prev) => prev ? { ...prev, currentPuzzleRating: currentRating } : prev);
 
+    const animMs = ANIMATION_MS[settings.animationSpeed];
     // Let the setup piece slide, then swap in the post-setup position.
     if (init.setupMove) {
       const mv = init.setupMove;
       if (settings.soundEnabled) playSound(settings.soundPack, 'move');
-      setTimeout(() => {
+      if (animMs === 0) {
         setChess(new Chess(init.postFen));
         setLastMove({ from: mv.from, to: mv.to });
         setAnimateMove(null);
         attemptStart.current = Date.now();
-      }, 300);
+      } else {
+        setTimeout(() => {
+          setChess(new Chess(init.postFen));
+          setLastMove({ from: mv.from, to: mv.to });
+          setAnimateMove(null);
+          attemptStart.current = Date.now();
+        }, animMs + 20);
+      }
     } else {
       attemptStart.current = Date.now();
     }
@@ -182,6 +192,7 @@ export default function PlayRunner() {
     const opTo = opponentUci.slice(2, 4) as Square;
     const opPromo = opponentUci.length > 4 ? opponentUci.slice(4) : undefined;
     setOpponentBusy(true);
+    const animMs = ANIMATION_MS[settings.animationSpeed];
     setTimeout(() => {
       const move = chess.move({ from: opFrom, to: opTo, promotion: opPromo });
       setChess(new Chess(chess.fen()));
@@ -189,7 +200,7 @@ export default function PlayRunner() {
       if (settings.soundEnabled) playSound(settings.soundPack, move?.captured ? 'capture' : 'move');
       setRemaining(afterExpected.slice(1));
       setOpponentBusy(false);
-    }, 280);
+    }, Math.max(animMs, 80));
 
     setChess(new Chess(chess.fen()));
     return true;
@@ -247,6 +258,7 @@ export default function PlayRunner() {
             onMove={handleMove}
             lastMove={lastMove}
             animateMove={animateMove}
+            animationMs={ANIMATION_MS[settings.animationSpeed]}
             allowMoves={!animateMove && !loadingFirst}
             theme={settings.boardTheme as BoardTheme}
             pieceSet={settings.pieceSet}

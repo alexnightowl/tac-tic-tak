@@ -3,6 +3,14 @@ import type { SoundPack } from './sound';
 
 export type Language = 'en' | 'uk';
 export type ColorMode = 'auto' | 'white' | 'black';
+export type AnimationSpeed = 'instant' | 'fast' | 'normal' | 'slow';
+
+export const ANIMATION_MS: Record<AnimationSpeed, number> = {
+  instant: 0,
+  fast: 160,
+  normal: 280,
+  slow: 460,
+};
 
 export type UserSettings = {
   focusMode: boolean;
@@ -13,6 +21,7 @@ export type UserSettings = {
   soundPack: SoundPack;
   language: Language;
   fixedColor: ColorMode;
+  animationSpeed: AnimationSpeed;
 };
 
 type AuthUser = { id: string; nickname: string };
@@ -34,9 +43,10 @@ const DEFAULT_SETTINGS: UserSettings = {
   boardTheme: 'green',
   pieceSet: 'cburnett',
   soundEnabled: true,
-  soundPack: 'classic',
+  soundPack: 'wood',
   language: 'en',
   fixedColor: 'auto',
+  animationSpeed: 'normal',
 };
 
 export const useAppStore = create<State>((set) => ({

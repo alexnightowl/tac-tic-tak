@@ -28,6 +28,7 @@ export class UsersService {
     soundPack: string;
     language: string;
     fixedColor: string;
+    animationSpeed: string;
   }>) {
     return this.prisma.userSetting.update({
       where: { userId },

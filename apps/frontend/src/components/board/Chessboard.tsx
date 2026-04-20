@@ -19,6 +19,8 @@ type Props = {
   pieceSet?: string;
   /** If set, a piece slides from `from` to `to` while this prop is non-null. */
   animateMove?: { from: Square; to: Square } | null;
+  /** Duration of the slide animation in milliseconds. */
+  animationMs?: number;
 };
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
@@ -56,6 +58,7 @@ export function Chessboard({
   theme = 'green',
   pieceSet = 'cburnett',
   animateMove,
+  animationMs = 280,
 }: Props) {
   const chess = useMemo(() => new Chess(fen), [fen]);
   const ref = useRef<HTMLDivElement>(null);
@@ -317,7 +320,7 @@ export function Chessboard({
               top: from.row * sq,
               ['--dx' as any]: `${(to.col - from.col) * sq}px`,
               ['--dy' as any]: `${(to.row - from.row) * sq}px`,
-              animation: 'slide-piece 280ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+              animation: `slide-piece ${animationMs}ms cubic-bezier(0.4, 0, 0.2, 1) forwards`,
               zIndex: 3,
             }}
           />

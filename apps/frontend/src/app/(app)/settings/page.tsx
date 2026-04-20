@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { http } from '@/lib/api';
-import { useAppStore, ColorMode, Language, UserSettings } from '@/lib/store';
+import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Toggle } from '@/components/ui/toggle';
 import { Segmented } from '@/components/ui/segmented';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { BOARD_THEMES, PIECE_SETS, PIECE_SET_LABELS } from '@/lib/themes';
-import { SOUND_PACK_KEYS, SoundPack, playSound } from '@/lib/sound';
+import { SOUND_PACK_KEYS, SOUND_PACK_LABELS, SoundPack, playSound } from '@/lib/sound';
 import { pieceUrl } from '@/lib/pieces';
 
 export default function SettingsPage() {
@@ -58,16 +58,30 @@ export default function SettingsPage() {
               <button
                 key={pk}
                 onClick={() => { patch({ soundPack: pk as SoundPack }); playSound(pk, 'move'); }}
-                className={`py-2 rounded-lg text-xs capitalize border transition-all ${
+                className={`py-2 rounded-lg text-xs border transition-all ${
                   settings.soundPack === pk
                     ? 'bg-[var(--accent)] text-black border-transparent font-medium'
                     : 'border-[var(--border)] text-zinc-300 hover:bg-white/5'
                 }`}
               >
-                {pk}
+                {SOUND_PACK_LABELS[pk]}
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="pt-2">
+          <div className="text-sm mb-2">{t('settings.animation')}</div>
+          <Segmented
+            value={settings.animationSpeed}
+            onChange={(v) => patch({ animationSpeed: v as AnimationSpeed })}
+            options={[
+              { value: 'instant', label: t('settings.animation.instant') },
+              { value: 'fast',    label: t('settings.animation.fast') },
+              { value: 'normal',  label: t('settings.animation.normal') },
+              { value: 'slow',    label: t('settings.animation.slow') },
+            ]}
+          />
         </div>
 
         <div className="pt-2">
