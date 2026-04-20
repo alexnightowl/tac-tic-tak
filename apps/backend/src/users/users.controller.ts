@@ -13,6 +13,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsString() soundPack?: string;
   @IsOptional() @IsIn(['en', 'uk']) language?: string;
   @IsOptional() @IsIn(['auto', 'white', 'black']) fixedColor?: string;
+  @IsOptional() @IsIn(['instant', 'fast', 'normal', 'slow']) animationSpeed?: string;
 }
 
 @UseGuards(JwtAuthGuard)

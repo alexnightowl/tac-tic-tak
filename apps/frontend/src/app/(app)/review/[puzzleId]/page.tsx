@@ -9,7 +9,7 @@ import { Chessboard } from '@/components/board/Chessboard';
 import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { playSound } from '@/lib/sound';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { BoardTheme } from '@/lib/themes';
 import { themeLabel } from '@/lib/theme-labels';
@@ -45,14 +45,21 @@ export default function ReviewPuzzle() {
     setLastMove(null);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
     setSolved(false);
+    const animMs = ANIMATION_MS[settings.animationSpeed];
     if (init.setupMove) {
       const mv = init.setupMove;
       if (settings.soundEnabled) playSound(settings.soundPack, 'move');
-      setTimeout(() => {
+      if (animMs === 0) {
         setChess(new Chess(init.postFen));
         setLastMove({ from: mv.from, to: mv.to });
         setAnimateMove(null);
-      }, 300);
+      } else {
+        setTimeout(() => {
+          setChess(new Chess(init.postFen));
+          setLastMove({ from: mv.from, to: mv.to });
+          setAnimateMove(null);
+        }, animMs + 20);
+      }
     }
   }
 
@@ -88,13 +95,14 @@ export default function ReviewPuzzle() {
       return true;
     }
     const op = after[0];
+    const animMs = ANIMATION_MS[settings.animationSpeed];
     setTimeout(() => {
       const mv = chess.move({ from: op.slice(0, 2) as Square, to: op.slice(2, 4) as Square, promotion: op.length > 4 ? op.slice(4) : undefined });
       setChess(new Chess(chess.fen()));
       setLastMove({ from: op.slice(0, 2) as Square, to: op.slice(2, 4) as Square });
       if (settings.soundEnabled) playSound(settings.soundPack, mv?.captured ? 'capture' : 'move');
       setRemaining(after.slice(1));
-    }, 220);
+    }, Math.max(animMs, 80));
     setChess(new Chess(chess.fen()));
     return true;
   }
@@ -116,6 +124,7 @@ export default function ReviewPuzzle() {
           onMove={handleMove}
           lastMove={lastMove}
           animateMove={animateMove}
+          animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove}
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}

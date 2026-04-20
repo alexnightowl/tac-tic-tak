@@ -29,9 +29,10 @@ model UserSetting {
   boardTheme      String  @default("green")
   pieceSet        String  @default("cburnett")
   soundEnabled    Boolean @default(true)
-  soundPack       String  @default("classic")
+  soundPack       String  @default("wood")
   language        String  @default("en")
   fixedColor      String  @default("auto") // auto | white | black
+  animationSpeed  String  @default("normal") // instant | fast | normal | slow
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
