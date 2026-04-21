@@ -11,6 +11,10 @@ model User {
   id             String   @id @default(cuid())
   nickname       String   @unique
   passwordHash   String
+  displayName    String?
+  avatarUrl      String?
+  bio            String?
+  country        String?  // ISO-3166 alpha-2
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -21,6 +25,8 @@ model User {
   attempts       TrainingAttempt[]
   puzzleHistory  UserPuzzleHistory[]
   reviewItems    ReviewItem[]
+  sentFriendRequests     Friendship[] @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
 }
 
 model UserSetting {
@@ -142,6 +148,21 @@ model UserPuzzleHistory {
 
   @@id([userId, puzzleId])
   @@index([userId, lastSeenAt])
+}
+
+model Friendship {
+  id          String   @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status      String   // "pending" | "accepted"
+  createdAt   DateTime @default(now())
+  acceptedAt  DateTime?
+  requester   User     @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee   User     @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+  @@index([requesterId, status])
 }
 
 model ReviewItem {

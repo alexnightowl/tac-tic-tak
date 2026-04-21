@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
-import { IsBoolean, IsHexColor, IsIn, IsOptional, IsString } from 'class-validator';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { IsBoolean, IsHexColor, IsIn, IsOptional, IsString, Length, Matches, MaxLength } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
 import { UsersService } from './users.service';
+import { FriendshipService } from './friendship.service';
 
 class UpdateSettingsDto {
   @IsOptional() @IsBoolean() focusMode?: boolean;
@@ -17,18 +18,84 @@ class UpdateSettingsDto {
   @IsOptional() @IsIn(['bullet', 'blitz', 'rapid']) defaultStyle?: string;
 }
 
-@UseGuards(JwtAuthGuard)
+class UpdateProfileDto {
+  @IsOptional() @IsString() @Length(1, 40)
+  displayName?: string;
+
+  @IsOptional() @IsString() @MaxLength(280)
+  bio?: string;
+
+  @IsOptional() @IsString() @Matches(/^[a-z]{2}$/i, { message: 'country must be 2-letter code' })
+  country?: string;
+}
+
+class UploadAvatarDto {
+  @IsString() @Matches(/^data:image\/(png|jpeg|webp);base64,/, { message: 'unsupported image format' })
+  dataUrl!: string;
+}
+
 @Controller('users')
 export class UsersController {
-  constructor(private readonly users: UsersService) {}
+  constructor(
+    private readonly users: UsersService,
+    private readonly friends: FriendshipService,
+  ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('me')
   me(@CurrentUser() u: AuthedUser) {
     return this.users.getProfile(u.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('me/settings')
   updateSettings(@CurrentUser() u: AuthedUser, @Body() dto: UpdateSettingsDto) {
     return this.users.updateSettings(u.id, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('me/profile')
+  updateProfile(@CurrentUser() u: AuthedUser, @Body() dto: UpdateProfileDto) {
+    return this.users.updateProfile(u.id, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('me/avatar')
+  uploadAvatar(@CurrentUser() u: AuthedUser, @Body() dto: UploadAvatarDto) {
+    return this.users.setAvatar(u.id, dto.dataUrl);
+  }
+
+  /** Prefix search by nickname. Requires auth to discourage scraping. */
+  @UseGuards(JwtAuthGuard)
+  @Get('search')
+  async search(@CurrentUser() u: AuthedUser, @Query('q') q: string) {
+    const rows = await this.friends.search(u.id, q ?? '', 10);
+    // Enrich each hit with the viewer's friendship state so the UI can render
+    // the right CTA without a per-row round-trip.
+    const withStatus = await Promise.all(
+      rows.map(async (r) => ({
+        ...r,
+        friendship: await this.friends.statusWith(u.id, r.id),
+      })),
+    );
+    return withStatus;
+  }
+
+  /** Public profile lookup by nickname. Auth is optional — if the caller is
+   *  authenticated, the response includes their friendship state with the
+   *  target so the UI can render the correct action button. */
+  @Get('by-nickname/:nickname')
+  async publicProfile(@Param('nickname') nickname: string) {
+    const profile = await this.users.publicProfile(nickname);
+    return profile;
+  }
+
+  /** Friendship state with a named user (requires auth). */
+  @UseGuards(JwtAuthGuard)
+  @Get('by-nickname/:nickname/friendship')
+  async friendshipWith(@CurrentUser() u: AuthedUser, @Param('nickname') nickname: string) {
+    const target = await this.users.findByNickname(nickname);
+    if (!target) return { state: 'none', friendshipId: null };
+    return this.friends.statusWith(u.id, target.id);
   }
 }

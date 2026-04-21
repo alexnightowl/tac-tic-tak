@@ -9,6 +9,10 @@ import type { Progressions } from './store';
 type Me = {
   id: string;
   nickname: string;
+  displayName?: string | null;
+  avatarUrl?: string | null;
+  bio?: string | null;
+  country?: string | null;
   settings: any;
   progressions: Progressions;
   defaultStyle?: string;
@@ -26,7 +30,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
     if (!getToken()) return;
     http.get<Me>('/users/me')
       .then((me) => {
-        setUser({ id: me.id, nickname: me.nickname });
+        setUser({
+          id: me.id,
+          nickname: me.nickname,
+          displayName: me.displayName,
+          avatarUrl: me.avatarUrl,
+          bio: me.bio,
+          country: me.country,
+        });
         if (me.settings) setSettings(me.settings);
         if (me.progressions) setProgressions(me.progressions);
       })
