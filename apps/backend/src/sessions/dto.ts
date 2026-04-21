@@ -11,6 +11,9 @@ export class CreateSessionDto {
   @IsIn(['mixed', 'theme'])
   mode!: 'mixed' | 'theme';
 
+  @IsIn(['bullet', 'blitz', 'rapid'])
+  style!: 'bullet' | 'blitz' | 'rapid';
+
   @IsOptional() @IsString()
   theme?: string;
 }

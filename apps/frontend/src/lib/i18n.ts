@@ -52,7 +52,18 @@ const en: Dict = {
   'play.loading_puzzle': 'Loading puzzle…',
   'play.rating': 'Rating',
   'play.cap': 'Max',
+  'play.style': 'Training style',
   'play.session_complete': 'Session complete',
+
+  'style.bullet.name': 'Bullet',
+  'style.bullet.desc': 'Rapid-fire pattern recognition. Short sessions, snap decisions — trains the speed you need for bullet and hyper-bullet games.',
+  'style.bullet.rating_label': 'Bullet rating',
+  'style.blitz.name': 'Blitz',
+  'style.blitz.desc': 'The all-rounder. Balanced pace and difficulty — the default choice for building tactical sharpness for blitz.',
+  'style.blitz.rating_label': 'Blitz rating',
+  'style.rapid.name': 'Rapid',
+  'style.rapid.desc': 'Deep calculation. Longer sessions, tougher positions, higher accuracy bar — geared for rapid and classical play.',
+  'style.rapid.rating_label': 'Rapid rating',
 
   'levels.novice': 'Novice',
   'levels.beginner': 'Beginner',
@@ -121,6 +132,8 @@ const en: Dict = {
   'settings.install': 'Install app',
   'settings.install_ready': 'Install to Home Screen',
   'settings.install_hint': 'Open in Safari / Chrome → Share → Add to Home Screen',
+  'settings.default_style': 'Default training style',
+  'settings.default_style_hint': 'Pre-selected when you start a new session.',
 };
 
 const uk: Dict = {
@@ -171,7 +184,18 @@ const uk: Dict = {
   'play.loading_puzzle': 'Завантаження задачі…',
   'play.rating': 'Рейтинг',
   'play.cap': 'Макс',
+  'play.style': 'Стиль тренування',
   'play.session_complete': 'Сесію завершено',
+
+  'style.bullet.name': 'Пуля',
+  'style.bullet.desc': 'Швидке розпізнавання патернів. Короткі сесії, миттєві рішення — тренування для пулі та гіпер-пулі.',
+  'style.bullet.rating_label': 'Рейтинг пулі',
+  'style.blitz.name': 'Бліц',
+  'style.blitz.desc': 'Універсальний стиль. Збалансований темп і складність — основа для тренування тактики під бліц.',
+  'style.blitz.rating_label': 'Рейтинг бліцу',
+  'style.rapid.name': 'Рапід',
+  'style.rapid.desc': 'Глибокі розрахунки. Довші сесії, складніші позиції, вища точність — для рапіду та класики.',
+  'style.rapid.rating_label': 'Рейтинг рапіду',
 
   'levels.novice': 'Новачок',
   'levels.beginner': 'Початківець',
@@ -240,6 +264,8 @@ const uk: Dict = {
   'settings.install': 'Встановити застосунок',
   'settings.install_ready': 'Додати на домашній екран',
   'settings.install_hint': 'Safari/Chrome → Поділитись → На домашній екран',
+  'settings.default_style': 'Стиль тренування за замовчуванням',
+  'settings.default_style_hint': 'Автоматично обирається при створенні нової сесії.',
 };
 
 const DICTS: Record<Language, Dict> = { en, uk };

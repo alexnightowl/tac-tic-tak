@@ -16,6 +16,7 @@ model User {
 
   settings       UserSetting?
   progression    UserProgression?
+  styleProgressions UserStyleProgression[]
   sessions       TrainingSession[]
   attempts       TrainingAttempt[]
   puzzleHistory  UserPuzzleHistory[]
@@ -33,7 +34,20 @@ model UserSetting {
   language        String  @default("en")
   fixedColor      String  @default("auto") // auto | white | black
   animationSpeed  String  @default("normal") // instant | fast | normal | slow
+  defaultStyle    String  @default("blitz") // bullet | blitz | rapid
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserStyleProgression {
+  userId              String
+  style               String   // bullet | blitz | rapid
+  startPuzzleRating   Int      @default(1200)
+  currentPuzzleRating Int      @default(1200)
+  unlockedStartRating Int      @default(1200)
+  updatedAt           DateTime @updatedAt
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, style])
 }
 
 model UserProgression {
@@ -83,6 +97,7 @@ model TrainingSession {
   id              String   @id @default(cuid())
   userId          String
   mode            String   // "mixed" | "theme"
+  style           String   @default("blitz") // bullet | blitz | rapid
   theme           String?
   startRating     Int
   durationSec     Int
@@ -97,6 +112,7 @@ model TrainingSession {
   attempts        TrainingAttempt[]
 
   @@index([userId, startedAt])
+  @@index([userId, style, startedAt])
 }
 
 model TrainingAttempt {

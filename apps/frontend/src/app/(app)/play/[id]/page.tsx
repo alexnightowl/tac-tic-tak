@@ -15,12 +15,13 @@ import { fmtDuration, cn } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
 import {
   computeUnlockProgress, CriterionProgress, CriterionId, UNLOCK_REWARD,
+  TrainingStyle, DEFAULT_STYLE, isTrainingStyle,
 } from '@/lib/levels';
 
 type NextResponse = {
   puzzle: ServerPuzzle;
   currentRating: number;
-  session: { id: string; startedAt: string; durationSec: number };
+  session: { id: string; startedAt: string; durationSec: number; style?: string };
 };
 type FinishResponse = {
   sessionId: string; solved: number; failed: number; accuracy: number;
@@ -42,8 +43,8 @@ export default function PlayRunner() {
   const { id: sessionId } = useParams<{ id: string }>();
   const router = useRouter();
   const settings = useAppStore((s) => s.settings);
-  const progression = useAppStore((s) => s.progression);
-  const setProgression = useAppStore((s) => s.setProgression);
+  const progressions = useAppStore((s) => s.progressions);
+  const patchStyleProgression = useAppStore((s) => s.patchStyleProgression);
   const t = useT();
   const focusMode = settings.focusMode;
 
@@ -63,6 +64,7 @@ export default function PlayRunner() {
   const [failedCount, setFailedCount] = useState(0);
   const [opponentBusy, setOpponentBusy] = useState(false);
   const [sessionStartRating, setSessionStartRating] = useState<number | null>(null);
+  const [sessionStyle, setSessionStyle] = useState<TrainingStyle>(DEFAULT_STYLE);
   const [peakRating, setPeakRating] = useState<number>(0);
   const [totalResponseMs, setTotalResponseMs] = useState<number>(0);
   const attemptStart = useRef<number>(Date.now());
@@ -100,6 +102,9 @@ export default function PlayRunner() {
         // First /next returns currentRating == session.startRating (no attempts yet).
         setSessionStartRating(r.currentRating);
         setPeakRating(r.currentRating);
+        if (r.session.style && isTrainingStyle(r.session.style)) {
+          setSessionStyle(r.session.style);
+        }
         loadPuzzle(r.puzzle, r.currentRating);
         setLoadingFirst(false);
       } catch (e: any) {
@@ -122,7 +127,7 @@ export default function PlayRunner() {
 
     setLastMove(null);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
-    setProgression((prev) => prev ? { ...prev, currentPuzzleRating: currentRating } : prev);
+    patchStyleProgression(sessionStyle, { currentPuzzleRating: currentRating });
 
     const animMs = ANIMATION_MS[settings.animationSpeed];
     // Let the setup piece slide, then swap in the post-setup position.
@@ -162,7 +167,7 @@ export default function PlayRunner() {
       const r = await http.post<{ newRating: number }>(`/sessions/${sessionId}/attempt`, {
         puzzleId: puzzle.id, correct, responseMs,
       });
-      setProgression((prev) => prev ? { ...prev, currentPuzzleRating: r.newRating } : prev);
+      patchStyleProgression(sessionStyle, { currentPuzzleRating: r.newRating });
     } catch {}
     // No visual flash — sound carries the feedback, next puzzle loads right away.
     setTimeout(() => { nextPuzzle(); }, correct ? 220 : 360);
@@ -253,14 +258,14 @@ export default function PlayRunner() {
   const totalAttempts = solvedCount + failedCount;
   const unlockProgress = useMemo(() => {
     if (sessionStartRating == null || durationSec === 0) return null;
-    return computeUnlockProgress({
+    return computeUnlockProgress(sessionStyle, {
       solved: solvedCount,
       accuracy: totalAttempts === 0 ? 0 : solvedCount / totalAttempts,
       avgResponseMs: totalAttempts === 0 ? 0 : Math.round(totalResponseMs / totalAttempts),
       peakRating,
       startRating: sessionStartRating,
     }, durationSec);
-  }, [sessionStartRating, durationSec, solvedCount, totalAttempts, totalResponseMs, peakRating]);
+  }, [sessionStyle, sessionStartRating, durationSec, solvedCount, totalAttempts, totalResponseMs, peakRating]);
 
   if (summary) return <SessionSummary s={summary} />;
 
@@ -268,8 +273,9 @@ export default function PlayRunner() {
   const warnThreshold = Math.min(30, Math.max(10, Math.round(durationSec * 0.1)));
   const warning = !loadingFirst && remainingSec <= warnThreshold && remainingSec > 0;
   const isPlayerTurn = !!chess && ((orientation === 'white' && chess.turn() === 'w') || (orientation === 'black' && chess.turn() === 'b'));
-  const currentRating = progression?.currentPuzzleRating ?? null;
-  const unlockCeiling = progression?.unlockedStartRating ?? null;
+  const styleProg = progressions[sessionStyle];
+  const currentRating = styleProg?.currentPuzzleRating ?? null;
+  const unlockCeiling = styleProg?.unlockedStartRating ?? null;
 
   return (
     <div className="min-h-dvh flex flex-col items-center px-2 pb-4"

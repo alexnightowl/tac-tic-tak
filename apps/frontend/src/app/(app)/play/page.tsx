@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Swords, Check, X } from 'lucide-react';
+import { Swords, Zap, Timer, Hourglass } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -15,30 +15,55 @@ import { DifficultySlider } from '@/components/DifficultySlider';
 import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
 import {
   bandFor, solvedTarget,
-  UNLOCK_ACCURACY, UNLOCK_AVG_MS, UNLOCK_DELTA, UNLOCK_REWARD,
+  STYLE_FORMULAS, TrainingStyle, TRAINING_STYLES,
+  UNLOCK_REWARD,
 } from '@/lib/levels';
 import { cn } from '@/lib/utils';
 
-const PRESET_DURATIONS = [300, 600, 1200];
+const STYLE_ICONS = {
+  bullet: Zap,
+  blitz: Timer,
+  rapid: Hourglass,
+} as const;
 
 export default function PlaySetup() {
   const router = useRouter();
-  const progression = useAppStore((s) => s.progression);
-  const unlocked = progression?.unlockedStartRating ?? 1200;
+  const progressions = useAppStore((s) => s.progressions);
+  const defaultStyle = useAppStore((s) => s.settings.defaultStyle);
   const t = useT();
 
-  const [startRating, setStartRating] = useState<number>(progression?.currentPuzzleRating ?? 1200);
-  const [duration, setDuration] = useState<number>(600);
+  const [style, setStyle] = useState<TrainingStyle>(defaultStyle);
+  const stylePreset = STYLE_FORMULAS[style];
+  const styleProgression = progressions[style];
+  const unlocked = styleProgression.unlockedStartRating;
+  const ratingCap = unlocked + 200;
+
+  const [startRating, setStartRating] = useState<number>(styleProgression.currentPuzzleRating);
+  const [duration, setDuration] = useState<number>(stylePreset.durationPresetsSec[1] ?? stylePreset.durationPresetsSec[0]);
   const [customDuration, setCustomDuration] = useState<boolean>(false);
-  const [customMinutes, setCustomMinutes] = useState<string>('15');
+  const [customMinutes, setCustomMinutes] = useState<string>(String(Math.round((stylePreset.durationPresetsSec[1] ?? stylePreset.durationPresetsSec[0]) / 60)));
   const [mode, setMode] = useState<'mixed' | 'theme'>('mixed');
   const [theme, setTheme] = useState('fork');
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const ratingCap = unlocked + 200;
-  const selectedBand = bandFor(startRating);
+  // When style changes, snap the rating + duration into that style's range
+  // so users don't end up with nonsensical combos from the previous style.
+  useEffect(() => {
+    setStartRating((r) => {
+      const min = 400;
+      if (r > ratingCap) return ratingCap;
+      if (r < min) return styleProgression.currentPuzzleRating;
+      return styleProgression.currentPuzzleRating;
+    });
+    const presets = stylePreset.durationPresetsSec;
+    setDuration(presets[1] ?? presets[0]);
+    setCustomDuration(false);
+    setCustomMinutes(String(Math.round((presets[1] ?? presets[0]) / 60)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [style]);
 
+  const selectedBand = bandFor(startRating);
   const bandLabels = {
     novice: t('levels.novice'),
     beginner: t('levels.beginner'),
@@ -54,9 +79,11 @@ export default function PlaySetup() {
     [],
   );
 
-  const customMinutesNum = Math.max(1, Math.min(60, Math.floor(Number(customMinutes) || 0)));
+  const minMinutes = Math.round(stylePreset.minDurationSec / 60);
+  const maxMinutes = Math.round(stylePreset.maxDurationSec / 60);
+  const customMinutesNum = Math.max(minMinutes, Math.min(maxMinutes, Math.floor(Number(customMinutes) || 0)));
   const effectiveDuration = customDuration ? customMinutesNum * 60 : duration;
-  const customInvalid = customDuration && (customMinutes === '' || customMinutesNum < 1);
+  const customInvalid = customDuration && (customMinutes === '' || customMinutesNum < minMinutes);
 
   const start = async () => {
     setErr(null);
@@ -66,6 +93,7 @@ export default function PlaySetup() {
         startRating,
         durationSec: effectiveDuration,
         mode,
+        style,
         theme: mode === 'theme' ? theme : undefined,
       });
       router.push(`/play/${r.sessionId}`);
@@ -82,8 +110,20 @@ export default function PlaySetup() {
 
       <Card className="space-y-6">
         <section>
+          <div className="text-sm text-zinc-300 mb-2">{t('play.style')}</div>
+          <Segmented
+            value={style}
+            onChange={(v) => setStyle(v as TrainingStyle)}
+            options={TRAINING_STYLES.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
+          />
+          <StyleBlurb style={style} t={t} />
+        </section>
+
+        <section>
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-zinc-300">{t('play.start_rating')}</div>
+            <div className="text-sm text-zinc-300">
+              {t(`style.${style}.rating_label`)}
+            </div>
             <div className="flex items-baseline gap-2">
               <span
                 className="text-[10px] uppercase tracking-wider font-medium"
@@ -99,7 +139,7 @@ export default function PlaySetup() {
             onChange={setStartRating}
             cap={ratingCap}
             labels={bandLabels}
-            currentRating={progression?.currentPuzzleRating}
+            currentRating={styleProgression.currentPuzzleRating}
             ariaLabel={t('play.start_rating')}
           />
           <p className="text-xs text-zinc-500 mt-2">
@@ -118,7 +158,10 @@ export default function PlaySetup() {
               else { setCustomDuration(false); setDuration(Number(v)); }
             }}
             options={[
-              ...PRESET_DURATIONS.map((d) => ({ value: String(d), label: `${d / 60} ${t('play.minutes')}` })),
+              ...stylePreset.durationPresetsSec.map((d) => ({
+                value: String(d),
+                label: `${d / 60} ${t('play.minutes')}`,
+              })),
               { value: 'custom', label: t('play.custom') },
             ]}
           />
@@ -131,17 +174,17 @@ export default function PlaySetup() {
                 value={customMinutes}
                 onChange={(e) => {
                   const v = e.target.value;
-                  // Allow empty (so the user can clear the field) or 1-2 digits.
                   if (v === '' || /^\d{1,2}$/.test(v)) setCustomMinutes(v);
                 }}
                 onBlur={() => {
-                  // Clamp on blur so the final value is always 1-60.
-                  if (customMinutes === '') setCustomMinutes('15');
+                  if (customMinutes === '') setCustomMinutes(String(minMinutes));
                   else setCustomMinutes(String(customMinutesNum));
                 }}
                 className="max-w-[120px]"
               />
-              <span className="text-sm text-zinc-400">{t('play.minutes')}</span>
+              <span className="text-sm text-zinc-400">
+                {t('play.minutes')} · {minMinutes}–{maxMinutes}
+              </span>
             </div>
           )}
         </section>
@@ -169,6 +212,7 @@ export default function PlaySetup() {
         </section>
 
         <NextUnlockPreview
+          style={style}
           durationSec={effectiveDuration}
           unlockedTo={unlocked}
           t={t}
@@ -189,17 +233,42 @@ export default function PlaySetup() {
   );
 }
 
-function NextUnlockPreview({ durationSec, unlockedTo, t }: {
-  durationSec: number; unlockedTo: number; t: (k: string) => string;
+function StyleBlurb({ style, t }: { style: TrainingStyle; t: (k: string) => string }) {
+  const Icon = STYLE_ICONS[style];
+  const preset = STYLE_FORMULAS[style];
+  const minMinutes = Math.round(preset.minDurationSec / 60);
+  const maxMinutes = Math.round(preset.maxDurationSec / 60);
+  return (
+    <div className="mt-3 flex items-start gap-3 rounded-xl bg-black/20 px-3 py-2.5">
+      <div
+        className="h-8 w-8 rounded-lg bg-[var(--accent)]/15 text-[var(--accent)] flex items-center justify-center shrink-0"
+        aria-hidden
+      >
+        <Icon size={16} />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="text-xs text-zinc-300 leading-snug">{t(`style.${style}.desc`)}</div>
+        <div className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1 tabular-nums">
+          {minMinutes}–{maxMinutes} {t('play.minutes')} · ≤ {Math.round(preset.avgMs / 1000)}s {t('unlock.req_speed').toLowerCase()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NextUnlockPreview({ style, durationSec, unlockedTo, t }: {
+  style: TrainingStyle;
+  durationSec: number;
+  unlockedTo: number;
+  t: (k: string) => string;
 }) {
-  const target = solvedTarget(durationSec);
-  const accPct = Math.round(UNLOCK_ACCURACY * 100);
-  const avgSec = Math.round(UNLOCK_AVG_MS / 1000);
+  const preset = STYLE_FORMULAS[style];
+  const target = solvedTarget(style, durationSec);
+  const accPct = Math.round(preset.accuracy * 100);
+  const avgSec = Math.round(preset.avgMs / 1000);
 
   return (
-    <section
-      className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-softer)]/40 p-4"
-    >
+    <section className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-softer)]/40 p-4">
       <div className="flex items-baseline justify-between gap-2 mb-3">
         <div className="text-xs uppercase tracking-wider text-zinc-400">
           {t('unlock.next_title')}
@@ -216,7 +285,7 @@ function NextUnlockPreview({ durationSec, unlockedTo, t }: {
         <Requirement label={t('unlock.req_solved')} value={`≥ ${target}`} />
         <Requirement label={t('unlock.req_accuracy')} value={`≥ ${accPct}%`} />
         <Requirement label={t('unlock.req_speed')} value={`≤ ${avgSec}s`} />
-        <Requirement label={t('unlock.req_peak')} value={`+${UNLOCK_DELTA}`} />
+        <Requirement label={t('unlock.req_peak')} value={`+${preset.peakDelta}`} />
       </ul>
       <p className="text-[11px] text-zinc-500 mt-3 leading-snug">
         {t('unlock.hint')}

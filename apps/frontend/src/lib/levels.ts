@@ -1,6 +1,7 @@
 // Shared level/difficulty + unlock-criteria helpers.
-// NOTE: unlock thresholds here must stay in sync with
-// apps/backend/src/sessions/sessions.service.ts::finish.
+// Must stay in sync with apps/backend/src/sessions/unlock.ts.
+
+// ---- Difficulty bands (colouring the rating slider) ---------------------
 
 export type Band = {
   min: number;
@@ -25,23 +26,69 @@ export function bandFor(rating: number): Band {
   return DIFFICULTY_BANDS[DIFFICULTY_BANDS.length - 1];
 }
 
-// --- Unlock criteria -----------------------------------------------------
+// ---- Training styles ----------------------------------------------------
 
-export const UNLOCK_ACCURACY = 0.70;
-export const UNLOCK_AVG_MS = 10_000;
-export const UNLOCK_DELTA = 100;
+export type TrainingStyle = 'bullet' | 'blitz' | 'rapid';
+export const TRAINING_STYLES: TrainingStyle[] = ['bullet', 'blitz', 'rapid'];
+export const DEFAULT_STYLE: TrainingStyle = 'blitz';
+
+export type StyleFormula = {
+  solvedPerMin: number;
+  solvedFloor: number;
+  accuracy: number;
+  avgMs: number;
+  peakDelta: number;
+  durationPresetsSec: number[];
+  minDurationSec: number;
+  maxDurationSec: number;
+};
+
+export const STYLE_FORMULAS: Record<TrainingStyle, StyleFormula> = {
+  bullet: {
+    solvedPerMin: 3.5,
+    solvedFloor: 3,
+    accuracy: 0.65,
+    avgMs: 6000,
+    peakDelta: 75,
+    durationPresetsSec: [60, 120, 180],
+    minDurationSec: 60,
+    maxDurationSec: 600,
+  },
+  blitz: {
+    solvedPerMin: 2.5,
+    solvedFloor: 5,
+    accuracy: 0.70,
+    avgMs: 10000,
+    peakDelta: 100,
+    durationPresetsSec: [300, 600, 900],
+    minDurationSec: 60,
+    maxDurationSec: 1800,
+  },
+  rapid: {
+    solvedPerMin: 1.2,
+    solvedFloor: 5,
+    accuracy: 0.80,
+    avgMs: 25000,
+    peakDelta: 120,
+    durationPresetsSec: [600, 1200, 1800],
+    minDurationSec: 300,
+    maxDurationSec: 3600,
+  },
+};
+
 export const UNLOCK_REWARD = 50;
-export const UNLOCK_SOLVED_PER_MIN = 1.2;
-export const UNLOCK_SOLVED_FLOOR = 5;
 
-export function solvedTarget(durationSec: number): number {
+export function solvedTarget(style: TrainingStyle, durationSec: number): number {
+  const f = STYLE_FORMULAS[style];
   const min = durationSec / 60;
-  return Math.max(UNLOCK_SOLVED_FLOOR, Math.round(min * UNLOCK_SOLVED_PER_MIN));
+  return Math.max(f.solvedFloor, Math.round(min * f.solvedPerMin));
 }
+
+// ---- Unlock progress ----------------------------------------------------
 
 export type UnlockStats = {
   solved: number;
-  accuracy: number;   // 0..1
+  accuracy: number;      // 0..1
   avgResponseMs: number;
   peakRating: number;
   startRating: number;
@@ -51,43 +98,42 @@ export type CriterionId = 'solved' | 'accuracy' | 'speed' | 'peak';
 
 export type CriterionProgress = {
   id: CriterionId;
-  ratio: number;  // 0..1, capped
+  ratio: number;
   met: boolean;
   current: number;
   target: number;
 };
 
-/**
- * Returns the per-criterion progress for level-up. All four must be met
- * (ratio >= 1) for the session to unlock the next tier.
- */
 export function computeUnlockProgress(
+  style: TrainingStyle,
   stats: UnlockStats,
   durationSec: number,
 ): { criteria: CriterionProgress[]; ratio: number; met: boolean } {
-  const target = solvedTarget(durationSec);
+  const f = STYLE_FORMULAS[style];
+  const target = solvedTarget(style, durationSec);
+
   const solvedRatio = clamp01(stats.solved / target);
-
-  const accuracyRatio = clamp01(stats.accuracy / UNLOCK_ACCURACY);
-  // Faster is better — ratio 1 at target speed, 0 when avg is 2x the target.
-  const speedRatio =
-    stats.avgResponseMs === 0
-      ? 0
-      : clamp01(UNLOCK_AVG_MS / Math.max(stats.avgResponseMs, 1));
-
+  const accuracyRatio = clamp01(stats.accuracy / f.accuracy);
+  const speedRatio = stats.avgResponseMs === 0
+    ? 0
+    : clamp01(f.avgMs / Math.max(stats.avgResponseMs, 1));
   const peakDelta = Math.max(0, stats.peakRating - stats.startRating);
-  const peakRatio = clamp01(peakDelta / UNLOCK_DELTA);
+  const peakRatio = clamp01(peakDelta / f.peakDelta);
 
   const criteria: CriterionProgress[] = [
-    { id: 'solved',   ratio: solvedRatio,   met: stats.solved >= target,           current: stats.solved,            target },
-    { id: 'accuracy', ratio: accuracyRatio, met: stats.accuracy >= UNLOCK_ACCURACY, current: stats.accuracy,         target: UNLOCK_ACCURACY },
-    { id: 'speed',    ratio: speedRatio,    met: stats.avgResponseMs > 0 && stats.avgResponseMs <= UNLOCK_AVG_MS, current: stats.avgResponseMs, target: UNLOCK_AVG_MS },
-    { id: 'peak',     ratio: peakRatio,     met: peakDelta >= UNLOCK_DELTA,         current: peakDelta,              target: UNLOCK_DELTA },
+    { id: 'solved',   ratio: solvedRatio,   met: stats.solved >= target,           current: stats.solved,         target },
+    { id: 'accuracy', ratio: accuracyRatio, met: stats.accuracy >= f.accuracy,      current: stats.accuracy,       target: f.accuracy },
+    { id: 'speed',    ratio: speedRatio,    met: stats.avgResponseMs > 0 && stats.avgResponseMs <= f.avgMs, current: stats.avgResponseMs, target: f.avgMs },
+    { id: 'peak',     ratio: peakRatio,     met: peakDelta >= f.peakDelta,          current: peakDelta,            target: f.peakDelta },
   ];
 
   const overall = Math.min(...criteria.map((c) => c.ratio));
   const met = criteria.every((c) => c.met);
   return { criteria, ratio: overall, met };
+}
+
+export function isTrainingStyle(v: unknown): v is TrainingStyle {
+  return typeof v === 'string' && TRAINING_STYLES.includes(v as TrainingStyle);
 }
 
 function clamp01(v: number) {

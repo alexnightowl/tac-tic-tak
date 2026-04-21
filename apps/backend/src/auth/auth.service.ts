@@ -25,6 +25,13 @@ export class AuthService {
         passwordHash,
         settings: { create: {} },
         progression: { create: {} },
+        styleProgressions: {
+          create: [
+            { style: 'bullet' },
+            { style: 'blitz' },
+            { style: 'rapid' },
+          ],
+        },
       },
     });
     return this.issueToken(user.id, user.nickname);
