@@ -42,6 +42,11 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
     ports:
       - "4000:4000"
+    volumes:
+      # Persist uploaded assets (avatars, etc) across redeploys. Path must
+      # match `process.cwd()/uploads` in the backend runtime — the image has
+      # WORKDIR=/app/apps/backend.
+      - uploads:/app/apps/backend/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -77,3 +82,4 @@ services:
 volumes:
   pgdata:
   redisdata:
+  uploads:
