@@ -2,19 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Swords, BookOpen, BarChart3, Settings as SettingsIcon, LogOut } from 'lucide-react';
+import { Home, Swords, BookOpen, BarChart3, Settings as SettingsIcon, LogOut, Trophy } from 'lucide-react';
 import { setToken } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/brand/Logo';
+import { Avatar } from '@/components/Avatar';
 
 const items = (t: (k: string) => string) => [
-  { href: '/dashboard', label: t('home'),    Icon: Home },
-  { href: '/play',      label: t('play'),    Icon: Swords },
-  { href: '/review',    label: t('review'),  Icon: BookOpen },
-  { href: '/analytics', label: t('stats'),   Icon: BarChart3 },
-  { href: '/settings',  label: t('settings'),Icon: SettingsIcon },
+  { href: '/dashboard',   label: t('home'),       Icon: Home },
+  { href: '/play',        label: t('play'),       Icon: Swords },
+  { href: '/review',      label: t('review'),     Icon: BookOpen },
+  { href: '/leaderboard', label: t('leaderboard'),Icon: Trophy },
+  { href: '/analytics',   label: t('stats'),      Icon: BarChart3 },
+  { href: '/settings',    label: t('settings'),   Icon: SettingsIcon },
 ];
 
 export function Nav() {
@@ -53,10 +55,15 @@ export function Nav() {
             </Link>
           ))}
         </nav>
-        <button onClick={logout} className="text-sm text-zinc-400 hover:text-white flex items-center gap-2">
-          <span>{user.nickname}</span>
-          <LogOut size={14} />
-        </button>
+        <div className="flex items-center gap-3">
+          <Link href={`/profile/${user.nickname}`} className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white">
+            <Avatar nickname={user.nickname} avatarUrl={user.avatarUrl} size={28} />
+            <span>{user.nickname}</span>
+          </Link>
+          <button onClick={logout} className="text-zinc-400 hover:text-white" aria-label={t('logout')}>
+            <LogOut size={14} />
+          </button>
+        </div>
       </header>
 
       {/* Mobile top app bar */}
@@ -67,9 +74,9 @@ export function Nav() {
             tac<span className="text-[var(--accent)]">·</span>tic<span className="text-[var(--accent)]">·</span>tak
           </span>
         </Link>
-        <button onClick={logout} aria-label={t('logout')} className="h-9 w-9 rounded-full glass flex items-center justify-center text-zinc-400">
-          <LogOut size={15} />
-        </button>
+        <Link href={`/profile/${user.nickname}`} className="h-9 w-9 rounded-full glass flex items-center justify-center overflow-hidden" aria-label="Profile">
+          <Avatar nickname={user.nickname} avatarUrl={user.avatarUrl} size={28} />
+        </Link>
       </header>
 
       {/* Mobile bottom tab bar */}
@@ -77,7 +84,7 @@ export function Nav() {
         className="md:hidden fixed bottom-0 inset-x-0 z-40 glass border-t border-[var(--border-soft)]"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-6">
           {nav.map(({ href, label, Icon }) => {
             const active = pathname?.startsWith(href);
             return (

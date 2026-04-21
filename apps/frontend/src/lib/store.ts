@@ -26,7 +26,14 @@ export type UserSettings = {
   defaultStyle: TrainingStyle;
 };
 
-type AuthUser = { id: string; nickname: string };
+export type AuthUser = {
+  id: string;
+  nickname: string;
+  displayName?: string | null;
+  avatarUrl?: string | null;
+  bio?: string | null;
+  country?: string | null;
+};
 
 export type Progression = { startPuzzleRating: number; currentPuzzleRating: number; unlockedStartRating: number };
 export type Progressions = Record<TrainingStyle, Progression>;
@@ -47,6 +54,7 @@ type State = {
   settings: UserSettings;
   progressions: Progressions;
   setUser: (u: AuthUser | null) => void;
+  patchUser: (patch: Partial<AuthUser>) => void;
   setSettings: (s: Partial<UserSettings>) => void;
   setProgressions: (p: Progressions) => void;
   patchStyleProgression: (style: TrainingStyle, patch: Partial<Progression>) => void;
@@ -70,6 +78,7 @@ export const useAppStore = create<State>((set) => ({
   settings: DEFAULT_SETTINGS,
   progressions: DEFAULT_PROGRESSIONS,
   setUser: (user) => set({ user }),
+  patchUser: (patch) => set((s) => ({ user: s.user ? { ...s.user, ...patch } : s.user })),
   setSettings: (patch) => set((s) => {
     const next = { ...s.settings, ...patch };
     if (typeof document !== 'undefined') {

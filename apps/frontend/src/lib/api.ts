@@ -1,4 +1,14 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+// Host portion only, for serving static uploads (avatars, etc) that live
+// outside the /api prefix.
+export const API_HOST = API_URL.replace(/\/api\/?$/, '');
+
+/** Resolves a backend-relative asset URL (e.g. "/uploads/avatars/x.png"). */
+export function assetUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  if (/^https?:/i.test(path)) return path;
+  return `${API_HOST}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 const TOKEN_KEY = 'taktic.token';
 

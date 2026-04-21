@@ -22,7 +22,7 @@ export type SessionRow = {
 
 type Props = {
   sessions: SessionRow[];
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
   language: string;
   emptyLabel: string;
 };
@@ -76,7 +76,8 @@ function startOfDay(d: Date) {
   return x;
 }
 
-function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (id: string) => void; language: string }) {
+function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (id: string) => void; language: string }) {
+  const canDelete = !!onDelete;
   const [dx, setDx] = useState(0);
   const [confirming, setConfirming] = useState(false);
   const [animating, setAnimating] = useState(false);
@@ -93,12 +94,14 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
   const mode = s.theme ?? s.mode;
 
   const onPointerDown = (e: React.PointerEvent) => {
+    if (!canDelete) return;
     startX.current = e.clientX;
     startY.current = e.clientY;
     axis.current = null;
     setAnimating(false);
   };
   const onPointerMove = (e: React.PointerEvent) => {
+    if (!canDelete) return;
     const ddx = e.clientX - startX.current;
     const ddy = e.clientY - startY.current;
     if (axis.current === null) {
@@ -110,6 +113,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
     setDx(next);
   };
   const onPointerUp = () => {
+    if (!canDelete) return;
     if (axis.current === 'h') {
       setAnimating(true);
       setDx(dx < -REVEAL / 2 ? -REVEAL : 0);
@@ -132,23 +136,25 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
   return (
     <div className="relative">
       {/* Delete action — hidden at rest, fades in as the swipe progresses. */}
-      <button
-        className="absolute inset-y-0 right-0 w-[88px] bg-red-500/90 text-white text-xs flex flex-col items-center justify-center gap-1"
-        onClick={() => setConfirming(true)}
-        aria-label={language === 'uk' ? 'Видалити' : 'Delete'}
-        style={{
-          opacity: buttonOpacity,
-          pointerEvents: buttonOpacity > 0.5 ? 'auto' : 'none',
-          borderTopLeftRadius: innerRadius,
-          borderBottomLeftRadius: innerRadius,
-          borderTopRightRadius: R,
-          borderBottomRightRadius: R,
-          transition: buttonTransition,
-        }}
-      >
-        <Trash2 size={18} />
-        <span>{language === 'uk' ? 'Видалити' : 'Delete'}</span>
-      </button>
+      {canDelete && (
+        <button
+          className="absolute inset-y-0 right-0 w-[88px] bg-red-500/90 text-white text-xs flex flex-col items-center justify-center gap-1"
+          onClick={() => setConfirming(true)}
+          aria-label={language === 'uk' ? 'Видалити' : 'Delete'}
+          style={{
+            opacity: buttonOpacity,
+            pointerEvents: buttonOpacity > 0.5 ? 'auto' : 'none',
+            borderTopLeftRadius: innerRadius,
+            borderBottomLeftRadius: innerRadius,
+            borderTopRightRadius: R,
+            borderBottomRightRadius: R,
+            transition: buttonTransition,
+          }}
+        >
+          <Trash2 size={18} />
+          <span>{language === 'uk' ? 'Видалити' : 'Delete'}</span>
+        </button>
+      )}
 
       <Link
         href={`/sessions/${s.id}`}
@@ -198,7 +204,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
         </div>
       </Link>
 
-      {confirming && (
+      {confirming && onDelete && (
         <ConfirmDelete
           language={language}
           onConfirm={() => { setConfirming(false); onDelete(s.id); }}
