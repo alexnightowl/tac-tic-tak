@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2, Crown } from 'lucide-react';
+import { X, Check, XCircle, Loader2, Crown, Sparkles } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -13,6 +13,9 @@ import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { playSound } from '@/lib/sound';
 import { fmtDuration, cn } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
+import {
+  computeUnlockProgress, CriterionProgress, CriterionId, UNLOCK_REWARD,
+} from '@/lib/levels';
 
 type NextResponse = {
   puzzle: ServerPuzzle;
@@ -21,7 +24,18 @@ type NextResponse = {
 };
 type FinishResponse = {
   sessionId: string; solved: number; failed: number; accuracy: number;
-  avgResponseMs: number; peakRating: number; unlocked?: boolean;
+  avgResponseMs: number; peakRating: number; durationSec?: number;
+  unlocked?: boolean;
+  unlockCheck?: {
+    met: boolean;
+    solvedTarget: number;
+    criteria: Array<{
+      id: CriterionId;
+      met: boolean;
+      current: number;
+      target: number;
+    }>;
+  };
 };
 
 export default function PlayRunner() {
@@ -48,6 +62,9 @@ export default function PlayRunner() {
   const [solvedCount, setSolvedCount] = useState(0);
   const [failedCount, setFailedCount] = useState(0);
   const [opponentBusy, setOpponentBusy] = useState(false);
+  const [sessionStartRating, setSessionStartRating] = useState<number | null>(null);
+  const [peakRating, setPeakRating] = useState<number>(0);
+  const [totalResponseMs, setTotalResponseMs] = useState<number>(0);
   const attemptStart = useRef<number>(Date.now());
   const loading = useRef(false);
   const finishing = useRef(false);
@@ -80,6 +97,9 @@ export default function PlayRunner() {
         // Use the client's clock as the anchor so no seconds are lost to
         // network round-trips.
         setEndsAt(Date.now() + r.session.durationSec * 1000);
+        // First /next returns currentRating == session.startRating (no attempts yet).
+        setSessionStartRating(r.currentRating);
+        setPeakRating(r.currentRating);
         loadPuzzle(r.puzzle, r.currentRating);
         setLoadingFirst(false);
       } catch (e: any) {
@@ -130,7 +150,13 @@ export default function PlayRunner() {
   async function afterAttempt(correct: boolean) {
     if (!puzzle) return;
     const responseMs = Date.now() - attemptStart.current;
-    if (correct) setSolvedCount((c) => c + 1); else setFailedCount((c) => c + 1);
+    setTotalResponseMs((t) => t + responseMs);
+    if (correct) {
+      setSolvedCount((c) => c + 1);
+      setPeakRating((p) => Math.max(p, puzzle.rating));
+    } else {
+      setFailedCount((c) => c + 1);
+    }
     if (settings.soundEnabled) playSound(settings.soundPack, correct ? 'correct' : 'fail');
     try {
       const r = await http.post<{ newRating: number }>(`/sessions/${sessionId}/attempt`, {
@@ -224,6 +250,18 @@ export default function PlayRunner() {
     return true;
   }
 
+  const totalAttempts = solvedCount + failedCount;
+  const unlockProgress = useMemo(() => {
+    if (sessionStartRating == null || durationSec === 0) return null;
+    return computeUnlockProgress({
+      solved: solvedCount,
+      accuracy: totalAttempts === 0 ? 0 : solvedCount / totalAttempts,
+      avgResponseMs: totalAttempts === 0 ? 0 : Math.round(totalResponseMs / totalAttempts),
+      peakRating,
+      startRating: sessionStartRating,
+    }, durationSec);
+  }, [sessionStartRating, durationSec, solvedCount, totalAttempts, totalResponseMs, peakRating]);
+
   if (summary) return <SessionSummary s={summary} />;
 
   const remainingSec = endsAt ? Math.max(0, Math.round((endsAt - now) / 1000)) : 0;
@@ -231,6 +269,7 @@ export default function PlayRunner() {
   const warning = !loadingFirst && remainingSec <= warnThreshold && remainingSec > 0;
   const isPlayerTurn = !!chess && ((orientation === 'white' && chess.turn() === 'w') || (orientation === 'black' && chess.turn() === 'b'));
   const currentRating = progression?.currentPuzzleRating ?? null;
+  const unlockCeiling = progression?.unlockedStartRating ?? null;
 
   return (
     <div className="min-h-dvh flex flex-col items-center px-2 pb-4"
@@ -266,6 +305,13 @@ export default function PlayRunner() {
           loading={loadingFirst}
           opponentBusy={opponentBusy}
         />
+
+        {unlockProgress && unlockCeiling != null && (
+          <UnlockProgressBar
+            progress={unlockProgress}
+            unlockedTo={unlockCeiling}
+          />
+        )}
       </div>
 
       {/* Board centered in the remaining vertical space */}
@@ -366,6 +412,82 @@ function RatingPill({ rating, label }: { rating: number | null; label: string })
   );
 }
 
+function UnlockProgressBar({
+  progress, unlockedTo,
+}: { progress: { criteria: CriterionProgress[]; ratio: number; met: boolean }; unlockedTo: number }) {
+  const t = useT();
+  const pct = Math.round(progress.ratio * 100);
+  const met = progress.met;
+
+  return (
+    <div
+      className={cn(
+        'rounded-xl border px-3 py-2',
+        met
+          ? 'border-[var(--accent)]/60 bg-[var(--accent)]/10'
+          : 'border-[var(--border-soft)] bg-black/20',
+      )}
+    >
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-[11px] uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+          {met && <Sparkles size={12} className="text-[var(--accent)]" />}
+          {met ? t('unlock.met') : t('unlock.progress')}
+        </span>
+        <span className="tabular-nums text-xs text-zinc-300">
+          <span className="text-zinc-500">{unlockedTo}</span>
+          <span className="mx-1 text-zinc-600">→</span>
+          <span className={met ? 'text-[var(--accent)] font-semibold' : 'text-zinc-400'}>
+            {unlockedTo + UNLOCK_REWARD}
+          </span>
+        </span>
+      </div>
+
+      <div className="relative h-1.5 rounded-full bg-white/5 overflow-hidden">
+        <div
+          className={cn(
+            'absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-300',
+            met ? 'bg-[var(--accent)]' : 'bg-emerald-400/80',
+          )}
+          style={{ width: `${Math.max(pct, 2)}%` }}
+        />
+      </div>
+
+      <div className="grid grid-cols-4 gap-1.5 mt-2">
+        {progress.criteria.map((c) => (
+          <CriterionTick key={c.id} c={c} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CriterionTick({ c }: { c: CriterionProgress }) {
+  const t = useT();
+  const label = {
+    solved: t('unlock.req_solved'),
+    accuracy: t('unlock.req_accuracy'),
+    speed: t('unlock.req_speed'),
+    peak: t('unlock.req_peak'),
+  }[c.id];
+
+  return (
+    <div
+      className={cn(
+        'flex flex-col items-center gap-0.5 rounded-md py-1 text-[10px] border',
+        c.met
+          ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300'
+          : 'border-[var(--border-soft)] bg-transparent text-zinc-500',
+      )}
+      title={label}
+    >
+      <span className="leading-none">{label}</span>
+      <span className="tabular-nums font-semibold leading-none">
+        {Math.round(c.ratio * 100)}%
+      </span>
+    </div>
+  );
+}
+
 function TurnCard({
   orientation, isPlayerTurn, loading, opponentBusy,
 }: { orientation: 'white' | 'black'; isPlayerTurn: boolean; loading: boolean; opponentBusy: boolean }) {
@@ -413,13 +535,15 @@ function SessionSummary({ s }: { s: FinishResponse }) {
   return (
     <div className="max-w-md mx-auto mt-10 space-y-4 px-4">
       <h1 className="text-2xl font-semibold text-center">{t('play.session_complete')}</h1>
+
+      {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
+
       <div className="grid grid-cols-2 gap-3">
         <Stat label={t('play.solved')} v={s.solved} />
         <Stat label={t('play.failed')} v={s.failed} />
         <Stat label={t('play.accuracy')} v={`${Math.round(s.accuracy * 100)}%`} />
-        <Stat label={t('play.avg')} v={`${Math.round(s.avgResponseMs)}ms`} />
+        <Stat label={t('play.avg')} v={`${(s.avgResponseMs / 1000).toFixed(1)}s`} />
         <Stat label={t('play.peak')} v={s.peakRating} />
-        {s.unlocked && <Stat label={t('play.unlocked_reward')} v="+50" />}
       </div>
       <div className="flex gap-2">
         <a href="/dashboard" className="flex-1"><Button variant="outline" className="w-full">Home</Button></a>
@@ -427,6 +551,78 @@ function SessionSummary({ s }: { s: FinishResponse }) {
       </div>
     </div>
   );
+}
+
+function UnlockOutcome({ check, unlocked }: {
+  check: NonNullable<FinishResponse['unlockCheck']>;
+  unlocked: boolean;
+}) {
+  const t = useT();
+
+  if (unlocked) {
+    return (
+      <div className="rounded-2xl p-4 border border-[var(--accent)]/60 bg-[var(--accent)]/10 flex items-center gap-3">
+        <Sparkles size={24} className="text-[var(--accent)] shrink-0" />
+        <div>
+          <div className="font-semibold text-[var(--accent)]">
+            {t('unlock.summary_success')}
+          </div>
+          <div className="text-xs text-zinc-300 mt-0.5">
+            {t('unlock.summary_success_hint').replace('{reward}', String(UNLOCK_REWARD))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl p-4 border border-[var(--border-soft)] bg-black/20">
+      <div className="text-sm font-semibold">{t('unlock.summary_near')}</div>
+      <div className="text-xs text-zinc-400 mt-0.5">{t('unlock.summary_near_hint')}</div>
+      <ul className="mt-3 space-y-1.5">
+        {check.criteria.map((c) => (
+          <CriterionRow key={c.id} c={c} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function CriterionRow({ c }: { c: FinishResponse['unlockCheck'] extends infer U ? (U extends { criteria: Array<infer C> } ? C : never) : never }) {
+  const t = useT();
+  const labels: Record<CriterionId, string> = {
+    solved: t('unlock.req_solved'),
+    accuracy: t('unlock.req_accuracy'),
+    speed: t('unlock.req_speed'),
+    peak: t('unlock.req_peak'),
+  };
+  const fmt = formatCriterion(c);
+  return (
+    <li className="flex items-center gap-2 text-xs">
+      {c.met
+        ? <Check size={14} className="text-emerald-400 shrink-0" />
+        : <X size={14} className="text-rose-400 shrink-0" />}
+      <span className="text-zinc-300 flex-1">{labels[c.id as CriterionId]}</span>
+      <span className={cn('tabular-nums', c.met ? 'text-emerald-300' : 'text-zinc-400')}>
+        {fmt.current}
+        <span className="text-zinc-600 mx-1">/</span>
+        <span className="text-zinc-500">{fmt.target}</span>
+      </span>
+    </li>
+  );
+}
+
+function formatCriterion(c: { id: string; current: number; target: number }) {
+  switch (c.id) {
+    case 'accuracy':
+      return { current: `${Math.round(c.current * 100)}%`, target: `${Math.round(c.target * 100)}%` };
+    case 'speed':
+      return { current: `${(c.current / 1000).toFixed(1)}s`, target: `${(c.target / 1000).toFixed(0)}s` };
+    case 'peak':
+      return { current: `+${c.current}`, target: `+${c.target}` };
+    default:
+      return { current: String(c.current), target: String(c.target) };
+  }
 }
 
 function Stat({ label, v }: { label: string; v: string | number }) {

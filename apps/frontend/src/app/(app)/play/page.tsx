@@ -2,17 +2,22 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Swords } from 'lucide-react';
+import { Swords, Check, X } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
 import { Segmented } from '@/components/ui/segmented';
 import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { DifficultySlider } from '@/components/DifficultySlider';
 import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
+import {
+  bandFor, solvedTarget,
+  UNLOCK_ACCURACY, UNLOCK_AVG_MS, UNLOCK_DELTA, UNLOCK_REWARD,
+} from '@/lib/levels';
+import { cn } from '@/lib/utils';
 
 const PRESET_DURATIONS = [300, 600, 1200];
 
@@ -31,14 +36,16 @@ export default function PlaySetup() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const ratingMax = unlocked + 200;
-  const ratingMin = 400;
-  const ratingTicks = useMemo(() => {
-    const out: number[] = [];
-    const step = 200;
-    for (let v = 400; v <= ratingMax; v += step) out.push(v);
-    return out;
-  }, [ratingMax]);
+  const ratingCap = unlocked + 200;
+  const selectedBand = bandFor(startRating);
+
+  const bandLabels = {
+    novice: t('levels.novice'),
+    beginner: t('levels.beginner'),
+    intermediate: t('levels.intermediate'),
+    advanced: t('levels.advanced'),
+    expert: t('levels.expert'),
+  } as const;
 
   const themeOptions = useMemo(
     () => KNOWN_THEME_SLUGS
@@ -75,20 +82,31 @@ export default function PlaySetup() {
 
       <Card className="space-y-6">
         <section>
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <div className="text-sm text-zinc-300">{t('play.start_rating')}</div>
-            <div className="tabular-nums text-lg font-semibold text-white">{startRating}</div>
+            <div className="flex items-baseline gap-2">
+              <span
+                className="text-[10px] uppercase tracking-wider font-medium"
+                style={{ color: selectedBand.color }}
+              >
+                {bandLabels[selectedBand.key]}
+              </span>
+              <span className="tabular-nums text-lg font-semibold text-white">{startRating}</span>
+            </div>
           </div>
-          <Slider
-            min={ratingMin}
-            max={ratingMax}
-            step={25}
+          <DifficultySlider
             value={startRating}
             onChange={setStartRating}
-            ticks={ratingTicks}
-            aria-label={t('play.start_rating')}
+            cap={ratingCap}
+            labels={bandLabels}
+            currentRating={progression?.currentPuzzleRating}
+            ariaLabel={t('play.start_rating')}
           />
-          <p className="text-xs text-zinc-500 mt-2">{t('play.unlocked')}: {unlocked}</p>
+          <p className="text-xs text-zinc-500 mt-2">
+            {t('play.unlocked')}: <span className="text-zinc-300">{unlocked}</span>
+            <span className="mx-2 text-zinc-700">·</span>
+            {t('play.cap')}: <span className="text-zinc-300">{ratingCap}</span>
+          </p>
         </section>
 
         <section>
@@ -150,6 +168,12 @@ export default function PlaySetup() {
           )}
         </section>
 
+        <NextUnlockPreview
+          durationSec={effectiveDuration}
+          unlockedTo={unlocked}
+          t={t}
+        />
+
         {err && <p className="text-sm text-red-400">{err}</p>}
 
         <Button
@@ -162,5 +186,50 @@ export default function PlaySetup() {
         </Button>
       </Card>
     </div>
+  );
+}
+
+function NextUnlockPreview({ durationSec, unlockedTo, t }: {
+  durationSec: number; unlockedTo: number; t: (k: string) => string;
+}) {
+  const target = solvedTarget(durationSec);
+  const accPct = Math.round(UNLOCK_ACCURACY * 100);
+  const avgSec = Math.round(UNLOCK_AVG_MS / 1000);
+
+  return (
+    <section
+      className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-softer)]/40 p-4"
+    >
+      <div className="flex items-baseline justify-between gap-2 mb-3">
+        <div className="text-xs uppercase tracking-wider text-zinc-400">
+          {t('unlock.next_title')}
+        </div>
+        <div className="tabular-nums text-sm text-zinc-300">
+          <span className="text-zinc-500">{unlockedTo}</span>
+          <span className="mx-1 text-zinc-600">→</span>
+          <span className="text-[var(--accent)] font-semibold">
+            {unlockedTo + UNLOCK_REWARD}
+          </span>
+        </div>
+      </div>
+      <ul className="grid grid-cols-2 gap-2 text-xs">
+        <Requirement label={t('unlock.req_solved')} value={`≥ ${target}`} />
+        <Requirement label={t('unlock.req_accuracy')} value={`≥ ${accPct}%`} />
+        <Requirement label={t('unlock.req_speed')} value={`≤ ${avgSec}s`} />
+        <Requirement label={t('unlock.req_peak')} value={`+${UNLOCK_DELTA}`} />
+      </ul>
+      <p className="text-[11px] text-zinc-500 mt-3 leading-snug">
+        {t('unlock.hint')}
+      </p>
+    </section>
+  );
+}
+
+function Requirement({ label, value }: { label: string; value: string }) {
+  return (
+    <li className="rounded-lg bg-black/20 px-2.5 py-2 flex items-center justify-between gap-2">
+      <span className="text-zinc-400">{label}</span>
+      <span className="tabular-nums font-semibold text-white">{value}</span>
+    </li>
   );
 }
