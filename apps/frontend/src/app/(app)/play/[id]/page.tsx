@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2 } from 'lucide-react';
+import { X, Check, XCircle, Loader2, Crown } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -28,6 +28,7 @@ export default function PlayRunner() {
   const { id: sessionId } = useParams<{ id: string }>();
   const router = useRouter();
   const settings = useAppStore((s) => s.settings);
+  const progression = useAppStore((s) => s.progression);
   const setProgression = useAppStore((s) => s.setProgression);
   const t = useT();
   const focusMode = settings.focusMode;
@@ -228,14 +229,14 @@ export default function PlayRunner() {
   const remainingSec = endsAt ? Math.max(0, Math.round((endsAt - now) / 1000)) : 0;
   const warnThreshold = Math.min(30, Math.max(10, Math.round(durationSec * 0.1)));
   const warning = !loadingFirst && remainingSec <= warnThreshold && remainingSec > 0;
-  const turn = chess?.turn() === 'w' ? 'White' : 'Black';
-  const isPlayerTurn = chess && ((orientation === 'white' && chess.turn() === 'w') || (orientation === 'black' && chess.turn() === 'b'));
+  const isPlayerTurn = !!chess && ((orientation === 'white' && chess.turn() === 'w') || (orientation === 'black' && chess.turn() === 'b'));
+  const currentRating = progression?.currentPuzzleRating ?? null;
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-between gap-2 pt-3 pb-4 px-2"
+    <div className="min-h-dvh flex flex-col items-center px-2 pb-4"
          style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}>
-      {/* Top header */}
-      <div className="w-full max-w-[min(94vh,640px)] space-y-3">
+      {/* Top cluster: header + info card */}
+      <div className="w-full max-w-[min(94vh,640px)] flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <Button
             variant="glass"
@@ -259,38 +260,46 @@ export default function PlayRunner() {
           <div className="w-[72px]" />
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
-          <StatPill icon={<Check size={14} />} value={solvedCount} tone="good" />
-          <TurnPill turn={turn} you={!!isPlayerTurn} />
-          <StatPill icon={<XCircle size={14} />} value={failedCount} tone="bad" align="right" />
+        <TurnCard
+          orientation={orientation}
+          isPlayerTurn={isPlayerTurn}
+          loading={loadingFirst}
+          opponentBusy={opponentBusy}
+        />
+      </div>
+
+      {/* Board centered in the remaining vertical space */}
+      <div className="flex-1 w-full max-w-[min(94vh,640px)] flex items-center justify-center py-3 min-h-0">
+        <div className="relative w-full">
+          {chess && (
+            <Chessboard
+              fen={chess.fen()}
+              orientation={orientation}
+              onMove={handleMove}
+              lastMove={lastMove}
+              animateMove={animateMove}
+              animationMs={ANIMATION_MS[settings.animationSpeed]}
+              allowMoves={!animateMove && !loadingFirst}
+              theme={settings.boardTheme as BoardTheme}
+              pieceSet={settings.pieceSet}
+            />
+          )}
+          {loadingFirst && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="glass rounded-full h-14 w-14 flex items-center justify-center shadow-lg">
+                <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Board */}
-      <div className="relative w-full max-w-[min(94vh,640px)]">
-        {chess && (
-          <Chessboard
-            fen={chess.fen()}
-            orientation={orientation}
-            onMove={handleMove}
-            lastMove={lastMove}
-            animateMove={animateMove}
-            animationMs={ANIMATION_MS[settings.animationSpeed]}
-            allowMoves={!animateMove && !loadingFirst}
-            theme={settings.boardTheme as BoardTheme}
-            pieceSet={settings.pieceSet}
-          />
-        )}
-        {loadingFirst && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="glass rounded-full h-14 w-14 flex items-center justify-center shadow-lg">
-              <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
-            </div>
-          </div>
-        )}
+      {/* Bottom row: solved · rating · failed */}
+      <div className="w-full max-w-[min(94vh,640px)] grid grid-cols-3 gap-2">
+        <StatPill icon={<Check size={14} />} value={solvedCount} tone="good" />
+        <RatingPill rating={currentRating} label={t('play.rating')} />
+        <StatPill icon={<XCircle size={14} />} value={failedCount} tone="bad" align="right" />
       </div>
-
-      <div className="h-2" />
 
       {confirmExit && (
         <ExitDialog
@@ -348,12 +357,53 @@ function StatPill({ icon, value, tone, align }: { icon: React.ReactNode; value: 
   );
 }
 
-function TurnPill({ turn, you }: { turn: string; you: boolean }) {
+function RatingPill({ rating, label }: { rating: number | null; label: string }) {
   return (
-    <div className="glass rounded-xl py-2 px-3 text-[12px] flex items-center justify-center gap-2">
-      <span className={cn('inline-block h-2.5 w-2.5 rounded-full', turn === 'White' ? 'bg-white' : 'bg-zinc-900 border border-zinc-500')} />
-      <span className="text-zinc-300">{turn}</span>
-      {you && <span className="text-[var(--accent)] font-semibold">· you</span>}
+    <div className="glass rounded-xl py-2 px-3 flex items-center justify-center gap-2 text-sm">
+      <span className="text-[11px] uppercase tracking-wider text-zinc-500">{label}</span>
+      <span className="tabular-nums font-semibold text-white">{rating ?? '—'}</span>
+    </div>
+  );
+}
+
+function TurnCard({
+  orientation, isPlayerTurn, loading, opponentBusy,
+}: { orientation: 'white' | 'black'; isPlayerTurn: boolean; loading: boolean; opponentBusy: boolean }) {
+  const t = useT();
+  const isWhite = orientation === 'white';
+
+  let title: string;
+  let subtitle: string | null;
+  if (loading) {
+    title = t('play.loading_puzzle');
+    subtitle = null;
+  } else if (opponentBusy || !isPlayerTurn) {
+    title = t('play.opponent_moving');
+    subtitle = null;
+  } else {
+    title = t('play.your_turn');
+    subtitle = isWhite ? t('play.find_best_white') : t('play.find_best_black');
+  }
+
+  return (
+    <div className="glass rounded-2xl px-4 py-3 flex items-center gap-3">
+      <div
+        className={cn(
+          'h-10 w-10 rounded-xl flex items-center justify-center shrink-0 border',
+          isWhite
+            ? 'bg-white text-zinc-900 border-white/70'
+            : 'bg-zinc-900 text-zinc-100 border-zinc-700',
+        )}
+        aria-hidden
+      >
+        <Crown size={20} />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="text-[15px] font-semibold leading-tight truncate">{title}</div>
+        {subtitle && (
+          <div className="text-xs text-zinc-400 mt-0.5 truncate">{subtitle}</div>
+        )}
+      </div>
     </div>
   );
 }
