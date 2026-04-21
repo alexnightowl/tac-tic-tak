@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Trash2, ChevronRight, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -209,7 +210,11 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete: (i
 }
 
 function ConfirmDelete({ onConfirm, onCancel, language }: { onConfirm: () => void; onCancel: () => void; language: string }) {
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-50 bg-black/60 flex items-end md:items-center justify-center p-4" onClick={onCancel}>
       <div className="glass rounded-2xl p-5 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
         <div className="text-base font-medium">
@@ -227,6 +232,7 @@ function ConfirmDelete({ onConfirm, onCancel, language }: { onConfirm: () => voi
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
