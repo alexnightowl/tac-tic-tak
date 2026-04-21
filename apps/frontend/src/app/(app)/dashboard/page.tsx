@@ -2,22 +2,29 @@
 
 import Link from 'next/link';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Swords } from 'lucide-react';
+import { Swords, Zap, Timer, Hourglass } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { SessionList, SessionRow } from '@/components/SessionList';
+import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 
 type Overview = {
   recentSessions: SessionRow[];
   allTimePeak: number;
 };
 
+const STYLE_ICONS = {
+  bullet: Zap,
+  blitz: Timer,
+  rapid: Hourglass,
+} as const;
+
 export default function DashboardPage() {
   const user = useAppStore((s) => s.user);
-  const progression = useAppStore((s) => s.progression);
+  const progressions = useAppStore((s) => s.progressions);
   const language = useAppStore((s) => s.settings.language);
   const t = useT();
   const qc = useQueryClient();
@@ -50,15 +57,13 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card>
-          <CardTitle>{t('dashboard.current_rating')}</CardTitle>
-          <CardValue>{progression?.currentPuzzleRating ?? '—'}</CardValue>
-        </Card>
-        <Card>
-          <CardTitle>{t('dashboard.unlocked_start')}</CardTitle>
-          <CardValue>{progression?.unlockedStartRating ?? '—'}</CardValue>
-        </Card>
+      <div className="grid grid-cols-3 md:grid-cols-3 gap-3">
+        {TRAINING_STYLES.map((s) => (
+          <StyleRatingCard key={s} style={s} t={t} />
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
         <Card>
           <CardTitle>{t('dashboard.peak')}</CardTitle>
           <CardValue>{data?.allTimePeak ?? '—'}</CardValue>
@@ -79,5 +84,26 @@ export default function DashboardPage() {
         />
       </div>
     </div>
+  );
+}
+
+function StyleRatingCard({ style, t }: { style: TrainingStyle; t: (k: string) => string }) {
+  const prog = useAppStore((s) => s.progressions[style]);
+  const Icon = STYLE_ICONS[style];
+  return (
+    <Card className="!p-3">
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-[11px] uppercase tracking-wider text-zinc-400">
+          {t(`style.${style}.name`)}
+        </span>
+        <Icon size={14} className="text-[var(--accent)]" />
+      </div>
+      <div className="text-2xl font-semibold tabular-nums leading-none">
+        {prog.currentPuzzleRating}
+      </div>
+      <div className="text-[10px] text-zinc-500 mt-1 tabular-nums">
+        {t('play.unlocked')} {prog.unlockedStartRating}
+      </div>
+    </Card>
   );
 }

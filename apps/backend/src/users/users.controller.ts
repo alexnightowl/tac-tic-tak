@@ -14,6 +14,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsIn(['en', 'uk']) language?: string;
   @IsOptional() @IsIn(['auto', 'white', 'black']) fixedColor?: string;
   @IsOptional() @IsIn(['instant', 'fast', 'normal', 'slow']) animationSpeed?: string;
+  @IsOptional() @IsIn(['bullet', 'blitz', 'rapid']) defaultStyle?: string;
 }
 
 @UseGuards(JwtAuthGuard)
