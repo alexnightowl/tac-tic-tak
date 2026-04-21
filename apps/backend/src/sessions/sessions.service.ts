@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
 import { AttemptDto, CreateSessionDto } from './dto';
 import { computeRatingStep, deriveSessionStats } from './rating';
+import { evaluateUnlock, UNLOCK_REWARD } from './unlock';
 
 const WINDOW = 4;
 const MIN_RATING = 400;
@@ -167,17 +168,20 @@ export class SessionsService {
     });
 
     const progression = await this.prisma.userProgression.findUniqueOrThrow({ where: { userId } });
-    const delta = stats.peakRating - session.startRating;
-    const unlocked = delta >= 100 && stats.accuracy >= 0.72 && stats.avgResponseMs <= 9000 && stats.solved >= 15;
-    if (unlocked) {
+    const check = evaluateUnlock(stats, session.durationSec, session.startRating);
+    if (check.met) {
       await this.prisma.userProgression.update({
         where: { userId },
-        data: { unlockedStartRating: progression.unlockedStartRating + 50 },
+        data: { unlockedStartRating: progression.unlockedStartRating + UNLOCK_REWARD },
       });
     }
 
     await this.buffer.clearSession(sessionId);
-    return { ...(await this.summary(sessionId)), unlocked };
+    return {
+      ...(await this.summary(sessionId)),
+      unlocked: check.met,
+      unlockCheck: check,
+    };
   }
 
   /** Delete a finished session (used by the list's swipe-to-delete). */
