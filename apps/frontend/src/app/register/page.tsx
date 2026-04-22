@@ -18,6 +18,7 @@ const NICK_NO_DOUBLES_RE = /^(?!.*[-_]{2}).+$/;
 export default function RegisterPage() {
   const router = useRouter();
   const setUser = useAppStore((s) => s.setUser);
+  const language = useAppStore((s) => s.settings.language);
   const t = useT();
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +53,7 @@ export default function RegisterPage() {
     try {
       const r = await http.post<{ token: string; user: { id: string; nickname: string } }>(
         '/auth/register',
-        { nickname, password, repeatPassword: repeat },
+        { nickname, password, repeatPassword: repeat, language },
       );
       setToken(r.token);
       setUser(r.user);

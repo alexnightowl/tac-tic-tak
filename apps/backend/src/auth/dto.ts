@@ -1,4 +1,4 @@
-import { IsString, Length, Matches } from 'class-validator';
+import { IsIn, IsOptional, IsString, Length, Matches } from 'class-validator';
 
 export class RegisterDto {
   @IsString()
@@ -16,6 +16,11 @@ export class RegisterDto {
   @IsString()
   @Length(8, 128)
   repeatPassword!: string;
+
+  // Seed the new account's UI language from whatever the visitor picked
+  // on the landing page (optional — defaults to English).
+  @IsOptional() @IsIn(['en', 'uk'])
+  language?: 'en' | 'uk';
 }
 
 export class LoginDto {

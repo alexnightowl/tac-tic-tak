@@ -84,6 +84,11 @@ export const useAppStore = create<State>((set) => ({
     if (typeof document !== 'undefined') {
       document.documentElement.style.setProperty('--accent', next.accentColor);
     }
+    // Persist the language choice so it carries across reloads and to the
+    // landing page (same key it reads from).
+    if ('language' in patch && typeof window !== 'undefined') {
+      try { window.localStorage.setItem('taktic.lang', next.language); } catch {}
+    }
     return { settings: next };
   }),
   setProgressions: (progressions) => set({ progressions }),
