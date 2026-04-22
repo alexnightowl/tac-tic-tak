@@ -67,6 +67,7 @@ export function Chessboard({
   const [legal, setLegal] = useState<Set<Square>>(new Set());
   const [dragFrom, setDragFrom] = useState<Square | null>(null);
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
+  const [dragOver, setDragOver] = useState<Square | null>(null);
   const [highlights, setHighlights] = useState<Set<Square>>(new Set());
   const [arrows, setArrows] = useState<Array<{ from: Square; to: Square }>>([]);
   const [arrowDrag, setArrowDrag] = useState<{ from: Square; to?: Square } | null>(null);
@@ -170,6 +171,7 @@ export function Chessboard({
   const onPointerMove = (e: React.PointerEvent) => {
     if (dragFrom) {
       setDragPos({ x: e.clientX, y: e.clientY });
+      setDragOver(pointToSquare(e.clientX, e.clientY));
     } else if (arrowDrag) {
       const to = pointToSquare(e.clientX, e.clientY);
       if (to) setArrowDrag({ ...arrowDrag, to });
@@ -184,6 +186,7 @@ export function Chessboard({
       }
       setDragFrom(null);
       setDragPos(null);
+      setDragOver(null);
     }
     if (arrowDrag) {
       if (arrowDrag.to && arrowDrag.to !== arrowDrag.from) {
@@ -232,12 +235,17 @@ export function Chessboard({
             const piece = chess.get(s);
             const isDragging = dragFrom === s;
             const isAnimatingSource = animateMove?.from === s;
+            const isDragTarget = !!dragFrom && dragOver === s && legal.has(s) && s !== dragFrom;
+            const canGrab = allowMoves && !dragFrom && !!piece && piece.color === chess.turn();
+            const cursor = dragFrom
+              ? (legal.has(s) || s === dragFrom) ? 'grabbing' : 'not-allowed'
+              : canGrab ? 'grab' : 'default';
             return (
               <div
                 key={s}
                 className={cn('board-square relative flex items-center justify-center',
                   isDragging && 'dragging')}
-                style={{ background: isLight ? colors.light : colors.dark }}
+                style={{ background: isLight ? colors.light : colors.dark, cursor }}
                 onPointerDown={(e) => {
                   if (e.button === 2) onRightDown(e, s);
                   else onSquareMouseDown(e, s);
@@ -272,8 +280,15 @@ export function Chessboard({
                     ? <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, boxShadow: 'inset 0 0 0 3px rgba(0,0,0,0.35)' }} />
                     : <div className="absolute w-1/3 h-1/3 rounded-full bg-black/25 pointer-events-none" style={{ zIndex: 1 }} />
                 )}
-                {/* piece (skipped if this is the source cell of an ongoing slide animation) */}
-                {piece && !isAnimatingSource && (
+                {/* drop-target ring while dragging */}
+                {isDragTarget && (
+                  <div
+                    className="absolute inset-0 pointer-events-none rounded-[2px]"
+                    style={{ zIndex: 1, boxShadow: `inset 0 0 0 4px ${hexToRgba(colors.highlight, 0.85)}` }}
+                  />
+                )}
+                {/* piece (skipped during slide animation source or while dragging) */}
+                {piece && !isAnimatingSource && !isDragging && (
                   <img
                     src={pieceUrl(pieceSet, piece.color, piece.type as any)}
                     alt=""
