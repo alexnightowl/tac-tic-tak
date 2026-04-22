@@ -1,26 +1,16 @@
 'use client';
 
 import { Reveal } from './Reveal';
+import { useLandingT } from '@/lib/landingI18n';
 
 const STEPS = [
-  {
-    n: '01',
-    title: 'Pick your style',
-    body: 'Bullet, Blitz or Rapid. Choose a duration preset and the difficulty you want to push against — the slider shows where your cap is.',
-  },
-  {
-    n: '02',
-    title: 'Solve under pressure',
-    body: 'The board fills the screen, the timer runs, puzzles adapt to you after every attempt. Missed moves are automatically queued for later review.',
-  },
-  {
-    n: '03',
-    title: 'Hit all four to level up',
-    body: 'Finish the session with enough solved, high enough accuracy, fast enough, with enough peak rating. Nail all four and your ceiling goes up.',
-  },
+  { n: '01', titleKey: 'how.step_1.title', bodyKey: 'how.step_1.body' },
+  { n: '02', titleKey: 'how.step_2.title', bodyKey: 'how.step_2.body' },
+  { n: '03', titleKey: 'how.step_3.title', bodyKey: 'how.step_3.body' },
 ];
 
 export function HowItWorks() {
+  const { t } = useLandingT();
   return (
     <section className="relative py-20 md:py-28">
       <div className="absolute inset-0 pointer-events-none opacity-60" aria-hidden>
@@ -34,14 +24,13 @@ export function HowItWorks() {
         <Reveal>
           <div className="mb-12 max-w-2xl">
             <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent)] font-medium">
-              How it works
+              {t('how.eyebrow')}
             </span>
             <h2 className="mt-3 text-3xl md:text-5xl font-semibold tracking-tight">
-              Three steps. Real progress.
+              {t('how.title')}
             </h2>
             <p className="mt-4 text-zinc-400">
-              You're not accumulating a vanity number. Each level-up is a specific,
-              earned moment — and the bar shows you exactly how close you are to it.
+              {t('how.subtitle')}
             </p>
           </div>
         </Reveal>
@@ -55,8 +44,8 @@ export function HowItWorks() {
                 </div>
                 <div className="relative">
                   <div className="text-xs font-mono tracking-wider text-[var(--accent)]">{s.n}</div>
-                  <h3 className="mt-2 text-lg font-semibold tracking-tight">{s.title}</h3>
-                  <p className="mt-2 text-sm text-zinc-400 leading-relaxed">{s.body}</p>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight">{t(s.titleKey)}</h3>
+                  <p className="mt-2 text-sm text-zinc-400 leading-relaxed">{t(s.bodyKey)}</p>
                 </div>
               </div>
             </Reveal>
