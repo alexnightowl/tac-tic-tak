@@ -2,22 +2,23 @@
 
 import { Target, Gauge, Trophy } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { useLandingT } from '@/lib/landingI18n';
 
 export function ValueProps() {
+  const { t } = useLandingT();
   return (
     <section className="relative py-20 md:py-28">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <Reveal>
           <div className="text-center mb-14 md:mb-16">
             <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent)] font-medium">
-              Why it works
+              {t('value.eyebrow')}
             </span>
             <h2 className="mt-3 text-3xl md:text-5xl font-semibold tracking-tight">
-              Built around how you actually improve
+              {t('value.title')}
             </h2>
             <p className="mt-4 text-zinc-400 max-w-2xl mx-auto">
-              Grinding random puzzles doesn't build skill — calibrated pressure does.
-              Each piece of the app is designed around a specific training principle.
+              {t('value.subtitle')}
             </p>
           </div>
         </Reveal>
@@ -26,22 +27,22 @@ export function ValueProps() {
           <Reveal delay={1}>
             <ValueCard
               icon={<Target size={20} />}
-              title="Adaptive difficulty"
-              body="Puzzle rating drifts toward yours after every attempt. Too easy? Next one climbs. Stuck? It eases off. You always train at the edge of your ability."
+              title={t('value.adaptive.title')}
+              body={t('value.adaptive.body')}
             />
           </Reveal>
           <Reveal delay={2}>
             <ValueCard
               icon={<Gauge size={20} />}
-              title="Per-style training"
-              body="Bullet sharpens pattern recognition. Rapid builds deep calculation. We track them separately so your bullet rating can't smuggle weak rapid habits."
+              title={t('value.per_style.title')}
+              body={t('value.per_style.body')}
             />
           </Reveal>
           <Reveal delay={3}>
             <ValueCard
               icon={<Trophy size={20} />}
-              title="Real level-up gate"
-              body="Rating ceilings only rise when you meet four targets in a single session — count, accuracy, speed, peak. No shortcuts, no grinding for numbers."
+              title={t('value.gate.title')}
+              body={t('value.gate.body')}
             />
           </Reveal>
         </div>

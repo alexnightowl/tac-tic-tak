@@ -5,8 +5,11 @@ import { ArrowRight, Swords, Crown, Timer, TrendingUp } from 'lucide-react';
 import { Logo } from '@/components/brand/Logo';
 import { HeroBoard } from './HeroBoard';
 import { Reveal } from './Reveal';
+import { LangToggle } from './LangToggle';
+import { useLandingT } from '@/lib/landingI18n';
 
 export function Hero() {
+  const { t } = useLandingT();
   return (
     <section className="relative overflow-hidden">
       <div className="hero-gradient absolute inset-0 pointer-events-none" aria-hidden />
@@ -14,7 +17,7 @@ export function Hero() {
 
       <div className="relative max-w-6xl mx-auto px-5 md:px-8 pt-14 md:pt-20 pb-20 md:pb-28">
         {/* Top bar */}
-        <nav className="flex items-center justify-between mb-16 md:mb-24">
+        <nav className="flex items-center justify-between mb-16 md:mb-24 gap-3">
           <div className="flex items-center gap-2.5">
             <Logo size={28} />
             <span className="font-semibold tracking-tight text-[15px]">
@@ -22,17 +25,18 @@ export function Hero() {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <LangToggle />
             <Link
               href="/login"
-              className="h-9 px-3 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors"
+              className="hidden sm:inline-flex h-9 px-3 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors items-center"
             >
-              Log in
+              {t('nav.login')}
             </Link>
             <Link
               href="/register"
-              className="h-9 px-3 rounded-lg text-sm bg-[var(--accent)] text-black font-semibold hover:brightness-110 transition-all"
+              className="h-9 px-3 rounded-lg text-sm bg-[var(--accent)] text-black font-semibold hover:brightness-110 transition-all flex items-center"
             >
-              Sign up
+              {t('nav.signup')}
             </Link>
           </div>
         </nav>
@@ -43,21 +47,20 @@ export function Hero() {
             <Reveal>
               <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[var(--accent)] font-medium">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] ring-pulse" />
-                Chess tactics, done right
+                {t('hero.eyebrow')}
               </span>
             </Reveal>
 
             <Reveal delay={1}>
               <h1 className="mt-5 text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
-                Train smarter.<br />
-                <span className="text-[var(--accent)]">Level up faster.</span>
+                {t('hero.title_1')}<br />
+                <span className="text-[var(--accent)]">{t('hero.title_2')}</span>
               </h1>
             </Reveal>
 
             <Reveal delay={2}>
               <p className="mt-5 text-zinc-400 text-base md:text-lg max-w-lg leading-relaxed">
-                Adaptive puzzles that scale with you. Separate ratings for bullet, blitz and
-                rapid. Real progression — not just a number that drifts up.
+                {t('hero.subtitle')}
               </p>
             </Reveal>
 
@@ -67,23 +70,23 @@ export function Hero() {
                   href="/register"
                   className="group inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-[var(--accent)] text-black text-sm font-semibold hover:brightness-110 transition-all"
                 >
-                  <Swords size={16} /> Start training
+                  <Swords size={16} /> {t('hero.cta_primary')}
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   href="/login"
                   className="inline-flex items-center h-12 px-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium transition-colors"
                 >
-                  I have an account
+                  {t('hero.cta_secondary')}
                 </Link>
               </div>
             </Reveal>
 
             <Reveal delay={4}>
               <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
-                <HeroStat icon={<Timer size={14} />} label="Styles" value="3" />
-                <HeroStat icon={<TrendingUp size={14} />} label="Adaptive" value="∞" />
-                <HeroStat icon={<Crown size={14} />} label="Tiers" value="5" />
+                <HeroStat icon={<Timer size={14} />} label={t('hero.stat_styles')} value="3" />
+                <HeroStat icon={<TrendingUp size={14} />} label={t('hero.stat_adaptive')} value="∞" />
+                <HeroStat icon={<Crown size={14} />} label={t('hero.stat_tiers')} value="5" />
               </div>
             </Reveal>
           </div>
@@ -109,15 +112,15 @@ export function Hero() {
                     <Crown size={18} />
                   </div>
                   <div>
-                    <div className="text-[11px] font-semibold leading-none">Your turn</div>
-                    <div className="text-[10px] text-zinc-400 leading-none mt-1">Find the best move</div>
+                    <div className="text-[11px] font-semibold leading-none">{t('hero.float_your_turn')}</div>
+                    <div className="text-[10px] text-zinc-400 leading-none mt-1">{t('hero.float_find_best')}</div>
                   </div>
                 </div>
 
                 {/* Floating meta card: unlock progress */}
                 <div className="absolute -right-3 md:-right-8 bottom-10 md:bottom-14 glass rounded-2xl px-3 py-2.5 shadow-xl float-slow" style={{ animationDelay: '1.2s' }}>
                   <div className="flex items-center justify-between gap-3 mb-1.5">
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-400">Level-up</span>
+                    <span className="text-[10px] uppercase tracking-wider text-zinc-400">{t('hero.float_levelup')}</span>
                     <span className="tabular-nums text-[11px] font-semibold text-[var(--accent)]">78%</span>
                   </div>
                   <div className="w-24 h-1.5 rounded-full bg-white/5 overflow-hidden">

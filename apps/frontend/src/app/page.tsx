@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getToken } from '@/lib/api';
+import { LandingLangProvider } from '@/lib/landingI18n';
 import { Hero } from '@/components/landing/Hero';
 import { ValueProps } from '@/components/landing/ValueProps';
 import { Features } from '@/components/landing/Features';
@@ -22,12 +23,14 @@ export default function Home() {
   if (!ready) return null;
 
   return (
-    <main className="relative">
-      <Hero />
-      <ValueProps />
-      <Features />
-      <HowItWorks />
-      <CTA />
-    </main>
+    <LandingLangProvider>
+      <main className="relative">
+        <Hero />
+        <ValueProps />
+        <Features />
+        <HowItWorks />
+        <CTA />
+      </main>
+    </LandingLangProvider>
   );
 }
