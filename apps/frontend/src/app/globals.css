@@ -136,3 +136,87 @@ input[type="range"].ticks::-moz-range-thumb {
   to   { transform: translate(var(--dx), var(--dy)); }
 }
 
+/* ===== Landing page ===== */
+
+/* Scroll-triggered reveal. Elements start faded and down; the `.is-in`
+   class toggled by IntersectionObserver pushes them into view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal.delay-1 { transition-delay: 80ms; }
+.reveal.delay-2 { transition-delay: 160ms; }
+.reveal.delay-3 { transition-delay: 240ms; }
+.reveal.delay-4 { transition-delay: 320ms; }
+.reveal.delay-5 { transition-delay: 400ms; }
+.reveal.delay-6 { transition-delay: 480ms; }
+
+/* Slow hero gradient pan for a living-background feel. */
+@keyframes hero-pan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-gradient {
+  background:
+    radial-gradient(900px 500px at 20% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%),
+    radial-gradient(700px 400px at 95% 30%, color-mix(in srgb, #6366f1 22%, transparent), transparent 55%),
+    radial-gradient(600px 320px at 50% 120%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);
+  background-size: 200% 200%, 200% 200%, 200% 200%;
+  animation: hero-pan 18s ease-in-out infinite;
+}
+
+/* Soft floating motion for hero decorations. */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.float-slow { animation: float-y 6s ease-in-out infinite; }
+
+/* Decorative chess piece trail that slides in from the left edge. */
+@keyframes drift-right {
+  from { transform: translateX(-40px); opacity: 0; }
+  to   { transform: translateX(0);      opacity: 1; }
+}
+
+/* Noise texture for premium feel (pure CSS, no image). */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 1px;
+}
+
+/* Stat counter underline that ticks across on reveal. */
+@keyframes stroke-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.stat-underline {
+  transform-origin: left;
+  animation: stroke-grow 900ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Ring pulse for CTA icons. */
+@keyframes ring-pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  80%  { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.ring-pulse { animation: ring-pulse 2.4s ease-out infinite; }
+

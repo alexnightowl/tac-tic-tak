@@ -358,12 +358,12 @@ export default function PlayRunner() {
 
   return (
     <div
-      className="min-h-dvh px-2 pb-4 md:px-6 md:pb-6"
+      className="h-dvh flex flex-col overflow-hidden px-2 pb-3 md:px-6 md:pb-6"
       style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}
     >
       {/* Mobile: stacked. Header → TurnCard → Progress → Board → Stats. */}
-      <div className="md:hidden flex flex-col items-center min-h-dvh">
-        <div className="w-full max-w-[min(94vh,640px)] flex flex-col gap-3">
+      <div className="md:hidden flex flex-col items-center flex-1 min-h-0 w-full gap-2">
+        <div className="w-full max-w-[min(94vh,640px)] flex flex-col gap-2.5">
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
@@ -373,7 +373,7 @@ export default function PlayRunner() {
           {progressBar}
         </div>
 
-        <div className="flex-1 w-full max-w-[min(94vh,640px)] flex items-center justify-center py-3 min-h-0">
+        <div className="flex-1 w-full max-w-[min(94vh,640px)] flex items-center justify-center min-h-0">
           {boardBlock}
         </div>
 
@@ -383,15 +383,18 @@ export default function PlayRunner() {
       </div>
 
       {/* Desktop: board on the left, meta sidebar on the right. */}
-      <div className="hidden md:flex min-h-dvh items-center justify-center">
-        <div className="flex gap-6 w-full max-w-[1200px] items-stretch">
-          <div className="flex-1 flex items-center justify-center min-w-0">
-            <div className="w-full" style={{ maxWidth: 'min(80vh, 720px)' }}>
+      <div className="hidden md:flex flex-1 items-center justify-center min-h-0">
+        <div className="flex gap-6 w-full max-w-[1200px] items-stretch h-full py-2">
+          <div className="flex-1 flex items-center justify-center min-w-0 min-h-0">
+            <div
+              className="w-full"
+              style={{ maxWidth: 'min(calc(100vh - 64px), 720px)' }}
+            >
               {boardBlock}
             </div>
           </div>
 
-          <aside className="w-[320px] shrink-0 flex flex-col gap-3 py-2">
+          <aside className="w-[320px] shrink-0 flex flex-col gap-3">
             <div className="flex items-center justify-between gap-2">
               {exitButton}
               {timerPill}
