@@ -6,7 +6,10 @@ import {
 
 export type LandingLang = 'en' | 'uk';
 
-const STORAGE_KEY = 'taktic.landing.lang';
+// Shared with the in-app store so the choice carries from the landing into
+// the login/register pages and, for brand-new accounts, into their saved
+// user settings.
+const STORAGE_KEY = 'taktic.lang';
 
 type Dict = Record<string, string>;
 

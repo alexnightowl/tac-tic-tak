@@ -23,7 +23,7 @@ export class AuthService {
       data: {
         nickname: dto.nickname,
         passwordHash,
-        settings: { create: {} },
+        settings: { create: dto.language ? { language: dto.language } : {} },
         progression: { create: {} },
         styleProgressions: {
           create: [

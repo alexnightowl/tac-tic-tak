@@ -27,7 +27,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const setProgressions = useAppStore((s) => s.setProgressions);
 
   useEffect(() => {
-    if (!getToken()) return;
+    if (!getToken()) {
+      // Not authenticated — honour the language picked on the landing page
+      // (or remembered from a previous session) so the login/register UI
+      // renders in the right language.
+      try {
+        const stored = window.localStorage.getItem('taktic.lang');
+        if (stored === 'en' || stored === 'uk') setSettings({ language: stored });
+      } catch {}
+      return;
+    }
     http.get<Me>('/users/me')
       .then((me) => {
         setUser({
