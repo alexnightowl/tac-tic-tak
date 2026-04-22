@@ -40,8 +40,11 @@ jobs:
             git pull --ff-only
             docker compose --profile app build
             docker compose --profile app up -d --remove-orphans
-            # nginx.conf is a bind-mount; `up -d` won't recreate the nginx
-            # container when only its contents change, so force a reload so
-            # route/size changes go live on the same deploy.
-            docker compose exec -T nginx nginx -s reload || docker compose restart nginx
+            # nginx.conf is a bind-mount; `up -d` doesn't recreate the
+            # container when only file content changes, and `nginx -s reload`
+            # has proven flaky here. Force a clean recreate so the running
+            # process reads the current conf on disk.
+            docker compose --profile app up -d --force-recreate nginx
+            # Log the first lines so the CI output tells us which conf is live.
+            docker compose exec -T nginx sh -c 'sed -n "1,40p" /etc/nginx/nginx.conf' || true
             docker image prune -f
