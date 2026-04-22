@@ -20,7 +20,9 @@ export class SessionsService {
 
   async create(userId: string, dto: CreateSessionDto) {
     const styleRow = await this.styleProgression(userId, dto.style);
-    if (dto.startRating > styleRow.unlockedStartRating + 200) {
+    // Theme-mode sessions are unrated practice — any start rating is allowed
+    // and the style's progression row is not bumped.
+    if (dto.mode !== 'theme' && dto.startRating > styleRow.unlockedStartRating + 200) {
       throw new BadRequestException(`startRating exceeds unlocked cap (${styleRow.unlockedStartRating})`);
     }
     const session = await this.prisma.trainingSession.create({
@@ -33,10 +35,12 @@ export class SessionsService {
         durationSec: dto.durationSec,
       },
     });
-    await this.prisma.userStyleProgression.update({
-      where: { userId_style: { userId, style: dto.style } },
-      data: { currentPuzzleRating: dto.startRating, startPuzzleRating: dto.startRating },
-    });
+    if (dto.mode !== 'theme') {
+      await this.prisma.userStyleProgression.update({
+        where: { userId_style: { userId, style: dto.style } },
+        data: { currentPuzzleRating: dto.startRating, startPuzzleRating: dto.startRating },
+      });
+    }
 
     // Warm the session queue up-front so the very first /next returns fast.
     this.buffer
@@ -76,22 +80,29 @@ export class SessionsService {
       });
     }
 
+    // Theme sessions are unrated — they pin puzzle difficulty to the user's
+    // chosen startRating and never touch the adaptive progression.
+    const servingRating = session.mode === 'theme'
+      ? session.startRating
+      : progression.currentPuzzleRating;
+
     const puzzle = await this.buffer.getNext({
       sessionId,
       userId,
-      rating: progression.currentPuzzleRating,
+      rating: servingRating,
       theme: session.theme,
     });
     if (!puzzle) throw new NotFoundException('no puzzles available');
 
     return {
       puzzle,
-      currentRating: progression.currentPuzzleRating,
+      currentRating: servingRating,
       session: {
         id: session.id,
         startedAt,
         durationSec: session.durationSec,
         style,
+        mode: session.mode,
       },
     };
   }
@@ -128,12 +139,20 @@ export class SessionsService {
       });
     }
 
+    const style = normalizeStyle(session.style);
+
+    // Theme sessions are unrated — skip the rating step entirely and keep the
+    // user's progression untouched. We still want attempts + review items
+    // recorded above, so they show up in history.
+    if (session.mode === 'theme') {
+      return { newRating: session.startRating, step: 0 };
+    }
+
     const windowAttempts = await this.prisma.trainingAttempt.findMany({
       where: { sessionId },
       orderBy: { createdAt: 'desc' },
       take: WINDOW,
     });
-    const style = normalizeStyle(session.style);
     const progression = await this.styleProgression(userId, style);
     const step = computeRatingStep(progression.currentPuzzleRating, windowAttempts.map((a) => ({
       correct: a.correct,
@@ -176,6 +195,17 @@ export class SessionsService {
     });
 
     const style = normalizeStyle(session.style);
+
+    // Theme sessions are unrated — no unlock check, no reward.
+    if (session.mode === 'theme') {
+      await this.buffer.clearSession(sessionId);
+      return {
+        ...(await this.summary(sessionId)),
+        unlocked: false,
+        style,
+      };
+    }
+
     const progression = await this.styleProgression(userId, style);
     const check = evaluateUnlock(style, stats, session.durationSec, session.startRating);
     if (check.met) {

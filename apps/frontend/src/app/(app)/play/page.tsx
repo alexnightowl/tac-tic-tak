@@ -36,7 +36,6 @@ export default function PlaySetup() {
   const stylePreset = STYLE_FORMULAS[style];
   const styleProgression = progressions[style];
   const unlocked = styleProgression.unlockedStartRating;
-  const ratingCap = unlocked + 200;
 
   const [startRating, setStartRating] = useState<number>(styleProgression.currentPuzzleRating);
   const [duration, setDuration] = useState<number>(stylePreset.durationPresetsSec[1] ?? stylePreset.durationPresetsSec[0]);
@@ -47,15 +46,15 @@ export default function PlaySetup() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Theme sessions are unrated practice — no unlock cap, any rating is OK.
+  // Mixed sessions stay capped at unlocked + 200 to prevent skipping
+  // progression.
+  const ratingCap = mode === 'theme' ? 3000 : unlocked + 200;
+
   // When style changes, snap the rating + duration into that style's range
   // so users don't end up with nonsensical combos from the previous style.
   useEffect(() => {
-    setStartRating((r) => {
-      const min = 400;
-      if (r > ratingCap) return ratingCap;
-      if (r < min) return styleProgression.currentPuzzleRating;
-      return styleProgression.currentPuzzleRating;
-    });
+    setStartRating(styleProgression.currentPuzzleRating);
     const presets = stylePreset.durationPresetsSec;
     setDuration(presets[1] ?? presets[0]);
     setCustomDuration(false);
@@ -143,9 +142,15 @@ export default function PlaySetup() {
             ariaLabel={t('play.start_rating')}
           />
           <p className="text-xs text-zinc-500 mt-2">
-            {t('play.unlocked')}: <span className="text-zinc-300">{unlocked}</span>
-            <span className="mx-2 text-zinc-700">·</span>
-            {t('play.cap')}: <span className="text-zinc-300">{ratingCap}</span>
+            {mode === 'theme' ? (
+              <span className="text-zinc-400">{t('play.theme_unrated_hint')}</span>
+            ) : (
+              <>
+                {t('play.unlocked')}: <span className="text-zinc-300">{unlocked}</span>
+                <span className="mx-2 text-zinc-700">·</span>
+                {t('play.cap')}: <span className="text-zinc-300">{ratingCap}</span>
+              </>
+            )}
           </p>
         </section>
 
@@ -211,12 +216,16 @@ export default function PlaySetup() {
           )}
         </section>
 
-        <NextUnlockPreview
-          style={style}
-          durationSec={effectiveDuration}
-          unlockedTo={unlocked}
-          t={t}
-        />
+        {mode === 'mixed' ? (
+          <NextUnlockPreview
+            style={style}
+            durationSec={effectiveDuration}
+            unlockedTo={unlocked}
+            t={t}
+          />
+        ) : (
+          <ThemePracticeNote t={t} />
+        )}
 
         {err && <p className="text-sm text-red-400">{err}</p>}
 
@@ -289,6 +298,19 @@ function NextUnlockPreview({ style, durationSec, unlockedTo, t }: {
       </ul>
       <p className="text-[11px] text-zinc-500 mt-3 leading-snug">
         {t('unlock.hint')}
+      </p>
+    </section>
+  );
+}
+
+function ThemePracticeNote({ t }: { t: (k: string) => string }) {
+  return (
+    <section className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-softer)]/40 p-4">
+      <div className="text-xs uppercase tracking-wider text-zinc-400 mb-1.5">
+        {t('play.theme_practice_title')}
+      </div>
+      <p className="text-[12px] text-zinc-400 leading-snug">
+        {t('play.theme_practice_hint')}
       </p>
     </section>
   );

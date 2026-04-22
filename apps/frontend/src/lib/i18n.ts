@@ -103,7 +103,11 @@ const en: Dict = {
   'play.opponent_moving': 'Opponent is moving…',
   'play.loading_puzzle': 'Loading puzzle…',
   'play.rating': 'Rating',
+  'play.drill': 'Drill',
   'play.cap': 'Max',
+  'play.theme_unrated_hint': 'Theme mode is unrated practice — pick any difficulty.',
+  'play.theme_practice_title': 'Practice session',
+  'play.theme_practice_hint': 'Theme sessions don\'t change your rating or unlock progress. Pure drill on the chosen motif.',
   'play.style': 'Training style',
   'play.session_complete': 'Session complete',
 
@@ -291,7 +295,11 @@ const uk: Dict = {
   'play.opponent_moving': 'Хід суперника…',
   'play.loading_puzzle': 'Завантаження задачі…',
   'play.rating': 'Рейтинг',
+  'play.drill': 'Тема',
   'play.cap': 'Макс',
+  'play.theme_unrated_hint': 'Тренування за темою не впливає на рейтинг — обирай будь-яку складність.',
+  'play.theme_practice_title': 'Тренувальна сесія',
+  'play.theme_practice_hint': 'Сесії за темою не змінюють твій рейтинг і прогрес розблокування. Просто тренування обраного мотиву.',
   'play.style': 'Стиль тренування',
   'play.session_complete': 'Сесію завершено',
 

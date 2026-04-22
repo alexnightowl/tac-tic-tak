@@ -21,7 +21,7 @@ import {
 type NextResponse = {
   puzzle: ServerPuzzle;
   currentRating: number;
-  session: { id: string; startedAt: string; durationSec: number; style?: string };
+  session: { id: string; startedAt: string; durationSec: number; style?: string; mode?: 'mixed' | 'theme' };
 };
 type FinishResponse = {
   sessionId: string; solved: number; failed: number; accuracy: number;
@@ -65,6 +65,7 @@ export default function PlayRunner() {
   const [opponentBusy, setOpponentBusy] = useState(false);
   const [sessionStartRating, setSessionStartRating] = useState<number | null>(null);
   const [sessionStyle, setSessionStyle] = useState<TrainingStyle>(DEFAULT_STYLE);
+  const [sessionMode, setSessionMode] = useState<'mixed' | 'theme'>('mixed');
   const [peakRating, setPeakRating] = useState<number>(0);
   const [totalResponseMs, setTotalResponseMs] = useState<number>(0);
   const attemptStart = useRef<number>(Date.now());
@@ -104,6 +105,9 @@ export default function PlayRunner() {
         setPeakRating(r.currentRating);
         if (r.session.style && isTrainingStyle(r.session.style)) {
           setSessionStyle(r.session.style);
+        }
+        if (r.session.mode === 'theme' || r.session.mode === 'mixed') {
+          setSessionMode(r.session.mode);
         }
         loadPuzzle(r.puzzle, r.currentRating);
         setLoadingFirst(false);
@@ -277,80 +281,126 @@ export default function PlayRunner() {
   const currentRating = styleProg?.currentPuzzleRating ?? null;
   const unlockCeiling = styleProg?.unlockedStartRating ?? null;
 
-  return (
-    <div className="min-h-dvh flex flex-col items-center px-2 pb-4"
-         style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}>
-      {/* Top cluster: header + info card */}
-      <div className="w-full max-w-[min(94vh,640px)] flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-2">
-          <Button
-            variant="glass"
-            size="sm"
-            onClick={requestExit}
-            className="!px-3"
-            aria-label={t('play.exit')}
-          >
-            <X size={18} /> {t('play.exit')}
-          </Button>
+  const exitButton = (
+    <Button
+      variant="glass"
+      size="sm"
+      onClick={requestExit}
+      className="!px-3"
+      aria-label={t('play.exit')}
+    >
+      <X size={18} /> {t('play.exit')}
+    </Button>
+  );
 
-          <div className={cn(
-            'font-mono text-xl tabular-nums px-4 py-1.5 rounded-full border transition-colors',
-            warning
-              ? 'bg-red-500/15 border-red-400/60 text-red-300 pulse-red'
-              : 'glass text-white',
-          )}>
-            {loadingFirst ? '--:--' : fmtDuration(remainingSec)}
+  const timerPill = (
+    <div className={cn(
+      'font-mono text-xl tabular-nums px-4 py-1.5 rounded-full border transition-colors text-center',
+      warning
+        ? 'bg-red-500/15 border-red-400/60 text-red-300 pulse-red'
+        : 'glass text-white',
+    )}>
+      {loadingFirst ? '--:--' : fmtDuration(remainingSec)}
+    </div>
+  );
+
+  const turnCard = (
+    <TurnCard
+      orientation={orientation}
+      isPlayerTurn={isPlayerTurn}
+      loading={loadingFirst}
+      opponentBusy={opponentBusy}
+    />
+  );
+
+  // Theme sessions are unrated practice — no unlock target to show.
+  const progressBar = sessionMode !== 'theme' && unlockProgress && unlockCeiling != null ? (
+    <UnlockProgressBar
+      progress={unlockProgress}
+      unlockedTo={unlockCeiling}
+    />
+  ) : null;
+
+  const statsRow = (
+    <div className="grid grid-cols-3 gap-2">
+      <StatPill icon={<Check size={14} />} value={solvedCount} tone="good" />
+      {sessionMode === 'theme'
+        ? <RatingPill rating={sessionStartRating} label={t('play.drill')} />
+        : <RatingPill rating={currentRating} label={t('play.rating')} />}
+      <StatPill icon={<XCircle size={14} />} value={failedCount} tone="bad" align="right" />
+    </div>
+  );
+
+  const boardBlock = (
+    <div className="relative w-full">
+      {chess && (
+        <Chessboard
+          fen={chess.fen()}
+          orientation={orientation}
+          onMove={handleMove}
+          lastMove={lastMove}
+          animateMove={animateMove}
+          animationMs={ANIMATION_MS[settings.animationSpeed]}
+          allowMoves={!animateMove && !loadingFirst}
+          theme={settings.boardTheme as BoardTheme}
+          pieceSet={settings.pieceSet}
+        />
+      )}
+      {loadingFirst && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="glass rounded-full h-14 w-14 flex items-center justify-center shadow-lg">
+            <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div
+      className="min-h-dvh px-2 pb-4 md:px-6 md:pb-6"
+      style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}
+    >
+      {/* Mobile: stacked. Header → TurnCard → Progress → Board → Stats. */}
+      <div className="md:hidden flex flex-col items-center min-h-dvh">
+        <div className="w-full max-w-[min(94vh,640px)] flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-2">
+            {exitButton}
+            {timerPill}
+            <div className="w-[72px]" />
+          </div>
+          {turnCard}
+          {progressBar}
+        </div>
+
+        <div className="flex-1 w-full max-w-[min(94vh,640px)] flex items-center justify-center py-3 min-h-0">
+          {boardBlock}
+        </div>
+
+        <div className="w-full max-w-[min(94vh,640px)]">
+          {statsRow}
+        </div>
+      </div>
+
+      {/* Desktop: board on the left, meta sidebar on the right. */}
+      <div className="hidden md:flex min-h-dvh items-center justify-center">
+        <div className="flex gap-6 w-full max-w-[1200px] items-stretch">
+          <div className="flex-1 flex items-center justify-center min-w-0">
+            <div className="w-full" style={{ maxWidth: 'min(80vh, 720px)' }}>
+              {boardBlock}
+            </div>
           </div>
 
-          <div className="w-[72px]" />
-        </div>
-
-        <TurnCard
-          orientation={orientation}
-          isPlayerTurn={isPlayerTurn}
-          loading={loadingFirst}
-          opponentBusy={opponentBusy}
-        />
-
-        {unlockProgress && unlockCeiling != null && (
-          <UnlockProgressBar
-            progress={unlockProgress}
-            unlockedTo={unlockCeiling}
-          />
-        )}
-      </div>
-
-      {/* Board centered in the remaining vertical space */}
-      <div className="flex-1 w-full max-w-[min(94vh,640px)] flex items-center justify-center py-3 min-h-0">
-        <div className="relative w-full">
-          {chess && (
-            <Chessboard
-              fen={chess.fen()}
-              orientation={orientation}
-              onMove={handleMove}
-              lastMove={lastMove}
-              animateMove={animateMove}
-              animationMs={ANIMATION_MS[settings.animationSpeed]}
-              allowMoves={!animateMove && !loadingFirst}
-              theme={settings.boardTheme as BoardTheme}
-              pieceSet={settings.pieceSet}
-            />
-          )}
-          {loadingFirst && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="glass rounded-full h-14 w-14 flex items-center justify-center shadow-lg">
-                <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
-              </div>
+          <aside className="w-[320px] shrink-0 flex flex-col gap-3 py-2">
+            <div className="flex items-center justify-between gap-2">
+              {exitButton}
+              {timerPill}
             </div>
-          )}
+            {turnCard}
+            {progressBar}
+            {statsRow}
+          </aside>
         </div>
-      </div>
-
-      {/* Bottom row: solved · rating · failed */}
-      <div className="w-full max-w-[min(94vh,640px)] grid grid-cols-3 gap-2">
-        <StatPill icon={<Check size={14} />} value={solvedCount} tone="good" />
-        <RatingPill rating={currentRating} label={t('play.rating')} />
-        <StatPill icon={<XCircle size={14} />} value={failedCount} tone="bad" align="right" />
       </div>
 
       {confirmExit && (
