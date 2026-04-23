@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { User as UserIcon, Gamepad2, Palette, Smartphone } from 'lucide-react';
-import { http } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut } from 'lucide-react';
+import { http, setToken } from '@/lib/api';
 import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card, CardTitle } from '@/components/ui/card';
@@ -37,7 +38,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-4 max-w-2xl">
+    <div className="space-y-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-semibold tracking-tight">
         {t('settings.title')}
         {saving && <span className="text-xs text-zinc-500 ml-2 font-normal">{t('settings.saving')}</span>}
@@ -83,7 +84,15 @@ function TabBar({ tab, onChange, t }: { tab: Tab; onChange: (t: Tab) => void; t:
 function ProfileTab() {
   const user = useAppStore((s) => s.user);
   const patchUser = useAppStore((s) => s.patchUser);
+  const setUser = useAppStore((s) => s.setUser);
+  const router = useRouter();
   const t = useT();
+
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    router.replace('/login');
+  };
   const [displayName, setDisplayName] = useState(user?.displayName ?? '');
   const [bio, setBio] = useState(user?.bio ?? '');
   const [country, setCountry] = useState(user?.country ?? '');
@@ -156,6 +165,16 @@ function ProfileTab() {
 
       {err && <div className="text-xs text-rose-400">{err}</div>}
       {savingField && <div className="text-[11px] text-zinc-500">{t('settings.saving')}</div>}
+
+      <div className="pt-4 border-t border-[var(--border)]">
+        <button
+          type="button"
+          onClick={logout}
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-400/10 transition-colors"
+        >
+          <LogOut size={16} /> {t('logout')}
+        </button>
+      </div>
     </Card>
   );
 }

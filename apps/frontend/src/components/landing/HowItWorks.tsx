@@ -12,7 +12,7 @@ const STEPS = [
 export function HowItWorks() {
   const { t } = useLandingT();
   return (
-    <section className="relative py-20 md:py-28">
+    <section id="how" className="relative py-20 md:py-28 scroll-mt-20">
       <div className="absolute inset-0 pointer-events-none opacity-60" aria-hidden>
         <div className="absolute top-20 -left-20 w-72 h-72 rounded-full"
              style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--accent) 14%, transparent), transparent)' }} />

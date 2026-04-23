@@ -34,7 +34,7 @@ const FEATURES: Feature[] = [
 export function Features() {
   const { t } = useLandingT();
   return (
-    <section className="relative py-20 md:py-28">
+    <section id="features" className="relative py-20 md:py-28 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <Reveal>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">

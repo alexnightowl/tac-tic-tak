@@ -16,13 +16,18 @@ type Dict = Record<string, string>;
 const EN: Dict = {
   'nav.login': 'Log in',
   'nav.signup': 'Sign up',
+  'nav.features': 'Features',
+  'nav.training': 'Training',
+  'nav.statistics': 'Statistics',
+  'nav.about': 'About',
 
   'hero.eyebrow': 'Chess tactics, done right',
-  'hero.title_1': 'Train smarter.',
-  'hero.title_2': 'Level up faster.',
+  'hero.title_1': 'Sharpen',
+  'hero.title_2': 'your instincts',
   'hero.subtitle':
-    'Adaptive puzzles that scale with you. Separate ratings for bullet, blitz and rapid. Real progression — not just a number that drifts up.',
+    'Tacticore trains your chess tactics smarter, faster, every day. Adaptive puzzles, per-style ratings, real progression.',
   'hero.cta_primary': 'Start training',
+  'hero.cta_primary_short': 'Get started',
   'hero.cta_secondary': 'I have an account',
   'hero.stat_styles': 'Styles',
   'hero.stat_adaptive': 'Adaptive',
@@ -99,13 +104,18 @@ const EN: Dict = {
 const UK: Dict = {
   'nav.login': 'Увійти',
   'nav.signup': 'Реєстрація',
+  'nav.features': 'Фічі',
+  'nav.training': 'Тренування',
+  'nav.statistics': 'Статистика',
+  'nav.about': 'Про нас',
 
   'hero.eyebrow': 'Шахові тактики, як слід',
-  'hero.title_1': 'Тренуйся розумніше.',
-  'hero.title_2': 'Прогресуй швидше.',
+  'hero.title_1': 'Загостри',
+  'hero.title_2': 'свої інстинкти',
   'hero.subtitle':
-    'Адаптивні задачі, що підлаштовуються під тебе. Окремі рейтинги для пулі, бліцу та рапіду. Реальний прогрес — а не число, що просто повзе вгору.',
+    'Tacticore тренує твої шахові тактики розумніше, швидше, щодня. Адаптивні задачі, рейтинги по стилях, реальний прогрес.',
   'hero.cta_primary': 'Почати тренування',
+  'hero.cta_primary_short': 'Старт',
   'hero.cta_secondary': 'У мене вже є акаунт',
   'hero.stat_styles': 'Стилі',
   'hero.stat_adaptive': 'Адаптивно',

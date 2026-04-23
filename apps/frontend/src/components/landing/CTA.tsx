@@ -8,7 +8,7 @@ import { useLandingT } from '@/lib/landingI18n';
 export function CTA() {
   const { t } = useLandingT();
   return (
-    <section className="relative py-20 md:py-28">
+    <section id="cta" className="relative py-20 md:py-28 scroll-mt-20">
       <div className="max-w-5xl mx-auto px-5 md:px-8">
         <Reveal>
           <div
