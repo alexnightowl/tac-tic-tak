@@ -71,9 +71,15 @@ services:
     image: nginx:alpine
     container_name: taktic_nginx
     ports:
-      - "${NGINX_HOST_PORT:-8080}:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./deploy/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Read-only mount of the host's Let's Encrypt directory so the
+      # container sees current certs after every certbot renewal.
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      # Webroot path for certbot's HTTP-01 challenges during renewal.
+      - /var/www/certbot:/var/www/certbot:ro
     depends_on:
       - backend
       - frontend
