@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { IsBoolean, IsHexColor, IsIn, IsOptional, IsString, Length, Matches, MaxLength } from 'class-validator';
+import { IsBoolean, IsHexColor, IsIn, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
 import { UsersService } from './users.service';
@@ -19,13 +19,17 @@ class UpdateSettingsDto {
 }
 
 class UpdateProfileDto {
-  @IsOptional() @IsString() @Length(1, 40)
+  // Empty string is accepted as "clear this field" (users.service converts
+  // it to null). Min-length was the old cause of the infamous
+  // "displayName must be longer than or equal to 1 characters" error
+  // when someone wanted to change only the country code.
+  @IsOptional() @IsString() @MaxLength(40)
   displayName?: string;
 
   @IsOptional() @IsString() @MaxLength(280)
   bio?: string;
 
-  @IsOptional() @IsString() @Matches(/^[a-z]{2}$/i, { message: 'country must be 2-letter code' })
+  @IsOptional() @IsString() @Matches(/^([a-z]{2})?$/i, { message: 'country must be a 2-letter code or empty' })
   country?: string;
 }
 
