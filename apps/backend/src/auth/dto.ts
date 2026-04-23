@@ -30,3 +30,14 @@ export class LoginDto {
   @IsString()
   password!: string;
 }
+
+export class ChangePasswordDto {
+  @IsString()
+  currentPassword!: string;
+
+  @IsString()
+  @Length(8, 128, { message: 'password must be at least 8 characters' })
+  @Matches(/[A-Za-z]/, { message: 'password must include a letter' })
+  @Matches(/[0-9]/, { message: 'password must include a digit' })
+  newPassword!: string;
+}
