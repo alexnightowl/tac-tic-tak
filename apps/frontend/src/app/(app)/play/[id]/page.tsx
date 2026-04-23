@@ -198,8 +198,18 @@ export default function PlayRunner() {
     try {
       const r = await http.post<NextResponse>(`/sessions/${sessionId}/next`);
       loadPuzzle(r.puzzle, r.currentRating);
-    } catch (e: any) {
-      await finish();
+    } catch {
+      // One retry with backoff — covers brief backend restarts (rolling
+      // deploys) and flaky network. Only end the session if the retry
+      // fails too, so an in-progress session isn't nuked by a 30-second
+      // container swap.
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const r = await http.post<NextResponse>(`/sessions/${sessionId}/next`);
+        loadPuzzle(r.puzzle, r.currentRating);
+      } catch {
+        await finish();
+      }
     } finally {
       loading.current = false;
     }
@@ -219,7 +229,18 @@ export default function PlayRunner() {
       }
       setSummary(r);
     } catch {
-      setSummary({ sessionId, solved: 0, failed: 0, accuracy: 0, avgResponseMs: 0, peakRating: 0 });
+      // Backend unreachable — don't gaslight the user with zeros, fall
+      // back to the stats we've been tracking client-side throughout
+      // the session.
+      const attempts = solvedCount + failedCount;
+      setSummary({
+        sessionId,
+        solved: solvedCount,
+        failed: failedCount,
+        accuracy: attempts > 0 ? solvedCount / attempts : 0,
+        avgResponseMs: attempts > 0 ? totalResponseMs / attempts : 0,
+        peakRating,
+      });
     }
   }
 
