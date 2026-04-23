@@ -13,6 +13,7 @@ import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { DifficultySlider } from '@/components/DifficultySlider';
 import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
+import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle';
 import {
   bandFor, solvedTarget,
   STYLE_FORMULAS, TrainingStyle, TRAINING_STYLES,
@@ -89,13 +90,20 @@ export default function PlaySetup() {
     setErr(null);
     setLoading(true);
     try {
-      const r = await http.post<{ sessionId: string }>('/sessions', {
+      const r = await http.post<{
+        sessionId: string;
+        firstPuzzle: FirstPuzzlePayload | null;
+      }>('/sessions', {
         startRating,
         durationSec: effectiveDuration,
         mode,
         style,
         theme: mode === 'theme' ? theme : undefined,
       });
+      // Hand the first puzzle off to the runner via an in-memory cache —
+      // avoids the second /next round-trip that used to stall the board
+      // on first load.
+      if (r.firstPuzzle) stashFirstPuzzle(r.sessionId, r.firstPuzzle);
       router.push(`/play/${r.sessionId}`);
     } catch (e: any) {
       setErr(e.message);

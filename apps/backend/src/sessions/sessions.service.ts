@@ -42,21 +42,58 @@ export class SessionsService {
       });
     }
 
-    // Warm the session queue up-front so the very first /next returns fast.
-    this.buffer
-      .warmSession({
+    // Pop the first puzzle synchronously and embed it in the response so
+    // the client doesn't pay a second round-trip to /next before showing
+    // the board. Previously we fire-and-forgot the warm, then the client
+    // raced to /next and often hit a cold queue that had to preload from
+    // Postgres with an ORDER BY random() over a multi-million-row table
+    // — the slow first-puzzle problem.
+    // Right after create, both theme-mode and rated sessions serve at the
+    // dto-declared startRating: rated sessions just had their
+    // currentPuzzleRating bumped to it above.
+    const servingRating = dto.startRating;
+    let firstPuzzle: Awaited<ReturnType<typeof this.buffer.getNext>> = null;
+    try {
+      firstPuzzle = await this.buffer.getNext({
         sessionId: session.id,
         userId,
-        rating: dto.startRating,
+        rating: servingRating,
         theme: dto.theme ?? null,
-      })
-      .catch((e) => this.log.error(`initial warm failed: ${e?.message}`));
+      });
+    } catch (e: unknown) {
+      this.log.error(`initial preload failed: ${e instanceof Error ? e.message : String(e)}`);
+    }
+
+    // Reset startedAt to NOW — the client is about to see the first
+    // puzzle on this response, not when the row was inserted. Matches
+    // what /next did on first call before this change.
+    const startedAt = new Date();
+    await this.prisma.trainingSession.update({
+      where: { id: session.id },
+      data: { startedAt },
+    });
 
     return {
       sessionId: session.id,
-      startedAt: session.startedAt,
+      startedAt,
       durationSec: session.durationSec,
       style: dto.style,
+      // NextResponse-shaped payload. Client uses this directly instead
+      // of issuing POST /sessions/:id/next for the first puzzle. Null
+      // if preload failed — client falls back to /next.
+      firstPuzzle: firstPuzzle
+        ? {
+            puzzle: firstPuzzle,
+            currentRating: servingRating,
+            session: {
+              id: session.id,
+              startedAt,
+              durationSec: session.durationSec,
+              style: dto.style,
+              mode: session.mode,
+            },
+          }
+        : null,
     };
   }
 

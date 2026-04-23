@@ -10,6 +10,7 @@ import { useT } from '@/lib/i18n';
 import { Chessboard } from '@/components/board/Chessboard';
 import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
+import { takeFirstPuzzle } from '@/lib/pending-puzzle';
 import { playSound } from '@/lib/sound';
 import { fmtDuration, cn } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
@@ -117,25 +118,39 @@ export default function PlayRunner() {
   }, [now, endsAt]);
 
   useEffect(() => {
+    const applyNextResponse = (r: NextResponse) => {
+      setDurationSec(r.session.durationSec);
+      // Use the client's clock as the anchor so no seconds are lost to
+      // network round-trips.
+      setEndsAt(Date.now() + r.session.durationSec * 1000);
+      setSessionStartRating(r.currentRating);
+      setPeakRating(r.currentRating);
+      if (r.session.style && isTrainingStyle(r.session.style)) {
+        setSessionStyle(r.session.style);
+      }
+      if (r.session.mode === 'theme' || r.session.mode === 'mixed') {
+        setSessionMode(r.session.mode);
+      }
+      loadPuzzle(r.puzzle, r.currentRating);
+      setLoadingFirst(false);
+    };
+
+    // If POST /sessions already shipped us the first puzzle, use it and
+    // skip the extra /next round-trip. This is the common path now —
+    // avoids waiting on another Postgres trip before the board appears.
+    const stashed = takeFirstPuzzle(sessionId);
+    if (stashed) {
+      applyNextResponse(stashed as NextResponse);
+      return;
+    }
+
+    // Legacy / fallback path: no stashed puzzle (e.g. hard-refresh of
+    // the runner URL, or the backend didn't send one back).
     (async () => {
       try {
         const r = await http.post<NextResponse>(`/sessions/${sessionId}/next`);
-        setDurationSec(r.session.durationSec);
-        // Use the client's clock as the anchor so no seconds are lost to
-        // network round-trips.
-        setEndsAt(Date.now() + r.session.durationSec * 1000);
-        // First /next returns currentRating == session.startRating (no attempts yet).
-        setSessionStartRating(r.currentRating);
-        setPeakRating(r.currentRating);
-        if (r.session.style && isTrainingStyle(r.session.style)) {
-          setSessionStyle(r.session.style);
-        }
-        if (r.session.mode === 'theme' || r.session.mode === 'mixed') {
-          setSessionMode(r.session.mode);
-        }
-        loadPuzzle(r.puzzle, r.currentRating);
-        setLoadingFirst(false);
-      } catch (e: any) {
+        applyNextResponse(r);
+      } catch {
         setSummary({ sessionId, solved: 0, failed: 0, accuracy: 0, avgResponseMs: 0, peakRating: 0 });
       }
     })();
