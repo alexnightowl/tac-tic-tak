@@ -8,7 +8,7 @@ import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card } from '@/components/ui/card';
 import { BoardThumbnail } from '@/components/board/BoardThumbnail';
-import { themeLabel } from '@/lib/theme-labels';
+import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
 import { BoardTheme } from '@/lib/themes';
 
 type ReviewItem = {
@@ -57,7 +57,7 @@ export default function ReviewList() {
                   <span className="text-xs text-zinc-500">{new Date(i.createdAt).toLocaleDateString()}</span>
                 </div>
                 <div className="text-xs text-zinc-400 mt-1 line-clamp-2">
-                  {i.themes.slice(0, 3).map(themeLabel).join(' · ')}
+                  {i.themes.filter((s) => !isMetaTheme(s)).slice(0, 3).map((s) => themeLabel(s, settings.language as 'en' | 'uk')).join(' · ')}
                 </div>
               </div>
               <ChevronRight size={16} className="text-zinc-500" />

@@ -12,7 +12,7 @@ import { playSound } from '@/lib/sound';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { BoardTheme } from '@/lib/themes';
-import { themeLabel } from '@/lib/theme-labels';
+import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
 
 export default function ReviewPuzzle() {
   const { puzzleId } = useParams<{ puzzleId: string }>();
@@ -115,7 +115,7 @@ export default function ReviewPuzzle() {
           <ChevronLeft size={16} /> {t('review.back')}
         </Button>
         <div className="text-sm text-zinc-400">
-          {puzzle?.rating} · {puzzle?.themes.slice(0, 3).map(themeLabel).join(', ')}
+          {puzzle?.rating} · {puzzle?.themes.filter((s) => !isMetaTheme(s)).slice(0, 3).map((s) => themeLabel(s, settings.language as 'en' | 'uk')).join(', ')}
         </div>
       </div>
       {chess && settingsReady && (

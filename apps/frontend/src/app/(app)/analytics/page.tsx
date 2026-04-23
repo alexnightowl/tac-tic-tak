@@ -3,10 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { http } from '@/lib/api';
+import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { RadarChart } from '@/components/charts/RadarChart';
-import { themeLabel } from '@/lib/theme-labels';
+import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
 
 type Overview = {
   recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
@@ -18,20 +19,23 @@ type Recommendation = { theme: string | null; reason: string };
 
 export default function AnalyticsPage() {
   const t = useT();
+  const language = useAppStore((s) => s.settings.language);
   const overview = useQuery({ queryKey: ['analytics'], queryFn: () => http.get<Overview>('/analytics') });
   const themes = useQuery({ queryKey: ['analytics-themes'], queryFn: () => http.get<ThemeRow[]>('/analytics/themes') });
   const rec = useQuery({ queryKey: ['analytics-rec'], queryFn: () => http.get<Recommendation>('/analytics/recommendations') });
 
-  // Top 8 most-attempted themes with solved ratings, for the radar.
+  // Top 8 most-attempted *tactical* themes — strip out the Lichess meta
+  // tags (middlegame / endgame / short / long / ...) that would otherwise
+  // dominate the radar without actually representing a tactical skill.
   const radarData = useMemo(() => {
     if (!themes.data) return [];
     return themes.data
-      .filter((t) => t.rating > 0)
+      .filter((t) => t.rating > 0 && !isMetaTheme(t.slug))
       .sort((a, b) => b.attempts - a.attempts)
       .slice(0, 8)
       .sort((a, b) => a.slug.localeCompare(b.slug)) // stable visual order
-      .map((t) => ({ label: themeLabel(t.slug), value: t.rating }));
-  }, [themes.data]);
+      .map((t) => ({ label: themeLabel(t.slug, language), value: t.rating }));
+  }, [themes.data, language]);
 
   const radarBounds = useMemo(() => {
     if (radarData.length === 0) return { min: 1200, max: 2000 };
@@ -48,7 +52,7 @@ export default function AnalyticsPage() {
       {rec.data?.theme && (
         <Card>
           <CardTitle>{t('stats.recommend')}</CardTitle>
-          <CardValue>{themeLabel(rec.data.theme)}</CardValue>
+          <CardValue>{themeLabel(rec.data.theme, language)}</CardValue>
           <div className="text-xs text-zinc-500 mt-1">{rec.data.reason}</div>
         </Card>
       )}
@@ -84,13 +88,13 @@ export default function AnalyticsPage() {
         <h2 className="text-lg font-medium mb-2">{t('stats.theme_list')}</h2>
         <div className="grid gap-2">
           {(themes.data ?? [])
-            .slice()
+            .filter((th) => !isMetaTheme(th.slug))
             .sort((a, b) => b.weakness - a.weakness)
             .slice(0, 20)
             .map((th) => (
               <Card key={th.slug} className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-medium">{themeLabel(th.slug)}</div>
+                  <div className="text-sm font-medium">{themeLabel(th.slug, language)}</div>
                   <div className="text-xs text-zinc-500">
                     {th.attempts} · {Math.round(th.failureRate * 100)}% fail · {th.avgResponseMs}ms
                   </div>
