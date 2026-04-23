@@ -289,6 +289,16 @@ export default function PlayRunner() {
     setLastMove({ from: m.from, to: m.to });
     if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
 
+    // Puzzle-quality escape hatch: if the user's move delivers checkmate
+    // it's a correct solution even when the dataset's canonical line
+    // lists a different mating move. Lichess's puzzle corpus often
+    // records only one of several valid mates.
+    if (chess.isCheckmate()) {
+      setChess(new Chess(chess.fen()));
+      afterAttempt(true);
+      return true;
+    }
+
     if (candidate !== expected) {
       afterAttempt(false);
       return true;
