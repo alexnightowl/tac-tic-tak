@@ -69,6 +69,11 @@ export default function PlayRunner() {
   const [sessionMode, setSessionMode] = useState<'mixed' | 'theme'>('mixed');
   const [peakRating, setPeakRating] = useState<number>(0);
   const [totalResponseMs, setTotalResponseMs] = useState<number>(0);
+  const [streak, setStreak] = useState<number>(0);
+  // If non-null, holds the streak length that just snapped — used to
+  // render the "🔥 N ✗" broken-chip animation for ~700ms before the
+  // chip disappears entirely.
+  const [streakBroken, setStreakBroken] = useState<number | null>(null);
   const attemptStart = useRef<number>(Date.now());
   const loading = useRef(false);
   const finishing = useRef(false);
@@ -182,11 +187,21 @@ export default function PlayRunner() {
       setFailedCount((c) => c + 1);
     }
     if (settings.soundEnabled) playSound(settings.soundPack, correct ? 'correct' : 'fail');
+    // Drive the visible streak from local state optimistically (so it
+    // updates even if the attempt request is in-flight), then reconcile
+    // with the server's canonical count when the response lands.
+    if (!correct && streak >= 2) {
+      const broken = streak;
+      setStreakBroken(broken);
+      setTimeout(() => setStreakBroken(null), 700);
+    }
+    setStreak((prev) => (correct ? prev + 1 : 0));
     try {
-      const r = await http.post<{ newRating: number }>(`/sessions/${sessionId}/attempt`, {
+      const r = await http.post<{ newRating: number; streak?: number }>(`/sessions/${sessionId}/attempt`, {
         puzzleId: puzzle.id, correct, responseMs,
       });
       patchStyleProgression(sessionStyle, { currentPuzzleRating: r.newRating });
+      if (typeof r.streak === 'number') setStreak(r.streak);
     } catch {}
     // No visual flash — sound carries the feedback, next puzzle loads right away.
     setTimeout(() => { nextPuzzle(); }, correct ? 220 : 360);
@@ -346,6 +361,8 @@ export default function PlayRunner() {
       isPlayerTurn={isPlayerTurn}
       loading={loadingFirst}
       opponentBusy={opponentBusy}
+      streak={streak}
+      streakBroken={streakBroken}
     />
   );
 
@@ -565,10 +582,19 @@ function CriterionTick({ c }: { c: CriterionProgress }) {
 }
 
 function TurnCard({
-  orientation, isPlayerTurn, loading, opponentBusy,
-}: { orientation: 'white' | 'black'; isPlayerTurn: boolean; loading: boolean; opponentBusy: boolean }) {
+  orientation, isPlayerTurn, loading, opponentBusy, streak, streakBroken,
+}: {
+  orientation: 'white' | 'black';
+  isPlayerTurn: boolean;
+  loading: boolean;
+  opponentBusy: boolean;
+  streak: number;
+  streakBroken: number | null;
+}) {
   const t = useT();
   const isWhite = orientation === 'white';
+  const showStreak = streak >= 2;
+  const showBroken = streakBroken !== null;
 
   let title: string;
   let subtitle: string | null;
@@ -602,6 +628,22 @@ function TurnCard({
           <div className="text-xs text-zinc-400 mt-0.5 truncate">{subtitle}</div>
         )}
       </div>
+      {/* Streak chip — only shows up when the streak is interesting (≥ 2)
+          or right after it snaps. Non-interactive, easy to ignore. */}
+      {(showStreak || showBroken) && (
+        <div
+          key={showBroken ? `broken-${streakBroken}` : `alive-${streak}`}
+          className={cn(
+            'text-[12px] font-semibold px-2 py-1 rounded-full whitespace-nowrap shrink-0 tabular-nums transition-opacity duration-500',
+            showBroken
+              ? 'bg-rose-500/15 text-rose-300 line-through opacity-100'
+              : 'bg-amber-500/15 text-amber-300 opacity-100',
+          )}
+          aria-hidden
+        >
+          🔥 {showBroken ? streakBroken : streak}
+        </div>
+      )}
     </div>
   );
 }

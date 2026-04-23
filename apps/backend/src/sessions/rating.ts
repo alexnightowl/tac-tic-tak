@@ -38,7 +38,11 @@ function difficultyFactor(puzzleRating: number, currentRating: number): number {
   return 1 + c / 400;
 }
 
-export function computeRatingStep(currentRating: number, window: AttemptWindow): number {
+export function computeRatingStep(
+  currentRating: number,
+  window: AttemptWindow,
+  currentStreak: number = 0,
+): number {
   if (window.length === 0) return 0;
   let total = 0;
   const base = 12;
@@ -50,8 +54,15 @@ export function computeRatingStep(currentRating: number, window: AttemptWindow):
     const diffAdj = a.correct ? diff : 2 - diff;
     total += sign * base * speed * diffAdj;
   }
-  // Take the average so the magnitude is independent of window size.
-  return Math.round(total / window.length);
+  // Average over the window so magnitude doesn't scale with N.
+  let step = total / window.length;
+  // Streak reward: only boosts positive (correct-driven) momentum, never
+  // softens losses. +4% per step past the first, capped at 10 → 1.36x.
+  if (step > 0 && currentStreak > 1) {
+    const capped = Math.min(currentStreak - 1, 9);
+    step *= 1 + capped * 0.04;
+  }
+  return Math.round(step);
 }
 
 /**
