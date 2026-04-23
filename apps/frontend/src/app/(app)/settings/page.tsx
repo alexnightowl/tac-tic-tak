@@ -166,7 +166,8 @@ function ProfileTab() {
       {err && <div className="text-xs text-rose-400">{err}</div>}
       {savingField && <div className="text-[11px] text-zinc-500">{t('settings.saving')}</div>}
 
-      <div className="pt-4 border-t border-[var(--border)]">
+      <div className="pt-4 border-t border-[var(--border)] space-y-4">
+        <ChangePasswordSection t={t} />
         <button
           type="button"
           onClick={logout}
@@ -176,6 +177,108 @@ function ProfileTab() {
         </button>
       </div>
     </Card>
+  );
+}
+
+function ChangePasswordSection({ t }: { t: (k: string) => string }) {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState('');
+  const [next, setNext] = useState('');
+  const [repeat, setRepeat] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [ok, setOk] = useState(false);
+
+  const reset = () => {
+    setOpen(false);
+    setCurrent('');
+    setNext('');
+    setRepeat('');
+    setErr(null);
+    setOk(false);
+  };
+
+  const valid =
+    current.length > 0 &&
+    next.length >= 8 &&
+    /[A-Za-z]/.test(next) &&
+    /[0-9]/.test(next) &&
+    next === repeat &&
+    next !== current;
+
+  const submit = async () => {
+    setErr(null);
+    setSaving(true);
+    try {
+      await http.post('/auth/change-password', { currentPassword: current, newPassword: next });
+      setOk(true);
+      setCurrent('');
+      setNext('');
+      setRepeat('');
+      setTimeout(reset, 1800);
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : 'Save failed');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/5 border border-[var(--border)] transition-colors"
+      >
+        {t('profile.change_password')}
+      </button>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-[var(--border)] p-4 space-y-3">
+      <div className="text-sm font-semibold">{t('profile.change_password')}</div>
+      <PasswordField label={t('profile.current_password')} value={current} onChange={setCurrent} autoFocus />
+      <PasswordField label={t('profile.new_password')} value={next} onChange={setNext} />
+      <PasswordField label={t('profile.repeat_new_password')} value={repeat} onChange={setRepeat} />
+      <div className="text-[11px] text-zinc-500">{t('auth.rule_pw_len')} · {t('auth.rule_pw_letter')} · {t('auth.rule_pw_digit')}</div>
+      {err && <div className="text-xs text-rose-400">{err}</div>}
+      {ok && <div className="text-xs text-emerald-400">{t('profile.password_changed')}</div>}
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={reset}
+          className="flex-1 h-10 rounded-lg border border-[var(--border)] text-sm"
+        >
+          {t('common.cancel')}
+        </button>
+        <button
+          type="button"
+          onClick={submit}
+          disabled={!valid || saving}
+          className="flex-1 h-10 rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold disabled:opacity-60"
+        >
+          {saving ? '…' : t('common.save')}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function PasswordField({
+  label, value, onChange, autoFocus,
+}: { label: string; value: string; onChange: (v: string) => void; autoFocus?: boolean }) {
+  return (
+    <div>
+      <div className="text-xs uppercase tracking-wider text-zinc-400 mb-1">{label}</div>
+      <input
+        type="password"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        autoFocus={autoFocus}
+        className="w-full h-10 rounded-lg bg-black/30 border border-[var(--border)] px-3 text-sm"
+      />
+    </div>
   );
 }
 
