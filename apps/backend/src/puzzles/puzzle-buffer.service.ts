@@ -154,6 +154,14 @@ export class PuzzleBufferService {
     if (opts.count <= 0) return [];
     const take = opts.count * 4;
 
+    // Quality filters — drop puzzles that the Lichess community has
+    // down-voted or that don't have enough plays to be trustworthy.
+    // `popularity` is on [-100, 100] (net thumbs up/down ratio).
+    // These thresholds exclude the most-reported "multiple valid
+    // solutions" and "wrong line" puzzles.
+    const MIN_POPULARITY = 80;
+    const MIN_PLAYS = 50;
+
     const rows = await this.prisma.$queryRawUnsafe<{ id: string }[]>(
       opts.theme
         ? `
@@ -162,6 +170,8 @@ export class PuzzleBufferService {
           JOIN "PuzzleTheme" pt ON pt."puzzleId" = p."id"
           JOIN "Theme" t ON t."id" = pt."themeId"
           WHERE p."rating" BETWEEN $1 AND $2
+            AND p."popularity" >= ${MIN_POPULARITY}
+            AND p."nbPlays" >= ${MIN_PLAYS}
             AND t."slug" = $3
           ORDER BY random()
           LIMIT $4
@@ -170,6 +180,8 @@ export class PuzzleBufferService {
           SELECT p."id"
           FROM "Puzzle" p
           WHERE p."rating" BETWEEN $1 AND $2
+            AND p."popularity" >= ${MIN_POPULARITY}
+            AND p."nbPlays" >= ${MIN_PLAYS}
           ORDER BY random()
           LIMIT $3
         `,
