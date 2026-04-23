@@ -22,6 +22,7 @@ type ReviewItem = {
 
 export default function ReviewList() {
   const settings = useAppStore((s) => s.settings);
+  const settingsReady = useAppStore((s) => s.settingsReady);
   const t = useT();
   const { data, isLoading } = useQuery({
     queryKey: ['review'],
@@ -39,13 +40,17 @@ export default function ReviewList() {
         {(data ?? []).map((i) => (
           <Link key={i.puzzleId} href={`/review/${i.puzzleId}`}>
             <Card className="flex items-center gap-3 hover:border-[var(--accent)] cursor-pointer transition-colors">
-              <BoardThumbnail
-                fen={i.fen}
-                setupMove={i.setupMove}
-                size={96}
-                theme={settings.boardTheme as BoardTheme}
-                pieceSet={settings.pieceSet}
-              />
+              {settingsReady ? (
+                <BoardThumbnail
+                  fen={i.fen}
+                  setupMove={i.setupMove}
+                  size={96}
+                  theme={settings.boardTheme as BoardTheme}
+                  pieceSet={settings.pieceSet}
+                />
+              ) : (
+                <div className="shrink-0 rounded-lg bg-white/5" style={{ width: 96, height: 96 }} />
+              )}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-base font-semibold text-white">{i.rating}</span>

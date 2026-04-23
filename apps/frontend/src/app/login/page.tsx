@@ -5,14 +5,20 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { http, setToken } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
+import type { Progressions } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Logo } from '@/components/brand/Logo';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Me = { id: string; nickname: string; displayName?: string | null; avatarUrl?: string | null; bio?: string | null; country?: string | null; settings?: any; progressions?: Progressions };
+
 export default function LoginPage() {
   const router = useRouter();
   const setUser = useAppStore((s) => s.setUser);
+  const setSettings = useAppStore((s) => s.setSettings);
+  const setProgressions = useAppStore((s) => s.setProgressions);
   const t = useT();
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -30,6 +36,25 @@ export default function LoginPage() {
       );
       setToken(r.token);
       setUser(r.user);
+      // Providers' /users/me effect only fires on mount — it won't re-run
+      // when token flips here. Pull the full profile + settings now so
+      // the dashboard lands with the user's real theme/avatar instead
+      // of defaulting for a split second.
+      try {
+        const me = await http.get<Me>('/users/me');
+        setUser({
+          id: me.id,
+          nickname: me.nickname,
+          displayName: me.displayName,
+          avatarUrl: me.avatarUrl,
+          bio: me.bio,
+          country: me.country,
+        });
+        if (me.settings) setSettings(me.settings);
+        if (me.progressions) setProgressions(me.progressions);
+      } catch {
+        // Non-fatal — dashboard will fall back to cached / default settings.
+      }
       router.replace('/dashboard');
     } catch (e: any) {
       setErr(e.message ?? 'Login failed');

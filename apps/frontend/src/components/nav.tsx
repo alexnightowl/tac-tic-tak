@@ -25,7 +25,13 @@ export function Nav() {
   const user = useAppStore((s) => s.user);
   const setUser = useAppStore((s) => s.setUser);
   const t = useT();
-  if (!user) return null;
+
+  // Keep the header mounted even before /users/me resolves — otherwise
+  // the whole page reflows vertically when the nav pops in on hydration.
+  // User-specific bits (nickname / avatar) fall back to placeholders
+  // during the brief null window.
+  const nickname = user?.nickname ?? '';
+  const avatarUrl = user?.avatarUrl;
 
   const nav = items(t);
   const logout = () => {
@@ -38,9 +44,9 @@ export function Nav() {
     <>
       {/* Desktop top app bar */}
       <header className="hidden md:flex items-center justify-between px-6 py-3 glass rounded-b-none border-b border-[var(--border-soft)]">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <Logo size={32} />
-          <span className="font-display font-bold tracking-tight text-[16px] text-white">
+        <Link href="/dashboard" className="flex items-center gap-3">
+          <Logo size={64} />
+          <span className="font-display font-bold tracking-tight text-[32px] text-white leading-none">
             tac<span className="text-[var(--accent)]">·</span>tic<span className="text-[var(--accent)]">·</span>tak
           </span>
         </Link>
@@ -56,11 +62,27 @@ export function Nav() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <Link href={`/profile/${user.nickname}`} className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white">
-            <Avatar nickname={user.nickname} avatarUrl={user.avatarUrl} size={28} />
-            <span>{user.nickname}</span>
-          </Link>
-          <button onClick={logout} className="text-zinc-400 hover:text-white" aria-label={t('logout')}>
+          {/* Fixed-width slot so the row doesn't reflow horizontally
+              when the nickname resolves from /users/me. */}
+          <div className="flex items-center gap-3 text-sm text-zinc-300 justify-end min-w-[240px]">
+            {user ? (
+              <Link href={`/profile/${nickname}`} className="flex items-center gap-3 hover:text-white truncate max-w-full">
+                <Avatar nickname={nickname} avatarUrl={avatarUrl} size={56} />
+                <span className="truncate">{nickname}</span>
+              </Link>
+            ) : (
+              <div className="flex items-center gap-3" aria-hidden>
+                <div className="h-14 w-14 rounded-full bg-white/5 shrink-0" />
+                <div className="h-3 w-28 rounded bg-white/5" />
+              </div>
+            )}
+          </div>
+          <button
+            onClick={logout}
+            disabled={!user}
+            className="text-zinc-400 hover:text-white disabled:opacity-50"
+            aria-label={t('logout')}
+          >
             <LogOut size={14} />
           </button>
         </div>
@@ -68,15 +90,19 @@ export function Nav() {
 
       {/* Mobile top app bar */}
       <header className="md:hidden flex items-center justify-between px-4 pt-3 pb-2">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <Logo size={28} />
-          <span className="font-display font-bold tracking-tight text-[14px] text-white">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <Logo size={56} />
+          <span className="font-display font-bold tracking-tight text-[28px] text-white leading-none">
             tac<span className="text-[var(--accent)]">·</span>tic<span className="text-[var(--accent)]">·</span>tak
           </span>
         </Link>
-        <Link href={`/profile/${user.nickname}`} className="h-9 w-9 rounded-full glass flex items-center justify-center overflow-hidden" aria-label="Profile">
-          <Avatar nickname={user.nickname} avatarUrl={user.avatarUrl} size={28} />
-        </Link>
+        {user ? (
+          <Link href={`/profile/${nickname}`} className="h-[56px] w-[56px] rounded-full glass flex items-center justify-center overflow-hidden" aria-label="Profile">
+            <Avatar nickname={nickname} avatarUrl={avatarUrl} size={56} />
+          </Link>
+        ) : (
+          <div className="h-[56px] w-[56px] rounded-full bg-white/5" aria-hidden />
+        )}
       </header>
 
       {/* Mobile bottom tab bar */}

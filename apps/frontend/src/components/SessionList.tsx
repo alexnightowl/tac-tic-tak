@@ -87,8 +87,10 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
   const REVEAL = 88;
   const R = 16; // matches Tailwind rounded-2xl
 
+  // Force 24h so the time fits on one line at any locale (en-US would
+  // otherwise render "04:45 PM" which overflows the left column).
   const time = new Date(s.startedAt).toLocaleTimeString(language === 'uk' ? 'uk-UA' : 'en-US', {
-    hour: '2-digit', minute: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false,
   });
   const delta = s.peakRating - s.startRating;
   const mode = s.theme ?? s.mode;
@@ -175,7 +177,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
         onClick={(e) => { if (dx !== 0) { e.preventDefault(); reset(); } }}
       >
         <div className="p-3 flex items-center gap-3">
-          <div className="flex flex-col items-center justify-center w-12">
+          <div className="flex flex-col items-center justify-center w-14 shrink-0">
             <div className="text-[11px] text-zinc-500 leading-none">{time}</div>
             <div className="text-lg font-semibold tabular-nums leading-tight mt-1">{s.solved}</div>
             <div className="text-[10px] text-zinc-500 leading-none">solved</div>

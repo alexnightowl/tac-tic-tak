@@ -206,7 +206,7 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
               onClick={() => { patch({ soundPack: pk as SoundPack }); playSound(pk, 'move'); }}
               className={`py-2 rounded-lg text-xs border transition-all ${
                 settings.soundPack === pk
-                  ? 'bg-[var(--accent)] text-black border-transparent font-medium'
+                  ? 'bg-[var(--accent)] text-[var(--accent-contrast)] border-transparent font-medium'
                   : 'border-[var(--border)] text-zinc-300 hover:bg-white/5'
               }`}
             >

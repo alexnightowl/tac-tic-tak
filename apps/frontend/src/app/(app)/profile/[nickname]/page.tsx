@@ -72,37 +72,41 @@ export default function ProfilePage() {
           <Avatar nickname={data.nickname} avatarUrl={data.avatarUrl} size={80} />
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">
-              <h1 className="text-xl font-semibold tracking-tight truncate">{displayName}</h1>
+              <h1 className="text-xl font-semibold tracking-tight truncate max-w-full">{displayName}</h1>
               {data.displayName && (
-                <span className="text-sm text-zinc-500">@{data.nickname}</span>
+                <span className="text-sm text-zinc-500 truncate">@{data.nickname}</span>
               )}
               {data.country && (
                 <span className="text-xs text-zinc-400 uppercase">· {data.country}</span>
               )}
             </div>
             {data.bio && <p className="text-sm text-zinc-300 mt-1.5 whitespace-pre-wrap">{data.bio}</p>}
-            <div className="flex items-center gap-4 mt-2 text-[11px] text-zinc-500">
-              <span className="flex items-center gap-1">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-[11px] text-zinc-500">
+              <span className="flex items-center gap-1 whitespace-nowrap">
                 <CalendarDays size={12} /> {t('profile.joined')} {joined}
               </span>
               {data.allTimePeak != null && (
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1 whitespace-nowrap">
                   <Trophy size={12} /> {t('profile.peak')} {data.allTimePeak}
                 </span>
               )}
             </div>
           </div>
-          {isSelf
-            ? (
-                <div className="flex gap-2">
-                  <Link href="/friends"
-                    className="h-9 px-3 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-[var(--border)] flex items-center gap-1.5">
-                    <Users size={14} /> {t('nav.friends')}
-                  </Link>
-                  <ProfileEditor onSaved={() => refetch()} />
-                </div>
-              )
-            : <FriendActionButton nickname={data.nickname} targetUserId={data.id} />}
+        </div>
+
+        {/* Actions row — breaks to its own line so the text column gets
+            the full card width and the long date/peak strings don't wrap
+            awkwardly against the buttons. */}
+        <div className="flex flex-wrap gap-2 mt-4 sm:justify-end">
+          {isSelf ? (
+            <>
+              <Link href="/friends"
+                className="h-9 px-3 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-[var(--border)] flex items-center gap-1.5">
+                <Users size={14} /> {t('nav.friends')}
+              </Link>
+              <ProfileEditor onSaved={() => refetch()} />
+            </>
+          ) : <FriendActionButton nickname={data.nickname} targetUserId={data.id} />}
         </div>
       </Card>
 

@@ -25,7 +25,7 @@ export function Segmented<T extends string | number>({ value, onChange, options,
               'flex-1 rounded-lg transition-all duration-200',
               size === 'sm' ? 'py-1.5 text-xs' : 'py-2 text-sm',
               active
-                ? 'bg-[var(--accent)] text-black font-medium shadow-md'
+                ? 'bg-[var(--accent)] text-[var(--accent-contrast)] font-medium shadow-md'
                 : 'text-zinc-300 hover:text-white hover:bg-white/5',
             )}
           >

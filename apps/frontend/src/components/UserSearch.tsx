@@ -121,7 +121,7 @@ function FriendAction({ row, onAdd }: { row: SearchResult; onAdd: () => void }) 
       return (
         <button
           onClick={onAdd}
-          className="text-[11px] bg-[var(--accent)] text-black font-semibold rounded-lg px-2 py-1 flex items-center gap-1"
+          className="text-[11px] bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold rounded-lg px-2 py-1 flex items-center gap-1"
         >
           <Check size={12} /> Accept
         </button>
