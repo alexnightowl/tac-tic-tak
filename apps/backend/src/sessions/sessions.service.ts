@@ -141,11 +141,27 @@ export class SessionsService {
 
     const style = normalizeStyle(session.style);
 
+    // Count the current streak (run of correct attempts ending at the one
+    // just recorded). Needed both for the rating multiplier and for the
+    // frontend's visual feedback. Scan enough history to find where the
+    // streak broke even for long runs.
+    const recent = await this.prisma.trainingAttempt.findMany({
+      where: { sessionId },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      select: { correct: true },
+    });
+    let streak = 0;
+    for (const a of recent) {
+      if (a.correct) streak++;
+      else break;
+    }
+
     // Theme sessions are unrated — skip the rating step entirely and keep the
     // user's progression untouched. We still want attempts + review items
     // recorded above, so they show up in history.
     if (session.mode === 'theme') {
-      return { newRating: session.startRating, step: 0 };
+      return { newRating: session.startRating, step: 0, streak };
     }
 
     const windowAttempts = await this.prisma.trainingAttempt.findMany({
@@ -154,18 +170,22 @@ export class SessionsService {
       take: WINDOW,
     });
     const progression = await this.styleProgression(userId, style);
-    const step = computeRatingStep(progression.currentPuzzleRating, windowAttempts.map((a) => ({
-      correct: a.correct,
-      responseMs: a.responseMs,
-      puzzleRating: a.puzzleRating,
-    })));
+    const step = computeRatingStep(
+      progression.currentPuzzleRating,
+      windowAttempts.map((a) => ({
+        correct: a.correct,
+        responseMs: a.responseMs,
+        puzzleRating: a.puzzleRating,
+      })),
+      streak,
+    );
     const next = Math.max(MIN_RATING, Math.min(MAX_RATING, progression.currentPuzzleRating + step));
     await this.prisma.userStyleProgression.update({
       where: { userId_style: { userId, style } },
       data: { currentPuzzleRating: next },
     });
 
-    return { newRating: next, step };
+    return { newRating: next, step, streak };
   }
 
   async finish(userId: string, sessionId: string, opts: { save?: boolean } = {}) {
