@@ -38,9 +38,9 @@ export function Nav() {
     <>
       {/* Desktop top app bar */}
       <header className="hidden md:flex items-center justify-between px-6 py-3 glass rounded-b-none border-b border-[var(--border-soft)]">
-        <Link href="/dashboard" className="flex items-center gap-3">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
           <Logo size={32} />
-          <span className="font-semibold tracking-tight text-[15px]">
+          <span className="font-display font-bold tracking-tight text-[16px] text-white">
             tac<span className="text-[var(--accent)]">·</span>tic<span className="text-[var(--accent)]">·</span>tak
           </span>
         </Link>
@@ -70,7 +70,7 @@ export function Nav() {
       <header className="md:hidden flex items-center justify-between px-4 pt-3 pb-2">
         <Link href="/dashboard" className="flex items-center gap-2">
           <Logo size={28} />
-          <span className="font-semibold tracking-tight text-[14px]">
+          <span className="font-display font-bold tracking-tight text-[14px] text-white">
             tac<span className="text-[var(--accent)]">·</span>tic<span className="text-[var(--accent)]">·</span>tak
           </span>
         </Link>

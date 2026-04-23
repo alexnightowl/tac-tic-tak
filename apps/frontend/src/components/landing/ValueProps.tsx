@@ -7,7 +7,7 @@ import { useLandingT } from '@/lib/landingI18n';
 export function ValueProps() {
   const { t } = useLandingT();
   return (
-    <section className="relative py-20 md:py-28">
+    <section id="value" className="relative py-20 md:py-28 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <Reveal>
           <div className="text-center mb-14 md:mb-16">

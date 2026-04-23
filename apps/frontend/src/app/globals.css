@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --accent: #22c55e;
+  /* Tacticore brand red — deep but alive, reads well on dark surfaces. */
+  --accent: #d81f26;
   --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
   --accent-weak: color-mix(in srgb, var(--accent) 8%, transparent);
   --bg-base: #0b0d10;
@@ -17,7 +18,14 @@
   --text: #e6e8eb;
   --text-dim: #9aa1ac;
   --text-faint: #626a75;
-  --danger: #ef4444;
+  /* Orange-ish so it's distinguishable from the new red accent. */
+  --danger: #f59e0b;
+
+  /* Landing light theme surface. */
+  --paper: #efeae4;
+  --paper-soft: #e8e2d9;
+  --ink: #121212;
+  --ink-dim: #4a4a4a;
 }
 
 html, body {
@@ -26,6 +34,14 @@ html, body {
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Display font — use on brand wordmarks, hero headlines, section eyebrows.
+   Condensed + heavy to match the Tacticore identity. */
+.font-display {
+  font-family: var(--font-display), 'Inter', system-ui, -apple-system, sans-serif;
+  font-stretch: condensed;
+  letter-spacing: 0.01em;
 }
 
 /* Prevent scrolling in focus mode. */
@@ -180,6 +196,17 @@ input[type="range"].ticks::-moz-range-thumb {
   50%      { transform: translateY(-8px); }
 }
 .float-slow { animation: float-y 6s ease-in-out infinite; }
+
+/* Opaque chip used for the hero's floating meta cards. Unlike `.glass`,
+   this reads cleanly when it sits on top of the board behind it. */
+.hero-chip {
+  background: linear-gradient(180deg, #1d222a, #14181e);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 14px 40px -14px rgba(0, 0, 0, 0.85),
+    0 4px 12px -6px rgba(0, 0, 0, 0.6);
+}
 
 /* Decorative chess piece trail that slides in from the left edge. */
 @keyframes drift-right {

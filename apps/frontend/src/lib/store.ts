@@ -62,7 +62,7 @@ type State = {
 
 const DEFAULT_SETTINGS: UserSettings = {
   focusMode: true,
-  accentColor: '#22c55e',
+  accentColor: '#d81f26',
   boardTheme: 'green',
   pieceSet: 'cburnett',
   soundEnabled: true,

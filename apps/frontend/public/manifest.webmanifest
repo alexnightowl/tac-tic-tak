@@ -1,7 +1,7 @@
 {
-  "name": "tac-tic-tak",
-  "short_name": "tac-tic-tak",
-  "description": "Adaptive chess tactics trainer",
+  "name": "tac·tic·tak",
+  "short_name": "tac·tic·tak",
+  "description": "Sharpen your instincts — adaptive chess tactics trainer.",
   "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#0b0d10",
