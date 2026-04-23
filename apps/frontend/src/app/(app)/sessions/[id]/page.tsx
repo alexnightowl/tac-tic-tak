@@ -67,7 +67,7 @@ export default function SessionDetail() {
           {when.charAt(0).toUpperCase() + when.slice(1)}
         </h1>
         <p className="text-sm text-zinc-400 mt-1">
-          {data.theme ? themeLabel(data.theme) : (language === 'uk' ? 'Змішана' : 'Mixed')}
+          {data.theme ? themeLabel(data.theme, language as 'en' | 'uk') : (language === 'uk' ? 'Змішана' : 'Mixed')}
           {' · '}{Math.round(data.durationSec / 60)} {language === 'uk' ? 'хв' : 'min'}
         </p>
       </div>

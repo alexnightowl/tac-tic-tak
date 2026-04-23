@@ -30,6 +30,7 @@ export default function PlaySetup() {
   const router = useRouter();
   const progressions = useAppStore((s) => s.progressions);
   const defaultStyle = useAppStore((s) => s.settings.defaultStyle);
+  const language = useAppStore((s) => s.settings.language);
   const t = useT();
 
   const [style, setStyle] = useState<TrainingStyle>(defaultStyle);
@@ -73,9 +74,9 @@ export default function PlaySetup() {
 
   const themeOptions = useMemo(
     () => KNOWN_THEME_SLUGS
-      .map((slug) => ({ value: slug, label: themeLabel(slug) }))
+      .map((slug) => ({ value: slug, label: themeLabel(slug, language as 'en' | 'uk') }))
       .sort((a, b) => a.label.localeCompare(b.label)),
-    [],
+    [language],
   );
 
   const minMinutes = Math.round(stylePreset.minDurationSec / 60);
