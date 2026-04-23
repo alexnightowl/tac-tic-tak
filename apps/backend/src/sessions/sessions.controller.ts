@@ -34,6 +34,11 @@ export class SessionsController {
     return this.sessions.detail(u.id, id);
   }
 
+  @Get(':id/review-items')
+  reviewItems(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
+    return this.sessions.reviewItems(u.id, id);
+  }
+
   @Delete(':id')
   remove(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
     return this.sessions.remove(u.id, id);
