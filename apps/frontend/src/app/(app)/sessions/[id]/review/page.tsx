@@ -142,6 +142,13 @@ export default function SessionReview() {
     setLastMove({ from: m.from, to: m.to });
     if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
 
+    // Same escape hatch as the main runner — any mate counts as solved.
+    if (chess.isCheckmate()) {
+      setChess(new Chess(chess.fen()));
+      onSolved();
+      return true;
+    }
+
     if (uciFromMove(m) !== expected) {
       setChess(new Chess(chess.fen()));
       onFailed();
