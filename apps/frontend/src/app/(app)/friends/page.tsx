@@ -74,7 +74,7 @@ export default function FriendsPage() {
                   </div>
                 </Link>
                 <button onClick={() => accept(r.id)}
-                  className="text-[11px] bg-[var(--accent)] text-black font-semibold rounded-lg px-2.5 py-1 flex items-center gap-1">
+                  className="text-[11px] bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold rounded-lg px-2.5 py-1 flex items-center gap-1">
                   <Check size={12} /> {t('friends.accept')}
                 </button>
                 <button onClick={() => decline(r.id)}

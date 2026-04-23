@@ -105,7 +105,7 @@ export function AvatarCropper({ open, file, onCancel, onConfirm, size = 256 }: P
             <button
               onClick={confirm}
               disabled={submitting || !croppedArea}
-              className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-black text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
+              className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {submitting ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
               Save

@@ -7,6 +7,10 @@
   --accent: #d81f26;
   --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
   --accent-weak: color-mix(in srgb, var(--accent) 8%, transparent);
+  /* Foreground colour for text sitting directly on --accent. Defaults
+     to white (our brand red is dark enough). Recalculated in JS when
+     the user picks a custom accent — light accents flip this to black. */
+  --accent-contrast: #fff;
   --bg-base: #0b0d10;
   --bg-card: rgba(22, 26, 32, 0.72);
   --bg-card-solid: #171b22;
@@ -47,6 +51,15 @@ html, body {
 /* Prevent scrolling in focus mode. */
 body.focus-mode {
   overflow: hidden;
+}
+
+/* Play runner locks both html + body so iOS PWA can't ever expose a
+   ghost scroll when 100dvh disagrees with the real visible area. */
+html.play-locked,
+body.play-locked {
+  overflow: hidden;
+  height: 100%;
+  overscroll-behavior: none;
 }
 
 /* Ambient gradient glow behind content. Fixed so it tracks viewport. */

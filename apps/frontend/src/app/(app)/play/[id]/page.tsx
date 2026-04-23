@@ -43,6 +43,7 @@ export default function PlayRunner() {
   const { id: sessionId } = useParams<{ id: string }>();
   const router = useRouter();
   const settings = useAppStore((s) => s.settings);
+  const settingsReady = useAppStore((s) => s.settingsReady);
   const progressions = useAppStore((s) => s.progressions);
   const patchStyleProgression = useAppStore((s) => s.patchStyleProgression);
   const t = useT();
@@ -71,6 +72,20 @@ export default function PlayRunner() {
   const attemptStart = useRef<number>(Date.now());
   const loading = useRef(false);
   const finishing = useRef(false);
+
+  // Lock html + body scroll for the runner's whole lifetime (regardless
+  // of focus mode). iOS PWA sometimes reports a 100dvh taller than the
+  // actual visible area, which otherwise causes the bottom of the board
+  // to slip under the home indicator and a phantom scroll to appear.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.add('play-locked');
+    document.body.classList.add('play-locked');
+    return () => {
+      html.classList.remove('play-locked');
+      document.body.classList.remove('play-locked');
+    };
+  }, []);
 
   useEffect(() => {
     if (!focusMode) return;
@@ -332,8 +347,8 @@ export default function PlayRunner() {
   );
 
   const boardBlock = (
-    <div className="relative w-full">
-      {chess && (
+    <div className="relative w-full aspect-square">
+      {chess && settingsReady && (
         <Chessboard
           fen={chess.fen()}
           orientation={orientation}
@@ -346,7 +361,7 @@ export default function PlayRunner() {
           pieceSet={settings.pieceSet}
         />
       )}
-      {loadingFirst && (
+      {(loadingFirst || !settingsReady) && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="glass rounded-full h-14 w-14 flex items-center justify-center shadow-lg">
             <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
@@ -358,12 +373,17 @@ export default function PlayRunner() {
 
   return (
     <div
-      className="h-dvh flex flex-col overflow-hidden px-2 pb-3 md:px-6 md:pb-6"
-      style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}
+      className="h-dvh flex flex-col overflow-hidden px-2 md:px-6"
+      style={{
+        paddingTop: 'max(12px, env(safe-area-inset-top))',
+        // iOS PWA: without this the stats row + board's bottom edge
+        // slide under the home indicator and a phantom scroll appears.
+        paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
+      }}
     >
       {/* Stacked layout everywhere: Header → TurnCard → Progress → Board → Stats. */}
       <div className="flex flex-col items-center flex-1 min-h-0 w-full gap-2">
-        <div className="w-full max-w-[min(94vh,640px)] flex flex-col gap-2.5">
+        <div className="w-full max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
@@ -373,11 +393,11 @@ export default function PlayRunner() {
           {progressBar}
         </div>
 
-        <div className="flex-1 w-full max-w-[min(94vh,640px)] flex items-center justify-center min-h-0">
+        <div className="flex-1 w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center min-h-0">
           {boardBlock}
         </div>
 
-        <div className="w-full max-w-[min(94vh,640px)]">
+        <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
           {statsRow}
         </div>
       </div>
@@ -410,7 +430,7 @@ function ExitDialog({ onSave, onDiscard, onCancel, language }: {
             : 'Leaving early. Save this session to your stats, or discard it?'}
         </div>
         <div className="flex flex-col gap-2 mt-4">
-          <button onClick={onSave} className="h-11 rounded-xl bg-[var(--accent)] text-black font-semibold text-sm">
+          <button onClick={onSave} className="h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold text-sm">
             {uk ? 'Зберегти' : 'Save'}
           </button>
           <button onClick={onDiscard} className="h-11 rounded-xl border border-rose-500/40 text-rose-300 text-sm">

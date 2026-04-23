@@ -66,6 +66,7 @@ export function Chessboard({
   const [selected, setSelected] = useState<Square | null>(null);
   const [legal, setLegal] = useState<Set<Square>>(new Set());
   const [dragFrom, setDragFrom] = useState<Square | null>(null);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
   const [dragOver, setDragOver] = useState<Square | null>(null);
   const [highlights, setHighlights] = useState<Set<Square>>(new Set());
@@ -160,6 +161,7 @@ export function Chessboard({
       setSelected(s);
       setLegal(legalForSquare(s));
       setDragFrom(s);
+      setDragStart({ x: e.clientX, y: e.clientY });
       setDragPos({ x: e.clientX, y: e.clientY });
       (e.target as Element).setPointerCapture?.(e.pointerId);
     } else {
@@ -185,6 +187,7 @@ export function Chessboard({
         tryMove(dragFrom, to);
       }
       setDragFrom(null);
+      setDragStart(null);
       setDragPos(null);
       setDragOver(null);
     }
@@ -287,14 +290,28 @@ export function Chessboard({
                     style={{ zIndex: 1, boxShadow: `inset 0 0 0 4px ${hexToRgba(colors.highlight, 0.85)}` }}
                   />
                 )}
-                {/* piece (skipped during slide animation source or while dragging) */}
-                {piece && !isAnimatingSource && !isDragging && (
+                {/* piece — during drag the same <img> follows the
+                    cursor via a translate() delta. Keeping the node in
+                    the source square (rather than portalling a ghost)
+                    sidesteps any transformed-ancestor / containing-block
+                    quirks that would otherwise mis-position a fixed
+                    ghost. */}
+                {piece && !isAnimatingSource && (
                   <img
                     src={pieceUrl(pieceSet, piece.color, piece.type as any)}
                     alt=""
                     draggable={false}
                     className="w-full h-full pointer-events-none relative"
-                    style={{ padding: '5%', zIndex: 2 }}
+                    style={{
+                      padding: '5%',
+                      zIndex: isDragging ? 50 : 2,
+                      transform: isDragging && dragStart && dragPos
+                        ? `translate(${dragPos.x - dragStart.x}px, ${dragPos.y - dragStart.y}px) scale(1.06)`
+                        : undefined,
+                      transition: isDragging ? 'none' : undefined,
+                      filter: isDragging ? 'drop-shadow(0 10px 18px rgba(0,0,0,0.35))' : undefined,
+                      willChange: isDragging ? 'transform' : undefined,
+                    }}
                   />
                 )}
                 {/* coordinates */}
@@ -342,26 +359,6 @@ export function Chessboard({
         );
       })()}
 
-      {/* Drag ghost */}
-      {dragFrom && dragPos && size > 0 && (() => {
-        const piece = chess.get(dragFrom);
-        if (!piece) return null;
-        return (
-          <img
-            src={pieceUrl(pieceSet, piece.color, piece.type as any)}
-            draggable={false}
-            className="fixed pointer-events-none z-50 drop-shadow-xl"
-            style={{
-              left: dragPos.x - sq / 2,
-              top: dragPos.y - sq / 2,
-              width: sq,
-              height: sq,
-              padding: '5%',
-              transform: 'scale(1.08)',
-            }}
-          />
-        );
-      })()}
 
       <Arrows size={size} orientation={orientation} arrows={arrows}
               pending={arrowDrag?.from && arrowDrag.to ? { from: arrowDrag.from, to: arrowDrag.to } : null} />

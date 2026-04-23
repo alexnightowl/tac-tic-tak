@@ -8,7 +8,7 @@ type Size = 'sm' | 'md' | 'lg';
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: Size };
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-[var(--accent)] text-black hover:brightness-110 font-semibold shadow-[0_8px_30px_-10px_var(--accent-soft)]',
+  primary: 'bg-[var(--accent)] text-[var(--accent-contrast)] hover:brightness-110 font-semibold shadow-[0_8px_30px_-10px_var(--accent-soft)]',
   ghost: 'bg-transparent text-zinc-200 hover:bg-white/5',
   outline: 'border border-[var(--border-strong)] text-zinc-100 hover:bg-white/5',
   danger: 'bg-red-500/90 text-white hover:bg-red-500',

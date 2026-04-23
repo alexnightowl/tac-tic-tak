@@ -89,7 +89,12 @@ export function PullToRefresh({ onRefresh, children }: Props) {
               />}
         </div>
       </div>
-      <div style={{ transform: `translateY(${pullY}px)`, transition: refreshing || pullY === 0 ? 'transform 180ms ease' : 'none' }}>
+      <div
+        style={{
+          transform: `translateY(${pullY}px)`,
+          transition: refreshing || pullY === 0 ? 'transform 180ms ease' : 'none',
+        }}
+      >
         {children}
       </div>
     </>

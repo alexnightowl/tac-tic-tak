@@ -2,6 +2,20 @@ import { create } from 'zustand';
 import type { SoundPack } from './sound';
 import { DEFAULT_STYLE, TRAINING_STYLES, TrainingStyle } from './levels';
 
+/** Picks black or white — whichever reads on the given accent hex.
+ *  Uses perceived luminance (ITU-R BT.601 coefficients). Threshold
+ *  tuned so mid-red (#d81f26) still gets white text. */
+function accentContrast(hex: string): string {
+  const h = hex.replace('#', '');
+  if (h.length !== 6) return '#fff';
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return '#fff';
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.6 ? '#000' : '#fff';
+}
+
 export type Language = 'en' | 'uk';
 export type ColorMode = 'auto' | 'white' | 'black';
 export type AnimationSpeed = 'instant' | 'fast' | 'normal' | 'slow';
@@ -53,11 +67,17 @@ type State = {
   user: AuthUser | null;
   settings: UserSettings;
   progressions: Progressions;
+  /** Flips to true once settings have been resolved from localStorage
+   *  cache or the backend, so surfaces that care about user theme (the
+   *  board, piece set) can hold their first paint and never flash the
+   *  defaults. */
+  settingsReady: boolean;
   setUser: (u: AuthUser | null) => void;
   patchUser: (patch: Partial<AuthUser>) => void;
   setSettings: (s: Partial<UserSettings>) => void;
   setProgressions: (p: Progressions) => void;
   patchStyleProgression: (style: TrainingStyle, patch: Partial<Progression>) => void;
+  setSettingsReady: (v: boolean) => void;
 };
 
 const DEFAULT_SETTINGS: UserSettings = {
@@ -77,17 +97,26 @@ export const useAppStore = create<State>((set) => ({
   user: null,
   settings: DEFAULT_SETTINGS,
   progressions: DEFAULT_PROGRESSIONS,
+  settingsReady: false,
+  setSettingsReady: (v) => set({ settingsReady: v }),
   setUser: (user) => set({ user }),
   patchUser: (patch) => set((s) => ({ user: s.user ? { ...s.user, ...patch } : s.user })),
   setSettings: (patch) => set((s) => {
     const next = { ...s.settings, ...patch };
     if (typeof document !== 'undefined') {
       document.documentElement.style.setProperty('--accent', next.accentColor);
+      document.documentElement.style.setProperty('--accent-contrast', accentContrast(next.accentColor));
     }
-    // Persist the language choice so it carries across reloads and to the
-    // landing page (same key it reads from).
-    if ('language' in patch && typeof window !== 'undefined') {
-      try { window.localStorage.setItem('taktic.lang', next.language); } catch {}
+    if (typeof window !== 'undefined') {
+      // Persist the language choice so it carries across reloads and to the
+      // landing page (same key it reads from).
+      if ('language' in patch) {
+        try { window.localStorage.setItem('taktic.lang', next.language); } catch {}
+      }
+      // Mirror the full settings object so authed pages can hydrate from
+      // cache on reload — otherwise the board flashes with the default
+      // theme while /users/me is in-flight.
+      try { window.localStorage.setItem('taktic.settings', JSON.stringify(next)); } catch {}
     }
     return { settings: next };
   }),

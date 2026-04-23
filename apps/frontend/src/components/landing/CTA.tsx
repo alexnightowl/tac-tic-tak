@@ -36,7 +36,7 @@ export function CTA() {
             <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/register"
-                className="group inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-[var(--accent)] text-black text-sm font-semibold hover:brightness-110 transition-all"
+                className="group inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold hover:brightness-110 transition-all"
               >
                 <Swords size={16} /> {t('cta.primary')}
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />

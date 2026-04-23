@@ -18,6 +18,7 @@ export default function ReviewPuzzle() {
   const { puzzleId } = useParams<{ puzzleId: string }>();
   const router = useRouter();
   const settings = useAppStore((s) => s.settings);
+  const settingsReady = useAppStore((s) => s.settingsReady);
   const t = useT();
 
   const [puzzle, setPuzzle] = useState<ServerPuzzle | null>(null);
@@ -117,7 +118,7 @@ export default function ReviewPuzzle() {
           {puzzle?.rating} · {puzzle?.themes.slice(0, 3).map(themeLabel).join(', ')}
         </div>
       </div>
-      {chess && (
+      {chess && settingsReady && (
         <Chessboard
           fen={chess.fen()}
           orientation={orientation}

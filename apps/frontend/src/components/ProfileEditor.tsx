@@ -146,7 +146,7 @@ function EditorDialog({ onClose }: { onClose: () => void }) {
             <button
               onClick={save}
               disabled={saving || !canSave}
-              className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-black text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
+              className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {saving && <Loader2 size={14} className="animate-spin" />} {t('common.save')}
             </button>
