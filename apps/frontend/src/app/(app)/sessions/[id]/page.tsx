@@ -102,6 +102,9 @@ export default function SessionDetail() {
         </Card>
       </div>
 
+      <SessionReviewCta sessionId={data.id} language={language} />
+
+
       <div>
         <h2 className="text-lg font-medium mb-2">
           {language === 'uk' ? 'Спроби' : 'Attempts'}
@@ -129,5 +132,33 @@ export default function SessionDetail() {
         </div>
       </div>
     </div>
+  );
+}
+
+function SessionReviewCta({ sessionId, language }: { sessionId: string; language: string }) {
+  const { data } = useQuery({
+    queryKey: ['session-review-items', sessionId],
+    queryFn: () => http.get<{ items: Array<{ reason: 'failed' | 'slow' }> }>(`/sessions/${sessionId}/review-items`),
+    staleTime: 60_000,
+  });
+  if (!data || data.items.length === 0) return null;
+  const failed = data.items.filter((i) => i.reason === 'failed').length;
+  const slow = data.items.filter((i) => i.reason === 'slow').length;
+  const heading = language === 'uk' ? 'Повторити сесію' : 'Review this session';
+  const hint = language === 'uk'
+    ? `${failed} не вирішено · ${slow} повільно. Прожени без таймера.`
+    : `${failed} missed · ${slow} slow. Drill them now — no timer.`;
+  const cta = language === 'uk' ? 'Повторити' : 'Review mistakes';
+  return (
+    <a
+      href={`/sessions/${sessionId}/review`}
+      className="block rounded-2xl p-4 border border-[var(--border-soft)] bg-black/20 hover:bg-black/30 transition-colors"
+    >
+      <div className="text-sm font-semibold">{heading}</div>
+      <div className="text-xs text-zinc-400 mt-0.5">{hint}</div>
+      <div className="mt-3 inline-flex items-center h-9 px-4 rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] text-xs font-semibold">
+        {cta}
+      </div>
+    </a>
   );
 }

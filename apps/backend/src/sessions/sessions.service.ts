@@ -251,6 +251,69 @@ export class SessionsService {
     return { ok: true };
   }
 
+  /**
+   * Returns puzzles from this session that the user failed or solved too
+   * slowly, ready to be drilled in a separate review runner. "Slow" is
+   * adaptive — 1.5x the session's own average response time — so a fast
+   * solver doesn't get flagged for a 7s puzzle while a deliberate solver
+   * isn't punished for 15s.
+   */
+  async reviewItems(userId: string, sessionId: string) {
+    await this.ownedSession(userId, sessionId);
+    const attempts = await this.prisma.trainingAttempt.findMany({
+      where: { sessionId },
+      orderBy: { createdAt: 'asc' },
+      select: { puzzleId: true, correct: true, responseMs: true, puzzleRating: true },
+    });
+    if (attempts.length === 0) return { items: [] };
+
+    const avgMs = attempts.reduce((s, a) => s + a.responseMs, 0) / attempts.length;
+    const slowCutoff = Math.max(avgMs * 1.5, 5_000);
+
+    // Flag failures unconditionally; flag slow solves using the adaptive
+    // cutoff. If a puzzle appears twice, keep the worst reason.
+    const flagged = new Map<string, { puzzleId: string; reason: 'failed' | 'slow'; responseMs: number; puzzleRating: number }>();
+    for (const a of attempts) {
+      const reason: 'failed' | 'slow' | null = !a.correct
+        ? 'failed'
+        : (a.responseMs > slowCutoff ? 'slow' : null);
+      if (!reason) continue;
+      const prev = flagged.get(a.puzzleId);
+      if (!prev || (prev.reason === 'slow' && reason === 'failed')) {
+        flagged.set(a.puzzleId, { puzzleId: a.puzzleId, reason, responseMs: a.responseMs, puzzleRating: a.puzzleRating });
+      }
+    }
+    if (flagged.size === 0) return { items: [] };
+
+    const puzzles = await this.prisma.puzzle.findMany({
+      where: { id: { in: [...flagged.keys()] } },
+      select: {
+        id: true, fen: true, moves: true, rating: true,
+        themes: { include: { theme: { select: { slug: true } } } },
+      },
+    });
+    const byId = new Map(puzzles.map((p) => [p.id, p]));
+
+    // Preserve the attempt order so the review queue feels chronological.
+    const items = [...flagged.values()]
+      .map((f) => {
+        const p = byId.get(f.puzzleId);
+        if (!p) return null;
+        return {
+          puzzleId: f.puzzleId,
+          reason: f.reason,
+          responseMs: f.responseMs,
+          rating: p.rating,
+          fen: p.fen,
+          moves: p.moves,
+          themes: p.themes.map((pt) => pt.theme.slug),
+        };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null);
+
+    return { items };
+  }
+
   /** Detailed view of a single session: headline stats + attempt breakdown. */
   async detail(userId: string, sessionId: string) {
     const session = await this.ownedSession(userId, sessionId);

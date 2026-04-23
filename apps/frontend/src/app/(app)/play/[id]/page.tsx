@@ -687,11 +687,56 @@ function SessionSummary({ s }: { s: FinishResponse }) {
         <Stat label={t('play.avg')} v={`${(s.avgResponseMs / 1000).toFixed(1)}s`} />
         <Stat label={t('play.peak')} v={s.peakRating} />
       </div>
+
+      <ReviewThisSession sessionId={s.sessionId} />
+
       <div className="flex gap-2">
         <a href="/dashboard" className="flex-1"><Button variant="outline" className="w-full">Home</Button></a>
         <a href="/play" className="flex-1"><Button className="w-full">{t('play.play_again')}</Button></a>
       </div>
     </div>
+  );
+}
+
+/**
+ * Pulls the list of puzzles worth reviewing from this specific session
+ * (failed + slow-solved), and offers a one-tap CTA into the session-
+ * scoped review runner. Renders nothing if there's nothing to drill.
+ */
+function ReviewThisSession({ sessionId }: { sessionId: string }) {
+  const t = useT();
+  const [count, setCount] = useState<{ failed: number; slow: number } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    http.get<{ items: Array<{ reason: 'failed' | 'slow' }> }>(`/sessions/${sessionId}/review-items`)
+      .then((r) => {
+        if (cancelled) return;
+        const failed = r.items.filter((i) => i.reason === 'failed').length;
+        const slow = r.items.filter((i) => i.reason === 'slow').length;
+        setCount({ failed, slow });
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [sessionId]);
+
+  if (!count || (count.failed === 0 && count.slow === 0)) return null;
+
+  return (
+    <a
+      href={`/sessions/${sessionId}/review`}
+      className="block rounded-2xl p-4 border border-[var(--border-soft)] bg-black/20 hover:bg-black/30 transition-colors"
+    >
+      <div className="text-sm font-semibold">{t('review.session_heading')}</div>
+      <div className="text-xs text-zinc-400 mt-0.5">
+        {t('review.session_hint')
+          .replace('{failed}', String(count.failed))
+          .replace('{slow}', String(count.slow))}
+      </div>
+      <div className="mt-3 inline-flex items-center h-9 px-4 rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] text-xs font-semibold">
+        {t('review.session_cta')}
+      </div>
+    </a>
   );
 }
 
