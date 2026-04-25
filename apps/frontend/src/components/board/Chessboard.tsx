@@ -21,6 +21,8 @@ type Props = {
   animateMove?: { from: Square; to: Square } | null;
   /** Duration of the slide animation in milliseconds. */
   animationMs?: number;
+  /** If set, the square is rendered with a pulsing amber hint ring. */
+  hintSquare?: Square | null;
 };
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
@@ -59,6 +61,7 @@ export function Chessboard({
   pieceSet = 'cburnett',
   animateMove,
   animationMs = 280,
+  hintSquare = null,
 }: Props) {
   const chess = useMemo(() => new Chess(fen), [fen]);
   const ref = useRef<HTMLDivElement>(null);
@@ -238,6 +241,7 @@ export function Chessboard({
             const piece = chess.get(s);
             const isDragging = dragFrom === s;
             const isAnimatingSource = animateMove?.from === s;
+            const isHintTarget = hintSquare === s;
             const isDragTarget = !!dragFrom && dragOver === s && legal.has(s) && s !== dragFrom;
             const canGrab = allowMoves && !dragFrom && !!piece && piece.color === chess.turn();
             const cursor = dragFrom
@@ -288,6 +292,15 @@ export function Chessboard({
                   <div
                     className="absolute inset-0 pointer-events-none rounded-[2px]"
                     style={{ zIndex: 1, boxShadow: `inset 0 0 0 4px ${hexToRgba(colors.highlight, 0.85)}` }}
+                  />
+                )}
+                {/* hint pulse — amber ring around the piece-to-move during
+                    review hint reveal. Stays above the piece via z-index so
+                    it remains visible on busy backgrounds. */}
+                {isHintTarget && (
+                  <div
+                    className="absolute inset-0 pointer-events-none rounded-[2px] hint-pulse"
+                    style={{ zIndex: 4 }}
                   />
                 )}
                 {/* piece — during drag the same <img> follows the
