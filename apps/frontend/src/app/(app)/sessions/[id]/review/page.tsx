@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2, ArrowLeft } from 'lucide-react';
+import { X, Check, XCircle, Loader2, ArrowLeft, Lightbulb } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -61,6 +61,7 @@ export default function SessionReview() {
   const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [opponentBusy, setOpponentBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
+  const [hintSquare, setHintSquare] = useState<Square | null>(null);
   const currentPuzzle = useRef<ServerPuzzle | null>(null);
 
   useEffect(() => {
@@ -93,6 +94,7 @@ export default function SessionReview() {
     else if (settings.fixedColor === 'black') side = 'black';
     setOrientation(side);
     setLastMove(null);
+    setHintSquare(null);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
 
     const animMs = ANIMATION_MS[settings.animationSpeed];
@@ -130,6 +132,21 @@ export default function SessionReview() {
     setTimeout(() => {
       setQueue((q) => (q.length <= 1 ? q : [...q.slice(1), q[0]]));
     }, 420);
+  }
+
+  function handleHint() {
+    if (!chess || opponentBusy || animateMove || hintSquare) return;
+    const expected = remaining[0];
+    if (!expected) return;
+    const from = expected.slice(0, 2) as Square;
+    setHintSquare(from);
+    // Show the pulse for ~900ms so the user registers which piece, then
+    // mark the puzzle as solved and advance — the user opted to skip via
+    // the hint, so we treat it the same as a successful clear.
+    setTimeout(() => {
+      setHintSquare(null);
+      onSolved();
+    }, 900);
   }
 
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
@@ -249,6 +266,16 @@ export default function SessionReview() {
           {head.reason === 'failed' ? t('review.reason_failed') : t('review.reason_slow')}
         </div>
         <div className="text-sm text-zinc-400 tabular-nums">{head.rating}</div>
+        <button
+          type="button"
+          onClick={handleHint}
+          disabled={!!animateMove || opponentBusy || !!hintSquare}
+          className="ml-auto h-9 px-3 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label={t('review.hint')}
+        >
+          <Lightbulb size={14} />
+          {t('review.hint')}
+        </button>
       </div>
 
       <div className="flex-1 w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center min-h-0">
@@ -261,9 +288,10 @@ export default function SessionReview() {
               lastMove={lastMove}
               animateMove={animateMove}
               animationMs={ANIMATION_MS[settings.animationSpeed]}
-              allowMoves={!animateMove && !opponentBusy}
+              allowMoves={!animateMove && !opponentBusy && !hintSquare}
               theme={settings.boardTheme as BoardTheme}
               pieceSet={settings.pieceSet}
+              hintSquare={hintSquare}
             />
           )}
           {feedback && (
