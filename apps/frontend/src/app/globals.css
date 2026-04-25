@@ -66,12 +66,20 @@ body.focus-mode {
 }
 
 /* Play runner locks both html + body so iOS PWA can't ever expose a
-   ghost scroll when 100dvh disagrees with the real visible area. */
+   ghost scroll when 100dvh disagrees with the real visible area.
+   Also strips the .app-shell safe-area padding: the runner is h-dvh
+   and applies its own safe-area insets, so leaving body padding on
+   shifts the runner down by safe-area-top and clips the stats row
+   off the bottom in installed PWA mode. */
 html.play-locked,
 body.play-locked {
   overflow: hidden;
   height: 100%;
   overscroll-behavior: none;
+}
+body.play-locked.app-shell {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* Ambient gradient glow behind content. Fixed so it tracks viewport. */
