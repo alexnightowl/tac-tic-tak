@@ -205,7 +205,23 @@ export default function ReviewPuzzle() {
   return (
     <div
       className="flex flex-col gap-3 max-w-[min(90vh,640px)] mx-auto"
-      style={{ minHeight: 'calc(100dvh - 200px)' }}
+      style={{
+        // Subtract every fixed slice of chrome from 100dvh so the page
+        // is sized to the EXACT visible area — otherwise the flex-1
+        // board container centers itself in an off-screen overflow and
+        // the gap above the board ends up bigger than the gap below.
+        //
+        //   76px  mobile top nav (pt-3 + 56px logo + pb-2)
+        //   32px  AppLayout main py-4 (top + bottom on mobile)
+        //   96px  AppLayout outer pb-24 (mobile bottom-nav reserve)
+        //   env(safe-area-inset-top)/bottom — body's app-shell padding
+        //
+        // On desktop md:py-6 swaps in (~16px more) and pb-24 vanishes,
+        // so the calc undershoots by ~70px there — acceptable, the
+        // worst case is a small empty band below the board on desktop.
+        minHeight:
+          'calc(100dvh - 204px - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
+      }}
     >
       {/* Two rows on small screens: row 1 has back + counter + rating
           (compact, never wraps), row 2 is the themes caption that
