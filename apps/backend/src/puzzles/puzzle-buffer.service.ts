@@ -156,11 +156,17 @@ export class PuzzleBufferService {
 
     // Quality filters — drop puzzles that the Lichess community has
     // down-voted or that don't have enough plays to be trustworthy.
-    // `popularity` is on [-100, 100] (net thumbs up/down ratio).
-    // These thresholds exclude the most-reported "multiple valid
-    // solutions" and "wrong line" puzzles.
-    const MIN_POPULARITY = 80;
-    const MIN_PLAYS = 50;
+    // `popularity` is on [-100, 100] (net thumbs up/down ratio); 95
+    // means almost-universal acceptance. 200+ plays guarantees the
+    // rating has settled and there's been enough exposure to surface
+    // any "multiple solutions" / "wrong line" reports.
+    //
+    // This keeps ~20% of the imported dataset (~880k of 4.4M). For
+    // ratings 2000+ the per-band pool shrinks to ~50k; if heavy users
+    // start seeing repeats we can relax to 92/200 which roughly
+    // doubles the pool.
+    const MIN_POPULARITY = 95;
+    const MIN_PLAYS = 200;
 
     const rows = await this.prisma.$queryRawUnsafe<{ id: string }[]>(
       opts.theme
