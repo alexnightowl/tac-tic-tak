@@ -1,6 +1,7 @@
 'use client';
 
 import { Square } from 'chess.js';
+import { useAppStore } from '@/lib/store';
 
 type Props = {
   size: number;
@@ -26,6 +27,7 @@ function isKnightHop(from: Square, to: Square) {
 }
 
 export function Arrows({ size, orientation, arrows, pending }: Props) {
+  const knightArrow = useAppStore((s) => s.settings.knightArrow);
   if (size === 0) return null;
   const all = [...arrows, ...(pending ? [pending] : [])];
   const sq = size / 8;
@@ -68,7 +70,7 @@ export function Arrows({ size, orientation, arrows, pending }: Props) {
       {all.map((a, i) => {
         const from = sqCenter(a.from, size, orientation);
         const to = sqCenter(a.to, size, orientation);
-        if (isKnightHop(a.from, a.to)) {
+        if (isKnightHop(a.from, a.to) && knightArrow === 'bent') {
           // L-shape: travel along the LONG leg first (the 2-square axis),
           // then turn for the short leg.
           const fx = a.from.charCodeAt(0) - 97;

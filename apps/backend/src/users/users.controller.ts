@@ -16,6 +16,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsIn(['auto', 'white', 'black']) fixedColor?: string;
   @IsOptional() @IsIn(['instant', 'fast', 'normal', 'slow']) animationSpeed?: string;
   @IsOptional() @IsIn(['bullet', 'blitz', 'rapid']) defaultStyle?: string;
+  @IsOptional() @IsIn(['bent', 'straight']) knightArrow?: string;
 }
 
 class UpdateProfileDto {

@@ -111,6 +111,7 @@ export class UsersService {
     fixedColor: string;
     animationSpeed: string;
     defaultStyle: string;
+    knightArrow: string;
   }>) {
     return this.prisma.userSetting.update({
       where: { userId },

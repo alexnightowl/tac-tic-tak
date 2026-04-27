@@ -213,6 +213,10 @@ const en: Dict = {
   'settings.install_hint': 'Open in Safari / Chrome → Share → Add to Home Screen',
   'settings.default_style': 'Default training style',
   'settings.default_style_hint': 'Pre-selected when you start a new session.',
+  'settings.knight_arrow': 'Knight arrow shape',
+  'settings.knight_arrow_hint': 'How right-click annotation arrows draw a knight move.',
+  'settings.knight_arrow.bent': 'L-shape',
+  'settings.knight_arrow.straight': 'Straight',
 };
 
 const uk: Dict = {
@@ -424,6 +428,10 @@ const uk: Dict = {
   'settings.install_hint': 'Safari/Chrome → Поділитись → На домашній екран',
   'settings.default_style': 'Стиль тренування за замовчуванням',
   'settings.default_style_hint': 'Автоматично обирається при створенні нової сесії.',
+  'settings.knight_arrow': 'Стрілка коня',
+  'settings.knight_arrow_hint': 'Як виглядає стрілка-анотація для ходу коня (правий клік).',
+  'settings.knight_arrow.bent': 'Кутом',
+  'settings.knight_arrow.straight': 'Пряма',
 };
 
 const DICTS: Record<Language, Dict> = { en, uk };

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut } from 'lucide-react';
 import { http, setToken } from '@/lib/api';
-import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed } from '@/lib/store';
+import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed, KnightArrowMode } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Toggle } from '@/components/ui/toggle';
@@ -358,6 +358,19 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
         <div className="text-[11px] text-zinc-500 mt-2 leading-snug">
           {t(`style.${settings.defaultStyle}.desc`)}
         </div>
+      </div>
+
+      <div className="pt-2">
+        <div className="text-sm">{t('settings.knight_arrow')}</div>
+        <div className="text-xs text-zinc-500 mb-2">{t('settings.knight_arrow_hint')}</div>
+        <Segmented
+          value={settings.knightArrow}
+          onChange={(v) => patch({ knightArrow: v as KnightArrowMode })}
+          options={[
+            { value: 'bent',     label: t('settings.knight_arrow.bent') },
+            { value: 'straight', label: t('settings.knight_arrow.straight') },
+          ]}
+        />
       </div>
     </Card>
   );

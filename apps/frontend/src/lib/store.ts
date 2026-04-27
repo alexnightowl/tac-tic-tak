@@ -19,6 +19,7 @@ function accentContrast(hex: string): string {
 export type Language = 'en' | 'uk';
 export type ColorMode = 'auto' | 'white' | 'black';
 export type AnimationSpeed = 'instant' | 'fast' | 'normal' | 'slow';
+export type KnightArrowMode = 'bent' | 'straight';
 
 export const ANIMATION_MS: Record<AnimationSpeed, number> = {
   instant: 0,
@@ -38,6 +39,7 @@ export type UserSettings = {
   fixedColor: ColorMode;
   animationSpeed: AnimationSpeed;
   defaultStyle: TrainingStyle;
+  knightArrow: KnightArrowMode;
 };
 
 export type AuthUser = {
@@ -91,6 +93,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   fixedColor: 'auto',
   animationSpeed: 'normal',
   defaultStyle: DEFAULT_STYLE,
+  knightArrow: 'bent',
 };
 
 export const useAppStore = create<State>((set) => ({
