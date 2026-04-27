@@ -138,15 +138,10 @@ export default function SessionReview() {
     if (!chess || opponentBusy || animateMove || hintSquare) return;
     const expected = remaining[0];
     if (!expected) return;
-    const from = expected.slice(0, 2) as Square;
-    setHintSquare(from);
-    // Show the pulse for ~900ms so the user registers which piece, then
-    // mark the puzzle as solved and advance — the user opted to skip via
-    // the hint, so we treat it the same as a successful clear.
-    setTimeout(() => {
-      setHintSquare(null);
-      onSolved();
-    }, 900);
+    // Highlight the source square of the next expected move and leave
+    // it on. The user still has to play that move themselves to clear
+    // the puzzle — the hint just shows which piece to look at.
+    setHintSquare(expected.slice(0, 2) as Square);
   }
 
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
@@ -164,6 +159,11 @@ export default function SessionReview() {
       onFailed();
       return true;
     }
+
+    // Correct move played — the hint (if shown) was for this move and
+    // is now stale; clear it so it doesn't leak into the next prompt
+    // of a multi-move puzzle.
+    setHintSquare(null);
 
     const afterExpected = remaining.slice(1);
     if (afterExpected.length === 0) {
@@ -269,7 +269,7 @@ export default function SessionReview() {
         <button
           type="button"
           onClick={handleHint}
-          disabled={!!animateMove || opponentBusy || !!hintSquare}
+          disabled={!!animateMove || opponentBusy || hintSquare !== null}
           className="ml-auto h-9 px-3 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
           aria-label={t('review.hint')}
         >
@@ -288,7 +288,7 @@ export default function SessionReview() {
               lastMove={lastMove}
               animateMove={animateMove}
               animationMs={ANIMATION_MS[settings.animationSpeed]}
-              allowMoves={!animateMove && !opponentBusy && !hintSquare}
+              allowMoves={!animateMove && !opponentBusy}
               theme={settings.boardTheme as BoardTheme}
               pieceSet={settings.pieceSet}
               hintSquare={hintSquare}

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Chess, Square } from 'chess.js';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Lightbulb } from 'lucide-react';
 import { http } from '@/lib/api';
 import { Chessboard } from '@/components/board/Chessboard';
 import { Button } from '@/components/ui/button';
@@ -47,6 +47,7 @@ export default function ReviewPuzzle() {
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
+  const [hintSquare, setHintSquare] = useState<Square | null>(null);
   const [solved, setSolved] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -85,6 +86,7 @@ export default function ReviewPuzzle() {
     setLastMove(null);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
     setSolved(false);
+    setHintSquare(null);
     const animMs = ANIMATION_MS[settings.animationSpeed];
     if (init.setupMove) {
       const mv = init.setupMove;
@@ -131,6 +133,16 @@ export default function ReviewPuzzle() {
     }
   }
 
+  function handleHint() {
+    if (!chess || !puzzle || hintSquare || solved) return;
+    const expected = remaining[0];
+    if (!expected) return;
+    // Highlight the source square of the next expected move and leave
+    // it on. The user still has to play that move themselves to clear
+    // the puzzle — the hint just shows which piece to look at.
+    setHintSquare(expected.slice(0, 2) as Square);
+  }
+
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
     if (!chess || !puzzle) return false;
     const uci = uciFromMove(m);
@@ -148,6 +160,10 @@ export default function ReviewPuzzle() {
       setTimeout(() => { setFeedback(null); reset(); }, 520);
       return true;
     }
+
+    // Correct move played — the hint (if shown) was for this move and
+    // is now stale.
+    setHintSquare(null);
 
     const after = remaining.slice(1);
     if (after.length === 0) {
@@ -223,24 +239,39 @@ export default function ReviewPuzzle() {
           'calc(100dvh - 204px - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
       }}
     >
-      {/* Two rows on small screens: row 1 has back + counter + rating
-          (compact, never wraps), row 2 is the themes caption that
-          truncates instead of wrapping into a ragged second line. */}
+      {/* Row 1: back, counter+rating, hint button. Row 2 is reserved
+          for either the themes caption or the inline retry feedback —
+          rendered as a single fixed-height slot so the board doesn't
+          jump up by ~20px when the message appears. */}
       <div className="flex items-center justify-between gap-2">
         <Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
           <ChevronLeft size={16} /> {t('review.back')}
         </Button>
-        <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400 shrink-0">
-          {counter && <span>{counter}</span>}
-          {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
-          {puzzle?.rating != null && <span>{puzzle.rating}</span>}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400">
+            {counter && <span>{counter}</span>}
+            {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
+            {puzzle?.rating != null && <span>{puzzle.rating}</span>}
+          </div>
+          <button
+            type="button"
+            onClick={handleHint}
+            disabled={!chess || !!hintSquare || solved}
+            className="h-8 px-2.5 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={t('review.hint')}
+          >
+            <Lightbulb size={14} />
+            {t('review.hint')}
+          </button>
         </div>
       </div>
-      {themesLine && (
-        <div className="text-xs text-zinc-500 truncate px-1 -mt-1">
-          {themesLine}
-        </div>
-      )}
+      <div className="-mt-1 px-1 min-h-[18px] flex items-center">
+        {feedback && !feedback.correct ? (
+          <span className="text-xs text-rose-400">{t('review.retry')}</span>
+        ) : themesLine ? (
+          <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
+        ) : null}
+      </div>
       {/* Board grows to fill the remaining vertical space; container
           queries pick the largest square that fits both width AND
           height so we don't leave dead space above or below. */}
@@ -263,6 +294,7 @@ export default function ReviewPuzzle() {
               allowMoves={!animateMove && !solved}
               theme={settings.boardTheme as BoardTheme}
               pieceSet={settings.pieceSet}
+              hintSquare={hintSquare}
             />
           )}
           {feedback && (
@@ -279,9 +311,6 @@ export default function ReviewPuzzle() {
           )}
         </div>
       </div>
-      {feedback && !feedback.correct && (
-        <p className="text-sm text-rose-400 text-center">{t('review.retry')}</p>
-      )}
     </div>
   );
 }
