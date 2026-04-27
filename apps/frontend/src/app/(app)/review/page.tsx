@@ -2,70 +2,111 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Loader2 } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
-import { Card } from '@/components/ui/card';
-import { BoardThumbnail } from '@/components/board/BoardThumbnail';
-import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
-import { BoardTheme } from '@/lib/themes';
+import { themeLabel } from '@/lib/theme-labels';
+
+type ReviewTheme = {
+  slug: string;
+  count: number;
+  minRating: number;
+};
 
 type ReviewItem = {
   puzzleId: string;
-  createdAt: string;
   rating: number;
-  fen: string;
-  setupMove: string | null;
-  themes: string[];
 };
 
 export default function ReviewList() {
   const settings = useAppStore((s) => s.settings);
-  const settingsReady = useAppStore((s) => s.settingsReady);
   const t = useT();
-  const { data, isLoading } = useQuery({
-    queryKey: ['review'],
-    queryFn: () => http.get<ReviewItem[]>('/review'),
+
+  const themes = useQuery({
+    queryKey: ['review-themes'],
+    queryFn: () => http.get<ReviewTheme[]>('/review/themes'),
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-3xl mx-auto">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('review.title')}</h1>
-        <p className="text-zinc-400 text-sm mt-1">{t('review.subtitle')}</p>
+        <p className="text-zinc-400 text-sm mt-1">{t('review.subtitle_themes')}</p>
       </div>
-      {isLoading && <p className="text-zinc-500">…</p>}
+      {themes.isLoading && (
+        <div className="flex items-center justify-center py-10 text-zinc-500">
+          <Loader2 size={20} className="animate-spin" />
+        </div>
+      )}
+      {themes.data && themes.data.length === 0 && (
+        <p className="text-sm text-zinc-500 py-6 text-center">{t('review.empty')}</p>
+      )}
       <div className="grid gap-3 sm:grid-cols-2">
-        {(data ?? []).map((i) => (
-          <Link key={i.puzzleId} href={`/review/${i.puzzleId}`}>
-            <Card className="flex items-center gap-3 hover:border-[var(--accent)] cursor-pointer transition-colors">
-              {settingsReady ? (
-                <BoardThumbnail
-                  fen={i.fen}
-                  setupMove={i.setupMove}
-                  size={96}
-                  theme={settings.boardTheme as BoardTheme}
-                  pieceSet={settings.pieceSet}
-                />
-              ) : (
-                <div className="shrink-0 rounded-lg bg-white/5" style={{ width: 96, height: 96 }} />
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-semibold text-white">{i.rating}</span>
-                  <span className="text-xs text-zinc-500">{new Date(i.createdAt).toLocaleDateString()}</span>
-                </div>
-                <div className="text-xs text-zinc-400 mt-1 line-clamp-2">
-                  {i.themes.filter((s) => !isMetaTheme(s)).slice(0, 3).map((s) => themeLabel(s, settings.language as 'en' | 'uk')).join(' · ')}
-                </div>
-              </div>
-              <ChevronRight size={16} className="text-zinc-500" />
-            </Card>
-          </Link>
+        {(themes.data ?? []).map((th) => (
+          <ThemeCard
+            key={th.slug}
+            theme={th}
+            language={settings.language as 'en' | 'uk'}
+            t={t}
+          />
         ))}
-        {data?.length === 0 && <p className="text-sm text-zinc-500 col-span-full">{t('review.empty')}</p>}
       </div>
     </div>
   );
+}
+
+function ThemeCard({
+  theme,
+  language,
+  t,
+}: {
+  theme: ReviewTheme;
+  language: 'en' | 'uk';
+  t: (k: string) => string;
+}) {
+  // Pre-fetch the first puzzle of this theme so the runner doesn't
+  // flicker through a loading state when the user taps in.
+  const startUrl = useStartUrl(theme.slug);
+
+  return (
+    <Link href={startUrl}>
+      <div className="glass rounded-2xl p-4 flex items-center gap-3 hover:border-[var(--accent)] cursor-pointer transition-colors border border-[var(--border-soft)]">
+        <div className="flex-1 min-w-0">
+          <div className="text-base font-semibold text-white truncate">
+            {themeLabel(theme.slug, language)}
+          </div>
+          <div className="text-xs text-zinc-400 mt-1 flex items-center gap-3 tabular-nums">
+            <span>
+              {theme.count} {t('review.theme_count')}
+            </span>
+            <span className="text-zinc-600">·</span>
+            <span>
+              {t('review.theme_from')} {theme.minRating}
+            </span>
+          </div>
+        </div>
+        <ChevronRight size={18} className="text-zinc-500 shrink-0" />
+      </div>
+    </Link>
+  );
+}
+
+/**
+ * Resolves the URL to the first puzzle of the theme. We need the
+ * puzzleId so the runner has somewhere to land — fetched lazily here
+ * (small list, cached by react-query) and the URL falls back to the
+ * theme list if the bucket somehow becomes empty between paint and
+ * tap.
+ */
+function useStartUrl(themeSlug: string): string {
+  const queue = useQuery({
+    queryKey: ['review-list', themeSlug],
+    queryFn: () => http.get<ReviewItem[]>(`/review?theme=${encodeURIComponent(themeSlug)}`),
+    staleTime: 30_000,
+  });
+  const first = queue.data?.[0]?.puzzleId;
+  return first
+    ? `/review/${first}?theme=${encodeURIComponent(themeSlug)}`
+    : '/review';
 }

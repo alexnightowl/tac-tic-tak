@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Chess, Square } from 'chess.js';
 import { ChevronLeft, Lightbulb } from 'lucide-react';
@@ -28,15 +28,24 @@ type ReviewItem = {
 export default function ReviewPuzzle() {
   const { puzzleId } = useParams<{ puzzleId: string }>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // Theme drill — when present the runner only auto-advances within
+  // this theme and the "all done" screen leads back to the theme
+  // landing page rather than to /play. Absent ⇒ legacy global flow.
+  const themeFilter = searchParams?.get('theme') ?? null;
   const settings = useAppStore((s) => s.settings);
   const settingsReady = useAppStore((s) => s.settingsReady);
   const t = useT();
 
-  // Full review queue — fetched once and kept in cache. Drives the
+  // Review queue scoped to the current theme (or the full queue when
+  // no theme filter). Fetched once and kept in cache. Drives the
   // "next task after this one" auto-advance and the "N of M" counter.
+  const listUrl = themeFilter
+    ? `/review?theme=${encodeURIComponent(themeFilter)}`
+    : '/review';
   const list = useQuery({
-    queryKey: ['review-list'],
-    queryFn: () => http.get<ReviewItem[]>('/review'),
+    queryKey: ['review-list', themeFilter ?? '__all__'],
+    queryFn: () => http.get<ReviewItem[]>(listUrl),
     staleTime: 30_000,
   });
 
@@ -121,13 +130,14 @@ export default function ReviewPuzzle() {
     }
     let fresh: ReviewItem[] = [];
     try {
-      fresh = await http.get<ReviewItem[]>('/review');
+      fresh = await http.get<ReviewItem[]>(listUrl);
     } catch {
       fresh = [];
     }
     const next = fresh.find((i) => i.puzzleId !== puzzleId);
     if (next) {
-      router.replace(`/review/${next.puzzleId}`);
+      const qs = themeFilter ? `?theme=${encodeURIComponent(themeFilter)}` : '';
+      router.replace(`/review/${next.puzzleId}${qs}`);
     } else {
       setDone(true);
     }
@@ -194,15 +204,22 @@ export default function ReviewPuzzle() {
     : '';
 
   if (done) {
+    const themeName = themeFilter
+      ? themeLabel(themeFilter, settings.language as 'en' | 'uk')
+      : null;
+    const title = themeFilter ? t('review.theme_done_title') : t('review.done_title');
+    const hint = themeFilter
+      ? t('review.theme_done_hint')
+        .replace('{theme}', themeName ?? '')
+        .replace('{n}', String(positionRef.current?.total ?? 0))
+      : t('review.done_hint').replace('{n}', String(positionRef.current?.total ?? 0));
     return (
       <div className="max-w-md mx-auto mt-10 space-y-4 px-4 text-center">
-        <h1 className="text-2xl font-semibold">{t('review.done_title')}</h1>
-        <p className="text-sm text-zinc-400">
-          {t('review.done_hint').replace('{n}', String(positionRef.current?.total ?? 0))}
-        </p>
+        <h1 className="text-2xl font-semibold">{title}</h1>
+        <p className="text-sm text-zinc-400">{hint}</p>
         <div className="flex gap-2 pt-2">
           <Button variant="outline" className="flex-1" onClick={() => router.push('/review')}>
-            {t('review.back')}
+            {t('review.back_to_themes')}
           </Button>
           <Button className="flex-1" onClick={() => router.push('/play')}>
             {t('review.new_session')}

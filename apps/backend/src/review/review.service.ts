@@ -29,9 +29,15 @@ export class ReviewService {
     private readonly puzzles: PuzzlesService,
   ) {}
 
-  async list(userId: string) {
+  async list(userId: string, themeSlug?: string) {
     const items = await this.prisma.reviewItem.findMany({
-      where: { userId, resolvedAt: null },
+      where: {
+        userId,
+        resolvedAt: null,
+        ...(themeSlug
+          ? { puzzle: { themes: { some: { theme: { slug: themeSlug } } } } }
+          : {}),
+      },
       include: {
         puzzle: {
           select: {
@@ -57,16 +63,58 @@ export class ReviewService {
         primaryTheme: primaryTheme(themes),
       };
     });
-    // Group by primary theme, ascending rating within each theme so
-    // the user can drill the same pattern from easy to hard and start
-    // recognising it before it shifts.
+    // Within a single theme drill, easiest first. Without a theme
+    // filter the queue is grouped by primary theme alphabetically
+    // and ascending rating inside each — preserves the old global
+    // sort for any callers that still hit the unfiltered endpoint.
     enriched.sort((a, b) => {
+      if (themeSlug) return a.rating - b.rating;
       if (a.primaryTheme !== b.primaryTheme) {
         return a.primaryTheme < b.primaryTheme ? -1 : 1;
       }
       return a.rating - b.rating;
     });
     return enriched.map(({ primaryTheme: _p, ...rest }) => rest);
+  }
+
+  /**
+   * Buckets the user's unresolved review items by tactical theme. A
+   * puzzle that carries multiple tactical themes (e.g. "fork" AND
+   * "discovery") shows up under each — solving it removes it from
+   * every bucket at once. Meta themes (game phase, length, source,
+   * outcome, mate-aliases) are skipped so the cards on the review
+   * landing page are tactical patterns, not housekeeping tags.
+   */
+  async themes(userId: string) {
+    const items = await this.prisma.reviewItem.findMany({
+      where: { userId, resolvedAt: null },
+      include: {
+        puzzle: {
+          select: {
+            rating: true,
+            themes: { include: { theme: true } },
+          },
+        },
+      },
+    });
+    const counts = new Map<string, { count: number; minRating: number }>();
+    for (const i of items) {
+      for (const pt of i.puzzle.themes) {
+        const slug = pt.theme.slug;
+        if (META_THEME_SLUGS.has(slug)) continue;
+        const prev = counts.get(slug);
+        if (prev) {
+          prev.count += 1;
+          if (i.puzzle.rating < prev.minRating) prev.minRating = i.puzzle.rating;
+        } else {
+          counts.set(slug, { count: 1, minRating: i.puzzle.rating });
+        }
+      }
+    }
+    return Array.from(counts.entries())
+      .map(([slug, v]) => ({ slug, count: v.count, minRating: v.minRating }))
+      // Most-failed pattern first — that's where drilling pays off.
+      .sort((a, b) => b.count - a.count || (a.slug < b.slug ? -1 : 1));
   }
 
   async getPuzzle(userId: string, puzzleId: string) {
