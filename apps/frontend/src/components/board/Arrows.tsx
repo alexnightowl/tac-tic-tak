@@ -29,24 +29,37 @@ export function Arrows({ size, orientation, arrows, pending }: Props) {
   if (size === 0) return null;
   const all = [...arrows, ...(pending ? [pending] : [])];
   const sq = size / 8;
-  const stroke = 'rgba(255,170,0,0.85)';
-  // Tuned to feel close to Lichess: a thin shaft and a head about a
-  // third of a square. `userSpaceOnUse` keeps the head a fixed pixel
-  // size regardless of stroke width.
-  const width = sq * 0.13;
-  const headSize = sq * 0.34;
+  const stroke = 'rgba(255,170,0,0.55)';
+  // Lichess-style arrow: thin shaft, butt-end at the source, and a
+  // stout head wider than it is long. Two tricks make this clean:
+  //   1. preserveAspectRatio="none" so markerWidth/Height can render
+  //      as a wide-and-short rectangle instead of a forced square.
+  //   2. refX=0 anchors the marker's BASE at the line endpoint, so we
+  //      shorten the line by headLen so the marker tip lands exactly
+  //      on the destination square's centre. Without this the shaft
+  //      pokes through near the apex (where the triangle tapers below
+  //      the shaft width) and produces visible notches.
+  const width = sq * 0.18;
+  const headLen = sq * 0.34;
+  const headWid = sq * 0.58;
 
   return (
-    <svg className="absolute inset-0 pointer-events-none" width={size} height={size}>
+    <svg
+      className="absolute inset-0 pointer-events-none"
+      style={{ zIndex: 20 }}
+      width={size}
+      height={size}
+    >
       <defs>
         <marker
           id="ah"
           viewBox="0 0 10 10"
-          refX="10"
+          refX="0"
           refY="5"
-          markerWidth={headSize}
-          markerHeight={headSize}
+          markerWidth={headLen}
+          markerHeight={headWid}
           markerUnits="userSpaceOnUse"
+          preserveAspectRatio="none"
           orient="auto"
         >
           <path d="M0,0 L10,5 L0,10 z" fill={stroke} />
@@ -57,8 +70,7 @@ export function Arrows({ size, orientation, arrows, pending }: Props) {
         const to = sqCenter(a.to, size, orientation);
         if (isKnightHop(a.from, a.to)) {
           // L-shape: travel along the LONG leg first (the 2-square axis),
-          // then turn for the short leg. Picking the short axis first
-          // (like the previous build did) reads as a wrong move.
+          // then turn for the short leg.
           const fx = a.from.charCodeAt(0) - 97;
           const fy = Number(a.from[1]) - 1;
           const tx = a.to.charCodeAt(0) - 97;
@@ -67,29 +79,41 @@ export function Arrows({ size, orientation, arrows, pending }: Props) {
           const mid = longIsHorizontal
             ? { x: to.x, y: from.y }
             : { x: from.x, y: to.y };
+          // Pull last-segment endpoint back by headLen along that
+          // segment's direction so the marker tip lands at `to`.
+          const sdx = to.x - mid.x;
+          const sdy = to.y - mid.y;
+          const slen = Math.hypot(sdx, sdy) || 1;
+          const ex = to.x - (sdx / slen) * headLen;
+          const ey = to.y - (sdy / slen) * headLen;
           return (
             <path
               key={i}
-              d={`M ${from.x} ${from.y} L ${mid.x} ${mid.y} L ${to.x} ${to.y}`}
+              d={`M ${from.x} ${from.y} L ${mid.x} ${mid.y} L ${ex} ${ey}`}
               fill="none"
               stroke={stroke}
               strokeWidth={width}
-              strokeLinecap="round"
+              strokeLinecap="butt"
               strokeLinejoin="round"
               markerEnd="url(#ah)"
             />
           );
         }
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const ex = to.x - (dx / len) * headLen;
+        const ey = to.y - (dy / len) * headLen;
         return (
           <line
             key={i}
             x1={from.x}
             y1={from.y}
-            x2={to.x}
-            y2={to.y}
+            x2={ex}
+            y2={ey}
             stroke={stroke}
             strokeWidth={width}
-            strokeLinecap="round"
+            strokeLinecap="butt"
             markerEnd="url(#ah)"
           />
         );
