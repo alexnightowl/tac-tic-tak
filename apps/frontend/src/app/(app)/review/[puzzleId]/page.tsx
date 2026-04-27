@@ -297,9 +297,12 @@ export default function ReviewPuzzle() {
       </div>
       {/* Board grows to fill the remaining vertical space; container
           queries pick the largest square that fits both width AND
-          height so we don't leave dead space above or below. */}
+          height so we don't leave dead space above or below. The
+          `w-full` is load-bearing — without it `containerType: size`
+          on a stretch flex item ends up with an undetermined
+          inline-size and 100cqw resolves to 0, collapsing the board. */}
       <div
-        className="flex-1 grid place-items-center min-h-0 min-w-0"
+        className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
         style={{ containerType: 'size' }}
       >
         <div
