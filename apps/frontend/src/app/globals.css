@@ -54,9 +54,21 @@ body.focus-mode {
 }
 
 /* Per-attempt feedback ring on the play board. Fades in fast, holds
-   briefly, then fades out over ~500ms total. */
+   briefly, then fades out over ~500ms total. The ring is intentionally
+   thin (2px) and low-alpha so a wrong answer doesn't read as a hard
+   error — it should feel like a quick nudge, not an alarm. */
 .board-feedback-ring {
   animation: board-feedback 500ms ease-out forwards;
+}
+.board-feedback-ring.is-correct {
+  box-shadow:
+    inset 0 0 0 2px rgba(74, 222, 128, 0.55),
+    0 0 14px 0 rgba(74, 222, 128, 0.18);
+}
+.board-feedback-ring.is-fail {
+  box-shadow:
+    inset 0 0 0 2px rgba(251, 113, 133, 0.55),
+    0 0 14px 0 rgba(251, 113, 133, 0.18);
 }
 @keyframes board-feedback {
   0%   { opacity: 0; }

@@ -300,12 +300,9 @@ export default function ReviewPuzzle() {
           {feedback && (
             <div
               key={feedback.id}
-              className="absolute inset-0 pointer-events-none rounded-xl board-feedback-ring"
-              style={{
-                boxShadow: feedback.correct
-                  ? 'inset 0 0 0 4px rgba(34, 197, 94, 0.9), 0 0 24px 2px rgba(34, 197, 94, 0.35)'
-                  : 'inset 0 0 0 4px rgba(244, 63, 94, 0.9), 0 0 24px 2px rgba(244, 63, 94, 0.35)',
-              }}
+              className={`absolute inset-0 pointer-events-none rounded-xl board-feedback-ring ${
+                feedback.correct ? 'is-correct' : 'is-fail'
+              }`}
               aria-hidden
             />
           )}
