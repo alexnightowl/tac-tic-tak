@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2, Crown, Sparkles } from 'lucide-react';
+import { X, Check, XCircle, Loader2, Crown, Sparkles, TrendingDown } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -37,6 +37,16 @@ type FinishResponse = {
       current: number;
       target: number;
     }>;
+  };
+  demoted?: boolean;
+  demoteCheck?: {
+    atPeak: boolean;
+    weak: boolean;
+    criteriaMet: number;
+    streakAfter: number;
+    threshold: number;
+    penalty: number;
+    unlockedStartRating: number;
   };
 };
 
@@ -726,6 +736,9 @@ function SessionSummary({ s }: { s: FinishResponse }) {
       <h1 className="text-2xl font-semibold text-center">{t('play.session_complete')}</h1>
 
       {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
+      {s.demoteCheck && !s.unlocked && (
+        <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         <Stat label={t('play.solved')} v={s.solved} />
@@ -784,6 +797,50 @@ function ReviewThisSession({ sessionId }: { sessionId: string }) {
         {t('review.session_cta')}
       </div>
     </a>
+  );
+}
+
+function DemoteOutcome({ check, demoted }: {
+  check: NonNullable<FinishResponse['demoteCheck']>;
+  demoted: boolean;
+}) {
+  const t = useT();
+
+  // Player passed enough criteria — no warning to show.
+  if (!check.weak && !demoted) return null;
+
+  if (demoted) {
+    return (
+      <div className="rounded-2xl p-4 border border-rose-500/40 bg-rose-500/10 flex items-center gap-3">
+        <TrendingDown size={22} className="text-rose-300 shrink-0" />
+        <div>
+          <div className="font-semibold text-rose-200">
+            {t('demote.summary_demoted').replace('{penalty}', String(check.penalty))}
+          </div>
+          <div className="text-xs text-zinc-300 mt-0.5">
+            {t('demote.summary_demoted_hint').replace('{ceiling}', String(check.unlockedStartRating))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Weak session at peak but streak hasn't crossed the threshold yet —
+  // soft heads-up, deliberately calm tone so it reads as guidance not
+  // punishment.
+  return (
+    <div className="rounded-2xl p-4 border border-amber-500/40 bg-amber-500/10 flex items-center gap-3">
+      <TrendingDown size={20} className="text-amber-300 shrink-0" />
+      <div>
+        <div className="font-semibold text-amber-200">
+          {t('demote.summary_weak')}
+        </div>
+        <div className="text-xs text-zinc-300 mt-0.5">
+          {t('demote.summary_weak_hint')
+            .replace('{remaining}', String(Math.max(0, check.threshold - check.streakAfter)))}
+        </div>
+      </div>
+    </div>
   );
 }
 

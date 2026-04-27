@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
 import { AttemptDto, CreateSessionDto } from './dto';
 import { computeRatingStep, deriveSessionStats } from './rating';
-import { evaluateUnlock, isTrainingStyle, TrainingStyle, UNLOCK_REWARD } from './unlock';
+import { evaluateUnlock, evaluateDemote, isTrainingStyle, TrainingStyle, UNLOCK_REWARD } from './unlock';
 
 const WINDOW = 4;
 const MIN_RATING = 400;
@@ -265,10 +265,39 @@ export class SessionsService {
 
     const progression = await this.styleProgression(userId, style);
     const check = evaluateUnlock(style, stats, session.durationSec, session.startRating);
+    const demote = evaluateDemote(
+      check.met,
+      check,
+      session.startRating,
+      progression.unlockedStartRating,
+      progression.weakSessionStreak,
+    );
+
+    // Compute the next ceiling. Unlock and demote are mutually exclusive
+    // (evaluateDemote resets the streak when unlock is met) so at most
+    // one branch fires per session. Demoted ceiling is clamped at the
+    // user's original entry rating so the level can't drift below where
+    // they started.
+    let nextUnlocked = progression.unlockedStartRating;
     if (check.met) {
+      nextUnlocked = progression.unlockedStartRating + UNLOCK_REWARD;
+    } else if (demote.demoted) {
+      nextUnlocked = Math.max(
+        progression.startPuzzleRating,
+        progression.unlockedStartRating - demote.penalty,
+      );
+    }
+
+    if (
+      nextUnlocked !== progression.unlockedStartRating ||
+      demote.streakAfter !== progression.weakSessionStreak
+    ) {
       await this.prisma.userStyleProgression.update({
         where: { userId_style: { userId, style } },
-        data: { unlockedStartRating: progression.unlockedStartRating + UNLOCK_REWARD },
+        data: {
+          unlockedStartRating: nextUnlocked,
+          weakSessionStreak: demote.streakAfter,
+        },
       });
     }
 
@@ -277,6 +306,16 @@ export class SessionsService {
       ...(await this.summary(sessionId)),
       unlocked: check.met,
       unlockCheck: check,
+      demoted: demote.demoted,
+      demoteCheck: {
+        atPeak: demote.atPeak,
+        weak: demote.weak,
+        criteriaMet: demote.criteriaMet,
+        streakAfter: demote.streakAfter,
+        threshold: 2,
+        penalty: demote.penalty,
+        unlockedStartRating: nextUnlocked,
+      },
       style,
     };
   }
