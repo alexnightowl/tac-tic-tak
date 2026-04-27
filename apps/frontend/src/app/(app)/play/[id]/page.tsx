@@ -450,7 +450,7 @@ export default function PlayRunner() {
 
   return (
     <div
-      className="h-dvh flex flex-col overflow-hidden px-2 md:px-6"
+      className="h-dvh flex flex-col overflow-hidden px-2 lg:px-6"
       style={{
         paddingTop: 'max(12px, env(safe-area-inset-top))',
         // iOS PWA: without this the stats row + board's bottom edge
@@ -458,9 +458,14 @@ export default function PlayRunner() {
         paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
       }}
     >
-      {/* Stacked layout everywhere: Header → TurnCard → Progress → Board → Stats. */}
-      <div className="flex flex-col items-center flex-1 min-h-0 w-full gap-2">
-        <div className="w-full max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
+      {/* Phone & tablet: stacked. Desktop (lg+): board on the left,
+          all controls on a fixed right-hand panel so the board can
+          claim full vertical space. */}
+      <div className="flex flex-col lg:flex-row items-stretch flex-1 min-h-0 w-full gap-2 lg:gap-6">
+        {/* Mobile-only top stack — duplicates the controls into the
+            stacked phone layout. Hidden on desktop so the right panel
+            is the single source of truth. */}
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
@@ -470,13 +475,38 @@ export default function PlayRunner() {
           {progressBar}
         </div>
 
-        <div className="flex-1 w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center min-h-0">
-          {boardBlock}
+        {/* Board column. `container-type: size` lets the inner element
+            sample its parent's resolved width AND height with cqw/cqh,
+            so we can always render the largest square that fits. */}
+        <div
+          className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
+          style={{ containerType: 'size' }}
+        >
+          <div
+            className="aspect-square"
+            style={{ width: 'min(100cqw, 100cqh, 880px)' }}
+          >
+            {boardBlock}
+          </div>
         </div>
 
-        <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
+        {/* Mobile-only bottom stats. */}
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)]">
           {statsRow}
         </div>
+
+        {/* Desktop-only side panel. */}
+        <aside className="hidden lg:flex w-[360px] shrink-0 flex-col gap-3">
+          <div className="flex items-center justify-between gap-2">
+            {exitButton}
+            {timerPill}
+          </div>
+          {turnCard}
+          {progressBar}
+          <div className="mt-auto">
+            {statsRow}
+          </div>
+        </aside>
       </div>
 
       {confirmExit && (
