@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ChevronRight, Loader2 } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
-import { useT } from '@/lib/i18n';
+import { useT, useTn } from '@/lib/i18n';
 import { themeLabel } from '@/lib/theme-labels';
 
 type ReviewTheme = {
@@ -22,6 +22,7 @@ type ReviewItem = {
 export default function ReviewList() {
   const settings = useAppStore((s) => s.settings);
   const t = useT();
+  const tn = useTn();
 
   const themes = useQuery({
     queryKey: ['review-themes'],
@@ -49,6 +50,7 @@ export default function ReviewList() {
             theme={th}
             language={settings.language as 'en' | 'uk'}
             t={t}
+            tn={tn}
           />
         ))}
       </div>
@@ -60,10 +62,12 @@ function ThemeCard({
   theme,
   language,
   t,
+  tn,
 }: {
   theme: ReviewTheme;
   language: 'en' | 'uk';
   t: (k: string) => string;
+  tn: (k: string, n: number) => string;
 }) {
   // Pre-fetch the first puzzle of this theme so the runner doesn't
   // flicker through a loading state when the user taps in.
@@ -78,7 +82,7 @@ function ThemeCard({
           </div>
           <div className="text-xs text-zinc-400 mt-1 flex items-center gap-3 tabular-nums">
             <span>
-              {theme.count} {t('review.theme_count')}
+              {theme.count} {tn('review.puzzle_word', theme.count)}
             </span>
             <span className="text-zinc-600">·</span>
             <span>

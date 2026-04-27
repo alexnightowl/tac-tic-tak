@@ -160,10 +160,11 @@ const en: Dict = {
   'review.title': 'Review',
   'review.subtitle': 'Puzzles you missed. No timer, no rush — figure them out.',
   'review.subtitle_themes': 'Pick a tactical pattern and drill it from easy to hard.',
-  'review.theme_count': 'puzzles',
+  'review.puzzle_word.one': 'puzzle',
+  'review.puzzle_word.other': 'puzzles',
   'review.theme_from': 'from',
   'review.theme_done_title': 'Pattern complete',
-  'review.theme_done_hint': 'Cleared all {n} {theme} puzzles. Pick another pattern or jump into a fresh session.',
+  'review.theme_done_hint': 'Cleared all {n} {theme} {noun}. Pick another pattern or jump into a fresh session.',
   'review.back_to_themes': 'Back to patterns',
   'review.empty': 'No puzzles in review. Nice.',
   'review.back': 'Back',
@@ -178,7 +179,7 @@ const en: Dict = {
   'review.hint': 'Hint',
   'review.remaining': 'left',
   'review.done_title': 'Review complete',
-  'review.done_hint': 'You cleared all {n} puzzles.',
+  'review.done_hint': 'You cleared all {n} {noun}.',
   'review.nothing_title': 'Nothing to review',
   'review.nothing_hint': 'You solved every puzzle quickly. Nice.',
   'review.back_to_session': 'Back to session',
@@ -385,10 +386,12 @@ const uk: Dict = {
   'review.title': 'Рев’ю',
   'review.subtitle': 'Задачі, які ви пропустили. Без таймера, спокійно розберіть кожну.',
   'review.subtitle_themes': 'Обери тактичний патерн і прожени його від легкого до важкого.',
-  'review.theme_count': 'задач',
+  'review.puzzle_word.one': 'задача',
+  'review.puzzle_word.few': 'задачі',
+  'review.puzzle_word.many': 'задач',
   'review.theme_from': 'від',
   'review.theme_done_title': 'Патерн пройдений',
-  'review.theme_done_hint': 'Розібрано всі {n} задач на «{theme}». Обери інший патерн або зіграй нову сесію.',
+  'review.theme_done_hint': 'Розібрано всі {n} {noun} на «{theme}». Обери інший патерн або зіграй нову сесію.',
   'review.back_to_themes': 'До патернів',
   'review.empty': 'Нічого в черзі. Гарна робота.',
   'review.back': 'Назад',
@@ -403,7 +406,7 @@ const uk: Dict = {
   'review.hint': 'Підказка',
   'review.remaining': 'лишилось',
   'review.done_title': 'Рев’ю завершено',
-  'review.done_hint': 'Розібрано всі {n} задач.',
+  'review.done_hint': 'Розібрано всі {n} {noun}.',
   'review.nothing_title': 'Немає що повторювати',
   'review.nothing_hint': 'Всі задачі розвʼязано швидко. Красиво.',
   'review.back_to_session': 'До сесії',
@@ -460,4 +463,28 @@ export function useT() {
   const lang = useAppStore((s) => s.settings.language);
   const dict = DICTS[lang] ?? DICTS.en;
   return (key: string) => dict[key] ?? DICTS.en[key] ?? key;
+}
+
+/**
+ * Plural-aware lookup. Picks `${key}.${form}` where `form` is the
+ * CLDR plural category for the current locale and the supplied count
+ * (Intl.PluralRules — 'one'|'few'|'many'|'other' for uk; 'one'|'other'
+ * for en). Falls back through the chain so a partial dict never
+ * crashes the UI.
+ */
+export function useTn() {
+  const lang = useAppStore((s) => s.settings.language);
+  const dict = DICTS[lang] ?? DICTS.en;
+  const pr = new Intl.PluralRules(lang);
+  return (key: string, count: number): string => {
+    const form = pr.select(count);
+    return (
+      dict[`${key}.${form}`] ??
+      dict[`${key}.other`] ??
+      dict[`${key}.many`] ??
+      DICTS.en[`${key}.${form}`] ??
+      DICTS.en[`${key}.other`] ??
+      key
+    );
+  };
 }

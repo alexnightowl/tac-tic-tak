@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { playSound } from '@/lib/sound';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
-import { useT } from '@/lib/i18n';
+import { useT, useTn } from '@/lib/i18n';
 import { BoardTheme } from '@/lib/themes';
 import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
 
@@ -36,6 +36,7 @@ export default function ReviewPuzzle() {
   const settings = useAppStore((s) => s.settings);
   const settingsReady = useAppStore((s) => s.settingsReady);
   const t = useT();
+  const tn = useTn();
 
   // Review queue scoped to the current theme (or the full queue when
   // no theme filter). Fetched once and kept in cache. Drives the
@@ -204,6 +205,8 @@ export default function ReviewPuzzle() {
     : '';
 
   if (done) {
+    const total = positionRef.current?.total ?? 0;
+    const noun = tn('review.puzzle_word', total);
     const themeName = themeFilter
       ? themeLabel(themeFilter, settings.language as 'en' | 'uk')
       : null;
@@ -211,8 +214,11 @@ export default function ReviewPuzzle() {
     const hint = themeFilter
       ? t('review.theme_done_hint')
         .replace('{theme}', themeName ?? '')
-        .replace('{n}', String(positionRef.current?.total ?? 0))
-      : t('review.done_hint').replace('{n}', String(positionRef.current?.total ?? 0));
+        .replace('{n}', String(total))
+        .replace('{noun}', noun)
+      : t('review.done_hint')
+        .replace('{n}', String(total))
+        .replace('{noun}', noun);
     return (
       <div className="max-w-md mx-auto mt-10 space-y-4 px-4 text-center">
         <h1 className="text-2xl font-semibold">{title}</h1>
