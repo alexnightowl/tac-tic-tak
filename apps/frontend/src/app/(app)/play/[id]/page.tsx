@@ -459,9 +459,11 @@ export default function PlayRunner() {
       }}
     >
       {/* Phone & tablet: stacked. Desktop (lg+): board on the left,
-          all controls on a fixed right-hand panel so the board can
-          claim full vertical space. */}
-      <div className="flex flex-col lg:flex-row items-stretch flex-1 min-h-0 w-full gap-2 lg:gap-6">
+          all controls on a fixed right-hand panel. The whole row is
+          capped at 2xl (1536px) and centred via mx-auto so on wide
+          monitors the board+panel group doesn't drift to the left
+          edge with a sea of empty space beside it. */}
+      <div className="flex flex-col lg:flex-row items-stretch flex-1 min-h-0 w-full gap-2 lg:gap-6 lg:max-w-screen-2xl lg:mx-auto">
         {/* Mobile-only top stack — duplicates the controls into the
             stacked phone layout. Hidden on desktop so the right panel
             is the single source of truth. */}
@@ -495,8 +497,10 @@ export default function PlayRunner() {
           {statsRow}
         </div>
 
-        {/* Desktop-only side panel. */}
-        <aside className="hidden lg:flex w-[320px] shrink-0 flex-col gap-3">
+        {/* Desktop-only side panel — vertically centred next to the
+            board so the controls read as a single coherent block
+            instead of three orphan widgets pinned to corners. */}
+        <aside className="hidden lg:flex w-[320px] shrink-0 self-center flex-col gap-3 max-h-full overflow-y-auto py-2">
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
