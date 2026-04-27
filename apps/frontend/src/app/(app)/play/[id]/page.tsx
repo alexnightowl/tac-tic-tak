@@ -484,7 +484,7 @@ export default function PlayRunner() {
         >
           <div
             className="aspect-square"
-            style={{ width: 'min(100cqw, 100cqh, 880px)' }}
+            style={{ width: 'min(100cqw, 100cqh)' }}
           >
             {boardBlock}
           </div>
@@ -496,16 +496,14 @@ export default function PlayRunner() {
         </div>
 
         {/* Desktop-only side panel. */}
-        <aside className="hidden lg:flex w-[360px] shrink-0 flex-col gap-3">
+        <aside className="hidden lg:flex w-[320px] shrink-0 flex-col gap-3">
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
           </div>
           {turnCard}
           {progressBar}
-          <div className="mt-auto">
-            {statsRow}
-          </div>
+          {statsRow}
         </aside>
       </div>
 
