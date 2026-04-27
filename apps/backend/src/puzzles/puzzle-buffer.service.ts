@@ -157,16 +157,18 @@ export class PuzzleBufferService {
     // Quality filters — drop puzzles that the Lichess community has
     // down-voted or that don't have enough plays to be trustworthy.
     // `popularity` is on [-100, 100] (net thumbs up/down ratio); 95
-    // means almost-universal acceptance. 200+ plays guarantees the
-    // rating has settled and there's been enough exposure to surface
-    // any "multiple solutions" / "wrong line" reports.
+    // means almost-universal acceptance. The 1000-play floor matches
+    // what Lichess actually surfaces in their puzzle feed — the
+    // median nbPlays for pop>=95 puzzles is ~1080, so we're keeping
+    // the upper half of the well-accepted pool.
     //
-    // This keeps ~20% of the imported dataset (~880k of 4.4M). For
-    // ratings 2000+ the per-band pool shrinks to ~50k; if heavy users
-    // start seeing repeats we can relax to 92/200 which roughly
-    // doubles the pool.
+    // Result: ~12% of the imported dataset (~535k of 4.4M). Pool per
+    // rating band: 100-115k for 1100-1700, ~78k for 1700-1900, ~38k
+    // for 1900-2100, ~8k for 2100-2300. The 2100+ bucket is the
+    // tightest — if heavy high-rated users start seeing repeats we
+    // can relax to plays>=500 (doubles the pool there).
     const MIN_POPULARITY = 95;
-    const MIN_PLAYS = 200;
+    const MIN_PLAYS = 1000;
 
     const rows = await this.prisma.$queryRawUnsafe<{ id: string }[]>(
       opts.theme
