@@ -204,7 +204,7 @@ export default function ReviewPuzzle() {
 
   return (
     <div
-      className="flex flex-col gap-3 max-w-[min(90vh,640px)] mx-auto justify-center"
+      className="flex flex-col gap-3 max-w-[min(90vh,640px)] mx-auto"
       style={{ minHeight: 'calc(100dvh - 200px)' }}
     >
       {/* Two rows on small screens: row 1 has back + counter + rating
@@ -225,32 +225,43 @@ export default function ReviewPuzzle() {
           {themesLine}
         </div>
       )}
-      <div className="relative w-full aspect-square">
-        {chess && settingsReady && (
-          <Chessboard
-            fen={chess.fen()}
-            orientation={orientation}
-            onMove={handleMove}
-            lastMove={lastMove}
-            animateMove={animateMove}
-            animationMs={ANIMATION_MS[settings.animationSpeed]}
-            allowMoves={!animateMove && !solved}
-            theme={settings.boardTheme as BoardTheme}
-            pieceSet={settings.pieceSet}
-          />
-        )}
-        {feedback && (
-          <div
-            key={feedback.id}
-            className="absolute inset-0 pointer-events-none rounded-xl board-feedback-ring"
-            style={{
-              boxShadow: feedback.correct
-                ? 'inset 0 0 0 4px rgba(34, 197, 94, 0.9), 0 0 24px 2px rgba(34, 197, 94, 0.35)'
-                : 'inset 0 0 0 4px rgba(244, 63, 94, 0.9), 0 0 24px 2px rgba(244, 63, 94, 0.35)',
-            }}
-            aria-hidden
-          />
-        )}
+      {/* Board grows to fill the remaining vertical space; container
+          queries pick the largest square that fits both width AND
+          height so we don't leave dead space above or below. */}
+      <div
+        className="flex-1 grid place-items-center min-h-0 min-w-0"
+        style={{ containerType: 'size' }}
+      >
+        <div
+          className="relative aspect-square"
+          style={{ width: 'min(100cqw, 100cqh)' }}
+        >
+          {chess && settingsReady && (
+            <Chessboard
+              fen={chess.fen()}
+              orientation={orientation}
+              onMove={handleMove}
+              lastMove={lastMove}
+              animateMove={animateMove}
+              animationMs={ANIMATION_MS[settings.animationSpeed]}
+              allowMoves={!animateMove && !solved}
+              theme={settings.boardTheme as BoardTheme}
+              pieceSet={settings.pieceSet}
+            />
+          )}
+          {feedback && (
+            <div
+              key={feedback.id}
+              className="absolute inset-0 pointer-events-none rounded-xl board-feedback-ring"
+              style={{
+                boxShadow: feedback.correct
+                  ? 'inset 0 0 0 4px rgba(34, 197, 94, 0.9), 0 0 24px 2px rgba(34, 197, 94, 0.35)'
+                  : 'inset 0 0 0 4px rgba(244, 63, 94, 0.9), 0 0 24px 2px rgba(244, 63, 94, 0.35)',
+              }}
+              aria-hidden
+            />
+          )}
+        </div>
       </div>
       {feedback && !feedback.correct && (
         <p className="text-sm text-rose-400 text-center">{t('review.retry')}</p>
