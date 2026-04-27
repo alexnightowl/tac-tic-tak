@@ -196,19 +196,35 @@ export default function ReviewPuzzle() {
     );
   }
 
+  const themesLine = puzzle?.themes
+    .filter((s) => !isMetaTheme(s))
+    .slice(0, 3)
+    .map((s) => themeLabel(s, settings.language as 'en' | 'uk'))
+    .join(', ');
+
   return (
-    <div className="max-w-[min(90vh,640px)] mx-auto space-y-3">
-      <div className="flex items-center justify-between">
+    <div
+      className="flex flex-col gap-3 max-w-[min(90vh,640px)] mx-auto justify-center"
+      style={{ minHeight: 'calc(100dvh - 200px)' }}
+    >
+      {/* Two rows on small screens: row 1 has back + counter + rating
+          (compact, never wraps), row 2 is the themes caption that
+          truncates instead of wrapping into a ragged second line. */}
+      <div className="flex items-center justify-between gap-2">
         <Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
           <ChevronLeft size={16} /> {t('review.back')}
         </Button>
-        <div className="text-sm text-zinc-400 flex items-center gap-3">
-          {counter && <span className="tabular-nums">{counter}</span>}
-          <span>
-            {puzzle?.rating} · {puzzle?.themes.filter((s) => !isMetaTheme(s)).slice(0, 3).map((s) => themeLabel(s, settings.language as 'en' | 'uk')).join(', ')}
-          </span>
+        <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400 shrink-0">
+          {counter && <span>{counter}</span>}
+          {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
+          {puzzle?.rating != null && <span>{puzzle.rating}</span>}
         </div>
       </div>
+      {themesLine && (
+        <div className="text-xs text-zinc-500 truncate px-1 -mt-1">
+          {themesLine}
+        </div>
+      )}
       <div className="relative w-full aspect-square">
         {chess && settingsReady && (
           <Chessboard
