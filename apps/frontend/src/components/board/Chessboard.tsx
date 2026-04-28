@@ -360,7 +360,14 @@ export function Chessboard({
             style={{
               width: sq,
               height: sq,
-              padding: '5%',
+              // Padding in PX, not %. % padding on this absolutely-
+              // positioned img is computed against the containing
+              // block (the whole board), not the cell — so the
+              // sliding piece used to render ~8× smaller than the
+              // static piece in a cell, then "pop" to full size when
+              // the animation swapped the static <img> in. Match the
+              // static cell's effective padding (5% of sq) directly.
+              padding: sq * 0.05,
               left: from.col * sq,
               top: from.row * sq,
               ['--dx' as any]: `${(to.col - from.col) * sq}px`,
