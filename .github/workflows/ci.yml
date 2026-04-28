@@ -37,7 +37,12 @@ jobs:
           script: |
             set -e
             cd /opt/tac-tic-tak
-            git pull --ff-only
+            # fetch + reset instead of pull --ff-only so deploys
+            # survive a force-push on main. The VPS clone is a
+            # deploy-only mirror; it never has local edits worth
+            # preserving.
+            git fetch --prune origin main
+            git reset --hard origin/main
             docker compose --profile app build
             docker compose --profile app up -d --remove-orphans
             # nginx.conf is a bind-mount; `up -d` doesn't recreate the
