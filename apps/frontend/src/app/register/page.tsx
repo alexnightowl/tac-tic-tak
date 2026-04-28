@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Check, X } from 'lucide-react';
 import { http, setToken } from '@/lib/api';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, type Progressions } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,9 +15,22 @@ import { cn } from '@/lib/utils';
 const NICK_RE = /^[A-Za-z0-9_-]+$/;
 const NICK_NO_DOUBLES_RE = /^(?!.*[-_]{2}).+$/;
 
+type Me = {
+  id: string;
+  nickname: string;
+  displayName?: string | null;
+  avatarUrl?: string | null;
+  bio?: string | null;
+  country?: string | null;
+  settings: any;
+  progressions: Progressions;
+};
+
 export default function RegisterPage() {
   const router = useRouter();
   const setUser = useAppStore((s) => s.setUser);
+  const setSettings = useAppStore((s) => s.setSettings);
+  const setProgressions = useAppStore((s) => s.setProgressions);
   const language = useAppStore((s) => s.settings.language);
   const t = useT();
   const [nickname, setNickname] = useState('');
@@ -57,6 +70,27 @@ export default function RegisterPage() {
       );
       setToken(r.token);
       setUser(r.user);
+      // Providers' /users/me effect only fires on mount — without
+      // pulling the profile here, progressions/settings from a
+      // previously-signed-in account leak into the fresh registration
+      // (same React app instance, no full reload in PWA). Mirror what
+      // /login does so the new user lands with their OWN defaults
+      // (e.g. calibrationSessionsLeft: 5, ratings at 1200).
+      try {
+        const me = await http.get<Me>('/users/me');
+        setUser({
+          id: me.id,
+          nickname: me.nickname,
+          displayName: me.displayName,
+          avatarUrl: me.avatarUrl,
+          bio: me.bio,
+          country: me.country,
+        });
+        if (me.settings) setSettings(me.settings);
+        if (me.progressions) setProgressions(me.progressions);
+      } catch {
+        // Non-fatal — Providers will reconcile on next mount.
+      }
       router.replace('/dashboard');
     } catch (e: any) {
       setErr(e.message ?? 'Registration failed');
