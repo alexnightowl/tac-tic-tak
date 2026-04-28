@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
 import { X, Check, XCircle, Loader2, ArrowLeft, Lightbulb } from 'lucide-react';
@@ -76,9 +76,10 @@ export default function SessionReview() {
     })();
   }, [sessionId]);
 
-  // Whenever the head of the queue changes, load that puzzle onto the board.
-  useEffect(() => {
-    const head = queue[0];
+  // Loads the queue head onto the board. Used both on queue change
+  // (head puzzle ID changes ⇒ new puzzle) and on retry (same puzzle,
+  // reset state after a wrong move).
+  const loadHead = useCallback((head: ReviewItem | undefined) => {
     if (!head) {
       currentPuzzle.current = null;
       setChess(null);
@@ -111,6 +112,10 @@ export default function SessionReview() {
       if (animMs === 0) swap();
       else setTimeout(swap, animMs + 20);
     }
+  }, [settings.animationSpeed, settings.fixedColor, settings.soundEnabled, settings.soundPack]);
+
+  useEffect(() => {
+    loadHead(queue[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queue[0]?.puzzleId]);
 
@@ -127,11 +132,11 @@ export default function SessionReview() {
     setFeedback({ correct: false, id: Date.now() });
     setTimeout(() => setFeedback(null), 500);
     setFailedTries((c) => c + 1);
-    // Rotate the head to the tail so the user comes back to it after
-    // everything else is cleared.
-    setTimeout(() => {
-      setQueue((q) => (q.length <= 1 ? q : [...q.slice(1), q[0]]));
-    }, 420);
+    // Reset the SAME puzzle instead of rotating the queue — the user
+    // has to actually solve each one before we move on, matching the
+    // /review/[puzzleId] flow. Wait out the wrong-move flash first
+    // so the board doesn't snap back mid-animation.
+    setTimeout(() => loadHead(queue[0]), 520);
   }
 
   function handleHint() {
