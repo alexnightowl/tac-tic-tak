@@ -13,6 +13,13 @@ type Overview = {
   recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
   allTimePeak: number;
   lastSessionBuckets: Record<string, { attempts: number; accuracy: number; avgResponseMs: number }>;
+  lifetime: {
+    solved: number;
+    attempts: number;
+    accuracy: number;
+    peakRating: number;
+    sessions: number;
+  };
 };
 type ThemeRow = { slug: string; attempts: number; failures: number; avgResponseMs: number; failureRate: number; weakness: number; rating: number };
 type Recommendation = { theme: string | null; reason: string };
@@ -48,6 +55,43 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold tracking-tight">{t('stats.title')}</h1>
+
+      {overview.data?.lifetime && (
+        <div>
+          <h2 className="text-lg font-medium mb-2">{t('stats.lifetime')}</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <Card>
+              <CardTitle>{t('stats.lifetime.solved')}</CardTitle>
+              <CardValue>{overview.data.lifetime.solved.toLocaleString()}</CardValue>
+              <div className="text-xs text-zinc-500 mt-1">
+                {overview.data.lifetime.attempts > 0
+                  ? `${overview.data.lifetime.attempts.toLocaleString()} ${t('stats.lifetime.attempts')}`
+                  : ''}
+              </div>
+            </Card>
+            <Card>
+              <CardTitle>{t('stats.lifetime.accuracy')}</CardTitle>
+              <CardValue>
+                {overview.data.lifetime.attempts > 0
+                  ? `${Math.round(overview.data.lifetime.accuracy * 100)}%`
+                  : '—'}
+              </CardValue>
+            </Card>
+            <Card>
+              <CardTitle>{t('stats.lifetime.sessions')}</CardTitle>
+              <CardValue>{overview.data.lifetime.sessions.toLocaleString()}</CardValue>
+            </Card>
+            <Card>
+              <CardTitle>{t('stats.lifetime.peak')}</CardTitle>
+              <CardValue>
+                {overview.data.lifetime.peakRating > 0
+                  ? overview.data.lifetime.peakRating
+                  : '—'}
+              </CardValue>
+            </Card>
+          </div>
+        </div>
+      )}
 
       {rec.data?.theme && (
         <Card>

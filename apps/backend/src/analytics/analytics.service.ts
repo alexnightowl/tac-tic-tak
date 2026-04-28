@@ -23,8 +23,30 @@ export class AnalyticsService {
       take: 20,
     });
 
+    // Lifetime aggregates — separate from the take-20 window so they
+    // cover every session/attempt the user has ever played. Three
+    // cheap queries: total attempt count, solved-only count (Prisma
+    // can't SUM a Bool, so use count with where), and peak/session
+    // count from finished sessions.
+    const [totalAttempts, solvedAttempts, sessionAgg] = await Promise.all([
+      this.prisma.trainingAttempt.count({ where: { userId } }),
+      this.prisma.trainingAttempt.count({ where: { userId, correct: true } }),
+      this.prisma.trainingSession.aggregate({
+        where: { userId, endedAt: { not: null } },
+        _max: { peakRating: true },
+        _count: true,
+      }),
+    ]);
+    const lifetime = {
+      solved: solvedAttempts,
+      attempts: totalAttempts,
+      accuracy: totalAttempts > 0 ? solvedAttempts / totalAttempts : 0,
+      peakRating: sessionAgg._max.peakRating ?? 0,
+      sessions: sessionAgg._count,
+    };
+
     const lastSession = sessions[0];
-    const allTimePeak = sessions.reduce((m, s) => Math.max(m, s.peakRating), 0);
+    const allTimePeak = lifetime.peakRating;
 
     // Time-bucket analytics for the most recent session.
     let buckets: Record<string, { attempts: number; accuracy: number; avgResponseMs: number }> = {};
@@ -66,6 +88,7 @@ export class AnalyticsService {
       })),
       allTimePeak,
       lastSessionBuckets: buckets,
+      lifetime,
     };
   }
 
