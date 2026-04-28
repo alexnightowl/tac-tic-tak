@@ -8,6 +8,7 @@ type StyleRow = {
   startPuzzleRating: number;
   currentPuzzleRating: number;
   unlockedStartRating: number;
+  calibrationSessionsLeft: number;
 };
 
 const AVATAR_ROOT = join(process.cwd(), 'uploads', 'avatars');
@@ -161,7 +162,13 @@ export class UsersService {
     return { avatarUrl: url };
   }
 
-  private mapStyleProgressions(rows: Array<{ style: string; startPuzzleRating: number; currentPuzzleRating: number; unlockedStartRating: number }>): Record<TrainingStyle, StyleRow> {
+  private mapStyleProgressions(rows: Array<{
+    style: string;
+    startPuzzleRating: number;
+    currentPuzzleRating: number;
+    unlockedStartRating: number;
+    calibrationSessionsLeft: number;
+  }>): Record<TrainingStyle, StyleRow> {
     const out: Record<TrainingStyle, StyleRow> = {} as any;
     for (const s of TRAINING_STYLES) {
       const row = rows.find((p) => p.style === s);
@@ -170,8 +177,16 @@ export class UsersService {
             startPuzzleRating: row.startPuzzleRating,
             currentPuzzleRating: row.currentPuzzleRating,
             unlockedStartRating: row.unlockedStartRating,
+            calibrationSessionsLeft: row.calibrationSessionsLeft,
           }
-        : { startPuzzleRating: 1200, currentPuzzleRating: 1200, unlockedStartRating: 1200 };
+        : {
+            startPuzzleRating: 1200,
+            currentPuzzleRating: 1200,
+            unlockedStartRating: 1200,
+            // Style row missing — surface as full calibration window
+            // so the UI prompts the user through it on first session.
+            calibrationSessionsLeft: 5,
+          };
     }
     return out;
   }

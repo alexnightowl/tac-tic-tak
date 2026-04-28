@@ -18,6 +18,19 @@ export const DEMOTE_PEAK_BAND = 50;
 export const DEMOTE_MAX_CRITERIA = 1;
 export const WEAK_STREAK_THRESHOLD = 2;
 
+// Provisional / calibration window: number of rated sessions a brand-
+// new style progression rides freely up/down before normal +50 / -25
+// rules engage. Tuned to be short — Glicko-style RD shrinks fast
+// enough that 5 sessions get most players within ±100 of their real
+// level, which is a finer resolution than the unlock step anyway.
+export const CALIBRATION_SESSIONS = 5;
+// While calibrating, a session whose peakRating lands this far below
+// the current ceiling triggers a downward snap so the next session
+// starts from a more honest place. Smaller than DEMOTE_PEAK_BAND so a
+// single shaky session in calibration can pull the ceiling down,
+// unlike stable mode which needs two strikes.
+export const CALIBRATION_DROP_GAP = 100;
+
 export type StyleFormula = {
   solvedPerMin: number;
   solvedFloor: number;
@@ -107,6 +120,48 @@ export function evaluateUnlock(
 
 export function isTrainingStyle(v: unknown): v is TrainingStyle {
   return typeof v === 'string' && TRAINING_STYLES.includes(v as TrainingStyle);
+}
+
+export type CalibrationCheck = {
+  // Was this session run under provisional rules.
+  active: boolean;
+  sessionsLeftBefore: number;
+  sessionsLeftAfter: number;
+  ceilingBefore: number;
+  ceilingAfter: number;
+  // Signed: positive ⇒ ceiling moved up to match a higher peak,
+  // negative ⇒ snapped down because peak was far below ceiling.
+  delta: number;
+};
+
+export function evaluateCalibration(
+  unlockedStartRating: number,
+  startPuzzleRating: number,
+  peakRating: number,
+  calibrationSessionsLeft: number,
+): CalibrationCheck {
+  const before = unlockedStartRating;
+  let after = before;
+  if (peakRating > 0) {
+    if (peakRating > before) {
+      // Ride the peak straight up — no rate limit during calibration.
+      after = peakRating;
+    } else if (peakRating <= before - CALIBRATION_DROP_GAP) {
+      // Peak landed clearly below the current ceiling: snap down so
+      // the next session starts in a place that reflects observed
+      // ability. Floor at startPuzzleRating so the level can't sink
+      // below the user's entry point.
+      after = Math.max(startPuzzleRating, peakRating);
+    }
+  }
+  return {
+    active: true,
+    sessionsLeftBefore: calibrationSessionsLeft,
+    sessionsLeftAfter: Math.max(0, calibrationSessionsLeft - 1),
+    ceilingBefore: before,
+    ceilingAfter: after,
+    delta: after - before,
+  };
 }
 
 export type DemoteCheck = {

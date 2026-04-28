@@ -51,13 +51,22 @@ export type AuthUser = {
   country?: string | null;
 };
 
-export type Progression = { startPuzzleRating: number; currentPuzzleRating: number; unlockedStartRating: number };
+export type Progression = {
+  startPuzzleRating: number;
+  currentPuzzleRating: number;
+  unlockedStartRating: number;
+  /** Rated sessions left in the provisional period. While > 0 the
+   *  ceiling rides peakRating freely; in-session UI hides the unlock
+   *  criteria bar and shows a calibration counter instead. */
+  calibrationSessionsLeft: number;
+};
 export type Progressions = Record<TrainingStyle, Progression>;
 
 const EMPTY_PROGRESSION: Progression = {
   startPuzzleRating: 1200,
   currentPuzzleRating: 1200,
   unlockedStartRating: 1200,
+  calibrationSessionsLeft: 5,
 };
 
 const DEFAULT_PROGRESSIONS: Progressions = TRAINING_STYLES.reduce((acc, s) => {

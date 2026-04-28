@@ -3,7 +3,15 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
 import { AttemptDto, CreateSessionDto } from './dto';
 import { computeRatingStep, deriveSessionStats } from './rating';
-import { evaluateUnlock, evaluateDemote, isTrainingStyle, TrainingStyle, UNLOCK_REWARD } from './unlock';
+import {
+  evaluateUnlock,
+  evaluateDemote,
+  evaluateCalibration,
+  isTrainingStyle,
+  TrainingStyle,
+  UNLOCK_REWARD,
+  DEMOTE_PEAK_BAND,
+} from './unlock';
 
 const WINDOW = 4;
 const MIN_RATING = 400;
@@ -264,50 +272,85 @@ export class SessionsService {
     }
 
     const progression = await this.styleProgression(userId, style);
+    // Criteria check runs in either mode — UI uses it for the in-
+    // session progress bar regardless of whether unlock fires.
     const check = evaluateUnlock(style, stats, session.durationSec, session.startRating);
-    const demote = evaluateDemote(
-      check.met,
-      check,
-      session.startRating,
-      progression.unlockedStartRating,
-      progression.weakSessionStreak,
-    );
 
-    // Compute the next ceiling. Unlock and demote are mutually exclusive
-    // (evaluateDemote resets the streak when unlock is met) so at most
-    // one branch fires per session. Demoted ceiling is clamped at the
-    // user's original entry rating so the level can't drift below where
-    // they started.
     let nextUnlocked = progression.unlockedStartRating;
-    if (check.met) {
-      nextUnlocked = progression.unlockedStartRating + UNLOCK_REWARD;
-    } else if (demote.demoted) {
-      nextUnlocked = Math.max(
+    let nextWeakStreak = progression.weakSessionStreak;
+    let nextCalibrationLeft = progression.calibrationSessionsLeft;
+    let unlocked = false;
+    let demoted = false;
+    let demoteResponse: {
+      atPeak: boolean;
+      weak: boolean;
+      criteriaMet: number;
+      streakAfter: number;
+      threshold: number;
+      penalty: number;
+      unlockedStartRating: number;
+    } | null = null;
+    let calibrationResponse: {
+      active: boolean;
+      sessionsLeftBefore: number;
+      sessionsLeftAfter: number;
+      ceilingBefore: number;
+      ceilingAfter: number;
+      delta: number;
+    } | null = null;
+
+    if (progression.calibrationSessionsLeft > 0) {
+      // Provisional period — peak-driven free movement, no +50 / -25
+      // celebrations, no weak-streak accounting (reset for safety).
+      const cal = evaluateCalibration(
+        progression.unlockedStartRating,
         progression.startPuzzleRating,
-        progression.unlockedStartRating - demote.penalty,
+        stats.peakRating,
+        progression.calibrationSessionsLeft,
       );
-    }
+      nextUnlocked = cal.ceilingAfter;
+      nextCalibrationLeft = cal.sessionsLeftAfter;
+      nextWeakStreak = 0;
+      calibrationResponse = {
+        active: cal.active,
+        sessionsLeftBefore: cal.sessionsLeftBefore,
+        sessionsLeftAfter: cal.sessionsLeftAfter,
+        ceilingBefore: cal.ceilingBefore,
+        ceilingAfter: cal.ceilingAfter,
+        delta: cal.delta,
+      };
+    } else {
+      // Stable mode. Unlock requires criteria-met AND a session
+      // started inside the peak band; sessions in the comfort zone
+      // can't farm the ceiling. Demote already enforces the same
+      // band on its side, keeping things symmetric.
+      const atPeak =
+        session.startRating >= progression.unlockedStartRating - DEMOTE_PEAK_BAND;
+      unlocked = check.met && atPeak;
 
-    if (
-      nextUnlocked !== progression.unlockedStartRating ||
-      demote.streakAfter !== progression.weakSessionStreak
-    ) {
-      await this.prisma.userStyleProgression.update({
-        where: { userId_style: { userId, style } },
-        data: {
-          unlockedStartRating: nextUnlocked,
-          weakSessionStreak: demote.streakAfter,
-        },
-      });
-    }
+      const demote = evaluateDemote(
+        unlocked,
+        check,
+        session.startRating,
+        progression.unlockedStartRating,
+        progression.weakSessionStreak,
+      );
+      demoted = demote.demoted;
 
-    await this.buffer.clearSession(sessionId);
-    return {
-      ...(await this.summary(sessionId)),
-      unlocked: check.met,
-      unlockCheck: check,
-      demoted: demote.demoted,
-      demoteCheck: {
+      if (unlocked) {
+        nextUnlocked = progression.unlockedStartRating + UNLOCK_REWARD;
+        nextWeakStreak = 0;
+      } else if (demote.demoted) {
+        nextUnlocked = Math.max(
+          progression.startPuzzleRating,
+          progression.unlockedStartRating - demote.penalty,
+        );
+        nextWeakStreak = demote.streakAfter;
+      } else {
+        nextWeakStreak = demote.streakAfter;
+      }
+
+      demoteResponse = {
         atPeak: demote.atPeak,
         weak: demote.weak,
         criteriaMet: demote.criteriaMet,
@@ -315,7 +358,32 @@ export class SessionsService {
         threshold: 2,
         penalty: demote.penalty,
         unlockedStartRating: nextUnlocked,
-      },
+      };
+    }
+
+    if (
+      nextUnlocked !== progression.unlockedStartRating ||
+      nextWeakStreak !== progression.weakSessionStreak ||
+      nextCalibrationLeft !== progression.calibrationSessionsLeft
+    ) {
+      await this.prisma.userStyleProgression.update({
+        where: { userId_style: { userId, style } },
+        data: {
+          unlockedStartRating: nextUnlocked,
+          weakSessionStreak: nextWeakStreak,
+          calibrationSessionsLeft: nextCalibrationLeft,
+        },
+      });
+    }
+
+    await this.buffer.clearSession(sessionId);
+    return {
+      ...(await this.summary(sessionId)),
+      unlocked,
+      unlockCheck: check,
+      demoted,
+      demoteCheck: demoteResponse,
+      calibration: calibrationResponse,
       style,
     };
   }

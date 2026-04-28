@@ -55,6 +55,13 @@ model UserStyleProgression {
   // ceiling that failed ≤1 of the 4 criteria. Resets on any non-weak
   // session at peak; ignored entirely for sessions in the comfort zone.
   weakSessionStreak   Int      @default(0)
+  // Provisional period: while > 0 the ceiling rides the observed
+  // peakRating up freely and snaps down to peakRating when it lands
+  // ≥100 below the current ceiling, so a brand-new player finds their
+  // real level fast. Decremented per rated session; theme/unrated
+  // sessions don't consume it. New rows start at 5; existing rows
+  // were backfilled to 0 (already past calibration).
+  calibrationSessionsLeft Int  @default(5)
   updatedAt           DateTime @updatedAt
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
