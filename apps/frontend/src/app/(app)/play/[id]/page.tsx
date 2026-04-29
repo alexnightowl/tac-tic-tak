@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2, Crown, Sparkles, TrendingDown, Gauge } from 'lucide-react';
+import { X, Check, XCircle, Loader2, Crown, Sparkles, TrendingDown } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -373,12 +373,6 @@ export default function PlayRunner() {
   const styleProg = progressions[sessionStyle];
   const currentRating = styleProg?.currentPuzzleRating ?? null;
   const unlockCeiling = styleProg?.unlockedStartRating ?? null;
-  // While the user is in the provisional period for this style, the
-  // unlock criteria don't drive the ceiling — peakRating does — so
-  // hide the criteria progress bar and show a calibration counter
-  // instead. Theme sessions don't consume calibration either way.
-  const calibratingThisStyle =
-    sessionMode !== 'theme' && (styleProg?.calibrationSessionsLeft ?? 0) > 0;
 
   const exitButton = (
     <Button
@@ -415,24 +409,18 @@ export default function PlayRunner() {
   );
 
   // Theme sessions are unrated practice — no unlock target to show.
-  // During calibration the criteria don't drive progression either,
-  // so swap in a small "Calibration: N/5" pill instead.
-  const progressBar = sessionMode === 'theme'
+  // During calibration the criteria still drive the visible progress
+  // (4/4 → unlock-style outcome, 0-2/4 → cap drop) so we render the
+  // same UnlockProgressBar; the only outward sign of provisional
+  // status is the "?" next to the rating on the play setup screen.
+  const progressBar = sessionMode === 'theme' || !unlockProgress || unlockCeiling == null
     ? null
-    : calibratingThisStyle
-      ? (
-        <CalibrationPill
-          left={styleProg?.calibrationSessionsLeft ?? 0}
-        />
-      )
-      : (unlockProgress && unlockCeiling != null
-        ? (
-          <UnlockProgressBar
-            progress={unlockProgress}
-            unlockedTo={unlockCeiling}
-          />
-        )
-        : null);
+    : (
+      <UnlockProgressBar
+        progress={unlockProgress}
+        unlockedTo={unlockCeiling}
+      />
+    );
 
   const statsRow = (
     <div className="grid grid-cols-3 gap-2">
@@ -610,35 +598,6 @@ function RatingPill({ rating, label }: { rating: number | null; label: string })
   );
 }
 
-function CalibrationPill({ left }: { left: number }) {
-  const t = useT();
-  const total = 5;
-  const done = Math.max(0, total - left);
-  const pct = Math.round((done / total) * 100);
-  return (
-    <div className="rounded-xl border border-sky-500/40 bg-sky-500/10 px-3 py-2">
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[11px] uppercase tracking-wider text-sky-200 flex items-center gap-1.5">
-          <Gauge size={12} />
-          {t('calibration.in_progress')}
-        </span>
-        <span className="tabular-nums text-xs text-sky-100/80">
-          {done} / {total}
-        </span>
-      </div>
-      <div className="relative h-1.5 rounded-full bg-white/5 overflow-hidden">
-        <div
-          className="absolute inset-y-0 left-0 rounded-full bg-sky-300/80 transition-[width] duration-300"
-          style={{ width: `${Math.max(pct, 2)}%` }}
-        />
-      </div>
-      <div className="text-[10px] text-zinc-400 mt-1.5 leading-snug">
-        {t('calibration.in_progress_hint')}
-      </div>
-    </div>
-  );
-}
-
 function UnlockProgressBar({
   progress, unlockedTo,
 }: { progress: { criteria: CriterionProgress[]; ratio: number; met: boolean }; unlockedTo: number }) {
@@ -788,15 +747,9 @@ function SessionSummary({ s }: { s: FinishResponse }) {
     <div className="max-w-md mx-auto mt-10 space-y-4 px-4">
       <h1 className="text-2xl font-semibold text-center">{t('play.session_complete')}</h1>
 
-      {s.calibration?.active ? (
-        <CalibrationOutcome calibration={s.calibration} />
-      ) : (
-        <>
-          {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
-          {s.demoteCheck && !s.unlocked && (
-            <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
-          )}
-        </>
+      {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
+      {s.demoteCheck && !s.unlocked && (
+        <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
       )}
 
       <div className="grid grid-cols-2 gap-3">
@@ -856,50 +809,6 @@ function ReviewThisSession({ sessionId }: { sessionId: string }) {
         {t('review.session_cta')}
       </div>
     </a>
-  );
-}
-
-function CalibrationOutcome({ calibration }: {
-  calibration: NonNullable<FinishResponse['calibration']>;
-}) {
-  const t = useT();
-  const { sessionsLeftAfter, ceilingBefore, ceilingAfter, delta } = calibration;
-  const moved = delta !== 0;
-  const finalSession = sessionsLeftAfter === 0;
-
-  // Final calibration session — switch tone to "you're locked in".
-  if (finalSession) {
-    return (
-      <div className="rounded-2xl p-4 border border-[var(--accent)]/60 bg-[var(--accent)]/10 flex items-center gap-3">
-        <Sparkles size={22} className="text-[var(--accent)] shrink-0" />
-        <div>
-          <div className="font-semibold text-[var(--accent)]">
-            {t('calibration.summary_done')}
-          </div>
-          <div className="text-xs text-zinc-300 mt-0.5">
-            {t('calibration.summary_done_hint').replace('{rating}', String(ceilingAfter))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-2xl p-4 border border-sky-500/40 bg-sky-500/10 flex items-center gap-3">
-      <Gauge size={22} className="text-sky-300 shrink-0" />
-      <div>
-        <div className="font-semibold text-sky-200">
-          {t('calibration.summary_active').replace('{left}', String(sessionsLeftAfter))}
-        </div>
-        <div className="text-xs text-zinc-300 mt-0.5">
-          {moved
-            ? t(delta > 0 ? 'calibration.summary_up' : 'calibration.summary_down')
-                .replace('{from}', String(ceilingBefore))
-                .replace('{to}', String(ceilingAfter))
-            : t('calibration.summary_steady').replace('{rating}', String(ceilingAfter))}
-        </div>
-      </div>
-    </div>
   );
 }
 

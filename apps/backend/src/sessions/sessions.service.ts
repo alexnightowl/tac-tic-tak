@@ -300,12 +300,18 @@ export class SessionsService {
     } | null = null;
 
     if (progression.calibrationSessionsLeft > 0) {
-      // Provisional period — peak-driven free movement, no +50 / -25
-      // celebrations, no weak-streak accounting (reset for safety).
+      // Provisional period — criteria-driven step from the rating the
+      // player actually tried this session. No weak-streak accounting
+      // (reset for safety). The UI doesn't render a calibration card
+      // explicitly — outcomes are routed to the standard
+      // unlocked/demoted cards based on direction so the player just
+      // sees a normal session summary with a "?" next to their rating
+      // until calibration ends.
       const cal = evaluateCalibration(
         progression.unlockedStartRating,
         progression.startPuzzleRating,
-        stats.peakRating,
+        session.startRating,
+        check,
         progression.calibrationSessionsLeft,
       );
       nextUnlocked = cal.ceilingAfter;
@@ -319,6 +325,28 @@ export class SessionsService {
         ceilingAfter: cal.ceilingAfter,
         delta: cal.delta,
       };
+
+      // Mirror the calibration outcome onto the standard
+      // unlocked/demoted flags so the UI can reuse the existing
+      // outcome cards. 4 of 4 criteria → unlocked (+50). Strict
+      // ceiling drop → demoted card (the rose-coloured "cap
+      // adjusted" UI). Holds (0 / +50 with no movement, e.g. floor
+      // clamp) just show the criteria progress card with no
+      // celebration.
+      if (cal.delta > 0) {
+        unlocked = true;
+      } else if (cal.delta < 0) {
+        demoted = true;
+        demoteResponse = {
+          atPeak: true,
+          weak: true,
+          criteriaMet: cal.criteriaMet,
+          streakAfter: 0,
+          threshold: 1,
+          penalty: -cal.delta,
+          unlockedStartRating: nextUnlocked,
+        };
+      }
     } else {
       // Stable mode. Unlock requires criteria-met AND a session
       // started inside the peak band; sessions in the comfort zone

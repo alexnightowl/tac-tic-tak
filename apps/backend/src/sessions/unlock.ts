@@ -19,17 +19,19 @@ export const DEMOTE_MAX_CRITERIA = 1;
 export const WEAK_STREAK_THRESHOLD = 2;
 
 // Provisional / calibration window: number of rated sessions a brand-
-// new style progression rides freely up/down before normal +50 / -25
-// rules engage. Tuned to be short — Glicko-style RD shrinks fast
-// enough that 5 sessions get most players within ±100 of their real
-// level, which is a finer resolution than the unlock step anyway.
+// new style progression aggressively settles its ceiling before the
+// usual +50 / -25 rules engage. Tuned short — five passes over the
+// 4-criteria step ladder is enough to land within ±50 of the true
+// "comfortable level-up zone" for most players.
 export const CALIBRATION_SESSIONS = 5;
-// While calibrating, a session whose peakRating lands this far below
-// the current ceiling triggers a downward snap so the next session
-// starts from a more honest place. Smaller than DEMOTE_PEAK_BAND so a
-// single shaky session in calibration can pull the ceiling down,
-// unlike stable mode which needs two strikes.
-export const CALIBRATION_DROP_GAP = 100;
+
+// Per-criterion-met-count step applied to the SESSION'S startRating
+// to produce the next ceiling. Hits the same four signals as a
+// stable-mode unlock check (solved-count, accuracy, speed,
+// peakDelta). The step ladder is asymmetric on purpose: 0 of 4
+// means the player is genuinely overwhelmed at startRating, so we
+// drop a full puzzle-band; 4 of 4 lifts +50 (same as a real unlock).
+export const CALIBRATION_STEP_BY_CRITERIA: readonly number[] = [-125, -75, -25, 0, 50];
 
 export type StyleFormula = {
   solvedPerMin: number;
@@ -129,38 +131,36 @@ export type CalibrationCheck = {
   sessionsLeftAfter: number;
   ceilingBefore: number;
   ceilingAfter: number;
-  // Signed: positive ⇒ ceiling moved up to match a higher peak,
-  // negative ⇒ snapped down because peak was far below ceiling.
+  // How many of the four unlock criteria the player actually met.
+  // Drives the step taken this session.
+  criteriaMet: number;
+  // Signed step applied: +50 / 0 / -25 / -75 / -125.
   delta: number;
 };
 
 export function evaluateCalibration(
   unlockedStartRating: number,
   startPuzzleRating: number,
-  peakRating: number,
+  startRating: number,
+  unlockCheck: UnlockCheck,
   calibrationSessionsLeft: number,
 ): CalibrationCheck {
-  const before = unlockedStartRating;
-  let after = before;
-  if (peakRating > 0) {
-    if (peakRating > before) {
-      // Ride the peak straight up — no rate limit during calibration.
-      after = peakRating;
-    } else if (peakRating <= before - CALIBRATION_DROP_GAP) {
-      // Peak landed clearly below the current ceiling: snap down so
-      // the next session starts in a place that reflects observed
-      // ability. Floor at startPuzzleRating so the level can't sink
-      // below the user's entry point.
-      after = Math.max(startPuzzleRating, peakRating);
-    }
-  }
+  const criteriaMet = unlockCheck.criteria.filter((c) => c.met).length;
+  const step = CALIBRATION_STEP_BY_CRITERIA[criteriaMet] ?? 0;
+  // Anchor the new ceiling on the rating the player ACTUALLY tried
+  // (session.startRating), not on the previous ceiling — the goal is
+  // to land at a level where the player will hit ~3/4 criteria next
+  // time, which means moving from where they just played. Floor at
+  // startPuzzleRating so the level can never drift below entry.
+  const after = Math.max(startPuzzleRating, startRating + step);
   return {
     active: true,
     sessionsLeftBefore: calibrationSessionsLeft,
     sessionsLeftAfter: Math.max(0, calibrationSessionsLeft - 1),
-    ceilingBefore: before,
+    ceilingBefore: unlockedStartRating,
     ceilingAfter: after,
-    delta: after - before,
+    criteriaMet,
+    delta: after - unlockedStartRating,
   };
 }
 

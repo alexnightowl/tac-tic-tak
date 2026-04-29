@@ -38,6 +38,10 @@ export default function PlaySetup() {
   const stylePreset = STYLE_FORMULAS[style];
   const styleProgression = progressions[style];
   const unlocked = styleProgression.unlockedStartRating;
+  // While the player still has calibration sessions left, the
+  // displayed rating is provisional — surface a "?" badge next to
+  // the number so the player knows it isn't yet a settled measure.
+  const provisional = styleProgression.calibrationSessionsLeft > 0;
 
   const [startRating, setStartRating] = useState<number>(styleProgression.currentPuzzleRating);
   const [duration, setDuration] = useState<number>(stylePreset.durationPresetsSec[1] ?? stylePreset.durationPresetsSec[0]);
@@ -140,6 +144,15 @@ export default function PlaySetup() {
                 {bandLabels[selectedBand.key]}
               </span>
               <span className="tabular-nums text-lg font-semibold text-white">{startRating}</span>
+              {provisional && (
+                <span
+                  className="ml-1 inline-flex items-center justify-center h-5 w-5 rounded-full border border-amber-400/50 bg-amber-400/15 text-amber-200 text-[11px] font-semibold"
+                  title={t('play.rating_provisional')}
+                  aria-label={t('play.rating_provisional')}
+                >
+                  ?
+                </span>
+              )}
             </div>
           </div>
           <DifficultySlider
