@@ -243,21 +243,13 @@ export default function ReviewPuzzle() {
 
   return (
     <div
-      className="flex flex-col gap-3 max-w-[min(90vh,640px)] mx-auto"
+      className="flex flex-col gap-3 max-w-[min(calc(100vh-240px),640px)] mx-auto"
       style={{
-        // Subtract every fixed slice of chrome from 100dvh so the page
-        // is sized to the EXACT visible area — otherwise the flex-1
-        // board container centers itself in an off-screen overflow and
-        // the gap above the board ends up bigger than the gap below.
-        //
-        //   76px  mobile top nav (pt-3 + 56px logo + pb-2)
-        //   32px  AppLayout main py-4 (top + bottom on mobile)
-        //   96px  AppLayout outer pb-24 (mobile bottom-nav reserve)
-        //   env(safe-area-inset-top)/bottom — body's app-shell padding
-        //
-        // On desktop md:py-6 swaps in (~16px more) and pb-24 vanishes,
-        // so the calc undershoots by ~70px there — acceptable, the
-        // worst case is a small empty band below the board on desktop.
+        // Page fills the visible area so the flex-1 board container
+        // has room to centre. 204px ≈ mobile top nav (76) + main py-4
+        // (32) + bottom-nav reserve pb-24 (96); env() picks up the
+        // notch + home indicator. On desktop md:py-6 + no bottom nav
+        // means we undershoot by ~70px → small empty band, fine.
         minHeight:
           'calc(100dvh - 204px - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
       }}
@@ -295,20 +287,13 @@ export default function ReviewPuzzle() {
           <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
         ) : null}
       </div>
-      {/* Board grows to fill the remaining vertical space; container
-          queries pick the largest square that fits both width AND
-          height so we don't leave dead space above or below. The
-          `w-full` is load-bearing — without it `containerType: size`
-          on a stretch flex item ends up with an undetermined
-          inline-size and 100cqw resolves to 0, collapsing the board. */}
-      <div
-        className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
-        style={{ containerType: 'size' }}
-      >
-        <div
-          className="relative aspect-square"
-          style={{ width: 'min(100cqw, 100cqh)' }}
-        >
+      {/* Board grows into the remaining vertical space and stays
+          square. The page's max-w already caps width at
+          min(100vh-240, 640) so a w-full board never overflows the
+          viewport vertically — same trick the session-review runner
+          uses. Plain flex centring, no container queries needed. */}
+      <div className="flex-1 flex items-center justify-center min-h-0 min-w-0 w-full">
+        <div className="relative w-full aspect-square">
           {chess && settingsReady && (
             <Chessboard
               fen={chess.fen()}
