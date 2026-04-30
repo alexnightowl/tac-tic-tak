@@ -271,6 +271,25 @@ export class SessionsService {
       };
     }
 
+    // Early-exit guard. The play runner only calls `finish` two ways:
+    // (a) timer naturally expired, (b) user pressed the exit dialog's
+    // "Save" button mid-session. Server-side we tell them apart by
+    // elapsed time vs declared duration — trusting a client flag would
+    // let a tampered client farm level-ups by ending after one good
+    // puzzle. 3s grace covers clock drift and the network round-trip
+    // between the client's "time's up" tick and this handler.
+    const elapsedSec = (Date.now() - session.startedAt.getTime()) / 1000;
+    const earlyExit = elapsedSec < session.durationSec - 3;
+    if (earlyExit) {
+      await this.buffer.clearSession(sessionId);
+      return {
+        ...(await this.summary(sessionId)),
+        unlocked: false,
+        early: true,
+        style,
+      };
+    }
+
     const progression = await this.styleProgression(userId, style);
     // Criteria check runs in either mode — UI uses it for the in-
     // session progress bar regardless of whether unlock fires.

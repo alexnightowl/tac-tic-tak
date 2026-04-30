@@ -27,6 +27,11 @@ type NextResponse = {
 type FinishResponse = {
   sessionId: string; solved: number; failed: number; accuracy: number;
   avgResponseMs: number; peakRating: number; durationSec?: number;
+  // Server-set when the session was ended via the exit dialog instead
+  // of running its full duration. Suppresses level-up/demote cards in
+  // the summary — the player's stats are kept but progression doesn't
+  // move.
+  early?: boolean;
   unlocked?: boolean;
   unlockCheck?: {
     met: boolean;
@@ -570,8 +575,8 @@ function ExitDialog({ onSave, onDiscard, onCancel, language }: {
         </div>
         <div className="text-xs text-zinc-400 mt-1">
           {uk
-            ? 'Ви вийшли достроково. Зберегти результат у статистику чи відкинути його?'
-            : 'Leaving early. Save this session to your stats, or discard it?'}
+            ? 'Ви виходите достроково. «Зберегти» запише статистику, але левел-ап не зарахується — або відкиньте сесію.'
+            : 'Leaving early. Save records the stats but won\'t count toward level-up — or discard the session.'}
         </div>
         <div className="flex flex-col gap-2 mt-4">
           <button onClick={onSave} className="h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold text-sm">
@@ -776,20 +781,26 @@ function SessionSummary({ s }: { s: FinishResponse }) {
     <div className="max-w-md mx-auto mt-10 space-y-4 px-4">
       <h1 className="text-2xl font-semibold text-center">{t('play.session_complete')}</h1>
 
-      {finalCalibrationSession && (
-        <LevelUpExplainer ceiling={s.calibration!.ceilingAfter} />
-      )}
-      {!wasCalibrating && (
-        isComfortSession ? (
-          <ComfortSessionNote ceiling={s.demoteCheck!.unlockedStartRating} />
-        ) : (
-          <>
-            {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
-            {s.demoteCheck && !s.unlocked && (
-              <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
-            )}
-          </>
-        )
+      {s.early ? (
+        <EarlyExitNote />
+      ) : (
+        <>
+          {finalCalibrationSession && (
+            <LevelUpExplainer ceiling={s.calibration!.ceilingAfter} />
+          )}
+          {!wasCalibrating && (
+            isComfortSession ? (
+              <ComfortSessionNote ceiling={s.demoteCheck!.unlockedStartRating} />
+            ) : (
+              <>
+                {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
+                {s.demoteCheck && !s.unlocked && (
+                  <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
+                )}
+              </>
+            )
+          )}
+        </>
       )}
 
       <div className="grid grid-cols-2 gap-3">
@@ -883,6 +894,23 @@ function LevelUpExplainer({ ceiling }: { ceiling: number }) {
           {t('calibration.intro_demote')}
         </li>
       </ul>
+    </div>
+  );
+}
+
+/**
+ * Shown in place of the unlock/demote cards when the session was
+ * ended via the exit dialog before the timer ran out. Stats are still
+ * recorded but the session doesn't move the rating cap in either
+ * direction — so neither the "you levelled up" nor the "you nearly
+ * did" framing fits.
+ */
+function EarlyExitNote() {
+  const t = useT();
+  return (
+    <div className="rounded-2xl p-4 border border-[var(--border-soft)] bg-black/20">
+      <div className="text-sm font-semibold">{t('play.early_exit_title')}</div>
+      <div className="text-xs text-zinc-400 mt-0.5">{t('play.early_exit_hint')}</div>
     </div>
   );
 }
