@@ -120,6 +120,46 @@ export class UsersService {
     });
   }
 
+  /**
+   * Wipes everything tied to the user's *playing history* and resets
+   * progressions to the brand-new-account defaults: 1200 ratings,
+   * full calibration window, no demote streak, no review queue, no
+   * puzzle-history. Keeps the User row itself and UserSetting (theme,
+   * sounds, language stay where they were).
+   *
+   * One transaction so a partial failure can't leave the account in a
+   * half-reset state. UserPuzzleHistory and ReviewItem cascade-delete
+   * via their userId FKs anyway, but explicit deletes are cheaper than
+   * a roundtrip to figure out which rows existed.
+   */
+  async resetProgress(userId: string) {
+    await this.prisma.$transaction([
+      this.prisma.trainingAttempt.deleteMany({ where: { userId } }),
+      this.prisma.trainingSession.deleteMany({ where: { userId } }),
+      this.prisma.userPuzzleHistory.deleteMany({ where: { userId } }),
+      this.prisma.reviewItem.deleteMany({ where: { userId } }),
+      this.prisma.userStyleProgression.updateMany({
+        where: { userId },
+        data: {
+          startPuzzleRating: 1200,
+          currentPuzzleRating: 1200,
+          unlockedStartRating: 1200,
+          weakSessionStreak: 0,
+          calibrationSessionsLeft: 5,
+        },
+      }),
+      this.prisma.userProgression.updateMany({
+        where: { userId },
+        data: {
+          startPuzzleRating: 1200,
+          currentPuzzleRating: 1200,
+          unlockedStartRating: 1200,
+        },
+      }),
+    ]);
+    return { ok: true };
+  }
+
   async updateProfile(userId: string, patch: Partial<{ displayName: string; bio: string; country: string }>) {
     const clean: Partial<{ displayName: string | null; bio: string | null; country: string | null }> = {};
     if ('displayName' in patch) clean.displayName = patch.displayName?.trim() || null;

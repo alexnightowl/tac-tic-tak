@@ -373,19 +373,20 @@ export default function PlayRunner() {
   const styleProg = progressions[sessionStyle];
   const currentRating = styleProg?.currentPuzzleRating ?? null;
   const unlockCeiling = styleProg?.unlockedStartRating ?? null;
-  // Stable-mode unlock needs the session to have STARTED within
-  // DEMOTE_PEAK_BAND (50) of the ceiling. Below that, no amount of
-  // criteria-met can level the cap up — so don't dangle the
-  // "ready, finish to claim" progress bar in front of the player.
-  // Calibration sessions ignore this gate (criteria-driven step
-  // from any startRating).
+  // Level-up UI (criteria progress bar, level-up / demote / comfort
+  // cards) only surfaces AFTER calibration finishes. During
+  // calibration the player just plays — ratings move quietly and
+  // mechanics are introduced only when calibration ends. After
+  // calibration, eligibility additionally requires the session to
+  // have STARTED within DEMOTE_PEAK_BAND (50) of the ceiling.
   const PEAK_BAND = 50;
   const isCalibrating = (styleProg?.calibrationSessionsLeft ?? 0) > 0;
   const sessionEligibleForUnlock =
     sessionMode !== 'theme' &&
+    !isCalibrating &&
     sessionStartRating != null &&
     unlockCeiling != null &&
-    (isCalibrating || sessionStartRating >= unlockCeiling - PEAK_BAND);
+    sessionStartRating >= unlockCeiling - PEAK_BAND;
 
   const exitButton = (
     <Button
@@ -755,28 +756,40 @@ function TurnCard({
 
 function SessionSummary({ s }: { s: FinishResponse }) {
   const t = useT();
-  // A session that started outside the peak band in stable mode
-  // can't move the cap regardless of how cleanly the player solved.
-  // Showing UnlockOutcome with all-green checkmarks plus "level-up
-  // not achieved" reads as "you almost made it" — confusing when
-  // the rating wasn't even eligible. Detect that here and show a
-  // calmer "comfort session" caption instead. Calibration sessions
-  // (s.calibration?.active) ignore the band gate.
+  // Three branches for the level-up area at the top of the summary.
+  //
+  //   1. wasCalibrating + final session → LevelUpExplainer that
+  //      introduces the level-up / demote mechanics now that the
+  //      player has a settled rating.
+  //   2. wasCalibrating + not final     → nothing. Calibration is
+  //      meant to be invisible; the player just sees their stats.
+  //   3. stable mode                    → existing UnlockOutcome /
+  //      DemoteOutcome / ComfortSessionNote logic. ComfortSession
+  //      kicks in for sub-peak-band sessions where the cap can't
+  //      move regardless of criteria-met.
+  const wasCalibrating = !!s.calibration?.active;
+  const finalCalibrationSession =
+    wasCalibrating && s.calibration!.sessionsLeftAfter === 0;
   const isComfortSession =
-    !s.calibration?.active && s.demoteCheck && s.demoteCheck.atPeak === false;
+    !wasCalibrating && s.demoteCheck && s.demoteCheck.atPeak === false;
   return (
     <div className="max-w-md mx-auto mt-10 space-y-4 px-4">
       <h1 className="text-2xl font-semibold text-center">{t('play.session_complete')}</h1>
 
-      {isComfortSession ? (
-        <ComfortSessionNote ceiling={s.demoteCheck!.unlockedStartRating} />
-      ) : (
-        <>
-          {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
-          {s.demoteCheck && !s.unlocked && (
-            <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
-          )}
-        </>
+      {finalCalibrationSession && (
+        <LevelUpExplainer ceiling={s.calibration!.ceilingAfter} />
+      )}
+      {!wasCalibrating && (
+        isComfortSession ? (
+          <ComfortSessionNote ceiling={s.demoteCheck!.unlockedStartRating} />
+        ) : (
+          <>
+            {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
+            {s.demoteCheck && !s.unlocked && (
+              <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
+            )}
+          </>
+        )
       )}
 
       <div className="grid grid-cols-2 gap-3">
@@ -836,6 +849,41 @@ function ReviewThisSession({ sessionId }: { sessionId: string }) {
         {t('review.session_cta')}
       </div>
     </a>
+  );
+}
+
+/**
+ * Shown once on the summary of a player's FINAL calibration session.
+ * Calibration runs without level-up UI so the new player can just
+ * play; this card introduces the level-up / demote mechanics that
+ * kick in starting next session, plus locks in their starting cap.
+ */
+function LevelUpExplainer({ ceiling }: { ceiling: number }) {
+  const t = useT();
+  const PEAK_BAND = 50;
+  const peakFloor = ceiling - PEAK_BAND;
+  return (
+    <div className="rounded-2xl p-4 border border-[var(--accent)]/60 bg-[var(--accent)]/10 space-y-2">
+      <div className="flex items-center gap-2">
+        <Sparkles size={18} className="text-[var(--accent)] shrink-0" />
+        <div className="font-semibold text-[var(--accent)]">
+          {t('calibration.complete_title')}
+        </div>
+      </div>
+      <div className="text-sm text-zinc-100">
+        {t('calibration.complete_summary').replace('{ceiling}', String(ceiling))}
+      </div>
+      <ul className="text-xs text-zinc-300 space-y-1 pt-1 leading-snug list-none">
+        <li>
+          <span className="text-emerald-300 font-semibold">+50</span>{' '}
+          {t('calibration.intro_unlock').replace('{floor}', String(peakFloor))}
+        </li>
+        <li>
+          <span className="text-rose-300 font-semibold">−25</span>{' '}
+          {t('calibration.intro_demote')}
+        </li>
+      </ul>
+    </div>
   );
 }
 

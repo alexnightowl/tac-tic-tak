@@ -137,7 +137,34 @@ export default function PlaySetup() {
           <Segmented
             value={style}
             onChange={(v) => setStyle(v as TrainingStyle)}
-            options={TRAINING_STYLES.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
+            options={TRAINING_STYLES.map((s) => {
+              const left = progressions[s]?.calibrationSessionsLeft ?? 0;
+              const calibrating = left > 0;
+              const done = 5 - left;
+              return {
+                value: s,
+                label: (
+                  <span className="inline-flex items-center gap-1.5">
+                    {t(`style.${s}.name`)}
+                    {calibrating && (
+                      <span
+                        className={cn(
+                          'inline-flex items-center gap-0.5 text-[10px] font-semibold leading-none rounded-full px-1.5 py-0.5 tabular-nums',
+                          s === style
+                            ? 'bg-black/15 text-[var(--accent-contrast)]/85'
+                            : 'bg-amber-400/15 text-amber-200',
+                        )}
+                        aria-label={t('play.calibration_progress_aria')
+                          .replace('{done}', String(done))
+                          .replace('{total}', '5')}
+                      >
+                        ?{done}/5
+                      </span>
+                    )}
+                  </span>
+                ),
+              };
+            })}
           />
           <StyleBlurb style={style} t={t} />
         </section>
@@ -158,7 +185,12 @@ export default function PlaySetup() {
                 className="tabular-nums text-lg font-semibold text-white"
                 title={provisional ? t('play.rating_provisional') : undefined}
               >
-                {startRating}{provisional && '?'}
+                {startRating}
+                {provisional && (
+                  <span className="text-amber-300 ml-0.5">
+                    ?
+                  </span>
+                )}
               </span>
             </div>
           </div>
@@ -181,6 +213,14 @@ export default function PlaySetup() {
               </>
             )}
           </p>
+          {provisional && (
+            <p className="text-xs text-amber-300/80 mt-2 leading-snug">
+              {t('play.calibration_per_style')
+                .replace('{done}', String(5 - styleProgression.calibrationSessionsLeft))
+                .replace('{total}', '5')
+                .replace('{style}', t(`style.${style}.name`).toLowerCase())}
+            </p>
+          )}
           {showComfortNotice && (
             <p className="text-xs text-amber-300/80 mt-2 leading-snug">
               {t('play.comfort_notice').replace('{floor}', String(peakFloor))}

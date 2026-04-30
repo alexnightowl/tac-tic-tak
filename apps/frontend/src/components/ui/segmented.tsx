@@ -1,7 +1,8 @@
 'use client';
+import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-type Option<T extends string | number> = { value: T; label: string };
+type Option<T extends string | number> = { value: T; label: ReactNode };
 
 type Props<T extends string | number> = {
   value: T;

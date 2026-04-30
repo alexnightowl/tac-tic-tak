@@ -70,6 +70,12 @@ export class UsersController {
     return this.users.setAvatar(u.id, dto.dataUrl);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('me/reset-progress')
+  resetProgress(@CurrentUser() u: AuthedUser) {
+    return this.users.resetProgress(u.id);
+  }
+
   /** Prefix search by nickname. Requires auth to discourage scraping. */
   @UseGuards(JwtAuthGuard)
   @Get('search')

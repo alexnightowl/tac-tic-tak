@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut } from 'lucide-react';
+import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut, AlertTriangle } from 'lucide-react';
 import { http, setToken } from '@/lib/api';
 import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed, KnightArrowMode } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -453,7 +453,81 @@ function AppTab({ settings, patch, t }: { settings: UserSettings; patch: (p: Par
         <div className="text-sm">{t('settings.install_ready')}</div>
         <div className="text-xs text-zinc-500 mt-1">{t('settings.install_hint')}</div>
       </Card>
+
+      <ResetProgressSection t={t} />
     </div>
+  );
+}
+
+function ResetProgressSection({ t }: { t: (k: string) => string }) {
+  const router = useRouter();
+  const setProgressions = useAppStore((s) => s.setProgressions);
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const reset = async () => {
+    setErr(null);
+    setBusy(true);
+    try {
+      await http.post('/users/me/reset-progress');
+      // Pull fresh /users/me so progressions in the store reflect the
+      // wiped state — otherwise the stale numbers linger until the
+      // next mount.
+      const me = await http.get<{ progressions: any }>('/users/me');
+      if (me.progressions) setProgressions(me.progressions);
+      setConfirming(false);
+      router.push('/dashboard');
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : 'Failed');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Card className="border-rose-500/30 bg-rose-500/5">
+      <CardTitle>
+        <span className="inline-flex items-center gap-2 text-rose-200">
+          <AlertTriangle size={16} /> {t('settings.reset_progress.title')}
+        </span>
+      </CardTitle>
+      <p className="text-xs text-zinc-300 mt-1 leading-relaxed">
+        {t('settings.reset_progress.body')}
+      </p>
+      {!confirming ? (
+        <button
+          type="button"
+          onClick={() => setConfirming(true)}
+          className="mt-3 inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-rose-300 hover:text-white hover:bg-rose-500/15 border border-rose-500/40 transition-colors"
+        >
+          {t('settings.reset_progress.cta')}
+        </button>
+      ) : (
+        <div className="mt-3 rounded-xl border border-rose-500/40 bg-rose-500/10 p-3 space-y-3">
+          <p className="text-sm text-rose-100">{t('settings.reset_progress.confirm')}</p>
+          {err && <p className="text-xs text-rose-300">{err}</p>}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => { setConfirming(false); setErr(null); }}
+              disabled={busy}
+              className="flex-1 h-10 rounded-lg border border-[var(--border)] text-sm disabled:opacity-50"
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              type="button"
+              onClick={reset}
+              disabled={busy}
+              className="flex-1 h-10 rounded-lg bg-rose-500 text-white text-sm font-semibold disabled:opacity-60"
+            >
+              {busy ? '…' : t('settings.reset_progress.confirm_cta')}
+            </button>
+          </div>
+        </div>
+      )}
+    </Card>
   );
 }
 
