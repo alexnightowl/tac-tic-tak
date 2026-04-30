@@ -6,7 +6,7 @@ import { Chess, Square } from 'chess.js';
 import { X, Check, XCircle, Loader2, ArrowLeft, Lightbulb } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
-import { useT } from '@/lib/i18n';
+import { useT, useTn } from '@/lib/i18n';
 import { Chessboard } from '@/components/board/Chessboard';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { playSound } from '@/lib/sound';
@@ -44,6 +44,7 @@ export default function SessionReview() {
   const settings = useAppStore((s) => s.settings);
   const settingsReady = useAppStore((s) => s.settingsReady);
   const t = useT();
+  const tn = useTn();
 
   // Review queue: FIFO list of items. Head = current puzzle. On fail the
   // head is rotated to the tail; on solve it's removed. Empty = done.
@@ -225,7 +226,9 @@ export default function SessionReview() {
       <div className="max-w-md mx-auto mt-10 space-y-4 px-4 text-center">
         <h1 className="text-2xl font-semibold">{t('review.done_title')}</h1>
         <p className="text-sm text-zinc-400">
-          {t('review.done_hint').replace('{n}', String(totalCount))}
+          {t('review.done_hint')
+            .replace('{n}', String(totalCount))
+            .replace('{noun}', tn('review.puzzle_word', totalCount))}
         </p>
         <div className="flex gap-2 pt-2">
           <button
