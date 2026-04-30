@@ -57,6 +57,17 @@ export default function PlaySetup() {
   // progression.
   const ratingCap = mode === 'theme' ? 3000 : unlocked + 200;
 
+  // Stable-mode unlock requires the session to start within
+  // DEMOTE_PEAK_BAND (50) of the unlocked ceiling. Anything below
+  // that is a comfort-zone session: the cap can't move regardless
+  // of how cleanly the player solves. Calibration sessions ignore
+  // this gate (criteria-driven step from any startRating). Theme
+  // sessions are unrated so the notice is irrelevant there too.
+  const PEAK_BAND = 50;
+  const peakFloor = unlocked - PEAK_BAND;
+  const showComfortNotice =
+    mode !== 'theme' && !provisional && startRating < peakFloor;
+
   // When style changes, snap the rating + duration into that style's range
   // so users don't end up with nonsensical combos from the previous style.
   useEffect(() => {
@@ -143,16 +154,12 @@ export default function PlaySetup() {
               >
                 {bandLabels[selectedBand.key]}
               </span>
-              <span className="tabular-nums text-lg font-semibold text-white">{startRating}</span>
-              {provisional && (
-                <span
-                  className="ml-1 inline-flex items-center justify-center h-5 w-5 rounded-full border border-amber-400/50 bg-amber-400/15 text-amber-200 text-[11px] font-semibold"
-                  title={t('play.rating_provisional')}
-                  aria-label={t('play.rating_provisional')}
-                >
-                  ?
-                </span>
-              )}
+              <span
+                className="tabular-nums text-lg font-semibold text-white"
+                title={provisional ? t('play.rating_provisional') : undefined}
+              >
+                {startRating}{provisional && '?'}
+              </span>
             </div>
           </div>
           <DifficultySlider
@@ -174,6 +181,11 @@ export default function PlaySetup() {
               </>
             )}
           </p>
+          {showComfortNotice && (
+            <p className="text-xs text-amber-300/80 mt-2 leading-snug">
+              {t('play.comfort_notice').replace('{floor}', String(peakFloor))}
+            </p>
+          )}
         </section>
 
         <section>

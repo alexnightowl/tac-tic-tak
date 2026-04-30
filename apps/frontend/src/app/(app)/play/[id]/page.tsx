@@ -373,6 +373,19 @@ export default function PlayRunner() {
   const styleProg = progressions[sessionStyle];
   const currentRating = styleProg?.currentPuzzleRating ?? null;
   const unlockCeiling = styleProg?.unlockedStartRating ?? null;
+  // Stable-mode unlock needs the session to have STARTED within
+  // DEMOTE_PEAK_BAND (50) of the ceiling. Below that, no amount of
+  // criteria-met can level the cap up — so don't dangle the
+  // "ready, finish to claim" progress bar in front of the player.
+  // Calibration sessions ignore this gate (criteria-driven step
+  // from any startRating).
+  const PEAK_BAND = 50;
+  const isCalibrating = (styleProg?.calibrationSessionsLeft ?? 0) > 0;
+  const sessionEligibleForUnlock =
+    sessionMode !== 'theme' &&
+    sessionStartRating != null &&
+    unlockCeiling != null &&
+    (isCalibrating || sessionStartRating >= unlockCeiling - PEAK_BAND);
 
   const exitButton = (
     <Button
@@ -408,12 +421,11 @@ export default function PlayRunner() {
     />
   );
 
-  // Theme sessions are unrated practice — no unlock target to show.
-  // During calibration the criteria still drive the visible progress
-  // (4/4 → unlock-style outcome, 0-2/4 → cap drop) so we render the
-  // same UnlockProgressBar; the only outward sign of provisional
-  // status is the "?" next to the rating on the play setup screen.
-  const progressBar = sessionMode === 'theme' || !unlockProgress || unlockCeiling == null
+  // Show the unlock-criteria progress bar only when the session can
+  // actually advance the cap. Theme mode is unrated. Below the peak
+  // band the cap is locked regardless of how cleanly we play — no
+  // sense dangling the "ready, finish to claim" pill.
+  const progressBar = !sessionEligibleForUnlock || !unlockProgress || unlockCeiling == null
     ? null
     : (
       <UnlockProgressBar
@@ -743,13 +755,28 @@ function TurnCard({
 
 function SessionSummary({ s }: { s: FinishResponse }) {
   const t = useT();
+  // A session that started outside the peak band in stable mode
+  // can't move the cap regardless of how cleanly the player solved.
+  // Showing UnlockOutcome with all-green checkmarks plus "level-up
+  // not achieved" reads as "you almost made it" — confusing when
+  // the rating wasn't even eligible. Detect that here and show a
+  // calmer "comfort session" caption instead. Calibration sessions
+  // (s.calibration?.active) ignore the band gate.
+  const isComfortSession =
+    !s.calibration?.active && s.demoteCheck && s.demoteCheck.atPeak === false;
   return (
     <div className="max-w-md mx-auto mt-10 space-y-4 px-4">
       <h1 className="text-2xl font-semibold text-center">{t('play.session_complete')}</h1>
 
-      {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
-      {s.demoteCheck && !s.unlocked && (
-        <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
+      {isComfortSession ? (
+        <ComfortSessionNote ceiling={s.demoteCheck!.unlockedStartRating} />
+      ) : (
+        <>
+          {s.unlockCheck && <UnlockOutcome check={s.unlockCheck} unlocked={!!s.unlocked} />}
+          {s.demoteCheck && !s.unlocked && (
+            <DemoteOutcome check={s.demoteCheck} demoted={!!s.demoted} />
+          )}
+        </>
       )}
 
       <div className="grid grid-cols-2 gap-3">
@@ -809,6 +836,26 @@ function ReviewThisSession({ sessionId }: { sessionId: string }) {
         {t('review.session_cta')}
       </div>
     </a>
+  );
+}
+
+/**
+ * Calm caption for sessions started below the peak band — i.e. not
+ * eligible for level-up. Avoids the all-green "near miss" UI of
+ * UnlockOutcome which reads as "you nearly leveled up" when the
+ * session was never going to count toward the cap.
+ */
+function ComfortSessionNote({ ceiling }: { ceiling: number }) {
+  const t = useT();
+  const PEAK_BAND = 50;
+  const floor = ceiling - PEAK_BAND;
+  return (
+    <div className="rounded-2xl p-4 border border-[var(--border-soft)] bg-black/20">
+      <div className="text-sm font-semibold">{t('play.comfort_summary_title')}</div>
+      <div className="text-xs text-zinc-400 mt-0.5">
+        {t('play.comfort_summary_hint').replace('{floor}', String(floor))}
+      </div>
+    </div>
   );
 }
 
