@@ -583,17 +583,6 @@ export default function PlayRunner() {
           aria-hidden
         />
       )}
-      {paused && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-md rounded-xl">
-          <div className="flex flex-col items-center gap-3">
-            <div className="text-2xl font-semibold text-white">{t('play.paused')}</div>
-            <div className="text-xs text-zinc-300 -mt-1">{t('play.paused_hint')}</div>
-            <Button onClick={resume} size="lg" className="mt-2">
-              <Play size={18} /> {t('play.resume')}
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 
@@ -669,6 +658,35 @@ export default function PlayRunner() {
           language={settings.language}
         />
       )}
+
+      {paused && (
+        <PauseOverlay
+          remainingSec={remainingSec}
+          onResume={resume}
+          t={t}
+        />
+      )}
+    </div>
+  );
+}
+
+function PauseOverlay({ remainingSec, onResume, t }: {
+  remainingSec: number;
+  onResume: () => void;
+  t: (k: string) => string;
+}) {
+  return (
+    <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="flex flex-col items-center gap-3 text-center max-w-sm">
+        <div className="font-mono text-4xl tabular-nums text-amber-300">
+          {fmtDuration(remainingSec)}
+        </div>
+        <div className="text-2xl font-semibold text-white">{t('play.paused')}</div>
+        <div className="text-sm text-zinc-300 max-w-[280px]">{t('play.paused_hint')}</div>
+        <Button onClick={onResume} size="lg" className="mt-2 min-w-[200px]">
+          <Play size={18} /> {t('play.resume')}
+        </Button>
+      </div>
     </div>
   );
 }
