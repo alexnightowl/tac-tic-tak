@@ -8,6 +8,7 @@ import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT, useTn } from '@/lib/i18n';
 import { Chessboard } from '@/components/board/Chessboard';
+import { TurnCard } from '@/components/board/TurnCard';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { playSound } from '@/lib/sound';
 import { BoardTheme } from '@/lib/themes';
@@ -284,6 +285,19 @@ export default function SessionReview() {
           <Lightbulb size={14} />
           {t('review.hint')}
         </button>
+      </div>
+
+      <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
+        <TurnCard
+          orientation={orientation}
+          loading={!chess}
+          opponentBusy={!!animateMove || opponentBusy}
+          isPlayerTurn={
+            !!chess &&
+            ((orientation === 'white' && chess.turn() === 'w') ||
+              (orientation === 'black' && chess.turn() === 'b'))
+          }
+        />
       </div>
 
       <div className="flex-1 w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center min-h-0">

@@ -7,6 +7,7 @@ import { Chess, Square } from 'chess.js';
 import { ChevronLeft, Lightbulb } from 'lucide-react';
 import { http } from '@/lib/api';
 import { Chessboard } from '@/components/board/Chessboard';
+import { TurnCard } from '@/components/board/TurnCard';
 import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { playSound } from '@/lib/sound';
@@ -287,6 +288,19 @@ export default function ReviewPuzzle() {
           <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
         ) : null}
       </div>
+      <TurnCard
+        orientation={orientation}
+        loading={!chess}
+        opponentBusy={!!animateMove}
+        // chess.turn() === user's color ⇒ player's turn. Solved
+        // puzzles also flip to "opponent moving" since the board
+        // is no longer interactive.
+        isPlayerTurn={
+          !!chess && !solved &&
+          ((orientation === 'white' && chess.turn() === 'w') ||
+            (orientation === 'black' && chess.turn() === 'b'))
+        }
+      />
       {/* Board grows into the remaining vertical space and stays
           square. The page's max-w already caps width at
           min(100vh-240, 640) so a w-full board never overflows the
