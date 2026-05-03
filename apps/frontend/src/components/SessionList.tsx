@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Trash2, ChevronRight, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { StyleIcon } from '@/components/StyleIcon';
+import { isTrainingStyle } from '@/lib/levels';
 
 export type SessionRow = {
   id: string;
@@ -17,6 +19,10 @@ export type SessionRow = {
   peakRating: number;
   startRating: number;
   mode: string;
+  /** bullet | blitz | rapid — drives the time-control icon on each
+   *  row. Optional for tolerance with older endpoints that don't
+   *  return it yet. */
+  style?: string;
   theme: string | null;
 };
 
@@ -198,8 +204,13 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
                 {delta !== 0 && <span className="ml-0.5 tabular-nums">{delta > 0 ? '+' : ''}{delta}</span>}
               </span>
             </div>
-            <div className="text-[11px] text-zinc-500 mt-0.5 truncate">
-              {mode} · {Math.round(s.accuracy * 100)}% · {Math.round(s.avgResponseMs)}ms · {Math.round(s.durationSec / 60)}m
+            <div className="text-[11px] text-zinc-500 mt-0.5 flex items-center gap-1.5 min-w-0">
+              {s.style && isTrainingStyle(s.style) && (
+                <StyleIcon style={s.style} size={11} className="shrink-0" />
+              )}
+              <span className="truncate">
+                {mode} · {Math.round(s.accuracy * 100)}% · {Math.round(s.avgResponseMs)}ms · {Math.round(s.durationSec / 60)}m
+              </span>
             </div>
           </div>
           <ChevronRight size={16} className="text-zinc-500 shrink-0" />

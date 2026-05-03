@@ -3,13 +3,14 @@
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { Zap, Timer, Hourglass, Trophy, CalendarDays, Users, Flame } from 'lucide-react';
+import { Trophy, CalendarDays, Users, Flame } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card } from '@/components/ui/card';
 import { Avatar } from '@/components/Avatar';
 import { SessionList, SessionRow } from '@/components/SessionList';
+import { StyleIcon } from '@/components/StyleIcon';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 import { ProfileEditor } from '@/components/ProfileEditor';
 import { FriendActionButton } from '@/components/FriendActionButton';
@@ -27,12 +28,6 @@ type PublicProfile = {
   streak?: { days: number; freezes: number; lastDay: string | null };
   recentSessions: SessionRow[];
 };
-
-const STYLE_ICONS = {
-  bullet: Zap,
-  blitz: Timer,
-  rapid: Hourglass,
-} as const;
 
 export default function ProfilePage() {
   const { nickname } = useParams<{ nickname: string }>();
@@ -121,7 +116,6 @@ export default function ProfilePage() {
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">{t('profile.ratings')}</h2>
         <div className="grid grid-cols-3 gap-3">
           {TRAINING_STYLES.map((s) => {
-            const Icon = STYLE_ICONS[s];
             const prog = data.progressions[s];
             return (
               <Card key={s} className="!p-3">
@@ -129,7 +123,7 @@ export default function ProfilePage() {
                   <span className="text-[11px] uppercase tracking-wider text-zinc-400">
                     {t(`style.${s}.name`)}
                   </span>
-                  <Icon size={14} className="text-[var(--accent)]" />
+                  <StyleIcon style={s} size={14} />
                 </div>
                 <div className="text-2xl font-semibold tabular-nums leading-none">
                   {prog?.currentPuzzleRating ?? '—'}

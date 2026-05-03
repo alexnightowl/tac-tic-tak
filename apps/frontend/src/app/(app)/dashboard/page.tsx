@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Swords, Zap, Timer, Hourglass } from 'lucide-react';
+import { Swords } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -10,18 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { SessionList, SessionRow } from '@/components/SessionList';
 import { StreakBadge } from '@/components/StreakBadge';
+import { StyleIcon } from '@/components/StyleIcon';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 
 type Overview = {
   recentSessions: SessionRow[];
   allTimePeak: number;
 };
-
-const STYLE_ICONS = {
-  bullet: Zap,
-  blitz: Timer,
-  rapid: Hourglass,
-} as const;
 
 export default function DashboardPage() {
   const user = useAppStore((s) => s.user);
@@ -101,14 +96,13 @@ export default function DashboardPage() {
 
 function StyleRatingCard({ style, t }: { style: TrainingStyle; t: (k: string) => string }) {
   const prog = useAppStore((s) => s.progressions[style]);
-  const Icon = STYLE_ICONS[style];
   return (
     <Card className="!p-3">
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-[11px] uppercase tracking-wider text-zinc-400">
           {t(`style.${style}.name`)}
         </span>
-        <Icon size={14} className="text-[var(--accent)]" />
+        <StyleIcon style={style} size={14} />
       </div>
       <div className="text-2xl font-semibold tabular-nums leading-none">
         {prog.currentPuzzleRating}

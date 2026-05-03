@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Swords, Zap, Timer, Hourglass } from 'lucide-react';
+import { Swords } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -12,6 +12,7 @@ import { Segmented } from '@/components/ui/segmented';
 import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { DifficultySlider } from '@/components/DifficultySlider';
+import { StyleIcon } from '@/components/StyleIcon';
 import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
 import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle';
 import {
@@ -20,12 +21,6 @@ import {
   DEFAULT_STYLE, UNLOCK_REWARD, CALIBRATION_SESSIONS,
 } from '@/lib/levels';
 import { cn } from '@/lib/utils';
-
-const STYLE_ICONS = {
-  bullet: Zap,
-  blitz: Timer,
-  rapid: Hourglass,
-} as const;
 
 // Remember the player's last-played style so they don't have to
 // re-pick on every visit. localStorage so it survives reloads but
@@ -351,17 +346,16 @@ export default function PlaySetup() {
 }
 
 function StyleBlurb({ style, t }: { style: TrainingStyle; t: (k: string) => string }) {
-  const Icon = STYLE_ICONS[style];
   const preset = STYLE_FORMULAS[style];
   const minMinutes = Math.round(preset.minDurationSec / 60);
   const maxMinutes = Math.round(preset.maxDurationSec / 60);
   return (
     <div className="mt-3 flex items-start gap-3 rounded-xl bg-black/20 px-3 py-2.5">
       <div
-        className="h-8 w-8 rounded-lg bg-[var(--accent)]/15 text-[var(--accent)] flex items-center justify-center shrink-0"
+        className="h-8 w-8 rounded-lg bg-white/[0.06] flex items-center justify-center shrink-0"
         aria-hidden
       >
-        <Icon size={16} />
+        <StyleIcon style={style} size={16} />
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-xs text-zinc-300 leading-snug">{t(`style.${style}.desc`)}</div>

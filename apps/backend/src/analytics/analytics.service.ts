@@ -84,6 +84,7 @@ export class AnalyticsService {
         startRating: s.startRating,
         durationSec: s.durationSec,
         mode: s.mode,
+        style: s.style,
         theme: s.theme,
       })),
       allTimePeak,

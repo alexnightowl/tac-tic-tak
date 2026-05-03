@@ -3,22 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { Zap, Timer, Hourglass, Users2, Globe2, Trophy, Medal } from 'lucide-react';
+import { Users2, Globe2, Trophy, Medal } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useT } from '@/lib/i18n';
 import { Avatar } from '@/components/Avatar';
 import { Card } from '@/components/ui/card';
 import { Segmented } from '@/components/ui/segmented';
 import { StreakBadge } from '@/components/StreakBadge';
+import { StyleIcon } from '@/components/StyleIcon';
 import { useAppStore } from '@/lib/store';
 import { TRAINING_STYLES, TrainingStyle } from '@/lib/levels';
 import { cn } from '@/lib/utils';
-
-const STYLE_ICONS = {
-  bullet: Zap,
-  blitz: Timer,
-  rapid: Hourglass,
-} as const;
 
 type Row = {
   rank: number;
@@ -89,7 +84,6 @@ export default function LeaderboardPage() {
 }
 
 function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showStreak: boolean }) {
-  const Icon = STYLE_ICONS[style];
   const medal = row.rank <= 3
     ? ['text-yellow-400', 'text-zinc-300', 'text-amber-600'][row.rank - 1]
     : null;
@@ -121,7 +115,7 @@ function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showS
         <StreakBadge days={row.streakDays} size="sm" />
       )}
       <div className="flex items-center gap-1.5">
-        <Icon size={12} className="text-[var(--accent)]" />
+        <StyleIcon style={style} size={12} />
         <span className="text-base font-semibold tabular-nums">{row.rating}</span>
       </div>
     </Link>
