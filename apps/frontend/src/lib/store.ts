@@ -39,6 +39,29 @@ export type UserSettings = {
   fixedColor: ColorMode;
   animationSpeed: AnimationSpeed;
   knightArrow: KnightArrowMode;
+  /** Toggle to hide the daily-streak UI for users who'd rather
+   *  not see it. Server still tracks the streak; this only gates
+   *  the badges on dashboard / leaderboard / profile. */
+  showStreak: boolean;
+};
+
+export type Streak = {
+  /** Current streak length in days. 0 = never played or just reset. */
+  days: number;
+  /** Freezes available to absorb a single missed day. Capped at 1. */
+  freezes: number;
+  /** Last counted play day in the user's local TZ ('YYYY-MM-DD'). */
+  lastDay: string | null;
+  /** Day a consumed freeze regenerates ('YYYY-MM-DD'); null when no
+   *  freeze is regenerating. */
+  freezeRegenAt: string | null;
+};
+
+const EMPTY_STREAK: Streak = {
+  days: 0,
+  freezes: 1,
+  lastDay: null,
+  freezeRegenAt: null,
 };
 
 export type AuthUser = {
@@ -77,6 +100,7 @@ type State = {
   user: AuthUser | null;
   settings: UserSettings;
   progressions: Progressions;
+  streak: Streak;
   /** Flips to true once settings have been resolved from localStorage
    *  cache or the backend, so surfaces that care about user theme (the
    *  board, piece set) can hold their first paint and never flash the
@@ -87,6 +111,7 @@ type State = {
   setSettings: (s: Partial<UserSettings>) => void;
   setProgressions: (p: Progressions) => void;
   patchStyleProgression: (style: TrainingStyle, patch: Partial<Progression>) => void;
+  setStreak: (s: Streak) => void;
   setSettingsReady: (v: boolean) => void;
 };
 
@@ -101,12 +126,14 @@ const DEFAULT_SETTINGS: UserSettings = {
   fixedColor: 'auto',
   animationSpeed: 'normal',
   knightArrow: 'bent',
+  showStreak: true,
 };
 
 export const useAppStore = create<State>((set) => ({
   user: null,
   settings: DEFAULT_SETTINGS,
   progressions: DEFAULT_PROGRESSIONS,
+  streak: EMPTY_STREAK,
   settingsReady: false,
   setSettingsReady: (v) => set({ settingsReady: v }),
   setUser: (user) => set({ user }),
@@ -131,6 +158,7 @@ export const useAppStore = create<State>((set) => ({
     return { settings: next };
   }),
   setProgressions: (progressions) => set({ progressions }),
+  setStreak: (streak) => set({ streak }),
   patchStyleProgression: (style, patch) => set((s) => ({
     progressions: {
       ...s.progressions,

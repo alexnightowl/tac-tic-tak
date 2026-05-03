@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { http, getToken } from './api';
 import { useAppStore } from './store';
-import type { Progressions } from './store';
+import type { Progressions, Streak } from './store';
 
 // useLayoutEffect warns during SSR; swap it out on the server.
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -18,6 +18,7 @@ type Me = {
   country?: string | null;
   settings: any;
   progressions: Progressions;
+  streak?: Streak;
 };
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -27,6 +28,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const setUser = useAppStore((s) => s.setUser);
   const setSettings = useAppStore((s) => s.setSettings);
   const setProgressions = useAppStore((s) => s.setProgressions);
+  const setStreak = useAppStore((s) => s.setStreak);
   const setSettingsReady = useAppStore((s) => s.setSettingsReady);
 
   // Rehydrate settings from localStorage BEFORE first paint on the client.
@@ -69,10 +71,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
         });
         if (me.settings) setSettings(me.settings);
         if (me.progressions) setProgressions(me.progressions);
+        if (me.streak) setStreak(me.streak);
       })
       .catch(() => {})
       .finally(() => setSettingsReady(true));
-  }, [setUser, setSettings, setProgressions, setSettingsReady]);
+  }, [setUser, setSettings, setProgressions, setStreak, setSettingsReady]);
 
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }

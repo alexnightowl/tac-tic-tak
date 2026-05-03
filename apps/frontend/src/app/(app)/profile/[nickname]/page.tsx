@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { Zap, Timer, Hourglass, Trophy, CalendarDays, Users } from 'lucide-react';
+import { Zap, Timer, Hourglass, Trophy, CalendarDays, Users, Flame } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -24,6 +24,7 @@ type PublicProfile = {
   createdAt: string;
   progressions: Record<TrainingStyle, { currentPuzzleRating: number; unlockedStartRating: number; startPuzzleRating: number }>;
   allTimePeak: number | null;
+  streak?: { days: number; freezes: number; lastDay: string | null };
   recentSessions: SessionRow[];
 };
 
@@ -37,6 +38,7 @@ export default function ProfilePage() {
   const { nickname } = useParams<{ nickname: string }>();
   const me = useAppStore((s) => s.user);
   const language = useAppStore((s) => s.settings.language);
+  const showStreak = useAppStore((s) => s.settings.showStreak);
   const t = useT();
 
   const isSelf = !!me && me.nickname.toLowerCase() === nickname?.toLowerCase();
@@ -88,6 +90,11 @@ export default function ProfilePage() {
               {data.allTimePeak != null && (
                 <span className="flex items-center gap-1 whitespace-nowrap">
                   <Trophy size={12} /> {t('profile.peak')} {data.allTimePeak}
+                </span>
+              )}
+              {showStreak && data.streak && data.streak.days > 0 && (
+                <span className="flex items-center gap-1 whitespace-nowrap text-amber-300">
+                  <Flame size={12} /> {t('profile.streak')} {data.streak.days}
                 </span>
               )}
             </div>

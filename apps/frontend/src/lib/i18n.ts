@@ -254,6 +254,9 @@ const en: Dict = {
   'settings.knight_arrow_hint': 'How right-click annotation arrows draw a knight move.',
   'settings.knight_arrow.bent': 'L-shape',
   'settings.knight_arrow.straight': 'Straight',
+  'settings.show_streak': 'Show daily streak',
+  'settings.show_streak_hint': 'Hide the flame on dashboard, leaderboard and profile if you\'d rather not see it. Server still tracks it.',
+  'profile.streak': 'Streak',
 };
 
 const uk: Dict = {
@@ -306,6 +309,7 @@ const uk: Dict = {
   'profile.no_sessions': 'Ще немає завершених сесій.',
   'profile.joined': 'Приєднався',
   'profile.peak': 'Пік',
+  'profile.streak': 'Стрік',
   'profile.not_found_title': 'Гравця не знайдено',
   'profile.not_found_hint': 'Немає гравця з ніком «{nickname}».',
   'profile.add_friend': 'Додати в друзі',
@@ -507,6 +511,8 @@ const uk: Dict = {
   'settings.knight_arrow_hint': 'Як виглядає стрілка-анотація для ходу коня (правий клік).',
   'settings.knight_arrow.bent': 'Кутом',
   'settings.knight_arrow.straight': 'Пряма',
+  'settings.show_streak': 'Показувати щоденний стрік',
+  'settings.show_streak_hint': 'Сховати вогник на дашборді, у турнірній таблиці та профілі. Сервер все одно його рахує.',
 };
 
 const DICTS: Record<Language, Dict> = { en, uk };

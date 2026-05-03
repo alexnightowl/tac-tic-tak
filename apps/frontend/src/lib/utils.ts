@@ -17,3 +17,16 @@ export function fmtDuration(s: number) {
   const rem = s % 60;
   return `${m}:${rem.toString().padStart(2, '0')}`;
 }
+
+/**
+ * Format a Date as 'YYYY-MM-DD' in the browser's local timezone.
+ * Used to tell the backend the user's local calendar day on
+ * session finish so the daily-streak ticks in their TZ rather
+ * than UTC. Avoid `toISOString()` — that's UTC.
+ */
+export function formatLocalDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}

@@ -18,6 +18,17 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
+  // Daily-streak tracking. Updated on session finish using the
+  // user's local 'YYYY-MM-DD' supplied by the client (no TZ stored
+  // server-side — date arithmetic happens on those strings).
+  // streakFreezes is auto-applied when the player misses exactly
+  // one day; regenerates one week after consumption (see
+  // sessions/streak.ts).
+  streakDays            Int     @default(0)
+  streakFreezes         Int     @default(1)
+  streakLastDay         String?
+  streakFreezeRegenAt   String?
+
   settings       UserSetting?
   progression    UserProgression?
   styleProgressions UserStyleProgression[]
@@ -41,6 +52,7 @@ model UserSetting {
   fixedColor      String  @default("auto") // auto | white | black
   animationSpeed  String  @default("normal") // instant | fast | normal | slow
   knightArrow     String  @default("bent")  // bent | straight (right-click arrow shape for knight moves)
+  showStreak      Boolean @default(true)
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

@@ -358,6 +358,14 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
           ]}
         />
       </div>
+
+      <div className="pt-2 flex items-center justify-between gap-4">
+        <div>
+          <div className="text-sm">{t('settings.show_streak')}</div>
+          <div className="text-xs text-zinc-500">{t('settings.show_streak_hint')}</div>
+        </div>
+        <Toggle checked={settings.showStreak} onChange={(v) => patch({ showStreak: v })} />
+      </div>
     </Card>
   );
 }

@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { takeFirstPuzzle } from '@/lib/pending-puzzle';
 import { playSound } from '@/lib/sound';
-import { fmtDuration, cn } from '@/lib/utils';
+import { fmtDuration, cn, formatLocalDate } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
 import {
   computeUnlockProgress, CriterionProgress, CriterionId, UNLOCK_REWARD,
@@ -62,6 +62,13 @@ type FinishResponse = {
     ceilingAfter: number;
     delta: number;
   } | null;
+  streak?: {
+    days: number;
+    freezes: number;
+    lastDay: string | null;
+    freezeRegenAt: string | null;
+    outcome: 'same-day' | 'continued' | 'frozen' | 'reset' | 'started' | 'skipped';
+  } | null;
 };
 
 export default function PlayRunner() {
@@ -71,6 +78,7 @@ export default function PlayRunner() {
   const settingsReady = useAppStore((s) => s.settingsReady);
   const progressions = useAppStore((s) => s.progressions);
   const patchStyleProgression = useAppStore((s) => s.patchStyleProgression);
+  const setDailyStreak = useAppStore((s) => s.setStreak);
   const t = useT();
   const focusMode = settings.focusMode;
 
@@ -282,13 +290,28 @@ export default function PlayRunner() {
     if (finishing.current) return;
     finishing.current = true;
     const save = opts.save !== false;
+    // The user's local 'YYYY-MM-DD' so the server can tick the
+    // daily-streak in their TZ instead of UTC. Sent on every
+    // finish — discarded calls ignore it server-side.
+    const localDate = formatLocalDate(new Date());
+    const params = new URLSearchParams();
+    if (!save) params.set('save', 'false');
+    params.set('localDate', localDate);
     try {
       const r = await http.post<FinishResponse & { discarded?: boolean }>(
-        `/sessions/${sessionId}/finish${save ? '' : '?save=false'}`,
+        `/sessions/${sessionId}/finish?${params.toString()}`,
       );
       if ((r as any).discarded) {
         router.replace('/dashboard');
         return;
+      }
+      if (r.streak) {
+        setDailyStreak({
+          days: r.streak.days,
+          freezes: r.streak.freezes,
+          lastDay: r.streak.lastDay,
+          freezeRegenAt: r.streak.freezeRegenAt,
+        });
       }
       setSummary(r);
     } catch {

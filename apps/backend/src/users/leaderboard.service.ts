@@ -39,7 +39,10 @@ export class LeaderboardService {
       take: limit,
       include: {
         user: {
-          select: { id: true, nickname: true, displayName: true, avatarUrl: true, country: true },
+          select: {
+            id: true, nickname: true, displayName: true, avatarUrl: true, country: true,
+            streakDays: true,
+          },
         },
       },
     });
@@ -49,7 +52,14 @@ export class LeaderboardService {
       rating: r.currentPuzzleRating,
       unlocked: r.unlockedStartRating,
       isSelf: r.userId === opts.viewerId,
-      user: r.user,
+      streakDays: r.user.streakDays,
+      user: {
+        id: r.user.id,
+        nickname: r.user.nickname,
+        displayName: r.user.displayName,
+        avatarUrl: r.user.avatarUrl,
+        country: r.user.country,
+      },
     }));
   }
 }

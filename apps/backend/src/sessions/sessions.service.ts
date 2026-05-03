@@ -12,6 +12,7 @@ import {
   UNLOCK_REWARD,
   DEMOTE_PEAK_BAND,
 } from './unlock';
+import { applyStreakOnPlay, isValidDay, StreakState } from './streak';
 
 const WINDOW = 4;
 const MIN_RATING = 400;
@@ -244,7 +245,11 @@ export class SessionsService {
     return { newRating: next, step, streak };
   }
 
-  async finish(userId: string, sessionId: string, opts: { save?: boolean } = {}) {
+  async finish(
+    userId: string,
+    sessionId: string,
+    opts: { save?: boolean; localDate?: string } = {},
+  ) {
     const save = opts.save !== false;
     const session = await this.ownedSession(userId, sessionId);
     if (session.endedAt) return this.summary(session.id);
@@ -270,6 +275,12 @@ export class SessionsService {
       },
     });
 
+    // Daily-streak update happens for any saved session — theme,
+    // calibration, early-exit, full duration. The point is "did
+    // the player open the app and play today?", not "did they
+    // qualify for level-up?". See sessions/streak.ts for rules.
+    const streakOutcome = await this.tickStreak(userId, opts.localDate);
+
     const style = normalizeStyle(session.style);
 
     // Theme sessions are unrated — no unlock check, no reward.
@@ -278,6 +289,7 @@ export class SessionsService {
       return {
         ...(await this.summary(sessionId)),
         unlocked: false,
+        streak: streakOutcome,
         style,
       };
     }
@@ -297,6 +309,7 @@ export class SessionsService {
         ...(await this.summary(sessionId)),
         unlocked: false,
         early: true,
+        streak: streakOutcome,
         style,
       };
     }
@@ -442,7 +455,72 @@ export class SessionsService {
       demoted,
       demoteCheck: demoteResponse,
       calibration: calibrationResponse,
+      streak: streakOutcome,
       style,
+    };
+  }
+
+  /**
+   * Apply today's session to the user's daily streak. The client
+   * provides its local 'YYYY-MM-DD' (we don't store TZ on User).
+   * If the day param is missing or malformed, we leave the streak
+   * untouched and return null — better than guessing UTC and
+   * ticking the wrong day for someone several timezones west.
+   */
+  private async tickStreak(
+    userId: string,
+    localDate: string | undefined,
+  ): Promise<{
+    days: number;
+    freezes: number;
+    lastDay: string | null;
+    freezeRegenAt: string | null;
+    outcome: 'same-day' | 'continued' | 'frozen' | 'reset' | 'started' | 'skipped';
+  } | null> {
+    if (!localDate || !isValidDay(localDate)) return null;
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        streakDays: true,
+        streakFreezes: true,
+        streakLastDay: true,
+        streakFreezeRegenAt: true,
+      },
+    });
+    if (!user) return null;
+
+    const before: StreakState = {
+      streakDays: user.streakDays,
+      streakFreezes: user.streakFreezes,
+      streakLastDay: user.streakLastDay,
+      streakFreezeRegenAt: user.streakFreezeRegenAt,
+    };
+    const { next, outcome } = applyStreakOnPlay(before, localDate);
+
+    if (
+      next.streakDays !== before.streakDays ||
+      next.streakFreezes !== before.streakFreezes ||
+      next.streakLastDay !== before.streakLastDay ||
+      next.streakFreezeRegenAt !== before.streakFreezeRegenAt
+    ) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          streakDays: next.streakDays,
+          streakFreezes: next.streakFreezes,
+          streakLastDay: next.streakLastDay,
+          streakFreezeRegenAt: next.streakFreezeRegenAt,
+        },
+      });
+    }
+
+    return {
+      days: next.streakDays,
+      freezes: next.streakFreezes,
+      lastDay: next.streakLastDay,
+      freezeRegenAt: next.streakFreezeRegenAt,
+      outcome,
     };
   }
 

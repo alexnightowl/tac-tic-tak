@@ -39,6 +39,12 @@ export class UsersService {
       // frontend fully migrates off it.
       progression: user.progression,
       progressions: byStyle,
+      streak: {
+        days: user.streakDays,
+        freezes: user.streakFreezes,
+        lastDay: user.streakLastDay,
+        freezeRegenAt: user.streakFreezeRegenAt,
+      },
     };
   }
 
@@ -83,6 +89,11 @@ export class UsersService {
       createdAt: user.createdAt,
       progressions: byStyle,
       allTimePeak: peak._max.peakRating ?? null,
+      streak: {
+        days: user.streakDays,
+        freezes: user.streakFreezes,
+        lastDay: user.streakLastDay,
+      },
       recentSessions: recent.map((s) => ({
         id: s.id,
         startedAt: s.startedAt,
@@ -111,6 +122,7 @@ export class UsersService {
     fixedColor: string;
     animationSpeed: string;
     knightArrow: string;
+    showStreak: boolean;
   }>) {
     return this.prisma.userSetting.update({
       where: { userId },

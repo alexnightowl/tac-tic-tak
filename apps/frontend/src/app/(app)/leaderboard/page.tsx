@@ -9,6 +9,8 @@ import { useT } from '@/lib/i18n';
 import { Avatar } from '@/components/Avatar';
 import { Card } from '@/components/ui/card';
 import { Segmented } from '@/components/ui/segmented';
+import { StreakBadge } from '@/components/StreakBadge';
+import { useAppStore } from '@/lib/store';
 import { TRAINING_STYLES, TrainingStyle } from '@/lib/levels';
 import { cn } from '@/lib/utils';
 
@@ -23,12 +25,14 @@ type Row = {
   rating: number;
   unlocked: number;
   isSelf: boolean;
+  streakDays: number;
   user: { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null };
 };
 
 export default function LeaderboardPage() {
   const [style, setStyle] = useState<TrainingStyle>('blitz');
   const [scope, setScope] = useState<'global' | 'friends'>('global');
+  const showStreak = useAppStore((s) => s.settings.showStreak);
   const t = useT();
 
   const { data, isLoading } = useQuery({
@@ -77,14 +81,14 @@ export default function LeaderboardPage() {
 
       {data && data.length > 0 && (
         <div className="space-y-1.5">
-          {data.map((r) => <Row key={r.user.id} row={r} style={style} />)}
+          {data.map((r) => <Row key={r.user.id} row={r} style={style} showStreak={showStreak} />)}
         </div>
       )}
     </div>
   );
 }
 
-function Row({ row, style }: { row: Row; style: TrainingStyle }) {
+function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showStreak: boolean }) {
   const Icon = STYLE_ICONS[style];
   const medal = row.rank <= 3
     ? ['text-yellow-400', 'text-zinc-300', 'text-amber-600'][row.rank - 1]
@@ -113,6 +117,9 @@ function Row({ row, style }: { row: Row; style: TrainingStyle }) {
         </div>
         {row.user.country && <div className="text-[10px] uppercase text-zinc-500">{row.user.country}</div>}
       </div>
+      {showStreak && row.streakDays > 0 && (
+        <StreakBadge days={row.streakDays} size="sm" />
+      )}
       <div className="flex items-center gap-1.5">
         <Icon size={12} className="text-[var(--accent)]" />
         <span className="text-base font-semibold tabular-nums">{row.rating}</span>

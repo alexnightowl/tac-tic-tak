@@ -25,8 +25,16 @@ export class SessionsController {
   }
 
   @Post(':id/finish')
-  finish(@CurrentUser() u: AuthedUser, @Param('id') id: string, @Query('save') save?: string) {
-    return this.sessions.finish(u.id, id, { save: save !== 'false' });
+  finish(
+    @CurrentUser() u: AuthedUser,
+    @Param('id') id: string,
+    @Query('save') save?: string,
+    @Query('localDate') localDate?: string,
+  ) {
+    return this.sessions.finish(u.id, id, {
+      save: save !== 'false',
+      localDate,
+    });
   }
 
   @Get(':id')

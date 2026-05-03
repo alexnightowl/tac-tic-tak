@@ -9,6 +9,7 @@ import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { SessionList, SessionRow } from '@/components/SessionList';
+import { StreakBadge } from '@/components/StreakBadge';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 
 type Overview = {
@@ -26,6 +27,8 @@ export default function DashboardPage() {
   const user = useAppStore((s) => s.user);
   const progressions = useAppStore((s) => s.progressions);
   const language = useAppStore((s) => s.settings.language);
+  const showStreak = useAppStore((s) => s.settings.showStreak);
+  const streak = useAppStore((s) => s.streak);
   const t = useT();
   const qc = useQueryClient();
   const { data } = useQuery({
@@ -44,11 +47,20 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <div>
-          <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight">
-            {t('dashboard.welcome')}, {user?.nickname}
-          </h1>
-          <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight">
+              {t('dashboard.welcome')}, {user?.nickname}
+            </h1>
+            <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>
+          </div>
+          {showStreak && streak.days > 0 && (
+            <StreakBadge
+              days={streak.days}
+              freezeAvailable={streak.freezes > 0}
+              className="mt-1.5 shrink-0"
+            />
+          )}
         </div>
         <Link href="/play" className="block">
           <Button size="lg" className="w-full md:w-auto md:min-w-[220px]">
