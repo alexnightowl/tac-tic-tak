@@ -34,7 +34,7 @@ model UserSetting {
   focusMode       Boolean @default(true)
   accentColor     String  @default("#22c55e")
   boardTheme      String  @default("green")
-  pieceSet        String  @default("cburnett")
+  pieceSet        String  @default("maestro")
   soundEnabled    Boolean @default(true)
   soundPack       String  @default("wood")
   language        String  @default("en")

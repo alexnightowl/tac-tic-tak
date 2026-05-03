@@ -22,7 +22,7 @@ type Props = {
  * squares with piece sprites overlaid — no interactivity, safe to render
  * many of on a list page.
  */
-export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, theme = 'green', pieceSet = 'cburnett', className }: Props) {
+export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, theme = 'green', pieceSet = 'maestro', className }: Props) {
   const { board, orientation } = useMemo(() => {
     const chess = new Chess(fen);
     if (setupMove) {

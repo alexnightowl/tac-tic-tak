@@ -95,7 +95,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   focusMode: true,
   accentColor: '#d81f26',
   boardTheme: 'green',
-  pieceSet: 'cburnett',
+  pieceSet: 'maestro',
   soundEnabled: true,
   soundPack: 'wood',
   language: 'en',

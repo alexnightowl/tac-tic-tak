@@ -58,7 +58,7 @@ export function Chessboard({
   lastMove,
   allowMoves = true,
   theme = 'green',
-  pieceSet = 'cburnett',
+  pieceSet = 'maestro',
   animateMove,
   animationMs = 280,
   hintSquare = null,
