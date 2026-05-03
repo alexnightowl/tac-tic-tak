@@ -33,20 +33,31 @@ export class SessionsService {
     if (dto.mode !== 'theme' && dto.startRating > styleRow.unlockedStartRating + 200) {
       throw new BadRequestException(`startRating exceeds unlocked cap (${styleRow.unlockedStartRating})`);
     }
+
+    // Calibration sessions ignore whatever startRating the client sent
+    // and use the server-controlled progression rating instead. Without
+    // this, a player could pick a low rating, sail through 5 easy
+    // sessions, and call calibration "done" at a rating that doesn't
+    // reflect their real strength. UI hides the picker during
+    // calibration too — this is the belt to that suspenders.
+    const calibrating =
+      dto.mode !== 'theme' && styleRow.calibrationSessionsLeft > 0;
+    const startRating = calibrating ? styleRow.currentPuzzleRating : dto.startRating;
+
     const session = await this.prisma.trainingSession.create({
       data: {
         userId,
         mode: dto.mode,
         style: dto.style,
         theme: dto.theme ?? null,
-        startRating: dto.startRating,
+        startRating,
         durationSec: dto.durationSec,
       },
     });
     if (dto.mode !== 'theme') {
       await this.prisma.userStyleProgression.update({
         where: { userId_style: { userId, style: dto.style } },
-        data: { currentPuzzleRating: dto.startRating, startPuzzleRating: dto.startRating },
+        data: { currentPuzzleRating: startRating, startPuzzleRating: startRating },
       });
     }
 
@@ -56,10 +67,10 @@ export class SessionsService {
     // raced to /next and often hit a cold queue that had to preload from
     // Postgres with an ORDER BY random() over a multi-million-row table
     // — the slow first-puzzle problem.
-    // Right after create, both theme-mode and rated sessions serve at the
-    // dto-declared startRating: rated sessions just had their
-    // currentPuzzleRating bumped to it above.
-    const servingRating = dto.startRating;
+    // Both theme-mode and rated sessions serve at the resolved
+    // startRating: rated sessions just had their currentPuzzleRating
+    // bumped to it above (or kept at the calibration-controlled value).
+    const servingRating = startRating;
     let firstPuzzle: Awaited<ReturnType<typeof this.buffer.getNext>> = null;
     try {
       firstPuzzle = await this.buffer.getNext({

@@ -78,6 +78,11 @@ export const STYLE_FORMULAS: Record<TrainingStyle, StyleFormula> = {
 
 export const UNLOCK_REWARD = 50;
 
+// Sessions per style required to leave the provisional period. Mirror
+// of CALIBRATION_SESSIONS in apps/backend/src/sessions/unlock.ts —
+// keep these two in sync.
+export const CALIBRATION_SESSIONS = 5;
+
 export function solvedTarget(style: TrainingStyle, durationSec: number): number {
   const f = STYLE_FORMULAS[style];
   const min = durationSec / 60;

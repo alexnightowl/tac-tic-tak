@@ -16,7 +16,7 @@ import { fmtDuration, cn } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
 import {
   computeUnlockProgress, CriterionProgress, CriterionId, UNLOCK_REWARD,
-  TrainingStyle, DEFAULT_STYLE, isTrainingStyle,
+  TrainingStyle, DEFAULT_STYLE, isTrainingStyle, CALIBRATION_SESSIONS,
 } from '@/lib/levels';
 
 type NextResponse = {
@@ -427,11 +427,23 @@ export default function PlayRunner() {
     />
   );
 
-  // Show the unlock-criteria progress bar only when the session can
-  // actually advance the cap. Theme mode is unrated. Below the peak
-  // band the cap is locked regardless of how cleanly we play — no
-  // sense dangling the "ready, finish to claim" pill.
-  const progressBar = !sessionEligibleForUnlock || !unlockProgress || unlockCeiling == null
+  // Progress slot below the turn card. Three states:
+  //   1. calibrating  → CalibrationProgressBar (X / N sessions). The
+  //      level-up gate isn't live yet, so we show calibration progress
+  //      in the same slot — same outer shape so the position doesn't
+  //      shift when calibration finishes and the unlock bar replaces
+  //      this one.
+  //   2. eligible     → UnlockProgressBar (criteria + cap arrow).
+  //   3. otherwise    → nothing (theme mode / comfort-zone session,
+  //      where the cap can't move).
+  const calibrationLeft = styleProg?.calibrationSessionsLeft ?? 0;
+  const progressBar = isCalibrating && sessionMode !== 'theme' ? (
+    <CalibrationProgressBar
+      done={CALIBRATION_SESSIONS - calibrationLeft}
+      total={CALIBRATION_SESSIONS}
+      style={sessionStyle}
+    />
+  ) : !sessionEligibleForUnlock || !unlockProgress || unlockCeiling == null
     ? null
     : (
       <UnlockProgressBar
@@ -661,6 +673,43 @@ function UnlockProgressBar({
           <CriterionTick key={c.id} c={c} />
         ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Calibration twin of UnlockProgressBar — same outer shell so the slot
+ * doesn't change shape when calibration ends and the level-up bar
+ * takes over. No criteria grid (the level-up criteria are hidden
+ * during calibration), just a "X / N sessions" counter and a hint.
+ */
+function CalibrationProgressBar({ done, total, style }: {
+  done: number; total: number; style: TrainingStyle;
+}) {
+  const t = useT();
+  const pct = Math.round((done / total) * 100);
+  const styleName = t(`style.${style}.name`).toLowerCase();
+  return (
+    <div className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-3 py-2">
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-[11px] uppercase tracking-wider text-amber-200/90">
+          {t('calibration.bar_label')}
+        </span>
+        <span className="tabular-nums text-xs">
+          <span className="text-amber-200 font-semibold">{done}</span>
+          <span className="mx-1 text-amber-200/50">/</span>
+          <span className="text-amber-200/70">{total}</span>
+        </span>
+      </div>
+      <div className="relative h-1.5 rounded-full bg-white/5 overflow-hidden">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full bg-amber-400/80 transition-[width] duration-300"
+          style={{ width: `${Math.max(pct, 2)}%` }}
+        />
+      </div>
+      <p className="text-[10px] text-amber-200/70 mt-2 leading-snug">
+        {t('calibration.bar_hint').replace('{style}', styleName)}
+      </p>
     </div>
   );
 }

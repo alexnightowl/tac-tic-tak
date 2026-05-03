@@ -17,7 +17,7 @@ import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle'
 import {
   bandFor, solvedTarget,
   STYLE_FORMULAS, TrainingStyle, TRAINING_STYLES,
-  UNLOCK_REWARD,
+  UNLOCK_REWARD, CALIBRATION_SESSIONS,
 } from '@/lib/levels';
 import { cn } from '@/lib/utils';
 
@@ -140,7 +140,7 @@ export default function PlaySetup() {
             options={TRAINING_STYLES.map((s) => {
               const left = progressions[s]?.calibrationSessionsLeft ?? 0;
               const calibrating = left > 0;
-              const done = 5 - left;
+              const done = CALIBRATION_SESSIONS - left;
               return {
                 value: s,
                 label: (
@@ -156,9 +156,9 @@ export default function PlaySetup() {
                         )}
                         aria-label={t('play.calibration_progress_aria')
                           .replace('{done}', String(done))
-                          .replace('{total}', '5')}
+                          .replace('{total}', String(CALIBRATION_SESSIONS))}
                       >
-                        ?{done}/5
+                        ?{done}/{CALIBRATION_SESSIONS}
                       </span>
                     )}
                   </span>
@@ -194,37 +194,44 @@ export default function PlaySetup() {
               </span>
             </div>
           </div>
-          <DifficultySlider
-            value={startRating}
-            onChange={setStartRating}
-            cap={ratingCap}
-            labels={bandLabels}
-            currentRating={styleProgression.currentPuzzleRating}
-            ariaLabel={t('play.start_rating')}
-          />
-          <p className="text-xs text-zinc-500 mt-2">
-            {mode === 'theme' ? (
-              <span className="text-zinc-400">{t('play.theme_unrated_hint')}</span>
-            ) : (
-              <>
-                {t('play.unlocked')}: <span className="text-zinc-300">{unlocked}</span>
-                <span className="mx-2 text-zinc-700">·</span>
-                {t('play.cap')}: <span className="text-zinc-300">{ratingCap}</span>
-              </>
-            )}
-          </p>
-          {provisional && (
+          {/* Rating picker is hidden during calibration in mixed mode:
+              the system controls the rating until the provisional
+              window closes. The slider stays visible in theme mode
+              (unrated practice — any rating is fine). */}
+          {provisional && mode !== 'theme' ? (
             <p className="text-xs text-amber-300/80 mt-2 leading-snug">
               {t('play.calibration_per_style')
-                .replace('{done}', String(5 - styleProgression.calibrationSessionsLeft))
-                .replace('{total}', '5')
+                .replace('{done}', String(CALIBRATION_SESSIONS - styleProgression.calibrationSessionsLeft))
+                .replace('{total}', String(CALIBRATION_SESSIONS))
                 .replace('{style}', t(`style.${style}.name`).toLowerCase())}
             </p>
-          )}
-          {showComfortNotice && (
-            <p className="text-xs text-amber-300/80 mt-2 leading-snug">
-              {t('play.comfort_notice').replace('{floor}', String(peakFloor))}
-            </p>
+          ) : (
+            <>
+              <DifficultySlider
+                value={startRating}
+                onChange={setStartRating}
+                cap={ratingCap}
+                labels={bandLabels}
+                currentRating={styleProgression.currentPuzzleRating}
+                ariaLabel={t('play.start_rating')}
+              />
+              <p className="text-xs text-zinc-500 mt-2">
+                {mode === 'theme' ? (
+                  <span className="text-zinc-400">{t('play.theme_unrated_hint')}</span>
+                ) : (
+                  <>
+                    {t('play.unlocked')}: <span className="text-zinc-300">{unlocked}</span>
+                    <span className="mx-2 text-zinc-700">·</span>
+                    {t('play.cap')}: <span className="text-zinc-300">{ratingCap}</span>
+                  </>
+                )}
+              </p>
+              {showComfortNotice && (
+                <p className="text-xs text-amber-300/80 mt-2 leading-snug">
+                  {t('play.comfort_notice').replace('{floor}', String(peakFloor))}
+                </p>
+              )}
+            </>
           )}
         </section>
 
@@ -291,12 +298,21 @@ export default function PlaySetup() {
         </section>
 
         {mode === 'mixed' ? (
-          <NextUnlockPreview
-            style={style}
-            durationSec={effectiveDuration}
-            unlockedTo={unlocked}
-            t={t}
-          />
+          provisional ? (
+            <CalibrationPreview
+              done={CALIBRATION_SESSIONS - styleProgression.calibrationSessionsLeft}
+              total={CALIBRATION_SESSIONS}
+              style={style}
+              t={t}
+            />
+          ) : (
+            <NextUnlockPreview
+              style={style}
+              durationSec={effectiveDuration}
+              unlockedTo={unlocked}
+              t={t}
+            />
+          )
         ) : (
           <ThemePracticeNote t={t} />
         )}
@@ -372,6 +388,44 @@ function NextUnlockPreview({ style, durationSec, unlockedTo, t }: {
       </ul>
       <p className="text-[11px] text-zinc-500 mt-3 leading-snug">
         {t('unlock.hint')}
+      </p>
+    </section>
+  );
+}
+
+/**
+ * Mirror of NextUnlockPreview's card shell, shown during the
+ * provisional period in place of the level-up criteria preview.
+ * Same outer styling so the form layout doesn't reflow when
+ * calibration ends and the level-up card replaces this one.
+ */
+function CalibrationPreview({ done, total, style, t }: {
+  done: number;
+  total: number;
+  style: TrainingStyle;
+  t: (k: string) => string;
+}) {
+  const pct = Math.round((done / total) * 100);
+  return (
+    <section className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-softer)]/40 p-4">
+      <div className="flex items-baseline justify-between gap-2 mb-3">
+        <div className="text-xs uppercase tracking-wider text-zinc-400">
+          {t('calibration.preview_title')}
+        </div>
+        <div className="tabular-nums text-sm text-zinc-300">
+          <span className="text-amber-300 font-semibold">{done}</span>
+          <span className="mx-1 text-zinc-600">/</span>
+          <span className="text-zinc-400">{total}</span>
+        </div>
+      </div>
+      <div className="relative h-1.5 rounded-full bg-white/5 overflow-hidden">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full bg-amber-400/80 transition-[width] duration-300"
+          style={{ width: `${Math.max(pct, 2)}%` }}
+        />
+      </div>
+      <p className="text-[11px] text-zinc-500 mt-3 leading-snug">
+        {t('calibration.preview_hint').replace('{style}', t(`style.${style}.name`).toLowerCase())}
       </p>
     </section>
   );
