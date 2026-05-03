@@ -152,7 +152,15 @@ export function evaluateCalibration(
   // to land at a level where the player will hit ~3/4 criteria next
   // time, which means moving from where they just played. Floor at
   // startPuzzleRating so the level can never drift below entry.
-  const after = Math.max(startPuzzleRating, startRating + step);
+  //
+  // Snap to the 50-grid: stable-mode unlocks fire +50 increments, so
+  // a rating like 1495 reads as broken next to a 1500-step ladder.
+  // The calibration step ladder is 25-aligned (-75, -125) and
+  // session.startRating drifts off-grid via per-puzzle Glicko
+  // updates, so without this snap the post-calibration ceiling
+  // lands on an arbitrary integer.
+  const raw = Math.max(startPuzzleRating, startRating + step);
+  const after = Math.round(raw / 50) * 50;
   return {
     active: true,
     sessionsLeftBefore: calibrationSessionsLeft,
