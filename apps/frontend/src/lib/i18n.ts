@@ -205,6 +205,11 @@ const en: Dict = {
   'review.new_session': 'Play again',
 
   'stats.title': 'Statistics',
+  'stats.filter_all': 'All',
+  'stats.activity': 'Activity',
+  'stats.activity_hint': 'Sessions per day over the past year. Each square is one day.',
+  'stats.rating_history': 'Rating over time',
+  'stats.rating_history_hint': 'Peak rating per session, one line per style.',
   'stats.recommend': 'Recommended focus',
   'stats.by_time': 'Last session by time',
   'stats.by_theme': 'Themes profile',
@@ -464,6 +469,11 @@ const uk: Dict = {
   'review.new_session': 'Нова сесія',
 
   'stats.title': 'Статистика',
+  'stats.filter_all': 'Усі',
+  'stats.activity': 'Активність',
+  'stats.activity_hint': 'Сесії за день за останній рік. Кожен квадрат — один день.',
+  'stats.rating_history': 'Рейтинг у часі',
+  'stats.rating_history_hint': 'Піковий рейтинг за сесію, окрема лінія на стиль.',
   'stats.recommend': 'Рекомендація',
   'stats.by_time': 'Остання сесія за часом',
   'stats.by_theme': 'Профіль по темах',

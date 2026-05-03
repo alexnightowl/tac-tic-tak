@@ -1,13 +1,22 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
+import { Segmented } from '@/components/ui/segmented';
 import { RadarChart } from '@/components/charts/RadarChart';
+import { RatingHistoryChart } from '@/components/charts/RatingHistoryChart';
+import { ActivityHeatmap } from '@/components/charts/ActivityHeatmap';
 import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
+import {
+  TrainingStyle,
+  TRAINING_STYLES,
+  isTrainingStyle,
+} from '@/lib/levels';
+import { formatLocalDate } from '@/lib/utils';
 
 type Overview = {
   recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
@@ -23,13 +32,69 @@ type Overview = {
 };
 type ThemeRow = { slug: string; attempts: number; failures: number; avgResponseMs: number; failureRate: number; weakness: number; rating: number };
 type Recommendation = { theme: string | null; reason: string };
+type TimelinePoint = {
+  id: string;
+  endedAt: string;
+  style: string;
+  startRating: number;
+  peakRating: number;
+  solved: number;
+  durationSec: number;
+};
+
+type StyleFilter = 'all' | TrainingStyle;
 
 export default function AnalyticsPage() {
   const t = useT();
-  const language = useAppStore((s) => s.settings.language);
-  const overview = useQuery({ queryKey: ['analytics'], queryFn: () => http.get<Overview>('/analytics') });
-  const themes = useQuery({ queryKey: ['analytics-themes'], queryFn: () => http.get<ThemeRow[]>('/analytics/themes') });
-  const rec = useQuery({ queryKey: ['analytics-rec'], queryFn: () => http.get<Recommendation>('/analytics/recommendations') });
+  const language = useAppStore((s) => s.settings.language) as 'en' | 'uk';
+  const [filter, setFilter] = useState<StyleFilter>('all');
+  const styleParam = filter === 'all' ? '' : `?style=${filter}`;
+
+  const overview = useQuery({
+    queryKey: ['analytics', filter],
+    queryFn: () => http.get<Overview>(`/analytics${styleParam}`),
+  });
+  const themes = useQuery({
+    queryKey: ['analytics-themes', filter],
+    queryFn: () => http.get<ThemeRow[]>(`/analytics/themes${styleParam}`),
+  });
+  const rec = useQuery({
+    queryKey: ['analytics-rec', filter],
+    queryFn: () => http.get<Recommendation>(`/analytics/recommendations${styleParam}`),
+  });
+  // Timeline always pulls all styles — the line chart wants every
+  // style on the same axis so the user can compare their bullet vs
+  // rapid trajectory at a glance, even when the rest of the page
+  // is filtered. Heatmap also benefits from all-styles activity.
+  const timeline = useQuery({
+    queryKey: ['analytics-timeline'],
+    queryFn: () => http.get<TimelinePoint[]>('/analytics/timeline?days=365'),
+  });
+
+  const ratingPoints = useMemo(() => {
+    if (!timeline.data) return [];
+    return timeline.data
+      .filter((p) => isTrainingStyle(p.style))
+      .map((p) => ({
+        endedAt: p.endedAt,
+        style: p.style as TrainingStyle,
+        rating: p.peakRating,
+      }));
+  }, [timeline.data]);
+
+  // Bucket sessions by the user's local calendar day. The backend
+  // returns ISO timestamps; we convert each to the local 'YYYY-MM-DD'
+  // so the heatmap reflects "did I play on Monday in MY timezone",
+  // not in UTC.
+  const heatmapData = useMemo(() => {
+    if (!timeline.data) return [];
+    const counts = new Map<string, number>();
+    for (const p of timeline.data) {
+      const key = formatLocalDate(new Date(p.endedAt));
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    return Array.from(counts.entries()).map(([date, count]) => ({ date, count }));
+  }, [timeline.data]);
 
   // Top 8 most-attempted *tactical* themes — strip out the Lichess meta
   // tags (middlegame / endgame / short / long / ...) that would otherwise
@@ -54,7 +119,38 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">{t('stats.title')}</h1>
+      <div className="flex items-baseline justify-between gap-2 flex-wrap">
+        <h1 className="text-2xl font-semibold tracking-tight">{t('stats.title')}</h1>
+      </div>
+
+      <Segmented
+        value={filter}
+        onChange={(v) => setFilter(v as StyleFilter)}
+        size="sm"
+        options={[
+          { value: 'all', label: t('stats.filter_all') },
+          ...TRAINING_STYLES.map((s) => ({
+            value: s,
+            label: t(`style.${s}.name`),
+          })),
+        ]}
+      />
+
+      <Card>
+        <CardTitle>{t('stats.activity')}</CardTitle>
+        <p className="text-xs text-zinc-500 -mt-1 mb-3">{t('stats.activity_hint')}</p>
+        <ActivityHeatmap data={heatmapData} weeks={52} language={language} />
+      </Card>
+
+      <Card>
+        <CardTitle>{t('stats.rating_history')}</CardTitle>
+        <p className="text-xs text-zinc-500 -mt-1 mb-2">{t('stats.rating_history_hint')}</p>
+        <RatingHistoryChart
+          data={ratingPoints}
+          highlightStyle={filter === 'all' ? null : filter}
+          language={language}
+        />
+      </Card>
 
       {overview.data?.lifetime && (
         <div>
