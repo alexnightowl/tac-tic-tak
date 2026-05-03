@@ -308,6 +308,8 @@ export default function PlaySetup() {
                 onChange={setTheme}
                 options={themeOptions}
                 placeholder={t('play.choose_theme')}
+                searchPlaceholder={t('play.search_themes')}
+                noResultsLabel={t('play.no_themes_match')}
               />
             </div>
           )}
