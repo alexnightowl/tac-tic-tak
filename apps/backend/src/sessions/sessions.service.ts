@@ -13,6 +13,7 @@ import {
   DEMOTE_PEAK_BAND,
 } from './unlock';
 import { applyStreakOnPlay, isValidDay, StreakState } from './streak';
+import { AchievementsService } from '../achievements/achievements.service';
 
 const WINDOW = 4;
 const MIN_RATING = 400;
@@ -25,6 +26,7 @@ export class SessionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly buffer: PuzzleBufferService,
+    private readonly achievements: AchievementsService,
   ) {}
 
   async create(userId: string, dto: CreateSessionDto) {
@@ -286,10 +288,12 @@ export class SessionsService {
     // Theme sessions are unrated — no unlock check, no reward.
     if (session.mode === 'theme') {
       await this.buffer.clearSession(sessionId);
+      const newAchievements = await this.achievements.evaluate(userId);
       return {
         ...(await this.summary(sessionId)),
         unlocked: false,
         streak: streakOutcome,
+        achievementsUnlocked: newAchievements,
         style,
       };
     }
@@ -305,11 +309,13 @@ export class SessionsService {
     const earlyExit = elapsedSec < session.durationSec - 3;
     if (earlyExit) {
       await this.buffer.clearSession(sessionId);
+      const newAchievements = await this.achievements.evaluate(userId);
       return {
         ...(await this.summary(sessionId)),
         unlocked: false,
         early: true,
         streak: streakOutcome,
+        achievementsUnlocked: newAchievements,
         style,
       };
     }
@@ -448,6 +454,7 @@ export class SessionsService {
     }
 
     await this.buffer.clearSession(sessionId);
+    const newAchievements = await this.achievements.evaluate(userId);
     return {
       ...(await this.summary(sessionId)),
       unlocked,
@@ -456,6 +463,7 @@ export class SessionsService {
       demoteCheck: demoteResponse,
       calibration: calibrationResponse,
       streak: streakOutcome,
+      achievementsUnlocked: newAchievements,
       style,
     };
   }

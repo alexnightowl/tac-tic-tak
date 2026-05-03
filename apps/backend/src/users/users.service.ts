@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
+import { AchievementsService } from '../achievements/achievements.service';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
@@ -16,7 +17,10 @@ const MAX_AVATAR_BYTES = 4 * 1024 * 1024; // 4 MB after base64 decode
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly achievements: AchievementsService,
+  ) {}
 
   async getProfile(userId: string) {
     const user = await this.prisma.user.findUnique({
@@ -126,10 +130,16 @@ export class UsersService {
     knightArrow: string;
     showStreak: boolean;
   }>) {
-    return this.prisma.userSetting.update({
+    const updated = await this.prisma.userSetting.update({
       where: { userId },
       data: patch,
     });
+    // Fire-and-forget achievement evaluation — UI doesn't block on
+    // it because a settings save shouldn't be slowed down for an
+    // audit pass. Toasts will catch up on the next /achievements
+    // load if a write somehow misses.
+    const newAchievements = await this.achievements.evaluate(userId).catch(() => []);
+    return { ...updated, achievementsUnlocked: newAchievements };
   }
 
   /**
@@ -183,7 +193,8 @@ export class UsersService {
       data: clean,
       select: { id: true, displayName: true, bio: true, country: true, avatarUrl: true, nickname: true },
     });
-    return updated;
+    const newAchievements = await this.achievements.evaluate(userId).catch(() => []);
+    return { ...updated, achievementsUnlocked: newAchievements };
   }
 
   async setAvatar(userId: string, dataUrl: string) {
@@ -211,7 +222,8 @@ export class UsersService {
     // Cache-bust with mtime so the browser reloads the new avatar.
     const url = `/uploads/avatars/${filename}?v=${Date.now()}`;
     await this.prisma.user.update({ where: { id: userId }, data: { avatarUrl: url } });
-    return { avatarUrl: url };
+    const newAchievements = await this.achievements.evaluate(userId).catch(() => []);
+    return { avatarUrl: url, achievementsUnlocked: newAchievements };
   }
 
   private mapStyleProgressions(rows: Array<{

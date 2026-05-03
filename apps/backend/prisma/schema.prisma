@@ -35,6 +35,13 @@ model User {
   // operator chooses to recognise.
   verified              Boolean @default(false)
 
+  // Self-attested "I starred the repo" flag. Driven by a button
+  // on the achievements page; trust-based since we don't have
+  // GitHub OAuth set up.
+  starredRepo           Boolean @default(false)
+
+  achievements          UserAchievement[]
+
   settings       UserSetting?
   progression    UserProgression?
   styleProgressions UserStyleProgression[]
@@ -192,6 +199,20 @@ model Friendship {
   @@unique([requesterId, addresseeId])
   @@index([addresseeId, status])
   @@index([requesterId, status])
+}
+
+model UserAchievement {
+  userId     String
+  // Stable identifier matching one of ACHIEVEMENT_DEFS in
+  // apps/backend/src/achievements/registry.ts. Slug is the source
+  // of truth — adding/removing an achievement only affects what
+  // the registry recognises, never breaks existing rows.
+  slug       String
+  unlockedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, slug])
+  @@index([userId, unlockedAt])
 }
 
 model ReviewItem {

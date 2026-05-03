@@ -302,3 +302,9 @@ input[type="range"].ticks::-moz-range-thumb {
 }
 .ring-pulse { animation: ring-pulse 2.4s ease-out infinite; }
 
+/* Toast entry animation. Slide in from the right + fade. */
+@keyframes slideInRight {
+  0%   { transform: translateX(110%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+

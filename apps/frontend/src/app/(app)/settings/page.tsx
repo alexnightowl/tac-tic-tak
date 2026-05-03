@@ -15,6 +15,7 @@ import { SOUND_PACK_KEYS, SOUND_PACK_LABELS, SoundPack, playSound } from '@/lib/
 import { pieceUrl } from '@/lib/pieces';
 import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
+import { useToastStore } from '@/lib/toast';
 import { cn } from '@/lib/utils';
 
 type Tab = 'profile' | 'gameplay' | 'theme' | 'app';
@@ -26,11 +27,23 @@ export default function SettingsPage() {
   const t = useT();
   const [saving, setSaving] = useState(false);
 
+  const pushToast = useToastStore((s) => s.push);
+
   async function patch(p: Partial<UserSettings>) {
     setSettings(p);
     setSaving(true);
     try {
-      await http.patch('/users/me/settings', p);
+      const r = await http.patch<{ achievementsUnlocked?: string[] }>('/users/me/settings', p);
+      if (r.achievementsUnlocked && r.achievementsUnlocked.length > 0) {
+        for (const slug of r.achievementsUnlocked) {
+          pushToast({
+            tone: 'achievement',
+            title: t(`achv.${slug}.name`),
+            description: t(`achv.${slug}.desc`),
+            achievementSlug: slug,
+          });
+        }
+      }
     } finally {
       setSaving(false);
     }

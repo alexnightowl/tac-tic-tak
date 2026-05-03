@@ -9,6 +9,7 @@ import { Avatar } from '@/components/Avatar';
 import { Card, CardTitle } from '@/components/ui/card';
 import { UserSearch } from '@/components/UserSearch';
 import { UserBadges } from '@/components/UserBadges';
+import { useToastStore } from '@/lib/toast';
 
 type UserCard = { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null; verified?: boolean };
 
@@ -18,6 +19,7 @@ type PendingList = { incoming: Array<{ id: string; createdAt: string; user: User
 export default function FriendsPage() {
   const t = useT();
   const qc = useQueryClient();
+  const pushToast = useToastStore((s) => s.push);
 
   const friends = useQuery({
     queryKey: ['friends'],
@@ -34,7 +36,17 @@ export default function FriendsPage() {
   };
 
   const accept = async (id: string) => {
-    await http.post(`/friends/${id}/accept`);
+    const r = await http.post<{ achievementsUnlocked?: string[] }>(`/friends/${id}/accept`, {});
+    if (r.achievementsUnlocked) {
+      for (const slug of r.achievementsUnlocked) {
+        pushToast({
+          tone: 'achievement',
+          title: t(`achv.${slug}.name`),
+          description: t(`achv.${slug}.desc`),
+          achievementSlug: slug,
+        });
+      }
+    }
     invalidate();
   };
   const decline = async (id: string) => {

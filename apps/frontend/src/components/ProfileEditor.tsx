@@ -6,6 +6,7 @@ import { Pencil, X, Loader2 } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
+import { useToastStore } from '@/lib/toast';
 import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
 
@@ -33,7 +34,20 @@ export function ProfileEditor({ onSaved }: Props) {
 function EditorDialog({ onClose }: { onClose: () => void }) {
   const user = useAppStore((s) => s.user);
   const patchUser = useAppStore((s) => s.patchUser);
+  const pushToast = useToastStore((s) => s.push);
   const t = useT();
+
+  const pushAchievementToasts = (slugs?: string[]) => {
+    if (!slugs || slugs.length === 0) return;
+    for (const slug of slugs) {
+      pushToast({
+        tone: 'achievement',
+        title: t(`achv.${slug}.name`),
+        description: t(`achv.${slug}.desc`),
+        achievementSlug: slug,
+      });
+    }
+  };
 
   const [displayName, setDisplayName] = useState(user?.displayName ?? '');
   const [bio, setBio] = useState(user?.bio ?? '');
@@ -53,7 +67,12 @@ function EditorDialog({ onClose }: { onClose: () => void }) {
     setErr(null);
     setSaving(true);
     try {
-      const updated = await http.patch<{ displayName: string | null; bio: string | null; country: string | null }>(
+      const updated = await http.patch<{
+        displayName: string | null;
+        bio: string | null;
+        country: string | null;
+        achievementsUnlocked?: string[];
+      }>(
         '/users/me/profile',
         { displayName, bio, country },
       );
@@ -62,6 +81,7 @@ function EditorDialog({ onClose }: { onClose: () => void }) {
         bio: updated.bio,
         country: updated.country,
       });
+      pushAchievementToasts(updated.achievementsUnlocked);
       onClose();
     } catch (e: any) {
       setErr(e?.message ?? 'Save failed');
@@ -71,8 +91,11 @@ function EditorDialog({ onClose }: { onClose: () => void }) {
   };
 
   const uploadAvatar = async (dataUrl: string) => {
-    const res = await http.post<{ avatarUrl: string }>('/users/me/avatar', { dataUrl });
+    const res = await http.post<{ avatarUrl: string; achievementsUnlocked?: string[] }>(
+      '/users/me/avatar', { dataUrl },
+    );
     patchUser({ avatarUrl: res.avatarUrl });
+    pushAchievementToasts(res.achievementsUnlocked);
   };
 
   if (!mounted) return null;

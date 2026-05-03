@@ -10,13 +10,14 @@ import { Segmented } from '@/components/ui/segmented';
 import { RadarChart } from '@/components/charts/RadarChart';
 import { RatingHistoryChart } from '@/components/charts/RatingHistoryChart';
 import { ActivityHeatmap } from '@/components/charts/ActivityHeatmap';
+import { AchievementsGrid } from '@/components/achievements/AchievementsGrid';
 import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
 import {
   TrainingStyle,
   TRAINING_STYLES,
   isTrainingStyle,
 } from '@/lib/levels';
-import { formatLocalDate } from '@/lib/utils';
+import { formatLocalDate, cn } from '@/lib/utils';
 
 type Overview = {
   recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
@@ -43,10 +44,12 @@ type TimelinePoint = {
 };
 
 type StyleFilter = 'all' | TrainingStyle;
+type Tab = 'stats' | 'achievements';
 
 export default function AnalyticsPage() {
   const t = useT();
   const language = useAppStore((s) => s.settings.language) as 'en' | 'uk';
+  const [tab, setTab] = useState<Tab>('stats');
   const [filter, setFilter] = useState<StyleFilter>('all');
   const styleParam = filter === 'all' ? '' : `?style=${filter}`;
 
@@ -123,9 +126,107 @@ export default function AnalyticsPage() {
         <h1 className="text-2xl font-semibold tracking-tight">{t('stats.title')}</h1>
       </div>
 
+      <div className="flex gap-1 bg-black/30 rounded-xl p-1 w-fit">
+        {([
+          { k: 'stats',        label: t('stats.tab_stats') },
+          { k: 'achievements', label: t('stats.tab_achievements') },
+        ] as const).map(({ k, label }) => (
+          <button
+            key={k}
+            onClick={() => setTab(k)}
+            className={cn(
+              'h-9 px-3 rounded-lg text-sm transition-colors',
+              tab === k ? 'bg-[var(--bg-softer)] text-white' : 'text-zinc-400 hover:text-white',
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'achievements' ? (
+        <AchievementsGrid />
+      ) : (
+        <StatsTab
+          filter={filter}
+          onFilterChange={setFilter}
+          language={language}
+          t={t}
+        />
+      )}
+    </div>
+  );
+}
+
+function StatsTab({ filter, onFilterChange, language, t }: {
+  filter: StyleFilter;
+  onFilterChange: (v: StyleFilter) => void;
+  language: 'en' | 'uk';
+  t: (k: string) => string;
+}) {
+  const styleParam = filter === 'all' ? '' : `?style=${filter}`;
+
+  const overview = useQuery({
+    queryKey: ['analytics', filter],
+    queryFn: () => http.get<Overview>(`/analytics${styleParam}`),
+  });
+  const themes = useQuery({
+    queryKey: ['analytics-themes', filter],
+    queryFn: () => http.get<ThemeRow[]>(`/analytics/themes${styleParam}`),
+  });
+  const rec = useQuery({
+    queryKey: ['analytics-rec', filter],
+    queryFn: () => http.get<Recommendation>(`/analytics/recommendations${styleParam}`),
+  });
+  const timeline = useQuery({
+    queryKey: ['analytics-timeline'],
+    queryFn: () => http.get<TimelinePoint[]>('/analytics/timeline?days=365'),
+  });
+
+  const ratingPoints = useMemo(() => {
+    if (!timeline.data) return [];
+    return timeline.data
+      .filter((p) => isTrainingStyle(p.style))
+      .map((p) => ({
+        endedAt: p.endedAt,
+        style: p.style as TrainingStyle,
+        rating: p.peakRating,
+      }));
+  }, [timeline.data]);
+
+  const heatmapData = useMemo(() => {
+    if (!timeline.data) return [];
+    const counts = new Map<string, number>();
+    for (const p of timeline.data) {
+      const key = formatLocalDate(new Date(p.endedAt));
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    return Array.from(counts.entries()).map(([date, count]) => ({ date, count }));
+  }, [timeline.data]);
+
+  const radarData = useMemo(() => {
+    if (!themes.data) return [];
+    return themes.data
+      .filter((t) => t.rating > 0 && !isMetaTheme(t.slug))
+      .sort((a, b) => b.attempts - a.attempts)
+      .slice(0, 8)
+      .sort((a, b) => a.slug.localeCompare(b.slug))
+      .map((t) => ({ label: themeLabel(t.slug, language), value: t.rating }));
+  }, [themes.data, language]);
+
+  const radarBounds = useMemo(() => {
+    if (radarData.length === 0) return { min: 1200, max: 2000 };
+    const values = radarData.map((d) => d.value);
+    const lo = Math.floor(Math.min(...values) / 100) * 100;
+    const hi = Math.ceil(Math.max(...values) / 100) * 100;
+    return { min: Math.max(600, lo - 100), max: hi + 100 };
+  }, [radarData]);
+
+  return (
+    <>
       <Segmented
         value={filter}
-        onChange={(v) => setFilter(v as StyleFilter)}
+        onChange={(v) => onFilterChange(v as StyleFilter)}
         size="sm"
         options={[
           { value: 'all', label: t('stats.filter_all') },
@@ -250,6 +351,6 @@ export default function AnalyticsPage() {
           {themes.data?.length === 0 && <p className="text-sm text-zinc-500">{t('stats.no_data')}</p>}
         </div>
       </div>
-    </div>
+    </>
   );
 }

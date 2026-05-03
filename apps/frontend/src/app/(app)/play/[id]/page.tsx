@@ -7,6 +7,7 @@ import { X, Check, XCircle, Loader2, Sparkles, TrendingDown } from 'lucide-react
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
+import { useToastStore } from '@/lib/toast';
 import { Chessboard } from '@/components/board/Chessboard';
 import { TurnCard } from '@/components/board/TurnCard';
 import { Button } from '@/components/ui/button';
@@ -69,6 +70,7 @@ type FinishResponse = {
     freezeRegenAt: string | null;
     outcome: 'same-day' | 'continued' | 'frozen' | 'reset' | 'started' | 'skipped';
   } | null;
+  achievementsUnlocked?: string[];
 };
 
 export default function PlayRunner() {
@@ -79,6 +81,7 @@ export default function PlayRunner() {
   const progressions = useAppStore((s) => s.progressions);
   const patchStyleProgression = useAppStore((s) => s.patchStyleProgression);
   const setDailyStreak = useAppStore((s) => s.setStreak);
+  const pushToast = useToastStore((s) => s.push);
   const t = useT();
   const focusMode = settings.focusMode;
 
@@ -312,6 +315,16 @@ export default function PlayRunner() {
           lastDay: r.streak.lastDay,
           freezeRegenAt: r.streak.freezeRegenAt,
         });
+      }
+      if (r.achievementsUnlocked && r.achievementsUnlocked.length > 0) {
+        for (const slug of r.achievementsUnlocked) {
+          pushToast({
+            tone: 'achievement',
+            title: t(`achv.${slug}.name`),
+            description: t(`achv.${slug}.desc`),
+            achievementSlug: slug,
+          });
+        }
       }
       setSummary(r);
     } catch {

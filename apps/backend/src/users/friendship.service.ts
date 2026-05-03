@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { AchievementsService } from '../achievements/achievements.service';
 
 export type FriendshipView = 'none' | 'self' | 'outgoing' | 'incoming' | 'friends';
 
@@ -10,7 +11,10 @@ const USER_CARD_SELECT = {
 
 @Injectable()
 export class FriendshipService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly achievements: AchievementsService,
+  ) {}
 
   /** List accepted friends (as lightweight user cards). */
   async listFriends(userId: string) {
@@ -93,7 +97,23 @@ export class FriendshipService {
       data: { status: 'accepted', acceptedAt: new Date() },
       include: { requester: { select: USER_CARD_SELECT } },
     });
-    return { id: updated.id, status: updated.status, user: updated.requester };
+    // Both sides may have just hit "first friend" / "five friends".
+    // Evaluate for both to surface toasts on either client when they
+    // refresh.
+    const [acceptingUserNew, requesterNew] = await Promise.all([
+      this.achievements.evaluate(userId).catch(() => []),
+      this.achievements.evaluate(row.requesterId).catch(() => []),
+    ]);
+    return {
+      id: updated.id,
+      status: updated.status,
+      user: updated.requester,
+      achievementsUnlocked: acceptingUserNew,
+      // requesterNew is intentionally not returned — that user fetches
+      // their own /achievements list separately. Persisted, so they'll
+      // see toasts on next page load.
+      _requesterAchievements: requesterNew.length,
+    };
   }
 
   /** Decline incoming, cancel outgoing — same mechanic: delete the row. */
