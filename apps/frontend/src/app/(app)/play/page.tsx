@@ -16,8 +16,8 @@ import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
 import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle';
 import {
   bandFor, solvedTarget,
-  STYLE_FORMULAS, TrainingStyle, TRAINING_STYLES,
-  UNLOCK_REWARD, CALIBRATION_SESSIONS,
+  STYLE_FORMULAS, TrainingStyle, TRAINING_STYLES, isTrainingStyle,
+  DEFAULT_STYLE, UNLOCK_REWARD, CALIBRATION_SESSIONS,
 } from '@/lib/levels';
 import { cn } from '@/lib/utils';
 
@@ -27,14 +27,28 @@ const STYLE_ICONS = {
   rapid: Hourglass,
 } as const;
 
+// Remember the player's last-played style so they don't have to
+// re-pick on every visit. localStorage so it survives reloads but
+// stays per-device — crossing devices is rare enough that the
+// extra round-trip to a server-stored preference isn't worth it.
+const LAST_STYLE_KEY = 'taktic.lastStyle';
+
+function readLastStyle(): TrainingStyle {
+  if (typeof window === 'undefined') return DEFAULT_STYLE;
+  try {
+    const v = window.localStorage.getItem(LAST_STYLE_KEY);
+    if (v && isTrainingStyle(v)) return v;
+  } catch {}
+  return DEFAULT_STYLE;
+}
+
 export default function PlaySetup() {
   const router = useRouter();
   const progressions = useAppStore((s) => s.progressions);
-  const defaultStyle = useAppStore((s) => s.settings.defaultStyle);
   const language = useAppStore((s) => s.settings.language);
   const t = useT();
 
-  const [style, setStyle] = useState<TrainingStyle>(defaultStyle);
+  const [style, setStyle] = useState<TrainingStyle>(readLastStyle);
   const stylePreset = STYLE_FORMULAS[style];
   const styleProgression = progressions[style];
   const unlocked = styleProgression.unlockedStartRating;
@@ -70,12 +84,14 @@ export default function PlaySetup() {
 
   // When style changes, snap the rating + duration into that style's range
   // so users don't end up with nonsensical combos from the previous style.
+  // Also pin the new pick to localStorage so the next visit pre-selects it.
   useEffect(() => {
     setStartRating(styleProgression.currentPuzzleRating);
     const presets = stylePreset.durationPresetsSec;
     setDuration(presets[1] ?? presets[0]);
     setCustomDuration(false);
     setCustomMinutes(String(Math.round((presets[1] ?? presets[0]) / 60)));
+    try { window.localStorage.setItem(LAST_STYLE_KEY, style); } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [style]);
 

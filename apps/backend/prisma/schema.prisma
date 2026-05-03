@@ -40,7 +40,6 @@ model UserSetting {
   language        String  @default("en")
   fixedColor      String  @default("auto") // auto | white | black
   animationSpeed  String  @default("normal") // instant | fast | normal | slow
-  defaultStyle    String  @default("blitz") // bullet | blitz | rapid
   knightArrow     String  @default("bent")  // bent | straight (right-click arrow shape for knight moves)
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

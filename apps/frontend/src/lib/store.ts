@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { SoundPack } from './sound';
-import { DEFAULT_STYLE, TRAINING_STYLES, TrainingStyle } from './levels';
+import { TRAINING_STYLES, TrainingStyle } from './levels';
 
 /** Picks black or white — whichever reads on the given accent hex.
  *  Uses perceived luminance (ITU-R BT.601 coefficients). Threshold
@@ -38,7 +38,6 @@ export type UserSettings = {
   language: Language;
   fixedColor: ColorMode;
   animationSpeed: AnimationSpeed;
-  defaultStyle: TrainingStyle;
   knightArrow: KnightArrowMode;
 };
 
@@ -101,7 +100,6 @@ const DEFAULT_SETTINGS: UserSettings = {
   language: 'en',
   fixedColor: 'auto',
   animationSpeed: 'normal',
-  defaultStyle: DEFAULT_STYLE,
   knightArrow: 'bent',
 };
 

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DEFAULT_STYLE, TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
+import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
@@ -39,7 +39,6 @@ export class UsersService {
       // frontend fully migrates off it.
       progression: user.progression,
       progressions: byStyle,
-      defaultStyle: (user.settings?.defaultStyle as TrainingStyle) ?? DEFAULT_STYLE,
     };
   }
 
@@ -111,7 +110,6 @@ export class UsersService {
     language: string;
     fixedColor: string;
     animationSpeed: string;
-    defaultStyle: string;
     knightArrow: string;
   }>) {
     return this.prisma.userSetting.update({

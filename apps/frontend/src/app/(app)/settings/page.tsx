@@ -13,7 +13,6 @@ import { ColorPicker } from '@/components/ui/color-picker';
 import { BOARD_THEMES, PIECE_SETS, PIECE_SET_LABELS } from '@/lib/themes';
 import { SOUND_PACK_KEYS, SOUND_PACK_LABELS, SoundPack, playSound } from '@/lib/sound';
 import { pieceUrl } from '@/lib/pieces';
-import { TRAINING_STYLES, TrainingStyle } from '@/lib/levels';
 import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
 import { cn } from '@/lib/utils';
@@ -347,20 +346,7 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
         />
       </div>
 
-      <div className="pt-2">
-        <div className="text-sm">{t('settings.default_style')}</div>
-        <div className="text-xs text-zinc-500 mb-2">{t('settings.default_style_hint')}</div>
-        <Segmented
-          value={settings.defaultStyle}
-          onChange={(v) => patch({ defaultStyle: v as TrainingStyle })}
-          options={TRAINING_STYLES.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
-        />
-        <div className="text-[11px] text-zinc-500 mt-2 leading-snug">
-          {t(`style.${settings.defaultStyle}.desc`)}
-        </div>
-      </div>
-
-      <div className="pt-2">
+<div className="pt-2">
         <div className="text-sm">{t('settings.knight_arrow')}</div>
         <div className="text-xs text-zinc-500 mb-2">{t('settings.knight_arrow_hint')}</div>
         <Segmented

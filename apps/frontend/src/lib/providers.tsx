@@ -18,7 +18,6 @@ type Me = {
   country?: string | null;
   settings: any;
   progressions: Progressions;
-  defaultStyle?: string;
 };
 
 export function Providers({ children }: { children: React.ReactNode }) {
