@@ -45,10 +45,14 @@ export default function DashboardPage() {
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight flex items-center gap-2">
-              <span>{t('dashboard.welcome')}, {user?.nickname}</span>
-              {user && (
-                <UserBadges verified={user.verified} size={20} />
+            <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight">
+              {t('dashboard.welcome')}, {user?.nickname}
+              {user?.verified && (
+                <UserBadges
+                  verified
+                  size={20}
+                  className="inline-block ml-1.5 align-middle relative -top-[2px]"
+                />
               )}
             </h1>
             <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>

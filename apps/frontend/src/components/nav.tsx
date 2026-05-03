@@ -66,9 +66,9 @@ export function Nav() {
               when the nickname resolves from /users/me. */}
           <div className="flex items-center gap-3 text-sm text-zinc-300 justify-end min-w-[240px]">
             {user ? (
-              <Link href={`/profile/${nickname}`} className="flex items-center gap-3 hover:text-white truncate max-w-full">
+              <Link href={`/profile/${nickname}`} className="flex items-center gap-3 hover:text-white max-w-full min-w-0">
                 <Avatar nickname={nickname} avatarUrl={avatarUrl} size={56} />
-                <span className="truncate">{nickname}</span>
+                <span className="truncate min-w-0">{nickname}</span>
               </Link>
             ) : (
               <div className="flex items-center gap-3" aria-hidden>
@@ -97,7 +97,7 @@ export function Nav() {
           </span>
         </Link>
         {user ? (
-          <Link href={`/profile/${nickname}`} className="h-[56px] w-[56px] rounded-full glass flex items-center justify-center overflow-hidden" aria-label="Profile">
+          <Link href={`/profile/${nickname}`} aria-label="Profile" className="shrink-0">
             <Avatar nickname={nickname} avatarUrl={avatarUrl} size={56} />
           </Link>
         ) : (

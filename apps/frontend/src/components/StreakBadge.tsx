@@ -5,9 +5,13 @@ import { cn } from '@/lib/utils';
 
 type Props = {
   days: number;
-  /** When provided, the snowflake hint shows that the user has a
-   *  freeze in pocket (1 free missed day). Pass `undefined` to
-   *  hide the hint — useful on dense rows like the leaderboard. */
+  /**
+   * Kept on the type so existing call sites compile, but ignored
+   * — the freeze indicator was visually noisy next to the flame
+   * (read as "active or frozen?") so the badge now shows just
+   * the count. Freeze state surfaces elsewhere (in-toast on
+   * auto-apply, achievements page).
+   */
   freezeAvailable?: boolean;
   size?: 'sm' | 'md';
   className?: string;
@@ -20,32 +24,20 @@ type Props = {
  * presentational — caller decides whether to show it (i.e.
  * checks settings.showStreak first).
  */
-export function StreakBadge({ days, freezeAvailable, size = 'md', className }: Props) {
+export function StreakBadge({ days, size = 'md', className }: Props) {
   if (days <= 0) return null;
   const small = size === 'sm';
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-1 tabular-nums font-semibold',
+        'inline-flex items-center gap-1 tabular-nums font-semibold text-amber-300',
         small ? 'text-xs' : 'text-sm',
-        // Amber-orange for the flame, fades a touch when there's
-        // a freeze available so the snowflake reads as "safe".
-        'text-amber-300',
         className,
       )}
       aria-label={`${days}-day streak`}
     >
       <Flame size={small ? 12 : 14} className="shrink-0" />
       {days}
-      {freezeAvailable && (
-        <span
-          className={cn('text-cyan-300/80 leading-none', small ? 'text-[10px]' : 'text-[11px]')}
-          aria-hidden
-          title="Freeze available — one missed day won't break the streak"
-        >
-          ❄
-        </span>
-      )}
     </div>
   );
 }
