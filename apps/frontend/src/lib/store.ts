@@ -92,7 +92,7 @@ type State = {
 };
 
 const DEFAULT_SETTINGS: UserSettings = {
-  focusMode: true,
+  focusMode: false,
   accentColor: '#d81f26',
   boardTheme: 'green',
   pieceSet: 'maestro',
