@@ -8,8 +8,9 @@ import { useT } from '@/lib/i18n';
 import { Avatar } from '@/components/Avatar';
 import { Card, CardTitle } from '@/components/ui/card';
 import { UserSearch } from '@/components/UserSearch';
+import { UserBadges } from '@/components/UserBadges';
 
-type UserCard = { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null };
+type UserCard = { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null; verified?: boolean };
 
 type FriendsList = Array<{ friendshipId: string; since: string | null; user: UserCard }>;
 type PendingList = { incoming: Array<{ id: string; createdAt: string; user: UserCard }>; outgoing: Array<{ id: string; createdAt: string; user: UserCard }> };
@@ -67,9 +68,12 @@ export default function FriendsPage() {
                 <Link href={`/profile/${r.user.nickname}`} className="flex items-center gap-3 flex-1 min-w-0">
                   <Avatar nickname={r.user.nickname} avatarUrl={r.user.avatarUrl} size={36} />
                   <div className="min-w-0">
-                    <div className="text-sm truncate">
-                      {r.user.displayName || r.user.nickname}
-                      {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
+                    <div className="text-sm truncate flex items-center gap-1.5">
+                      <span className="truncate">
+                        {r.user.displayName || r.user.nickname}
+                        {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
+                      </span>
+                      <UserBadges nickname={r.user.nickname} verified={r.user.verified} size={13} />
                     </div>
                   </div>
                 </Link>
@@ -98,9 +102,12 @@ export default function FriendsPage() {
                 <Link href={`/profile/${r.user.nickname}`} className="flex items-center gap-3 flex-1 min-w-0">
                   <Avatar nickname={r.user.nickname} avatarUrl={r.user.avatarUrl} size={36} />
                   <div className="min-w-0">
-                    <div className="text-sm truncate">
-                      {r.user.displayName || r.user.nickname}
-                      {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
+                    <div className="text-sm truncate flex items-center gap-1.5">
+                      <span className="truncate">
+                        {r.user.displayName || r.user.nickname}
+                        {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
+                      </span>
+                      <UserBadges nickname={r.user.nickname} verified={r.user.verified} size={13} />
                     </div>
                     <div className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5">
                       <Clock size={10} /> {t('friends.waiting')}
@@ -133,9 +140,12 @@ export default function FriendsPage() {
                 <Link href={`/profile/${r.user.nickname}`} className="flex items-center gap-3 flex-1 min-w-0">
                   <Avatar nickname={r.user.nickname} avatarUrl={r.user.avatarUrl} size={36} />
                   <div className="min-w-0">
-                    <div className="text-sm truncate">
-                      {r.user.displayName || r.user.nickname}
-                      {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
+                    <div className="text-sm truncate flex items-center gap-1.5">
+                      <span className="truncate">
+                        {r.user.displayName || r.user.nickname}
+                        {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
+                      </span>
+                      <UserBadges nickname={r.user.nickname} verified={r.user.verified} size={13} />
                     </div>
                   </div>
                 </Link>

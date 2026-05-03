@@ -41,7 +41,7 @@ export class LeaderboardService {
         user: {
           select: {
             id: true, nickname: true, displayName: true, avatarUrl: true, country: true,
-            streakDays: true,
+            streakDays: true, verified: true,
           },
         },
       },
@@ -59,6 +59,7 @@ export class LeaderboardService {
         displayName: r.user.displayName,
         avatarUrl: r.user.avatarUrl,
         country: r.user.country,
+        verified: r.user.verified,
       },
     }));
   }

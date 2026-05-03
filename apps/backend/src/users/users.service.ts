@@ -34,6 +34,7 @@ export class UsersService {
       bio: user.bio,
       country: user.country,
       createdAt: user.createdAt,
+      verified: user.verified,
       settings: user.settings,
       // Legacy single-style progression — kept for backwards compat until the
       // frontend fully migrates off it.
@@ -87,6 +88,7 @@ export class UsersService {
       bio: user.bio,
       country: user.country,
       createdAt: user.createdAt,
+      verified: user.verified,
       progressions: byStyle,
       allTimePeak: peak._max.peakRating ?? null,
       streak: {

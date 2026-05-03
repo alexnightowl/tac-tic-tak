@@ -29,6 +29,12 @@ model User {
   streakLastDay         String?
   streakFreezeRegenAt   String?
 
+  // Verified-checkmark flag, surfaced as a small icon next to the
+  // nickname everywhere this user is displayed. No frontend admin
+  // UI on purpose — flipped manually in the DB for users the
+  // operator chooses to recognise.
+  verified              Boolean @default(false)
+
   settings       UserSetting?
   progression    UserProgression?
   styleProgressions UserStyleProgression[]

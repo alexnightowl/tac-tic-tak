@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/card';
 import { Avatar } from '@/components/Avatar';
 import { SessionList, SessionRow } from '@/components/SessionList';
 import { StyleIcon } from '@/components/StyleIcon';
+import { UserBadges } from '@/components/UserBadges';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 import { ProfileEditor } from '@/components/ProfileEditor';
 import { FriendActionButton } from '@/components/FriendActionButton';
@@ -23,6 +24,7 @@ type PublicProfile = {
   bio: string | null;
   country: string | null;
   createdAt: string;
+  verified?: boolean;
   progressions: Record<TrainingStyle, { currentPuzzleRating: number; unlockedStartRating: number; startPuzzleRating: number }>;
   allTimePeak: number | null;
   streak?: { days: number; freezes: number; lastDay: string | null };
@@ -70,6 +72,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">
               <h1 className="text-xl font-semibold tracking-tight truncate max-w-full">{displayName}</h1>
+              <UserBadges nickname={data.nickname} verified={data.verified} size={18} />
               {data.displayName && (
                 <span className="text-sm text-zinc-500 truncate">@{data.nickname}</span>
               )}

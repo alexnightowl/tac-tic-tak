@@ -11,6 +11,7 @@ import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { SessionList, SessionRow } from '@/components/SessionList';
 import { StreakBadge } from '@/components/StreakBadge';
 import { StyleIcon } from '@/components/StyleIcon';
+import { UserBadges } from '@/components/UserBadges';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 
 type Overview = {
@@ -44,8 +45,11 @@ export default function DashboardPage() {
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight">
-              {t('dashboard.welcome')}, {user?.nickname}
+            <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight flex items-center gap-2">
+              <span>{t('dashboard.welcome')}, {user?.nickname}</span>
+              {user && (
+                <UserBadges nickname={user.nickname} verified={user.verified} size={20} />
+              )}
             </h1>
             <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>
           </div>

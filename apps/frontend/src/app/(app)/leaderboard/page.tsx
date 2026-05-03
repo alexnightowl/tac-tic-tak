@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/card';
 import { Segmented } from '@/components/ui/segmented';
 import { StreakBadge } from '@/components/StreakBadge';
 import { StyleIcon } from '@/components/StyleIcon';
+import { UserBadges } from '@/components/UserBadges';
 import { useAppStore } from '@/lib/store';
 import { TRAINING_STYLES, TrainingStyle } from '@/lib/levels';
 import { cn } from '@/lib/utils';
@@ -21,7 +22,7 @@ type Row = {
   unlocked: number;
   isSelf: boolean;
   streakDays: number;
-  user: { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null };
+  user: { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null; verified?: boolean };
 };
 
 export default function LeaderboardPage() {
@@ -105,9 +106,12 @@ function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showS
       </div>
       <Avatar nickname={row.user.nickname} avatarUrl={row.user.avatarUrl} size={36} />
       <div className="flex-1 min-w-0">
-        <div className="text-sm truncate">
-          {row.user.displayName || row.user.nickname}
-          {row.user.displayName && <span className="text-zinc-500 ml-1.5">@{row.user.nickname}</span>}
+        <div className="text-sm truncate flex items-center gap-1.5">
+          <span className="truncate">
+            {row.user.displayName || row.user.nickname}
+            {row.user.displayName && <span className="text-zinc-500 ml-1.5">@{row.user.nickname}</span>}
+          </span>
+          <UserBadges nickname={row.user.nickname} verified={row.user.verified} size={13} />
         </div>
         {row.user.country && <div className="text-[10px] uppercase text-zinc-500">{row.user.country}</div>}
       </div>

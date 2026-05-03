@@ -71,6 +71,7 @@ export type AuthUser = {
   avatarUrl?: string | null;
   bio?: string | null;
   country?: string | null;
+  verified?: boolean;
 };
 
 export type Progression = {

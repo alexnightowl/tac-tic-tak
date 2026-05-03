@@ -5,6 +5,7 @@ export type FriendshipView = 'none' | 'self' | 'outgoing' | 'incoming' | 'friend
 
 const USER_CARD_SELECT = {
   id: true, nickname: true, displayName: true, avatarUrl: true, country: true,
+  verified: true,
 } as const;
 
 @Injectable()

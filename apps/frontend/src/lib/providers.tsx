@@ -16,6 +16,7 @@ type Me = {
   avatarUrl?: string | null;
   bio?: string | null;
   country?: string | null;
+  verified?: boolean;
   settings: any;
   progressions: Progressions;
   streak?: Streak;
@@ -68,6 +69,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           avatarUrl: me.avatarUrl,
           bio: me.bio,
           country: me.country,
+          verified: me.verified,
         });
         if (me.settings) setSettings(me.settings);
         if (me.progressions) setProgressions(me.progressions);

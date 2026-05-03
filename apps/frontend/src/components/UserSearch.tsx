@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Search, UserPlus, Check, Clock, Loader2 } from 'lucide-react';
 import { http } from '@/lib/api';
 import { Avatar } from '@/components/Avatar';
+import { UserBadges } from '@/components/UserBadges';
 import { cn } from '@/lib/utils';
 
 type FriendshipState = 'none' | 'self' | 'outgoing' | 'incoming' | 'friends';
@@ -15,6 +16,7 @@ type SearchResult = {
   displayName: string | null;
   avatarUrl: string | null;
   country: string | null;
+  verified?: boolean;
   friendship: { state: FriendshipState; friendshipId: string | null };
 };
 
@@ -84,9 +86,12 @@ export function UserSearch({ placeholder, onAction }: Props) {
                 <Link href={`/profile/${r.nickname}`} className="flex items-center gap-3 flex-1 min-w-0">
                   <Avatar nickname={r.nickname} avatarUrl={r.avatarUrl} size={36} />
                   <div className="min-w-0">
-                    <div className="text-sm truncate">
-                      {r.displayName || r.nickname}
-                      {r.displayName && <span className="text-zinc-500 ml-1.5">@{r.nickname}</span>}
+                    <div className="text-sm truncate flex items-center gap-1.5">
+                      <span className="truncate">
+                        {r.displayName || r.nickname}
+                        {r.displayName && <span className="text-zinc-500 ml-1.5">@{r.nickname}</span>}
+                      </span>
+                      <UserBadges nickname={r.nickname} verified={r.verified} size={13} />
                     </div>
                     {r.country && <div className="text-[10px] uppercase text-zinc-500">{r.country}</div>}
                   </div>
