@@ -73,7 +73,7 @@ export default function FriendsPage() {
                         {r.user.displayName || r.user.nickname}
                         {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
                       </span>
-                      <UserBadges nickname={r.user.nickname} verified={r.user.verified} size={13} />
+                      <UserBadges verified={r.user.verified} size={13} />
                     </div>
                   </div>
                 </Link>
@@ -107,7 +107,7 @@ export default function FriendsPage() {
                         {r.user.displayName || r.user.nickname}
                         {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
                       </span>
-                      <UserBadges nickname={r.user.nickname} verified={r.user.verified} size={13} />
+                      <UserBadges verified={r.user.verified} size={13} />
                     </div>
                     <div className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5">
                       <Clock size={10} /> {t('friends.waiting')}
@@ -145,7 +145,7 @@ export default function FriendsPage() {
                         {r.user.displayName || r.user.nickname}
                         {r.user.displayName && <span className="text-zinc-500 ml-1.5">@{r.user.nickname}</span>}
                       </span>
-                      <UserBadges nickname={r.user.nickname} verified={r.user.verified} size={13} />
+                      <UserBadges verified={r.user.verified} size={13} />
                     </div>
                   </div>
                 </Link>

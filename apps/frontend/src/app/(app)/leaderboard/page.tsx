@@ -111,7 +111,7 @@ function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showS
             {row.user.displayName || row.user.nickname}
             {row.user.displayName && <span className="text-zinc-500 ml-1.5">@{row.user.nickname}</span>}
           </span>
-          <UserBadges nickname={row.user.nickname} verified={row.user.verified} size={13} />
+          <UserBadges verified={row.user.verified} size={13} />
         </div>
         {row.user.country && <div className="text-[10px] uppercase text-zinc-500">{row.user.country}</div>}
       </div>

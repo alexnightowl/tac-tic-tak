@@ -91,7 +91,7 @@ export function UserSearch({ placeholder, onAction }: Props) {
                         {r.displayName || r.nickname}
                         {r.displayName && <span className="text-zinc-500 ml-1.5">@{r.nickname}</span>}
                       </span>
-                      <UserBadges nickname={r.nickname} verified={r.verified} size={13} />
+                      <UserBadges verified={r.verified} size={13} />
                     </div>
                     {r.country && <div className="text-[10px] uppercase text-zinc-500">{r.country}</div>}
                   </div>

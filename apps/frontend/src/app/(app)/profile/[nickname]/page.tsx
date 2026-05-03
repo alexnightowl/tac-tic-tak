@@ -72,7 +72,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">
               <h1 className="text-xl font-semibold tracking-tight truncate max-w-full">{displayName}</h1>
-              <UserBadges nickname={data.nickname} verified={data.verified} size={18} />
+              <UserBadges verified={data.verified} size={18} />
               {data.displayName && (
                 <span className="text-sm text-zinc-500 truncate">@{data.nickname}</span>
               )}

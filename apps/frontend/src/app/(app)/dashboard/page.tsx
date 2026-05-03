@@ -48,7 +48,7 @@ export default function DashboardPage() {
             <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight flex items-center gap-2">
               <span>{t('dashboard.welcome')}, {user?.nickname}</span>
               {user && (
-                <UserBadges nickname={user.nickname} verified={user.verified} size={20} />
+                <UserBadges verified={user.verified} size={20} />
               )}
             </h1>
             <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>
