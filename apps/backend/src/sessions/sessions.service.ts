@@ -31,11 +31,6 @@ export class SessionsService {
 
   async create(userId: string, dto: CreateSessionDto) {
     const styleRow = await this.styleProgression(userId, dto.style);
-    // Theme-mode sessions are unrated practice — any start rating is allowed
-    // and the style's progression row is not bumped.
-    if (dto.mode !== 'theme' && dto.startRating > styleRow.unlockedStartRating + 200) {
-      throw new BadRequestException(`startRating exceeds unlocked cap (${styleRow.unlockedStartRating})`);
-    }
 
     // Calibration sessions ignore whatever startRating the client sent
     // and use the server-controlled progression rating instead. Without
@@ -46,6 +41,17 @@ export class SessionsService {
     const calibrating =
       dto.mode !== 'theme' && styleRow.calibrationSessionsLeft > 0;
     const startRating = calibrating ? styleRow.currentPuzzleRating : dto.startRating;
+
+    // The +200 unlock-cap check only applies in stable mode. During
+    // calibration the player's currentPuzzleRating is allowed to
+    // overshoot the unlock cap (which is still anchored at the
+    // brand-new-account default) — that's literally how we discover
+    // their level. We're using `startRating` (post-override) here so
+    // the comparison is against the value that's actually going to
+    // be persisted on the session row.
+    if (dto.mode !== 'theme' && !calibrating && startRating > styleRow.unlockedStartRating + 200) {
+      throw new BadRequestException(`startRating exceeds unlocked cap (${styleRow.unlockedStartRating})`);
+    }
 
     const session = await this.prisma.trainingSession.create({
       data: {

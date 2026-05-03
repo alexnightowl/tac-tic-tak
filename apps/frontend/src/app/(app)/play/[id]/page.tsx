@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2, Sparkles, TrendingDown } from 'lucide-react';
+import { X, Check, XCircle, Loader2, Sparkles, TrendingDown, Pause, Play } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -118,6 +118,35 @@ export default function PlayRunner() {
   const loading = useRef(false);
   const finishing = useRef(false);
 
+  // Pause state. While paused: the session timer stops counting, the
+  // board ignores moves, and an overlay invites the player to resume.
+  // On resume both endsAt and the per-puzzle attemptStart get bumped
+  // forward by the pause duration so the user isn't penalised on
+  // either the session timer or per-puzzle responseMs.
+  const [paused, setPaused] = useState(false);
+  const [pausedRemainingMs, setPausedRemainingMs] = useState<number | null>(null);
+  const pauseStartedAt = useRef<number | null>(null);
+
+  function pause() {
+    if (paused || !endsAt || loadingFirst || finishing.current) return;
+    const rem = Math.max(0, endsAt - Date.now());
+    setPausedRemainingMs(rem);
+    pauseStartedAt.current = Date.now();
+    setPaused(true);
+  }
+
+  function resume() {
+    if (!paused || pausedRemainingMs == null) return;
+    const dur = Date.now() - (pauseStartedAt.current ?? Date.now());
+    // Push the per-puzzle thinking-time anchor forward so responseMs
+    // for the current puzzle reflects active time only, not wall time.
+    attemptStart.current += dur;
+    setEndsAt(Date.now() + pausedRemainingMs);
+    setPausedRemainingMs(null);
+    pauseStartedAt.current = null;
+    setPaused(false);
+  }
+
   // Lock html + body scroll for the runner's whole lifetime (regardless
   // of focus mode). iOS PWA sometimes reports a 100dvh taller than the
   // actual visible area, which otherwise causes the bottom of the board
@@ -149,8 +178,10 @@ export default function PlayRunner() {
   }, []);
 
   useEffect(() => {
+    if (paused) return;
     if (endsAt && now >= endsAt && !finishing.current) finish();
-  }, [now, endsAt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [now, endsAt, paused]);
 
   useEffect(() => {
     const applyNextResponse = (r: NextResponse) => {
@@ -408,9 +439,12 @@ export default function PlayRunner() {
 
   if (summary) return <SessionSummary s={summary} />;
 
-  const remainingSec = endsAt ? Math.max(0, Math.round((endsAt - now) / 1000)) : 0;
+  const remainingSec = paused
+    ? Math.round((pausedRemainingMs ?? 0) / 1000)
+    : endsAt ? Math.max(0, Math.round((endsAt - now) / 1000)) : 0;
   const warnThreshold = Math.min(30, Math.max(10, Math.round(durationSec * 0.1)));
-  const warning = !loadingFirst && remainingSec <= warnThreshold && remainingSec > 0;
+  // Don't pulse the timer red while paused — it's not running.
+  const warning = !loadingFirst && !paused && remainingSec <= warnThreshold && remainingSec > 0;
   const isPlayerTurn = !!chess && ((orientation === 'white' && chess.turn() === 'w') || (orientation === 'black' && chess.turn() === 'b'));
   const styleProg = progressions[sessionStyle];
   const currentRating = styleProg?.currentPuzzleRating ?? null;
@@ -442,12 +476,27 @@ export default function PlayRunner() {
     </Button>
   );
 
+  const pauseButton = (
+    <Button
+      variant="glass"
+      size="sm"
+      onClick={paused ? resume : pause}
+      disabled={loadingFirst}
+      className="!px-3"
+      aria-label={paused ? t('play.resume') : t('play.pause')}
+    >
+      {paused ? <Play size={18} /> : <Pause size={18} />}
+    </Button>
+  );
+
   const timerPill = (
     <div className={cn(
       'font-mono text-xl tabular-nums px-4 py-1.5 rounded-full border transition-colors text-center',
       warning
         ? 'bg-red-500/15 border-red-400/60 text-red-300 pulse-red'
-        : 'glass text-white',
+        : paused
+          ? 'glass text-amber-300 border-amber-300/30'
+          : 'glass text-white',
     )}>
       {loadingFirst ? '--:--' : fmtDuration(remainingSec)}
     </div>
@@ -509,7 +558,7 @@ export default function PlayRunner() {
           lastMove={lastMove}
           animateMove={animateMove}
           animationMs={ANIMATION_MS[settings.animationSpeed]}
-          allowMoves={!animateMove && !loadingFirst}
+          allowMoves={!animateMove && !loadingFirst && !paused}
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}
         />
@@ -533,6 +582,17 @@ export default function PlayRunner() {
           )}
           aria-hidden
         />
+      )}
+      {paused && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-md rounded-xl">
+          <div className="flex flex-col items-center gap-3">
+            <div className="text-2xl font-semibold text-white">{t('play.paused')}</div>
+            <div className="text-xs text-zinc-300 -mt-1">{t('play.paused_hint')}</div>
+            <Button onClick={resume} size="lg" className="mt-2">
+              <Play size={18} /> {t('play.resume')}
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -560,7 +620,7 @@ export default function PlayRunner() {
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
-            <div className="w-[72px]" />
+            {pauseButton}
           </div>
           {turnCard}
           {progressBar}
@@ -593,6 +653,7 @@ export default function PlayRunner() {
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
+            {pauseButton}
           </div>
           {turnCard}
           {progressBar}
