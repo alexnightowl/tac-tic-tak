@@ -3,6 +3,7 @@ import { Oswald } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/lib/providers';
 import { ToastContainer } from '@/components/Toast';
+import { OnboardingModal } from '@/components/Onboarding';
 
 const displayFont = Oswald({
   subsets: ['latin', 'latin-ext', 'cyrillic'],
@@ -58,7 +59,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="app-shell">
         <div className="app-glow" aria-hidden />
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <OnboardingModal />
+        </Providers>
         <ToastContainer />
       </body>
     </html>

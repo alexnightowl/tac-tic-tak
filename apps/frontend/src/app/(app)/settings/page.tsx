@@ -490,6 +490,19 @@ function AppTab({ settings, patch, t }: { settings: UserSettings; patch: (p: Par
         <div className="text-xs text-zinc-500 mt-1">{t('settings.install_hint')}</div>
       </Card>
 
+      <Card className="flex items-center justify-between gap-3">
+        <div>
+          <CardTitle>{t('settings.replay_onboarding')}</CardTitle>
+          <div className="text-xs text-zinc-500 mt-1">{t('settings.replay_onboarding_hint')}</div>
+        </div>
+        <button
+          onClick={() => patch({ onboardingCompleted: false })}
+          className="shrink-0 h-9 px-3 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-[var(--border)]"
+        >
+          {t('settings.replay_onboarding_cta')}
+        </button>
+      </Card>
+
       <ResetProgressSection t={t} />
     </div>
   );

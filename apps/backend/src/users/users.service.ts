@@ -131,6 +131,7 @@ export class UsersService {
     showStreak: boolean;
     reviewAutoAdvance: boolean;
     mirrorView: boolean;
+    onboardingCompleted: boolean;
   }>) {
     const updated = await this.prisma.userSetting.update({
       where: { userId },

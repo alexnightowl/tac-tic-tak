@@ -52,6 +52,9 @@ export type UserSettings = {
    *  the player has to spot threats coming AT them. Pure visual
    *  flip — move logic and validation are untouched. */
   mirrorView: boolean;
+  /** When true, the new-user welcome slide-deck has been seen.
+   *  False on a fresh account → modal fires on next login. */
+  onboardingCompleted: boolean;
 };
 
 export type Streak = {
@@ -139,6 +142,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   showStreak: true,
   reviewAutoAdvance: false,
   mirrorView: false,
+  onboardingCompleted: false,
 };
 
 export const useAppStore = create<State>((set) => ({

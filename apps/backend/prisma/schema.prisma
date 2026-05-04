@@ -75,6 +75,11 @@ model UserSetting {
   // see the position from the opponent's side. Training mode for
   // spotting opponent threats; all move logic stays the same.
   mirrorView      Boolean @default(false)
+  // Welcome slide-deck completion flag. False on a brand-new
+  // account → onboarding modal fires on next login. Existing
+  // users with prior session history get backfilled to true in
+  // the migration so they're not re-onboarded.
+  onboardingCompleted Boolean @default(false)
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

@@ -19,6 +19,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsBoolean() showStreak?: boolean;
   @IsOptional() @IsBoolean() reviewAutoAdvance?: boolean;
   @IsOptional() @IsBoolean() mirrorView?: boolean;
+  @IsOptional() @IsBoolean() onboardingCompleted?: boolean;
 }
 
 class UpdateProfileDto {
