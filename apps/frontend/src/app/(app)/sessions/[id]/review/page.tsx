@@ -304,16 +304,33 @@ export default function SessionReview() {
           {head.reason === 'failed' ? t('review.reason_failed') : t('review.reason_slow')}
         </div>
         <div className="text-sm text-zinc-400 tabular-nums">{head.rating}</div>
-        <button
-          type="button"
-          onClick={handleHint}
-          disabled={!!animateMove || opponentBusy || hintSquare !== null}
-          className="ml-auto h-9 px-3 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-          aria-label={t('review.hint')}
-        >
-          <Lightbulb size={14} />
-          {t('review.hint')}
-        </button>
+        {/* The hint button morphs into the next-puzzle CTA once
+            the puzzle is solved. Same fixed-width slot so the
+            row doesn't shift horizontally on the transition. */}
+        {solved && !settings.reviewAutoAdvance ? (
+          <button
+            type="button"
+            onClick={advanceToNext}
+            autoFocus
+            className="ml-auto h-9 w-[120px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
+            aria-label={t('review.done_cta')}
+          >
+            <Check size={14} />
+            {t('review.done_cta')}
+            <ArrowRight size={14} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleHint}
+            disabled={!!animateMove || opponentBusy || hintSquare !== null}
+            className="ml-auto h-9 w-[120px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={t('review.hint')}
+          >
+            <Lightbulb size={14} />
+            {t('review.hint')}
+          </button>
+        )}
       </div>
 
       <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
@@ -357,19 +374,6 @@ export default function SessionReview() {
           )}
         </div>
       </div>
-
-      {solved && !settings.reviewAutoAdvance && (
-        <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
-          <button
-            type="button"
-            onClick={advanceToNext}
-            autoFocus
-            className="w-full h-12 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80 transition-opacity"
-          >
-            <Check size={16} /> {t('review.next')} <ArrowRight size={16} />
-          </button>
-        </div>
-      )}
 
       <div className="w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center gap-4 text-xs text-zinc-400">
         <span className="flex items-center gap-1"><Check size={12} /> {solvedCount}</span>

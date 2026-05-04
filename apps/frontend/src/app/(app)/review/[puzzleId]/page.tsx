@@ -289,16 +289,33 @@ export default function ReviewPuzzle() {
             {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
             {puzzle?.rating != null && <span>{puzzle.rating}</span>}
           </div>
-          <button
-            type="button"
-            onClick={handleHint}
-            disabled={!chess || !!hintSquare || solved}
-            className="h-8 px-2.5 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label={t('review.hint')}
-          >
-            <Lightbulb size={14} />
-            {t('review.hint')}
-          </button>
+          {/* The hint button morphs into the next-puzzle CTA once
+              the puzzle is solved. Same fixed-width slot so the
+              row doesn't shift horizontally on the transition. */}
+          {solved && !settings.reviewAutoAdvance ? (
+            <button
+              type="button"
+              onClick={() => { void resolveAndAdvance(); }}
+              autoFocus
+              className="h-8 w-[112px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
+              aria-label={t('review.done_cta')}
+            >
+              <Check size={14} />
+              {t('review.done_cta')}
+              <ArrowRight size={14} />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleHint}
+              disabled={!chess || !!hintSquare || solved}
+              className="h-8 w-[112px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              aria-label={t('review.hint')}
+            >
+              <Lightbulb size={14} />
+              {t('review.hint')}
+            </button>
+          )}
         </div>
       </div>
       <div className="-mt-1 px-1 min-h-[18px] flex items-center">
@@ -353,16 +370,6 @@ export default function ReviewPuzzle() {
           )}
         </div>
       </div>
-      {solved && !settings.reviewAutoAdvance && (
-        <button
-          type="button"
-          onClick={() => { void resolveAndAdvance(); }}
-          autoFocus
-          className="h-12 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80 transition-opacity"
-        >
-          <Check size={16} /> {t('review.next')} <ArrowRight size={16} />
-        </button>
-      )}
     </div>
   );
 }
