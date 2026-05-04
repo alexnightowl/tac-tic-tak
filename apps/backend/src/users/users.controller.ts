@@ -18,6 +18,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsIn(['bent', 'straight']) knightArrow?: string;
   @IsOptional() @IsBoolean() showStreak?: boolean;
   @IsOptional() @IsBoolean() reviewAutoAdvance?: boolean;
+  @IsOptional() @IsBoolean() mirrorView?: boolean;
 }
 
 class UpdateProfileDto {

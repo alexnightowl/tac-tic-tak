@@ -48,6 +48,10 @@ export type UserSettings = {
    *  player has time to study the solved position; the manual
    *  Next button (or Enter / Space) drives the advance. */
   reviewAutoAdvance: boolean;
+  /** Training mode: render the board from the opponent's side so
+   *  the player has to spot threats coming AT them. Pure visual
+   *  flip — move logic and validation are untouched. */
+  mirrorView: boolean;
 };
 
 export type Streak = {
@@ -134,6 +138,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   knightArrow: 'bent',
   showStreak: true,
   reviewAutoAdvance: false,
+  mirrorView: false,
 };
 
 export const useAppStore = create<State>((set) => ({

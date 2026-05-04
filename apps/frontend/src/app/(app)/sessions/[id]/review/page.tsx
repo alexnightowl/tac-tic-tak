@@ -351,7 +351,7 @@ export default function SessionReview() {
           {chess && settingsReady && (
             <Chessboard
               fen={chess.fen()}
-              orientation={orientation}
+              orientation={settings.mirrorView ? (orientation === 'white' ? 'black' : 'white') : orientation}
               onMove={handleMove}
               lastMove={lastMove}
               animateMove={animateMove}

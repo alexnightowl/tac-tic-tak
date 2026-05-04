@@ -130,6 +130,7 @@ export class UsersService {
     knightArrow: string;
     showStreak: boolean;
     reviewAutoAdvance: boolean;
+    mirrorView: boolean;
   }>) {
     const updated = await this.prisma.userSetting.update({
       where: { userId },

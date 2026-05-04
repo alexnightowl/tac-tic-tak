@@ -548,12 +548,20 @@ export default function PlayRunner() {
     </div>
   );
 
+  // Mirror-view setting flips the board visually (player's pieces
+  // at the top, opponent's at the bottom). Move logic doesn't care
+  // — squares are still a1..h8. The TurnCard keeps the natural
+  // orientation since it still announces whose move it is.
+  const boardOrientation = settings.mirrorView
+    ? (orientation === 'white' ? 'black' : 'white')
+    : orientation;
+
   const boardBlock = (
     <div className="relative w-full aspect-square">
       {chess && settingsReady && (
         <Chessboard
           fen={chess.fen()}
-          orientation={orientation}
+          orientation={boardOrientation}
           onMove={handleMove}
           lastMove={lastMove}
           animateMove={animateMove}

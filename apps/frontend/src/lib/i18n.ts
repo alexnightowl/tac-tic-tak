@@ -336,6 +336,8 @@ const en: Dict = {
   'settings.show_streak_hint': 'Hide the flame on dashboard, leaderboard and profile if you\'d rather not see it. Server still tracks it.',
   'settings.review_auto_advance': 'Auto-advance in review',
   'settings.review_auto_advance_hint': 'When off (default), review waits for you to press Next after solving — so you can study the position. Turn on to skip the confirmation.',
+  'settings.mirror_view': 'Mirror view',
+  'settings.mirror_view_hint': 'Flip the board so you see the position from your opponent\'s side. Trains threat-spotting; move logic is unchanged.',
   'profile.streak': 'Streak',
 };
 
@@ -673,6 +675,8 @@ const uk: Dict = {
   'settings.show_streak_hint': 'Сховати вогник на дашборді, у турнірній таблиці та профілі. Сервер все одно його рахує.',
   'settings.review_auto_advance': 'Авто-перехід у ревʼю',
   'settings.review_auto_advance_hint': 'Коли вимкнено (за замовчуванням), ревʼю чекає на «Наступна задача» після розвʼязку — щоб встигнути роздивитися позицію. Увімкни щоб пропускати підтвердження.',
+  'settings.mirror_view': 'Дзеркальний перегляд',
+  'settings.mirror_view_hint': 'Перевернути дошку, щоб бачити позицію з боку суперника. Тренує помічати загрози; логіка ходів не змінюється.',
 };
 
 const DICTS: Record<Language, Dict> = { en, uk };

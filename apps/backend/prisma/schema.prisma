@@ -70,6 +70,11 @@ model UserSetting {
   // Next after solving. When true, the runner auto-advances to the
   // next puzzle a moment after the correct ring flashes.
   reviewAutoAdvance Boolean @default(false)
+  // When true, the board renders flipped from the natural
+  // perspective — the player's pieces appear at the top so they
+  // see the position from the opponent's side. Training mode for
+  // spotting opponent threats; all move logic stays the same.
+  mirrorView      Boolean @default(false)
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
