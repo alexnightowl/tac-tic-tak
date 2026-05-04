@@ -9,6 +9,7 @@ import type { Progressions } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Logo } from '@/components/brand/Logo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,8 +77,7 @@ export default function LoginPage() {
           onChange={(e) => setNickname(e.target.value)}
           autoComplete="username"
         />
-        <Input
-          type="password"
+        <PasswordInput
           placeholder={t('auth.password')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}

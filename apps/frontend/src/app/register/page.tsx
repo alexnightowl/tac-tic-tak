@@ -9,6 +9,7 @@ import { useAppStore, type Progressions } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Logo } from '@/components/brand/Logo';
 import { cn } from '@/lib/utils';
 
@@ -120,8 +121,7 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <Input
-            type="password"
+          <PasswordInput
             placeholder={t('auth.password')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -132,8 +132,7 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <Input
-            type="password"
+          <PasswordInput
             placeholder={t('auth.repeat')}
             value={repeat}
             onChange={(e) => setRepeat(e.target.value)}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut, AlertTriangle } from 'lucide-react';
+import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import { http, setToken } from '@/lib/api';
 import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed, KnightArrowMode } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -280,16 +280,29 @@ function ChangePasswordSection({ t }: { t: (k: string) => string }) {
 function PasswordField({
   label, value, onChange, autoFocus,
 }: { label: string; value: string; onChange: (v: string) => void; autoFocus?: boolean }) {
+  const [visible, setVisible] = useState(false);
+  const Icon = visible ? EyeOff : Eye;
   return (
     <div>
       <div className="text-xs uppercase tracking-wider text-zinc-400 mb-1">{label}</div>
-      <input
-        type="password"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        autoFocus={autoFocus}
-        className="w-full h-10 rounded-lg bg-black/30 border border-[var(--border)] px-3 text-sm"
-      />
+      <div className="relative">
+        <input
+          type={visible ? 'text' : 'password'}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          autoFocus={autoFocus}
+          className="w-full h-10 rounded-lg bg-black/30 border border-[var(--border)] pl-3 pr-10 text-sm"
+        />
+        <button
+          type="button"
+          onClick={() => setVisible((v) => !v)}
+          tabIndex={-1}
+          aria-label={visible ? 'Hide password' : 'Show password'}
+          className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center rounded-md text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+        >
+          <Icon size={16} />
+        </button>
+      </div>
     </div>
   );
 }
