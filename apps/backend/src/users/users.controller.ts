@@ -17,6 +17,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsIn(['instant', 'fast', 'normal', 'slow']) animationSpeed?: string;
   @IsOptional() @IsIn(['bent', 'straight']) knightArrow?: string;
   @IsOptional() @IsBoolean() showStreak?: boolean;
+  @IsOptional() @IsBoolean() reviewAutoAdvance?: boolean;
 }
 
 class UpdateProfileDto {

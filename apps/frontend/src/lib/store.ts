@@ -43,6 +43,11 @@ export type UserSettings = {
    *  not see it. Server still tracks the streak; this only gates
    *  the badges on dashboard / leaderboard / profile. */
   showStreak: boolean;
+  /** When true, review-runners auto-advance to the next puzzle a
+   *  moment after the correct ring flashes. Off by default so the
+   *  player has time to study the solved position; the manual
+   *  Next button (or Enter / Space) drives the advance. */
+  reviewAutoAdvance: boolean;
 };
 
 export type Streak = {
@@ -128,6 +133,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   animationSpeed: 'normal',
   knightArrow: 'bent',
   showStreak: true,
+  reviewAutoAdvance: false,
 };
 
 export const useAppStore = create<State>((set) => ({

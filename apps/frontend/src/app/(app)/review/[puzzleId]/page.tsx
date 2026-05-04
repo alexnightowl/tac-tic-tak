@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Chess, Square } from 'chess.js';
-import { ChevronLeft, Lightbulb } from 'lucide-react';
+import { ChevronLeft, Lightbulb, Check, ArrowRight } from 'lucide-react';
 import { http } from '@/lib/api';
 import { Chessboard } from '@/components/board/Chessboard';
 import { TurnCard } from '@/components/board/TurnCard';
@@ -88,6 +88,23 @@ export default function ReviewPuzzle() {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [puzzleId]);
+
+  // Enter / Space advance to the next puzzle once the current one
+  // is solved. Lets a player who just wants to crank through the
+  // queue skip reaching for the on-screen Next button. Skipped
+  // when auto-advance is enabled — the timer is already moving.
+  useEffect(() => {
+    if (!solved || settings.reviewAutoAdvance) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        void resolveAndAdvance();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solved, settings.reviewAutoAdvance]);
 
   function startFrom(p: ServerPuzzle) {
     const init = initPuzzle(p);
@@ -182,10 +199,13 @@ export default function ReviewPuzzle() {
       setSolved(true);
       setFeedback({ correct: true, id: Date.now() });
       if (settings.soundEnabled) playSound(settings.soundPack, 'correct');
-      // Give the correct-ring time to flash, then resolve + refetch +
-      // navigate in sequence. See resolveAndAdvance for the ordering
-      // rationale.
-      setTimeout(() => { void resolveAndAdvance(); }, 650);
+      // settings.reviewAutoAdvance: when true, fall back to the old
+      // 650ms auto-advance. When false (the default), the player
+      // gets time to study the solved position and drives the
+      // advance manually via the Next button or Enter / Space.
+      if (settings.reviewAutoAdvance) {
+        setTimeout(() => { void resolveAndAdvance(); }, 650);
+      }
       return true;
     }
     const op = after[0];
@@ -333,6 +353,16 @@ export default function ReviewPuzzle() {
           )}
         </div>
       </div>
+      {solved && !settings.reviewAutoAdvance && (
+        <button
+          type="button"
+          onClick={() => { void resolveAndAdvance(); }}
+          autoFocus
+          className="h-12 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80 transition-opacity"
+        >
+          <Check size={16} /> {t('review.next')} <ArrowRight size={16} />
+        </button>
+      )}
     </div>
   );
 }

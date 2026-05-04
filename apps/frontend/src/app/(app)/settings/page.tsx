@@ -379,6 +379,14 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
         </div>
         <Toggle checked={settings.showStreak} onChange={(v) => patch({ showStreak: v })} />
       </div>
+
+      <div className="pt-2 flex items-center justify-between gap-4">
+        <div>
+          <div className="text-sm">{t('settings.review_auto_advance')}</div>
+          <div className="text-xs text-zinc-500">{t('settings.review_auto_advance_hint')}</div>
+        </div>
+        <Toggle checked={settings.reviewAutoAdvance} onChange={(v) => patch({ reviewAutoAdvance: v })} />
+      </div>
     </Card>
   );
 }

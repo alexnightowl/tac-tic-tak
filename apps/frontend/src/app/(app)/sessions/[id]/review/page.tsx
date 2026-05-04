@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Chess, Square } from 'chess.js';
-import { X, Check, XCircle, Loader2, ArrowLeft, Lightbulb } from 'lucide-react';
+import { X, Check, XCircle, Loader2, ArrowLeft, Lightbulb, ArrowRight } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT, useTn } from '@/lib/i18n';
@@ -64,6 +64,7 @@ export default function SessionReview() {
   const [opponentBusy, setOpponentBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
   const [hintSquare, setHintSquare] = useState<Square | null>(null);
+  const [solved, setSolved] = useState(false);
   const currentPuzzle = useRef<ServerPuzzle | null>(null);
 
   useEffect(() => {
@@ -87,6 +88,7 @@ export default function SessionReview() {
       setChess(null);
       return;
     }
+    setSolved(false);
     const puzzle = toServerPuzzle(head);
     currentPuzzle.current = puzzle;
     const init = initPuzzle(puzzle);
@@ -126,8 +128,35 @@ export default function SessionReview() {
     setFeedback({ correct: true, id: Date.now() });
     setTimeout(() => setFeedback(null), 500);
     setSolvedCount((c) => c + 1);
-    setTimeout(() => setQueue((q) => q.slice(1)), 280);
+    setSolved(true);
+    // settings.reviewAutoAdvance: when on, the runner pops the
+    // queue automatically. When off (the default) the player
+    // drives the advance via the Next button or Enter / Space —
+    // see advanceToNext below.
+    if (settings.reviewAutoAdvance) {
+      setTimeout(() => setQueue((q) => q.slice(1)), 280);
+    }
   }
+
+  const advanceToNext = useCallback(() => {
+    setSolved(false);
+    setQueue((q) => q.slice(1));
+  }, []);
+
+  // Enter / Space advance to the next puzzle once the current one
+  // is solved (manual-advance mode only — auto-advance handles its
+  // own timing).
+  useEffect(() => {
+    if (!solved || settings.reviewAutoAdvance) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        advanceToNext();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [solved, settings.reviewAutoAdvance, advanceToNext]);
 
   function onFailed() {
     if (settings.soundEnabled) playSound(settings.soundPack, 'fail');
@@ -328,6 +357,19 @@ export default function SessionReview() {
           )}
         </div>
       </div>
+
+      {solved && !settings.reviewAutoAdvance && (
+        <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
+          <button
+            type="button"
+            onClick={advanceToNext}
+            autoFocus
+            className="w-full h-12 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80 transition-opacity"
+          >
+            <Check size={16} /> {t('review.next')} <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
 
       <div className="w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center gap-4 text-xs text-zinc-400">
         <span className="flex items-center gap-1"><Check size={12} /> {solvedCount}</span>

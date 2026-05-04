@@ -129,6 +129,7 @@ export class UsersService {
     animationSpeed: string;
     knightArrow: string;
     showStreak: boolean;
+    reviewAutoAdvance: boolean;
   }>) {
     const updated = await this.prisma.userSetting.update({
       where: { userId },

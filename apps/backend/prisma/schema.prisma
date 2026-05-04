@@ -66,6 +66,10 @@ model UserSetting {
   animationSpeed  String  @default("normal") // instant | fast | normal | slow
   knightArrow     String  @default("bent")  // bent | straight (right-click arrow shape for knight moves)
   showStreak      Boolean @default(true)
+  // When false (default), review puzzles wait for the user to press
+  // Next after solving. When true, the runner auto-advances to the
+  // next puzzle a moment after the correct ring flashes.
+  reviewAutoAdvance Boolean @default(false)
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

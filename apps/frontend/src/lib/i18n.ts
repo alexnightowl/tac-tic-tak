@@ -191,7 +191,7 @@ const en: Dict = {
   'review.back_to_themes': 'Back to patterns',
   'review.empty': 'No puzzles in review. Nice.',
   'review.back': 'Back',
-  'review.next': 'Next review',
+  'review.next': 'Next puzzle',
   'review.replay': 'Replay',
   'review.retry': 'Not quite — resetting…',
   'review.session_heading': 'Review this session',
@@ -333,6 +333,8 @@ const en: Dict = {
   'settings.knight_arrow.straight': 'Straight',
   'settings.show_streak': 'Show daily streak',
   'settings.show_streak_hint': 'Hide the flame on dashboard, leaderboard and profile if you\'d rather not see it. Server still tracks it.',
+  'settings.review_auto_advance': 'Auto-advance in review',
+  'settings.review_auto_advance_hint': 'When off (default), review waits for you to press Next after solving — so you can study the position. Turn on to skip the confirmation.',
   'profile.streak': 'Streak',
 };
 
@@ -525,7 +527,7 @@ const uk: Dict = {
   'review.back_to_themes': 'До патернів',
   'review.empty': 'Нічого в черзі. Гарна робота.',
   'review.back': 'Назад',
-  'review.next': 'Наступна',
+  'review.next': 'Наступна задача',
   'review.replay': 'Повторити',
   'review.retry': 'Неправильно — скидання…',
   'review.session_heading': 'Повторити сесію',
@@ -667,6 +669,8 @@ const uk: Dict = {
   'settings.knight_arrow.straight': 'Пряма',
   'settings.show_streak': 'Показувати щоденний стрік',
   'settings.show_streak_hint': 'Сховати вогник на дашборді, у турнірній таблиці та профілі. Сервер все одно його рахує.',
+  'settings.review_auto_advance': 'Авто-перехід у ревʼю',
+  'settings.review_auto_advance_hint': 'Коли вимкнено (за замовчуванням), ревʼю чекає на «Наступна задача» після розвʼязку — щоб встигнути роздивитися позицію. Увімкни щоб пропускати підтвердження.',
 };
 
 const DICTS: Record<Language, Dict> = { en, uk };
