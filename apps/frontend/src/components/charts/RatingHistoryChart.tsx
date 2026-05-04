@@ -44,6 +44,10 @@ export function RatingHistoryChart({
   height = 200,
   language = 'en',
 }: Props) {
+  // ALL hooks must run unconditionally on every render — keep
+  // them above the empty-state early return below. React error
+  // #310 in production traced back to ordered / xByPoint /
+  // gridStops sitting under the `if (data.length === 0)` guard.
   const series = useMemo(() => {
     const byStyle: Record<TrainingStyle, Point[]> = {
       bullet: [],
@@ -70,6 +74,33 @@ export function RatingHistoryChart({
     };
   }, [data]);
 
+  // X uses a simple ordinal index across all points — the actual
+  // calendar gap doesn't matter for the line's shape (see comment
+  // above). Build a global ordering by endedAt so styles share the
+  // same x scale.
+  const ordered = useMemo(
+    () => [...data].sort((a, b) => +new Date(a.endedAt) - +new Date(b.endedAt)),
+    [data],
+  );
+  const xByPoint = useMemo(() => {
+    const m = new Map<string, number>();
+    ordered.forEach((p, i) => {
+      m.set(`${p.style}-${p.endedAt}-${p.rating}`, i);
+    });
+    return m;
+  }, [ordered]);
+
+  // 4 horizontal grid lines at round-50 ratings.
+  const gridStops = useMemo(() => {
+    const span = yMax - yMin;
+    const step = span > 400 ? 100 : 50;
+    const stops: number[] = [];
+    for (let v = Math.ceil(yMin / step) * step; v <= yMax; v += step) {
+      stops.push(v);
+    }
+    return stops;
+  }, [yMin, yMax]);
+
   if (data.length === 0) {
     return (
       <p className={cn('text-sm text-zinc-500 py-6 text-center', className)}>
@@ -88,38 +119,11 @@ export function RatingHistoryChart({
   const padB = 22;
   const innerW = W - padL - padR;
   const innerH = H - padT - padB;
-
-  // X uses a simple ordinal index across all points — the actual
-  // calendar gap doesn't matter for the line's shape (see comment
-  // above). Build a global ordering by endedAt so styles share the
-  // same x scale.
-  const ordered = useMemo(
-    () => [...data].sort((a, b) => +new Date(a.endedAt) - +new Date(b.endedAt)),
-    [data],
-  );
-  const xByPoint = useMemo(() => {
-    const m = new Map<string, number>();
-    ordered.forEach((p, i) => {
-      m.set(`${p.style}-${p.endedAt}-${p.rating}`, i);
-    });
-    return m;
-  }, [ordered]);
   const xMax = Math.max(1, ordered.length - 1);
 
   const xFor = (i: number) => padL + (i / xMax) * innerW;
   const yFor = (rating: number) =>
     padT + innerH - ((rating - yMin) / Math.max(1, yMax - yMin)) * innerH;
-
-  // 4 horizontal grid lines at round-50 ratings.
-  const gridStops = useMemo(() => {
-    const span = yMax - yMin;
-    const step = span > 400 ? 100 : 50;
-    const stops: number[] = [];
-    for (let v = Math.ceil(yMin / step) * step; v <= yMax; v += step) {
-      stops.push(v);
-    }
-    return stops;
-  }, [yMin, yMax]);
 
   return (
     <div className={cn('w-full', className)}>
