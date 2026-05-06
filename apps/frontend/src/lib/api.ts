@@ -23,6 +23,20 @@ export function setToken(token: string | null) {
   else window.localStorage.removeItem(TOKEN_KEY);
 }
 
+// Module-level guard so a burst of parallel 401s from queued requests
+// doesn't fire the redirect repeatedly. Reset is unnecessary — the
+// hard reload to /login wipes module state anyway.
+let sessionExpiryHandled = false;
+
+function handleSessionExpired() {
+  if (sessionExpiryHandled) return;
+  sessionExpiryHandled = true;
+  setToken(null);
+  if (typeof window !== 'undefined') {
+    window.location.replace('/login');
+  }
+}
+
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const token = getToken();
   const res = await fetch(`${API_URL}${path}`, {
@@ -34,6 +48,12 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     },
   });
   if (!res.ok) {
+    // We sent a token and the server rejected it → session is gone.
+    // Clear local auth and bounce to /login. Authed-only signal: a 401
+    // on the login form itself (no token in flight) is left to the page.
+    if (res.status === 401 && token) {
+      handleSessionExpired();
+    }
     let msg = res.statusText;
     try {
       const body = await res.json();
