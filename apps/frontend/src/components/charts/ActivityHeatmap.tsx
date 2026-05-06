@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type Datum = { date: string; count: number };
@@ -40,6 +40,16 @@ const MONTH_LABELS = {
 export function ActivityHeatmap({ data, weeks = 52, language = 'en', className }: Props) {
   const grid = useMemo(() => buildGrid(data, weeks), [data, weeks]);
   const [hover, setHover] = useState<{ date: string; count: number } | null>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // Pin the horizontal scroll to the right edge so the most-recent
+  // week is what the user sees first on narrow screens. Runs after
+  // every grid rebuild so a data refresh doesn't yank scroll back.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollLeft = el.scrollWidth;
+  }, [grid]);
 
   const dayLabels = DAY_LABELS[language] ?? DAY_LABELS.en;
   const monthLabels = MONTH_LABELS[language] ?? MONTH_LABELS.en;
@@ -63,7 +73,7 @@ export function ActivityHeatmap({ data, weeks = 52, language = 'en', className }
 
   return (
     <div className={cn('relative', className)}>
-      <div className="overflow-x-auto pb-1">
+      <div ref={scrollerRef} className="overflow-x-auto pb-1">
         <div className="inline-flex gap-1.5 min-w-fit">
           {/* Day-labels column. The first cell is a spacer so the
               labels line up with cells, not with the month-labels
