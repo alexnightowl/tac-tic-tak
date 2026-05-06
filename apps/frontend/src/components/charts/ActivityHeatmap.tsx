@@ -73,7 +73,10 @@ export function ActivityHeatmap({ data, weeks = 52, language = 'en', className }
 
   return (
     <div className={cn('relative', className)}>
-      <div ref={scrollerRef} className="overflow-x-auto pb-1">
+      <div
+        ref={scrollerRef}
+        className="overflow-x-auto pb-1 md:overflow-visible md:flex md:justify-center"
+      >
         <div className="inline-flex gap-1.5 min-w-fit">
           {/* Day-labels column. The first cell is a spacer so the
               labels line up with cells, not with the month-labels
