@@ -27,6 +27,10 @@ import { cn } from '@/lib/utils';
 // stays per-device — crossing devices is rare enough that the
 // extra round-trip to a server-stored preference isn't worth it.
 const LAST_STYLE_KEY = 'taktic.lastStyle';
+// Last-picked duration is stored per-style: blitz/rapid/classical
+// have different preset ranges, so a single global value would be
+// wrong half the time. Shape: { [style]: seconds }.
+const LAST_DURATIONS_KEY = 'taktic.lastDurations';
 
 function readLastStyle(): TrainingStyle {
   if (typeof window === 'undefined') return DEFAULT_STYLE;
@@ -35,6 +39,49 @@ function readLastStyle(): TrainingStyle {
     if (v && isTrainingStyle(v)) return v;
   } catch {}
   return DEFAULT_STYLE;
+}
+
+type StoredDurations = Partial<Record<TrainingStyle, number>>;
+
+function readStoredDurations(): StoredDurations {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(LAST_DURATIONS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') return parsed as StoredDurations;
+  } catch {}
+  return {};
+}
+
+function writeStoredDuration(style: TrainingStyle, sec: number) {
+  if (typeof window === 'undefined') return;
+  try {
+    const cur = readStoredDurations();
+    cur[style] = sec;
+    window.localStorage.setItem(LAST_DURATIONS_KEY, JSON.stringify(cur));
+  } catch {}
+}
+
+type DurationInit = { duration: number; customDuration: boolean; customMinutesSec: number };
+
+function resolveDurationFor(style: TrainingStyle): DurationInit {
+  const preset = STYLE_FORMULAS[style];
+  const presets = preset.durationPresetsSec;
+  const fallback = presets[1] ?? presets[0];
+  const stored = readStoredDurations()[style];
+  if (
+    typeof stored !== 'number' ||
+    !Number.isFinite(stored) ||
+    stored < preset.minDurationSec ||
+    stored > preset.maxDurationSec
+  ) {
+    return { duration: fallback, customDuration: false, customMinutesSec: fallback };
+  }
+  if (presets.includes(stored)) {
+    return { duration: stored, customDuration: false, customMinutesSec: stored };
+  }
+  return { duration: fallback, customDuration: true, customMinutesSec: stored };
 }
 
 export default function PlaySetup() {
@@ -53,9 +100,10 @@ export default function PlaySetup() {
   const provisional = styleProgression.calibrationSessionsLeft > 0;
 
   const [startRating, setStartRating] = useState<number>(styleProgression.currentPuzzleRating);
-  const [duration, setDuration] = useState<number>(stylePreset.durationPresetsSec[1] ?? stylePreset.durationPresetsSec[0]);
-  const [customDuration, setCustomDuration] = useState<boolean>(false);
-  const [customMinutes, setCustomMinutes] = useState<string>(String(Math.round((stylePreset.durationPresetsSec[1] ?? stylePreset.durationPresetsSec[0]) / 60)));
+  const [initialDuration] = useState<DurationInit>(() => resolveDurationFor(readLastStyle()));
+  const [duration, setDuration] = useState<number>(initialDuration.duration);
+  const [customDuration, setCustomDuration] = useState<boolean>(initialDuration.customDuration);
+  const [customMinutes, setCustomMinutes] = useState<string>(String(Math.round(initialDuration.customMinutesSec / 60)));
   const [mode, setMode] = useState<'mixed' | 'theme'>('mixed');
   const [theme, setTheme] = useState('fork');
   const [err, setErr] = useState<string | null>(null);
@@ -79,13 +127,14 @@ export default function PlaySetup() {
 
   // When style changes, snap the rating + duration into that style's range
   // so users don't end up with nonsensical combos from the previous style.
+  // Restore the last duration the player picked for this style if any.
   // Also pin the new pick to localStorage so the next visit pre-selects it.
   useEffect(() => {
     setStartRating(styleProgression.currentPuzzleRating);
-    const presets = stylePreset.durationPresetsSec;
-    setDuration(presets[1] ?? presets[0]);
-    setCustomDuration(false);
-    setCustomMinutes(String(Math.round((presets[1] ?? presets[0]) / 60)));
+    const restored = resolveDurationFor(style);
+    setDuration(restored.duration);
+    setCustomDuration(restored.customDuration);
+    setCustomMinutes(String(Math.round(restored.customMinutesSec / 60)));
     try { window.localStorage.setItem(LAST_STYLE_KEY, style); } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [style]);
@@ -111,6 +160,13 @@ export default function PlaySetup() {
   const customMinutesNum = Math.max(minMinutes, Math.min(maxMinutes, Math.floor(Number(customMinutes) || 0)));
   const effectiveDuration = customDuration ? customMinutesNum * 60 : duration;
   const customInvalid = customDuration && (customMinutes === '' || customMinutesNum < minMinutes);
+
+  // Persist the current duration per-style so the next visit pre-selects it.
+  // We save the clamped effective seconds; reconstruction handles preset vs
+  // custom on the next read.
+  useEffect(() => {
+    writeStoredDuration(style, effectiveDuration);
+  }, [style, effectiveDuration]);
 
   const start = async () => {
     setErr(null);
