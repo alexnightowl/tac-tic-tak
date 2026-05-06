@@ -397,6 +397,14 @@ export default function PlayRunner() {
     if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
 
     if (candidate !== expected) {
+      // The Lichess dataset records one solution per puzzle, but a
+      // position can have several mating moves. If the player's move
+      // delivers checkmate, the puzzle's goal is achieved regardless
+      // of which piece did it — accept it instead of failing.
+      if (chess.isCheckmate()) {
+        afterAttempt(true, m.to);
+        return true;
+      }
       afterAttempt(false, m.to);
       return true;
     }
