@@ -110,10 +110,11 @@ export default function PlayRunner() {
   // render the "🔥 N ✗" broken-chip animation for ~700ms before the
   // chip disappears entirely.
   const [streakBroken, setStreakBroken] = useState<number | null>(null);
-  // Transient per-attempt feedback shown as a colored ring around the
-  // board. `id` is a timestamp so that consecutive same-correctness
-  // attempts still retrigger the CSS animation via React's key reset.
-  const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
+  // Transient per-attempt feedback — paints the destination square
+  // green or red briefly. `id` is a timestamp so that consecutive
+  // same-square attempts still retrigger the CSS animation via React's
+  // key reset.
+  const [feedbackSquare, setFeedbackSquare] = useState<{ square: Square; correct: boolean; id: number } | null>(null);
   const attemptStart = useRef<number>(Date.now());
   const loading = useRef(false);
   const finishing = useRef(false);
@@ -261,7 +262,7 @@ export default function PlayRunner() {
     }
   }
 
-  async function afterAttempt(correct: boolean) {
+  async function afterAttempt(correct: boolean, square: Square) {
     if (!puzzle) return;
     const responseMs = Date.now() - attemptStart.current;
     setTotalResponseMs((t) => t + responseMs);
@@ -272,11 +273,11 @@ export default function PlayRunner() {
       setFailedCount((c) => c + 1);
     }
     if (settings.soundEnabled) playSound(settings.soundPack, correct ? 'correct' : 'fail');
-    // Coloured ring-pulse around the board — binary visual answer the
-    // user can read even with sound off. Auto-clears so the next puzzle
-    // starts with a clean frame.
-    setFeedback({ correct, id: Date.now() });
-    setTimeout(() => setFeedback(null), 500);
+    // Green/red wash on the destination square — visual answer right
+    // where the eye is, so peripheral attention isn't required. Auto-
+    // clears so the next puzzle starts with a clean frame.
+    setFeedbackSquare({ square, correct, id: Date.now() });
+    setTimeout(() => setFeedbackSquare(null), 500);
     // Drive the visible streak from local state optimistically (so it
     // updates even if the attempt request is in-flight), then reconcile
     // with the server's canonical count when the response lands.
@@ -396,13 +397,13 @@ export default function PlayRunner() {
     if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
 
     if (candidate !== expected) {
-      afterAttempt(false);
+      afterAttempt(false, m.to);
       return true;
     }
 
     const afterExpected = remaining.slice(1);
     if (afterExpected.length === 0) {
-      afterAttempt(true);
+      afterAttempt(true, m.to);
       return true;
     }
 
@@ -569,6 +570,7 @@ export default function PlayRunner() {
           allowMoves={!animateMove && !loadingFirst && !paused}
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}
+          feedbackSquare={feedbackSquare}
         />
       )}
       {(loadingFirst || !settingsReady) && (
@@ -577,19 +579,6 @@ export default function PlayRunner() {
             <Loader2 size={28} className="text-[var(--accent)] animate-spin" />
           </div>
         </div>
-      )}
-      {/* Correct/incorrect ring-pulse around the board. `key` on the id
-          forces React to remount the element so the CSS animation
-          replays on every attempt, even two corrects in a row. */}
-      {feedback && (
-        <div
-          key={feedback.id}
-          className={cn(
-            'absolute inset-0 pointer-events-none rounded-xl board-feedback-ring',
-            feedback.correct ? 'is-correct' : 'is-fail',
-          )}
-          aria-hidden
-        />
       )}
     </div>
   );

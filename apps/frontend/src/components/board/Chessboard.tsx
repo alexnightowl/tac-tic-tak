@@ -23,6 +23,10 @@ type Props = {
   animationMs?: number;
   /** If set, the square is rendered with a pulsing amber hint ring. */
   hintSquare?: Square | null;
+  /** Brief green/red flash on the destination square after an attempt.
+   *  `id` lets a consecutive same-square attempt re-trigger the CSS
+   *  animation via key reset. */
+  feedbackSquare?: { square: Square; correct: boolean; id: number } | null;
 };
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
@@ -62,6 +66,7 @@ export function Chessboard({
   animateMove,
   animationMs = 280,
   hintSquare = null,
+  feedbackSquare = null,
 }: Props) {
   const chess = useMemo(() => new Chess(fen), [fen]);
   const ref = useRef<HTMLDivElement>(null);
@@ -242,6 +247,7 @@ export function Chessboard({
             const isDragging = dragFrom === s;
             const isAnimatingSource = animateMove?.from === s;
             const isHintTarget = hintSquare === s;
+            const isFeedback = feedbackSquare?.square === s;
             const isDragTarget = !!dragFrom && dragOver === s && legal.has(s) && s !== dragFrom;
             const canGrab = allowMoves && !dragFrom && !!piece && piece.color === chess.turn();
             const cursor = dragFrom
@@ -300,6 +306,20 @@ export function Chessboard({
                 {isHintTarget && (
                   <div
                     className="absolute inset-0 pointer-events-none rounded-[2px] hint-pulse"
+                    style={{ zIndex: 4 }}
+                  />
+                )}
+                {/* per-attempt destination flash — solid green/red wash
+                    on the square the player just moved to. Renders ABOVE
+                    the piece so the colour is unambiguous on any theme;
+                    fades out in 500ms via CSS animation. */}
+                {isFeedback && (
+                  <div
+                    key={feedbackSquare!.id}
+                    className={cn(
+                      'absolute inset-0 pointer-events-none square-feedback',
+                      feedbackSquare!.correct ? 'is-correct' : 'is-fail',
+                    )}
                     style={{ zIndex: 4 }}
                   />
                 )}
