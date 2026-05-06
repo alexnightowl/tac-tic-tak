@@ -48,7 +48,7 @@ const EN: Dict = {
     "Bullet sharpens pattern recognition. Rapid builds deep calculation. We track them separately so your bullet rating can't smuggle weak rapid habits.",
   'value.gate.title': 'Real level-up gate',
   'value.gate.body':
-    'Rating ceilings only rise when you meet four targets in a single session — count, accuracy, speed, peak. No shortcuts, no grinding for numbers.',
+    'Your norm only rises when you meet four targets in a single session — count, accuracy, speed, peak. No shortcuts, no grinding for numbers.',
 
   'features.eyebrow': 'Everything you need',
   'features.title': 'The full toolkit, out of the box',
@@ -87,7 +87,7 @@ const EN: Dict = {
     'The board fills the screen, the timer runs, puzzles adapt to you after every attempt. Missed moves are automatically queued for later review.',
   'how.step_3.title': 'Hit all four to level up',
   'how.step_3.body':
-    'Finish the session with enough solved, high enough accuracy, fast enough, with enough peak rating. Nail all four and your ceiling goes up.',
+    'Finish the session with enough solved, high enough accuracy, fast enough, with enough peak rating. Nail all four and your norm goes up.',
 
   'cta.title_1': 'Your next rating jump is',
   'cta.title_2': 'one session away.',
@@ -175,7 +175,7 @@ const UK: Dict = {
     'Дошка на весь екран, таймер іде, задачі підлаштовуються під тебе після кожної спроби. Пропущені ходи автоматично додаються в рев’ю.',
   'how.step_3.title': 'Виконай усі чотири — левел-ап',
   'how.step_3.body':
-    'Заверши сесію з достатньою кількістю розвʼязаних, достатньою точністю, швидкістю й піком рейтингу. Виконав усі чотири — стеля росте.',
+    'Заверши сесію з достатньою кількістю розвʼязаних, достатньою точністю, швидкістю й піком рейтингу. Виконав усі чотири — норма росте.',
 
   'cta.title_1': 'Твій наступний ривок у рейтингу',
   'cta.title_2': 'уже в одній сесії.',
