@@ -64,32 +64,7 @@ export class AnalyticsService {
       sessions: sessionAgg._count,
     };
 
-    const lastSession = sessions[0];
     const allTimePeak = lifetime.peakRating;
-
-    // Time-bucket analytics for the most recent session.
-    let buckets: Record<string, { attempts: number; accuracy: number; avgResponseMs: number }> = {};
-    if (lastSession) {
-      const attempts = await this.prisma.trainingAttempt.findMany({
-        where: { sessionId: lastSession.id },
-        orderBy: { createdAt: 'asc' },
-      });
-      const started = lastSession.startedAt.getTime();
-      const groups: Record<string, typeof attempts> = { '0-3': [], '3-6': [], '6-10': [] };
-      for (const a of attempts) {
-        const mins = (a.createdAt.getTime() - started) / 60_000;
-        const key = mins < 3 ? '0-3' : mins < 6 ? '3-6' : '6-10';
-        groups[key].push(a);
-      }
-      for (const [k, arr] of Object.entries(groups)) {
-        const correct = arr.filter((a) => a.correct).length;
-        buckets[k] = {
-          attempts: arr.length,
-          accuracy: arr.length ? correct / arr.length : 0,
-          avgResponseMs: arr.length ? Math.round(arr.reduce((s, a) => s + a.responseMs, 0) / arr.length) : 0,
-        };
-      }
-    }
 
     return {
       recentSessions: sessions.map((s) => ({
@@ -107,7 +82,6 @@ export class AnalyticsService {
         theme: s.theme,
       })),
       allTimePeak,
-      lastSessionBuckets: buckets,
       lifetime,
     };
   }

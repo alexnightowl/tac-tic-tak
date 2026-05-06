@@ -22,7 +22,6 @@ import { formatLocalDate, cn } from '@/lib/utils';
 type Overview = {
   recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
   allTimePeak: number;
-  lastSessionBuckets: Record<string, { attempts: number; accuracy: number; avgResponseMs: number }>;
   lifetime: {
     solved: number;
     attempts: number;
@@ -229,22 +228,6 @@ function StatsTab({ filter, onFilterChange, language, t }: {
           <div className="text-xs text-zinc-500 mt-1">{rec.data.reason}</div>
         </Card>
       )}
-
-      <div>
-        <h2 className="text-lg font-medium mb-2">{t('stats.by_time')}</h2>
-        <div className="grid grid-cols-3 gap-3">
-          {['0-3', '3-6', '6-10'].map((k) => {
-            const b = overview.data?.lastSessionBuckets?.[k];
-            return (
-              <Card key={k}>
-                <CardTitle>{k} min</CardTitle>
-                <CardValue>{b ? `${Math.round(b.accuracy * 100)}%` : '—'}</CardValue>
-                <div className="text-xs text-zinc-500 mt-1">{b ? `${b.attempts} · ${b.avgResponseMs}ms` : ''}</div>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
 
       <Card className="overflow-hidden">
         <CardTitle>{t('stats.by_theme')}</CardTitle>
