@@ -37,7 +37,7 @@ export default function LeaderboardPage() {
   });
 
   return (
-    <div className="space-y-4 max-w-2xl">
+    <div className="space-y-4 max-w-2xl mx-auto">
       <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
         <Trophy size={22} className="text-[var(--accent)]" />
         {t('leaderboard.title')}
