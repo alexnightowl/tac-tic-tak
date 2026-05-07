@@ -11,14 +11,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const qc = useQueryClient();
-  // Hide chrome on the play runner itself (focus mode) — just show content.
+  // Hide chrome on board-runner pages (focus mode) — play, theme review,
+  // and session review all need full viewport so the board can match the
+  // size players see during a session. Without this they'd be clamped by
+  // the global max-w-5xl wrapper to a postage-stamp on wide monitors.
   const inPlayRunner = pathname?.startsWith('/play/') && pathname.split('/').length >= 3;
+  const inThemeReview = pathname?.startsWith('/review/') && pathname.split('/').length >= 3;
+  const inSessionReview = pathname ? /^\/sessions\/[^/]+\/review$/.test(pathname) : false;
+  const focusMode = inPlayRunner || inThemeReview || inSessionReview;
 
   useEffect(() => {
     if (!getToken()) router.replace('/login');
   }, [router]);
 
-  if (inPlayRunner) {
+  if (focusMode) {
     return <div className="relative min-h-dvh">{children}</div>;
   }
 

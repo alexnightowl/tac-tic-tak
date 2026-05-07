@@ -262,113 +262,141 @@ export default function ReviewPuzzle() {
     .map((s) => themeLabel(s, settings.language as 'en' | 'uk'))
     .join(', ');
 
+  const headerRow = (
+    <div className="flex items-center justify-between gap-2">
+      <Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
+        <ChevronLeft size={16} /> {t('review.back')}
+      </Button>
+      <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400">
+          {counter && <span>{counter}</span>}
+          {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
+          {puzzle?.rating != null && <span>{puzzle.rating}</span>}
+        </div>
+        {/* The hint button morphs into the next-puzzle CTA once
+            the puzzle is solved. Same fixed-width slot so the
+            row doesn't shift horizontally on the transition. */}
+        {solved && !settings.reviewAutoAdvance ? (
+          <button
+            type="button"
+            onClick={() => { void resolveAndAdvance(); }}
+            autoFocus
+            className="h-8 w-[112px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
+            aria-label={t('review.done_cta')}
+          >
+            <Check size={14} />
+            {t('review.done_cta')}
+            <ArrowRight size={14} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleHint}
+            disabled={!chess || !!hintSquare || solved}
+            className="h-8 w-[112px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={t('review.hint')}
+          >
+            <Lightbulb size={14} />
+            {t('review.hint')}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
+  // Reserved as a fixed-height slot so the board doesn't jump up
+  // by ~20px when the retry message appears.
+  const themesSlot = (
+    <div className="-mt-1 px-1 min-h-[18px] flex items-center">
+      {feedback && !feedback.correct ? (
+        <span className="text-xs text-rose-400">{t('review.retry')}</span>
+      ) : themesLine ? (
+        <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
+      ) : null}
+    </div>
+  );
+
+  const turnCardBlock = (
+    <TurnCard
+      orientation={orientation}
+      loading={!chess}
+      opponentBusy={!!animateMove}
+      // chess.turn() === user's color ⇒ player's turn. Solved
+      // puzzles also flip to "opponent moving" since the board
+      // is no longer interactive.
+      isPlayerTurn={
+        !!chess && !solved &&
+        ((orientation === 'white' && chess.turn() === 'w') ||
+          (orientation === 'black' && chess.turn() === 'b'))
+      }
+    />
+  );
+
+  const boardBlock = (
+    <div className="relative w-full aspect-square">
+      {chess && settingsReady && (
+        <Chessboard
+          fen={chess.fen()}
+          orientation={settings.mirrorView ? (orientation === 'white' ? 'black' : 'white') : orientation}
+          onMove={handleMove}
+          lastMove={lastMove}
+          animateMove={animateMove}
+          animationMs={ANIMATION_MS[settings.animationSpeed]}
+          allowMoves={!animateMove && !solved}
+          theme={settings.boardTheme as BoardTheme}
+          pieceSet={settings.pieceSet}
+          hintSquare={hintSquare}
+        />
+      )}
+      {feedback && (
+        <div
+          key={feedback.id}
+          className={`absolute inset-0 pointer-events-none rounded-xl board-feedback-ring ${
+            feedback.correct ? 'is-correct' : 'is-fail'
+          }`}
+          aria-hidden
+        />
+      )}
+    </div>
+  );
+
   return (
     <div
-      className="flex flex-col gap-3 max-w-[min(calc(100vh-240px),640px)] mx-auto"
+      className="h-dvh flex flex-col overflow-hidden px-2 lg:px-6"
       style={{
-        // Page fills the visible area so the flex-1 board container
-        // has room to centre. 204px ≈ mobile top nav (76) + main py-4
-        // (32) + bottom-nav reserve pb-24 (96); env() picks up the
-        // notch + home indicator. On desktop md:py-6 + no bottom nav
-        // means we undershoot by ~70px → small empty band, fine.
-        minHeight:
-          'calc(100dvh - 204px - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
+        paddingTop: 'max(12px, env(safe-area-inset-top))',
+        paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
       }}
     >
-      {/* Row 1: back, counter+rating, hint button. Row 2 is reserved
-          for either the themes caption or the inline retry feedback —
-          rendered as a single fixed-height slot so the board doesn't
-          jump up by ~20px when the message appears. */}
-      <div className="flex items-center justify-between gap-2">
-        <Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
-          <ChevronLeft size={16} /> {t('review.back')}
-        </Button>
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400">
-            {counter && <span>{counter}</span>}
-            {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
-            {puzzle?.rating != null && <span>{puzzle.rating}</span>}
+      {/* Mirrors the play runner: phone & tablet stacked, desktop (lg+)
+          board on the left with a 320px control panel on the right.
+          containerType:size on the board column lets the inner element
+          render the largest square that fits via cqw/cqh — same trick
+          used in the play runner so the board matches session size. */}
+      <div className="flex flex-col lg:flex-row items-stretch flex-1 min-h-0 w-full gap-2 lg:gap-6 lg:max-w-screen-2xl lg:mx-auto">
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
+          {headerRow}
+          {themesSlot}
+          {turnCardBlock}
+        </div>
+
+        <div
+          className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
+          style={{ containerType: 'size' }}
+        >
+          <div
+            className="aspect-square"
+            style={{ width: 'min(100cqw, 100cqh)' }}
+          >
+            {boardBlock}
           </div>
-          {/* The hint button morphs into the next-puzzle CTA once
-              the puzzle is solved. Same fixed-width slot so the
-              row doesn't shift horizontally on the transition. */}
-          {solved && !settings.reviewAutoAdvance ? (
-            <button
-              type="button"
-              onClick={() => { void resolveAndAdvance(); }}
-              autoFocus
-              className="h-8 w-[112px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
-              aria-label={t('review.done_cta')}
-            >
-              <Check size={14} />
-              {t('review.done_cta')}
-              <ArrowRight size={14} />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={handleHint}
-              disabled={!chess || !!hintSquare || solved}
-              className="h-8 w-[112px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-              aria-label={t('review.hint')}
-            >
-              <Lightbulb size={14} />
-              {t('review.hint')}
-            </button>
-          )}
         </div>
-      </div>
-      <div className="-mt-1 px-1 min-h-[18px] flex items-center">
-        {feedback && !feedback.correct ? (
-          <span className="text-xs text-rose-400">{t('review.retry')}</span>
-        ) : themesLine ? (
-          <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
-        ) : null}
-      </div>
-      <TurnCard
-        orientation={orientation}
-        loading={!chess}
-        opponentBusy={!!animateMove}
-        // chess.turn() === user's color ⇒ player's turn. Solved
-        // puzzles also flip to "opponent moving" since the board
-        // is no longer interactive.
-        isPlayerTurn={
-          !!chess && !solved &&
-          ((orientation === 'white' && chess.turn() === 'w') ||
-            (orientation === 'black' && chess.turn() === 'b'))
-        }
-      />
-      {/* Board grows into the remaining vertical space and stays
-          square. The page's max-w already caps width at
-          min(100vh-240, 640) so a w-full board never overflows the
-          viewport vertically — same trick the session-review runner
-          uses. Plain flex centring, no container queries needed. */}
-      <div className="flex-1 flex items-center justify-center min-h-0 min-w-0 w-full">
-        <div className="relative w-full aspect-square">
-          {chess && settingsReady && (
-            <Chessboard
-              fen={chess.fen()}
-              orientation={settings.mirrorView ? (orientation === 'white' ? 'black' : 'white') : orientation}
-              onMove={handleMove}
-              lastMove={lastMove}
-              animateMove={animateMove}
-              animationMs={ANIMATION_MS[settings.animationSpeed]}
-              allowMoves={!animateMove && !solved}
-              theme={settings.boardTheme as BoardTheme}
-              pieceSet={settings.pieceSet}
-              hintSquare={hintSquare}
-            />
-          )}
-          {feedback && (
-            <div
-              key={feedback.id}
-              className={`absolute inset-0 pointer-events-none rounded-xl board-feedback-ring ${
-                feedback.correct ? 'is-correct' : 'is-fail'
-              }`}
-              aria-hidden
-            />
-          )}
-        </div>
+
+        <aside className="hidden lg:flex w-[320px] shrink-0 self-center flex-col gap-3 max-h-full overflow-y-auto py-2">
+          {headerRow}
+          {themesSlot}
+          {turnCardBlock}
+        </aside>
       </div>
     </div>
   );

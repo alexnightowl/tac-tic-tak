@@ -280,105 +280,152 @@ export default function SessionReview() {
 
   const head = queue[0];
 
-  return (
-    <div className="flex flex-col items-center gap-3 pb-4">
-      <div className="w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-between gap-2">
+  const headerRow = (
+    <div className="flex items-center justify-between gap-2">
+      <button
+        onClick={() => router.back()}
+        className="glass rounded-xl py-2 px-3 flex items-center gap-1.5 text-sm"
+        aria-label={t('review.back')}
+      >
+        <ArrowLeft size={16} /> {t('review.back')}
+      </button>
+      <div className="glass rounded-xl py-2 px-4 text-sm tabular-nums">
+        {progressLabel}
+      </div>
+    </div>
+  );
+
+  const reasonBar = (
+    <div className="glass rounded-2xl px-4 py-3 flex items-center gap-3">
+      <div className={cn(
+        'h-9 px-2.5 rounded-full text-[11px] font-semibold flex items-center gap-1.5',
+        head.reason === 'failed' ? 'bg-rose-500/15 text-rose-300' : 'bg-amber-500/15 text-amber-300',
+      )}>
+        {head.reason === 'failed' ? <XCircle size={14} /> : <Loader2 size={14} />}
+        {head.reason === 'failed' ? t('review.reason_failed') : t('review.reason_slow')}
+      </div>
+      <div className="text-sm text-zinc-400 tabular-nums">{head.rating}</div>
+      {/* The hint button morphs into the next-puzzle CTA once
+          the puzzle is solved. Same fixed-width slot so the
+          row doesn't shift horizontally on the transition. */}
+      {solved && !settings.reviewAutoAdvance ? (
         <button
-          onClick={() => router.back()}
-          className="glass rounded-xl py-2 px-3 flex items-center gap-1.5 text-sm"
-          aria-label={t('review.back')}
+          type="button"
+          onClick={advanceToNext}
+          autoFocus
+          className="ml-auto h-9 w-[120px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
+          aria-label={t('review.done_cta')}
         >
-          <ArrowLeft size={16} /> {t('review.back')}
+          <Check size={14} />
+          {t('review.done_cta')}
+          <ArrowRight size={14} />
         </button>
-        <div className="glass rounded-xl py-2 px-4 text-sm tabular-nums">
-          {progressLabel}
-        </div>
-      </div>
+      ) : (
+        <button
+          type="button"
+          onClick={handleHint}
+          disabled={!!animateMove || opponentBusy || hintSquare !== null}
+          className="ml-auto h-9 w-[120px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label={t('review.hint')}
+        >
+          <Lightbulb size={14} />
+          {t('review.hint')}
+        </button>
+      )}
+    </div>
+  );
 
-      <div className="w-full max-w-[min(calc(100vh-240px),880px)] glass rounded-2xl px-4 py-3 flex items-center gap-3">
-        <div className={cn(
-          'h-9 px-2.5 rounded-full text-[11px] font-semibold flex items-center gap-1.5',
-          head.reason === 'failed' ? 'bg-rose-500/15 text-rose-300' : 'bg-amber-500/15 text-amber-300',
-        )}>
-          {head.reason === 'failed' ? <XCircle size={14} /> : <Loader2 size={14} />}
-          {head.reason === 'failed' ? t('review.reason_failed') : t('review.reason_slow')}
-        </div>
-        <div className="text-sm text-zinc-400 tabular-nums">{head.rating}</div>
-        {/* The hint button morphs into the next-puzzle CTA once
-            the puzzle is solved. Same fixed-width slot so the
-            row doesn't shift horizontally on the transition. */}
-        {solved && !settings.reviewAutoAdvance ? (
-          <button
-            type="button"
-            onClick={advanceToNext}
-            autoFocus
-            className="ml-auto h-9 w-[120px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
-            aria-label={t('review.done_cta')}
-          >
-            <Check size={14} />
-            {t('review.done_cta')}
-            <ArrowRight size={14} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleHint}
-            disabled={!!animateMove || opponentBusy || hintSquare !== null}
-            className="ml-auto h-9 w-[120px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label={t('review.hint')}
-          >
-            <Lightbulb size={14} />
-            {t('review.hint')}
-          </button>
-        )}
-      </div>
+  const turnCardBlock = (
+    <TurnCard
+      orientation={orientation}
+      loading={!chess}
+      opponentBusy={!!animateMove || opponentBusy}
+      isPlayerTurn={
+        !!chess &&
+        ((orientation === 'white' && chess.turn() === 'w') ||
+          (orientation === 'black' && chess.turn() === 'b'))
+      }
+    />
+  );
 
-      <div className="w-full max-w-[min(calc(100vh-240px),880px)]">
-        <TurnCard
-          orientation={orientation}
-          loading={!chess}
-          opponentBusy={!!animateMove || opponentBusy}
-          isPlayerTurn={
-            !!chess &&
-            ((orientation === 'white' && chess.turn() === 'w') ||
-              (orientation === 'black' && chess.turn() === 'b'))
-          }
+  const statsRow = (
+    <div className="flex items-center justify-center gap-4 text-xs text-zinc-400">
+      <span className="flex items-center gap-1"><Check size={12} /> {solvedCount}</span>
+      <span className="flex items-center gap-1"><X size={12} /> {failedTries}</span>
+      <span className="text-zinc-500">· {queue.length} {t('review.remaining')}</span>
+    </div>
+  );
+
+  const boardBlock = (
+    <div className="relative w-full aspect-square">
+      {chess && settingsReady && (
+        <Chessboard
+          fen={chess.fen()}
+          orientation={settings.mirrorView ? (orientation === 'white' ? 'black' : 'white') : orientation}
+          onMove={handleMove}
+          lastMove={lastMove}
+          animateMove={animateMove}
+          animationMs={ANIMATION_MS[settings.animationSpeed]}
+          allowMoves={!animateMove && !opponentBusy}
+          theme={settings.boardTheme as BoardTheme}
+          pieceSet={settings.pieceSet}
+          hintSquare={hintSquare}
         />
-      </div>
+      )}
+      {feedback && (
+        <div
+          key={feedback.id}
+          className={cn(
+            'absolute inset-0 pointer-events-none rounded-xl board-feedback-ring',
+            feedback.correct ? 'is-correct' : 'is-fail',
+          )}
+          aria-hidden
+        />
+      )}
+    </div>
+  );
 
-      <div className="flex-1 w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center min-h-0">
-        <div className="relative w-full aspect-square">
-          {chess && settingsReady && (
-            <Chessboard
-              fen={chess.fen()}
-              orientation={settings.mirrorView ? (orientation === 'white' ? 'black' : 'white') : orientation}
-              onMove={handleMove}
-              lastMove={lastMove}
-              animateMove={animateMove}
-              animationMs={ANIMATION_MS[settings.animationSpeed]}
-              allowMoves={!animateMove && !opponentBusy}
-              theme={settings.boardTheme as BoardTheme}
-              pieceSet={settings.pieceSet}
-              hintSquare={hintSquare}
-            />
-          )}
-          {feedback && (
-            <div
-              key={feedback.id}
-              className={cn(
-                'absolute inset-0 pointer-events-none rounded-xl board-feedback-ring',
-                feedback.correct ? 'is-correct' : 'is-fail',
-              )}
-              aria-hidden
-            />
-          )}
+  return (
+    <div
+      className="h-dvh flex flex-col overflow-hidden px-2 lg:px-6"
+      style={{
+        paddingTop: 'max(12px, env(safe-area-inset-top))',
+        paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
+      }}
+    >
+      {/* Mirrors the play runner: phone & tablet stacked, desktop (lg+)
+          board on the left and a 320px control panel on the right.
+          The board column uses container queries so it renders the
+          largest square that fits — same size as during a session. */}
+      <div className="flex flex-col lg:flex-row items-stretch flex-1 min-h-0 w-full gap-2 lg:gap-6 lg:max-w-screen-2xl lg:mx-auto">
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
+          {headerRow}
+          {reasonBar}
+          {turnCardBlock}
         </div>
-      </div>
 
-      <div className="w-full max-w-[min(calc(100vh-240px),880px)] flex items-center justify-center gap-4 text-xs text-zinc-400">
-        <span className="flex items-center gap-1"><Check size={12} /> {solvedCount}</span>
-        <span className="flex items-center gap-1"><X size={12} /> {failedTries}</span>
-        <span className="text-zinc-500">· {queue.length} {t('review.remaining')}</span>
+        <div
+          className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
+          style={{ containerType: 'size' }}
+        >
+          <div
+            className="aspect-square"
+            style={{ width: 'min(100cqw, 100cqh)' }}
+          >
+            {boardBlock}
+          </div>
+        </div>
+
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)]">
+          {statsRow}
+        </div>
+
+        <aside className="hidden lg:flex w-[320px] shrink-0 self-center flex-col gap-3 max-h-full overflow-y-auto py-2">
+          {headerRow}
+          {reasonBar}
+          {turnCardBlock}
+          {statsRow}
+        </aside>
       </div>
     </div>
   );
