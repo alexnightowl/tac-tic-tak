@@ -416,7 +416,7 @@ function StyleBlurb({ style, t }: { style: TrainingStyle; t: (k: string) => stri
       <div className="min-w-0 flex-1">
         <div className="text-xs text-zinc-300 leading-snug">{t(`style.${style}.desc`)}</div>
         <div className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1 tabular-nums">
-          {minMinutes}–{maxMinutes} {t('play.minutes')} · ≤ {Math.round(preset.avgMs / 1000)}s {t('unlock.req_speed').toLowerCase()}
+          {minMinutes}–{maxMinutes} {t('play.minutes')}
         </div>
       </div>
     </div>
@@ -432,7 +432,6 @@ function NextUnlockPreview({ style, durationSec, unlockedTo, t }: {
   const preset = STYLE_FORMULAS[style];
   const target = solvedTarget(style, durationSec);
   const accPct = Math.round(preset.accuracy * 100);
-  const avgSec = Math.round(preset.avgMs / 1000);
 
   return (
     <section className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-softer)]/40 p-4">
@@ -448,10 +447,9 @@ function NextUnlockPreview({ style, durationSec, unlockedTo, t }: {
           </span>
         </div>
       </div>
-      <ul className="grid grid-cols-2 gap-2 text-xs">
+      <ul className="grid grid-cols-3 gap-2 text-xs">
         <Requirement label={t('unlock.req_solved')} value={`≥ ${target}`} />
         <Requirement label={t('unlock.req_accuracy')} value={`≥ ${accPct}%`} />
-        <Requirement label={t('unlock.req_speed')} value={`≤ ${avgSec}s`} />
         <Requirement label={t('unlock.req_peak')} value={`+${preset.peakDelta}`} />
       </ul>
       <p className="text-[11px] text-zinc-500 mt-3 leading-snug">

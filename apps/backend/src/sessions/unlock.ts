@@ -9,7 +9,7 @@ export const UNLOCK_REWARD = 50;
 
 // Demotion: asymmetric to unlock so progress is easier than regress.
 // A session counts as "weak" only when started within DEMOTE_PEAK_BAND of
-// the current unlock ceiling AND ≤ DEMOTE_MAX_CRITERIA of the 4 unlock
+// the current unlock ceiling AND ≤ DEMOTE_MAX_CRITERIA of the 3 unlock
 // criteria are met. After WEAK_STREAK_THRESHOLD weak sessions in a row
 // the ceiling drops by DEMOTE_PENALTY (clamped at startPuzzleRating).
 // Sessions in the comfort zone (below the band) don't touch the streak.
@@ -21,55 +21,56 @@ export const WEAK_STREAK_THRESHOLD = 2;
 // Provisional / calibration window: number of rated sessions a brand-
 // new style progression aggressively settles its ceiling before the
 // usual +50 / -25 rules engage. Tuned short — five passes over the
-// 4-criteria step ladder is enough to land within ±50 of the true
+// 3-criteria step ladder is enough to land within ±50 of the true
 // "comfortable level-up zone" for most players.
 export const CALIBRATION_SESSIONS = 5;
 
 // Per-criterion-met-count step applied to the SESSION'S startRating
-// to produce the next ceiling. Hits the same four signals as a
-// stable-mode unlock check (solved-count, accuracy, speed,
-// peakDelta). The step ladder is asymmetric on purpose: 0 of 4
-// means the player is genuinely overwhelmed at startRating, so we
-// drop a full puzzle-band; 4 of 4 lifts +50 (same as a real unlock).
-export const CALIBRATION_STEP_BY_CRITERIA: readonly number[] = [-125, -75, -25, 0, 50];
+// to produce the next ceiling. Hits the same three signals as a
+// stable-mode unlock check (solved-count, accuracy, peakDelta). The
+// step ladder is asymmetric on purpose: 0 of 3 means the player is
+// genuinely overwhelmed at startRating, so we drop a full puzzle-
+// band; 3 of 3 lifts +50 (same as a real unlock).
+export const CALIBRATION_STEP_BY_CRITERIA: readonly number[] = [-125, -50, 0, 50];
 
 export type StyleFormula = {
   solvedPerMin: number;
   solvedFloor: number;
   accuracy: number;   // 0..1
-  avgMs: number;
   peakDelta: number;
   durationPresetsSec: number[];
   minDurationSec: number;
   maxDurationSec: number;
 };
 
+// solvedPerMin used to be paired with a separate avgMs speed gate.
+// Speed was always the binding constraint, making solved redundant
+// — see the May 2026 redesign. Per-min now bakes in pace = (60s /
+// avgMs) × accuracy, so passing solved+accuracy implicitly proves
+// the throughput we used to require explicitly.
 export const STYLE_FORMULAS: Record<TrainingStyle, StyleFormula> = {
   bullet: {
-    solvedPerMin: 3.5,
+    solvedPerMin: 6.5,
     solvedFloor: 3,
     accuracy: 0.65,
-    avgMs: 6000,
     peakDelta: 75,
     durationPresetsSec: [60, 120, 180],
     minDurationSec: 60,
     maxDurationSec: 600,
   },
   blitz: {
-    solvedPerMin: 2.5,
+    solvedPerMin: 4.2,
     solvedFloor: 5,
     accuracy: 0.70,
-    avgMs: 10000,
     peakDelta: 100,
     durationPresetsSec: [300, 600, 900],
     minDurationSec: 60,
     maxDurationSec: 1800,
   },
   rapid: {
-    solvedPerMin: 1.2,
+    solvedPerMin: 1.9,
     solvedFloor: 5,
     accuracy: 0.80,
-    avgMs: 25000,
     peakDelta: 120,
     durationPresetsSec: [600, 1200, 1800],
     minDurationSec: 300,
@@ -88,7 +89,7 @@ export type UnlockCheck = {
   style: TrainingStyle;
   solvedTarget: number;
   criteria: Array<{
-    id: 'solved' | 'accuracy' | 'speed' | 'peak';
+    id: 'solved' | 'accuracy' | 'peak';
     met: boolean;
     current: number;
     target: number;
@@ -97,7 +98,7 @@ export type UnlockCheck = {
 
 export function evaluateUnlock(
   style: TrainingStyle,
-  stats: { solved: number; accuracy: number; avgResponseMs: number; peakRating: number },
+  stats: { solved: number; accuracy: number; peakRating: number },
   durationSec: number,
   startRating: number,
 ): UnlockCheck {
@@ -106,10 +107,9 @@ export function evaluateUnlock(
   const peakDelta = Math.max(0, stats.peakRating - startRating);
 
   const criteria: UnlockCheck['criteria'] = [
-    { id: 'solved',   met: stats.solved >= target,               current: stats.solved,        target },
-    { id: 'accuracy', met: stats.accuracy >= f.accuracy,         current: stats.accuracy,      target: f.accuracy },
-    { id: 'speed',    met: stats.avgResponseMs > 0 && stats.avgResponseMs <= f.avgMs, current: stats.avgResponseMs, target: f.avgMs },
-    { id: 'peak',     met: peakDelta >= f.peakDelta,             current: peakDelta,           target: f.peakDelta },
+    { id: 'solved',   met: stats.solved >= target,       current: stats.solved,    target },
+    { id: 'accuracy', met: stats.accuracy >= f.accuracy, current: stats.accuracy,  target: f.accuracy },
+    { id: 'peak',     met: peakDelta >= f.peakDelta,     current: peakDelta,       target: f.peakDelta },
   ];
 
   return {
@@ -131,10 +131,10 @@ export type CalibrationCheck = {
   sessionsLeftAfter: number;
   ceilingBefore: number;
   ceilingAfter: number;
-  // How many of the four unlock criteria the player actually met.
+  // How many of the three unlock criteria the player actually met.
   // Drives the step taken this session.
   criteriaMet: number;
-  // Signed step applied: +50 / 0 / -25 / -75 / -125.
+  // Signed step applied: +50 / 0 / -50 / -125.
   delta: number;
 };
 
@@ -149,7 +149,7 @@ export function evaluateCalibration(
   const step = CALIBRATION_STEP_BY_CRITERIA[criteriaMet] ?? 0;
   // Anchor the new ceiling on the rating the player ACTUALLY tried
   // (session.startRating), not on the previous ceiling — the goal is
-  // to land at a level where the player will hit ~3/4 criteria next
+  // to land at a level where the player will hit ~2/3 criteria next
   // time, which means moving from where they just played. Floor at
   // startPuzzleRating so the level can never drift below entry.
   //

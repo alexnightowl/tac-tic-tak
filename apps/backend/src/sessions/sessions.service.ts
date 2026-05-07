@@ -383,7 +383,7 @@ export class SessionsService {
 
       // Mirror the calibration outcome onto the standard
       // unlocked/demoted flags so the UI can reuse the existing
-      // outcome cards. 4 of 4 criteria → unlocked (+50). Strict
+      // outcome cards. 3 of 3 criteria → unlocked (+50). Strict
       // ceiling drop → demoted card (the rose-coloured "cap
       // adjusted" UI). Holds (0 / +50 with no movement, e.g. floor
       // clamp) just show the criteria progress card with no

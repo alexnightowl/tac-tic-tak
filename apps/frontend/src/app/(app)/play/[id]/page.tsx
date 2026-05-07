@@ -440,11 +440,10 @@ export default function PlayRunner() {
     return computeUnlockProgress(sessionStyle, {
       solved: solvedCount,
       accuracy: totalAttempts === 0 ? 0 : solvedCount / totalAttempts,
-      avgResponseMs: totalAttempts === 0 ? 0 : Math.round(totalResponseMs / totalAttempts),
       peakRating,
       startRating: sessionStartRating,
     }, durationSec);
-  }, [sessionStyle, sessionStartRating, durationSec, solvedCount, totalAttempts, totalResponseMs, peakRating]);
+  }, [sessionStyle, sessionStartRating, durationSec, solvedCount, totalAttempts, peakRating]);
 
   if (summary) return <SessionSummary s={summary} />;
 
@@ -789,7 +788,7 @@ function UnlockProgressBar({
         />
       </div>
 
-      <div className="grid grid-cols-4 gap-1.5 mt-2">
+      <div className="grid grid-cols-3 gap-1.5 mt-2">
         {progress.criteria.map((c) => (
           <CriterionTick key={c.id} c={c} />
         ))}
@@ -840,7 +839,6 @@ function CriterionTick({ c }: { c: CriterionProgress }) {
   const label = {
     solved: t('unlock.req_solved'),
     accuracy: t('unlock.req_accuracy'),
-    speed: t('unlock.req_speed'),
     peak: t('unlock.req_peak'),
   }[c.id];
 
@@ -1129,7 +1127,6 @@ function CriterionRow({ c }: { c: FinishResponse['unlockCheck'] extends infer U 
   const labels: Record<CriterionId, string> = {
     solved: t('unlock.req_solved'),
     accuracy: t('unlock.req_accuracy'),
-    speed: t('unlock.req_speed'),
     peak: t('unlock.req_peak'),
   };
   const fmt = formatCriterion(c);
@@ -1152,8 +1149,6 @@ function formatCriterion(c: { id: string; current: number; target: number }) {
   switch (c.id) {
     case 'accuracy':
       return { current: `${Math.round(c.current * 100)}%`, target: `${Math.round(c.target * 100)}%` };
-    case 'speed':
-      return { current: `${(c.current / 1000).toFixed(1)}s`, target: `${(c.target / 1000).toFixed(0)}s` };
     case 'peak':
       return { current: `+${c.current}`, target: `+${c.target}` };
     default:

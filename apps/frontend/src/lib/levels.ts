@@ -36,39 +36,40 @@ export type StyleFormula = {
   solvedPerMin: number;
   solvedFloor: number;
   accuracy: number;
-  avgMs: number;
   peakDelta: number;
   durationPresetsSec: number[];
   minDurationSec: number;
   maxDurationSec: number;
 };
 
+// solvedPerMin used to be paired with a separate avgMs speed gate.
+// Speed was always the binding constraint, making solved redundant
+// — see the May 2026 redesign. Per-min now bakes in pace = (60s /
+// avgMs) × accuracy, so passing solved+accuracy implicitly proves
+// the throughput we used to require explicitly.
 export const STYLE_FORMULAS: Record<TrainingStyle, StyleFormula> = {
   bullet: {
-    solvedPerMin: 3.5,
+    solvedPerMin: 6.5,
     solvedFloor: 3,
     accuracy: 0.65,
-    avgMs: 6000,
     peakDelta: 75,
     durationPresetsSec: [60, 120, 180],
     minDurationSec: 60,
     maxDurationSec: 600,
   },
   blitz: {
-    solvedPerMin: 2.5,
+    solvedPerMin: 4.2,
     solvedFloor: 5,
     accuracy: 0.70,
-    avgMs: 10000,
     peakDelta: 100,
     durationPresetsSec: [300, 600, 900],
     minDurationSec: 60,
     maxDurationSec: 1800,
   },
   rapid: {
-    solvedPerMin: 1.2,
+    solvedPerMin: 1.9,
     solvedFloor: 5,
     accuracy: 0.80,
-    avgMs: 25000,
     peakDelta: 120,
     durationPresetsSec: [600, 1200, 1800],
     minDurationSec: 300,
@@ -94,12 +95,11 @@ export function solvedTarget(style: TrainingStyle, durationSec: number): number 
 export type UnlockStats = {
   solved: number;
   accuracy: number;      // 0..1
-  avgResponseMs: number;
   peakRating: number;
   startRating: number;
 };
 
-export type CriterionId = 'solved' | 'accuracy' | 'speed' | 'peak';
+export type CriterionId = 'solved' | 'accuracy' | 'peak';
 
 export type CriterionProgress = {
   id: CriterionId;
@@ -119,17 +119,13 @@ export function computeUnlockProgress(
 
   const solvedRatio = clamp01(stats.solved / target);
   const accuracyRatio = clamp01(stats.accuracy / f.accuracy);
-  const speedRatio = stats.avgResponseMs === 0
-    ? 0
-    : clamp01(f.avgMs / Math.max(stats.avgResponseMs, 1));
   const peakDelta = Math.max(0, stats.peakRating - stats.startRating);
   const peakRatio = clamp01(peakDelta / f.peakDelta);
 
   const criteria: CriterionProgress[] = [
-    { id: 'solved',   ratio: solvedRatio,   met: stats.solved >= target,           current: stats.solved,         target },
-    { id: 'accuracy', ratio: accuracyRatio, met: stats.accuracy >= f.accuracy,      current: stats.accuracy,       target: f.accuracy },
-    { id: 'speed',    ratio: speedRatio,    met: stats.avgResponseMs > 0 && stats.avgResponseMs <= f.avgMs, current: stats.avgResponseMs, target: f.avgMs },
-    { id: 'peak',     ratio: peakRatio,     met: peakDelta >= f.peakDelta,          current: peakDelta,            target: f.peakDelta },
+    { id: 'solved',   ratio: solvedRatio,   met: stats.solved >= target,       current: stats.solved,    target },
+    { id: 'accuracy', ratio: accuracyRatio, met: stats.accuracy >= f.accuracy, current: stats.accuracy,  target: f.accuracy },
+    { id: 'peak',     ratio: peakRatio,     met: peakDelta >= f.peakDelta,     current: peakDelta,       target: f.peakDelta },
   ];
 
   const overall = Math.min(...criteria.map((c) => c.ratio));
