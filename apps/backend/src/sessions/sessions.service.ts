@@ -262,8 +262,53 @@ export class SessionsService {
     const session = await this.ownedSession(userId, sessionId);
     if (session.endedAt) return this.summary(session.id);
 
-    // User chose to discard — wipe the session and its attempts entirely.
+    // User chose to discard — the session must leave no trace on
+    // rating or stats. The cascade delete below kills the session row
+    // and its attempts, but per-attempt side effects on the
+    // progression and review queue persist on their own tables and
+    // need explicit rollback.
     if (!save) {
+      // Capture failed-attempt puzzleIds before the cascade wipes
+      // them — we'll prune the ReviewItems they created below.
+      const failedPuzzleIds = (await this.prisma.trainingAttempt.findMany({
+        where: { sessionId, correct: false },
+        select: { puzzleId: true },
+      })).map((a) => a.puzzleId);
+
+      // Restore the per-style rating to where it stood at session
+      // start. currentPuzzleRating drifts per-puzzle via Glicko, and
+      // that drift shouldn't survive a discard. session.create sets
+      // both currentPuzzleRating and startPuzzleRating to
+      // session.startRating, so restoring to that value mirrors the
+      // just-after-create state. Theme sessions don't touch
+      // progression rating, so the restore is a no-op for them.
+      if (session.mode !== 'theme') {
+        await this.prisma.userStyleProgression.update({
+          where: { userId_style: { userId, style: normalizeStyle(session.style) } },
+          data: {
+            currentPuzzleRating: session.startRating,
+            startPuzzleRating: session.startRating,
+          },
+        });
+      }
+
+      // Drop ReviewItems that this session newly created. Filtering
+      // by createdAt >= session.startedAt avoids clobbering pre-
+      // existing items the player happened to fail again here. We
+      // accept one corner case: if a previously-RESOLVED item was
+      // un-resolved by a wrong attempt in this session, it stays
+      // un-resolved (we don't snapshot the prior resolvedAt). Niche
+      // enough not to justify a schema column for it.
+      if (failedPuzzleIds.length > 0) {
+        await this.prisma.reviewItem.deleteMany({
+          where: {
+            userId,
+            puzzleId: { in: failedPuzzleIds },
+            createdAt: { gte: session.startedAt },
+          },
+        });
+      }
+
       await this.buffer.clearSession(sessionId);
       await this.prisma.trainingSession.delete({ where: { id: sessionId } });
       return { discarded: true } as const;
