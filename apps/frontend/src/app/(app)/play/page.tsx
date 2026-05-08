@@ -512,9 +512,9 @@ function ThemePracticeNote({ t }: { t: (k: string) => string }) {
 
 function Requirement({ label, value }: { label: string; value: string }) {
   return (
-    <li className="rounded-lg bg-black/20 px-2.5 py-2 flex items-center justify-between gap-2">
-      <span className="text-zinc-400">{label}</span>
-      <span className="tabular-nums font-semibold text-white">{value}</span>
+    <li className="rounded-lg bg-black/20 px-2.5 py-2 flex flex-col items-center gap-0.5 text-center">
+      <span className="text-zinc-400 leading-tight">{label}</span>
+      <span className="tabular-nums font-semibold text-white leading-tight">{value}</span>
     </li>
   );
 }
