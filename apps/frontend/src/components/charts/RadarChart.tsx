@@ -51,10 +51,7 @@ export function RadarChart({ data, min, max, size = 320, strokeColor = 'var(--ac
     const scaleMax = max ?? Math.max(...values, scaleMin + 100);
     const cx = size / 2;
     const cy = size / 2;
-    // Bigger inset (was 48) so wrapped two-line labels and long
-    // single-word labels don't run off the SVG. Costs us ~14px of
-    // polygon radius — the data still reads cleanly.
-    const r = size / 2 - 62;
+    const r = size / 2 - 44;
     const toXY = (idx: number, v: number) => {
       const t = (v - scaleMin) / Math.max(1, scaleMax - scaleMin);
       const angle = -Math.PI / 2 + (idx / n) * Math.PI * 2;
@@ -73,20 +70,14 @@ export function RadarChart({ data, min, max, size = 320, strokeColor = 'var(--ac
   }
   const { cx, cy, r, scaleMin, scaleMax, spokePoint, poly } = computed;
 
-  // Give the SVG horizontal slack so labels at left / right spokes
-  // don't get clipped by the viewBox edge. The polygon stays
-  // centred at cx,cy; we just paint over a wider canvas.
-  const overflowX = 56;
+  const overflowX = 40;
   const viewW = size + overflowX * 2;
   const viewX = -overflowX;
 
   return (
     <svg
-      width={viewW}
-      height={size}
       viewBox={`${viewX} 0 ${viewW} ${size}`}
-      className="select-none max-w-full"
-      style={{ height: size }}
+      className="select-none block w-full h-auto"
     >
       {/* rings */}
       {Array.from({ length: rings }).map((_, i) => {
