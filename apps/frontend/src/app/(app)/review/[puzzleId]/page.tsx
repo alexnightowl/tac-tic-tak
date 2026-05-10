@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Chess, Square } from 'chess.js';
@@ -62,20 +62,19 @@ export default function ReviewPuzzle() {
   const [solved, setSolved] = useState(false);
   const [done, setDone] = useState(false);
 
-  // Queue position relative to the LIST AT THE TIME THIS PUZZLE MOUNTED.
-  // We lock it so that when the current puzzle resolves (and the list
-  // refetches without it), the counter still advances cleanly instead
-  // of snapping.
-  const positionRef = useMemo(() => {
-    // Intentionally only captured on first render for this puzzleId.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    return { current: null as { index: number; total: number } | null };
-  }, [puzzleId]);
-  if (list.data && positionRef.current === null) {
-    const idx = list.data.findIndex((i) => i.puzzleId === puzzleId);
-    positionRef.current = idx >= 0
-      ? { index: idx, total: list.data.length }
-      : { index: 0, total: Math.max(list.data.length, 1) };
+  // Session position. The total is captured ONCE per theme drill and
+  // never reacts to the queue shrinking (puzzles being resolved) or
+  // growing (backend pushing new items mid-session). We also remember
+  // the original puzzle order so the X counter advances even when the
+  // server-side list mutates underneath us.
+  const sessionRef = useRef<{ ids: string[]; total: number; key: string } | null>(null);
+  const sessionKey = themeFilter ?? '__all__';
+  if (
+    list.data &&
+    (sessionRef.current === null || sessionRef.current.key !== sessionKey)
+  ) {
+    const ids = list.data.map((i) => i.puzzleId);
+    sessionRef.current = { ids, total: ids.length, key: sessionKey };
   }
 
   useEffect(() => {
@@ -223,12 +222,19 @@ export default function ReviewPuzzle() {
     return true;
   }
 
-  const counter = positionRef.current
-    ? `${Math.min(positionRef.current.index + 1, positionRef.current.total)} / ${positionRef.current.total}`
-    : '';
+  const counter = (() => {
+    const sess = sessionRef.current;
+    if (!sess) return '';
+    const idx = sess.ids.indexOf(puzzleId);
+    // Outside the original session list (backend added a new puzzle
+    // mid-drill, we drifted onto it) ⇒ pin to the captured total so
+    // the denominator never bumps.
+    const position = idx >= 0 ? idx + 1 : sess.total;
+    return `${Math.min(position, sess.total)} / ${sess.total}`;
+  })();
 
   if (done) {
-    const total = positionRef.current?.total ?? 0;
+    const total = sessionRef.current?.total ?? 0;
     const noun = tn('review.puzzle_word', total);
     const themeName = themeFilter
       ? themeLabel(themeFilter, settings.language as 'en' | 'uk')
