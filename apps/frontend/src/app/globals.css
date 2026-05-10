@@ -112,6 +112,34 @@ body.play-locked.app-shell {
     radial-gradient(400px 200px at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%);
 }
 
+/* Phone-only landscape lock. Tablets (short side > 500px) are unaffected. */
+.rotate-lock {
+  display: none;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .rotate-lock {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    background: var(--bg-base);
+    color: rgb(228 228 231);
+    text-align: center;
+  }
+  .rotate-lock-icon {
+    font-size: 48px;
+    line-height: 1;
+  }
+  body.app-shell > :not(.rotate-lock) {
+    visibility: hidden;
+  }
+}
+
 /* Glass card surface. */
 .glass {
   background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));

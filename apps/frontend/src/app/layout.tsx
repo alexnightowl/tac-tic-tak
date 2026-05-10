@@ -64,6 +64,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <OnboardingModal />
         </Providers>
         <ToastContainer />
+        <div className="rotate-lock" role="alert">
+          <div className="rotate-lock-icon" aria-hidden>↻</div>
+          <div className="text-base font-medium">Please rotate your device</div>
+          <div className="text-sm text-zinc-400">Будь ласка, поверніть пристрій</div>
+        </div>
       </body>
     </html>
   );
