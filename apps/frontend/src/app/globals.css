@@ -112,6 +112,16 @@ body.play-locked.app-shell {
     radial-gradient(400px 200px at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%);
 }
 
+/* Subtle pulse on the streak badge when today's play hasn't been
+   logged yet — draws the eye without being a banner. */
+@keyframes streak-breath {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+.streak-pulse {
+  animation: streak-breath 1.6s ease-in-out infinite;
+}
+
 /* Phone-only landscape lock. Tablets (short side > 500px) are unaffected. */
 .rotate-lock {
   display: none;

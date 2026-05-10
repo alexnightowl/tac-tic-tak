@@ -229,6 +229,8 @@ const en: Dict = {
   'stats.themes_tab_weakest': 'Weakest',
   'stats.themes_tab_strongest': 'Strongest',
   'stats.themes_tab_all': 'All',
+  'streak.secured': 'Locked in today',
+  'streak.at_risk': 'Play today to keep it',
 
   'achv.loading': 'Loading achievements…',
   'achv.progress_title': 'Achievements',
@@ -587,6 +589,8 @@ const uk: Dict = {
   'stats.themes_tab_weakest': 'Найслабші',
   'stats.themes_tab_strongest': 'Найсильніші',
   'stats.themes_tab_all': 'Усі',
+  'streak.secured': 'Закріплено сьогодні',
+  'streak.at_risk': 'Зіграй сьогодні, щоб не загубити',
 
   'achv.loading': 'Завантажую досягнення…',
   'achv.progress_title': 'Досягнення',
