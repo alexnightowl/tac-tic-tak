@@ -267,41 +267,40 @@ export default function ReviewPuzzle() {
       <Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
         <ChevronLeft size={16} /> {t('review.back')}
       </Button>
-      <div className="flex items-center gap-2 shrink-0">
-        <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400">
-          {counter && <span>{counter}</span>}
-          {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
-          {puzzle?.rating != null && <span>{puzzle.rating}</span>}
-        </div>
-        {/* The hint button morphs into the next-puzzle CTA once
-            the puzzle is solved. Same fixed-width slot so the
-            row doesn't shift horizontally on the transition. */}
-        {solved && !settings.reviewAutoAdvance ? (
-          <button
-            type="button"
-            onClick={() => { void resolveAndAdvance(); }}
-            autoFocus
-            className="h-8 w-[112px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
-            aria-label={t('review.done_cta')}
-          >
-            <Check size={14} />
-            {t('review.done_cta')}
-            <ArrowRight size={14} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleHint}
-            disabled={!chess || !!hintSquare || solved}
-            className="h-8 w-[112px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label={t('review.hint')}
-          >
-            <Lightbulb size={14} />
-            {t('review.hint')}
-          </button>
-        )}
+      <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400 shrink-0">
+        {counter && <span>{counter}</span>}
+        {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
+        {puzzle?.rating != null && <span>{puzzle.rating}</span>}
       </div>
     </div>
+  );
+
+  // Hint/Next CTA — lives at the bottom on phone (thumb zone) and on
+  // the right side panel on desktop. Hint morphs into Next once solved
+  // so the slot doesn't bounce around.
+  const ctaButton = solved && !settings.reviewAutoAdvance ? (
+    <button
+      type="button"
+      onClick={() => { void resolveAndAdvance(); }}
+      autoFocus
+      className="h-12 w-full rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80"
+      aria-label={t('review.done_cta')}
+    >
+      <Check size={16} />
+      {t('review.done_cta')}
+      <ArrowRight size={16} />
+    </button>
+  ) : (
+    <button
+      type="button"
+      onClick={handleHint}
+      disabled={!chess || !!hintSquare || solved}
+      className="h-12 w-full rounded-xl bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+      aria-label={t('review.hint')}
+    >
+      <Lightbulb size={16} />
+      {t('review.hint')}
+    </button>
   );
 
   // Reserved as a fixed-height slot so the board doesn't jump up
@@ -392,10 +391,15 @@ export default function ReviewPuzzle() {
           </div>
         </div>
 
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] pt-2">
+          {ctaButton}
+        </div>
+
         <aside className="hidden lg:flex w-[320px] shrink-0 self-center flex-col gap-3 max-h-full overflow-y-auto py-2">
           {headerRow}
           {themesSlot}
           {turnCardBlock}
+          {ctaButton}
         </aside>
       </div>
     </div>
