@@ -58,7 +58,7 @@ export default function ReviewPuzzle() {
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
-  const [hintSquare, setHintSquare] = useState<Square | null>(null);
+  const [hintLevel, setHintLevel] = useState<0 | 1 | 2>(0);
   const [solved, setSolved] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -114,7 +114,7 @@ export default function ReviewPuzzle() {
     setLastMove(null);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
     setSolved(false);
-    setHintSquare(null);
+    setHintLevel(0);
     const animMs = ANIMATION_MS[settings.animationSpeed];
     if (init.setupMove) {
       const mv = init.setupMove;
@@ -163,14 +163,16 @@ export default function ReviewPuzzle() {
   }
 
   function handleHint() {
-    if (!chess || !puzzle || hintSquare || solved) return;
-    const expected = remaining[0];
-    if (!expected) return;
-    // Highlight the source square of the next expected move and leave
-    // it on. The user still has to play that move themselves to clear
-    // the puzzle — the hint just shows which piece to look at.
-    setHintSquare(expected.slice(0, 2) as Square);
+    if (!chess || !puzzle || solved) return;
+    if (!remaining[0]) return;
+    setHintLevel((lvl) => (lvl >= 2 ? 2 : ((lvl + 1) as 0 | 1 | 2)));
   }
+
+  const expectedMove = remaining[0];
+  const hintSquare: Square | null =
+    hintLevel >= 1 && expectedMove ? (expectedMove.slice(0, 2) as Square) : null;
+  const hintTargetSquare: Square | null =
+    hintLevel >= 2 && expectedMove ? (expectedMove.slice(2, 4) as Square) : null;
 
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
     if (!chess || !puzzle) return false;
@@ -192,7 +194,7 @@ export default function ReviewPuzzle() {
 
     // Correct move played — the hint (if shown) was for this move and
     // is now stale.
-    setHintSquare(null);
+    setHintLevel(0);
 
     const after = remaining.slice(1);
     if (after.length === 0) {
@@ -294,7 +296,7 @@ export default function ReviewPuzzle() {
     <button
       type="button"
       onClick={handleHint}
-      disabled={!chess || !!hintSquare || solved}
+      disabled={!chess || hintLevel >= 2 || solved}
       className="h-12 w-full rounded-xl bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
       aria-label={t('review.hint')}
     >
@@ -345,6 +347,7 @@ export default function ReviewPuzzle() {
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}
           hintSquare={hintSquare}
+          hintTargetSquare={hintTargetSquare}
         />
       )}
       {feedback && (

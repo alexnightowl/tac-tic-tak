@@ -23,6 +23,9 @@ type Props = {
   animationMs?: number;
   /** If set, the square is rendered with a pulsing amber hint ring. */
   hintSquare?: Square | null;
+  /** If set together with hintSquare, the target square pulses too and
+   *  a guide arrow connects the source to it. */
+  hintTargetSquare?: Square | null;
   /** Brief green/red flash on the destination square after an attempt.
    *  `id` lets a consecutive same-square attempt re-trigger the CSS
    *  animation via key reset. */
@@ -66,6 +69,7 @@ export function Chessboard({
   animateMove,
   animationMs = 280,
   hintSquare = null,
+  hintTargetSquare = null,
   feedbackSquare = null,
 }: Props) {
   const chess = useMemo(() => new Chess(fen), [fen]);
@@ -140,6 +144,14 @@ export function Chessboard({
     const moves = chess.moves({ square: from, verbose: true }) as any[];
     return new Set(moves.map((m) => m.to as Square));
   }, [chess]);
+
+  // First-tap hint: auto-select the suggested piece so its legal moves
+  // appear without a second tap on the board.
+  useEffect(() => {
+    if (!hintSquare) return;
+    setSelected(hintSquare);
+    setLegal(legalForSquare(hintSquare));
+  }, [hintSquare, legalForSquare]);
 
   const tryMove = useCallback((from: Square, to: Square) => {
     if (!allowMoves) return;
@@ -247,6 +259,7 @@ export function Chessboard({
             const isDragging = dragFrom === s;
             const isAnimatingSource = animateMove?.from === s;
             const isHintTarget = hintSquare === s;
+            const isHintTo = hintTargetSquare === s;
             const isFeedback = feedbackSquare?.square === s;
             const isDragTarget = !!dragFrom && dragOver === s && legal.has(s) && s !== dragFrom;
             const canGrab = allowMoves && !dragFrom && !!piece && piece.color === chess.turn();
@@ -303,7 +316,7 @@ export function Chessboard({
                 {/* hint pulse — amber ring around the piece-to-move during
                     review hint reveal. Stays above the piece via z-index so
                     it remains visible on busy backgrounds. */}
-                {isHintTarget && (
+                {(isHintTarget || isHintTo) && (
                   <div
                     className="absolute inset-0 pointer-events-none rounded-[2px] hint-pulse"
                     style={{ zIndex: 4 }}
@@ -400,8 +413,16 @@ export function Chessboard({
       })()}
 
 
-      <Arrows size={size} orientation={orientation} arrows={arrows}
-              pending={arrowDrag?.from && arrowDrag.to ? { from: arrowDrag.from, to: arrowDrag.to } : null} />
+      <Arrows
+        size={size}
+        orientation={orientation}
+        arrows={
+          hintSquare && hintTargetSquare
+            ? [...arrows, { from: hintSquare, to: hintTargetSquare }]
+            : arrows
+        }
+        pending={arrowDrag?.from && arrowDrag.to ? { from: arrowDrag.from, to: arrowDrag.to } : null}
+      />
 
       {promotion && (
         <PromotionPicker
