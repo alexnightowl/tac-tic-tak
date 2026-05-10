@@ -104,6 +104,13 @@ export class UsersController {
     return profile;
   }
 
+  /** Theme weakness/strength rows for the public profile radar. Same
+   *  shape and source as the owner's analytics — Sessions data only. */
+  @Get('by-nickname/:nickname/themes')
+  async publicThemes(@Param('nickname') nickname: string) {
+    return this.users.publicThemes(nickname);
+  }
+
   /** Friendship state with a named user (requires auth). */
   @UseGuards(JwtAuthGuard)
   @Get('by-nickname/:nickname/friendship')

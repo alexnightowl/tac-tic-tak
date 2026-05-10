@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AchievementsModule } from '../achievements/achievements.module';
+import { AnalyticsModule } from '../analytics/analytics.module';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { FriendshipService } from './friendship.service';
@@ -8,7 +9,7 @@ import { LeaderboardController } from './leaderboard.controller';
 import { LeaderboardService } from './leaderboard.service';
 
 @Module({
-  imports: [AchievementsModule],
+  imports: [AchievementsModule, AnalyticsModule],
   providers: [UsersService, FriendshipService, LeaderboardService],
   controllers: [UsersController, FriendsController, LeaderboardController],
   exports: [UsersService, FriendshipService],

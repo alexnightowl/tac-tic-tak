@@ -3,11 +3,12 @@
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { Trophy, CalendarDays, Users, Flame } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
-import { Card } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
 import { Avatar } from '@/components/Avatar';
 import { SessionList, SessionRow } from '@/components/SessionList';
 import { StyleIcon } from '@/components/StyleIcon';
@@ -15,6 +16,18 @@ import { UserBadges } from '@/components/UserBadges';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 import { ProfileEditor } from '@/components/ProfileEditor';
 import { FriendActionButton } from '@/components/FriendActionButton';
+import { RadarChart } from '@/components/charts/RadarChart';
+import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
+
+type ThemeRow = {
+  slug: string;
+  attempts: number;
+  failures: number;
+  avgResponseMs: number;
+  failureRate: number;
+  weakness: number;
+  rating: number;
+};
 
 type PublicProfile = {
   id: string;
@@ -45,6 +58,31 @@ export default function ProfilePage() {
     queryFn: () => http.get<PublicProfile>(`/users/by-nickname/${encodeURIComponent(nickname)}`),
     enabled: !!nickname,
   });
+
+  const themesQuery = useQuery({
+    queryKey: ['profile-themes', nickname],
+    queryFn: () => http.get<ThemeRow[]>(`/users/by-nickname/${encodeURIComponent(nickname)}/themes`),
+    enabled: !!nickname,
+  });
+
+  const radarData = useMemo(() => {
+    if (!themesQuery.data) return [];
+    return themesQuery.data
+      .filter((th) => th.rating > 0 && !isMetaTheme(th.slug))
+      .sort((a, b) => b.attempts - a.attempts)
+      .slice(0, 8)
+      .sort((a, b) => a.slug.localeCompare(b.slug))
+      .map((th) => ({ label: themeLabel(th.slug, language as 'en' | 'uk'), value: th.rating }));
+  }, [themesQuery.data, language]);
+
+  const radarBounds = useMemo(() => {
+    if (radarData.length === 0) return { min: 1200, max: 2000 };
+    const values = radarData.map((d) => d.value);
+    const lo = Math.min(...values);
+    const hi = Math.max(...values);
+    const pad = Math.max(50, Math.round((hi - lo) * 0.2));
+    return { min: Math.max(0, lo - pad), max: hi + pad };
+  }, [radarData]);
 
   if (isLoading) {
     return <div className="text-sm text-zinc-500">Loading…</div>;
@@ -139,6 +177,15 @@ export default function ProfilePage() {
           })}
         </div>
       </div>
+
+      {radarData.length >= 3 && (
+        <Card className="overflow-hidden">
+          <CardTitle>{t('stats.by_theme')}</CardTitle>
+          <div className="flex justify-center mt-2">
+            <RadarChart data={radarData} min={radarBounds.min} max={radarBounds.max} size={340} />
+          </div>
+        </Card>
+      )}
 
       <div>
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">{t('profile.recent')}</h2>
