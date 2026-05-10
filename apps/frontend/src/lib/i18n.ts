@@ -226,6 +226,9 @@ const en: Dict = {
   'stats.lifetime.peak': 'Peak rating',
   'stats.tab_stats': 'Stats',
   'stats.tab_achievements': 'Achievements',
+  'stats.themes_tab_weakest': 'Weakest',
+  'stats.themes_tab_strongest': 'Strongest',
+  'stats.themes_tab_all': 'All',
 
   'achv.loading': 'Loading achievements…',
   'achv.progress_title': 'Achievements',
@@ -581,6 +584,9 @@ const uk: Dict = {
   'stats.lifetime.peak': 'Пік рейтингу',
   'stats.tab_stats': 'Статистика',
   'stats.tab_achievements': 'Досягнення',
+  'stats.themes_tab_weakest': 'Найслабші',
+  'stats.themes_tab_strongest': 'Найсильніші',
+  'stats.themes_tab_all': 'Усі',
 
   'achv.loading': 'Завантажую досягнення…',
   'achv.progress_title': 'Досягнення',

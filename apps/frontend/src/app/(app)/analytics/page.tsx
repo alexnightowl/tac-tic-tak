@@ -12,6 +12,7 @@ import { RatingHistoryChart } from '@/components/charts/RatingHistoryChart';
 import { ActivityHeatmap } from '@/components/charts/ActivityHeatmap';
 import { AchievementsGrid } from '@/components/achievements/AchievementsGrid';
 import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
+import { themeIcon } from '@/lib/theme-icons';
 import {
   TrainingStyle,
   TRAINING_STYLES,
@@ -240,32 +241,101 @@ function StatsTab({ filter, onFilterChange, language, t }: {
         )}
       </Card>
 
-      <div>
-        <h2 className="text-lg font-medium mb-2">{t('stats.theme_list')}</h2>
-        <div className="grid gap-2">
-          {(themes.data ?? [])
-            .filter((th) => !isMetaTheme(th.slug))
-            .sort((a, b) => b.weakness - a.weakness)
-            .slice(0, 20)
-            .map((th) => (
-              <Card key={th.slug} className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-medium">{themeLabel(th.slug, language)}</div>
-                  <div className="text-xs text-zinc-500">
-                    {th.attempts} · {Math.round(th.failureRate * 100)}% fail · {th.avgResponseMs}ms
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  {th.rating > 0 && <span className="text-sm tabular-nums text-zinc-400">{th.rating}</span>}
-                  <div className="w-20 h-2 bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-rose-500/80" style={{ width: `${Math.round(th.weakness * 100)}%` }} />
-                  </div>
-                </div>
-              </Card>
-            ))}
-          {themes.data?.length === 0 && <p className="text-sm text-zinc-500">{t('stats.no_data')}</p>}
+      <ThemesList themes={themes.data ?? []} language={language} t={t} />
+    </>
+  );
+}
+
+type ThemesTab = 'weakest' | 'strongest' | 'all';
+
+function ThemesList({
+  themes,
+  language,
+  t,
+}: {
+  themes: ThemeRow[];
+  language: 'en' | 'uk';
+  t: (k: string) => string;
+}) {
+  const [tab, setTab] = useState<ThemesTab>('weakest');
+
+  const tactical = useMemo(
+    () => themes.filter((th) => !isMetaTheme(th.slug)),
+    [themes],
+  );
+
+  const visible = useMemo(() => {
+    if (tab === 'strongest') {
+      return [...tactical]
+        .filter((th) => th.attempts > 0)
+        .sort((a, b) => a.weakness - b.weakness)
+        .slice(0, 20);
+    }
+    if (tab === 'all') {
+      return [...tactical].sort((a, b) => b.weakness - a.weakness);
+    }
+    return [...tactical].sort((a, b) => b.weakness - a.weakness).slice(0, 20);
+  }, [tactical, tab]);
+
+  return (
+    <div>
+      <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+        <h2 className="text-lg font-medium">{t('stats.theme_list')}</h2>
+        <div className="flex gap-1 bg-black/30 rounded-xl p-1">
+          {([
+            { k: 'weakest',   label: t('stats.themes_tab_weakest') },
+            { k: 'strongest', label: t('stats.themes_tab_strongest') },
+            { k: 'all',       label: t('stats.themes_tab_all') },
+          ] as const).map(({ k, label }) => (
+            <button
+              key={k}
+              onClick={() => setTab(k)}
+              className={cn(
+                'h-8 px-3 rounded-lg text-xs transition-colors',
+                tab === k ? 'bg-[var(--bg-softer)] text-white' : 'text-zinc-400 hover:text-white',
+              )}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
-    </>
+      <div className="grid gap-2">
+        {visible.map((th) => (
+          <ThemeRowCard key={th.slug} row={th} language={language} />
+        ))}
+        {visible.length === 0 && (
+          <p className="text-sm text-zinc-500">{t('stats.no_data')}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ThemeRowCard({ row, language }: { row: ThemeRow; language: 'en' | 'uk' }) {
+  const Icon = themeIcon(row.slug);
+  const w = Math.max(0, Math.min(1, row.weakness));
+  // Rose for weak, amber for mid, emerald for strong — colour communicates
+  // direction at a glance; the bar width still encodes magnitude.
+  const barColor = w >= 0.66 ? 'bg-rose-500/80' : w >= 0.33 ? 'bg-amber-500/80' : 'bg-emerald-500/80';
+  const iconTint = w >= 0.66 ? 'text-rose-300' : w >= 0.33 ? 'text-amber-300' : 'text-emerald-300';
+  return (
+    <Card className="flex items-center gap-3">
+      <div className={cn('h-10 w-10 rounded-xl bg-[var(--bg-softer)] flex items-center justify-center shrink-0', iconTint)}>
+        <Icon size={20} strokeWidth={1.75} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="text-sm font-medium truncate">{themeLabel(row.slug, language)}</div>
+        <div className="text-xs text-zinc-500">
+          {row.attempts} · {Math.round(row.failureRate * 100)}% fail · {row.avgResponseMs}ms
+        </div>
+      </div>
+      <div className="flex items-center gap-3 shrink-0">
+        {row.rating > 0 && <span className="text-sm tabular-nums text-zinc-400">{row.rating}</span>}
+        <div className="w-20 h-2 bg-white/5 rounded-full overflow-hidden">
+          <div className={cn('h-full', barColor)} style={{ width: `${Math.round(w * 100)}%` }} />
+        </div>
+      </div>
+    </Card>
   );
 }
