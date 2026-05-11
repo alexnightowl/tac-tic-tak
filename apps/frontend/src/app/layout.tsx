@@ -53,7 +53,7 @@ const accentHydrationScript = `(function(){try{var s=localStorage.getItem('takti
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`dark ${displayFont.variable}`}>
+    <html lang="en" className={`dark ${displayFont.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: accentHydrationScript }} />
       </head>
