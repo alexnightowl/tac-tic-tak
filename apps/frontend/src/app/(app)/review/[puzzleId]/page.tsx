@@ -88,6 +88,20 @@ export default function ReviewPuzzle() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [puzzleId]);
 
+  // Lock html+body for the runner's lifetime so iOS PWA doesn't push
+  // the bottom CTA under the home indicator. Without this the
+  // app-shell adds its own safe-area padding on top of our h-dvh
+  // height, and the page overflows the visible viewport.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.add('play-locked');
+    document.body.classList.add('play-locked');
+    return () => {
+      html.classList.remove('play-locked');
+      document.body.classList.remove('play-locked');
+    };
+  }, []);
+
   // Enter / Space advance to the next puzzle once the current one
   // is solved. Lets a player who just wants to crank through the
   // queue skip reaching for the on-screen Next button. Skipped
