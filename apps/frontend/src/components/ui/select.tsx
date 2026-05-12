@@ -200,7 +200,7 @@ export function Select({
         />
       </button>
 
-      {open && (
+      {open && (isMobile || pos) && (
         <>
           {/* Backdrop. Mobile uses a real dim+blur so the sheet stands
               out; desktop uses a transparent layer that only catches
@@ -232,9 +232,7 @@ export function Select({
                     left: pos.left,
                     width: pos.width,
                   }
-                : isMobile
-                  ? { paddingBottom: 'env(safe-area-inset-bottom)' }
-                  : undefined
+                : { paddingBottom: 'env(safe-area-inset-bottom)' }
             }
           >
             <div className="p-2 border-b border-[var(--border-soft)]">
