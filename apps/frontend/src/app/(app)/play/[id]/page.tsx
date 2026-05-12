@@ -412,7 +412,15 @@ export default function PlayRunner() {
     if (!legal) return false;
 
     setLastMove({ from: m.from, to: m.to });
-    if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+    // Skip the click when this move resolves the puzzle (either the
+    // expected mainline final move, or a checkmate that scores as
+    // correct) — the correct-sting plays standalone.
+    const isFinalMainline = candidate === expected && remaining.length === 1;
+    const isCheckmateWin = candidate !== expected && chess.isCheckmate();
+    const isWinning = isFinalMainline || isCheckmateWin;
+    if (settings.soundEnabled && !isWinning) {
+      playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+    }
 
     if (candidate !== expected) {
       // The Lichess dataset records one solution per puzzle, but a
