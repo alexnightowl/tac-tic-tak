@@ -17,7 +17,11 @@ import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
 import { ProfileEditor } from '@/components/ProfileEditor';
 import { FriendActionButton } from '@/components/FriendActionButton';
 import { RadarChart } from '@/components/charts/RadarChart';
+import { RatingHistoryChart } from '@/components/charts/RatingHistoryChart';
+import { ActivityHeatmap } from '@/components/charts/ActivityHeatmap';
 import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
+import { isTrainingStyle } from '@/lib/levels';
+import { formatLocalDate } from '@/lib/utils';
 
 type ThemeRow = {
   slug: string;
@@ -27,6 +31,16 @@ type ThemeRow = {
   failureRate: number;
   weakness: number;
   rating: number;
+};
+
+type TimelinePoint = {
+  id: string;
+  endedAt: string;
+  style: string;
+  startRating: number;
+  peakRating: number;
+  solved: number;
+  durationSec: number;
 };
 
 type PublicProfile = {
@@ -64,6 +78,33 @@ export default function ProfilePage() {
     queryFn: () => http.get<ThemeRow[]>(`/users/by-nickname/${encodeURIComponent(nickname)}/themes`),
     enabled: !!nickname,
   });
+
+  const timelineQuery = useQuery({
+    queryKey: ['profile-timeline', nickname],
+    queryFn: () => http.get<TimelinePoint[]>(`/users/by-nickname/${encodeURIComponent(nickname)}/timeline`),
+    enabled: !!nickname,
+  });
+
+  const ratingPoints = useMemo(() => {
+    if (!timelineQuery.data) return [];
+    return timelineQuery.data
+      .filter((p) => isTrainingStyle(p.style))
+      .map((p) => ({
+        endedAt: p.endedAt,
+        style: p.style as 'bullet' | 'blitz' | 'rapid',
+        rating: p.peakRating,
+      }));
+  }, [timelineQuery.data]);
+
+  const heatmapData = useMemo(() => {
+    if (!timelineQuery.data) return [];
+    const counts = new Map<string, number>();
+    for (const p of timelineQuery.data) {
+      const key = formatLocalDate(new Date(p.endedAt));
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    return Array.from(counts.entries()).map(([date, count]) => ({ date, count }));
+  }, [timelineQuery.data]);
 
   const radarData = useMemo(() => {
     if (!themesQuery.data) return [];
@@ -177,6 +218,22 @@ export default function ProfilePage() {
           })}
         </div>
       </div>
+
+      {heatmapData.length > 0 && (
+        <Card>
+          <CardTitle>{t('stats.activity')}</CardTitle>
+          <p className="text-xs text-zinc-500 -mt-1 mb-3">{t('stats.activity_hint')}</p>
+          <ActivityHeatmap data={heatmapData} weeks={52} language={language as 'en' | 'uk'} />
+        </Card>
+      )}
+
+      {ratingPoints.length > 0 && (
+        <Card>
+          <CardTitle>{t('stats.rating_history')}</CardTitle>
+          <p className="text-xs text-zinc-500 -mt-1 mb-2">{t('stats.rating_history_hint')}</p>
+          <RatingHistoryChart data={ratingPoints} language={language as 'en' | 'uk'} />
+        </Card>
+      )}
 
       {radarData.length >= 3 && (
         <Card className="overflow-hidden">

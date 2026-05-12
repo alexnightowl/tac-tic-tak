@@ -71,6 +71,15 @@ export class UsersService {
     return this.analytics.themes(user.id);
   }
 
+  async publicTimeline(nickname: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { nickname },
+      select: { id: true },
+    });
+    if (!user) throw new NotFoundException('user not found');
+    return this.analytics.timeline(user.id, undefined, 365);
+  }
+
   async publicProfile(nickname: string) {
     const user = await this.prisma.user.findUnique({
       where: { nickname },

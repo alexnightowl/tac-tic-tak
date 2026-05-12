@@ -111,6 +111,13 @@ export class UsersController {
     return this.users.publicThemes(nickname);
   }
 
+  /** Per-session timeline for the activity heatmap + rating history
+   *  on a public profile. Last 365 days, Sessions data only. */
+  @Get('by-nickname/:nickname/timeline')
+  async publicTimeline(@Param('nickname') nickname: string) {
+    return this.users.publicTimeline(nickname);
+  }
+
   /** Friendship state with a named user (requires auth). */
   @UseGuards(JwtAuthGuard)
   @Get('by-nickname/:nickname/friendship')
