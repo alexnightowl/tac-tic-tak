@@ -10,9 +10,7 @@ import { Card, CardTitle } from '@/components/ui/card';
 import { Toggle } from '@/components/ui/toggle';
 import { Segmented } from '@/components/ui/segmented';
 import { ColorPicker } from '@/components/ui/color-picker';
-import { BOARD_THEMES, PIECE_SETS, PIECE_SET_LABELS } from '@/lib/themes';
-import { SOUND_PACK_KEYS, SOUND_PACK_LABELS, SoundPack, playSound } from '@/lib/sound';
-import { pieceUrl } from '@/lib/pieces';
+import { BOARD_THEMES } from '@/lib/themes';
 import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
 import { useToastStore } from '@/lib/toast';
@@ -74,19 +72,21 @@ function TabBar({ tab, onChange, t }: { tab: Tab; onChange: (t: Tab) => void; t:
     { k: 'app',      Icon: Smartphone, label: t('settings.tab.app') },
   ];
   return (
-    <div className="flex gap-1 bg-black/30 rounded-xl p-1 overflow-x-auto no-scrollbar">
+    <div className="flex gap-1 bg-black/30 rounded-xl p-1">
       {tabs.map(({ k, Icon, label }) => (
         <button
           key={k}
           onClick={() => onChange(k)}
+          aria-label={label}
           className={cn(
-            'flex-1 min-w-fit whitespace-nowrap h-10 rounded-lg text-sm flex items-center justify-center gap-2 transition-colors px-3',
+            'flex-1 min-w-0 h-10 rounded-lg text-sm flex items-center justify-center gap-2 transition-colors px-2 sm:px-3',
             tab === k
               ? 'bg-[var(--bg-softer)] text-white'
               : 'text-zinc-400 hover:text-white',
           )}
         >
-          <Icon size={14} /> {label}
+          <Icon size={14} className="shrink-0" />
+          <span className="hidden sm:inline truncate">{label}</span>
         </button>
       ))}
     </div>
@@ -326,25 +326,6 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
       />
 
       <div className="pt-2">
-        <div className="text-sm mb-2">{t('settings.sound_pack')}</div>
-        <div className="grid grid-cols-3 gap-2">
-          {SOUND_PACK_KEYS.map((pk) => (
-            <button
-              key={pk}
-              onClick={() => { patch({ soundPack: pk as SoundPack }); playSound(pk, 'move'); }}
-              className={`py-2 rounded-lg text-xs border transition-all ${
-                settings.soundPack === pk
-                  ? 'bg-[var(--accent)] text-[var(--accent-contrast)] border-transparent font-medium'
-                  : 'border-[var(--border)] text-zinc-300 hover:bg-white/5'
-              }`}
-            >
-              {SOUND_PACK_LABELS[pk]}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="pt-2">
         <div className="text-sm mb-2">{t('settings.animation')}</div>
         <Segmented
           value={settings.animationSpeed}
@@ -445,26 +426,6 @@ function ThemeTab({ settings, patch, t }: { settings: UserSettings; patch: (p: P
         </div>
       </Card>
 
-      <Card>
-        <CardTitle>{t('settings.piece_set')}</CardTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-          {PIECE_SETS.map((set) => (
-            <button
-              key={set}
-              onClick={() => patch({ pieceSet: set })}
-              className={`rounded-xl p-2 border-2 transition-all ${
-                settings.pieceSet === set ? 'border-[var(--accent)]' : 'border-transparent'
-              } bg-white/5 hover:bg-white/10`}
-            >
-              <div className="flex items-center justify-center gap-0.5" style={{ background: '#ebecd0', borderRadius: 6, padding: 4 }}>
-                <img src={pieceUrl(set, 'w', 'k')} alt="" className="h-10 w-10" />
-                <img src={pieceUrl(set, 'b', 'q')} alt="" className="h-10 w-10" />
-              </div>
-              <div className="text-[10px] text-zinc-400 text-center mt-1 capitalize">{PIECE_SET_LABELS[set]}</div>
-            </button>
-          ))}
-        </div>
-      </Card>
     </div>
   );
 }

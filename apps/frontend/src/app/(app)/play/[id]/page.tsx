@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { takeFirstPuzzle } from '@/lib/pending-puzzle';
 import { playSound } from '@/lib/sound';
-import { fmtDuration, cn, formatLocalDate } from '@/lib/utils';
+import { fmtDuration, cn, formatLocalDate, fmtResponseTime } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
 import {
   computeUnlockProgress, CriterionProgress, CriterionId, UNLOCK_REWARD,
@@ -412,7 +412,15 @@ export default function PlayRunner() {
     if (!legal) return false;
 
     setLastMove({ from: m.from, to: m.to });
-    if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+    // Skip the click when this move resolves the puzzle (either the
+    // expected mainline final move, or a checkmate that scores as
+    // correct) — the correct-sting plays standalone.
+    const isFinalMainline = candidate === expected && remaining.length === 1;
+    const isCheckmateWin = candidate !== expected && chess.isCheckmate();
+    const isWinning = isFinalMainline || isCheckmateWin;
+    if (settings.soundEnabled && !isWinning) {
+      playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+    }
 
     if (candidate !== expected) {
       // The Lichess dataset records one solution per puzzle, but a
@@ -594,7 +602,7 @@ export default function PlayRunner() {
           animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove && !loadingFirst && !paused}
           theme={settings.boardTheme as BoardTheme}
-          pieceSet={settings.pieceSet}
+          pieceSet="maestro"
           feedbackSquare={feedbackSquare}
         />
       )}
@@ -933,7 +941,7 @@ function SessionSummary({ s }: { s: FinishResponse }) {
         <Stat label={t('play.solved')} v={s.solved} />
         <Stat label={t('play.failed')} v={s.failed} />
         <Stat label={t('play.accuracy')} v={`${Math.round(s.accuracy * 100)}%`} />
-        <Stat label={t('play.avg')} v={`${(s.avgResponseMs / 1000).toFixed(1)}s`} />
+        <Stat label={t('play.avg')} v={fmtResponseTime(s.avgResponseMs)} />
         <Stat label={t('play.peak')} v={s.peakRating} />
       </div>
 

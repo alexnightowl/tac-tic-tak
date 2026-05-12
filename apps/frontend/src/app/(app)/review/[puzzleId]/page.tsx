@@ -196,7 +196,12 @@ export default function ReviewPuzzle() {
     if (!legal) return false;
 
     setLastMove({ from: m.from, to: m.to });
-    if (settings.soundEnabled) playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+    // Skip the click when this move resolves the puzzle — the
+    // correct-sting plays standalone instead of stacked under a click.
+    const isWinning = uci === expected && remaining.length === 1;
+    if (settings.soundEnabled && !isWinning) {
+      playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+    }
 
     if (uci !== expected) {
       setFeedback({ correct: false, id: Date.now() });
@@ -365,7 +370,7 @@ export default function ReviewPuzzle() {
           animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove && !solved}
           theme={settings.boardTheme as BoardTheme}
-          pieceSet={settings.pieceSet}
+          pieceSet="maestro"
           hintSquare={hintSquare}
           hintTargetSquare={hintTargetSquare}
         />

@@ -8,7 +8,7 @@ import { useAppStore } from '@/lib/store';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { themeLabel } from '@/lib/theme-labels';
-import { cn, fmtDuration } from '@/lib/utils';
+import { cn, fmtDuration, fmtResponseTime } from '@/lib/utils';
 
 type Attempt = {
   id: string;
@@ -87,7 +87,7 @@ export default function SessionDetail() {
         </Card>
         <Card>
           <CardTitle>{language === 'uk' ? 'Середній час' : 'Avg response'}</CardTitle>
-          <CardValue>{Math.round(data.avgResponseMs)}ms</CardValue>
+          <CardValue>{fmtResponseTime(data.avgResponseMs)}</CardValue>
         </Card>
       </div>
 

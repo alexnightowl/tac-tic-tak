@@ -19,7 +19,7 @@ import {
   TRAINING_STYLES,
   isTrainingStyle,
 } from '@/lib/levels';
-import { formatLocalDate, cn } from '@/lib/utils';
+import { formatLocalDate, cn, fmtResponseTime } from '@/lib/utils';
 
 type Overview = {
   recentSessions: Array<{ id: string; startedAt: string; solved: number; failed: number; accuracy: number; avgResponseMs: number; peakRating: number }>;
@@ -333,7 +333,7 @@ function ThemeRowCard({ row, language }: { row: ThemeRow; language: 'en' | 'uk' 
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium truncate">{themeLabel(row.slug, language)}</div>
         <div className="text-xs text-zinc-500">
-          {row.attempts} · {Math.round(row.failureRate * 100)}% fail · {row.avgResponseMs}ms
+          {row.attempts} · {Math.round(row.failureRate * 100)}% fail · {fmtResponseTime(row.avgResponseMs)}
         </div>
       </div>
       <div className="flex items-center gap-3 shrink-0">
