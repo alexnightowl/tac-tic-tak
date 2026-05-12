@@ -13,6 +13,7 @@ import { ActivityHeatmap } from '@/components/charts/ActivityHeatmap';
 import { AchievementsGrid } from '@/components/achievements/AchievementsGrid';
 import { themeLabel, isMetaTheme } from '@/lib/theme-labels';
 import { themeIcon } from '@/lib/theme-icons';
+import { StyleIcon } from '@/components/StyleIcon';
 import {
   TrainingStyle,
   TRAINING_STYLES,
@@ -164,7 +165,12 @@ function StatsTab({ filter, onFilterChange, language, t }: {
           { value: 'all', label: t('stats.filter_all') },
           ...TRAINING_STYLES.map((s) => ({
             value: s,
-            label: t(`style.${s}.name`),
+            label: (
+              <span className="inline-flex items-center gap-1.5">
+                <StyleIcon style={s} size={13} colored={filter !== s} />
+                {t(`style.${s}.name`)}
+              </span>
+            ),
           })),
         ]}
       />
