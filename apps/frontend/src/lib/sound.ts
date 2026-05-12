@@ -1,119 +1,88 @@
 'use client';
 
 /**
- * Sound playback. The 'native' pack synthesises minimalist tactile
- * tones via WebAudio so the trainer doesn't sound like Lichess. The
- * remaining packs proxy to Lichess's CDN and are kept for users who
- * prefer the familiar set.
+ * Move + capture are pinned to Lichess's wood (standard) pack — the
+ * physical click feel that the player liked, so it's not user-pickable.
+ * Correct + fail are independently selectable from the timbre list
+ * below; the picker in Settings previews each option before committing.
+ * Choices live in localStorage — backend doesn't track them because
+ * they're cosmetic and rarely worth syncing across devices.
  */
 
-export type SoundPack = 'native' | 'wood' | 'metal' | 'piano' | 'nes' | 'robot' | 'futuristic' | 'mute';
+export type SoundPack = string;
 export type SoundKind = 'move' | 'capture' | 'correct' | 'fail';
+export type SoundSlot = 'correct' | 'fail';
 
-/** Lichess theme names — used by every pack except 'native'/'mute'. */
-const THEMES: Record<Exclude<SoundPack, 'mute' | 'native'>, string> = {
-  wood: 'standard',
-  metal: 'sfx',
-  piano: 'piano',
-  nes: 'nes',
-  robot: 'robot',
-  futuristic: 'futuristic',
-};
+const MOVE_THEME = 'standard';
 
 const FILE_BY_KIND: Record<SoundKind, string> = {
-  move: 'Move',
+  move:    'Move',
   capture: 'Capture',
   correct: 'GenericNotify',
-  fail: 'Error',
+  fail:    'Error',
 };
 
-function url(pack: Exclude<SoundPack, 'mute' | 'native'>, kind: SoundKind) {
-  return `https://lichess1.org/assets/sound/${THEMES[pack]}/${FILE_BY_KIND[kind]}.mp3`;
+/** Lichess CDN themes available for the correct/fail picker. */
+export const SOUND_THEMES: Array<{ id: string; label: string }> = [
+  { id: 'standard',   label: 'Wood' },
+  { id: 'sfx',        label: 'Metal' },
+  { id: 'piano',      label: 'Piano' },
+  { id: 'nes',        label: 'Retro' },
+  { id: 'robot',      label: 'Robot' },
+  { id: 'futuristic', label: 'Futuristic' },
+];
+
+const DEFAULTS: Record<SoundSlot, string> = {
+  correct: 'piano',
+  fail:    'piano',
+};
+
+const LS_KEY: Record<SoundSlot, string> = {
+  correct: 'taktic.sound.correct',
+  fail:    'taktic.sound.fail',
+};
+
+export function getSoundChoice(slot: SoundSlot): string {
+  if (typeof window === 'undefined') return DEFAULTS[slot];
+  try {
+    const stored = window.localStorage.getItem(LS_KEY[slot]);
+    if (stored && SOUND_THEMES.some((t) => t.id === stored)) return stored;
+  } catch {}
+  return DEFAULTS[slot];
+}
+
+export function setSoundChoice(slot: SoundSlot, themeId: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(LS_KEY[slot], themeId);
+  } catch {}
+}
+
+function urlFor(kind: SoundKind, themeId: string) {
+  return `https://lichess1.org/assets/sound/${themeId}/${FILE_BY_KIND[kind]}.mp3`;
 }
 
 const cache = new Map<string, HTMLAudioElement>();
-
-function getAudio(pack: SoundPack, kind: SoundKind): HTMLAudioElement | null {
-  if (pack === 'mute' || pack === 'native' || typeof window === 'undefined') return null;
-  const u = url(pack, kind);
-  let a = cache.get(u);
+function getAudio(url: string): HTMLAudioElement | null {
+  if (typeof window === 'undefined') return null;
+  let a = cache.get(url);
   if (!a) {
-    a = new Audio(u);
+    a = new Audio(url);
     a.preload = 'auto';
     a.volume = 0.6;
-    cache.set(u, a);
+    cache.set(url, a);
   }
   return a;
 }
 
-let audioCtx: AudioContext | null = null;
-function ctx(): AudioContext | null {
-  if (typeof window === 'undefined') return null;
-  if (!audioCtx) {
-    const C = window.AudioContext ?? (window as any).webkitAudioContext;
-    if (!C) return null;
-    audioCtx = new C();
-  }
-  // Browsers suspend the context until a user gesture; resume() is a
-  // no-op when already running and silently rejects when the user
-  // hasn't interacted yet — we just don't make sound in that case.
-  if (audioCtx.state === 'suspended') void audioCtx.resume().catch(() => {});
-  return audioCtx;
+function themeForKind(kind: SoundKind): string {
+  if (kind === 'move' || kind === 'capture') return MOVE_THEME;
+  return getSoundChoice(kind);
 }
 
-/** One enveloped tone — sine for melodic, square for percussive. */
-function tone(
-  ac: AudioContext,
-  startAt: number,
-  freq: number,
-  durationMs: number,
-  type: OscillatorType,
-  peakGain: number,
-) {
-  const o = ac.createOscillator();
-  const g = ac.createGain();
-  o.type = type;
-  o.frequency.setValueAtTime(freq, startAt);
-  const dur = durationMs / 1000;
-  // Fast attack, exponential decay — keeps each tone tactile rather
-  // than bell-like.
-  g.gain.setValueAtTime(0, startAt);
-  g.gain.linearRampToValueAtTime(peakGain, startAt + 0.005);
-  g.gain.exponentialRampToValueAtTime(0.0001, startAt + dur);
-  o.connect(g).connect(ac.destination);
-  o.start(startAt);
-  o.stop(startAt + dur + 0.02);
-}
-
-function playNative(kind: SoundKind) {
-  const ac = ctx();
-  if (!ac) return;
-  const t0 = ac.currentTime;
-  switch (kind) {
-    case 'correct':
-      // Two-note ascending — E5 → A5, sine, soft and bright.
-      tone(ac, t0,        659.25, 110, 'sine', 0.22);
-      tone(ac, t0 + 0.07, 880.00, 160, 'sine', 0.22);
-      break;
-    case 'fail':
-      // Damped low tap — A3 square through fast decay reads as "no".
-      tone(ac, t0, 220.00, 220, 'square', 0.16);
-      tone(ac, t0, 110.00, 240, 'sine',   0.10);
-      break;
-    case 'move':
-      tone(ac, t0, 880, 35, 'square', 0.10);
-      break;
-    case 'capture':
-      tone(ac, t0,        1100, 30, 'square', 0.12);
-      tone(ac, t0 + 0.04,  700, 45, 'square', 0.10);
-      break;
-  }
-}
-
-export function playSound(pack: SoundPack, kind: SoundKind) {
+export function playSound(pack: SoundPack | undefined, kind: SoundKind) {
   if (pack === 'mute') return;
-  if (pack === 'native') return playNative(kind);
-  const a = getAudio(pack, kind);
+  const a = getAudio(urlFor(kind, themeForKind(kind)));
   if (!a) return;
   try {
     a.currentTime = 0;
@@ -121,15 +90,12 @@ export function playSound(pack: SoundPack, kind: SoundKind) {
   } catch {}
 }
 
-export const SOUND_PACK_KEYS: SoundPack[] = ['native', 'wood', 'metal', 'piano', 'nes', 'robot', 'futuristic', 'mute'];
-
-export const SOUND_PACK_LABELS: Record<SoundPack, string> = {
-  native: 'Native',
-  wood: 'Wood',
-  metal: 'Metal',
-  piano: 'Piano',
-  nes: 'Retro',
-  robot: 'Robot',
-  futuristic: 'Futuristic',
-  mute: 'Mute',
-};
+/** Preview a sound without persisting the choice — used by the picker. */
+export function previewSound(kind: SoundKind, themeId: string) {
+  const a = getAudio(urlFor(kind, themeId));
+  if (!a) return;
+  try {
+    a.currentTime = 0;
+    a.play().catch(() => {});
+  } catch {}
+}

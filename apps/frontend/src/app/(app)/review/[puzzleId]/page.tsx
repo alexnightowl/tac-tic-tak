@@ -365,7 +365,7 @@ export default function ReviewPuzzle() {
           animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove && !solved}
           theme={settings.boardTheme as BoardTheme}
-          pieceSet={settings.pieceSet}
+          pieceSet="maestro"
           hintSquare={hintSquare}
           hintTargetSquare={hintTargetSquare}
         />

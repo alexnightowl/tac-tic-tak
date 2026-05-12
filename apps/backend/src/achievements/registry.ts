@@ -58,7 +58,7 @@ export type AchievementDef = {
 // brand-new-account default". Mirror of UserSetting defaults in
 // schema.prisma; if you change a default there, change here too.
 const DEFAULT_ACCENT = '#22c55e';
-const DEFAULT_BOARD_THEME = 'green';
+const DEFAULT_BOARD_THEME = 'blue';
 const DEFAULT_LANGUAGE = 'en';
 
 export const ACHIEVEMENT_DEFS: AchievementDef[] = [

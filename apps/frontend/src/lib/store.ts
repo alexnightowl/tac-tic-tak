@@ -131,7 +131,7 @@ type State = {
 const DEFAULT_SETTINGS: UserSettings = {
   focusMode: false,
   accentColor: '#d81f26',
-  boardTheme: 'green',
+  boardTheme: 'blue',
   pieceSet: 'maestro',
   soundEnabled: true,
   soundPack: 'wood',
