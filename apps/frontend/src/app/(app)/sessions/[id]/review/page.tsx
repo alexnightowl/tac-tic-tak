@@ -298,7 +298,7 @@ export default function SessionReview() {
   const reasonBar = (
     <div className="glass rounded-2xl px-4 py-3 flex items-center gap-3">
       <div className={cn(
-        'h-9 px-2.5 rounded-full text-[11px] font-semibold flex items-center gap-1.5',
+        'h-9 px-2.5 rounded-full text-[11px] font-semibold flex items-center gap-1.5 whitespace-nowrap shrink-0',
         head.reason === 'failed' ? 'bg-rose-500/15 text-rose-300' : 'bg-amber-500/15 text-amber-300',
       )}>
         {head.reason === 'failed' ? <XCircle size={14} /> : <Loader2 size={14} />}
