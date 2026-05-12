@@ -209,7 +209,7 @@ export default function PlaySetup() {
   );
 
   return (
-    <div className="max-w-md mx-auto space-y-5 pb-36 md:pb-0">
+    <div className="max-w-md mx-auto space-y-5 pb-12 md:pb-0">
       <h1 className="text-2xl font-semibold tracking-tight">{t('play.new_session')}</h1>
 
       <Card className="space-y-6">
