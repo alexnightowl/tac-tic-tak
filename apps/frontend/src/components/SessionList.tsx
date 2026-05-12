@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { Trash2, ChevronRight, ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, fmtResponseTime } from '@/lib/utils';
 import { StyleIcon } from '@/components/StyleIcon';
 import { isTrainingStyle } from '@/lib/levels';
 
@@ -209,7 +209,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
                 <StyleIcon style={s.style} size={11} className="shrink-0" />
               )}
               <span className="truncate">
-                {mode} · {Math.round(s.accuracy * 100)}% · {Math.round(s.avgResponseMs)}ms · {Math.round(s.durationSec / 60)}m
+                {mode} · {Math.round(s.accuracy * 100)}% · {fmtResponseTime(s.avgResponseMs)} · {Math.round(s.durationSec / 60)}m
               </span>
             </div>
           </div>

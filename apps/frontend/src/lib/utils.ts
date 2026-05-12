@@ -5,11 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function fmtMs(ms: number) {
-  if (ms < 1000) return `${ms}ms`;
-  const s = Math.floor(ms / 1000);
-  const rem = Math.floor((ms % 1000) / 100);
-  return `${s}.${rem}s`;
+/**
+ * Format a response time for end-user display. Always in seconds with
+ * one decimal — milliseconds are an implementation detail nobody outside
+ * the eng team thinks in.
+ */
+export function fmtResponseTime(ms: number) {
+  return `${(ms / 1000).toFixed(1)}s`;
 }
 
 export function fmtDuration(s: number) {
