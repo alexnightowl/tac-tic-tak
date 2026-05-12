@@ -300,7 +300,7 @@ function ThemesList({
           ))}
         </div>
       </div>
-      <div className="grid gap-2">
+      <div className="grid grid-cols-1 gap-2">
         {visible.map((th) => (
           <ThemeRowCard key={th.slug} row={th} language={language} />
         ))}
