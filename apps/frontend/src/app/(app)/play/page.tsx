@@ -1,5 +1,7 @@
 'use client';
 
+import { createPortal } from 'react-dom';
+
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Swords } from 'lucide-react';
@@ -194,8 +196,20 @@ export default function PlaySetup() {
     }
   };
 
+  const ctaDisabled = loading || customInvalid || (mode === 'theme' && !theme);
+  const ctaButton = (
+    <Button
+      className="w-full shadow-[0_10px_30px_-8px_color-mix(in_srgb,var(--accent)_55%,transparent),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
+      size="lg"
+      onClick={start}
+      disabled={ctaDisabled}
+    >
+      <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
+    </Button>
+  );
+
   return (
-    <div className="max-w-md mx-auto space-y-5">
+    <div className="max-w-md mx-auto space-y-5 pb-36 md:pb-0">
       <h1 className="text-2xl font-semibold tracking-tight">{t('play.new_session')}</h1>
 
       <Card className="space-y-6">
@@ -387,31 +401,42 @@ export default function PlaySetup() {
         )}
 
         {err && <p className="text-sm text-red-400">{err}</p>}
+
+        {/* Desktop CTA — inline at the end of the Card. Mobile gets a
+            full-width fixed bar below; this branch is hidden on phones
+            so the button doesn't appear twice. */}
+        <div className="hidden md:block">{ctaButton}</div>
       </Card>
 
-      {/* Sticky CTA — flush against the mobile nav bar so the bar reads
-          as one continuous chrome strip rather than a floating island.
-          The accent-tinted glass background + backdrop blur dissolves
-          the content scrolling under the button without going dead-flat
-          black. The 1px overlap (`-mb-px`) hides the seam where the
-          gradient meets the nav's top border. */}
-      <div
-        className="sticky z-10 bottom-[calc(58px+env(safe-area-inset-bottom))] md:bottom-3 pt-10 pb-3 -mb-px backdrop-blur-xl"
-        style={{
-          background:
-            'linear-gradient(to top, color-mix(in srgb, var(--accent) 10%, var(--bg-base)) 0%, color-mix(in srgb, var(--accent) 6%, var(--bg-base)) 55%, color-mix(in srgb, var(--bg-base) 75%, transparent) 80%, transparent 100%)',
-        }}
-      >
-        <Button
-          className="w-full shadow-[0_10px_30px_-8px_color-mix(in_srgb,var(--accent)_55%,transparent),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
-          size="lg"
-          onClick={start}
-          disabled={loading || customInvalid || (mode === 'theme' && !theme)}
-        >
-          <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
-        </Button>
-      </div>
+      <MobileStartBar disabled={ctaDisabled}>{ctaButton}</MobileStartBar>
     </div>
+  );
+}
+
+/**
+ * Fixed full-width bottom CTA strip for mobile only. Rendered via a
+ * portal into document.body so it isn't trapped by the PullToRefresh
+ * wrapper's `transform` (a transformed ancestor changes the containing
+ * block for fixed children — without the portal the bar would anchor
+ * to the wrapper instead of the viewport and float at the wrong y).
+ */
+function MobileStartBar({ children, disabled }: { children: React.ReactNode; disabled: boolean }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return createPortal(
+    <div
+      className="md:hidden fixed inset-x-0 z-30 pt-10 pb-3 backdrop-blur-xl pointer-events-none"
+      style={{
+        bottom: 'calc(58px + env(safe-area-inset-bottom))',
+        background:
+          'linear-gradient(to top, color-mix(in srgb, var(--accent) 10%, var(--bg-base)) 0%, color-mix(in srgb, var(--accent) 6%, var(--bg-base)) 55%, color-mix(in srgb, var(--bg-base) 75%, transparent) 80%, transparent 100%)',
+      }}
+      aria-hidden={disabled}
+    >
+      <div className="max-w-md mx-auto px-4 pointer-events-auto">{children}</div>
+    </div>,
+    document.body,
   );
 }
 
