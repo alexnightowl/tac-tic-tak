@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search } from 'lucide-react';
+import { Repeat, Search, Target, XCircle } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -173,18 +173,21 @@ function ThemeTile({
   const label = themeLabel(slug, language);
 
   // Stat shown in the bottom strip varies by tab so each lens has its
-  // own actionable number rather than a single noisy metric.
-  let stat: string | null = null;
-  let statTint = 'text-zinc-500';
+  // own actionable number rather than a single noisy metric. A small
+  // glyph prefixes the number so the unit reads at a glance:
+  //   weakest → ✕ + fail rate (% in red/amber/green)
+  //   popular → ↻ + attempt count
+  //   all     → ⌖ + acquired rating (only if the player has data)
+  let stat: { text: string; tint: string; Icon: typeof XCircle } | null = null;
   if (row) {
     if (metric === 'weakest') {
       const pct = Math.round(row.failureRate * 100);
-      stat = `${pct}%`;
-      statTint = pct >= 50 ? 'text-rose-300' : pct >= 25 ? 'text-amber-300' : 'text-emerald-300';
+      const tint = pct >= 50 ? 'text-rose-300' : pct >= 25 ? 'text-amber-300' : 'text-emerald-300';
+      stat = { text: `${pct}%`, tint, Icon: XCircle };
     } else if (metric === 'popular') {
-      stat = `${row.attempts}`;
+      stat = { text: `${row.attempts}`, tint: 'text-zinc-400', Icon: Repeat };
     } else if (row.rating > 0) {
-      stat = `${row.rating}`;
+      stat = { text: `${row.rating}`, tint: 'text-zinc-400', Icon: Target };
     }
   }
 
@@ -214,8 +217,9 @@ function ThemeTile({
           {label}
         </div>
         {stat && (
-          <div className={cn('text-[10px] mt-1 tabular-nums', statTint)}>
-            {stat}
+          <div className={cn('flex items-center gap-1 text-[10px] mt-1 tabular-nums', stat.tint)}>
+            <stat.Icon size={10} strokeWidth={2.2} />
+            {stat.text}
           </div>
         )}
       </div>
