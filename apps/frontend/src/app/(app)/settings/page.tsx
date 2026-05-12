@@ -12,7 +12,6 @@ import { Segmented } from '@/components/ui/segmented';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { BOARD_THEMES } from '@/lib/themes';
 import { Avatar } from '@/components/Avatar';
-import { SoundPicker } from '@/components/SoundPicker';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
 import { useToastStore } from '@/lib/toast';
 import { cn } from '@/lib/utils';
@@ -325,14 +324,6 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
         checked={settings.soundEnabled}
         onChange={(v) => patch({ soundEnabled: v })}
       />
-
-      {settings.soundEnabled && (
-        <>
-          <SoundPicker slot="correct" title={t('settings.sound_correct')} />
-          <SoundPicker slot="fail" title={t('settings.sound_fail')} />
-          <p className="text-[11px] text-zinc-500 -mt-1">{t('settings.sound_preview_hint')}</p>
-        </>
-      )}
 
       <div className="pt-2">
         <div className="text-sm mb-2">{t('settings.animation')}</div>
