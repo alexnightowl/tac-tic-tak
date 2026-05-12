@@ -30,3 +30,22 @@ export function formatLocalDate(d: Date): string {
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${day}`;
 }
+
+export type StreakState = 'secured' | 'at_risk' | 'broken' | 'none';
+
+/**
+ * Resolve the user's daily-streak state from the server-provided
+ * `lastDay` and the current local calendar day. Used to colour the
+ * streak badge and decide whether to surface a "play today" nudge —
+ * the source of truth (count, freezes) still comes from the API.
+ */
+export function streakState(days: number, lastDay: string | null): StreakState {
+  if (days <= 0 || !lastDay) return 'none';
+  const today = formatLocalDate(new Date());
+  if (lastDay === today) return 'secured';
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  const yesterday = formatLocalDate(y);
+  if (lastDay === yesterday) return 'at_risk';
+  return 'broken';
+}

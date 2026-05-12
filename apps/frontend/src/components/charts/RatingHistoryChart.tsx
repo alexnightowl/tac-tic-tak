@@ -167,8 +167,8 @@ export function RatingHistoryChart({
                 y={y}
                 textAnchor="end"
                 dominantBaseline="middle"
-                className="fill-zinc-500"
-                style={{ fontSize: 11 }}
+                className="fill-zinc-300 tabular-nums"
+                style={{ fontSize: 12, fontWeight: 500 }}
               >
                 {v}
               </text>

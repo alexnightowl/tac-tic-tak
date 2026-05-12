@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Chess, Square } from 'chess.js';
@@ -58,24 +58,23 @@ export default function ReviewPuzzle() {
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
-  const [hintSquare, setHintSquare] = useState<Square | null>(null);
+  const [hintLevel, setHintLevel] = useState<0 | 1 | 2>(0);
   const [solved, setSolved] = useState(false);
   const [done, setDone] = useState(false);
 
-  // Queue position relative to the LIST AT THE TIME THIS PUZZLE MOUNTED.
-  // We lock it so that when the current puzzle resolves (and the list
-  // refetches without it), the counter still advances cleanly instead
-  // of snapping.
-  const positionRef = useMemo(() => {
-    // Intentionally only captured on first render for this puzzleId.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    return { current: null as { index: number; total: number } | null };
-  }, [puzzleId]);
-  if (list.data && positionRef.current === null) {
-    const idx = list.data.findIndex((i) => i.puzzleId === puzzleId);
-    positionRef.current = idx >= 0
-      ? { index: idx, total: list.data.length }
-      : { index: 0, total: Math.max(list.data.length, 1) };
+  // Session position. The total is captured ONCE per theme drill and
+  // never reacts to the queue shrinking (puzzles being resolved) or
+  // growing (backend pushing new items mid-session). We also remember
+  // the original puzzle order so the X counter advances even when the
+  // server-side list mutates underneath us.
+  const sessionRef = useRef<{ ids: string[]; total: number; key: string } | null>(null);
+  const sessionKey = themeFilter ?? '__all__';
+  if (
+    list.data &&
+    (sessionRef.current === null || sessionRef.current.key !== sessionKey)
+  ) {
+    const ids = list.data.map((i) => i.puzzleId);
+    sessionRef.current = { ids, total: ids.length, key: sessionKey };
   }
 
   useEffect(() => {
@@ -88,6 +87,20 @@ export default function ReviewPuzzle() {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [puzzleId]);
+
+  // Lock html+body for the runner's lifetime so iOS PWA doesn't push
+  // the bottom CTA under the home indicator. Without this the
+  // app-shell adds its own safe-area padding on top of our h-dvh
+  // height, and the page overflows the visible viewport.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.add('play-locked');
+    document.body.classList.add('play-locked');
+    return () => {
+      html.classList.remove('play-locked');
+      document.body.classList.remove('play-locked');
+    };
+  }, []);
 
   // Enter / Space advance to the next puzzle once the current one
   // is solved. Lets a player who just wants to crank through the
@@ -114,7 +127,7 @@ export default function ReviewPuzzle() {
     setLastMove(null);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
     setSolved(false);
-    setHintSquare(null);
+    setHintLevel(0);
     const animMs = ANIMATION_MS[settings.animationSpeed];
     if (init.setupMove) {
       const mv = init.setupMove;
@@ -163,14 +176,16 @@ export default function ReviewPuzzle() {
   }
 
   function handleHint() {
-    if (!chess || !puzzle || hintSquare || solved) return;
-    const expected = remaining[0];
-    if (!expected) return;
-    // Highlight the source square of the next expected move and leave
-    // it on. The user still has to play that move themselves to clear
-    // the puzzle — the hint just shows which piece to look at.
-    setHintSquare(expected.slice(0, 2) as Square);
+    if (!chess || !puzzle || solved) return;
+    if (!remaining[0]) return;
+    setHintLevel((lvl) => (lvl >= 2 ? 2 : ((lvl + 1) as 0 | 1 | 2)));
   }
+
+  const expectedMove = remaining[0];
+  const hintSquare: Square | null =
+    hintLevel >= 1 && expectedMove ? (expectedMove.slice(0, 2) as Square) : null;
+  const hintTargetSquare: Square | null =
+    hintLevel >= 2 && expectedMove ? (expectedMove.slice(2, 4) as Square) : null;
 
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
     if (!chess || !puzzle) return false;
@@ -192,7 +207,7 @@ export default function ReviewPuzzle() {
 
     // Correct move played — the hint (if shown) was for this move and
     // is now stale.
-    setHintSquare(null);
+    setHintLevel(0);
 
     const after = remaining.slice(1);
     if (after.length === 0) {
@@ -221,12 +236,19 @@ export default function ReviewPuzzle() {
     return true;
   }
 
-  const counter = positionRef.current
-    ? `${Math.min(positionRef.current.index + 1, positionRef.current.total)} / ${positionRef.current.total}`
-    : '';
+  const counter = (() => {
+    const sess = sessionRef.current;
+    if (!sess) return '';
+    const idx = sess.ids.indexOf(puzzleId);
+    // Outside the original session list (backend added a new puzzle
+    // mid-drill, we drifted onto it) ⇒ pin to the captured total so
+    // the denominator never bumps.
+    const position = idx >= 0 ? idx + 1 : sess.total;
+    return `${Math.min(position, sess.total)} / ${sess.total}`;
+  })();
 
   if (done) {
-    const total = positionRef.current?.total ?? 0;
+    const total = sessionRef.current?.total ?? 0;
     const noun = tn('review.puzzle_word', total);
     const themeName = themeFilter
       ? themeLabel(themeFilter, settings.language as 'en' | 'uk')
@@ -267,41 +289,40 @@ export default function ReviewPuzzle() {
       <Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
         <ChevronLeft size={16} /> {t('review.back')}
       </Button>
-      <div className="flex items-center gap-2 shrink-0">
-        <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400">
-          {counter && <span>{counter}</span>}
-          {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
-          {puzzle?.rating != null && <span>{puzzle.rating}</span>}
-        </div>
-        {/* The hint button morphs into the next-puzzle CTA once
-            the puzzle is solved. Same fixed-width slot so the
-            row doesn't shift horizontally on the transition. */}
-        {solved && !settings.reviewAutoAdvance ? (
-          <button
-            type="button"
-            onClick={() => { void resolveAndAdvance(); }}
-            autoFocus
-            className="h-8 w-[112px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
-            aria-label={t('review.done_cta')}
-          >
-            <Check size={14} />
-            {t('review.done_cta')}
-            <ArrowRight size={14} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleHint}
-            disabled={!chess || !!hintSquare || solved}
-            className="h-8 w-[112px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label={t('review.hint')}
-          >
-            <Lightbulb size={14} />
-            {t('review.hint')}
-          </button>
-        )}
+      <div className="flex items-center gap-2 text-sm tabular-nums text-zinc-400 shrink-0">
+        {counter && <span>{counter}</span>}
+        {counter && puzzle?.rating != null && <span className="text-zinc-600">·</span>}
+        {puzzle?.rating != null && <span>{puzzle.rating}</span>}
       </div>
     </div>
+  );
+
+  // Hint/Next CTA — lives at the bottom on phone (thumb zone) and on
+  // the right side panel on desktop. Hint morphs into Next once solved
+  // so the slot doesn't bounce around.
+  const ctaButton = solved && !settings.reviewAutoAdvance ? (
+    <button
+      type="button"
+      onClick={() => { void resolveAndAdvance(); }}
+      autoFocus
+      className="h-12 w-full rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80"
+      aria-label={t('review.done_cta')}
+    >
+      <Check size={16} />
+      {t('review.done_cta')}
+      <ArrowRight size={16} />
+    </button>
+  ) : (
+    <button
+      type="button"
+      onClick={handleHint}
+      disabled={!chess || hintLevel >= 2 || solved}
+      className="h-12 w-full rounded-xl bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+      aria-label={t('review.hint')}
+    >
+      <Lightbulb size={16} />
+      {t('review.hint')}
+    </button>
   );
 
   // Reserved as a fixed-height slot so the board doesn't jump up
@@ -346,6 +367,7 @@ export default function ReviewPuzzle() {
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}
           hintSquare={hintSquare}
+          hintTargetSquare={hintTargetSquare}
         />
       )}
       {feedback && (
@@ -392,10 +414,15 @@ export default function ReviewPuzzle() {
           </div>
         </div>
 
+        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] pt-2">
+          {ctaButton}
+        </div>
+
         <aside className="hidden lg:flex w-[320px] shrink-0 self-center flex-col gap-3 max-h-full overflow-y-auto py-2">
           {headerRow}
           {themesSlot}
           {turnCardBlock}
+          {ctaButton}
         </aside>
       </div>
     </div>

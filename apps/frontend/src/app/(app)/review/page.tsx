@@ -7,6 +7,7 @@ import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT, useTn } from '@/lib/i18n';
 import { themeLabel } from '@/lib/theme-labels';
+import { themeIcon } from '@/lib/theme-icons';
 
 type ReviewTheme = {
   slug: string;
@@ -72,10 +73,14 @@ function ThemeCard({
   // Pre-fetch the first puzzle of this theme so the runner doesn't
   // flicker through a loading state when the user taps in.
   const startUrl = useStartUrl(theme.slug);
+  const Icon = themeIcon(theme.slug);
 
   return (
     <Link href={startUrl}>
       <div className="glass rounded-2xl p-4 flex items-center gap-3 hover:border-[var(--accent)] cursor-pointer transition-colors border border-[var(--border-soft)]">
+        <div className="h-10 w-10 rounded-xl bg-[var(--bg-softer)] flex items-center justify-center text-[var(--accent)] shrink-0">
+          <Icon size={20} strokeWidth={1.75} />
+        </div>
         <div className="flex-1 min-w-0">
           <div className="text-base font-semibold text-white truncate">
             {themeLabel(theme.slug, language)}

@@ -13,6 +13,7 @@ import { StreakBadge } from '@/components/StreakBadge';
 import { StyleIcon } from '@/components/StyleIcon';
 import { UserBadges } from '@/components/UserBadges';
 import { TrainingStyle, TRAINING_STYLES } from '@/lib/levels';
+import { streakState } from '@/lib/utils';
 
 type Overview = {
   recentSessions: SessionRow[];
@@ -57,13 +58,26 @@ export default function DashboardPage() {
             </h1>
             <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>
           </div>
-          {showStreak && streak.days > 0 && (
-            <StreakBadge
-              days={streak.days}
-              freezeAvailable={streak.freezes > 0}
-              className="mt-1.5 shrink-0"
-            />
-          )}
+          {showStreak && streak.days > 0 && (() => {
+            const st = streakState(streak.days, streak.lastDay);
+            // 'broken' = already lost (we still show the count for
+            // honesty rather than silently disappearing the badge).
+            return (
+              <div className="flex flex-col items-end gap-0.5 mt-1.5 shrink-0">
+                <StreakBadge
+                  days={streak.days}
+                  state={st}
+                  freezeAvailable={streak.freezes > 0}
+                />
+                {st === 'at_risk' && (
+                  <span className="text-[10px] text-amber-300/80">{t('streak.at_risk')}</span>
+                )}
+                {st === 'secured' && (
+                  <span className="text-[10px] text-zinc-500">{t('streak.secured')}</span>
+                )}
+              </div>
+            );
+          })()}
         </div>
         <Link href="/play" className="block">
           <Button size="lg" className="w-full md:w-auto md:min-w-[220px]">

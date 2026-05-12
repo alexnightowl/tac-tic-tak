@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
 import { AchievementsService } from '../achievements/achievements.service';
+import { AnalyticsService } from '../analytics/analytics.service';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
@@ -20,6 +21,7 @@ export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly achievements: AchievementsService,
+    private readonly analytics: AnalyticsService,
   ) {}
 
   async getProfile(userId: string) {
@@ -58,6 +60,24 @@ export class UsersService {
       where: { nickname },
       select: { id: true, nickname: true },
     });
+  }
+
+  async publicThemes(nickname: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { nickname },
+      select: { id: true },
+    });
+    if (!user) throw new NotFoundException('user not found');
+    return this.analytics.themes(user.id);
+  }
+
+  async publicTimeline(nickname: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { nickname },
+      select: { id: true },
+    });
+    if (!user) throw new NotFoundException('user not found');
+    return this.analytics.timeline(user.id, undefined, 365);
   }
 
   async publicProfile(nickname: string) {

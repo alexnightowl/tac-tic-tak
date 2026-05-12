@@ -115,6 +115,9 @@ export default function RegisterPage() {
             onChange={(e) => setNickname(e.target.value)}
             onBlur={() => setTouched((s) => ({ ...s, n: true }))}
             autoComplete="username"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             maxLength={20}
           />
           {(touched.n || nickname.length > 0) && <RuleList rules={nickRules} />}

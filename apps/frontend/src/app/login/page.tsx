@@ -76,6 +76,9 @@ export default function LoginPage() {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           autoComplete="username"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
         />
         <PasswordInput
           placeholder={t('auth.password')}

@@ -18,3 +18,7 @@ coverage/
 data/
 *.csv
 *.zst
+
+# playwright-mcp scratch (screenshots, accessibility snapshots, console logs)
+.playwright-mcp/
+/*.png

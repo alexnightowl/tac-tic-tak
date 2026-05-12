@@ -218,7 +218,25 @@ export default function PlayRunner() {
         const r = await http.post<NextResponse>(`/sessions/${sessionId}/next`);
         applyNextResponse(r);
       } catch {
-        setSummary({ sessionId, solved: 0, failed: 0, accuracy: 0, avgResponseMs: 0, peakRating: 0 });
+        // /next 400s when the session is already finished. Pull the
+        // real aggregates from /sessions/:id so the summary screen
+        // shows the actual numbers instead of zeros.
+        try {
+          const d = await http.get<{
+            solved: number; failed: number; accuracy: number;
+            avgResponseMs: number; peakRating: number;
+          }>(`/sessions/${sessionId}`);
+          setSummary({
+            sessionId,
+            solved: d.solved,
+            failed: d.failed,
+            accuracy: d.accuracy,
+            avgResponseMs: d.avgResponseMs,
+            peakRating: d.peakRating,
+          });
+        } catch {
+          setSummary({ sessionId, solved: 0, failed: 0, accuracy: 0, avgResponseMs: 0, peakRating: 0 });
+        }
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

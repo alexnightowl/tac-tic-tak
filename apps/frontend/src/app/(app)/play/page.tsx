@@ -1,5 +1,7 @@
 'use client';
 
+import { createPortal } from 'react-dom';
+
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Swords } from 'lucide-react';
@@ -9,11 +11,10 @@ import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Segmented } from '@/components/ui/segmented';
-import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { DifficultySlider } from '@/components/DifficultySlider';
 import { StyleIcon } from '@/components/StyleIcon';
-import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
+import { ThemePicker } from '@/components/ThemePicker';
 import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle';
 import {
   bandFor, solvedTarget,
@@ -148,13 +149,6 @@ export default function PlaySetup() {
     expert: t('levels.expert'),
   } as const;
 
-  const themeOptions = useMemo(
-    () => KNOWN_THEME_SLUGS
-      .map((slug) => ({ value: slug, label: themeLabel(slug, language as 'en' | 'uk') }))
-      .sort((a, b) => a.label.localeCompare(b.label)),
-    [language],
-  );
-
   const minMinutes = Math.round(stylePreset.minDurationSec / 60);
   const maxMinutes = Math.round(stylePreset.maxDurationSec / 60);
   const customMinutesNum = Math.max(minMinutes, Math.min(maxMinutes, Math.floor(Number(customMinutes) || 0)));
@@ -194,8 +188,20 @@ export default function PlaySetup() {
     }
   };
 
+  const ctaDisabled = loading || customInvalid || (mode === 'theme' && !theme);
+  const ctaButton = (
+    <Button
+      className="w-full shadow-[0_10px_30px_-8px_color-mix(in_srgb,var(--accent)_55%,transparent),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
+      size="lg"
+      onClick={start}
+      disabled={ctaDisabled}
+    >
+      <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
+    </Button>
+  );
+
   return (
-    <div className="max-w-md mx-auto space-y-5">
+    <div className="max-w-md mx-auto space-y-5 pb-12 md:pb-0">
       <h1 className="text-2xl font-semibold tracking-tight">{t('play.new_session')}</h1>
 
       <Card className="space-y-6">
@@ -354,14 +360,7 @@ export default function PlaySetup() {
           />
           {mode === 'theme' && (
             <div className="mt-3">
-              <Select
-                value={theme}
-                onChange={setTheme}
-                options={themeOptions}
-                placeholder={t('play.choose_theme')}
-                searchPlaceholder={t('play.search_themes')}
-                noResultsLabel={t('play.no_themes_match')}
-              />
+              <ThemePicker value={theme} onChange={setTheme} />
             </div>
           )}
         </section>
@@ -388,16 +387,41 @@ export default function PlaySetup() {
 
         {err && <p className="text-sm text-red-400">{err}</p>}
 
-        <Button
-          className="w-full"
-          size="lg"
-          onClick={start}
-          disabled={loading || customInvalid || (mode === 'theme' && !theme)}
-        >
-          <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
-        </Button>
+        {/* Desktop CTA — inline at the end of the Card. Mobile gets a
+            full-width fixed bar below; this branch is hidden on phones
+            so the button doesn't appear twice. */}
+        <div className="hidden md:block">{ctaButton}</div>
       </Card>
+
+      <MobileStartBar disabled={ctaDisabled}>{ctaButton}</MobileStartBar>
     </div>
+  );
+}
+
+/**
+ * Fixed full-width bottom CTA strip for mobile only. Rendered via a
+ * portal into document.body so it isn't trapped by the PullToRefresh
+ * wrapper's `transform` (a transformed ancestor changes the containing
+ * block for fixed children — without the portal the bar would anchor
+ * to the wrapper instead of the viewport and float at the wrong y).
+ */
+function MobileStartBar({ children, disabled }: { children: React.ReactNode; disabled: boolean }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return createPortal(
+    <div
+      className="md:hidden fixed inset-x-0 z-30 pt-5 pb-2 backdrop-blur-xl pointer-events-none"
+      style={{
+        bottom: 'calc(58px + env(safe-area-inset-bottom))',
+        background:
+          'linear-gradient(to top, color-mix(in srgb, var(--accent) 10%, var(--bg-base)) 0%, color-mix(in srgb, var(--accent) 6%, var(--bg-base)) 55%, color-mix(in srgb, var(--bg-base) 75%, transparent) 80%, transparent 100%)',
+      }}
+      aria-hidden={disabled}
+    >
+      <div className="max-w-md mx-auto px-4 pointer-events-auto">{children}</div>
+    </div>,
+    document.body,
   );
 }
 
