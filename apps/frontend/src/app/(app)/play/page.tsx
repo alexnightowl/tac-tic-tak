@@ -387,7 +387,12 @@ export default function PlaySetup() {
         )}
 
         {err && <p className="text-sm text-red-400">{err}</p>}
+      </Card>
 
+      {/* Sticky CTA — keeps Start always reachable without scrolling
+          past the level-preview card. On mobile the offset clears the
+          fixed bottom nav; on desktop it just hugs the viewport floor. */}
+      <div className="sticky z-10 bottom-[calc(72px+env(safe-area-inset-bottom))] md:bottom-3 pt-4 pb-2 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)]/95 to-transparent">
         <Button
           className="w-full"
           size="lg"
@@ -396,7 +401,7 @@ export default function PlaySetup() {
         >
           <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
         </Button>
-      </Card>
+      </div>
     </div>
   );
 }
