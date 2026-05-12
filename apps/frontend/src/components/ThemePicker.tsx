@@ -141,9 +141,9 @@ export function ThemePicker({ value, onChange }: Props) {
       ) : items.length === 0 ? (
         <p className="text-xs text-zinc-500 py-6 text-center">{t('play.no_themes_match')}</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[360px] overflow-y-auto pr-1">
+        <ul className="flex flex-col gap-1 max-h-[360px] overflow-y-auto pr-1">
           {items.map(({ slug, row }) => (
-            <ThemeTile
+            <ThemeRow
               key={slug}
               slug={slug}
               row={row}
@@ -153,13 +153,13 @@ export function ThemePicker({ value, onChange }: Props) {
               metric={tab}
             />
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
 }
 
-function ThemeTile({
+function ThemeRow({
   slug, row, language, active, onPick, metric,
 }: {
   slug: string;
@@ -172,8 +172,8 @@ function ThemeTile({
   const Icon = themeIcon(slug);
   const label = themeLabel(slug, language);
 
-  // Stat shown in the bottom strip varies by tab so each lens has its
-  // own actionable number rather than a single noisy metric. A small
+  // Stat shown on the right varies by tab so each lens has its own
+  // actionable number rather than a single noisy metric. A small
   // glyph prefixes the number so the unit reads at a glance:
   //   weakest → ✕ + fail rate (% in red/amber/green)
   //   popular → ↻ + attempt count
@@ -192,37 +192,37 @@ function ThemeTile({
   }
 
   return (
-    <button
-      type="button"
-      onClick={onPick}
-      className={cn(
-        'group relative flex flex-col items-start gap-2 rounded-xl border p-3 text-left transition-colors',
-        active
-          ? 'border-[var(--accent)] bg-[var(--accent)]/10'
-          : 'border-[var(--border)] bg-white/[0.03] hover:bg-white/[0.06]',
-      )}
-      aria-pressed={active}
-    >
-      <div className={cn(
-        'h-9 w-9 rounded-lg flex items-center justify-center',
-        active ? 'bg-[var(--accent)]/20 text-[var(--accent)]' : 'bg-[var(--bg-softer)] text-zinc-300',
-      )}>
-        <Icon size={18} strokeWidth={1.75} />
-      </div>
-      <div className="min-w-0 w-full">
+    <li>
+      <button
+        type="button"
+        onClick={onPick}
+        className={cn(
+          'w-full h-12 flex items-center gap-3 rounded-lg border px-3 text-left transition-colors',
+          active
+            ? 'border-[var(--accent)] bg-[var(--accent)]/10'
+            : 'border-[var(--border)] bg-white/[0.03] hover:bg-white/[0.06]',
+        )}
+        aria-pressed={active}
+      >
         <div className={cn(
-          'text-xs font-medium leading-tight line-clamp-2 break-words',
-          active ? 'text-white' : 'text-zinc-200',
+          'h-7 w-7 rounded-md flex items-center justify-center shrink-0',
+          active ? 'bg-[var(--accent)]/20 text-[var(--accent)]' : 'bg-[var(--bg-softer)] text-zinc-300',
+        )}>
+          <Icon size={16} strokeWidth={1.75} />
+        </div>
+        <span className={cn(
+          'flex-1 min-w-0 truncate text-sm',
+          active ? 'text-white font-medium' : 'text-zinc-200',
         )}>
           {label}
-        </div>
+        </span>
         {stat && (
-          <div className={cn('flex items-center gap-1 text-[10px] mt-1 tabular-nums', stat.tint)}>
-            <stat.Icon size={10} strokeWidth={2.2} />
+          <span className={cn('flex items-center gap-1 text-[11px] tabular-nums shrink-0 w-14 justify-end', stat.tint)}>
+            <stat.Icon size={11} strokeWidth={2.2} />
             {stat.text}
-          </div>
+          </span>
         )}
-      </div>
-    </button>
+      </button>
+    </li>
   );
 }
