@@ -426,7 +426,7 @@ function MobileStartBar({ children, disabled }: { children: React.ReactNode; dis
   if (!mounted) return null;
   return createPortal(
     <div
-      className="md:hidden fixed inset-x-0 z-30 pt-10 pb-3 backdrop-blur-xl pointer-events-none"
+      className="md:hidden fixed inset-x-0 z-30 pt-5 pb-2 backdrop-blur-xl pointer-events-none"
       style={{
         bottom: 'calc(58px + env(safe-area-inset-bottom))',
         background:
