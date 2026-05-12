@@ -11,11 +11,10 @@ import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Segmented } from '@/components/ui/segmented';
-import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { DifficultySlider } from '@/components/DifficultySlider';
 import { StyleIcon } from '@/components/StyleIcon';
-import { KNOWN_THEME_SLUGS, themeLabel } from '@/lib/theme-labels';
+import { ThemePicker } from '@/components/ThemePicker';
 import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle';
 import {
   bandFor, solvedTarget,
@@ -149,13 +148,6 @@ export default function PlaySetup() {
     advanced: t('levels.advanced'),
     expert: t('levels.expert'),
   } as const;
-
-  const themeOptions = useMemo(
-    () => KNOWN_THEME_SLUGS
-      .map((slug) => ({ value: slug, label: themeLabel(slug, language as 'en' | 'uk') }))
-      .sort((a, b) => a.label.localeCompare(b.label)),
-    [language],
-  );
 
   const minMinutes = Math.round(stylePreset.minDurationSec / 60);
   const maxMinutes = Math.round(stylePreset.maxDurationSec / 60);
@@ -368,14 +360,7 @@ export default function PlaySetup() {
           />
           {mode === 'theme' && (
             <div className="mt-3">
-              <Select
-                value={theme}
-                onChange={setTheme}
-                options={themeOptions}
-                placeholder={t('play.choose_theme')}
-                searchPlaceholder={t('play.search_themes')}
-                noResultsLabel={t('play.no_themes_match')}
-              />
+              <ThemePicker value={theme} onChange={setTheme} />
             </div>
           )}
         </section>
