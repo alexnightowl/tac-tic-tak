@@ -1,135 +1,44 @@
 'use client';
 
 /**
- * Sound playback. The 'native' pack synthesises minimalist tactile
- * tones via WebAudio so the trainer doesn't sound like Lichess. The
- * remaining packs proxy to Lichess's CDN and are kept for users who
- * prefer the familiar set.
+ * Single sound set, no user-facing variants. Move + capture use the
+ * Lichess wood (standard) pack — physical, tactile clicks. Correct +
+ * fail use the Lichess piano pack — softer melodic notes for puzzle
+ * feedback, so the solve/fail layer doesn't read as another piece
+ * click. Files come from Lichess's CDN and are cached after first
+ * play. `pack` is kept on the signature for backwards-compat with
+ * existing call sites — it's ignored at runtime.
  */
 
-export type SoundPack = 'native' | 'wood' | 'metal' | 'piano' | 'nes' | 'robot' | 'futuristic' | 'mute';
+export type SoundPack = 'default' | 'mute';
 export type SoundKind = 'move' | 'capture' | 'correct' | 'fail';
 
-/** Lichess theme names — used by every pack except 'native'/'mute'. */
-const THEMES: Record<Exclude<SoundPack, 'mute' | 'native'>, string> = {
-  wood: 'standard',
-  metal: 'sfx',
-  piano: 'piano',
-  nes: 'nes',
-  robot: 'robot',
-  futuristic: 'futuristic',
+const URL_BY_KIND: Record<SoundKind, string> = {
+  move:    'https://lichess1.org/assets/sound/standard/Move.mp3',
+  capture: 'https://lichess1.org/assets/sound/standard/Capture.mp3',
+  correct: 'https://lichess1.org/assets/sound/piano/GenericNotify.mp3',
+  fail:    'https://lichess1.org/assets/sound/piano/Error.mp3',
 };
-
-const FILE_BY_KIND: Record<SoundKind, string> = {
-  move: 'Move',
-  capture: 'Capture',
-  correct: 'GenericNotify',
-  fail: 'Error',
-};
-
-function url(pack: Exclude<SoundPack, 'mute' | 'native'>, kind: SoundKind) {
-  return `https://lichess1.org/assets/sound/${THEMES[pack]}/${FILE_BY_KIND[kind]}.mp3`;
-}
 
 const cache = new Map<string, HTMLAudioElement>();
-
-function getAudio(pack: SoundPack, kind: SoundKind): HTMLAudioElement | null {
-  if (pack === 'mute' || pack === 'native' || typeof window === 'undefined') return null;
-  const u = url(pack, kind);
-  let a = cache.get(u);
+function getAudio(url: string): HTMLAudioElement | null {
+  if (typeof window === 'undefined') return null;
+  let a = cache.get(url);
   if (!a) {
-    a = new Audio(u);
+    a = new Audio(url);
     a.preload = 'auto';
     a.volume = 0.6;
-    cache.set(u, a);
+    cache.set(url, a);
   }
   return a;
 }
 
-let audioCtx: AudioContext | null = null;
-function ctx(): AudioContext | null {
-  if (typeof window === 'undefined') return null;
-  if (!audioCtx) {
-    const C = window.AudioContext ?? (window as any).webkitAudioContext;
-    if (!C) return null;
-    audioCtx = new C();
-  }
-  // Browsers suspend the context until a user gesture; resume() is a
-  // no-op when already running and silently rejects when the user
-  // hasn't interacted yet — we just don't make sound in that case.
-  if (audioCtx.state === 'suspended') void audioCtx.resume().catch(() => {});
-  return audioCtx;
-}
-
-/** One enveloped tone — sine for melodic, square for percussive. */
-function tone(
-  ac: AudioContext,
-  startAt: number,
-  freq: number,
-  durationMs: number,
-  type: OscillatorType,
-  peakGain: number,
-) {
-  const o = ac.createOscillator();
-  const g = ac.createGain();
-  o.type = type;
-  o.frequency.setValueAtTime(freq, startAt);
-  const dur = durationMs / 1000;
-  // Fast attack, exponential decay — keeps each tone tactile rather
-  // than bell-like.
-  g.gain.setValueAtTime(0, startAt);
-  g.gain.linearRampToValueAtTime(peakGain, startAt + 0.005);
-  g.gain.exponentialRampToValueAtTime(0.0001, startAt + dur);
-  o.connect(g).connect(ac.destination);
-  o.start(startAt);
-  o.stop(startAt + dur + 0.02);
-}
-
-function playNative(kind: SoundKind) {
-  const ac = ctx();
-  if (!ac) return;
-  const t0 = ac.currentTime;
-  switch (kind) {
-    case 'correct':
-      // Two-note ascending — E5 → A5, sine, soft and bright.
-      tone(ac, t0,        659.25, 110, 'sine', 0.22);
-      tone(ac, t0 + 0.07, 880.00, 160, 'sine', 0.22);
-      break;
-    case 'fail':
-      // Damped low tap — A3 square through fast decay reads as "no".
-      tone(ac, t0, 220.00, 220, 'square', 0.16);
-      tone(ac, t0, 110.00, 240, 'sine',   0.10);
-      break;
-    case 'move':
-      tone(ac, t0, 880, 35, 'square', 0.10);
-      break;
-    case 'capture':
-      tone(ac, t0,        1100, 30, 'square', 0.12);
-      tone(ac, t0 + 0.04,  700, 45, 'square', 0.10);
-      break;
-  }
-}
-
-export function playSound(pack: SoundPack, kind: SoundKind) {
+export function playSound(pack: SoundPack | string | undefined, kind: SoundKind) {
   if (pack === 'mute') return;
-  if (pack === 'native') return playNative(kind);
-  const a = getAudio(pack, kind);
+  const a = getAudio(URL_BY_KIND[kind]);
   if (!a) return;
   try {
     a.currentTime = 0;
     a.play().catch(() => {});
   } catch {}
 }
-
-export const SOUND_PACK_KEYS: SoundPack[] = ['native', 'wood', 'metal', 'piano', 'nes', 'robot', 'futuristic', 'mute'];
-
-export const SOUND_PACK_LABELS: Record<SoundPack, string> = {
-  native: 'Native',
-  wood: 'Wood',
-  metal: 'Metal',
-  piano: 'Piano',
-  nes: 'Retro',
-  robot: 'Robot',
-  futuristic: 'Futuristic',
-  mute: 'Mute',
-};

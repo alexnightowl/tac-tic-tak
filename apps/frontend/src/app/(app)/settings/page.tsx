@@ -11,7 +11,6 @@ import { Toggle } from '@/components/ui/toggle';
 import { Segmented } from '@/components/ui/segmented';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { BOARD_THEMES, PIECE_SETS, PIECE_SET_LABELS } from '@/lib/themes';
-import { SOUND_PACK_KEYS, SOUND_PACK_LABELS, SoundPack, playSound } from '@/lib/sound';
 import { pieceUrl } from '@/lib/pieces';
 import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
@@ -324,25 +323,6 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
         checked={settings.soundEnabled}
         onChange={(v) => patch({ soundEnabled: v })}
       />
-
-      <div className="pt-2">
-        <div className="text-sm mb-2">{t('settings.sound_pack')}</div>
-        <div className="grid grid-cols-3 gap-2">
-          {SOUND_PACK_KEYS.map((pk) => (
-            <button
-              key={pk}
-              onClick={() => { patch({ soundPack: pk as SoundPack }); playSound(pk, 'move'); }}
-              className={`py-2 rounded-lg text-xs border transition-all ${
-                settings.soundPack === pk
-                  ? 'bg-[var(--accent)] text-[var(--accent-contrast)] border-transparent font-medium'
-                  : 'border-[var(--border)] text-zinc-300 hover:bg-white/5'
-              }`}
-            >
-              {SOUND_PACK_LABELS[pk]}
-            </button>
-          ))}
-        </div>
-      </div>
 
       <div className="pt-2">
         <div className="text-sm mb-2">{t('settings.animation')}</div>

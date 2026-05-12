@@ -134,7 +134,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   boardTheme: 'green',
   pieceSet: 'maestro',
   soundEnabled: true,
-  soundPack: 'wood',
+  soundPack: 'default',
   language: 'en',
   fixedColor: 'auto',
   animationSpeed: 'normal',
