@@ -123,10 +123,14 @@ export function RatingHistoryChart({
   }
 
   // Virtual SVG canvas: 0..1000 wide, scaled by viewBox to fit
-  // whatever width the container hands us.
+  // whatever width the container hands us. The Y-axis label column
+  // lives OUTSIDE the SVG (HTML overlay, fixed CSS pixel width) so
+  // glyphs aren't squished by preserveAspectRatio="none". The SVG
+  // itself only owns the chart area to the right of that column.
+  const LABEL_COL_PX = 44;
   const W = 1000;
   const H = height;
-  const padL = 44;
+  const padL = 0;
   const padR = 12;
   const padT = 10;
   const padB = 14;
@@ -141,11 +145,11 @@ export function RatingHistoryChart({
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="relative" style={{ height }}>
+      <div className="relative" style={{ height, paddingLeft: LABEL_COL_PX }}>
         <svg
           viewBox={`0 0 ${W} ${H}`}
           preserveAspectRatio="none"
-          className="absolute inset-0 w-full h-full"
+          className="w-full h-full block"
         >
         <defs>
           {STYLE_ORDER.map((style) => (
@@ -206,13 +210,19 @@ export function RatingHistoryChart({
         })}
         </svg>
 
-        {/* Y-axis labels — HTML overlay so they render at the correct
-            glyph aspect ratio regardless of the SVG's horizontal stretch. */}
+        {/* Y-axis labels — HTML overlay in the reserved left column so
+            glyphs render at proper aspect ratio (the SVG uses a
+            non-uniform viewBox that would squish text horizontally). */}
         {gridStops.map((v) => (
           <span
             key={v}
-            className="absolute text-[11px] font-medium text-zinc-300 tabular-nums pointer-events-none whitespace-nowrap"
-            style={{ top: yFor(v), left: 0, transform: 'translateY(-50%)' }}
+            className="absolute text-[11px] font-medium text-zinc-300 tabular-nums pointer-events-none whitespace-nowrap text-right"
+            style={{
+              top: yFor(v),
+              left: 0,
+              width: LABEL_COL_PX - 6,
+              transform: 'translateY(-50%)',
+            }}
           >
             {v}
           </span>
