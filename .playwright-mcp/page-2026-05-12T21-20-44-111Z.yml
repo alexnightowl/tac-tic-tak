@@ -1,0 +1,139 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - img
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - img "tac·tic·tak" [ref=e8]
+            - generic [ref=e9]: tac·tic·tak
+          - generic [ref=e10]:
+            - link "Features" [ref=e11] [cursor=pointer]:
+              - /url: "#features"
+            - link "Training" [ref=e12] [cursor=pointer]:
+              - /url: "#how"
+            - link "Statistics" [ref=e13] [cursor=pointer]:
+              - /url: "#value"
+            - link "About" [ref=e14] [cursor=pointer]:
+              - /url: "#cta"
+          - generic [ref=e15]:
+            - group "Language" [ref=e16]:
+              - button "EN" [pressed] [ref=e17] [cursor=pointer]
+              - button "УК" [ref=e18] [cursor=pointer]
+            - link "Get started" [ref=e19] [cursor=pointer]:
+              - /url: /register
+      - generic [ref=e22]:
+        - heading "Sharpen your instincts" [level=1] [ref=e24]:
+          - text: Sharpen
+          - text: your instincts
+        - paragraph [ref=e27]: Tacticore trains your chess tactics smarter, faster, every day. Adaptive puzzles, per-style ratings, real progression.
+        - generic [ref=e29]:
+          - link "Start training" [ref=e30] [cursor=pointer]:
+            - /url: /register
+            - text: Start training
+            - img [ref=e32]
+          - link "I have an account" [ref=e34] [cursor=pointer]:
+            - /url: /login
+    - generic [ref=e36]:
+      - generic [ref=e38]:
+        - text: Why it works
+        - heading "Built around how you actually improve" [level=2] [ref=e39]
+        - paragraph [ref=e40]: Grinding random puzzles doesn't build skill — calibrated pressure does. Each piece of the app is designed around a specific training principle.
+      - generic [ref=e41]:
+        - generic [ref=e43]:
+          - img [ref=e45]
+          - heading "Adaptive difficulty" [level=3] [ref=e49]
+          - paragraph [ref=e50]: Puzzle rating drifts toward yours after every attempt. Too easy? Next one climbs. Stuck? It eases off. You always train at the edge of your ability.
+        - generic [ref=e52]:
+          - img [ref=e54]
+          - heading "Per-style training" [level=3] [ref=e57]
+          - paragraph [ref=e58]: Bullet sharpens pattern recognition. Rapid builds deep calculation. We track them separately so your bullet rating can't smuggle weak rapid habits.
+        - generic [ref=e60]:
+          - img [ref=e62]
+          - heading "Real level-up gate" [level=3] [ref=e68]
+          - paragraph [ref=e69]: Your norm only rises when you meet four targets in a single session — count, accuracy, speed, peak. No shortcuts, no grinding for numbers.
+    - generic [ref=e71]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - text: Everything you need
+          - heading "The full toolkit, out of the box" [level=2] [ref=e75]
+        - paragraph [ref=e76]: No pay-wall for the things that matter. The whole trainer — styles, review, social — is in the product from day one.
+      - generic [ref=e77]:
+        - generic [ref=e79]:
+          - img [ref=e81]
+          - heading "Three training styles" [level=3] [ref=e83]
+          - paragraph [ref=e84]: Bullet (1–3 min), Blitz (5–15 min), Rapid (10–30 min) — each with its own rating, pace and unlock formula.
+        - generic [ref=e86]:
+          - img [ref=e88]
+          - heading "Focus mode" [level=3] [ref=e93]
+          - paragraph [ref=e94]: Fullscreen, stats hidden, zero distractions. Nothing to look at but the position in front of you.
+        - generic [ref=e96]:
+          - img [ref=e98]
+          - heading "Live level-up progress" [level=3] [ref=e100]
+          - paragraph [ref=e101]: Every move ticks a progress bar toward the next unlock. You always know how close you are.
+        - generic [ref=e103]:
+          - img [ref=e105]
+          - heading "Friends & leaderboards" [level=3] [ref=e109]
+          - paragraph [ref=e110]: Add people by nickname, climb the style-specific boards, see friends-only standings when it's personal.
+        - generic [ref=e112]:
+          - img [ref=e114]
+          - heading "Review what you missed" [level=3] [ref=e117]
+          - paragraph [ref=e118]: Failed puzzles queue into a timerless Review mode. Work them out without pressure until they stick.
+        - generic [ref=e120]:
+          - img [ref=e122]
+          - heading "Make it yours" [level=3] [ref=e128]
+          - paragraph [ref=e129]: Pick your board theme, piece set, accent colour, sound pack. The app should feel like your setup, not ours.
+      - generic [ref=e131]:
+        - img [ref=e133]
+        - generic [ref=e135]: Over 4 million Lichess puzzles, curated by rating and theme. Every session pulls fresh positions calibrated to where you are right now.
+    - generic [ref=e137]:
+      - generic [ref=e139]:
+        - text: How it works
+        - heading "Three steps. Real progress." [level=2] [ref=e140]
+        - paragraph [ref=e141]: You're not accumulating a vanity number. Each level-up is a specific, earned moment — and the bar shows you exactly how close you are to it.
+      - list [ref=e142]:
+        - listitem [ref=e143]:
+          - generic [ref=e144]:
+            - generic [ref=e145]: "01"
+            - generic [ref=e146]:
+              - generic [ref=e147]: "01"
+              - heading "Pick your style" [level=3] [ref=e148]
+              - paragraph [ref=e149]: Bullet, Blitz or Rapid. Choose a duration preset and the difficulty you want to push against — the slider shows where your cap is.
+        - listitem [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]: "02"
+            - generic [ref=e153]:
+              - generic [ref=e154]: "02"
+              - heading "Solve under pressure" [level=3] [ref=e155]
+              - paragraph [ref=e156]: The board fills the screen, the timer runs, puzzles adapt to you after every attempt. Missed moves are automatically queued for later review.
+        - listitem [ref=e157]:
+          - generic [ref=e158]:
+            - generic [ref=e159]: "03"
+            - generic [ref=e160]:
+              - generic [ref=e161]: "03"
+              - heading "Hit all four to level up" [level=3] [ref=e162]
+              - paragraph [ref=e163]: Finish the session with enough solved, high enough accuracy, fast enough, with enough peak rating. Nail all four and your norm goes up.
+    - generic [ref=e164]:
+      - generic [ref=e167]:
+        - heading "Your next rating jump is one session away." [level=2] [ref=e168]:
+          - text: Your next rating jump is
+          - text: one session away.
+        - paragraph [ref=e169]: No email, no payment, no onboarding form. Pick a nickname, pick a style, start solving.
+        - generic [ref=e170]:
+          - link "Create account" [ref=e171] [cursor=pointer]:
+            - /url: /register
+            - img [ref=e172]
+            - text: Create account
+            - img [ref=e181]
+          - link "Log in" [ref=e183] [cursor=pointer]:
+            - /url: /login
+      - generic [ref=e185]:
+        - generic [ref=e186]: © 2026 tac·tic·tak
+        - generic [ref=e187]:
+          - link "Log in" [ref=e188] [cursor=pointer]:
+            - /url: /login
+          - link "Sign up" [ref=e189] [cursor=pointer]:
+            - /url: /register
+          - link "Puzzles via Lichess" [ref=e190] [cursor=pointer]:
+            - /url: https://database.lichess.org/
+  - alert [ref=e191]

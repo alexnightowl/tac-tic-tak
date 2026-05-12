@@ -389,14 +389,21 @@ export default function PlaySetup() {
         {err && <p className="text-sm text-red-400">{err}</p>}
       </Card>
 
-      {/* Sticky CTA — keeps Start always reachable without scrolling
-          past the level-preview card. On mobile the offset clears the
-          fixed bottom nav; on desktop it just hugs the viewport floor.
-          The taller gradient + soft blur lift the button off scrolling
-          content beneath it. */}
-      <div className="sticky z-10 bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-3 pt-8 pb-3 bg-gradient-to-t from-[var(--bg-base)] from-50% via-[var(--bg-base)]/80 to-transparent">
+      {/* Sticky CTA — flush against the mobile nav bar so the bar reads
+          as one continuous chrome strip rather than a floating island.
+          The accent-tinted glass background + backdrop blur dissolves
+          the content scrolling under the button without going dead-flat
+          black. The 1px overlap (`-mb-px`) hides the seam where the
+          gradient meets the nav's top border. */}
+      <div
+        className="sticky z-10 bottom-[calc(58px+env(safe-area-inset-bottom))] md:bottom-3 pt-10 pb-3 -mb-px backdrop-blur-xl"
+        style={{
+          background:
+            'linear-gradient(to top, color-mix(in srgb, var(--accent) 10%, var(--bg-base)) 0%, color-mix(in srgb, var(--accent) 6%, var(--bg-base)) 55%, color-mix(in srgb, var(--bg-base) 75%, transparent) 80%, transparent 100%)',
+        }}
+      >
         <Button
-          className="w-full shadow-[0_8px_24px_-8px_rgba(0,0,0,0.55),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
+          className="w-full shadow-[0_10px_30px_-8px_color-mix(in_srgb,var(--accent)_55%,transparent),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
           size="lg"
           onClick={start}
           disabled={loading || customInvalid || (mode === 'theme' && !theme)}
