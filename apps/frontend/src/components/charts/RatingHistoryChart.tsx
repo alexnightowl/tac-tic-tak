@@ -141,12 +141,12 @@ export function RatingHistoryChart({
 
   return (
     <div className={cn('w-full', className)}>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        preserveAspectRatio="none"
-        className="w-full"
-        style={{ height }}
-      >
+      <div className="relative" style={{ height }}>
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          preserveAspectRatio="none"
+          className="absolute inset-0 w-full h-full"
+        >
         <defs>
           {STYLE_ORDER.map((style) => (
             <linearGradient key={style} id={`rh-grad-${style}`} x1="0" y1="0" x2="0" y2="1">
@@ -156,23 +156,12 @@ export function RatingHistoryChart({
           ))}
         </defs>
 
-        {/* y-axis grid + labels */}
+        {/* y-axis grid — labels render as HTML overlay below so glyph
+            aspect ratio isn't squished by the non-uniform viewBox. */}
         {gridStops.map((v) => {
           const y = yFor(v);
           return (
-            <g key={v}>
-              <line x1={padL} x2={W - padR} y1={y} y2={y} stroke="rgba(255,255,255,0.05)" />
-              <text
-                x={padL - 8}
-                y={y}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="fill-zinc-300 tabular-nums"
-                style={{ fontSize: 12, fontWeight: 500 }}
-              >
-                {v}
-              </text>
-            </g>
+            <line key={v} x1={padL} x2={W - padR} y1={y} y2={y} stroke="rgba(255,255,255,0.05)" />
           );
         })}
 
@@ -215,7 +204,20 @@ export function RatingHistoryChart({
             </g>
           );
         })}
-      </svg>
+        </svg>
+
+        {/* Y-axis labels — HTML overlay so they render at the correct
+            glyph aspect ratio regardless of the SVG's horizontal stretch. */}
+        {gridStops.map((v) => (
+          <span
+            key={v}
+            className="absolute text-[11px] font-medium text-zinc-300 tabular-nums pointer-events-none whitespace-nowrap"
+            style={{ top: yFor(v), left: 0, transform: 'translateY(-50%)' }}
+          >
+            {v}
+          </span>
+        ))}
+      </div>
 
       {/* Legend */}
       <div className="flex items-center gap-3 mt-2 text-[11px] flex-wrap pl-11">
