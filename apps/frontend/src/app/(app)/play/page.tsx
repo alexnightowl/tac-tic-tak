@@ -391,10 +391,12 @@ export default function PlaySetup() {
 
       {/* Sticky CTA — keeps Start always reachable without scrolling
           past the level-preview card. On mobile the offset clears the
-          fixed bottom nav; on desktop it just hugs the viewport floor. */}
-      <div className="sticky z-10 bottom-[calc(72px+env(safe-area-inset-bottom))] md:bottom-3 pt-4 pb-2 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)]/95 to-transparent">
+          fixed bottom nav; on desktop it just hugs the viewport floor.
+          The taller gradient + soft blur lift the button off scrolling
+          content beneath it. */}
+      <div className="sticky z-10 bottom-[calc(80px+env(safe-area-inset-bottom))] md:bottom-3 pt-8 pb-3 bg-gradient-to-t from-[var(--bg-base)] from-50% via-[var(--bg-base)]/80 to-transparent">
         <Button
-          className="w-full"
+          className="w-full shadow-[0_8px_24px_-8px_rgba(0,0,0,0.55),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
           size="lg"
           onClick={start}
           disabled={loading || customInvalid || (mode === 'theme' && !theme)}
