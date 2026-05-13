@@ -9,6 +9,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { PuzzlesModule } from './puzzles/puzzles.module';
 import { UsersModule } from './users/users.module';
 import { AchievementsModule } from './achievements/achievements.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AchievementsModule } from './achievements/achievements.module';
     ReviewModule,
     AnalyticsModule,
     AchievementsModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

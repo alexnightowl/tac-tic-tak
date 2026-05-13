@@ -84,6 +84,7 @@ export type AuthUser = {
   bio?: string | null;
   country?: string | null;
   verified?: boolean;
+  isAdmin?: boolean;
 };
 
 export type Progression = {

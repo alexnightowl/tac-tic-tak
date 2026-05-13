@@ -13,7 +13,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { Logo } from '@/components/brand/Logo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Me = { id: string; nickname: string; displayName?: string | null; avatarUrl?: string | null; bio?: string | null; country?: string | null; settings?: any; progressions?: Progressions };
+type Me = { id: string; nickname: string; displayName?: string | null; avatarUrl?: string | null; bio?: string | null; country?: string | null; verified?: boolean; isAdmin?: boolean; settings?: any; progressions?: Progressions };
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,6 +50,8 @@ export default function LoginPage() {
           avatarUrl: me.avatarUrl,
           bio: me.bio,
           country: me.country,
+          verified: me.verified,
+          isAdmin: me.isAdmin,
         });
         if (me.settings) setSettings(me.settings);
         if (me.progressions) setProgressions(me.progressions);

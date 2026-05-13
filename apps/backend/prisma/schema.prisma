@@ -35,6 +35,11 @@ model User {
   // operator chooses to recognise.
   verified              Boolean @default(false)
 
+  // Gate for the /admin page. Flipped manually in the DB. The
+  // route guard and AdminGuard on the backend both read this; no
+  // UI to grant it from inside the app.
+  isAdmin               Boolean @default(false)
+
   // Self-attested "I starred the repo" flag. Driven by a button
   // on the achievements page; trust-based since we don't have
   // GitHub OAuth set up.

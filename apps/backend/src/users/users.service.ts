@@ -41,6 +41,7 @@ export class UsersService {
       country: user.country,
       createdAt: user.createdAt,
       verified: user.verified,
+      isAdmin: user.isAdmin,
       settings: user.settings,
       // Legacy single-style progression — kept for backwards compat until the
       // frontend fully migrates off it.
