@@ -41,7 +41,7 @@ export class LeaderboardService {
         user: {
           select: {
             id: true, nickname: true, displayName: true, avatarUrl: true, country: true,
-            streakDays: true, verified: true,
+            streakDays: true, streakLastDay: true, verified: true,
           },
         },
       },
@@ -53,6 +53,7 @@ export class LeaderboardService {
       unlocked: r.unlockedStartRating,
       isSelf: r.userId === opts.viewerId,
       streakDays: r.user.streakDays,
+      streakLastDay: r.user.streakLastDay,
       user: {
         id: r.user.id,
         nickname: r.user.nickname,

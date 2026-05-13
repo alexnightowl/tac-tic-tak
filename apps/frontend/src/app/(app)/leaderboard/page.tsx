@@ -14,7 +14,7 @@ import { StyleIcon } from '@/components/StyleIcon';
 import { UserBadges } from '@/components/UserBadges';
 import { useAppStore } from '@/lib/store';
 import { TRAINING_STYLES, TrainingStyle } from '@/lib/levels';
-import { cn } from '@/lib/utils';
+import { cn, streakState } from '@/lib/utils';
 
 type Row = {
   rank: number;
@@ -22,6 +22,7 @@ type Row = {
   unlocked: number;
   isSelf: boolean;
   streakDays: number;
+  streakLastDay: string | null;
   user: { id: string; nickname: string; displayName: string | null; avatarUrl: string | null; country: string | null; verified?: boolean };
 };
 
@@ -115,7 +116,10 @@ function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showS
         </div>
         {row.user.country && <div className="text-[10px] uppercase text-zinc-500">{row.user.country}</div>}
       </div>
-      {showStreak && row.streakDays > 0 && (
+      {showStreak && (() => {
+        const st = streakState(row.streakDays, row.streakLastDay);
+        return st === 'secured' || st === 'at_risk';
+      })() && (
         <StreakBadge days={row.streakDays} size="sm" />
       )}
       <div className="flex items-center gap-1.5">
