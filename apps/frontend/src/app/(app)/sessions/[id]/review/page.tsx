@@ -63,7 +63,7 @@ export default function SessionReview() {
   const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
   const [opponentBusy, setOpponentBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
-  const [hintSquare, setHintSquare] = useState<Square | null>(null);
+  const [hintLevel, setHintLevel] = useState<0 | 1 | 2>(0);
   const [solved, setSolved] = useState(false);
   const currentPuzzle = useRef<ServerPuzzle | null>(null);
 
@@ -99,7 +99,7 @@ export default function SessionReview() {
     else if (settings.fixedColor === 'black') side = 'black';
     setOrientation(side);
     setLastMove(null);
-    setHintSquare(null);
+    setHintLevel(0);
     setAnimateMove(init.setupMove ? { from: init.setupMove.from, to: init.setupMove.to } : null);
 
     const animMs = ANIMATION_MS[settings.animationSpeed];
@@ -171,14 +171,16 @@ export default function SessionReview() {
   }
 
   function handleHint() {
-    if (!chess || opponentBusy || animateMove || hintSquare) return;
-    const expected = remaining[0];
-    if (!expected) return;
-    // Highlight the source square of the next expected move and leave
-    // it on. The user still has to play that move themselves to clear
-    // the puzzle — the hint just shows which piece to look at.
-    setHintSquare(expected.slice(0, 2) as Square);
+    if (!chess || opponentBusy || animateMove || solved) return;
+    if (!remaining[0]) return;
+    setHintLevel((lvl) => (lvl >= 2 ? 2 : ((lvl + 1) as 0 | 1 | 2)));
   }
+
+  const expectedMove = remaining[0];
+  const hintSquare: Square | null =
+    hintLevel >= 1 && expectedMove ? (expectedMove.slice(0, 2) as Square) : null;
+  const hintTargetSquare: Square | null =
+    hintLevel >= 2 && expectedMove ? (expectedMove.slice(2, 4) as Square) : null;
 
   function handleMove(m: { from: Square; to: Square; promotion?: string }) {
     if (!chess || opponentBusy) return false;
@@ -204,7 +206,7 @@ export default function SessionReview() {
     // Correct move played — the hint (if shown) was for this move and
     // is now stale; clear it so it doesn't leak into the next prompt
     // of a multi-move puzzle.
-    setHintSquare(null);
+    setHintLevel(0);
 
     const afterExpected = remaining.slice(1);
     if (afterExpected.length === 0) {
@@ -329,7 +331,7 @@ export default function SessionReview() {
         <button
           type="button"
           onClick={handleHint}
-          disabled={!!animateMove || opponentBusy || hintSquare !== null}
+          disabled={!!animateMove || opponentBusy || hintLevel >= 2}
           className="ml-auto h-9 w-[120px] rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
           aria-label={t('review.hint')}
         >
@@ -375,6 +377,7 @@ export default function SessionReview() {
           theme={settings.boardTheme as BoardTheme}
           pieceSet={settings.pieceSet}
           hintSquare={hintSquare}
+          hintTargetSquare={hintTargetSquare}
         />
       )}
       {feedback && (
