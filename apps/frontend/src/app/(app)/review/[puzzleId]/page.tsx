@@ -4,12 +4,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Chess, Square } from 'chess.js';
-import { ChevronLeft, Lightbulb, Check, ArrowRight } from 'lucide-react';
+import { ChevronLeft, Lightbulb, Check } from 'lucide-react';
 import { http } from '@/lib/api';
 import { Chessboard } from '@/components/board/Chessboard';
 import { TurnCard } from '@/components/board/TurnCard';
 import { Button } from '@/components/ui/button';
-import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
+import { ServerPuzzle, initPuzzle, uciFromMove, SOLVED_PAUSE_MS } from '@/lib/puzzle';
 import { playSound, sfx, moveSoundEvent } from '@/lib/sound';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT, useTn } from '@/lib/i18n';
@@ -57,10 +57,15 @@ export default function ReviewPuzzle() {
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [animateMove, setAnimateMove] = useState<{ from: Square; to: Square } | null>(null);
-  const [feedback, setFeedback] = useState<{ correct: boolean; id: number } | null>(null);
+  const [feedbackSquare, setFeedbackSquare] = useState<{ square: Square; correct: boolean; id: number } | null>(null);
   const [hintLevel, setHintLevel] = useState<0 | 1 | 2>(0);
   const [solved, setSolved] = useState(false);
   const [done, setDone] = useState(false);
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (advanceTimer.current) clearTimeout(advanceTimer.current);
+  }, []);
 
   // Session position. The total is captured ONCE per theme drill and
   // never reacts to the queue shrinking (puzzles being resolved) or
@@ -101,23 +106,6 @@ export default function ReviewPuzzle() {
       document.body.classList.remove('play-locked');
     };
   }, []);
-
-  // Enter / Space advance to the next puzzle once the current one
-  // is solved. Lets a player who just wants to crank through the
-  // queue skip reaching for the on-screen Next button. Skipped
-  // when auto-advance is enabled — the timer is already moving.
-  useEffect(() => {
-    if (!solved || settings.reviewAutoAdvance) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        void resolveAndAdvance();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [solved, settings.reviewAutoAdvance]);
 
   function startFrom(p: ServerPuzzle) {
     const init = initPuzzle(p);
@@ -204,9 +192,9 @@ export default function ReviewPuzzle() {
     }
 
     if (uci !== expected) {
-      setFeedback({ correct: false, id: Date.now() });
+      setFeedbackSquare({ square: m.to, correct: false, id: Date.now() });
       if (settings.soundEnabled) playSound(settings.soundPack, 'fail');
-      setTimeout(() => { setFeedback(null); reset(); }, 520);
+      setTimeout(() => { setFeedbackSquare(null); reset(); }, 520);
       return true;
     }
 
@@ -217,15 +205,12 @@ export default function ReviewPuzzle() {
     const after = remaining.slice(1);
     if (after.length === 0) {
       setSolved(true);
-      setFeedback({ correct: true, id: Date.now() });
+      setFeedbackSquare({ square: m.to, correct: true, id: Date.now() });
+      setTimeout(() => setFeedbackSquare(null), 500);
       if (settings.soundEnabled) playSound(settings.soundPack, 'correct');
-      // settings.reviewAutoAdvance: when true, fall back to the old
-      // 650ms auto-advance. When false (the default), the player
-      // gets time to study the solved position and drives the
-      // advance manually via the Next button or Enter / Space.
-      if (settings.reviewAutoAdvance) {
-        setTimeout(() => { void resolveAndAdvance(); }, 650);
-      }
+      // Hold on the solved position long enough for the "Solved" badge
+      // to register, then move on (or to the done screen).
+      advanceTimer.current = setTimeout(() => { void resolveAndAdvance(); }, SOLVED_PAUSE_MS);
       return true;
     }
     const op = after[0];
@@ -302,26 +287,23 @@ export default function ReviewPuzzle() {
     </div>
   );
 
-  // Hint/Next CTA — lives at the bottom on phone (thumb zone) and on
-  // the right side panel on desktop. Hint morphs into Next once solved
-  // so the slot doesn't bounce around.
-  const ctaButton = solved && !settings.reviewAutoAdvance ? (
-    <button
-      type="button"
-      onClick={() => { void resolveAndAdvance(); }}
-      autoFocus
-      className="h-12 w-full rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80"
-      aria-label={t('review.done_cta')}
+  // Hint CTA — lives at the bottom on phone (thumb zone) and on the
+  // right side panel on desktop. Morphs into a "Solved" badge while
+  // the runner pauses before the next puzzle, so the slot doesn't
+  // bounce around.
+  const ctaButton = solved ? (
+    <div
+      role="status"
+      className="h-12 w-full rounded-xl bg-[rgba(175,192,169,0.15)] text-eos-sage text-sm font-semibold flex items-center justify-center gap-2 review-solved-pop"
     >
       <Check size={16} />
-      {t('review.done_cta')}
-      <ArrowRight size={16} />
-    </button>
+      {t('review.solved')}
+    </div>
   ) : (
     <button
       type="button"
       onClick={handleHint}
-      disabled={!chess || hintLevel >= 2 || solved}
+      disabled={!chess || hintLevel >= 2}
       className="h-12 w-full rounded-xl bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
       aria-label={t('review.hint')}
     >
@@ -334,7 +316,7 @@ export default function ReviewPuzzle() {
   // by ~20px when the retry message appears.
   const themesSlot = (
     <div className="-mt-1 px-1 min-h-[18px] flex items-center">
-      {feedback && !feedback.correct ? (
+      {feedbackSquare && !feedbackSquare.correct ? (
         <span className="text-xs text-eos-rose">{t('review.retry')}</span>
       ) : themesLine ? (
         <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
@@ -373,15 +355,7 @@ export default function ReviewPuzzle() {
           pieceSet={settings.pieceSet}
           hintSquare={hintSquare}
           hintTargetSquare={hintTargetSquare}
-        />
-      )}
-      {feedback && (
-        <div
-          key={feedback.id}
-          className={`absolute inset-0 pointer-events-none rounded-xl board-feedback-ring ${
-            feedback.correct ? 'is-correct' : 'is-fail'
-          }`}
-          aria-hidden
+          feedbackSquare={feedbackSquare}
         />
       )}
     </div>

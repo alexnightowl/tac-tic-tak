@@ -48,6 +48,10 @@ export function initPuzzle(p: ServerPuzzle): InitResult {
   };
 }
 
+// How long review runners hold on a solved position (showing the
+// "Solved" badge) before moving to the next puzzle.
+export const SOLVED_PAUSE_MS = 1000;
+
 export function uciFromMove(m: { from: Square; to: Square; promotion?: string }) {
   return `${m.from}${m.to}${m.promotion ?? ''}`;
 }
