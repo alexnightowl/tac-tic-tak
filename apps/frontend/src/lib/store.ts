@@ -119,7 +119,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   focusMode: false,
   accentColor: '#c72a2f',
   boardTheme: 'stone',
-  pieceSet: 'ember',
+  pieceSet: 'classic',
   soundEnabled: true,
   soundPack: 'wood',
   language: 'en',

@@ -595,7 +595,7 @@ function PieceSetPicker({ value, onChange, t }: { value: AppPieceSet; onChange: 
                 <div
                   key={pc}
                   className="aspect-square"
-                  style={{ backgroundImage: `url(/design/textures/${i % 2 === 0 ? 'marble' : 'slate'}.jpg?v=3)`, backgroundSize: '200% 200%' }}
+                  style={{ backgroundImage: `url(/design/board/tile-${i % 2 === 0 ? 'light' : 'dark'}.jpg?v=1)`, backgroundSize: '100% 100%' }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

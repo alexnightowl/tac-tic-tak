@@ -442,10 +442,11 @@ input[type="range"].ticks::-moz-range-thumb {
     url('/design/textures/slate.jpg?v=3');
   background-size: cover, 520px 520px;
 }
-/* Board squares. Each square shows its own piece of the texture via
-   background-position; marble is used on the board only. */
-.sq-marble { background-image: url('/design/textures/marble.jpg?v=3'); background-size: 200% 200%; }
-.sq-slate  { background-image: url('/design/textures/slate.jpg?v=3');  background-size: 200% 200%; }
+/* Board squares: one finished glass tile per square (top band, soft rim),
+   stretched to the square. Fade (30) and temperature (−22) from the design
+   canvas are baked in — see scripts/bake-board.py. */
+.sq-marble { background-image: url('/design/board/tile-light.jpg?v=1'); background-size: 100% 100%; }
+.sq-slate  { background-image: url('/design/board/tile-dark.jpg?v=1');  background-size: 100% 100%; }
 
 /* Primary / secondary buttons: 9-slice stone plates.
    Border widths scale with height — see <PlateButton/>. */

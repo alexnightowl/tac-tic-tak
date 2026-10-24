@@ -33,7 +33,6 @@ type Props = {
 };
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
-const TEXTURE_POS = ['0% 0%', '100% 0%', '0% 100%', '100% 100%', '50% 50%', '30% 70%', '70% 30%'];
 const HL = '47, 95, 158'; // board highlight blue (--eos-hl)
 
 function sqName(file: number, rank: number): Square {
@@ -284,8 +283,6 @@ export function Chessboard({
                   isDragging && 'dragging')}
                 style={{
                   backgroundColor: isLight ? colors.light : colors.dark,
-                  // each square shows its own patch of the stone texture
-                  backgroundPosition: TEXTURE_POS[(file * 3 + rank * 5) % TEXTURE_POS.length],
                   cursor,
                 }}
                 onPointerDown={(e) => {
