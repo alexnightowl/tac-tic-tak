@@ -432,7 +432,15 @@ input[type="range"].ticks::-moz-range-thumb {
    Values = canvas "Fade" artboard: fade 35, desaturate 49, warmth 35, vignette 60. */
 .eos-fade {
   position: fixed;
-  inset: 0;
+  /* Size to the *large* viewport: with inset:0, iOS Safari keeps the
+     layer at the small-viewport height, so when the toolbar collapses a
+     strip at the bottom is left unfiltered. 100vh on iOS is already the
+     large viewport; lvh makes it explicit where supported. */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100lvh;
   z-index: 60;
   pointer-events: none;
   backdrop-filter: contrast(0.962) saturate(0.892) brightness(1.02) sepia(0.035);
