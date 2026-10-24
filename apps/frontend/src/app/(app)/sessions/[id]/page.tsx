@@ -118,7 +118,7 @@ export default function SessionDetail() {
               <div className="w-6 text-xs text-zinc-500 tabular-nums">{i + 1}</div>
               <div className={cn(
                 'h-7 w-7 rounded-full flex items-center justify-center shrink-0',
-                a.correct ? 'bg-[rgba(142,163,138,0.2)] text-eos-sage' : 'bg-[rgba(176,58,58,0.2)] text-eos-rose',
+                a.correct ? 'bg-[rgba(148,165,142,0.2)] text-eos-sage' : 'bg-[rgba(166,66,65,0.2)] text-eos-rose',
               )}>
                 {a.correct ? <Check size={14} /> : <X size={14} />}
               </div>

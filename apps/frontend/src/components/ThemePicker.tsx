@@ -107,7 +107,7 @@ export function ThemePicker({ value, onChange }: Props) {
 
   return (
     <div className="space-y-3">
-      <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]">
+      <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(17,15,17,0.5)]">
         {tabs.map(({ k, label }) => (
           <button
             key={k}
@@ -116,7 +116,7 @@ export function ThemePicker({ value, onChange }: Props) {
             className={cn(
               'flex-1 h-8 px-2 rounded-lg text-xs font-bold transition-colors',
               tab === k
-                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]'
+                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,254,0.06),0_1px_2px_rgba(17,15,17,0.4)]'
                 : 'text-eos-dust hover:text-eos-bone',
             )}
           >
@@ -184,7 +184,7 @@ function ThemeRow({
   if (row) {
     if (metric === 'weakest') {
       const pct = Math.round(row.failureRate * 100);
-      const tint = pct >= 50 ? 'text-eos-rose' : pct >= 25 ? 'text-[#d9b46a]' : 'text-eos-sage';
+      const tint = pct >= 50 ? 'text-eos-rose' : pct >= 25 ? 'text-[#d7b777]' : 'text-eos-sage';
       stat = { text: `${pct}%`, tint, Icon: XCircle };
     } else if (metric === 'popular') {
       stat = { text: `${row.attempts}`, tint: 'text-eos-dust', Icon: Repeat };
@@ -201,14 +201,14 @@ function ThemeRow({
         className={cn(
           'w-full h-12 flex items-center gap-3 rounded-lg px-3 text-left transition-colors',
           active
-            ? 'bg-[rgba(176,58,58,0.16)] shadow-[inset_0_0_0_1px_rgba(176,58,58,0.55)]'
-            : 'bg-[#2a282f] shadow-[inset_0_0_0_1px_rgba(228,222,213,0.06)] hover:bg-[#312e36]',
+            ? 'bg-[rgba(166,66,65,0.16)] shadow-[inset_0_0_0_1px_rgba(166,66,65,0.55)]'
+            : 'bg-[#2f2d32] shadow-[inset_0_0_0_1px_rgba(231,224,215,0.06)] hover:bg-[#353339]',
         )}
         aria-pressed={active}
       >
         <div className={cn(
           'h-7 w-7 rounded-md flex items-center justify-center shrink-0',
-          active ? 'bg-eos-ember text-[#f3ece4]' : 'bg-eos-rise text-eos-ash',
+          active ? 'bg-eos-ember text-[#f5eee5]' : 'bg-eos-rise text-eos-ash',
         )}>
           <Icon size={16} strokeWidth={1.75} />
         </div>

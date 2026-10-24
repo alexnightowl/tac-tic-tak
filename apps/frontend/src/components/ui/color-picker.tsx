@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const PRESETS = [
-  '#22c55e', '#10b981', '#14b8a6',
-  '#3b82f6', '#6366f1', '#8b5cf6',
-  '#a78bfa', '#ec4899', '#f43f5e',
-  '#ef4444', '#f59e0b', '#eab308',
-  '#84cc16', '#06b6d4', '#f97316',
+  '#38c169', '#27b585', '#2bb5a5',
+  '#4985e5', '#6a6be0', '#8c63e4',
+  '#a991ed', '#de5396', '#e34a63',
+  '#df4e4d', '#eca226', '#e5b625',
+  '#8eca2f', '#22b3cb', '#ec7a2a',
 ];
 
 type Props = {
@@ -42,7 +42,7 @@ export function ColorPicker({ value, onChange }: Props) {
             custom ? 'ring-2 ring-white ring-offset-2 ring-offset-[var(--bg-base)]' : '',
           )}
           style={{
-            background: 'conic-gradient(from 180deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #3b82f6, #a78bfa, #ec4899, #ef4444)',
+            background: 'conic-gradient(from 180deg, #df4e4d, #eca226, #e5b625, #38c169, #22b3cb, #4985e5, #a991ed, #de5396, #df4e4d)',
           }}
           aria-label="Pick custom colour"
         >

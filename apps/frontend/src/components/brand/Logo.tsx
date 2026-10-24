@@ -35,7 +35,7 @@ export function Logo({ size = 36, withWordmark = false, tone = 'dark', glow = fa
               width: size * 2.8,
               height: size * 2.8,
               background:
-                'radial-gradient(circle at 50% 46%, rgba(214,72,60,0.42) 0%, rgba(176,58,58,0.26) 18%, rgba(140,40,42,0.14) 36%, rgba(100,28,32,0.06) 54%, rgba(20,19,23,0) 72%)',
+                'radial-gradient(circle at 50% 46%, rgba(201,81,70,0.42) 0%, rgba(166,66,65,0.26) 18%, rgba(133,48,49,0.14) 36%, rgba(96,35,39,0.06) 54%, rgba(29,27,32,0) 72%)',
               filter: `blur(${Math.max(4, Math.round(size * 0.11))}px)`,
             }}
           />
@@ -47,14 +47,14 @@ export function Logo({ size = 36, withWordmark = false, tone = 'dark', glow = fa
           height={size}
           priority={size >= 96}
           className={cn('relative block select-none', tone === 'light' && 'rounded-full')}
-          style={{ width: size, height: size, filter: tone === 'dark' && size >= 64 ? 'drop-shadow(0 8px 14px rgba(0,0,0,0.55))' : undefined }}
+          style={{ width: size, height: size, filter: tone === 'dark' && size >= 64 ? 'drop-shadow(0 8px 14px rgba(17,15,17,0.55))' : undefined }}
           draggable={false}
         />
       </span>
       {withWordmark && (
         <span
           className={cn(
-            tone === 'light' ? 'font-display font-bold tracking-tight text-[#121212]' : 'font-serif font-bold tracking-[0.04em] text-eos-bone',
+            tone === 'light' ? 'font-display font-bold tracking-tight text-[#1c1b1d]' : 'font-serif font-bold tracking-[0.04em] text-eos-bone',
           )}
           style={{ fontSize: Math.round(size * (tone === 'light' ? 0.48 : 0.6)) }}
         >

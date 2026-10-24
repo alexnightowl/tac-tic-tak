@@ -6,7 +6,7 @@ export function Card({ className, hero, ...rest }: React.HTMLAttributes<HTMLDivE
     <div
       className={cn(
         hero
-          ? 'tx-slate rounded-[12px] p-5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.5)]'
+          ? 'tx-slate rounded-[12px] p-5 shadow-[inset_0_0_0_1px_rgba(255,255,254,0.06),0_14px_30px_rgba(17,15,17,0.5)]'
           : 'glass rounded-[12px] p-4',
         className,
       )}

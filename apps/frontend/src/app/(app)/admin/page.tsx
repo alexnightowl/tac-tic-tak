@@ -233,7 +233,7 @@ function ActivityChart({
             x2={W - PAD.r}
             y1={yAt(t)}
             y2={yAt(t)}
-            stroke="rgba(255,255,255,0.06)"
+            stroke="rgba(255,255,254,0.06)"
             strokeWidth={1}
           />
           <text
@@ -250,8 +250,8 @@ function ActivityChart({
 
       {/* Lines */}
       <path d={pathFor('sessions')} fill="none" stroke="var(--accent)" strokeWidth={2} />
-      <path d={pathFor('activeUsers')} fill="none" stroke="#34d399" strokeWidth={2} />
-      <path d={pathFor('signups')} fill="none" stroke="#38bdf8" strokeWidth={2} strokeDasharray="3 3" />
+      <path d={pathFor('activeUsers')} fill="none" stroke="#4acf9d" strokeWidth={2} />
+      <path d={pathFor('signups')} fill="none" stroke="#4dbcec" strokeWidth={2} strokeDasharray="3 3" />
 
       {/* X labels */}
       {xLabels.map(({ d, i }) => (

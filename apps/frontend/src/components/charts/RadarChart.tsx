@@ -85,13 +85,13 @@ export function RadarChart({ data, min, max, size = 320, strokeColor = 'var(--ac
         const pts = data.map((_, idx) => spokePoint(idx, f));
         const d = pts.map((p, j) => `${j === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ') + ' Z';
         return (
-          <path key={i} d={d} fill="none" stroke="rgba(255,255,255,0.08)" />
+          <path key={i} d={d} fill="none" stroke="rgba(255,255,254,0.08)" />
         );
       })}
       {/* spokes */}
       {data.map((_, idx) => {
         const outer = spokePoint(idx, 1);
-        return <line key={idx} x1={cx} y1={cy} x2={outer.x} y2={outer.y} stroke="rgba(255,255,255,0.06)" />;
+        return <line key={idx} x1={cx} y1={cy} x2={outer.x} y2={outer.y} stroke="rgba(255,255,254,0.06)" />;
       })}
       {/* ring labels */}
       {Array.from({ length: rings }).map((_, i) => {

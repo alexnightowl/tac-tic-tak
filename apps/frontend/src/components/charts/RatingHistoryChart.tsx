@@ -19,9 +19,9 @@ type Props = {
 
 const STYLE_HEX: Record<TrainingStyle, string> = {
   // Ember on stone chart palette
-  bullet: '#8e8a93', // graphite
-  blitz: '#b03a3a',  // ember
-  rapid: '#a9bea5',  // sage
+  bullet: '#928e94', // graphite
+  blitz: '#a64241',  // ember
+  rapid: '#afc0a9',  // sage
 };
 
 const STYLE_ORDER: TrainingStyle[] = ['rapid', 'blitz', 'bullet'];
@@ -71,7 +71,7 @@ export function RatingHistoryChart({
   language = 'en',
 }: Props) {
   // Hooks live above the empty-state guard. Calling any hook below
-  // an early return causes React #310 once data first arrives.
+  // an early return causes React #341b13 once data first arrives.
   const series = useMemo(() => {
     const byStyle: Record<TrainingStyle, Point[]> = {
       bullet: [],
@@ -166,7 +166,7 @@ export function RatingHistoryChart({
         {gridStops.map((v) => {
           const y = yFor(v);
           return (
-            <line key={v} x1={padL} x2={W - padR} y1={y} y2={y} stroke="rgba(255,255,255,0.05)" />
+            <line key={v} x1={padL} x2={W - padR} y1={y} y2={y} stroke="rgba(255,255,254,0.05)" />
           );
         })}
 
@@ -202,7 +202,7 @@ export function RatingHistoryChart({
                   cy={p.y}
                   r={3}
                   fill={STYLE_HEX[style]}
-                  stroke="rgba(0,0,0,0.4)"
+                  stroke="rgba(17,15,17,0.4)"
                   strokeWidth={1}
                 />
               ))}

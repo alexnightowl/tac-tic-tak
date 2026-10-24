@@ -29,7 +29,7 @@ export function Segmented<T extends string | number>({ value, onChange, options,
               'flex-1 inline-flex items-center justify-center gap-1.5 rounded-control font-bold transition-colors duration-150',
               size === 'sm' ? 'h-8 text-xs' : 'h-[38px] text-sm',
               active
-                ? 'bg-eos-ember text-[#f3ece4] shadow-[inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-2px_0_rgba(0,0,0,0.25)]'
+                ? 'bg-eos-ember text-[#f5eee5] shadow-[inset_0_1px_0_rgba(255,255,254,0.18),inset_0_-2px_0_rgba(17,15,17,0.25)]'
                 : 'text-eos-ash hover:text-eos-bone',
             )}
           >

@@ -44,7 +44,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
         plateClass && 'box-border px-1.5 font-serif font-bold uppercase tracking-[0.1em]',
         !plateClass && 'rounded-control px-4 font-semibold transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed',
         variant === 'ghost' && 'bg-transparent text-eos-bone hover:bg-white/5',
-        variant === 'danger' && 'border border-[rgba(176,58,58,0.7)] text-[#d8706a] hover:bg-[rgba(176,58,58,0.1)]',
+        variant === 'danger' && 'border border-[rgba(166,66,65,0.7)] text-[#d07771] hover:bg-[rgba(166,66,65,0.1)]',
         plateClass,
         heights[size],
         className,

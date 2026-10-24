@@ -170,7 +170,7 @@ export default function ProfilePage() {
                 </span>
               )}
               {showStreak && data.streak && data.streak.days > 0 && (
-                <span className="flex items-center gap-1 whitespace-nowrap text-[#d9b46a]">
+                <span className="flex items-center gap-1 whitespace-nowrap text-[#d7b777]">
                   <Flame size={12} /> {t('profile.streak')} {data.streak.days}
                 </span>
               )}

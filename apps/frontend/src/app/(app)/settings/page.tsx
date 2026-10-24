@@ -457,7 +457,7 @@ function ResetProgressSection({ t }: { t: (k: string) => string }) {
   };
 
   return (
-    <Card className="border-[rgba(176,58,58,0.3)] bg-[rgba(176,58,58,0.05)]">
+    <Card className="border-[rgba(166,66,65,0.3)] bg-[rgba(166,66,65,0.05)]">
       <CardTitle>
         <span className="inline-flex items-center gap-2 text-eos-rose">
           <AlertTriangle size={16} /> {t('settings.reset_progress.title')}
@@ -470,12 +470,12 @@ function ResetProgressSection({ t }: { t: (k: string) => string }) {
         <button
           type="button"
           onClick={() => setConfirming(true)}
-          className="mt-3 inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-eos-rose hover:text-white hover:bg-[rgba(176,58,58,0.15)] border border-[rgba(176,58,58,0.4)] transition-colors"
+          className="mt-3 inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-eos-rose hover:text-white hover:bg-[rgba(166,66,65,0.15)] border border-[rgba(166,66,65,0.4)] transition-colors"
         >
           {t('settings.reset_progress.cta')}
         </button>
       ) : (
-        <div className="mt-3 rounded-xl border border-[rgba(176,58,58,0.4)] bg-[rgba(176,58,58,0.1)] p-3 space-y-3">
+        <div className="mt-3 rounded-xl border border-[rgba(166,66,65,0.4)] bg-[rgba(166,66,65,0.1)] p-3 space-y-3">
           <p className="text-sm text-rose-100">{t('settings.reset_progress.confirm')}</p>
           {err && <p className="text-xs text-eos-rose">{err}</p>}
           <div className="flex gap-2">

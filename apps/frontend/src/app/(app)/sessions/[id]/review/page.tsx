@@ -306,7 +306,7 @@ export default function SessionReview() {
     <div className="glass rounded-2xl px-4 py-3 flex items-center gap-3">
       <div className={cn(
         'h-9 px-2.5 rounded-full text-[11px] font-semibold flex items-center gap-1.5 whitespace-nowrap shrink-0',
-        head.reason === 'failed' ? 'bg-[rgba(176,58,58,0.15)] text-eos-rose' : 'bg-amber-500/15 text-amber-300',
+        head.reason === 'failed' ? 'bg-[rgba(166,66,65,0.15)] text-eos-rose' : 'bg-amber-500/15 text-amber-300',
       )}>
         {head.reason === 'failed' ? <XCircle size={14} /> : <Loader2 size={14} />}
         {head.reason === 'failed' ? t('review.reason_failed') : t('review.reason_slow')}

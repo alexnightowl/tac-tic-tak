@@ -28,7 +28,7 @@ export function SoundSettings() {
           max={100}
           value={Math.round(volume * 100)}
           onChange={(e) => setVolume(Number(e.target.value) / 100)}
-          className="flex-1 accent-[#b03a3a]"
+          className="flex-1 accent-[#a64241]"
           aria-label={t('settings.sound_volume')}
         />
         <span className="w-9 text-right tabular-nums">{Math.round(volume * 100)}%</span>

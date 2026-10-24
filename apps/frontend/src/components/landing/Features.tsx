@@ -32,8 +32,8 @@ export function Features() {
       <div className="mt-8 grid gap-3 md:mt-14 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
         {items.map((f, i) => (
           <Reveal key={f.key} delay={((i % 3) + 1) as 1 | 2 | 3}>
-            <div className="h-full rounded-[14px] bg-eos-slate p-[22px] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),inset_0_0_0_1px_rgba(255,255,255,0.03)] md:p-7">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+            <div className="h-full rounded-[14px] bg-eos-slate p-[22px] shadow-[inset_0_1px_0_rgba(255,255,254,0.04),inset_0_0_0_1px_rgba(255,255,254,0.03)] md:p-7">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,254,0.05)]">
                 {f.icon}
               </span>
               <div className="mt-[18px] text-lg font-extrabold text-eos-bone">{t(`features.${f.key}.title`)}</div>

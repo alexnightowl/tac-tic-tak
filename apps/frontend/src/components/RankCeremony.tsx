@@ -54,7 +54,7 @@ export function RankCeremony({ direction, from, to, normFrom, normTo, styleLabel
   }
 
   const glow = !up ? (stage === 2 ? 0.04 : 0.14) : stage === 0 ? 0.08 : stage === 1 ? 0.22 : 0.34;
-  const finalGlow = to === 'expert' ? 'rgba(150,90,220,0.6)' : 'rgba(214,72,60,0.55)';
+  const finalGlow = to === 'expert' ? 'rgba(149,98,206,0.6)' : 'rgba(201,81,70,0.55)';
 
   if (!mounted) return null;
   // Portal to <body>: the app shell has transformed ancestors, which would
@@ -69,7 +69,7 @@ export function RankCeremony({ direction, from, to, normFrom, normTo, styleLabel
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 transition-[background] duration-500"
-        style={{ background: `radial-gradient(circle at 50% 38%, rgba(176,58,58,${glow}) 0%, rgba(120,30,34,0.12) 35%, rgba(20,19,23,0) 65%)` }}
+        style={{ background: `radial-gradient(circle at 50% 38%, rgba(176,58,58,${glow}) 0%, rgba(114,38,41,0.12) 35%, rgba(29,27,32,0) 65%)` }}
       />
       {up && stage === 2 && <div aria-hidden className="rank-flash pointer-events-none absolute inset-0 bg-white" />}
 
@@ -92,7 +92,7 @@ export function RankCeremony({ direction, from, to, normFrom, normTo, styleLabel
       <div
         className={cn('relative mt-10 text-center transition-all duration-500 delay-150', stage === 2 ? 'translate-y-0 opacity-100' : 'translate-y-3.5 opacity-0')}
       >
-        <div className={cn('text-xs font-extrabold tracking-[0.25em]', up ? 'text-[#e07d76]' : 'text-eos-ash')}>
+        <div className={cn('text-xs font-extrabold tracking-[0.25em]', up ? 'text-[#d8847c]' : 'text-eos-ash')}>
           {up ? t('rank.up') : t('rank.down')}
         </div>
         <h2 id="rank-ceremony-title" className="mt-2.5 font-serif text-4xl font-bold text-eos-bone">

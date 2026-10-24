@@ -49,7 +49,7 @@ export function AchievementCard({ achievement, name, description, language = 'en
         )}
         style={
           unlocked
-            ? { background: 'linear-gradient(135deg, #fde68a 0%, #f59e0b 60%, #d97706 100%)' }
+            ? { background: 'linear-gradient(135deg, #fce898 0%, #eca226 60%, #d07c20 100%)' }
             : undefined
         }
       >

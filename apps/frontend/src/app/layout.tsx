@@ -54,8 +54,8 @@ export const viewport: Viewport = {
   // blends into the app. Both media buckets set the same value because
   // the app forces dark mode regardless of system preference.
   themeColor: [
-    { media: '(prefers-color-scheme: dark)',  color: '#141317' },
-    { media: '(prefers-color-scheme: light)', color: '#141317' },
+    { media: '(prefers-color-scheme: dark)',  color: '#1d1b20' },
+    { media: '(prefers-color-scheme: light)', color: '#1d1b20' },
   ],
   colorScheme: 'dark',
 };
@@ -69,9 +69,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <OnboardingModal />
         </Providers>
         <ToastContainer />
-        <div className="eos-fade-tint" aria-hidden />
-        <div className="eos-fade-tint is-warm" aria-hidden />
-        <div className="eos-fade" aria-hidden />
         <div className="rotate-lock" role="alert">
           <div className="rotate-lock-icon" aria-hidden>↻</div>
           <div className="text-base font-medium">Please rotate your device</div>

@@ -6,12 +6,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Fade baked in (scripts/bake-fade.py): pure black/white as they used to render under the overlay.
+        black: '#110f11',
+        white: '#fffffe',
         // Warm "graphite" ramp: existing screens use zinc-* for text and
         // surfaces; remapping it lets them inherit the stone palette.
         zinc: {
-          50: '#f6f2ec', 100: '#efe9e1', 200: '#e4ded5', 300: '#c8c2bd',
-          400: '#a19da3', 500: '#7c7880', 600: '#5d5a62', 700: '#3d3b43',
-          800: '#2a282f', 900: '#1b1a1f', 950: '#141317',
+          50: '#f9f4ed', 100: '#f2ebe2', 200: '#e7e0d7', 300: '#cbc5bf',
+          400: '#a5a0a4', 500: '#807c81', 600: '#615e64', 700: '#413f46',
+          800: '#2f2d32', 900: '#222025', 950: '#1d1b20',
         },
         // Ember on stone — mirrors the --eos-* CSS variables in globals.css
         eos: {
@@ -38,17 +41,17 @@ const config: Config = {
           border: 'var(--eos-seam)',
         },
         accent: {
-          DEFAULT: 'var(--accent, #22c55e)',
-          fg: '#f3ece4',
+          DEFAULT: 'var(--accent, #38c169)',
+          fg: '#f5eee5',
         },
         board: {
           // Stone board: textures come from .sq-marble / .sq-slate,
           // these are the fallback fills underneath.
-          light: '#c9ccd6',
-          dark: '#4b4c57',
-          select: 'rgba(47, 95, 158, 0.45)',
-          highlight: 'rgba(47, 95, 158, 0.35)',
-          lastmove: 'rgba(47, 95, 158, 0.35)',
+          light: '#cdcfd5',
+          dark: '#505059',
+          select: 'rgba(58,98,150,0.45)',
+          highlight: 'rgba(58,98,150,0.35)',
+          lastmove: 'rgba(58,98,150,0.35)',
         },
       },
       borderRadius: {

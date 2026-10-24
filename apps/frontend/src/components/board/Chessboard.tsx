@@ -58,7 +58,7 @@ const SPARKS = Array.from({ length: 14 }, (_, i) => {
     dx: Math.round(Math.cos(a) * d),
     dy: Math.round(Math.sin(a) * d) - 10,
     size: 3 + (i % 3),
-    color: i % 3 === 0 ? '#ffb27a' : i % 3 === 1 ? '#e0563f' : '#ffd9a8',
+    color: i % 3 === 0 ? '#f9b786' : i % 3 === 1 ? '#d35e4a' : '#fddcb1',
     ms: 520 + (i % 4) * 60,
   };
 });
@@ -249,7 +249,7 @@ export function Chessboard({
     <div
       ref={ref}
       className="relative w-full aspect-square select-none touch-none overflow-hidden rounded-[6px]"
-      style={{ userSelect: 'none', boxShadow: '0 0 0 1px rgba(255,255,255,0.08), 0 24px 60px rgba(0,0,0,0.5)' }}
+      style={{ userSelect: 'none', boxShadow: '0 0 0 1px rgba(255,255,254,0.08), 0 24px 60px rgba(17,15,17,0.5)' }}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
@@ -299,7 +299,7 @@ export function Chessboard({
                 {isCheck && (
                   <div className="absolute inset-0 pointer-events-none" style={{
                     zIndex: 0,
-                    background: 'radial-gradient(circle, rgba(239, 68, 68, 0.85) 10%, rgba(239, 68, 68, 0.35) 55%, transparent 80%)',
+                    background: 'radial-gradient(circle, rgba(223,78,77,0.85) 10%, rgba(223,78,77,0.35) 55%, transparent 80%)',
                   }} />
                 )}
                 {/* highlight fill — renders BEHIND the piece */}
@@ -309,7 +309,7 @@ export function Chessboard({
                     style={{
                       zIndex: 0,
                       background: isHighlighted
-                        ? 'rgba(176, 58, 58, 0.6)'
+                        ? 'rgba(166,66,65,0.6)'
                         : isSelected
                           ? `rgba(${HL}, 0.45)`
                           : `rgba(${HL}, 0.35)`,
@@ -320,8 +320,8 @@ export function Chessboard({
                 {/* legal move indicator */}
                 {isLegalTarget && (
                   piece
-                    ? <div className="absolute inset-[4%] rounded-full pointer-events-none" style={{ zIndex: 3, boxShadow: 'inset 0 0 0 6px rgba(140,140,140,0.32)' }} />
-                    : <div className="absolute w-[26%] h-[26%] rounded-full pointer-events-none" style={{ zIndex: 3, background: 'rgba(140,140,140,0.32)' }} />
+                    ? <div className="absolute inset-[4%] rounded-full pointer-events-none" style={{ zIndex: 3, boxShadow: 'inset 0 0 0 6px rgba(144,143,142,0.32)' }} />
+                    : <div className="absolute w-[26%] h-[26%] rounded-full pointer-events-none" style={{ zIndex: 3, background: 'rgba(144,143,142,0.32)' }} />
                 )}
                 {/* drop-target ring while dragging */}
                 {isDragTarget && (
@@ -390,7 +390,7 @@ export function Chessboard({
                         ? `translate(${dragPos.x - dragStart.x}px, ${dragPos.y - dragStart.y}px) ${pieceTransform(pieceSet, piece.type as any) ?? ''} scale(1.06)`
                         : pieceTransform(pieceSet, piece.type as any),
                       transition: isDragging ? 'none' : undefined,
-                      filter: isDragging ? 'drop-shadow(0 10px 18px rgba(0,0,0,0.35))' : undefined,
+                      filter: isDragging ? 'drop-shadow(0 10px 18px rgba(17,15,17,0.35))' : undefined,
                       willChange: isDragging ? 'transform' : undefined,
                     }}
                   />
@@ -515,7 +515,7 @@ function PromotionPicker({ size, square, orientation, color, pieceSet, onPick, o
     <>
       <div
         className="absolute inset-0"
-        style={{ zIndex: 30, background: 'rgba(0,0,0,0.35)' }}
+        style={{ zIndex: 30, background: 'rgba(17,15,17,0.35)' }}
         onPointerDown={(e) => {
           if (!ready) return;
           e.stopPropagation();
@@ -530,7 +530,7 @@ function PromotionPicker({ size, square, orientation, color, pieceSet, onPick, o
           top: baseTop,
           width: sq,
           height: sq * 4,
-          background: 'rgba(252, 252, 252, 0.98)',
+          background: 'rgba(255,254,252,0.98)',
         }}
         onPointerDown={(e) => e.stopPropagation()}
       >

@@ -26,7 +26,7 @@ export function LandingNav() {
         <span className="hidden md:inline-flex">
           <Link
             href="/register"
-            className="btn-ember h-11 px-3 font-serif text-[13px] font-bold uppercase tracking-[0.1em] text-[#ece3d6]"
+            className="btn-ember h-11 px-3 font-serif text-[13px] font-bold uppercase tracking-[0.1em] text-[#eee5d8]"
             style={{ borderWidth: '12px 13px' }}
           >
             {t('nav.get_started')}

@@ -133,7 +133,7 @@ export function AchievementsGrid() {
           className={cn(
             'shrink-0 h-9 px-3 rounded-lg text-xs font-semibold transition-colors',
             starredAlready
-              ? 'bg-[rgba(142,163,138,0.15)] text-eos-sage cursor-default'
+              ? 'bg-[rgba(148,165,142,0.15)] text-eos-sage cursor-default'
               : 'btn-ember font-serif font-bold uppercase tracking-[0.08em] hover:opacity-90',
             starring && 'opacity-60',
           )}

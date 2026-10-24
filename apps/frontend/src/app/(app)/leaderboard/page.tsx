@@ -60,7 +60,7 @@ export default function LeaderboardPage() {
             onClick={() => setScope(k)}
             className={cn(
               'h-8 px-3 rounded-control text-xs font-bold flex items-center gap-1.5 transition-colors',
-              scope === k ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]' : 'text-eos-ash hover:text-eos-bone',
+              scope === k ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,254,0.06)]' : 'text-eos-ash hover:text-eos-bone',
             )}
           >
             <Icon size={12} /> {label}
@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
 
 function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showStreak: boolean }) {
   const medal = row.rank <= 3
-    ? ['text-[#d9b46a]', 'text-[#c8c2bd]', 'text-[#b07a52]'][row.rank - 1]
+    ? ['text-[#d7b777]', 'text-[#cbc5bf]', 'text-[#ad7f5c]'][row.rank - 1]
     : null;
 
   return (
@@ -95,7 +95,7 @@ function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showS
       href={`/profile/${row.user.nickname}`}
       className={cn(
         'glass rounded-[10px] p-3 flex items-center gap-3 hover:brightness-110 transition-[filter]',
-        row.isSelf && 'shadow-[inset_0_0_0_1px_rgba(176,58,58,0.55)] !bg-[#2a2129]',
+        row.isSelf && 'shadow-[inset_0_0_0_1px_rgba(166,66,65,0.55)] !bg-[#2e262c]',
       )}
     >
       <div className="w-8 flex items-center justify-center">

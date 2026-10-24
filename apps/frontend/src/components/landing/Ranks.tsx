@@ -18,7 +18,7 @@ const GATE: Array<{ key: string; value: string }> = [
 export function Ranks() {
   const { t } = useLandingT();
   return (
-    <section id="ranks" className="scroll-mt-6 bg-[linear-gradient(#141317,#19181d_30%,#141317)] px-4 py-[72px] md:px-6 md:py-[104px]">
+    <section id="ranks" className="scroll-mt-6 bg-[linear-gradient(#1d1b20,#19181d_30%,#1d1b20)] px-4 py-[72px] md:px-6 md:py-[104px]">
       <div className="mx-auto grid max-w-[1200px] items-center gap-9 lg:grid-cols-[1fr_560px] lg:gap-[88px]">
         <Reveal>
           <Eyebrow>{t('ranks.eyebrow')}</Eyebrow>
@@ -27,7 +27,7 @@ export function Ranks() {
           <ul className="mt-6 grid gap-3">
             {['ranks.point_1', 'ranks.point_2', 'ranks.point_3'].map((k) => (
               <li key={k} className="flex items-start gap-3 text-[15px] leading-normal text-eos-ash">
-                <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgba(176,58,58,0.16)] text-[#e07d76]">
+                <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgba(166,66,65,0.16)] text-[#d8847c]">
                   <Check size={12} strokeWidth={2.6} />
                 </span>
                 {t(k)}
@@ -37,7 +37,7 @@ export function Ranks() {
         </Reveal>
 
         <Reveal delay={2}>
-          <div className="tx-slate rounded-2xl p-5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06),0_20px_40px_rgba(0,0,0,0.5)] md:p-8">
+          <div className="tx-slate rounded-2xl p-5 shadow-[inset_0_0_0_1px_rgba(255,255,254,0.06),0_20px_40px_rgba(17,15,17,0.5)] md:p-8">
             <div className="flex items-center justify-between">
               <span className="text-xs font-extrabold tracking-[0.12em] text-eos-ash">{t('ranks.panel_rating')}</span>
               <span className="inline-flex items-center gap-2">
@@ -49,11 +49,11 @@ export function Ranks() {
             </div>
 
             <div className="relative mt-[18px] h-7">
-              <div className="absolute inset-x-0 top-[11px] h-1.5 rounded-full bg-eos-well shadow-[inset_0_1px_2px_rgba(0,0,0,0.7)]" />
-              <div className="absolute left-0 top-[11px] h-1.5 w-[70%] rounded-full bg-[linear-gradient(90deg,#7a2a2c,#b03a3a)]" />
+              <div className="absolute inset-x-0 top-[11px] h-1.5 rounded-full bg-eos-well shadow-[inset_0_1px_2px_rgba(17,15,17,0.7)]" />
+              <div className="absolute left-0 top-[11px] h-1.5 w-[70%] rounded-full bg-[linear-gradient(90deg,#753132,#a64241)]" />
               <div
-                className="absolute left-[calc(70%-12px)] top-0.5 h-6 w-6 rounded-full shadow-[0_0_0_4px_rgba(176,58,58,0.25),0_2px_6px_rgba(0,0,0,0.6)]"
-                style={{ background: 'radial-gradient(circle at 40% 32%, #f3ece4, #c8c2bd 60%, #8f8a8e)' }}
+                className="absolute left-[calc(70%-12px)] top-0.5 h-6 w-6 rounded-full shadow-[0_0_0_4px_rgba(166,66,65,0.25),0_2px_6px_rgba(17,15,17,0.6)]"
+                style={{ background: 'radial-gradient(circle at 40% 32%, #f5eee5, #cbc5bf 60%, #938e90)' }}
               />
             </div>
 
@@ -84,7 +84,7 @@ export function Ranks() {
             <div className="mt-[26px] border-t border-white/[0.07] pt-[22px]">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-extrabold tracking-[0.12em] text-eos-ash">{t('ranks.gate')}</span>
-                <span className="inline-flex h-6 items-center rounded-full bg-[rgba(142,163,138,0.16)] px-2.5 text-xs font-extrabold text-[#a9bea5]">
+                <span className="inline-flex h-6 items-center rounded-full bg-[rgba(148,165,142,0.16)] px-2.5 text-xs font-extrabold text-[#afc0a9]">
                   {t('ranks.gate_badge')}
                 </span>
               </div>
@@ -95,11 +95,11 @@ export function Ranks() {
                       <span className="text-eos-ash">{t(`ranks.gate_${g.key}`)}</span>
                       <span className="inline-flex items-center gap-1.5 tabular-nums text-eos-bone">
                         {g.value}
-                        <Check size={14} strokeWidth={2.4} className="text-[#a9bea5]" />
+                        <Check size={14} strokeWidth={2.4} className="text-[#afc0a9]" />
                       </span>
                     </div>
-                    <div className="mt-[7px] h-1.5 rounded-full bg-eos-well shadow-[inset_0_1px_2px_rgba(0,0,0,0.6)]">
-                      <div className="h-1.5 w-full rounded-full bg-[linear-gradient(90deg,#5d7359,#8ea38a)]" />
+                    <div className="mt-[7px] h-1.5 rounded-full bg-eos-well shadow-[inset_0_1px_2px_rgba(17,15,17,0.6)]">
+                      <div className="h-1.5 w-full rounded-full bg-[linear-gradient(90deg,#64765f,#94a58e)]" />
                     </div>
                   </div>
                 ))}

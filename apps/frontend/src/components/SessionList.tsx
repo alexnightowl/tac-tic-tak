@@ -146,7 +146,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
       {/* Delete action — hidden at rest, fades in as the swipe progresses. */}
       {canDelete && (
         <button
-          className="absolute inset-y-0 right-0 w-[88px] bg-eos-ember text-[#f3ece4] text-xs flex flex-col items-center justify-center gap-1"
+          className="absolute inset-y-0 right-0 w-[88px] bg-eos-ember text-[#f5eee5] text-xs flex flex-col items-center justify-center gap-1"
           onClick={() => setConfirming(true)}
           aria-label={language === 'uk' ? 'Видалити' : 'Delete'}
           style={{
@@ -248,7 +248,7 @@ function ConfirmDelete({ onConfirm, onCancel, language }: { onConfirm: () => voi
           <button onClick={onCancel} className="flex-1 h-11 rounded-xl border border-[var(--border)] text-sm">
             {language === 'uk' ? 'Скасувати' : 'Cancel'}
           </button>
-          <button onClick={onConfirm} className="flex-1 h-11 rounded-xl bg-eos-ember text-[#f3ece4] text-sm font-medium">
+          <button onClick={onConfirm} className="flex-1 h-11 rounded-xl bg-eos-ember text-[#f5eee5] text-sm font-medium">
             {language === 'uk' ? 'Видалити' : 'Delete'}
           </button>
         </div>

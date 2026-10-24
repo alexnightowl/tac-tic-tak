@@ -21,9 +21,9 @@ export function Paces() {
       <div className="mt-9 grid gap-3.5 md:mt-14 md:grid-cols-3 md:gap-6">
         {STYLE_ORDER.map((s, i) => (
           <Reveal key={s} delay={(i + 1) as 1 | 2 | 3}>
-            <div className="tx-slate h-full rounded-[14px] p-6 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] md:p-[30px]">
+            <div className="tx-slate h-full rounded-[14px] p-6 shadow-[inset_0_0_0_1px_rgba(255,255,254,0.06),0_14px_30px_rgba(17,15,17,0.45)] md:p-[30px]">
               <div className="flex items-center justify-between">
-                <span className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[rgba(15,14,18,0.6)] text-eos-bone shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+                <span className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[rgba(26,24,28,0.6)] text-eos-bone shadow-[inset_0_2px_4px_rgba(17,15,17,0.5)]">
                   <StyleIcon style={s} size={30} />
                 </span>
                 <span className="inline-flex h-[26px] items-center rounded-full bg-eos-rise px-2.5 text-xs font-extrabold text-eos-ash">

@@ -530,7 +530,7 @@ export default function PlayRunner() {
     <div className={cn(
       'font-sans font-extrabold text-xl tabular-nums px-4 py-1.5 rounded-full border transition-colors text-center',
       warning
-        ? 'bg-[rgba(176,58,58,0.16)] border-[rgba(176,58,58,0.6)] text-eos-rose pulse-red'
+        ? 'bg-[rgba(166,66,65,0.16)] border-[rgba(166,66,65,0.6)] text-eos-rose pulse-red'
         : paused
           ? 'glass text-eos-ash'
           : 'glass text-eos-bone',
@@ -743,7 +743,7 @@ function ExitDialog({ onSave, onDiscard, onCancel, language }: {
           <button onClick={onSave} className="h-11 rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] font-semibold text-sm">
             {uk ? 'Зберегти' : 'Save'}
           </button>
-          <button onClick={onDiscard} className="h-11 rounded-xl border border-[rgba(176,58,58,0.4)] text-eos-rose text-sm">
+          <button onClick={onDiscard} className="h-11 rounded-xl border border-[rgba(166,66,65,0.4)] text-eos-rose text-sm">
             {uk ? 'Відкинути' : 'Discard'}
           </button>
           <button onClick={onCancel} className="h-11 rounded-xl border border-[var(--border)] text-zinc-300 text-sm">
@@ -811,7 +811,7 @@ function UnlockProgressBar({
         <div
           className={cn(
             'absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-300',
-            met ? 'bg-[var(--accent)]' : 'bg-[rgba(142,163,138,0.8)]',
+            met ? 'bg-[var(--accent)]' : 'bg-[rgba(148,165,142,0.8)]',
           )}
           style={{ width: `${Math.max(pct, 2)}%` }}
         />
@@ -876,7 +876,7 @@ function CriterionTick({ c }: { c: CriterionProgress }) {
       className={cn(
         'flex flex-col items-center gap-0.5 rounded-md py-1 text-[10px] border',
         c.met
-          ? 'border-[rgba(142,163,138,0.4)] bg-[rgba(142,163,138,0.1)] text-eos-sage'
+          ? 'border-[rgba(148,165,142,0.4)] bg-[rgba(148,165,142,0.1)] text-eos-sage'
           : 'border-[var(--border-soft)] bg-transparent text-zinc-500',
       )}
       title={label}
@@ -1115,7 +1115,7 @@ function DemoteOutcome({ check, demoted }: {
 
   if (demoted) {
     return (
-      <div className="rounded-2xl p-4 border border-[rgba(176,58,58,0.4)] bg-[rgba(176,58,58,0.1)] flex items-center gap-3">
+      <div className="rounded-2xl p-4 border border-[rgba(166,66,65,0.4)] bg-[rgba(166,66,65,0.1)] flex items-center gap-3">
         <TrendingDown size={22} className="text-eos-rose shrink-0" />
         <div>
           <div className="font-semibold text-eos-rose">
@@ -1134,9 +1134,9 @@ function DemoteOutcome({ check, demoted }: {
   // punishment.
   return (
     <div className="rounded-2xl p-4 border border-amber-500/40 bg-amber-500/10 flex items-center gap-3">
-      <TrendingDown size={20} className="text-[#d9b46a] shrink-0" />
+      <TrendingDown size={20} className="text-[#d7b777] shrink-0" />
       <div>
-        <div className="font-semibold text-[#d9b46a]">
+        <div className="font-semibold text-[#d7b777]">
           {t('demote.summary_weak')}
         </div>
         <div className="text-xs text-zinc-300 mt-0.5">

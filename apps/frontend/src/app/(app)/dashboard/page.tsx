@@ -71,7 +71,7 @@ export default function DashboardPage() {
                   freezeAvailable={streak.freezes > 0}
                 />
                 {st === 'at_risk' && (
-                  <span className="text-[10px] text-[#d9b46a]/80">{t('streak.at_risk')}</span>
+                  <span className="text-[10px] text-[#d7b777]/80">{t('streak.at_risk')}</span>
                 )}
                 {st === 'secured' && (
                   <span className="text-[10px] text-zinc-500">{t('streak.secured')}</span>

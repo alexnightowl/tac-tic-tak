@@ -13,11 +13,11 @@ export type Band = {
 
 export const DIFFICULTY_BANDS: Band[] = [
   // Ember on stone: muted progression from graphite to ember red.
-  { min: 400,  max: 1000, key: 'novice',       color: '#a19da3', glow: 'rgba(161,157,163,0.18)' },
-  { min: 1000, max: 1400, key: 'beginner',     color: '#c8c2bd', glow: 'rgba(200,194,189,0.18)' },
-  { min: 1400, max: 1800, key: 'intermediate', color: '#d9b46a', glow: 'rgba(217,180,106,0.20)' },
-  { min: 1800, max: 2200, key: 'advanced',     color: '#c06a4f', glow: 'rgba(192,106,79,0.22)' },
-  { min: 2200, max: 3000, key: 'expert',       color: '#b03a3a', glow: 'rgba(176,58,58,0.25)' },
+  { min: 400,  max: 1000, key: 'novice',       color: '#a5a0a4', glow: 'rgba(165,160,164,0.18)' },
+  { min: 1000, max: 1400, key: 'beginner',     color: '#cbc5bf', glow: 'rgba(203,197,191,0.18)' },
+  { min: 1400, max: 1800, key: 'intermediate', color: '#d7b777', glow: 'rgba(215,183,119,0.20)' },
+  { min: 1800, max: 2200, key: 'advanced',     color: '#ba7058', glow: 'rgba(186,112,88,0.22)' },
+  { min: 2200, max: 3000, key: 'expert',       color: '#a64241', glow: 'rgba(166,66,65,0.25)' },
 ];
 
 /** Eye marks for the difficulty bands: sharingan with 1–3 tomoe,

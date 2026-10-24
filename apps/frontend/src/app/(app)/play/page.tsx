@@ -225,8 +225,8 @@ export default function PlaySetup() {
                         className={cn(
                           'inline-flex items-center gap-0.5 text-[10px] font-semibold leading-none rounded-full px-1.5 py-0.5 tabular-nums',
                           s === style
-                            ? 'bg-black/20 text-[#f3ece4]/85'
-                            : 'bg-[rgba(217,180,106,0.15)] text-[#d9b46a]',
+                            ? 'bg-black/20 text-[#f5eee5]/85'
+                            : 'bg-[rgba(215,183,119,0.15)] text-[#d7b777]',
                         )}
                         aria-label={t('play.calibration_progress_aria')
                           .replace('{done}', String(done))
@@ -260,7 +260,7 @@ export default function PlaySetup() {
               >
                 {startRating}
                 {provisional && (
-                  <span className="text-[#d9b46a] ml-0.5">
+                  <span className="text-[#d7b777] ml-0.5">
                     ?
                   </span>
                 )}
@@ -272,7 +272,7 @@ export default function PlaySetup() {
               window closes. The slider stays visible in theme mode
               (unrated practice — any rating is fine). */}
           {provisional && mode !== 'theme' ? (
-            <p className="text-xs text-[#d9b46a]/80 mt-2 leading-snug">
+            <p className="text-xs text-[#d7b777]/80 mt-2 leading-snug">
               {t('play.calibration_per_style')
                 .replace('{done}', String(CALIBRATION_SESSIONS - styleProgression.calibrationSessionsLeft))
                 .replace('{total}', String(CALIBRATION_SESSIONS))
@@ -300,7 +300,7 @@ export default function PlaySetup() {
                 )}
               </p>
               {showComfortNotice && (
-                <p className="text-xs text-[#d9b46a]/80 mt-2 leading-snug">
+                <p className="text-xs text-[#d7b777]/80 mt-2 leading-snug">
                   {t('play.comfort_notice').replace('{floor}', String(peakFloor))}
                 </p>
               )}
@@ -503,7 +503,7 @@ function CalibrationPreview({ done, total, style, t }: {
           {t('calibration.preview_title')}
         </div>
         <div className="tabular-nums text-sm text-zinc-300">
-          <span className="text-[#d9b46a] font-semibold">{done}</span>
+          <span className="text-[#d7b777] font-semibold">{done}</span>
           <span className="mx-1 text-zinc-600">/</span>
           <span className="text-zinc-400">{total}</span>
         </div>

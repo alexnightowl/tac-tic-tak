@@ -32,15 +32,15 @@ export function LandingBoard() {
       const p = BOARD[sq];
       const type = p ? (p[1].toLowerCase() as PieceType) : null;
       const fit = type ? EMBER_FIT[type] : null;
-      const coord = light ? '#4b4c57' : '#c9ccd6';
+      const coord = light ? '#505059' : '#cdcfd5';
       cells.push(
         <div
           key={sq}
           className={light ? 'sq-marble' : 'sq-slate'}
           style={{ position: 'relative', backgroundPosition: POS[(f * 3 + r * 5) % 7] }}
         >
-          {sq === 'e5' && <div className="absolute inset-0" style={{ background: 'rgba(70,120,190,0.38)' }} />}
-          {sq === 'f7' && <div className="absolute inset-0" style={{ background: 'rgba(70,120,190,0.22)' }} />}
+          {sq === 'e5' && <div className="absolute inset-0" style={{ background: 'rgba(81,123,181,0.38)' }} />}
+          {sq === 'f7' && <div className="absolute inset-0" style={{ background: 'rgba(81,123,181,0.22)' }} />}
           {f === 0 && <span className="absolute left-[3px] top-px text-[9px] font-extrabold md:text-[11px]" style={{ color: coord }}>{r}</span>}
           {r === 1 && <span className="absolute bottom-px right-[3px] text-[9px] font-extrabold md:text-[11px]" style={{ color: coord }}>{file}</span>}
           {p && fit && (
@@ -63,13 +63,13 @@ export function LandingBoard() {
       <svg viewBox="0 0 8 8" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
         <defs>
           <marker id="lb-ah" markerWidth="4" markerHeight="4" refX="2.2" refY="2" orient="auto">
-            <path d="M0 0 L4 2 L0 4 z" fill="rgba(70,130,210,0.85)" />
+            <path d="M0 0 L4 2 L0 4 z" fill="rgba(82,132,199,0.85)" />
           </marker>
         </defs>
         <path
           d="M4.5 3.2 L4.5 1.5 L5.18 1.5"
           fill="none"
-          stroke="rgba(70,130,210,0.85)"
+          stroke="rgba(82,132,199,0.85)"
           strokeWidth="0.19"
           strokeLinejoin="round"
           markerEnd="url(#lb-ah)"

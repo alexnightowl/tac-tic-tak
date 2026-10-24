@@ -43,7 +43,7 @@ export function Avatar({ nickname, avatarUrl, size = 40, className }: Props) {
     'w-full h-full rounded-full flex items-center justify-center object-cover',
     isCreator
       ? 'outline outline-2 outline-amber-300 outline-offset-[2px]'
-      : 'shadow-[0_0_0_1px_rgba(0,0,0,0.65),0_0_0_2px_rgba(255,255,255,0.06)]',
+      : 'shadow-[0_0_0_1px_rgba(17,15,17,0.65),0_0_0_2px_rgba(255,255,254,0.06)]',
   );
 
   // Wrapper preserves the original `size × size` footprint so
@@ -88,7 +88,7 @@ function CreatorCrown({ size }: { size: number }) {
         height: chip,
         bottom: -Math.round(chip * 0.15),
         right: -Math.round(chip * 0.15),
-        background: 'linear-gradient(135deg, #fde68a 0%, #f59e0b 60%, #d97706 100%)',
+        background: 'linear-gradient(135deg, #fce898 0%, #eca226 60%, #d07c20 100%)',
       }}
       aria-label="Creator"
       title="Creator"

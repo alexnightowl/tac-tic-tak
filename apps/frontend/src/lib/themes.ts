@@ -13,17 +13,17 @@ export type ThemeColors = {
 export const BOARD_THEMES: Record<string, ThemeColors> = {
   // Ember on stone — the one board of the app (marble + slate textures
   // are layered on top of these fills by the Chessboard component).
-  stone:    { light: '#c9ccd6', dark: '#4b4c57', lastMove: '#2f5f9e', highlight: '#2f5f9e', label: 'Stone' },
-  green:    { light: '#ebecd0', dark: '#739552', lastMove: '#d8a53a', highlight: '#edd56b', label: 'Green' },
-  brown:    { light: '#f0d9b5', dark: '#b58863', lastMove: '#c78b3a', highlight: '#e8cd5d', label: 'Brown' },
-  blue:     { light: '#dee3e6', dark: '#8ca2ad', lastMove: '#3b82b5', highlight: '#9bd0e8', label: 'Blue' },
-  gray:     { light: '#dcdcdc', dark: '#7d8796', lastMove: '#c9a041', highlight: '#e5d27a', label: 'Gray' },
-  purple:   { light: '#efe6f6', dark: '#8f6fb5', lastMove: '#c49835', highlight: '#e7c77b', label: 'Purple' },
-  ocean:    { light: '#e7ecef', dark: '#3c6f8a', lastMove: '#d6953d', highlight: '#efd17d', label: 'Ocean' },
-  midnight: { light: '#cdd3dd', dark: '#394c6e', lastMove: '#d4a72c', highlight: '#e7ca6f', label: 'Midnight' },
-  forest:   { light: '#e3ecd6', dark: '#4c6b35', lastMove: '#c49b30', highlight: '#e3cd64', label: 'Forest' },
-  rose:     { light: '#f4e1de', dark: '#c27a78', lastMove: '#c49739', highlight: '#ecd077', label: 'Rose' },
-  maple:    { light: '#f2d7a0', dark: '#b07038', lastMove: '#d68e3a', highlight: '#e9c673', label: 'Maple' },
+  stone:    { light: '#cdcfd5', dark: '#505059', lastMove: '#3a6296', highlight: '#3a6296', label: 'Stone' },
+  green:    { light: '#eeeed4', dark: '#7a965c', lastMove: '#d4a84c', highlight: '#ecd77b', label: 'Green' },
+  brown:    { light: '#f0dcbb', dark: '#b38c6c', lastMove: '#c38f4a', highlight: '#e7cf6f', label: 'Brown' },
+  blue:     { light: '#e2e5e6', dark: '#93a4ac', lastMove: '#4884ae', highlight: '#a5d1e3', label: 'Blue' },
+  gray:     { light: '#e0dedc', dark: '#838a96', lastMove: '#c7a352', highlight: '#e5d488', label: 'Gray' },
+  purple:   { light: '#f2e9f4', dark: '#9075af', lastMove: '#c19b46', highlight: '#e6ca88', label: 'Purple' },
+  ocean:    { light: '#ebeeee', dark: '#477187', lastMove: '#d1994d', highlight: '#eed38b', label: 'Ocean' },
+  midnight: { light: '#d1d5dc', dark: '#40506c', lastMove: '#d1aa41', highlight: '#e6cc7e', label: 'Midnight' },
+  forest:   { light: '#e7eed9', dark: '#536d3e', lastMove: '#c29e42', highlight: '#e3cf74', label: 'Forest' },
+  rose:     { light: '#f5e4df', dark: '#bd807d', lastMove: '#c19a4a', highlight: '#ebd285', label: 'Rose' },
+  maple:    { light: '#f2daa9', dark: '#ac7545', lastMove: '#d0934a', highlight: '#e7c981', label: 'Maple' },
 };
 
 export type BoardTheme = keyof typeof BOARD_THEMES;

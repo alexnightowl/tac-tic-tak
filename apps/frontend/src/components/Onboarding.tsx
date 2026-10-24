@@ -136,7 +136,7 @@ export function OnboardingModal() {
           <div
             className="h-16 w-16 rounded-2xl flex items-center justify-center mb-4"
             style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))',
+              background: 'linear-gradient(135deg, rgba(255,255,254,0.06), rgba(255,255,254,0.02))',
               border: '1px solid var(--border)',
             }}
           >

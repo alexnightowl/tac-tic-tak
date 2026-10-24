@@ -91,12 +91,12 @@ export function DifficultySlider({
         {/* Carved track */}
         <div
           className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-eos-well"
-          style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.7)' }}
+          style={{ boxShadow: 'inset 0 1px 2px rgba(17,15,17,0.7)' }}
         />
         {/* Ember fill */}
         <div
           className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full"
-          style={{ width: `${valuePct}%`, background: 'linear-gradient(90deg, #7a2a2c, #b03a3a)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}
+          style={{ width: `${valuePct}%`, background: 'linear-gradient(90deg, #753132, #a64241)', boxShadow: 'inset 0 1px 0 rgba(255,255,254,0.15)' }}
         />
 
         {/* Locked region overlay (beyond cap) */}
@@ -106,7 +106,7 @@ export function DifficultySlider({
             style={{
               left: `${capPct}%`,
               right: 0,
-              background: 'repeating-linear-gradient(45deg, rgba(0,0,0,0.55) 0 4px, rgba(0,0,0,0.25) 4px 8px)',
+              background: 'repeating-linear-gradient(45deg, rgba(17,15,17,0.55) 0 4px, rgba(17,15,17,0.25) 4px 8px)',
             }}
           />
         )}
@@ -137,8 +137,8 @@ export function DifficultySlider({
           className="absolute top-1/2 -translate-y-1/2 h-6 w-6 rounded-full"
           style={{
             left: `calc(${valuePct}% - 12px)`,
-            background: 'radial-gradient(circle at 40% 32%, #f3ece4, #c8c2bd 60%, #8f8a8e)',
-            boxShadow: '0 0 0 4px rgba(176,58,58,0.25), 0 2px 6px rgba(0,0,0,0.6)',
+            background: 'radial-gradient(circle at 40% 32%, #f5eee5, #cbc5bf 60%, #938e90)',
+            boxShadow: '0 0 0 4px rgba(166,66,65,0.25), 0 2px 6px rgba(17,15,17,0.6)',
           }}
         />
       </div>

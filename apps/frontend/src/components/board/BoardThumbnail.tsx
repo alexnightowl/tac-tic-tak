@@ -41,7 +41,7 @@ export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, 
   return (
     <div
       className={className}
-      style={{ width: size, height: size, display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gridTemplateRows: 'repeat(8, 1fr)', borderRadius: 6, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,0.06)' }}
+      style={{ width: size, height: size, display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gridTemplateRows: 'repeat(8, 1fr)', borderRadius: 6, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,254,0.06)' }}
     >
       {rows.map((r) =>
         cols.map((c) => {

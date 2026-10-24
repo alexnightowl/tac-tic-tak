@@ -11,11 +11,11 @@ export function CTA() {
     <>
       <section id="cta" className="px-4 pb-14 pt-[72px] md:px-6 md:pb-24 md:pt-20">
         <Reveal>
-          <div className="tx-slate relative mx-auto max-w-[1200px] overflow-hidden rounded-[18px] px-5 py-12 text-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06),0_30px_60px_rgba(0,0,0,0.55)] md:px-12 md:py-20">
+          <div className="tx-slate relative mx-auto max-w-[1200px] overflow-hidden rounded-[18px] px-5 py-12 text-center shadow-[inset_0_0_0_1px_rgba(255,255,254,0.06),0_30px_60px_rgba(17,15,17,0.55)] md:px-12 md:py-20">
             <div
               aria-hidden
               className="pointer-events-none absolute left-1/2 top-[-260px] h-[620px] w-[720px] -translate-x-1/2 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(176,58,58,0.34) 0%, rgba(140,40,42,0.12) 38%, rgba(20,19,23,0) 68%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(166,66,65,0.34) 0%, rgba(133,48,49,0.12) 38%, rgba(29,27,32,0) 68%)' }}
             />
             <div className="relative flex justify-center">
               <Logo size={104} glow />
@@ -27,7 +27,7 @@ export function CTA() {
             <div className="relative mt-7 flex flex-col gap-2.5 md:mt-9 md:flex-row md:justify-center md:gap-3.5">
               <Link
                 href="/register"
-                className="btn-ember inline-flex h-14 items-center justify-center px-6 font-serif text-[15px] font-bold uppercase tracking-[0.1em] text-[#ece3d6]"
+                className="btn-ember inline-flex h-14 items-center justify-center px-6 font-serif text-[15px] font-bold uppercase tracking-[0.1em] text-[#eee5d8]"
                 style={{ borderWidth: '15px 16px' }}
               >
                 {t('cta.primary')}

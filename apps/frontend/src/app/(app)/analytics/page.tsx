@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
         <h1 className="text-[22px] text-eos-bone">{t('stats.title')}</h1>
       </div>
 
-      <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)] w-fit">
+      <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(17,15,17,0.5)] w-fit">
         {([
           { k: 'stats',        label: t('stats.tab_stats') },
           { k: 'achievements', label: t('stats.tab_achievements') },
@@ -70,7 +70,7 @@ export default function AnalyticsPage() {
             className={cn(
               'h-9 px-3 rounded-lg text-sm font-bold transition-colors',
               tab === k
-                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]'
+                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,254,0.06),0_1px_2px_rgba(17,15,17,0.4)]'
                 : 'text-eos-dust hover:text-eos-bone',
             )}
           >
@@ -289,7 +289,7 @@ function ThemesList({
     <div>
       <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
         <h2 className="text-lg font-medium">{t('stats.theme_list')}</h2>
-        <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]">
+        <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(17,15,17,0.5)]">
           {([
             { k: 'weakest',   label: t('stats.themes_tab_weakest') },
             { k: 'strongest', label: t('stats.themes_tab_strongest') },
@@ -301,7 +301,7 @@ function ThemesList({
               className={cn(
                 'h-8 px-3 rounded-lg text-xs font-bold transition-colors',
                 tab === k
-                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]'
+                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,254,0.06),0_1px_2px_rgba(17,15,17,0.4)]'
                 : 'text-eos-dust hover:text-eos-bone',
               )}
             >
@@ -327,7 +327,7 @@ function ThemeRowCard({ row, language }: { row: ThemeRow; language: 'en' | 'uk' 
   const w = Math.max(0, Math.min(1, row.weakness));
   // Rose for weak, amber for mid, emerald for strong — colour communicates
   // direction at a glance; the bar width still encodes magnitude.
-  const barColor = w >= 0.66 ? 'bg-[rgba(176,58,58,0.8)]' : w >= 0.33 ? 'bg-[#a8865a]' : 'bg-[rgba(142,163,138,0.8)]';
+  const barColor = w >= 0.66 ? 'bg-[rgba(166,66,65,0.8)]' : w >= 0.33 ? 'bg-[#a78a64]' : 'bg-[rgba(148,165,142,0.8)]';
   const iconTint = w >= 0.66 ? 'text-eos-rose' : w >= 0.33 ? 'text-amber-300' : 'text-eos-sage';
   return (
     <Card className="flex items-center gap-3">
