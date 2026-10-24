@@ -64,14 +64,15 @@ function writeStoredDuration(style: TrainingStyle, sec: number) {
   } catch {}
 }
 
-// Where the rating slider opens for a style. Stable mode reopens at the
-// rating the player picked for their last rated session — never at
-// currentPuzzleRating, which drifts down through a rough session and
-// would silently drop the next one into the comfort zone. During
-// calibration the server picks the rating, so show that one.
+// Where the rating slider opens for a style. Stable mode follows
+// currentPuzzleRating up after a good session, but never below the
+// rating the player picked for their last rated session — a rough
+// session drags currentPuzzleRating down and would silently drop the
+// next one into the comfort zone. During calibration the server picks
+// the rating, so show that one.
 function initialStartRating(p: Progression): number {
   if (p.calibrationSessionsLeft > 0) return p.currentPuzzleRating;
-  return Math.min(p.startPuzzleRating, p.unlockedStartRating + 200);
+  return Math.min(Math.max(p.startPuzzleRating, p.currentPuzzleRating), p.unlockedStartRating + 200);
 }
 
 type DurationInit = { duration: number; customDuration: boolean; customMinutesSec: number };
