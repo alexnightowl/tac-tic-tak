@@ -372,13 +372,13 @@ input[type="range"].ticks::-moz-range-thumb {
 .tx-slate {
   background-image:
     linear-gradient(rgba(24, 23, 28, 0.74), rgba(24, 23, 28, 0.86)),
-    url('/design/textures/slate.jpg');
+    url('/design/textures/slate.jpg?v=2');
   background-size: cover, 520px 520px;
 }
 /* Board squares. Each square shows its own piece of the texture via
    background-position; marble is used on the board only. */
 .sq-marble { background-image: url('/design/textures/marble.jpg'); background-size: 200% 200%; }
-.sq-slate  { background-image: url('/design/textures/slate.jpg');  background-size: 200% 200%; }
+.sq-slate  { background-image: url('/design/textures/slate.jpg?v=2');  background-size: 200% 200%; }
 
 /* Primary / secondary buttons: 9-slice stone plates.
    Border widths scale with height — see <PlateButton/>. */
@@ -418,7 +418,7 @@ input[type="range"].ticks::-moz-range-thumb {
   background:
     radial-gradient(circle at 35% 28%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
     linear-gradient(rgba(70,68,78,0.35), rgba(10,9,12,0.35)),
-    url('/design/textures/slate.jpg') center / 220px;
+    url('/design/textures/slate.jpg?v=2') center / 220px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -2px 4px rgba(0,0,0,0.55),
               0 0 0 1px rgba(0,0,0,0.65), 0 0 0 2px rgba(255,255,255,0.06), 0 3px 8px rgba(0,0,0,0.45);
   color: var(--eos-bone);
