@@ -9,9 +9,20 @@ const LICHESS_BASE = 'https://lichess1.org/assets/piece';
 
 export type PieceType = 'p' | 'n' | 'b' | 'r' | 'q' | 'k';
 
+/** The app's own sets — the only ones offered in Settings. */
+export const APP_PIECE_SETS = ['ember', 'classic'] as const;
+export type AppPieceSet = typeof APP_PIECE_SETS[number];
+
+/** Older accounts may still carry a Lichess set name from before the
+ *  redesign — anything that isn't one of ours renders as Ember. */
+export function normalizePieceSet(set: string | null | undefined): AppPieceSet {
+  return (APP_PIECE_SETS as readonly string[]).includes(set ?? '') ? (set as AppPieceSet) : 'ember';
+}
+
 export function pieceUrl(set: string, color: 'w' | 'b', type: PieceType) {
   const pc = `${color}${type.toUpperCase()}`;
   if (set === 'ember') return `/design/pieces/${pc}.png`;
+  if (set === 'classic') return `/design/pieces-classic/${pc}.png`;
   return `${LICHESS_BASE}/${set}/${pc}.svg`;
 }
 
@@ -30,8 +41,19 @@ export const EMBER_FIT: Record<PieceType, { scale: number; y: number }> = {
   k: { scale: 1.05, y: -1 },
 };
 
+/** Classic set: drawn at one shared scale already, just a touch larger. */
+export const CLASSIC_FIT: Record<PieceType, { scale: number; y: number }> = {
+  p: { scale: 1.04, y: -1 },
+  n: { scale: 1.04, y: -1 },
+  b: { scale: 1.04, y: -1 },
+  r: { scale: 1.04, y: -1 },
+  q: { scale: 1.04, y: -1 },
+  k: { scale: 1.04, y: -1 },
+};
+
 export function pieceTransform(set: string, type: PieceType): string | undefined {
-  if (set !== 'ember') return undefined;
-  const f = EMBER_FIT[type];
+  const fit = set === 'ember' ? EMBER_FIT : set === 'classic' ? CLASSIC_FIT : null;
+  if (!fit) return undefined;
+  const f = fit[type];
   return `translateY(${f.y}%) scale(${f.scale})`;
 }

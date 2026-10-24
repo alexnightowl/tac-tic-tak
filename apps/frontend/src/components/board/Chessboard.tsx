@@ -3,7 +3,7 @@
 import { Chess, Square } from 'chess.js';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { BOARD_THEMES, BoardTheme } from '@/lib/themes';
-import { pieceUrl, pieceTransform } from '@/lib/pieces';
+import { pieceUrl, pieceTransform, normalizePieceSet } from '@/lib/pieces';
 import { Arrows } from './Arrows';
 import { cn } from '@/lib/utils';
 
@@ -111,12 +111,12 @@ export function Chessboard({
   }, []);
 
   const sq = size / 8;
-  // Ember on stone: one board for the whole app. The theme / piece-set
-  // props are still accepted (older settings may pass them) but the
-  // stone board and Ember pieces always win.
-  void _theme; void _pieceSet;
+  // Ember on stone: one board for the whole app. The theme prop is still
+  // accepted (older settings may pass it) but the stone board always wins.
+  // Pieces: one of the app's own sets (Ember / Classic).
+  void _theme;
   const colors = BOARD_THEMES.stone;
-  const pieceSet = 'ember';
+  const pieceSet = normalizePieceSet(_pieceSet);
 
   const rows = orientation === 'white' ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
   const cols = orientation === 'white' ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];

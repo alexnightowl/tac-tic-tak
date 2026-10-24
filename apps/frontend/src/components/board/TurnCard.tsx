@@ -1,4 +1,6 @@
 'use client';
+import { pieceUrl, normalizePieceSet } from '@/lib/pieces';
+import { useAppStore } from '@/lib/store';
 
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -23,6 +25,7 @@ export function TurnCard({
   orientation, isPlayerTurn, loading = false, opponentBusy = false,
   streak, streakBroken = null,
 }: Props) {
+  const pieceSet = normalizePieceSet(useAppStore((st) => st.settings.pieceSet));
   const t = useT();
   const isWhite = orientation === 'white';
   const showStreak = streak != null && streak >= 2;
@@ -52,7 +55,7 @@ export function TurnCard({
         aria-hidden
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={isWhite ? '/design/pieces/wK.png' : '/design/pieces/bK.png'} alt="" className="h-9 w-9" draggable={false} />
+        <img src={pieceUrl(pieceSet, isWhite ? 'w' : 'b', 'k')} alt="" className="h-9 w-9" draggable={false} />
       </div>
       <div className="min-w-0 flex-1">
         <div className="font-serif text-[15px] font-bold tracking-[0.03em] leading-tight truncate">{title}</div>

@@ -3,7 +3,8 @@
 import { Chess } from 'chess.js';
 import { useMemo } from 'react';
 import { BOARD_THEMES, BoardTheme } from '@/lib/themes';
-import { pieceUrl, pieceTransform } from '@/lib/pieces';
+import { pieceUrl, pieceTransform, normalizePieceSet } from '@/lib/pieces';
+import { useAppStore } from '@/lib/store';
 
 type Props = {
   fen: string;
@@ -22,9 +23,11 @@ type Props = {
  * squares with piece sprites overlaid — no interactivity, safe to render
  * many of on a list page.
  */
-export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, theme: _theme = 'stone', pieceSet: _pieceSet = 'ember', className }: Props) {
-  void _theme; void _pieceSet;
-  const pieceSet = 'ember';
+export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, theme: _theme = 'stone', pieceSet: _pieceSet, className }: Props) {
+  void _theme;
+  // Follows the player's chosen set unless a caller pins one.
+  const userSet = useAppStore((s) => s.settings.pieceSet);
+  const pieceSet = normalizePieceSet(_pieceSet ?? userSet);
   const { board, orientation } = useMemo(() => {
     const chess = new Chess(fen);
     if (setupMove) {

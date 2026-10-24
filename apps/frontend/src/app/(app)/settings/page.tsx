@@ -14,6 +14,7 @@ import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
 import { useToastStore } from '@/lib/toast';
 import { cn } from '@/lib/utils';
+import { APP_PIECE_SETS, AppPieceSet, PieceType, normalizePieceSet, pieceTransform, pieceUrl } from '@/lib/pieces';
 
 type Tab = 'profile' | 'gameplay' | 'app';
 
@@ -309,6 +310,11 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
     <Card className="space-y-3">
       <CardTitle>{t('settings.gameplay')}</CardTitle>
 
+      <div>
+        <div className="text-sm mb-2">{t('settings.pieces')}</div>
+        <PieceSetPicker value={normalizePieceSet(settings.pieceSet)} onChange={(v) => patch({ pieceSet: v })} t={t} />
+      </div>
+
       <ToggleRow
         title={t('settings.focus')}
         hint={t('settings.focus_hint')}
@@ -563,6 +569,49 @@ function LabeledTextarea({ label, value, onChange, onBlur, maxLength, placeholde
         placeholder={placeholder}
         className="w-full rounded-lg bg-black/30 border border-[var(--border)] px-3 py-2 text-sm resize-none"
       />
+    </div>
+  );
+}
+
+function PieceSetPicker({ value, onChange, t }: { value: AppPieceSet; onChange: (v: AppPieceSet) => void; t: (k: string) => string }) {
+  return (
+    <div role="radiogroup" className="grid grid-cols-2 gap-2">
+      {APP_PIECE_SETS.map((set) => {
+        const active = set === value;
+        return (
+          <button
+            key={set}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            onClick={() => onChange(set)}
+            className={cn(
+              'rounded-xl p-2 text-left eos-well',
+              active ? 'outline outline-2 outline-[#a64241] -outline-offset-2' : 'hover:brightness-110',
+            )}
+          >
+            <div className="grid grid-cols-4 overflow-hidden rounded-md">
+              {(['wK', 'wN', 'bQ', 'bP'] as const).map((pc, i) => (
+                <div
+                  key={pc}
+                  className="aspect-square"
+                  style={{ backgroundImage: `url(/design/textures/${i % 2 === 0 ? 'marble' : 'slate'}.jpg?v=3)`, backgroundSize: '200% 200%' }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={pieceUrl(set, pc[0] as 'w' | 'b', pc[1].toLowerCase() as PieceType)}
+                    alt=""
+                    className="h-full w-full"
+                    style={{ transformOrigin: '50% 94%', transform: pieceTransform(set, pc[1].toLowerCase() as PieceType) }}
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className={cn('mt-2 text-xs font-bold', active ? 'text-eos-bone' : 'text-eos-ash')}>{t(`settings.pieces.${set}`)}</div>
+          </button>
+        );
+      })}
     </div>
   );
 }

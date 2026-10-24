@@ -605,7 +605,7 @@ export default function PlayRunner() {
           animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove && !loadingFirst && !paused}
           theme={settings.boardTheme as BoardTheme}
-          pieceSet="ember"
+          pieceSet={settings.pieceSet}
           feedbackSquare={feedbackSquare}
         />
       )}
