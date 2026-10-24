@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft, Check, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
@@ -112,9 +113,11 @@ export default function SessionDetail() {
         </h2>
         <div className="flex flex-col gap-1.5">
           {data.attempts.map((a, i) => (
-            <div key={a.id} className={cn(
-              'flex items-center gap-3 px-3 py-2 rounded-lg glass',
-            )}>
+            <Link
+              key={a.id}
+              href={`/puzzles/${a.puzzleId}`}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg glass transition-colors hover:bg-white/5 active:bg-white/10"
+            >
               <div className="w-6 text-xs text-zinc-500 tabular-nums">{i + 1}</div>
               <div className={cn(
                 'h-7 w-7 rounded-full flex items-center justify-center shrink-0',
@@ -124,7 +127,8 @@ export default function SessionDetail() {
               </div>
               <div className="flex-1 text-sm tabular-nums">{a.puzzleRating}</div>
               <div className="text-xs text-zinc-500 tabular-nums">{fmtDuration(a.responseMs)}</div>
-            </div>
+              <ChevronRight size={14} className="text-zinc-600 shrink-0" />
+            </Link>
           ))}
           {data.attempts.length === 0 && (
             <p className="text-sm text-zinc-500">{language === 'uk' ? 'Жодної спроби' : 'No attempts'}</p>

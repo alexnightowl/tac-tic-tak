@@ -21,6 +21,17 @@ export class PuzzlesService {
     };
   }
 
+  // Only puzzles the user has already been served — otherwise this
+  // would leak solutions to puzzles still ahead of them.
+  async getAttempted(userId: string, id: string) {
+    const seen = await this.prisma.trainingAttempt.findFirst({
+      where: { userId, puzzleId: id },
+      select: { id: true },
+    });
+    if (!seen) throw new NotFoundException('puzzle not found');
+    return this.get(id);
+  }
+
   async getForPlay(id: string) {
     // Same as get() — solution ("moves") is trusted to the client; client-side
     // validation happens before attempt is submitted to the server.

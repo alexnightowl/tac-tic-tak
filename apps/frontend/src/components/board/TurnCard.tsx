@@ -13,6 +13,8 @@ type Props = {
   /** Streak chip — only the play runner uses it; review pages omit. */
   streak?: number;
   streakBroken?: number | null;
+  /** Replaces the turn-derived text (puzzle viewer: solution mode / solved). */
+  override?: { title: string; subtitle?: string | null };
 };
 
 /**
@@ -23,7 +25,7 @@ type Props = {
  */
 export function TurnCard({
   orientation, isPlayerTurn, loading = false, opponentBusy = false,
-  streak, streakBroken = null,
+  streak, streakBroken = null, override,
 }: Props) {
   const pieceSet = normalizePieceSet(useAppStore((st) => st.settings.pieceSet));
   const t = useT();
@@ -33,7 +35,10 @@ export function TurnCard({
 
   let title: string;
   let subtitle: string | null;
-  if (loading) {
+  if (override) {
+    title = override.title;
+    subtitle = override.subtitle ?? null;
+  } else if (loading) {
     title = t('play.loading_puzzle');
     subtitle = null;
   } else if (opponentBusy || !isPlayerTurn) {
