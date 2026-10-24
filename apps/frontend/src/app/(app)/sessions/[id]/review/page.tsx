@@ -10,7 +10,7 @@ import { useT, useTn } from '@/lib/i18n';
 import { Chessboard } from '@/components/board/Chessboard';
 import { TurnCard } from '@/components/board/TurnCard';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
-import { playSound } from '@/lib/sound';
+import { playSound, sfx, moveSoundEvent } from '@/lib/sound';
 import { BoardTheme } from '@/lib/themes';
 import { cn } from '@/lib/utils';
 
@@ -194,7 +194,7 @@ export default function SessionReview() {
     // correct-sting plays standalone instead of stacked under a click.
     const isWinning = uciFromMove(m) === expected && remaining.length === 1;
     if (settings.soundEnabled && !isWinning) {
-      playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+      sfx(moveSoundEvent(legal));
     }
 
     if (uciFromMove(m) !== expected) {
@@ -225,7 +225,7 @@ export default function SessionReview() {
       const move = chess.move({ from: opFrom, to: opTo, promotion: opPromo });
       setChess(new Chess(chess.fen()));
       setLastMove({ from: opFrom, to: opTo });
-      if (settings.soundEnabled) playSound(settings.soundPack, move?.captured ? 'capture' : 'move');
+      if (settings.soundEnabled) sfx(moveSoundEvent(move));
       setRemaining(afterExpected.slice(1));
       setOpponentBusy(false);
     }, Math.max(animMs, 80));

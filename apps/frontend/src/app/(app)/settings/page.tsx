@@ -1,5 +1,6 @@
 'use client';
 
+import { SoundSettings } from '@/components/SoundSettings';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User as UserIcon, Gamepad2, Smartphone, LogOut, AlertTriangle, Eye, EyeOff } from 'lucide-react';
@@ -320,6 +321,7 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
         checked={settings.soundEnabled}
         onChange={(v) => patch({ soundEnabled: v })}
       />
+      {settings.soundEnabled && <SoundSettings />}
 
       <div className="pt-2">
         <div className="text-sm mb-2">{t('settings.animation')}</div>

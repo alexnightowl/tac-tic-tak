@@ -50,6 +50,19 @@ function gridPos(sq: Square, orientation: 'white' | 'black') {
   };
 }
 
+/** Ember sparks for the correct-answer burst (offsets in px). */
+const SPARKS = Array.from({ length: 14 }, (_, i) => {
+  const a = (i / 14) * Math.PI * 2 + (i % 2 ? 0.2 : 0);
+  const d = 34 + ((i * 7) % 22);
+  return {
+    dx: Math.round(Math.cos(a) * d),
+    dy: Math.round(Math.sin(a) * d) - 10,
+    size: 3 + (i % 3),
+    color: i % 3 === 0 ? '#ffb27a' : i % 3 === 1 ? '#e0563f' : '#ffd9a8',
+    ms: 520 + (i % 4) * 60,
+  };
+});
+
 export function Chessboard({
   fen,
   orientation = 'white',
@@ -340,6 +353,23 @@ export function Chessboard({
                     style={{ zIndex: 4 }}
                   />
                 )}
+                {/* ember sparks burst out of the square on a correct answer */}
+                {isFeedback && feedbackSquare!.correct && (
+                  <div key={`sp-${feedbackSquare!.id}`} aria-hidden className="absolute inset-0 pointer-events-none" style={{ zIndex: 5 }}>
+                    {SPARKS.map((sp, i) => (
+                      <span
+                        key={i}
+                        className="ember-spark"
+                        style={{
+                          width: sp.size, height: sp.size, marginLeft: -sp.size / 2, marginTop: -sp.size / 2,
+                          background: sp.color,
+                          animationDuration: `${sp.ms}ms`,
+                          ['--dx' as string]: `${sp.dx}px`, ['--dy' as string]: `${sp.dy}px`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
                 {/* piece — during drag the same <img> follows the
                     cursor via a translate() delta. Keeping the node in
                     the source square (rather than portalling a ghost)
@@ -351,7 +381,8 @@ export function Chessboard({
                     src={pieceUrl(pieceSet, piece.color, piece.type as any)}
                     alt=""
                     draggable={false}
-                    className="w-full h-full pointer-events-none relative"
+                    key={isFeedback && !feedbackSquare!.correct ? `shake-${feedbackSquare!.id}` : undefined}
+                    className={cn('w-full h-full pointer-events-none relative', isFeedback && !feedbackSquare!.correct && 'piece-shake')}
                     style={{
                       zIndex: isDragging ? 50 : 2,
                       transformOrigin: '50% 94%',

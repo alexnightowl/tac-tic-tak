@@ -10,7 +10,7 @@ import { Chessboard } from '@/components/board/Chessboard';
 import { TurnCard } from '@/components/board/TurnCard';
 import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
-import { playSound } from '@/lib/sound';
+import { playSound, sfx, moveSoundEvent } from '@/lib/sound';
 import { useAppStore, ANIMATION_MS } from '@/lib/store';
 import { useT, useTn } from '@/lib/i18n';
 import { BoardTheme } from '@/lib/themes';
@@ -200,7 +200,7 @@ export default function ReviewPuzzle() {
     // correct-sting plays standalone instead of stacked under a click.
     const isWinning = uci === expected && remaining.length === 1;
     if (settings.soundEnabled && !isWinning) {
-      playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
+      sfx(moveSoundEvent(legal));
     }
 
     if (uci !== expected) {

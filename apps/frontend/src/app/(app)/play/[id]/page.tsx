@@ -13,7 +13,9 @@ import { TurnCard } from '@/components/board/TurnCard';
 import { Button } from '@/components/ui/button';
 import { ServerPuzzle, initPuzzle, uciFromMove } from '@/lib/puzzle';
 import { takeFirstPuzzle } from '@/lib/pending-puzzle';
-import { playSound } from '@/lib/sound';
+import { sfx, moveSoundEvent, stopLongClip } from '@/lib/sound';
+import { RankCeremony } from '@/components/RankCeremony';
+import { bandFor, DIFFICULTY_BANDS } from '@/lib/levels';
 import { fmtDuration, cn, formatLocalDate, fmtResponseTime } from '@/lib/utils';
 import { BoardTheme } from '@/lib/themes';
 import {
@@ -118,6 +120,8 @@ export default function PlayRunner() {
   const attemptStart = useRef<number>(Date.now());
   const loading = useRef(false);
   const finishing = useRef(false);
+  // Ceiling (norm) as it stood before /finish — the rank ceremony compares it with the new one.
+  const ceilingAtFinish = useRef<number | null>(null);
 
   // Pause state. While paused: the session timer stops counting, the
   // board ignores moves, and an overlay invites the player to resume.
@@ -261,7 +265,7 @@ export default function PlayRunner() {
     // Let the setup piece slide, then swap in the post-setup position.
     if (init.setupMove) {
       const mv = init.setupMove;
-      if (settings.soundEnabled) playSound(settings.soundPack, 'move');
+      sfx('move');
       if (animMs === 0) {
         setChess(new Chess(init.postFen));
         setLastMove({ from: mv.from, to: mv.to });
@@ -290,7 +294,7 @@ export default function PlayRunner() {
     } else {
       setFailedCount((c) => c + 1);
     }
-    if (settings.soundEnabled) playSound(settings.soundPack, correct ? 'correct' : 'fail');
+    sfx(correct ? 'correct' : 'mistake');
     // Green/red wash on the destination square — visual answer right
     // where the eye is, so peripheral attention isn't required. Auto-
     // clears so the next puzzle starts with a clean frame.
@@ -418,9 +422,7 @@ export default function PlayRunner() {
     const isFinalMainline = candidate === expected && remaining.length === 1;
     const isCheckmateWin = candidate !== expected && chess.isCheckmate();
     const isWinning = isFinalMainline || isCheckmateWin;
-    if (settings.soundEnabled && !isWinning) {
-      playSound(settings.soundPack, legal.captured ? 'capture' : 'move');
-    }
+    if (!isWinning) sfx(moveSoundEvent(legal));
 
     if (candidate !== expected) {
       // The Lichess dataset records one solution per puzzle, but a
@@ -451,7 +453,7 @@ export default function PlayRunner() {
       const move = chess.move({ from: opFrom, to: opTo, promotion: opPromo });
       setChess(new Chess(chess.fen()));
       setLastMove({ from: opFrom, to: opTo });
-      if (settings.soundEnabled) playSound(settings.soundPack, move?.captured ? 'capture' : 'move');
+      sfx(moveSoundEvent(move));
       setRemaining(afterExpected.slice(1));
       setOpponentBusy(false);
     }, Math.max(animMs, 80));
@@ -471,7 +473,7 @@ export default function PlayRunner() {
     }, durationSec);
   }, [sessionStyle, sessionStartRating, durationSec, solvedCount, totalAttempts, peakRating]);
 
-  if (summary) return <SessionSummary s={summary} />;
+  if (summary) return <SessionSummary s={summary} ceilingBefore={ceilingAtFinish.current} styleLabel={t(`style.${sessionStyle}.name`)} />;
 
   const remainingSec = paused
     ? Math.round((pausedRemainingMs ?? 0) / 1000)
@@ -483,6 +485,7 @@ export default function PlayRunner() {
   const styleProg = progressions[sessionStyle];
   const currentRating = styleProg?.currentPuzzleRating ?? null;
   const unlockCeiling = styleProg?.unlockedStartRating ?? null;
+  if (!finishing.current) ceilingAtFinish.current = unlockCeiling;
   // Level-up UI (criteria progress bar, level-up / demote / comfort
   // cards) only surfaces AFTER calibration finishes. During
   // calibration the player just plays — ratings move quietly and
@@ -886,8 +889,27 @@ function CriterionTick({ c }: { c: CriterionProgress }) {
   );
 }
 
-function SessionSummary({ s }: { s: FinishResponse }) {
+function SessionSummary({ s, ceilingBefore, styleLabel }: { s: FinishResponse; ceilingBefore: number | null; styleLabel: string }) {
   const t = useT();
+  // Rank = difficulty band of the norm (unlocked ceiling). A gate clear
+  // that crosses a band boundary gets the full-screen ceremony; one that
+  // doesn't just plays the gate-cleared sound.
+  const rankChange = useMemo(() => {
+    if (s.early || s.calibration?.active || ceilingBefore == null) return null;
+    let after: number | null = null;
+    if (s.unlocked) after = ceilingBefore + UNLOCK_REWARD;
+    else if (s.demoted && s.demoteCheck) after = s.demoteCheck.unlockedStartRating;
+    if (after == null || after === ceilingBefore) return null;
+    const from = bandFor(ceilingBefore).key;
+    const to = bandFor(after).key;
+    const idx = (k: string) => DIFFICULTY_BANDS.findIndex((b) => b.key === k);
+    return { from, to, before: ceilingBefore, after, crossed: from !== to, up: idx(to) > idx(from) || (from === to && after > ceilingBefore) };
+  }, [s, ceilingBefore]);
+  const [ceremony, setCeremony] = useState(() => !!rankChange?.crossed);
+  useEffect(() => {
+    if (rankChange && !rankChange.crossed && rankChange.up) sfx('gate');
+    return () => stopLongClip(400);
+  }, [rankChange]);
   // Three branches for the level-up area at the top of the summary.
   //
   //   1. wasCalibrating + final session → LevelUpExplainer that
@@ -904,6 +926,19 @@ function SessionSummary({ s }: { s: FinishResponse }) {
     wasCalibrating && s.calibration!.sessionsLeftAfter === 0;
   const isComfortSession =
     !wasCalibrating && s.demoteCheck && s.demoteCheck.atPeak === false;
+  if (ceremony && rankChange) {
+    return (
+      <RankCeremony
+        direction={rankChange.up ? 'up' : 'down'}
+        from={rankChange.from}
+        to={rankChange.to}
+        normFrom={rankChange.before}
+        normTo={rankChange.after}
+        styleLabel={styleLabel}
+        onClose={() => setCeremony(false)}
+      />
+    );
+  }
   return (
     <div
       className="max-w-md mx-auto space-y-4 px-4"
