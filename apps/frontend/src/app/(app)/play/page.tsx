@@ -2,7 +2,7 @@
 
 import { createPortal } from 'react-dom';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Play } from 'lucide-react';
 import { http } from '@/lib/api';
@@ -22,6 +22,8 @@ import {
   DEFAULT_STYLE, UNLOCK_REWARD, CALIBRATION_SESSIONS,
 } from '@/lib/levels';
 import { cn } from '@/lib/utils';
+
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 // Remember the player's last-played style so they don't have to
 // re-pick on every visit. localStorage so it survives reloads but
@@ -77,6 +79,12 @@ function initialStartRating(p: Progression): number {
 
 type DurationInit = { duration: number; customDuration: boolean; customMinutesSec: number };
 
+function defaultDurationFor(style: TrainingStyle): DurationInit {
+  const presets = STYLE_FORMULAS[style].durationPresetsSec;
+  const fallback = presets[1] ?? presets[0];
+  return { duration: fallback, customDuration: false, customMinutesSec: fallback };
+}
+
 function resolveDurationFor(style: TrainingStyle): DurationInit {
   const preset = STYLE_FORMULAS[style];
   const presets = preset.durationPresetsSec;
@@ -102,7 +110,10 @@ export default function PlaySetup() {
   const language = useAppStore((s) => s.settings.language);
   const t = useT();
 
-  const [style, setStyle] = useState<TrainingStyle>(readLastStyle);
+  // First render uses the defaults on both server and client (reading
+  // localStorage here broke hydration); the stored picks are applied in
+  // a layout effect below, before the first paint.
+  const [style, setStyle] = useState<TrainingStyle>(DEFAULT_STYLE);
   const stylePreset = STYLE_FORMULAS[style];
   const styleProgression = progressions[style];
   const unlocked = styleProgression.unlockedStartRating;
@@ -122,7 +133,7 @@ export default function PlaySetup() {
   useEffect(() => {
     if (!ratingTouched.current) setStartRatingRaw(initialStartRating(styleProgression));
   }, [styleProgression]);
-  const [initialDuration] = useState<DurationInit>(() => resolveDurationFor(readLastStyle()));
+  const [initialDuration] = useState<DurationInit>(() => defaultDurationFor(DEFAULT_STYLE));
   const [duration, setDuration] = useState<number>(initialDuration.duration);
   const [customDuration, setCustomDuration] = useState<boolean>(initialDuration.customDuration);
   const [customMinutes, setCustomMinutes] = useState<string>(String(Math.round(initialDuration.customMinutesSec / 60)));
@@ -130,6 +141,17 @@ export default function PlaySetup() {
   const [theme, setTheme] = useState('fork');
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [restored, setRestored] = useState(false);
+
+  useIsoLayoutEffect(() => {
+    const last = readLastStyle();
+    const d = resolveDurationFor(last);
+    setStyle(last);
+    setDuration(d.duration);
+    setCustomDuration(d.customDuration);
+    setCustomMinutes(String(Math.round(d.customMinutesSec / 60)));
+    setRestored(true);
+  }, []);
 
   // Theme sessions are unrated practice — no unlock cap, any rating is OK.
   // Mixed sessions stay capped at unlocked + 200 to prevent skipping
@@ -190,8 +212,10 @@ export default function PlaySetup() {
   // We save the clamped effective seconds; reconstruction handles preset vs
   // custom on the next read.
   useEffect(() => {
-    writeStoredDuration(style, effectiveDuration);
-  }, [style, effectiveDuration]);
+    // Not before the stored picks are restored — the default would
+    // overwrite them.
+    if (restored) writeStoredDuration(style, effectiveDuration);
+  }, [restored, style, effectiveDuration]);
 
   const start = async () => {
     setErr(null);
