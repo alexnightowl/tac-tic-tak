@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Swords } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -46,8 +46,9 @@ export default function DashboardPage() {
       <div className="space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-[26px] md:text-3xl font-semibold tracking-tight">
-              {t('dashboard.welcome')}, {user?.nickname}
+            <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash">{t('dashboard.welcome')}</div>
+            <h1 className="mt-1.5 text-[26px] leading-8 md:text-3xl text-eos-bone">
+              {user?.nickname}
               {user?.verified && (
                 <UserBadges
                   verified
@@ -56,7 +57,7 @@ export default function DashboardPage() {
                 />
               )}
             </h1>
-            <p className="text-zinc-400 text-sm mt-1">{t('dashboard.ready')}</p>
+
           </div>
           {showStreak && streak.days > 0 && (() => {
             const st = streakState(streak.days, streak.lastDay);
@@ -70,7 +71,7 @@ export default function DashboardPage() {
                   freezeAvailable={streak.freezes > 0}
                 />
                 {st === 'at_risk' && (
-                  <span className="text-[10px] text-amber-300/80">{t('streak.at_risk')}</span>
+                  <span className="text-[10px] text-[#d9b46a]/80">{t('streak.at_risk')}</span>
                 )}
                 {st === 'secured' && (
                   <span className="text-[10px] text-zinc-500">{t('streak.secured')}</span>
@@ -79,11 +80,14 @@ export default function DashboardPage() {
             );
           })()}
         </div>
-        <Link href="/play" className="block">
-          <Button size="lg" className="w-full md:w-auto md:min-w-[220px]">
-            <Swords size={18} /> {t('dashboard.start')}
-          </Button>
-        </Link>
+        <Card hero>
+          <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash">{t('dashboard.ready')}</div>
+          <Link href="/play" className="mt-4 block">
+            <Button size="lg" className="w-full md:w-auto md:min-w-[260px]">
+              <Play size={18} /> {t('dashboard.start')}
+            </Button>
+          </Link>
+        </Card>
       </div>
 
       <div className="grid grid-cols-3 md:grid-cols-3 gap-3">
@@ -104,7 +108,7 @@ export default function DashboardPage() {
       </div>
 
       <div>
-        <h2 className="text-lg font-medium mb-2">{t('dashboard.recent')}</h2>
+        <h2 className="text-base mb-2.5 text-eos-bone">{t('dashboard.recent')}</h2>
         <SessionList
           sessions={data?.recentSessions ?? []}
           onDelete={onDelete}
@@ -120,16 +124,16 @@ function StyleRatingCard({ style, t }: { style: TrainingStyle; t: (k: string) =>
   const prog = useAppStore((s) => s.progressions[style]);
   return (
     <Card className="!p-3">
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[11px] uppercase tracking-wider text-zinc-400">
+      <div className="flex items-center gap-1.5 mb-1.5">
+        <StyleIcon style={style} size={15} />
+        <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-eos-ash truncate">
           {t(`style.${style}.name`)}
         </span>
-        <StyleIcon style={style} size={14} />
       </div>
-      <div className="text-2xl font-semibold tabular-nums leading-none">
+      <div className="text-2xl font-extrabold tabular-nums leading-none">
         {prog.currentPuzzleRating}
       </div>
-      <div className="text-[10px] text-zinc-500 mt-1 tabular-nums">
+      <div className="text-[11px] font-bold text-eos-dust mt-1.5 tabular-nums">
         {t('play.unlocked')} {prog.unlockedStartRating}
       </div>
     </Card>

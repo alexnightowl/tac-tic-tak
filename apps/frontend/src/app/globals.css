@@ -3,29 +3,45 @@
 @tailwind utilities;
 
 :root {
-  /* Tacticore brand red — deep but alive, reads well on dark surfaces. */
-  --accent: #d81f26;
+  /* ── Ember on stone ─────────────────────────────────────────────
+     The one theme of the app. Everything comes from the board:
+     marble only on the board, slate + clay carry the interface,
+     bone/graphite from the pieces, one muted red accent. */
+  --eos-ink:    #141317;  /* app ground */
+  --eos-shade:  #1b1a1f;  /* bars, sheets */
+  --eos-slate:  #24232a;  /* cards */
+  --eos-rise:   #302e36;  /* pressed, chips */
+  --eos-seam:   #3d3b43;  /* borders */
+  --eos-well:   #0f0e12;  /* carved inputs, segmented track */
+  --eos-bone:   #e4ded5;  /* text */
+  --eos-ash:    #a19da3;  /* secondary text */
+  --eos-dust:   #6f6b72;  /* disabled / faint */
+  --eos-ember:  #b03a3a;  /* the one accent */
+  --eos-embers: #5c1f22;  /* pressed / tint */
+  --eos-rose:   #e07d76;  /* negative numbers */
+  --eos-sage:   #a9bea5;  /* positive numbers */
+  --eos-hl:     #2f5f9e;  /* board highlight / arrows (blue) */
+
+  /* Legacy app tokens, remapped onto the new palette so existing
+     screens pick it up before they are rebuilt one by one. */
+  --accent: var(--eos-ember);
   --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
   --accent-weak: color-mix(in srgb, var(--accent) 8%, transparent);
-  /* Foreground colour for text sitting directly on --accent. Defaults
-     to white (our brand red is dark enough). Recalculated in JS when
-     the user picks a custom accent — light accents flip this to black. */
-  --accent-contrast: #fff;
-  --bg-base: #0b0d10;
-  --bg-card: rgba(22, 26, 32, 0.72);
-  --bg-card-solid: #171b22;
-  --bg-soft: #12151a;
-  --bg-softer: #1a1e25;
-  --border-soft: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --text: #e6e8eb;
-  --text-dim: #9aa1ac;
-  --text-faint: #626a75;
-  /* Orange-ish so it's distinguishable from the new red accent. */
-  --danger: #f59e0b;
+  --accent-contrast: #f3ece4;
+  --bg-base: var(--eos-ink);
+  --bg-card: rgba(36, 35, 42, 0.86);
+  --bg-card-solid: var(--eos-slate);
+  --bg-soft: var(--eos-shade);
+  --bg-softer: var(--eos-rise);
+  --border-soft: rgba(255, 255, 255, 0.05);
+  --border: var(--eos-seam);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: var(--eos-bone);
+  --text-dim: var(--eos-ash);
+  --text-faint: var(--eos-dust);
+  --danger: #d8706a;
 
-  /* Landing light theme surface. */
+  /* Landing light theme surface (unchanged). */
   --paper: #efeae4;
   --paper-soft: #e8e2d9;
   --ink: #121212;
@@ -35,6 +51,7 @@
 html, body {
   background: var(--bg-base);
   color: var(--text);
+  font-family: var(--font-manrope), system-ui, -apple-system, 'Segoe UI', sans-serif;
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -95,9 +112,8 @@ body.play-locked.app-shell {
   position: relative;
   min-height: 100dvh;
   background:
-    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, color-mix(in srgb, #6366f1 14%, transparent), transparent 55%),
-    radial-gradient(700px 400px at 50% 110%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%),
+    /* Ember on stone: one faint warm glow from the top, no colour wash. */
+    radial-gradient(900px 520px at 50% -12%, color-mix(in srgb, var(--eos-ember) 7%, transparent), transparent 62%),
     var(--bg-base);
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
@@ -152,13 +168,13 @@ body.play-locked.app-shell {
 
 /* Glass card surface. */
 .glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
-  backdrop-filter: blur(14px) saturate(130%);
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-  border: 1px solid var(--border);
+  /* Ember on stone: flat slate card, faint top highlight, deep shadow.
+     (Kept the class name so every existing card picks it up.) */
+  background: var(--eos-slate);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.04) inset,
-    0 12px 40px -14px rgba(0,0,0,0.6);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 28px -14px rgba(0, 0, 0, 0.6);
 }
 
 /* Subtle accent outline/glow — used on interactive focus states. */
@@ -342,3 +358,111 @@ input[type="range"].ticks::-moz-range-thumb {
   100% { transform: translateX(0); opacity: 1; }
 }
 
+
+
+/* ── Ember on stone: surfaces, plates, fade ─────────────────────── */
+
+/* Serif display face for titles, ranks, big numbers. */
+.font-serif-display {
+  font-family: var(--font-cinzel), 'Times New Roman', serif;
+  letter-spacing: 0.02em;
+}
+
+/* Hero card: slate texture under a dark veil (texture reads at ~20%). */
+.tx-slate {
+  background-image:
+    linear-gradient(rgba(24, 23, 28, 0.74), rgba(24, 23, 28, 0.86)),
+    url('/design/textures/slate.jpg');
+  background-size: cover, 520px 520px;
+}
+/* Board squares. Each square shows its own piece of the texture via
+   background-position; marble is used on the board only. */
+.sq-marble { background-image: url('/design/textures/marble.jpg'); background-size: 200% 200%; }
+.sq-slate  { background-image: url('/design/textures/slate.jpg');  background-size: 200% 200%; }
+
+/* Primary / secondary buttons: 9-slice stone plates.
+   Border widths scale with height — see <PlateButton/>. */
+.btn-ember,
+.btn-slate {
+  border-width: 12px 13px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: transparent;
+  border-image-slice: 55 60 55 60 fill;
+  border-image-repeat: round stretch;
+  background: transparent;
+  transition: filter .15s ease, transform .1s ease;
+}
+.btn-ember { border-image-source: url('/design/plates/ember.webp'); color: #ece3d6;
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.22), 0 1px 1px rgba(0,0,0,0.75), 0 2px 4px rgba(40,0,0,0.6); }
+.btn-slate { border-image-source: url('/design/plates/slate.webp'); color: var(--eos-bone);
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.18), 0 1px 1px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5); }
+.btn-ember:hover { filter: brightness(1.1) saturate(1.05); }
+.btn-slate:hover { filter: brightness(1.15); }
+.btn-ember:active { filter: brightness(0.8);  transform: translateY(1px); }
+.btn-slate:active { filter: brightness(0.86); transform: translateY(1px); }
+.btn-ember:disabled, .btn-slate:disabled { filter: grayscale(0.6) brightness(0.7); cursor: not-allowed; }
+
+/* Carved well: inputs, segmented-control track. */
+.eos-well {
+  background: var(--eos-well);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* Round slate avatar disc. */
+.eos-avatar {
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+    linear-gradient(rgba(70,68,78,0.35), rgba(10,9,12,0.35)),
+    url('/design/textures/slate.jpg') center / 220px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -2px 4px rgba(0,0,0,0.55),
+              0 0 0 1px rgba(0,0,0,0.65), 0 0 0 2px rgba(255,255,255,0.06), 0 3px 8px rgba(0,0,0,0.45);
+  color: var(--eos-bone);
+  font-family: var(--font-cinzel), serif;
+  font-weight: 700;
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.18), 0 1px 1px rgba(0,0,0,0.8);
+}
+
+/* Global fade — softer contrast, lifted blacks, faint vignette.
+   Rendered once in the root layout above everything, click-through.
+   Values = canvas "Fade" artboard: fade 35, desaturate 49, warmth 35, vignette 60. */
+.eos-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  backdrop-filter: contrast(0.962) saturate(0.892) brightness(1.02) sepia(0.035);
+  -webkit-backdrop-filter: contrast(0.962) saturate(0.892) brightness(1.02) sepia(0.035);
+}
+.eos-fade::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(38, 34, 40);
+  mix-blend-mode: lighten;
+  opacity: 0.35;
+}
+.eos-fade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(10,8,12,0.38) 100%);
+  opacity: 0.6;
+}
+
+/* App headings use the serif display face; the landing keeps its own
+   .font-display (class selector wins over these element selectors). */
+:where(.app-shell h1, .app-shell h2) {
+  font-family: var(--font-cinzel), 'Times New Roman', serif;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+/* Small-caps section labels that happen to be h2/h3 stay in the UI face. */
+:where(.app-shell h1.uppercase, .app-shell h2.uppercase, .app-shell h3.uppercase) {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  letter-spacing: 0.12em;
+}

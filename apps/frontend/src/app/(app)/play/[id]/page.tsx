@@ -525,12 +525,12 @@ export default function PlayRunner() {
 
   const timerPill = (
     <div className={cn(
-      'font-mono text-xl tabular-nums px-4 py-1.5 rounded-full border transition-colors text-center',
+      'font-sans font-extrabold text-xl tabular-nums px-4 py-1.5 rounded-full border transition-colors text-center',
       warning
-        ? 'bg-red-500/15 border-red-400/60 text-red-300 pulse-red'
+        ? 'bg-[rgba(176,58,58,0.16)] border-[rgba(176,58,58,0.6)] text-eos-rose pulse-red'
         : paused
-          ? 'glass text-amber-300 border-amber-300/30'
-          : 'glass text-white',
+          ? 'glass text-eos-ash'
+          : 'glass text-eos-bone',
     )}>
       {loadingFirst ? '--:--' : fmtDuration(remainingSec)}
     </div>
@@ -602,7 +602,7 @@ export default function PlayRunner() {
           animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove && !loadingFirst && !paused}
           theme={settings.boardTheme as BoardTheme}
-          pieceSet="maestro"
+          pieceSet="ember"
           feedbackSquare={feedbackSquare}
         />
       )}
@@ -708,10 +708,10 @@ function PauseOverlay({ remainingSec, onResume, t }: {
   return (
     <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
       <div className="flex flex-col items-center gap-3 text-center max-w-sm">
-        <div className="font-mono text-4xl tabular-nums text-amber-300">
+        <div className="font-sans font-extrabold text-5xl tabular-nums text-eos-bone">
           {fmtDuration(remainingSec)}
         </div>
-        <div className="text-2xl font-semibold text-white">{t('play.paused')}</div>
+        <div className="font-serif text-2xl font-bold tracking-[0.04em] text-eos-bone">{t('play.paused')}</div>
         <div className="text-sm text-zinc-300 max-w-[280px]">{t('play.paused_hint')}</div>
         <Button onClick={onResume} size="lg" className="mt-2 min-w-[200px]">
           <Play size={18} /> {t('play.resume')}
@@ -737,10 +737,10 @@ function ExitDialog({ onSave, onDiscard, onCancel, language }: {
             : 'Leaving early. Save records the stats but won\'t count toward level-up — or discard the session.'}
         </div>
         <div className="flex flex-col gap-2 mt-4">
-          <button onClick={onSave} className="h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold text-sm">
+          <button onClick={onSave} className="h-11 rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] font-semibold text-sm">
             {uk ? 'Зберегти' : 'Save'}
           </button>
-          <button onClick={onDiscard} className="h-11 rounded-xl border border-rose-500/40 text-rose-300 text-sm">
+          <button onClick={onDiscard} className="h-11 rounded-xl border border-[rgba(176,58,58,0.4)] text-eos-rose text-sm">
             {uk ? 'Відкинути' : 'Discard'}
           </button>
           <button onClick={onCancel} className="h-11 rounded-xl border border-[var(--border)] text-zinc-300 text-sm">
@@ -757,7 +757,7 @@ function StatPill({ icon, value, tone, align }: { icon: React.ReactNode; value: 
     <div className={cn(
       'glass rounded-xl py-2 px-3 flex items-center gap-1.5 text-sm',
       align === 'right' ? 'justify-end' : 'justify-start',
-      tone === 'good' ? 'text-emerald-300' : 'text-rose-300',
+      tone === 'good' ? 'text-eos-sage' : 'text-eos-rose',
     )}>
       {icon}
       <span className="tabular-nums font-semibold">{value}</span>
@@ -808,7 +808,7 @@ function UnlockProgressBar({
         <div
           className={cn(
             'absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-300',
-            met ? 'bg-[var(--accent)]' : 'bg-emerald-400/80',
+            met ? 'bg-[var(--accent)]' : 'bg-[rgba(142,163,138,0.8)]',
           )}
           style={{ width: `${Math.max(pct, 2)}%` }}
         />
@@ -836,24 +836,24 @@ function CalibrationProgressBar({ done, total, style }: {
   const pct = Math.round((done / total) * 100);
   const styleName = t(`style.${style}.name`).toLowerCase();
   return (
-    <div className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-3 py-2">
+    <div className="glass rounded-[10px] px-3 py-2">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[11px] uppercase tracking-wider text-amber-200/90">
+        <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-eos-ash">
           {t('calibration.bar_label')}
         </span>
         <span className="tabular-nums text-xs">
-          <span className="text-amber-200 font-semibold">{done}</span>
-          <span className="mx-1 text-amber-200/50">/</span>
-          <span className="text-amber-200/70">{total}</span>
+          <span className="text-eos-bone font-extrabold">{done}</span>
+          <span className="mx-1 text-eos-dust">/</span>
+          <span className="text-eos-ash">{total}</span>
         </span>
       </div>
       <div className="relative h-1.5 rounded-full bg-white/5 overflow-hidden">
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-amber-400/80 transition-[width] duration-300"
+          className="absolute inset-y-0 left-0 rounded-full bg-eos-ember transition-[width] duration-300"
           style={{ width: `${Math.max(pct, 2)}%` }}
         />
       </div>
-      <p className="text-[10px] text-amber-200/70 mt-2 leading-snug">
+      <p className="text-[11px] text-eos-dust mt-2 leading-snug">
         {t('calibration.bar_hint').replace('{style}', styleName)}
       </p>
     </div>
@@ -873,7 +873,7 @@ function CriterionTick({ c }: { c: CriterionProgress }) {
       className={cn(
         'flex flex-col items-center gap-0.5 rounded-md py-1 text-[10px] border',
         c.met
-          ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300'
+          ? 'border-[rgba(142,163,138,0.4)] bg-[rgba(142,163,138,0.1)] text-eos-sage'
           : 'border-[var(--border-soft)] bg-transparent text-zinc-500',
       )}
       title={label}
@@ -990,7 +990,7 @@ function ReviewThisSession({ sessionId }: { sessionId: string }) {
           .replace('{failed}', String(count.failed))
           .replace('{slow}', String(count.slow))}
       </div>
-      <div className="mt-3 inline-flex items-center h-9 px-4 rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] text-xs font-semibold">
+      <div className="mt-3 inline-flex items-center h-9 px-4 rounded-lg btn-ember font-serif font-bold uppercase tracking-[0.08em] text-xs font-semibold">
         {t('review.session_cta')}
       </div>
     </a>
@@ -1020,11 +1020,11 @@ function LevelUpExplainer({ ceiling }: { ceiling: number }) {
       </div>
       <ul className="text-xs text-zinc-300 space-y-1 pt-1 leading-snug list-none">
         <li>
-          <span className="text-emerald-300 font-semibold">+50</span>{' '}
+          <span className="text-eos-sage font-semibold">+50</span>{' '}
           {t('calibration.intro_unlock').replace('{floor}', String(peakFloor))}
         </li>
         <li>
-          <span className="text-rose-300 font-semibold">−25</span>{' '}
+          <span className="text-eos-rose font-semibold">−25</span>{' '}
           {t('calibration.intro_demote')}
         </li>
       </ul>
@@ -1080,10 +1080,10 @@ function DemoteOutcome({ check, demoted }: {
 
   if (demoted) {
     return (
-      <div className="rounded-2xl p-4 border border-rose-500/40 bg-rose-500/10 flex items-center gap-3">
-        <TrendingDown size={22} className="text-rose-300 shrink-0" />
+      <div className="rounded-2xl p-4 border border-[rgba(176,58,58,0.4)] bg-[rgba(176,58,58,0.1)] flex items-center gap-3">
+        <TrendingDown size={22} className="text-eos-rose shrink-0" />
         <div>
-          <div className="font-semibold text-rose-200">
+          <div className="font-semibold text-eos-rose">
             {t('demote.summary_demoted').replace('{penalty}', String(check.penalty))}
           </div>
           <div className="text-xs text-zinc-300 mt-0.5">
@@ -1099,9 +1099,9 @@ function DemoteOutcome({ check, demoted }: {
   // punishment.
   return (
     <div className="rounded-2xl p-4 border border-amber-500/40 bg-amber-500/10 flex items-center gap-3">
-      <TrendingDown size={20} className="text-amber-300 shrink-0" />
+      <TrendingDown size={20} className="text-[#d9b46a] shrink-0" />
       <div>
-        <div className="font-semibold text-amber-200">
+        <div className="font-semibold text-[#d9b46a]">
           {t('demote.summary_weak')}
         </div>
         <div className="text-xs text-zinc-300 mt-0.5">
@@ -1159,10 +1159,10 @@ function CriterionRow({ c }: { c: FinishResponse['unlockCheck'] extends infer U 
   return (
     <li className="flex items-center gap-2 text-xs">
       {c.met
-        ? <Check size={14} className="text-emerald-400 shrink-0" />
-        : <X size={14} className="text-rose-400 shrink-0" />}
+        ? <Check size={14} className="text-eos-sage shrink-0" />
+        : <X size={14} className="text-eos-rose shrink-0" />}
       <span className="text-zinc-300 flex-1">{labels[c.id as CriterionId]}</span>
-      <span className={cn('tabular-nums', c.met ? 'text-emerald-300' : 'text-zinc-400')}>
+      <span className={cn('tabular-nums', c.met ? 'text-eos-sage' : 'text-zinc-400')}>
         {fmt.current}
         <span className="text-zinc-600 mx-1">/</span>
         <span className="text-zinc-500">{fmt.target}</span>

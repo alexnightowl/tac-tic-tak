@@ -12,12 +12,23 @@ export type Band = {
 };
 
 export const DIFFICULTY_BANDS: Band[] = [
-  { min: 400,  max: 1000, key: 'novice',       color: '#22c55e', glow: 'rgba(34,197,94,0.18)' },
-  { min: 1000, max: 1400, key: 'beginner',     color: '#84cc16', glow: 'rgba(132,204,22,0.18)' },
-  { min: 1400, max: 1800, key: 'intermediate', color: '#eab308', glow: 'rgba(234,179,8,0.20)' },
-  { min: 1800, max: 2200, key: 'advanced',     color: '#f97316', glow: 'rgba(249,115,22,0.22)' },
-  { min: 2200, max: 3000, key: 'expert',       color: '#ef4444', glow: 'rgba(239,68,68,0.22)' },
+  // Ember on stone: muted progression from graphite to ember red.
+  { min: 400,  max: 1000, key: 'novice',       color: '#a19da3', glow: 'rgba(161,157,163,0.18)' },
+  { min: 1000, max: 1400, key: 'beginner',     color: '#c8c2bd', glow: 'rgba(200,194,189,0.18)' },
+  { min: 1400, max: 1800, key: 'intermediate', color: '#d9b46a', glow: 'rgba(217,180,106,0.20)' },
+  { min: 1800, max: 2200, key: 'advanced',     color: '#c06a4f', glow: 'rgba(192,106,79,0.22)' },
+  { min: 2200, max: 3000, key: 'expert',       color: '#b03a3a', glow: 'rgba(176,58,58,0.25)' },
 ];
+
+/** Eye marks for the difficulty bands: sharingan with 1–3 tomoe,
+ *  then mangekyō and rinnegan for the two top bands. */
+export const BAND_ICON: Record<Band['key'], string> = {
+  novice: '/design/icons/tomoe-1.webp',
+  beginner: '/design/icons/tomoe-2.webp',
+  intermediate: '/design/icons/tomoe-3.webp',
+  advanced: '/design/icons/rank-4.webp',
+  expert: '/design/icons/rank-5.webp',
+};
 
 export function bandFor(rating: number): Band {
   for (const b of DIFFICULTY_BANDS) {
@@ -29,7 +40,7 @@ export function bandFor(rating: number): Band {
 // ---- Training styles ----------------------------------------------------
 
 export type TrainingStyle = 'bullet' | 'blitz' | 'rapid';
-export const TRAINING_STYLES: TrainingStyle[] = ['bullet', 'blitz', 'rapid'];
+export const TRAINING_STYLES: TrainingStyle[] = ['rapid', 'blitz', 'bullet']; // slowest → fastest
 export const DEFAULT_STYLE: TrainingStyle = 'blitz';
 
 export type StyleFormula = {

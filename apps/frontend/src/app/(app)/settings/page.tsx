@@ -2,21 +2,19 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User as UserIcon, Gamepad2, Palette, Smartphone, LogOut, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { User as UserIcon, Gamepad2, Smartphone, LogOut, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import { http, setToken } from '@/lib/api';
 import { useAppStore, ColorMode, Language, UserSettings, AnimationSpeed, KnightArrowMode } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Toggle } from '@/components/ui/toggle';
 import { Segmented } from '@/components/ui/segmented';
-import { ColorPicker } from '@/components/ui/color-picker';
-import { BOARD_THEMES } from '@/lib/themes';
 import { Avatar } from '@/components/Avatar';
 import { AvatarPickerButton } from '@/components/AvatarCropper';
 import { useToastStore } from '@/lib/toast';
 import { cn } from '@/lib/utils';
 
-type Tab = 'profile' | 'gameplay' | 'theme' | 'app';
+type Tab = 'profile' | 'gameplay' | 'app';
 
 export default function SettingsPage() {
   const [tab, setTab] = useState<Tab>('profile');
@@ -49,7 +47,7 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-semibold tracking-tight">
+      <h1 className="text-[22px] text-eos-bone">
         {t('settings.title')}
         {saving && <span className="text-xs text-zinc-500 ml-2 font-normal">{t('settings.saving')}</span>}
       </h1>
@@ -58,7 +56,6 @@ export default function SettingsPage() {
 
       {tab === 'profile' && <ProfileTab />}
       {tab === 'gameplay' && <GameplayTab settings={settings} patch={patch} t={t} />}
-      {tab === 'theme' && <ThemeTab settings={settings} patch={patch} t={t} />}
       {tab === 'app' && <AppTab settings={settings} patch={patch} t={t} />}
     </div>
   );
@@ -68,25 +65,24 @@ function TabBar({ tab, onChange, t }: { tab: Tab; onChange: (t: Tab) => void; t:
   const tabs: Array<{ k: Tab; Icon: typeof UserIcon; label: string }> = [
     { k: 'profile',  Icon: UserIcon,   label: t('settings.tab.profile') },
     { k: 'gameplay', Icon: Gamepad2,   label: t('settings.tab.gameplay') },
-    { k: 'theme',    Icon: Palette,    label: t('settings.tab.theme') },
     { k: 'app',      Icon: Smartphone, label: t('settings.tab.app') },
   ];
   return (
-    <div className="flex gap-1 bg-black/30 rounded-xl p-1">
+    <div role="tablist" className="flex gap-6 px-1 shadow-[inset_0_-1px_0_var(--eos-seam)]">
       {tabs.map(({ k, Icon, label }) => (
         <button
           key={k}
           onClick={() => onChange(k)}
           aria-label={label}
           className={cn(
-            'flex-1 min-w-0 h-10 rounded-lg text-sm flex items-center justify-center gap-2 transition-colors px-2 sm:px-3',
+            'h-11 text-sm font-bold flex items-center gap-2 transition-colors',
             tab === k
-              ? 'bg-[var(--bg-softer)] text-white'
-              : 'text-zinc-400 hover:text-white',
+              ? 'text-eos-bone shadow-[inset_0_-2px_0_var(--eos-ember)]'
+              : 'text-eos-dust hover:text-eos-bone',
           )}
         >
-          <Icon size={14} className="shrink-0" />
-          <span className="hidden sm:inline truncate">{label}</span>
+          <Icon size={14} className="shrink-0 hidden sm:block" />
+          <span className="truncate">{label}</span>
         </button>
       ))}
     </div>
@@ -175,7 +171,7 @@ function ProfileTab() {
         placeholder="UA"
       />
 
-      {err && <div className="text-xs text-rose-400">{err}</div>}
+      {err && <div className="text-xs text-eos-rose">{err}</div>}
       {savingField && <div className="text-[11px] text-zinc-500">{t('settings.saving')}</div>}
 
       <div className="pt-4 border-t border-[var(--border)] space-y-4">
@@ -183,7 +179,7 @@ function ProfileTab() {
         <button
           type="button"
           onClick={logout}
-          className="inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-400/10 transition-colors"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-eos-rose hover:text-eos-rose hover:bg-rose-400/10 transition-colors"
         >
           <LogOut size={16} /> {t('logout')}
         </button>
@@ -240,7 +236,7 @@ function ChangePasswordSection({ t }: { t: (k: string) => string }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/5 border border-[var(--border)] transition-colors"
+        className="btn-slate h-10 gap-2 px-1.5 font-serif text-[13px] font-bold uppercase tracking-[0.08em]" style={{ borderWidth: '11px 12px' }}
       >
         {t('profile.change_password')}
       </button>
@@ -254,8 +250,8 @@ function ChangePasswordSection({ t }: { t: (k: string) => string }) {
       <PasswordField label={t('profile.new_password')} value={next} onChange={setNext} />
       <PasswordField label={t('profile.repeat_new_password')} value={repeat} onChange={setRepeat} />
       <div className="text-[11px] text-zinc-500">{t('auth.rule_pw_len')} · {t('auth.rule_pw_letter')} · {t('auth.rule_pw_digit')}</div>
-      {err && <div className="text-xs text-rose-400">{err}</div>}
-      {ok && <div className="text-xs text-emerald-400">{t('profile.password_changed')}</div>}
+      {err && <div className="text-xs text-eos-rose">{err}</div>}
+      {ok && <div className="text-xs text-eos-sage">{t('profile.password_changed')}</div>}
       <div className="flex gap-2">
         <button
           type="button"
@@ -268,7 +264,7 @@ function ChangePasswordSection({ t }: { t: (k: string) => string }) {
           type="button"
           onClick={submit}
           disabled={!valid || saving}
-          className="flex-1 h-10 rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold disabled:opacity-60"
+          className="flex-1 h-10 rounded-lg btn-ember font-serif font-bold uppercase tracking-[0.08em] text-sm font-semibold disabled:opacity-60"
         >
           {saving ? '…' : t('common.save')}
         </button>
@@ -393,43 +389,6 @@ function GameplayTab({ settings, patch, t }: { settings: UserSettings; patch: (p
   );
 }
 
-function ThemeTab({ settings, patch, t }: { settings: UserSettings; patch: (p: Partial<UserSettings>) => void; t: (k: string) => string }) {
-  return (
-    <div className="space-y-4">
-      <Card>
-        <CardTitle>{t('settings.accent')}</CardTitle>
-        <ColorPicker value={settings.accentColor} onChange={(c) => patch({ accentColor: c })} />
-      </Card>
-
-      <Card>
-        <CardTitle>{t('settings.board_theme')}</CardTitle>
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-2">
-          {Object.entries(BOARD_THEMES).map(([name, th]) => (
-            <button
-              key={name}
-              onClick={() => patch({ boardTheme: name })}
-              className={`p-1 rounded-xl border-2 transition-all ${
-                settings.boardTheme === name ? 'border-[var(--accent)]' : 'border-transparent'
-              }`}
-            >
-              <div className="grid grid-cols-4 grid-rows-4 overflow-hidden rounded-md aspect-square">
-                {Array.from({ length: 16 }).map((_, i) => {
-                  const row = Math.floor(i / 4);
-                  const col = i % 4;
-                  const light = (row + col) % 2 === 0;
-                  return <div key={i} style={{ background: light ? th.light : th.dark }} />;
-                })}
-              </div>
-              <div className="text-[10px] text-zinc-400 text-center mt-1 truncate">{th.label}</div>
-            </button>
-          ))}
-        </div>
-      </Card>
-
-    </div>
-  );
-}
-
 function AppTab({ settings, patch, t }: { settings: UserSettings; patch: (p: Partial<UserSettings>) => void; t: (k: string) => string }) {
   return (
     <div className="space-y-4">
@@ -496,9 +455,9 @@ function ResetProgressSection({ t }: { t: (k: string) => string }) {
   };
 
   return (
-    <Card className="border-rose-500/30 bg-rose-500/5">
+    <Card className="border-[rgba(176,58,58,0.3)] bg-[rgba(176,58,58,0.05)]">
       <CardTitle>
-        <span className="inline-flex items-center gap-2 text-rose-200">
+        <span className="inline-flex items-center gap-2 text-eos-rose">
           <AlertTriangle size={16} /> {t('settings.reset_progress.title')}
         </span>
       </CardTitle>
@@ -509,14 +468,14 @@ function ResetProgressSection({ t }: { t: (k: string) => string }) {
         <button
           type="button"
           onClick={() => setConfirming(true)}
-          className="mt-3 inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-rose-300 hover:text-white hover:bg-rose-500/15 border border-rose-500/40 transition-colors"
+          className="mt-3 inline-flex items-center gap-2 h-10 px-4 rounded-lg text-sm text-eos-rose hover:text-white hover:bg-[rgba(176,58,58,0.15)] border border-[rgba(176,58,58,0.4)] transition-colors"
         >
           {t('settings.reset_progress.cta')}
         </button>
       ) : (
-        <div className="mt-3 rounded-xl border border-rose-500/40 bg-rose-500/10 p-3 space-y-3">
+        <div className="mt-3 rounded-xl border border-[rgba(176,58,58,0.4)] bg-[rgba(176,58,58,0.1)] p-3 space-y-3">
           <p className="text-sm text-rose-100">{t('settings.reset_progress.confirm')}</p>
-          {err && <p className="text-xs text-rose-300">{err}</p>}
+          {err && <p className="text-xs text-eos-rose">{err}</p>}
           <div className="flex gap-2">
             <button
               type="button"

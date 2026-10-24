@@ -11,6 +11,9 @@ export type ThemeColors = {
 };
 
 export const BOARD_THEMES: Record<string, ThemeColors> = {
+  // Ember on stone — the one board of the app (marble + slate textures
+  // are layered on top of these fills by the Chessboard component).
+  stone:    { light: '#c9ccd6', dark: '#4b4c57', lastMove: '#2f5f9e', highlight: '#2f5f9e', label: 'Stone' },
   green:    { light: '#ebecd0', dark: '#739552', lastMove: '#d8a53a', highlight: '#edd56b', label: 'Green' },
   brown:    { light: '#f0d9b5', dark: '#b58863', lastMove: '#c78b3a', highlight: '#e8cd5d', label: 'Brown' },
   blue:     { light: '#dee3e6', dark: '#8ca2ad', lastMove: '#3b82b5', highlight: '#9bd0e8', label: 'Blue' },
@@ -26,6 +29,7 @@ export const BOARD_THEMES: Record<string, ThemeColors> = {
 export type BoardTheme = keyof typeof BOARD_THEMES;
 
 export const PIECE_SETS = [
+  'ember',
   'cburnett',
   'merida',
   'alpha',
@@ -41,6 +45,7 @@ export const PIECE_SETS = [
 export type PieceSet = typeof PIECE_SETS[number];
 
 export const PIECE_SET_LABELS: Record<PieceSet, string> = {
+  ember: 'Ember',
   cburnett: 'Cburnett',
   merida: 'Merida',
   alpha: 'Alpha',

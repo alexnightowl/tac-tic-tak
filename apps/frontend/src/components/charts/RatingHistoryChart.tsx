@@ -18,12 +18,13 @@ type Props = {
 };
 
 const STYLE_HEX: Record<TrainingStyle, string> = {
-  bullet: '#fb923c', // orange-400
-  blitz: '#facc15',  // yellow-400
-  rapid: '#34d399',  // emerald-400
+  // Ember on stone chart palette
+  bullet: '#8e8a93', // graphite
+  blitz: '#b03a3a',  // ember
+  rapid: '#a9bea5',  // sage
 };
 
-const STYLE_ORDER: TrainingStyle[] = ['bullet', 'blitz', 'rapid'];
+const STYLE_ORDER: TrainingStyle[] = ['rapid', 'blitz', 'bullet'];
 
 const NICE_STEPS = [25, 50, 100, 200, 250, 500, 1000];
 function niceStep(rough: number): number {

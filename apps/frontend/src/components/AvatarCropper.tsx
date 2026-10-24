@@ -94,18 +94,18 @@ export function AvatarCropper({ open, file, onCancel, onConfirm, size = 256 }: P
               aria-label="Zoom"
             />
           </div>
-          {err && <div className="text-xs text-rose-400">{err}</div>}
+          {err && <div className="text-xs text-eos-rose">{err}</div>}
           <div className="flex gap-2">
             <button
               onClick={onCancel}
-              className="flex-1 h-11 rounded-xl border border-[var(--border)] text-sm"
+              className="flex-1 h-11 btn-slate font-serif font-bold uppercase tracking-[0.08em] text-sm"
             >
               Cancel
             </button>
             <button
               onClick={confirm}
               disabled={submitting || !croppedArea}
-              className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
+              className="flex-1 h-11 rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {submitting ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
               Save
@@ -153,7 +153,7 @@ export function AvatarPickerButton({
         type="button"
         onClick={pick}
         disabled={disabled}
-        className="h-10 rounded-lg bg-white/5 hover:bg-white/10 border border-[var(--border)] px-3 text-sm flex items-center gap-2 disabled:opacity-50"
+        className="btn-slate h-10 gap-2 px-1.5 font-serif text-[13px] font-bold uppercase tracking-[0.08em] disabled:opacity-50" style={{ borderWidth: '11px 12px' }}
       >
         <Upload size={14} /> {label}
       </button>

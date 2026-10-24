@@ -102,10 +102,10 @@ export default function RegisterPage() {
 
   return (
     <main className="min-h-dvh flex items-center justify-center px-6 py-8">
-      <form onSubmit={submit} className="w-full max-w-sm space-y-4 glass rounded-3xl p-7">
+      <form onSubmit={submit} className="w-full max-w-sm space-y-4">
         <div className="flex flex-col items-center gap-2">
-          <Logo size={44} />
-          <h1 className="text-2xl font-semibold mt-1">{t('auth.create_account')}</h1>
+          <Logo size={96} glow />
+          <h1 className="mt-4 text-[26px] leading-8 tracking-[0.04em] text-eos-bone">{t('auth.create_account')}</h1>
         </div>
 
         <div>
@@ -143,16 +143,16 @@ export default function RegisterPage() {
             autoComplete="new-password"
           />
           {touched.r && repeat.length > 0 && !repeatValid && (
-            <p className="text-xs text-rose-400 mt-1">{t('auth.rule_pw_match')}</p>
+            <p className="text-xs text-eos-rose mt-1">{t('auth.rule_pw_match')}</p>
           )}
         </div>
 
-        {err && <p className="text-sm text-red-400">{err}</p>}
+        {err && <p className="text-sm text-eos-rose">{err}</p>}
         <Button type="submit" className="w-full" size="lg" disabled={loading || !formValid}>
           {loading ? t('auth.creating') : t('auth.register')}
         </Button>
         <p className="text-sm text-center text-zinc-400">
-          {t('auth.have_account')} <Link href="/login" className="text-[var(--accent)]">{t('auth.login')}</Link>
+          {t('auth.have_account')} <Link href="/login" className="font-bold text-eos-bone underline decoration-eos-ember underline-offset-4">{t('auth.login')}</Link>
         </p>
       </form>
     </main>
@@ -167,7 +167,7 @@ function RuleList({ rules }: { rules: Array<{ met: boolean; label: string }> }) 
           key={i}
           className={cn(
             'flex items-center gap-1.5 text-[11px]',
-            r.met ? 'text-emerald-400' : 'text-zinc-500',
+            r.met ? 'text-eos-sage' : 'text-zinc-500',
           )}
         >
           {r.met ? <Check size={11} /> : <X size={11} />}

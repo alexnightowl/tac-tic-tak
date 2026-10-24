@@ -6,43 +6,59 @@ import { cn } from '@/lib/utils';
 type Props = {
   size?: number;
   withWordmark?: boolean;
-  /** On light backgrounds (e.g. the landing hero) we serve the dark logo;
-   *  on dark backgrounds (e.g. the app nav) we serve the light variant. */
+  /** Surface the mark sits on. Landing (light paper) keeps the old ring
+   *  mark; everything dark uses the cut-out sharingan knight. */
   tone?: 'dark' | 'light';
+  /** Soft ember glow behind the knight (Ember on stone). */
+  glow?: boolean;
   className?: string;
 };
 
 /**
- * Tacticore brand mark — a stylised knight / horse head with sharingan-red
- * eyes inside an enso brush-stroke ring. The PNG assets live in
- * `public/brand/` and render at any size via `next/image`.
+ * Brand mark — knight head with sharingan eyes. On dark surfaces it is
+ * the transparent cut-out from the redesign (`/design/knight-logo.webp`),
+ * optionally with a diffuse ember glow behind it.
  */
-export function Logo({ size = 36, withWordmark = false, tone = 'dark', className }: Props) {
-  // `tone` describes the SURFACE the mark sits on, not the mark itself.
-  // A dark surface needs the light logo variant and vice-versa.
-  const src = tone === 'light' ? '/brand/logo.png' : '/brand/logo-light.png';
+export function Logo({ size = 36, withWordmark = false, tone = 'dark', glow = false, className }: Props) {
+  const src = tone === 'light' ? '/brand/logo.png' : '/design/knight-logo.webp';
 
   return (
     <div className={cn('inline-flex items-center gap-2.5', className)}>
-      <Image
-        src={src}
-        alt="tac·tic·tak"
-        width={size}
-        height={size}
-        priority={size >= 96}
-        className="block select-none rounded-full"
-        style={{ width: size, height: size }}
-        draggable={false}
-      />
+      <span className="relative inline-block shrink-0" style={{ width: size, height: size }}>
+        {glow && tone === 'dark' && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute rounded-full"
+            style={{
+              left: -size * 0.9,
+              top: -size * 0.9,
+              width: size * 2.8,
+              height: size * 2.8,
+              background:
+                'radial-gradient(circle at 50% 46%, rgba(214,72,60,0.42) 0%, rgba(176,58,58,0.26) 18%, rgba(140,40,42,0.14) 36%, rgba(100,28,32,0.06) 54%, rgba(20,19,23,0) 72%)',
+              filter: `blur(${Math.max(4, Math.round(size * 0.11))}px)`,
+            }}
+          />
+        )}
+        <Image
+          src={src}
+          alt="tac·tic·tak"
+          width={size}
+          height={size}
+          priority={size >= 96}
+          className={cn('relative block select-none', tone === 'light' && 'rounded-full')}
+          style={{ width: size, height: size, filter: tone === 'dark' && size >= 64 ? 'drop-shadow(0 8px 14px rgba(0,0,0,0.55))' : undefined }}
+          draggable={false}
+        />
+      </span>
       {withWordmark && (
         <span
           className={cn(
-            'font-display font-bold tracking-tight',
-            tone === 'light' ? 'text-[#121212]' : 'text-white',
+            tone === 'light' ? 'font-display font-bold tracking-tight text-[#121212]' : 'font-serif font-bold tracking-[0.04em] text-eos-bone',
           )}
-          style={{ fontSize: Math.round(size * 0.48) }}
+          style={{ fontSize: Math.round(size * (tone === 'light' ? 0.48 : 0.6)) }}
         >
-          tac<span className="text-[var(--accent)]">·</span>tic<span className="text-[var(--accent)]">·</span>tak
+          tac·tic·tak
         </span>
       )}
     </div>

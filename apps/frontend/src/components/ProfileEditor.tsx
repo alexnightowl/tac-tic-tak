@@ -160,7 +160,7 @@ function EditorDialog({ onClose }: { onClose: () => void }) {
             />
           </Field>
 
-          {err && <div className="text-xs text-rose-400">{err}</div>}
+          {err && <div className="text-xs text-eos-rose">{err}</div>}
 
           <div className="flex gap-2 pt-1">
             <button onClick={onClose} className="flex-1 h-11 rounded-xl border border-[var(--border)] text-sm">
@@ -169,7 +169,7 @@ function EditorDialog({ onClose }: { onClose: () => void }) {
             <button
               onClick={save}
               disabled={saving || !canSave}
-              className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
+              className="flex-1 h-11 rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {saving && <Loader2 size={14} className="animate-spin" />} {t('common.save')}
             </button>
@@ -189,7 +189,7 @@ function Field({ label, hint, invalid, children }: {
       <div className="flex items-center justify-between mb-1">
         <label className="text-xs uppercase tracking-wider text-zinc-400">{label}</label>
         {hint && (
-          <span className={`text-[10px] tabular-nums ${invalid ? 'text-rose-400' : 'text-zinc-500'}`}>
+          <span className={`text-[10px] tabular-nums ${invalid ? 'text-eos-rose' : 'text-zinc-500'}`}>
             {hint}
           </span>
         )}

@@ -22,3 +22,4 @@ data/
 # playwright-mcp scratch (screenshots, accessibility snapshots, console logs)
 .playwright-mcp/
 /*.png
+.claude-test-account

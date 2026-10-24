@@ -250,7 +250,7 @@ export default function SessionReview() {
         <p className="text-sm text-zinc-400">{t('review.nothing_hint')}</p>
         <button
           onClick={() => router.back()}
-          className="h-11 px-6 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold"
+          className="h-11 px-6 rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] font-semibold"
         >
           {t('review.back')}
         </button>
@@ -276,7 +276,7 @@ export default function SessionReview() {
           </button>
           <button
             onClick={() => router.push('/play')}
-            className="flex-1 h-11 rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] text-sm font-semibold"
+            className="flex-1 h-11 rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] text-sm font-semibold"
           >
             {t('review.new_session')}
           </button>
@@ -306,7 +306,7 @@ export default function SessionReview() {
     <div className="glass rounded-2xl px-4 py-3 flex items-center gap-3">
       <div className={cn(
         'h-9 px-2.5 rounded-full text-[11px] font-semibold flex items-center gap-1.5 whitespace-nowrap shrink-0',
-        head.reason === 'failed' ? 'bg-rose-500/15 text-rose-300' : 'bg-amber-500/15 text-amber-300',
+        head.reason === 'failed' ? 'bg-[rgba(176,58,58,0.15)] text-eos-rose' : 'bg-amber-500/15 text-amber-300',
       )}>
         {head.reason === 'failed' ? <XCircle size={14} /> : <Loader2 size={14} />}
         {head.reason === 'failed' ? t('review.reason_failed') : t('review.reason_slow')}
@@ -320,7 +320,7 @@ export default function SessionReview() {
           type="button"
           onClick={advanceToNext}
           autoFocus
-          className="ml-auto h-9 w-[120px] rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
+          className="ml-auto h-9 w-[120px] rounded-lg btn-ember font-serif font-bold uppercase tracking-[0.08em] transition-colors text-xs font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:opacity-80"
           aria-label={t('review.done_cta')}
         >
           <Check size={14} />

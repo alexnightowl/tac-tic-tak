@@ -310,7 +310,7 @@ export default function ReviewPuzzle() {
       type="button"
       onClick={() => { void resolveAndAdvance(); }}
       autoFocus
-      className="h-12 w-full rounded-xl bg-[var(--accent)] text-[var(--accent-contrast)] transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80"
+      className="h-12 w-full rounded-xl btn-ember font-serif font-bold uppercase tracking-[0.08em] transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:opacity-90 active:opacity-80"
       aria-label={t('review.done_cta')}
     >
       <Check size={16} />
@@ -335,7 +335,7 @@ export default function ReviewPuzzle() {
   const themesSlot = (
     <div className="-mt-1 px-1 min-h-[18px] flex items-center">
       {feedback && !feedback.correct ? (
-        <span className="text-xs text-rose-400">{t('review.retry')}</span>
+        <span className="text-xs text-eos-rose">{t('review.retry')}</span>
       ) : themesLine ? (
         <span className="text-xs text-zinc-500 truncate">{themesLine}</span>
       ) : null}
@@ -370,7 +370,7 @@ export default function ReviewPuzzle() {
           animationMs={ANIMATION_MS[settings.animationSpeed]}
           allowMoves={!animateMove && !solved}
           theme={settings.boardTheme as BoardTheme}
-          pieceSet="maestro"
+          pieceSet="ember"
           hintSquare={hintSquare}
           hintTargetSquare={hintTargetSquare}
         />

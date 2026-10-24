@@ -2,20 +2,6 @@ import { create } from 'zustand';
 import type { SoundPack } from './sound';
 import { TRAINING_STYLES, TrainingStyle } from './levels';
 
-/** Picks black or white — whichever reads on the given accent hex.
- *  Uses perceived luminance (ITU-R BT.601 coefficients). Threshold
- *  tuned so mid-red (#d81f26) still gets white text. */
-function accentContrast(hex: string): string {
-  const h = hex.replace('#', '');
-  if (h.length !== 6) return '#fff';
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return '#fff';
-  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return lum > 0.6 ? '#000' : '#fff';
-}
-
 export type Language = 'en' | 'uk';
 export type ColorMode = 'auto' | 'white' | 'black';
 export type AnimationSpeed = 'instant' | 'fast' | 'normal' | 'slow';
@@ -132,8 +118,8 @@ type State = {
 const DEFAULT_SETTINGS: UserSettings = {
   focusMode: false,
   accentColor: '#d81f26',
-  boardTheme: 'blue',
-  pieceSet: 'maestro',
+  boardTheme: 'stone',
+  pieceSet: 'ember',
   soundEnabled: true,
   soundPack: 'wood',
   language: 'en',
@@ -158,8 +144,11 @@ export const useAppStore = create<State>((set) => ({
   setSettings: (patch) => set((s) => {
     const next = { ...s.settings, ...patch };
     if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty('--accent', next.accentColor);
-      document.documentElement.style.setProperty('--accent-contrast', accentContrast(next.accentColor));
+      // Ember on stone: the accent is fixed by the theme (globals.css);
+      // a stored custom accentColor is ignored. Clear any inline override
+      // left by an earlier session.
+      document.documentElement.style.removeProperty('--accent');
+      document.documentElement.style.removeProperty('--accent-contrast');
     }
     if (typeof window !== 'undefined') {
       // Persist the language choice so it carries across reloads and to the

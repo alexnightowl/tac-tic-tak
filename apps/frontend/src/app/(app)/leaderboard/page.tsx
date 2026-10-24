@@ -39,18 +39,18 @@ export default function LeaderboardPage() {
 
   return (
     <div className="space-y-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
-        <Trophy size={22} className="text-[var(--accent)]" />
+      <h1 className="text-[22px] text-eos-bone flex items-center gap-2">
+        <Trophy size={20} className="text-eos-ember" />
         {t('leaderboard.title')}
       </h1>
 
       <Segmented
         value={style}
         onChange={(v) => setStyle(v as TrainingStyle)}
-        options={TRAINING_STYLES.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
+        options={TRAINING_STYLES.map((s) => ({ value: s, label: t(`style.${s}.name`), icon: <StyleIcon style={s} size={18} /> }))}
       />
 
-      <div className="flex bg-black/30 rounded-xl p-1 gap-1 w-fit">
+      <div className="eos-well flex rounded-lg p-1 gap-1 w-fit">
         {([
           { k: 'global',  Icon: Globe2, label: t('leaderboard.scope_global') },
           { k: 'friends', Icon: Users2, label: t('leaderboard.scope_friends') },
@@ -59,8 +59,8 @@ export default function LeaderboardPage() {
             key={k}
             onClick={() => setScope(k)}
             className={cn(
-              'h-9 px-3 rounded-lg text-xs flex items-center gap-1.5 transition-colors',
-              scope === k ? 'bg-[var(--bg-softer)] text-white' : 'text-zinc-400 hover:text-white',
+              'h-8 px-3 rounded-control text-xs font-bold flex items-center gap-1.5 transition-colors',
+              scope === k ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]' : 'text-eos-ash hover:text-eos-bone',
             )}
           >
             <Icon size={12} /> {label}
@@ -87,15 +87,15 @@ export default function LeaderboardPage() {
 
 function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showStreak: boolean }) {
   const medal = row.rank <= 3
-    ? ['text-yellow-400', 'text-zinc-300', 'text-amber-600'][row.rank - 1]
+    ? ['text-[#d9b46a]', 'text-[#c8c2bd]', 'text-[#b07a52]'][row.rank - 1]
     : null;
 
   return (
     <Link
       href={`/profile/${row.user.nickname}`}
       className={cn(
-        'glass rounded-xl p-3 flex items-center gap-3 hover:bg-white/[0.06] transition-colors',
-        row.isSelf && 'ring-1 ring-[var(--accent)]/50 bg-[var(--accent)]/[0.08]',
+        'glass rounded-[10px] p-3 flex items-center gap-3 hover:brightness-110 transition-[filter]',
+        row.isSelf && 'shadow-[inset_0_0_0_1px_rgba(176,58,58,0.55)] !bg-[#2a2129]',
       )}
     >
       <div className="w-8 flex items-center justify-center">
@@ -123,8 +123,8 @@ function Row({ row, style, showStreak }: { row: Row; style: TrainingStyle; showS
         <StreakBadge days={row.streakDays} size="sm" />
       )}
       <div className="flex items-center gap-1.5">
-        <StyleIcon style={style} size={12} />
-        <span className="text-base font-semibold tabular-nums">{row.rating}</span>
+        <StyleIcon style={style} size={16} />
+        <span className="text-base font-extrabold tabular-nums">{row.rating}</span>
       </div>
     </Link>
   );

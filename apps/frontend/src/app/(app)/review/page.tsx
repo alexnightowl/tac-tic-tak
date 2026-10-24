@@ -33,7 +33,7 @@ export default function ReviewList() {
   return (
     <div className="space-y-4 max-w-3xl mx-auto">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{t('review.title')}</h1>
+        <h1 className="text-[22px] text-eos-bone">{t('review.title')}</h1>
         <p className="text-zinc-400 text-sm mt-1">{t('review.subtitle_themes')}</p>
       </div>
       {themes.isLoading && (

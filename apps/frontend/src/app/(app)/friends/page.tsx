@@ -60,7 +60,7 @@ export default function FriendsPage() {
 
   return (
     <div className="space-y-5 max-w-2xl">
-      <h1 className="text-2xl font-semibold tracking-tight">{t('friends.title')}</h1>
+      <h1 className="text-[22px] text-eos-bone">{t('friends.title')}</h1>
 
       <Card>
         <CardTitle>{t('friends.find')}</CardTitle>
@@ -90,7 +90,7 @@ export default function FriendsPage() {
                   </div>
                 </Link>
                 <button onClick={() => accept(r.id)}
-                  className="text-[11px] bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold rounded-lg px-2.5 py-1 flex items-center gap-1">
+                  className="text-[11px] btn-ember font-serif font-bold uppercase tracking-[0.08em] font-semibold rounded-lg px-2.5 py-1 flex items-center gap-1">
                   <Check size={12} /> {t('friends.accept')}
                 </button>
                 <button onClick={() => decline(r.id)}
@@ -163,7 +163,7 @@ export default function FriendsPage() {
                 </Link>
                 <button
                   onClick={() => remove(r.user.id)}
-                  className="text-[11px] text-zinc-400 hover:text-rose-300 flex items-center gap-1 px-2"
+                  className="text-[11px] text-zinc-400 hover:text-eos-rose flex items-center gap-1 px-2"
                   aria-label={t('friends.unfriend')}
                 >
                   <UserMinus size={14} />

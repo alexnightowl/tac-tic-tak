@@ -1,6 +1,5 @@
 'use client';
 
-import { Crown } from 'lucide-react';
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -46,17 +45,17 @@ export function TurnCard({
     <div className="glass rounded-2xl px-4 py-3 flex items-center gap-3">
       <div
         className={cn(
-          'h-10 w-10 rounded-xl flex items-center justify-center shrink-0 border',
-          isWhite
-            ? 'bg-white text-zinc-900 border-white/70'
-            : 'bg-zinc-900 text-zinc-100 border-zinc-700',
+          'h-11 w-11 rounded-full flex items-center justify-center shrink-0',
+          isWhite ? 'sq-marble' : 'sq-slate',
         )}
+        style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -2px 4px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.6)' }}
         aria-hidden
       >
-        <Crown size={20} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={isWhite ? '/design/pieces/wK.png' : '/design/pieces/bK.png'} alt="" className="h-9 w-9" draggable={false} />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-[15px] font-semibold leading-tight truncate">{title}</div>
+        <div className="font-serif text-[15px] font-bold tracking-[0.03em] leading-tight truncate">{title}</div>
         {subtitle && (
           <div className="text-xs text-zinc-400 mt-0.5 truncate">{subtitle}</div>
         )}
@@ -67,8 +66,8 @@ export function TurnCard({
           className={cn(
             'text-[12px] font-semibold px-2 py-1 rounded-full whitespace-nowrap shrink-0 tabular-nums transition-opacity duration-500',
             showBroken
-              ? 'bg-rose-500/15 text-rose-300 line-through opacity-100'
-              : 'bg-amber-500/15 text-amber-300 opacity-100',
+              ? 'bg-[rgba(176,58,58,0.15)] text-eos-rose line-through opacity-100'
+              : 'bg-[rgba(176,58,58,0.16)] text-[#e07d76] opacity-100',
           )}
           aria-hidden
         >

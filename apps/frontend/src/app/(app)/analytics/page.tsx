@@ -56,10 +56,10 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-baseline justify-between gap-2 flex-wrap">
-        <h1 className="text-2xl font-semibold tracking-tight">{t('stats.title')}</h1>
+        <h1 className="text-[22px] text-eos-bone">{t('stats.title')}</h1>
       </div>
 
-      <div className="flex gap-1 bg-black/30 rounded-xl p-1 w-fit">
+      <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)] w-fit">
         {([
           { k: 'stats',        label: t('stats.tab_stats') },
           { k: 'achievements', label: t('stats.tab_achievements') },
@@ -68,8 +68,10 @@ export default function AnalyticsPage() {
             key={k}
             onClick={() => setTab(k)}
             className={cn(
-              'h-9 px-3 rounded-lg text-sm transition-colors',
-              tab === k ? 'bg-[var(--bg-softer)] text-white' : 'text-zinc-400 hover:text-white',
+              'h-9 px-3 rounded-lg text-sm font-bold transition-colors',
+              tab === k
+                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]'
+                : 'text-eos-dust hover:text-eos-bone',
             )}
           >
             {label}
@@ -167,7 +169,7 @@ function StatsTab({ filter, onFilterChange, language, t }: {
             value: s,
             label: (
               <span className="inline-flex items-center gap-1.5">
-                <StyleIcon style={s} size={13} colored={filter !== s} />
+                <StyleIcon style={s} size={16} />
                 {t(`style.${s}.name`)}
               </span>
             ),
@@ -287,7 +289,7 @@ function ThemesList({
     <div>
       <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
         <h2 className="text-lg font-medium">{t('stats.theme_list')}</h2>
-        <div className="flex gap-1 bg-black/30 rounded-xl p-1">
+        <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]">
           {([
             { k: 'weakest',   label: t('stats.themes_tab_weakest') },
             { k: 'strongest', label: t('stats.themes_tab_strongest') },
@@ -297,8 +299,10 @@ function ThemesList({
               key={k}
               onClick={() => setTab(k)}
               className={cn(
-                'h-8 px-3 rounded-lg text-xs transition-colors',
-                tab === k ? 'bg-[var(--bg-softer)] text-white' : 'text-zinc-400 hover:text-white',
+                'h-8 px-3 rounded-lg text-xs font-bold transition-colors',
+                tab === k
+                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]'
+                : 'text-eos-dust hover:text-eos-bone',
               )}
             >
               {label}
@@ -323,8 +327,8 @@ function ThemeRowCard({ row, language }: { row: ThemeRow; language: 'en' | 'uk' 
   const w = Math.max(0, Math.min(1, row.weakness));
   // Rose for weak, amber for mid, emerald for strong — colour communicates
   // direction at a glance; the bar width still encodes magnitude.
-  const barColor = w >= 0.66 ? 'bg-rose-500/80' : w >= 0.33 ? 'bg-amber-500/80' : 'bg-emerald-500/80';
-  const iconTint = w >= 0.66 ? 'text-rose-300' : w >= 0.33 ? 'text-amber-300' : 'text-emerald-300';
+  const barColor = w >= 0.66 ? 'bg-[rgba(176,58,58,0.8)]' : w >= 0.33 ? 'bg-[#a8865a]' : 'bg-[rgba(142,163,138,0.8)]';
+  const iconTint = w >= 0.66 ? 'text-eos-rose' : w >= 0.33 ? 'text-amber-300' : 'text-eos-sage';
   return (
     <Card className="flex items-center gap-3">
       <div className={cn('h-10 w-10 rounded-xl bg-[var(--bg-softer)] flex items-center justify-center shrink-0', iconTint)}>

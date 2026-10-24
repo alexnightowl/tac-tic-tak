@@ -35,21 +35,22 @@ function ToastCard({ t }: { t: T }) {
     <div
       className={cn(
         'pointer-events-auto glass rounded-2xl px-3 py-3 shadow-2xl flex items-start gap-3',
-        'border border-amber-300/30',
+        'border border-[rgba(176,58,58,0.35)]',
         'animate-[slideInRight_220ms_ease-out]',
       )}
     >
       <div
         className="h-10 w-10 rounded-xl shrink-0 flex items-center justify-center"
         style={{
-          background: 'linear-gradient(135deg, #fde68a 0%, #f59e0b 60%, #d97706 100%)',
+          background: 'linear-gradient(160deg, #c24a44 0%, #8f2d2f 100%)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.3)',
         }}
         aria-hidden
       >
-        <Icon size={20} className="text-amber-950" />
+        <Icon size={20} className="text-[#f3ece4]" />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-[11px] uppercase tracking-wider text-amber-300 leading-none">
+        <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-eos-rose leading-none">
           {t.tone === 'achievement' ? 'Achievement' : 'Notice'}
         </div>
         <div className="text-sm font-semibold text-white mt-1 truncate">{t.title}</div>

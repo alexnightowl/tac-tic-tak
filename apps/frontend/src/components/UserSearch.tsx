@@ -112,7 +112,7 @@ function FriendAction({ row, onAdd }: { row: SearchResult; onAdd: () => void }) 
       return null;
     case 'friends':
       return (
-        <span className="text-[11px] text-emerald-300 flex items-center gap-1">
+        <span className="text-[11px] text-eos-sage flex items-center gap-1">
           <Check size={12} /> Friends
         </span>
       );
@@ -126,7 +126,7 @@ function FriendAction({ row, onAdd }: { row: SearchResult; onAdd: () => void }) 
       return (
         <button
           onClick={onAdd}
-          className="text-[11px] bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold rounded-lg px-2 py-1 flex items-center gap-1"
+          className="text-[11px] btn-ember font-serif font-bold uppercase tracking-[0.08em] font-semibold rounded-lg px-2 py-1 flex items-center gap-1"
         >
           <Check size={12} /> Accept
         </button>

@@ -420,7 +420,7 @@ function UserRow({
                 admin
               </span>
             )}
-            {u.verified && <span title="Verified" className="text-emerald-400 text-xs">✓</span>}
+            {u.verified && <span title="Verified" className="text-eos-sage text-xs">✓</span>}
           </div>
           <Link
             href={`/profile/${u.nickname}`}
@@ -473,8 +473,8 @@ function UserRow({
           <Button variant="ghost" size="sm" onClick={() => { setResetting(false); setPw(''); setErr(null); setOk(false); }}>
             Cancel
           </Button>
-          {err && <span className="text-xs text-red-400">{err}</span>}
-          {ok && <span className="text-xs text-emerald-400">Password set.</span>}
+          {err && <span className="text-xs text-eos-rose">{err}</span>}
+          {ok && <span className="text-xs text-eos-sage">Password set.</span>}
         </div>
       )}
     </div>

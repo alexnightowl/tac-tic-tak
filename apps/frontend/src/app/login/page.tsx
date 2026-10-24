@@ -67,11 +67,12 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-dvh flex items-center justify-center px-6">
-      <form onSubmit={submit} className="w-full max-w-sm space-y-5 glass rounded-3xl p-7">
-        <div className="flex flex-col items-center gap-2">
-          <Logo size={44} />
-          <h1 className="text-2xl font-semibold mt-1">{t('auth.login')}</h1>
+    <main className="min-h-dvh flex items-center justify-center px-6 py-10">
+      <form onSubmit={submit} className="w-full max-w-sm space-y-5">
+        <div className="flex flex-col items-center text-center pb-3">
+          <Logo size={128} glow />
+          <h1 className="mt-5 text-[30px] leading-9 tracking-[0.05em] text-eos-bone">tac·tic·tak</h1>
+          <p className="mt-1.5 text-sm text-eos-ash">{t('auth.login')}</p>
         </div>
         <Input
           placeholder={t('auth.nickname')}
@@ -88,12 +89,12 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"
         />
-        {err && <p className="text-sm text-red-400">{err}</p>}
+        {err && <p className="text-sm text-eos-rose">{err}</p>}
         <Button type="submit" className="w-full" size="lg" disabled={loading}>
           {loading ? t('auth.logging_in') : t('auth.login')}
         </Button>
         <p className="text-sm text-center text-zinc-400">
-          {t('auth.no_account')} <Link href="/register" className="text-[var(--accent)]">{t('auth.create_account')}</Link>
+          {t('auth.no_account')} <Link href="/register" className="font-bold text-eos-bone underline decoration-eos-ember underline-offset-4">{t('auth.create_account')}</Link>
         </p>
       </form>
     </main>

@@ -122,7 +122,7 @@ function ActionBtn({ onClick, icon, label, variant, disabled, busy, hint }: {
       className={cn(
         'h-9 px-3 rounded-lg text-xs flex items-center gap-1.5 disabled:opacity-60',
         variant === 'primary'
-          ? 'bg-[var(--accent)] text-[var(--accent-contrast)] font-semibold hover:brightness-110'
+          ? 'btn-ember font-serif font-bold uppercase tracking-[0.08em] font-semibold hover:brightness-110'
           : 'bg-white/5 border border-[var(--border)] hover:bg-white/10',
       )}
     >

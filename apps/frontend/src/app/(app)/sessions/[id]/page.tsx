@@ -94,11 +94,11 @@ export default function SessionDetail() {
       <div className="grid grid-cols-2 gap-3">
         <Card className="flex items-center justify-between">
           <CardTitle className="mb-0">{language === 'uk' ? 'Розвʼязано' : 'Solved'}</CardTitle>
-          <span className="text-2xl font-semibold text-emerald-300">{data.solved}</span>
+          <span className="text-2xl font-semibold text-eos-sage">{data.solved}</span>
         </Card>
         <Card className="flex items-center justify-between">
           <CardTitle className="mb-0">{language === 'uk' ? 'Провалено' : 'Failed'}</CardTitle>
-          <span className="text-2xl font-semibold text-rose-300">{data.failed}</span>
+          <span className="text-2xl font-semibold text-eos-rose">{data.failed}</span>
         </Card>
       </div>
 
@@ -118,7 +118,7 @@ export default function SessionDetail() {
               <div className="w-6 text-xs text-zinc-500 tabular-nums">{i + 1}</div>
               <div className={cn(
                 'h-7 w-7 rounded-full flex items-center justify-center shrink-0',
-                a.correct ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300',
+                a.correct ? 'bg-[rgba(142,163,138,0.2)] text-eos-sage' : 'bg-[rgba(176,58,58,0.2)] text-eos-rose',
               )}>
                 {a.correct ? <Check size={14} /> : <X size={14} />}
               </div>
@@ -156,7 +156,7 @@ function SessionReviewCta({ sessionId, language }: { sessionId: string; language
     >
       <div className="text-sm font-semibold">{heading}</div>
       <div className="text-xs text-zinc-400 mt-0.5">{hint}</div>
-      <div className="mt-3 inline-flex items-center h-9 px-4 rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)] text-xs font-semibold">
+      <div className="mt-3 inline-flex items-center h-9 px-4 rounded-lg btn-ember font-serif font-bold uppercase tracking-[0.08em] text-xs font-semibold">
         {cta}
       </div>
     </a>

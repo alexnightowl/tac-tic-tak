@@ -146,7 +146,7 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
       {/* Delete action — hidden at rest, fades in as the swipe progresses. */}
       {canDelete && (
         <button
-          className="absolute inset-y-0 right-0 w-[88px] bg-red-500/90 text-white text-xs flex flex-col items-center justify-center gap-1"
+          className="absolute inset-y-0 right-0 w-[88px] bg-eos-ember text-[#f3ece4] text-xs flex flex-col items-center justify-center gap-1"
           onClick={() => setConfirming(true)}
           aria-label={language === 'uk' ? 'Видалити' : 'Delete'}
           style={{
@@ -183,7 +183,12 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
         onClick={(e) => { if (dx !== 0) { e.preventDefault(); reset(); } }}
       >
         <div className="p-3 flex items-center gap-3">
-          <div className="flex flex-col items-center justify-center w-14 shrink-0">
+          {s.style && isTrainingStyle(s.style) && (
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-eos-rise">
+              <StyleIcon style={s.style} size={18} className="text-eos-ash" />
+            </span>
+          )}
+          <div className="flex flex-col items-center justify-center w-12 shrink-0">
             <div className="text-[11px] text-zinc-500 leading-none">{time}</div>
             <div className="text-lg font-semibold tabular-nums leading-tight mt-1">{s.solved}</div>
             <div className="text-[10px] text-zinc-500 leading-none">solved</div>
@@ -194,20 +199,17 @@ function SessionRowCard({ s, onDelete, language }: { s: SessionRow; onDelete?: (
               <ChevronRight size={12} className="text-zinc-600" />
               <span className={cn(
                 'tabular-nums font-semibold',
-                delta > 0 ? 'text-emerald-300' : delta < 0 ? 'text-rose-300' : 'text-white',
+                delta > 0 ? 'text-eos-sage' : delta < 0 ? 'text-eos-rose' : 'text-white',
               )}>{s.peakRating}</span>
               <span className={cn(
                 'text-xs flex items-center',
-                delta > 0 ? 'text-emerald-400' : delta < 0 ? 'text-rose-400' : 'text-zinc-500',
+                delta > 0 ? 'text-eos-sage' : delta < 0 ? 'text-eos-rose' : 'text-zinc-500',
               )}>
                 {delta > 0 ? <ArrowUpRight size={12} /> : delta < 0 ? <ArrowDownRight size={12} /> : null}
                 {delta !== 0 && <span className="ml-0.5 tabular-nums">{delta > 0 ? '+' : ''}{delta}</span>}
               </span>
             </div>
             <div className="text-[11px] text-zinc-500 mt-0.5 flex items-center gap-1.5 min-w-0">
-              {s.style && isTrainingStyle(s.style) && (
-                <StyleIcon style={s.style} size={11} className="shrink-0" />
-              )}
               <span className="truncate">
                 {mode} · {Math.round(s.accuracy * 100)}% · {fmtResponseTime(s.avgResponseMs)} · {Math.round(s.durationSec / 60)}m
               </span>
@@ -246,7 +248,7 @@ function ConfirmDelete({ onConfirm, onCancel, language }: { onConfirm: () => voi
           <button onClick={onCancel} className="flex-1 h-11 rounded-xl border border-[var(--border)] text-sm">
             {language === 'uk' ? 'Скасувати' : 'Cancel'}
           </button>
-          <button onClick={onConfirm} className="flex-1 h-11 rounded-xl bg-red-500/90 text-white text-sm font-medium">
+          <button onClick={onConfirm} className="flex-1 h-11 rounded-xl bg-eos-ember text-[#f3ece4] text-sm font-medium">
             {language === 'uk' ? 'Видалити' : 'Delete'}
           </button>
         </div>

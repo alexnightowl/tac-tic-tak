@@ -107,15 +107,17 @@ export function ThemePicker({ value, onChange }: Props) {
 
   return (
     <div className="space-y-3">
-      <div className="flex gap-1 bg-black/30 rounded-xl p-1">
+      <div className="flex gap-1 rounded-xl p-1 bg-black/25 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]">
         {tabs.map(({ k, label }) => (
           <button
             key={k}
             type="button"
             onClick={() => setTab(k)}
             className={cn(
-              'flex-1 h-8 px-2 rounded-lg text-xs transition-colors',
-              tab === k ? 'bg-[var(--bg-softer)] text-white' : 'text-zinc-400 hover:text-white',
+              'flex-1 h-8 px-2 rounded-lg text-xs font-bold transition-colors',
+              tab === k
+                ? 'bg-eos-rise text-eos-bone shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]'
+                : 'text-eos-dust hover:text-eos-bone',
             )}
           >
             {label}
@@ -124,22 +126,22 @@ export function ThemePicker({ value, onChange }: Props) {
       </div>
 
       <div className="relative">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-eos-dust pointer-events-none" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('play.search_themes')}
-          className="w-full h-9 rounded-lg bg-white/5 border border-[var(--border-soft)] pl-9 pr-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[var(--accent)]"
+          className="eos-well w-full h-10 rounded-lg pl-9 pr-3 text-sm text-eos-bone placeholder:text-eos-dust focus:outline-none focus:ring-1 focus:ring-eos-ember/60"
         />
       </div>
 
       {emptyStats ? (
-        <p className="text-xs text-zinc-500 py-6 text-center">
+        <p className="text-xs text-eos-dust py-6 text-center">
           {t('play.themes_no_stats')}
         </p>
       ) : items.length === 0 ? (
-        <p className="text-xs text-zinc-500 py-6 text-center">{t('play.no_themes_match')}</p>
+        <p className="text-xs text-eos-dust py-6 text-center">{t('play.no_themes_match')}</p>
       ) : (
         <ul className="flex flex-col gap-1 max-h-[360px] overflow-y-auto pr-1">
           {items.map(({ slug, row }) => (
@@ -182,12 +184,12 @@ function ThemeRow({
   if (row) {
     if (metric === 'weakest') {
       const pct = Math.round(row.failureRate * 100);
-      const tint = pct >= 50 ? 'text-rose-300' : pct >= 25 ? 'text-amber-300' : 'text-emerald-300';
+      const tint = pct >= 50 ? 'text-eos-rose' : pct >= 25 ? 'text-[#d9b46a]' : 'text-eos-sage';
       stat = { text: `${pct}%`, tint, Icon: XCircle };
     } else if (metric === 'popular') {
-      stat = { text: `${row.attempts}`, tint: 'text-zinc-400', Icon: Repeat };
+      stat = { text: `${row.attempts}`, tint: 'text-eos-dust', Icon: Repeat };
     } else if (row.rating > 0) {
-      stat = { text: `${row.rating}`, tint: 'text-zinc-400', Icon: Target };
+      stat = { text: `${row.rating}`, tint: 'text-eos-dust', Icon: Target };
     }
   }
 
@@ -197,22 +199,22 @@ function ThemeRow({
         type="button"
         onClick={onPick}
         className={cn(
-          'w-full h-12 flex items-center gap-3 rounded-lg border px-3 text-left transition-colors',
+          'w-full h-12 flex items-center gap-3 rounded-lg px-3 text-left transition-colors',
           active
-            ? 'border-[var(--accent)] bg-[var(--accent)]/10'
-            : 'border-[var(--border)] bg-white/[0.03] hover:bg-white/[0.06]',
+            ? 'bg-[rgba(176,58,58,0.16)] shadow-[inset_0_0_0_1px_rgba(176,58,58,0.55)]'
+            : 'bg-[#2a282f] shadow-[inset_0_0_0_1px_rgba(228,222,213,0.06)] hover:bg-[#312e36]',
         )}
         aria-pressed={active}
       >
         <div className={cn(
           'h-7 w-7 rounded-md flex items-center justify-center shrink-0',
-          active ? 'bg-[var(--accent)]/20 text-[var(--accent)]' : 'bg-[var(--bg-softer)] text-zinc-300',
+          active ? 'bg-eos-ember text-[#f3ece4]' : 'bg-eos-rise text-eos-ash',
         )}>
           <Icon size={16} strokeWidth={1.75} />
         </div>
         <span className={cn(
           'flex-1 min-w-0 truncate text-sm',
-          active ? 'text-white font-medium' : 'text-zinc-200',
+          active ? 'text-eos-bone font-bold' : 'text-eos-bone/90',
         )}>
           {label}
         </span>

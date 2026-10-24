@@ -1,24 +1,16 @@
 'use client';
 
 import { useCallback, useMemo, useRef } from 'react';
-import { Lock, Sprout, Flame, Swords, Shield, Crown } from 'lucide-react';
-import { Band, DIFFICULTY_BANDS } from '@/lib/levels';
+import { Lock } from 'lucide-react';
+import { Band, BAND_ICON, DIFFICULTY_BANDS } from '@/lib/levels';
 import { cn } from '@/lib/utils';
-
-const BAND_ICONS: Record<Band['key'], typeof Sprout> = {
-  novice: Sprout,
-  beginner: Flame,
-  intermediate: Swords,
-  advanced: Shield,
-  expert: Crown,
-};
 
 type Props = {
   value: number;
   onChange: (v: number) => void;
   /** Visual floor of the track (default 400). */
   min?: number;
-  /** Visual ceiling of the track (default 2600). */
+  /** Visual ceiling of the track (default 3000 — top of the last band). */
   max?: number;
   /** Thumb can't go past this value. The region beyond is rendered locked. */
   cap: number;
@@ -32,14 +24,16 @@ type Props = {
 };
 
 export function DifficultySlider({
-  value, onChange, min = 400, max = 2600, cap, step = 25,
+  value, onChange, min = 400, max = 3000, cap, step = 25,
   labels, currentRating, thumbLabel, currentLabel, ariaLabel,
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
 
-  const gradient = useMemo(() => buildGradient(min, max), [min, max]);
-  const pct = (v: number) => ((v - min) / (max - min)) * 100;
+  // Piecewise scale: every band gets an equal slice of the track, so the
+  // thumb always sits above its eye in the 5-column row below.
+  const edges = useMemo(() => bandEdges(min, max), [min, max]);
+  const pct = (v: number) => valueToPct(v, edges);
   const valuePct = clampPct(pct(value));
   const capPct = clampPct(pct(cap));
   const currentPct = currentRating != null ? clampPct(pct(currentRating)) : null;
@@ -49,11 +43,11 @@ export function DifficultySlider({
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-    const raw = min + ratio * (max - min);
+    const raw = pctToValue(ratio * 100, edges);
     const snapped = Math.round(raw / step) * step;
     const capped = Math.min(cap, Math.max(min, snapped));
     onChange(capped);
-  }, [min, max, cap, step, onChange]);
+  }, [cap, step, min, onChange, edges]);
 
   const onPointerDown = (e: React.PointerEvent) => {
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
@@ -94,10 +88,15 @@ export function DifficultySlider({
         className="relative h-9 cursor-pointer touch-none outline-none"
         style={{ touchAction: 'none' }}
       >
-        {/* Gradient track */}
+        {/* Carved track */}
         <div
-          className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-2 rounded-full"
-          style={{ background: gradient }}
+          className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-eos-well"
+          style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.7)' }}
+        />
+        {/* Ember fill */}
+        <div
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full"
+          style={{ width: `${valuePct}%`, background: 'linear-gradient(90deg, #7a2a2c, #b03a3a)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}
         />
 
         {/* Locked region overlay (beyond cap) */}
@@ -115,7 +114,7 @@ export function DifficultySlider({
         {/* Lock marker at the cap */}
         {capPct < 100 && (
           <div
-            className="absolute top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-zinc-900 border border-zinc-600 flex items-center justify-center"
+            className="absolute top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-eos-well border border-eos-seam flex items-center justify-center"
             style={{ left: `calc(${capPct}% - 10px)` }}
             aria-hidden
           >
@@ -126,7 +125,7 @@ export function DifficultySlider({
         {/* "You are here" marker */}
         {currentPct != null && Math.abs(currentPct - valuePct) > 1 && (
           <div
-            className="absolute top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-white/80 shadow"
+            className="absolute top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-eos-bone/80 shadow"
             style={{ left: `calc(${currentPct}% - 1.5px)` }}
             aria-hidden
             title={currentLabel}
@@ -135,34 +134,35 @@ export function DifficultySlider({
 
         {/* Thumb */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-white border-2 flex items-center justify-center shadow-lg transition-[border-color,box-shadow] duration-150"
+          className="absolute top-1/2 -translate-y-1/2 h-6 w-6 rounded-full"
           style={{
             left: `calc(${valuePct}% - 12px)`,
-            borderColor: bandColor(value),
-            boxShadow: `0 0 0 6px ${bandGlow(value)}`,
+            background: 'radial-gradient(circle at 40% 32%, #f3ece4, #c8c2bd 60%, #8f8a8e)',
+            boxShadow: '0 0 0 4px rgba(176,58,58,0.25), 0 2px 6px rgba(0,0,0,0.6)',
           }}
         />
       </div>
 
-      {/* Band icons under the track — full text label is shown above the thumb */}
-      <div className="relative h-5 mt-1.5">
+      {/* Band eyes — five equal columns under the track */}
+      <div className="grid grid-cols-5 mt-2">
         {DIFFICULTY_BANDS.map((b) => {
-          const start = clampPct(pct(Math.max(b.min, min)));
-          const end = clampPct(pct(Math.min(b.max, max)));
-          const mid = (start + end) / 2;
-          if (end <= start + 1) return null;
-          const Icon = BAND_ICONS[b.key];
           const active = value >= b.min && value < b.max;
+          const locked = b.min > cap;
           return (
-            <div
+            <button
+              type="button"
               key={b.key}
-              className="absolute -translate-x-1/2 transition-opacity"
-              style={{ left: `${mid}%`, color: b.color, opacity: active ? 1 : 0.55 }}
+              disabled={locked}
+              className="justify-self-center grid place-items-center h-8 w-8 rounded-full transition-[opacity,transform] duration-150 disabled:cursor-not-allowed"
+              style={{ opacity: active ? 1 : locked ? 0.25 : 0.5, transform: active ? 'scale(1.15)' : undefined }}
               title={labels[b.key]}
               aria-label={labels[b.key]}
+              aria-pressed={active}
+              onClick={() => onChange(Math.min(cap, Math.max(min, Math.round(((Math.max(b.min, min) + Math.min(b.max, max)) / 2) / step) * step)))}
             >
-              <Icon size={14} strokeWidth={active ? 2.4 : 1.8} />
-            </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={BAND_ICON[b.key]} alt="" width={24} height={24} className="block h-6 w-6" draggable={false} />
+            </button>
           );
         })}
       </div>
@@ -172,8 +172,8 @@ export function DifficultySlider({
         {[min, cap].map((t, i) => (
           <div
             key={`${t}-${i}`}
-            className="absolute -translate-x-1/2 text-[10px] text-zinc-500 tabular-nums"
-            style={{ left: `${clampPct(pct(t))}%` }}
+            className="absolute text-[10px] font-bold text-eos-dust tabular-nums"
+            style={{ left: `${clampPct(pct(t))}%`, transform: `translateX(-${clampPct(pct(t))}%)` }}
           >
             {t}
           </div>
@@ -188,23 +188,24 @@ function clampPct(v: number) {
   return Math.min(100, Math.max(0, v));
 }
 
-function bandColor(rating: number) {
-  for (const b of DIFFICULTY_BANDS) if (rating >= b.min && rating < b.max) return b.color;
-  return DIFFICULTY_BANDS[DIFFICULTY_BANDS.length - 1].color;
+function bandEdges(min: number, max: number): number[] {
+  const inner = DIFFICULTY_BANDS.map((b) => b.min).filter((v) => v > min && v < max);
+  return [min, ...inner, max];
 }
 
-function bandGlow(rating: number) {
-  for (const b of DIFFICULTY_BANDS) if (rating >= b.min && rating < b.max) return b.glow;
-  return DIFFICULTY_BANDS[DIFFICULTY_BANDS.length - 1].glow;
-}
-
-function buildGradient(min: number, max: number): string {
-  const stops: string[] = [];
-  for (const b of DIFFICULTY_BANDS) {
-    const s = Math.max(0, ((b.min - min) / (max - min)) * 100);
-    const e = Math.min(100, ((b.max - min) / (max - min)) * 100);
-    if (e <= 0 || s >= 100) continue;
-    stops.push(`${b.color} ${s}%`, `${b.color} ${e}%`);
+function valueToPct(v: number, e: number[]): number {
+  const n = e.length - 1;
+  if (v <= e[0]) return 0;
+  if (v >= e[n]) return 100;
+  for (let i = 0; i < n; i++) {
+    if (v < e[i + 1]) return ((i + (v - e[i]) / (e[i + 1] - e[i])) / n) * 100;
   }
-  return `linear-gradient(90deg, ${stops.join(', ')})`;
+  return 100;
+}
+
+function pctToValue(p: number, e: number[]): number {
+  const n = e.length - 1;
+  const x = (Math.min(100, Math.max(0, p)) / 100) * n;
+  const i = Math.min(n - 1, Math.floor(x));
+  return e[i] + (x - i) * (e[i + 1] - e[i]);
 }

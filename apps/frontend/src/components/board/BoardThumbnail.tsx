@@ -3,7 +3,7 @@
 import { Chess } from 'chess.js';
 import { useMemo } from 'react';
 import { BOARD_THEMES, BoardTheme } from '@/lib/themes';
-import { pieceUrl } from '@/lib/pieces';
+import { pieceUrl, pieceTransform } from '@/lib/pieces';
 
 type Props = {
   fen: string;
@@ -22,7 +22,9 @@ type Props = {
  * squares with piece sprites overlaid — no interactivity, safe to render
  * many of on a list page.
  */
-export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, theme = 'green', pieceSet = 'maestro', className }: Props) {
+export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, theme: _theme = 'stone', pieceSet: _pieceSet = 'ember', className }: Props) {
+  void _theme; void _pieceSet;
+  const pieceSet = 'ember';
   const { board, orientation } = useMemo(() => {
     const chess = new Chess(fen);
     if (setupMove) {
@@ -32,27 +34,27 @@ export function BoardThumbnail({ fen, setupMove, autoOrient = true, size = 120, 
     return { board: chess.board(), orientation: autoOrient && playerColor === 'b' ? 'black' : 'white' as 'white' | 'black' };
   }, [fen, setupMove, autoOrient]);
 
-  const colors = BOARD_THEMES[theme] ?? BOARD_THEMES.green;
+  const colors = BOARD_THEMES.stone;
   const rows = orientation === 'white' ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];
   const cols = orientation === 'white' ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];
 
   return (
     <div
       className={className}
-      style={{ width: size, height: size, display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gridTemplateRows: 'repeat(8, 1fr)', borderRadius: 8, overflow: 'hidden' }}
+      style={{ width: size, height: size, display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gridTemplateRows: 'repeat(8, 1fr)', borderRadius: 6, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,0.06)' }}
     >
       {rows.map((r) =>
         cols.map((c) => {
           const cell = board[r]?.[c];
           const isLight = (r + c) % 2 === 0;
           return (
-            <div key={`${r}-${c}`} style={{ background: isLight ? colors.light : colors.dark, position: 'relative' }}>
+            <div key={`${r}-${c}`} className={isLight ? 'sq-marble' : 'sq-slate'} style={{ backgroundColor: isLight ? colors.light : colors.dark, backgroundPosition: ['0% 0%', '100% 0%', '0% 100%', '100% 100%', '50% 50%'][(r * 3 + c * 5) % 5], position: 'relative' }}>
               {cell && (
                 <img
                   src={pieceUrl(pieceSet, cell.color, cell.type as any)}
                   alt=""
                   draggable={false}
-                  style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4%' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', transformOrigin: '50% 94%', transform: pieceTransform(pieceSet, cell.type as any) }}
                 />
               )}
             </div>

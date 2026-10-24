@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Swords } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { http } from '@/lib/api';
 import { useAppStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
@@ -17,7 +17,7 @@ import { StyleIcon } from '@/components/StyleIcon';
 import { ThemePicker } from '@/components/ThemePicker';
 import { stashFirstPuzzle, type FirstPuzzlePayload } from '@/lib/pending-puzzle';
 import {
-  bandFor, solvedTarget,
+  bandFor, solvedTarget, BAND_ICON,
   STYLE_FORMULAS, TrainingStyle, TRAINING_STYLES, isTrainingStyle,
   DEFAULT_STYLE, UNLOCK_REWARD, CALIBRATION_SESSIONS,
 } from '@/lib/levels';
@@ -191,22 +191,22 @@ export default function PlaySetup() {
   const ctaDisabled = loading || customInvalid || (mode === 'theme' && !theme);
   const ctaButton = (
     <Button
-      className="w-full shadow-[0_10px_30px_-8px_color-mix(in_srgb,var(--accent)_55%,transparent),0_-2px_12px_-6px_rgba(0,0,0,0.45)]"
+      className="w-full"
       size="lg"
       onClick={start}
       disabled={ctaDisabled}
     >
-      <Swords size={18} /> {loading ? t('play.starting') : t('play.start')}
+      <Play size={18} /> {loading ? t('play.starting') : t('play.start')}
     </Button>
   );
 
   return (
     <div className="max-w-md mx-auto space-y-5 pb-12 md:pb-0">
-      <h1 className="text-2xl font-semibold tracking-tight">{t('play.new_session')}</h1>
+      <h1 className="text-center text-[20px] text-eos-bone">{t('play.new_session')}</h1>
 
       <Card className="space-y-6">
         <section>
-          <div className="text-sm text-zinc-300 mb-2">{t('play.style')}</div>
+          <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash mb-2.5">{t('play.style')}</div>
           <Segmented
             value={style}
             onChange={(v) => setStyle(v as TrainingStyle)}
@@ -218,14 +218,15 @@ export default function PlaySetup() {
                 value: s,
                 label: (
                   <span className="inline-flex items-center gap-1.5">
+                    <StyleIcon style={s} size={18} />
                     {t(`style.${s}.name`)}
                     {calibrating && (
                       <span
                         className={cn(
                           'inline-flex items-center gap-0.5 text-[10px] font-semibold leading-none rounded-full px-1.5 py-0.5 tabular-nums',
                           s === style
-                            ? 'bg-black/15 text-[var(--accent-contrast)]/85'
-                            : 'bg-amber-400/15 text-amber-200',
+                            ? 'bg-black/20 text-[#f3ece4]/85'
+                            : 'bg-[rgba(217,180,106,0.15)] text-[#d9b46a]',
                         )}
                         aria-label={t('play.calibration_progress_aria')
                           .replace('{done}', String(done))
@@ -244,23 +245,22 @@ export default function PlaySetup() {
 
         <section>
           <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-zinc-300">
+            <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash">
               {t(`style.${style}.rating_label`)}
             </div>
             <div className="flex items-baseline gap-2">
-              <span
-                className="text-[10px] uppercase tracking-wider font-medium"
-                style={{ color: selectedBand.color }}
-              >
+              <span className="inline-flex items-center gap-1.5 self-center text-[10px] uppercase tracking-[0.12em] font-bold text-eos-ash">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={BAND_ICON[selectedBand.key]} alt="" width={18} height={18} className="h-[18px] w-[18px]" />
                 {bandLabels[selectedBand.key]}
               </span>
               <span
-                className="tabular-nums text-lg font-semibold text-white"
+                className="tabular-nums text-[22px] font-extrabold text-eos-bone"
                 title={provisional ? t('play.rating_provisional') : undefined}
               >
                 {startRating}
                 {provisional && (
-                  <span className="text-amber-300 ml-0.5">
+                  <span className="text-[#d9b46a] ml-0.5">
                     ?
                   </span>
                 )}
@@ -272,7 +272,7 @@ export default function PlaySetup() {
               window closes. The slider stays visible in theme mode
               (unrated practice — any rating is fine). */}
           {provisional && mode !== 'theme' ? (
-            <p className="text-xs text-amber-300/80 mt-2 leading-snug">
+            <p className="text-xs text-[#d9b46a]/80 mt-2 leading-snug">
               {t('play.calibration_per_style')
                 .replace('{done}', String(CALIBRATION_SESSIONS - styleProgression.calibrationSessionsLeft))
                 .replace('{total}', String(CALIBRATION_SESSIONS))
@@ -300,7 +300,7 @@ export default function PlaySetup() {
                 )}
               </p>
               {showComfortNotice && (
-                <p className="text-xs text-amber-300/80 mt-2 leading-snug">
+                <p className="text-xs text-[#d9b46a]/80 mt-2 leading-snug">
                   {t('play.comfort_notice').replace('{floor}', String(peakFloor))}
                 </p>
               )}
@@ -309,7 +309,7 @@ export default function PlaySetup() {
         </section>
 
         <section>
-          <div className="text-sm text-zinc-300 mb-2">{t('play.duration')}</div>
+          <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash mb-2.5">{t('play.duration')}</div>
           <Segmented
             value={customDuration ? 'custom' : String(duration)}
             onChange={(v) => {
@@ -349,7 +349,7 @@ export default function PlaySetup() {
         </section>
 
         <section>
-          <div className="text-sm text-zinc-300 mb-2">{t('play.mode')}</div>
+          <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash mb-2.5">{t('play.mode')}</div>
           <Segmented
             value={mode}
             onChange={setMode}
@@ -385,7 +385,7 @@ export default function PlaySetup() {
           <ThemePracticeNote t={t} />
         )}
 
-        {err && <p className="text-sm text-red-400">{err}</p>}
+        {err && <p className="text-sm text-eos-rose">{err}</p>}
 
         {/* Desktop CTA — inline at the end of the Card. Mobile gets a
             full-width fixed bar below; this branch is hidden on phones
@@ -503,7 +503,7 @@ function CalibrationPreview({ done, total, style, t }: {
           {t('calibration.preview_title')}
         </div>
         <div className="tabular-nums text-sm text-zinc-300">
-          <span className="text-amber-300 font-semibold">{done}</span>
+          <span className="text-[#d9b46a] font-semibold">{done}</span>
           <span className="mx-1 text-zinc-600">/</span>
           <span className="text-zinc-400">{total}</span>
         </div>

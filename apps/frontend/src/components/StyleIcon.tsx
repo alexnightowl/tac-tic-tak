@@ -1,53 +1,48 @@
 'use client';
 
-import { Rocket, Zap, Timer, type LucideIcon } from 'lucide-react';
 import type { TrainingStyle } from '@/lib/levels';
 import { cn } from '@/lib/utils';
 
 /**
- * Time-control glyphs lifted from chess.com's familiar shorthand:
- *   - Bullet → rocket (small, fast)
- *   - Blitz  → lightning bolt
- *   - Rapid  → stopwatch
- *
- * Picking distinct shapes is more important than literally copying
- * chess.com's bitmaps; the lucide set above gets you the same
- * mental model in two glances.
+ * Time-control glyphs: rapid → hourglass, blitz → lightning, bullet → kunai.
+ * Single-colour masks filled with `currentColor`, so they follow the text
+ * colour of whatever they sit in (grey on idle tabs, light on the active one).
  */
-export const STYLE_ICONS: Record<TrainingStyle, LucideIcon> = {
-  bullet: Rocket,
-  blitz: Zap,
-  rapid: Timer,
+export const STYLE_ICON_SRC: Record<TrainingStyle, string> = {
+  rapid: '/design/icons/mode-rapid.png',
+  blitz: '/design/icons/mode-blitz.png',
+  bullet: '/design/icons/mode-bullet.png',
 };
 
-/**
- * Per-style accent colours. Echo chess.com's amber/yellow/green
- * palette so scrolling a session list reads the time control at a
- * glance. Bullet leans orange specifically to read clearly next to
- * blitz's yellow — they're easy to confuse otherwise.
- */
+/** Order for every picker / list: slowest → fastest. */
+export const STYLE_ORDER: TrainingStyle[] = ['rapid', 'blitz', 'bullet'];
+
+/** Kept for callers that colour text by style; all neutral now. */
 export const STYLE_COLORS: Record<TrainingStyle, string> = {
-  bullet: 'text-orange-400',
-  blitz: 'text-yellow-400',
-  rapid: 'text-emerald-400',
+  bullet: 'text-eos-bone',
+  blitz: 'text-eos-bone',
+  rapid: 'text-eos-bone',
 };
 
 type Props = {
   style: TrainingStyle;
   size?: number;
   className?: string;
-  /** When false, drops the per-style colour so the icon inherits
-   *  the surrounding context (e.g. var(--accent) on a feature card
-   *  where the colour is already meaningful). */
   colored?: boolean;
 };
 
-export function StyleIcon({ style, size = 14, className, colored = true }: Props) {
-  const Icon = STYLE_ICONS[style];
+export function StyleIcon({ style, size = 14, className }: Props) {
+  const url = `url(${STYLE_ICON_SRC[style]})`;
   return (
-    <Icon
-      size={size}
-      className={cn(colored && STYLE_COLORS[style], className)}
+    <span
+      aria-hidden
+      className={cn('inline-block shrink-0 bg-current', className)}
+      style={{
+        width: size,
+        height: size,
+        WebkitMask: `${url} center / contain no-repeat`,
+        mask: `${url} center / contain no-repeat`,
+      }}
     />
   );
 }

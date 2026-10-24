@@ -133,8 +133,8 @@ export function AchievementsGrid() {
           className={cn(
             'shrink-0 h-9 px-3 rounded-lg text-xs font-semibold transition-colors',
             starredAlready
-              ? 'bg-emerald-500/15 text-emerald-300 cursor-default'
-              : 'bg-[var(--accent)] text-[var(--accent-contrast)] hover:opacity-90',
+              ? 'bg-[rgba(142,163,138,0.15)] text-eos-sage cursor-default'
+              : 'btn-ember font-serif font-bold uppercase tracking-[0.08em] hover:opacity-90',
             starring && 'opacity-60',
           )}
         >

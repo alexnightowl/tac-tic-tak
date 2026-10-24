@@ -3,7 +3,7 @@
 import { Chess, Square } from 'chess.js';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { BOARD_THEMES, BoardTheme } from '@/lib/themes';
-import { pieceUrl } from '@/lib/pieces';
+import { pieceUrl, pieceTransform } from '@/lib/pieces';
 import { Arrows } from './Arrows';
 import { cn } from '@/lib/utils';
 
@@ -33,19 +33,11 @@ type Props = {
 };
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
+const TEXTURE_POS = ['0% 0%', '100% 0%', '0% 100%', '100% 100%', '50% 50%', '30% 70%', '70% 30%'];
+const HL = '47, 95, 158'; // board highlight blue (--eos-hl)
 
 function sqName(file: number, rank: number): Square {
   return `${FILES[file]}${rank + 1}` as Square;
-}
-
-function hexToRgba(hex: string, alpha: number): string {
-  const h = hex.replace('#', '');
-  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
-  const n = parseInt(full, 16);
-  const r = (n >> 16) & 0xff;
-  const g = (n >> 8) & 0xff;
-  const b = n & 0xff;
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 /** Board position → grid row/col indices under the current orientation. */
@@ -64,8 +56,8 @@ export function Chessboard({
   onMove,
   lastMove,
   allowMoves = true,
-  theme = 'green',
-  pieceSet = 'maestro',
+  theme: _theme = 'stone',
+  pieceSet: _pieceSet = 'ember',
   animateMove,
   animationMs = 280,
   hintSquare = null,
@@ -106,7 +98,12 @@ export function Chessboard({
   }, []);
 
   const sq = size / 8;
-  const colors = BOARD_THEMES[theme] ?? BOARD_THEMES.green;
+  // Ember on stone: one board for the whole app. The theme / piece-set
+  // props are still accepted (older settings may pass them) but the
+  // stone board and Ember pieces always win.
+  void _theme; void _pieceSet;
+  const colors = BOARD_THEMES.stone;
+  const pieceSet = 'ember';
 
   const rows = orientation === 'white' ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
   const cols = orientation === 'white' ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];
@@ -238,8 +235,8 @@ export function Chessboard({
   return (
     <div
       ref={ref}
-      className="relative w-full aspect-square select-none touch-none overflow-hidden rounded-xl"
-      style={{ userSelect: 'none' }}
+      className="relative w-full aspect-square select-none touch-none overflow-hidden rounded-[6px]"
+      style={{ userSelect: 'none', boxShadow: '0 0 0 1px rgba(255,255,255,0.08), 0 24px 60px rgba(0,0,0,0.5)' }}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
@@ -270,8 +267,14 @@ export function Chessboard({
               <div
                 key={s}
                 className={cn('board-square relative flex items-center justify-center',
+                  isLight ? 'sq-marble' : 'sq-slate',
                   isDragging && 'dragging')}
-                style={{ background: isLight ? colors.light : colors.dark, cursor }}
+                style={{
+                  backgroundColor: isLight ? colors.light : colors.dark,
+                  // each square shows its own patch of the stone texture
+                  backgroundPosition: TEXTURE_POS[(file * 3 + rank * 5) % TEXTURE_POS.length],
+                  cursor,
+                }}
                 onPointerDown={(e) => {
                   if (e.button === 2) onRightDown(e, s);
                   else onSquareMouseDown(e, s);
@@ -293,24 +296,25 @@ export function Chessboard({
                     style={{
                       zIndex: 0,
                       background: isHighlighted
-                        ? 'rgba(208, 90, 77, 0.75)'
+                        ? 'rgba(176, 58, 58, 0.6)'
                         : isSelected
-                          ? hexToRgba(colors.highlight, 0.72)
-                          : hexToRgba(colors.lastMove, 0.58),
+                          ? `rgba(${HL}, 0.45)`
+                          : `rgba(${HL}, 0.35)`,
+                      boxShadow: isSelected ? `inset 0 0 0 3px rgb(${HL})` : undefined,
                     }}
                   />
                 )}
                 {/* legal move indicator */}
                 {isLegalTarget && (
                   piece
-                    ? <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, boxShadow: 'inset 0 0 0 3px rgba(0,0,0,0.35)' }} />
-                    : <div className="absolute w-1/3 h-1/3 rounded-full bg-black/25 pointer-events-none" style={{ zIndex: 1 }} />
+                    ? <div className="absolute inset-[4%] rounded-full pointer-events-none" style={{ zIndex: 3, boxShadow: 'inset 0 0 0 6px rgba(140,140,140,0.32)' }} />
+                    : <div className="absolute w-[26%] h-[26%] rounded-full pointer-events-none" style={{ zIndex: 3, background: 'rgba(140,140,140,0.32)' }} />
                 )}
                 {/* drop-target ring while dragging */}
                 {isDragTarget && (
                   <div
                     className="absolute inset-0 pointer-events-none rounded-[2px]"
-                    style={{ zIndex: 1, boxShadow: `inset 0 0 0 4px ${hexToRgba(colors.highlight, 0.85)}` }}
+                    style={{ zIndex: 1, boxShadow: `inset 0 0 0 4px rgba(${HL}, 0.85)` }}
                   />
                 )}
                 {/* hint pulse — amber ring around the piece-to-move during
@@ -349,11 +353,11 @@ export function Chessboard({
                     draggable={false}
                     className="w-full h-full pointer-events-none relative"
                     style={{
-                      padding: '5%',
                       zIndex: isDragging ? 50 : 2,
+                      transformOrigin: '50% 94%',
                       transform: isDragging && dragStart && dragPos
-                        ? `translate(${dragPos.x - dragStart.x}px, ${dragPos.y - dragStart.y}px) scale(1.06)`
-                        : undefined,
+                        ? `translate(${dragPos.x - dragStart.x}px, ${dragPos.y - dragStart.y}px) ${pieceTransform(pieceSet, piece.type as any) ?? ''} scale(1.06)`
+                        : pieceTransform(pieceSet, piece.type as any),
                       transition: isDragging ? 'none' : undefined,
                       filter: isDragging ? 'drop-shadow(0 10px 18px rgba(0,0,0,0.35))' : undefined,
                       willChange: isDragging ? 'transform' : undefined,
@@ -362,12 +366,12 @@ export function Chessboard({
                 )}
                 {/* coordinates */}
                 {file === (orientation === 'white' ? 0 : 7) && (
-                  <span className="absolute top-0.5 left-1 text-[10px] font-medium" style={{ color: isLight ? colors.dark : colors.light, zIndex: 2 }}>
+                  <span className="absolute top-0.5 left-1 text-[10px] font-bold" style={{ color: isLight ? colors.dark : colors.light, zIndex: 2 }}>
                     {rank + 1}
                   </span>
                 )}
                 {rank === (orientation === 'white' ? 0 : 7) && (
-                  <span className="absolute bottom-0.5 right-1 text-[10px] font-medium" style={{ color: isLight ? colors.dark : colors.light, zIndex: 2 }}>
+                  <span className="absolute bottom-0.5 right-1 text-[10px] font-bold" style={{ color: isLight ? colors.dark : colors.light, zIndex: 2 }}>
                     {FILES[file]}
                   </span>
                 )}
@@ -400,7 +404,6 @@ export function Chessboard({
               // static piece in a cell, then "pop" to full size when
               // the animation swapped the static <img> in. Match the
               // static cell's effective padding (5% of sq) directly.
-              padding: sq * 0.05,
               left: from.col * sq,
               top: from.row * sq,
               ['--dx' as any]: `${(to.col - from.col) * sq}px`,

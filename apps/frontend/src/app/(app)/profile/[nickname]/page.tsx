@@ -145,12 +145,12 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <Card className="!p-5">
+      <Card hero className="!p-5">
         <div className="flex items-start gap-4">
-          <Avatar nickname={data.nickname} avatarUrl={data.avatarUrl} size={80} />
+          <Avatar nickname={data.nickname} avatarUrl={data.avatarUrl} size={64} />
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">
-              <h1 className="text-xl font-semibold tracking-tight truncate max-w-full">{displayName}</h1>
+              <h1 className="text-[22px] text-eos-bone truncate max-w-full">{displayName}</h1>
               <UserBadges verified={data.verified} size={18} />
               {data.displayName && (
                 <span className="text-sm text-zinc-500 truncate">@{data.nickname}</span>
@@ -170,7 +170,7 @@ export default function ProfilePage() {
                 </span>
               )}
               {showStreak && data.streak && data.streak.days > 0 && (
-                <span className="flex items-center gap-1 whitespace-nowrap text-amber-300">
+                <span className="flex items-center gap-1 whitespace-nowrap text-[#d9b46a]">
                   <Flame size={12} /> {t('profile.streak')} {data.streak.days}
                 </span>
               )}
@@ -185,7 +185,7 @@ export default function ProfilePage() {
           {isSelf ? (
             <>
               <Link href="/friends"
-                className="h-9 px-3 rounded-lg text-xs bg-white/5 hover:bg-white/10 border border-[var(--border)] flex items-center gap-1.5">
+                className="btn-slate h-10 px-1 font-serif text-[13px] font-bold uppercase tracking-[0.08em] gap-1.5" style={{ borderWidth: '11px 12px' }}>
                 <Users size={14} /> {t('nav.friends')}
               </Link>
               <ProfileEditor onSaved={() => refetch()} />
@@ -195,19 +195,19 @@ export default function ProfilePage() {
       </Card>
 
       <div>
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">{t('profile.ratings')}</h2>
+        <h2 className="!font-sans text-xs font-bold uppercase tracking-[0.12em] text-eos-ash mb-2.5">{t('profile.ratings')}</h2>
         <div className="grid grid-cols-3 gap-3">
           {TRAINING_STYLES.map((s) => {
             const prog = data.progressions[s];
             return (
               <Card key={s} className="!p-3">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] uppercase tracking-wider text-zinc-400">
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <StyleIcon style={s} size={15} />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-eos-ash truncate">
                     {t(`style.${s}.name`)}
                   </span>
-                  <StyleIcon style={s} size={14} />
                 </div>
-                <div className="text-2xl font-semibold tabular-nums leading-none">
+                <div className="text-2xl font-extrabold tabular-nums leading-none">
                   {prog?.currentPuzzleRating ?? '—'}
                 </div>
                 <div className="text-[10px] text-zinc-500 mt-1 tabular-nums">
@@ -245,7 +245,7 @@ export default function ProfilePage() {
       )}
 
       <div>
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">{t('profile.recent')}</h2>
+        <h2 className="!font-sans text-xs font-bold uppercase tracking-[0.12em] text-eos-ash mb-2.5">{t('profile.recent')}</h2>
         <SessionList
           sessions={data.recentSessions}
           onDelete={() => {}}

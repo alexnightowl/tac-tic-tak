@@ -1,87 +1,43 @@
-import {
-  AlertTriangle,
-  ArrowLeftFromLine,
-  ArrowRight,
-  ArrowRightFromLine,
-  ArrowUp,
-  ArrowUpRight,
-  Castle,
-  ChevronUp,
-  CornerDownRight,
-  Crosshair,
-  Crown,
-  Eye,
-  Flame,
-  Frown,
-  GitFork,
-  Hourglass,
-  Lock,
-  Magnet,
-  Pin,
-  Puzzle,
-  Scan,
-  Shield,
-  ShieldOff,
-  SkipForward,
-  Slash,
-  Target,
-  Wind,
-  type LucideIcon,
-} from 'lucide-react';
+import { createElement, type CSSProperties } from 'react';
+import { Puzzle } from 'lucide-react';
 
-const THEME_ICON: Record<string, LucideIcon> = {
-  fork: GitFork,
-  pin: Pin,
-  skewer: ArrowRight,
-  discoveredAttack: Eye,
-  doubleCheck: Crosshair,
-  sacrifice: Flame,
-  attraction: Magnet,
-  deflection: Wind,
-  interference: Slash,
-  defensiveMove: Shield,
-  hangingPiece: AlertTriangle,
-  trappedPiece: Lock,
-  xRayAttack: Scan,
-  quietMove: Wind,
-  intermezzo: CornerDownRight,
-  capturingDefender: ShieldOff,
-  exposedKing: Eye,
-  attackingF2F7: Target,
-  kingsideAttack: ArrowRightFromLine,
-  queensideAttack: ArrowLeftFromLine,
-  zugzwang: Frown,
-  advancedPawn: ChevronUp,
-  promotion: ArrowUp,
-  underPromotion: ArrowUpRight,
-  castling: Castle,
-  enPassant: SkipForward,
+/**
+ * Puzzle-theme glyphs from the Lichess project (game-icons.net, CC BY 3.0 —
+ * see /public/design/themes/CREDITS.md). They're single-colour SVGs, so we
+ * render them as CSS masks filled with `currentColor`; callers keep using
+ * them like a lucide icon: `<Icon size={16} className="text-…" />`.
+ */
+const LICHESS_THEMES = new Set<string>(["advancedPawn", "anastasiaMate", "arabianMate", "attackingF2F7", "attraction", "backRankMate", "bishopEndgame", "bodenMate", "capturingDefender", "castling", "defensiveMove", "deflection", "discoveredAttack", "doubleBishopMate", "doubleCheck", "dovetailMate", "enPassant", "exposedKing", "fork", "hangingPiece", "hookMate", "interference", "intermezzo", "killBoxMate", "kingsideAttack", "knightEndgame", "mate", "pawnEndgame", "pin", "promotion", "queenEndgame", "queenRookEndgame", "queensideAttack", "quietMove", "rookEndgame", "sacrifice", "skewer", "smotheredMate", "trappedPiece", "underPromotion", "vukovicMate", "xRayAttack", "zugzwang"]);
 
-  mate: Crown,
-  mateIn1: Crown,
-  mateIn2: Crown,
-  mateIn3: Crown,
-  mateIn4: Crown,
-  mateIn5: Crown,
-  anastasiaMate: Crown,
-  arabianMate: Crown,
-  backRankMate: Crown,
-  bodenMate: Crown,
-  doubleBishopMate: Crown,
-  dovetailMate: Crown,
-  hookMate: Crown,
-  killBoxMate: Crown,
-  smotheredMate: Crown,
-  vukovicMate: Crown,
+type IconProps = { size?: number; className?: string; strokeWidth?: number; style?: CSSProperties };
+export type ThemeIconComponent = (props: IconProps) => ReturnType<typeof createElement>;
 
-  bishopEndgame: Hourglass,
-  knightEndgame: Hourglass,
-  pawnEndgame: Hourglass,
-  queenEndgame: Hourglass,
-  queenRookEndgame: Hourglass,
-  rookEndgame: Hourglass,
-};
+const cache = new Map<string, ThemeIconComponent>();
 
-export function themeIcon(slug: string): LucideIcon {
-  return THEME_ICON[slug] ?? Puzzle;
+function maskIcon(file: string): ThemeIconComponent {
+  const hit = cache.get(file);
+  if (hit) return hit;
+  const url = `url(/design/themes/${file}.svg)`;
+  const C: ThemeIconComponent = ({ size = 16, className, style }) =>
+    createElement('span', {
+      'aria-hidden': true,
+      className: ['inline-block shrink-0 bg-current', className].filter(Boolean).join(' '),
+      // Lichess glyphs carry little padding, so render ~20% larger than
+      // the equivalent lucide size to match optical weight.
+      style: {
+        width: Math.round(size * 1.2),
+        height: Math.round(size * 1.2),
+        WebkitMask: `${url} center / contain no-repeat`,
+        mask: `${url} center / contain no-repeat`,
+        ...style,
+      },
+    });
+  cache.set(file, C);
+  return C;
+}
+
+export function themeIcon(slug: string): ThemeIconComponent {
+  if (LICHESS_THEMES.has(slug)) return maskIcon(slug);
+  if (slug === 'mate' || slug.startsWith('mateIn')) return maskIcon('mate');
+  return Puzzle as unknown as ThemeIconComponent;
 }

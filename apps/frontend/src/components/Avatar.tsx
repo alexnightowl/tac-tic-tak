@@ -12,15 +12,9 @@ type Props = {
   className?: string;
 };
 
-const BG_COLORS = [
-  'bg-rose-500/30 text-rose-200',
-  'bg-amber-500/30 text-amber-200',
-  'bg-emerald-500/30 text-emerald-200',
-  'bg-sky-500/30 text-sky-200',
-  'bg-violet-500/30 text-violet-200',
-  'bg-pink-500/30 text-pink-200',
-  'bg-teal-500/30 text-teal-200',
-];
+// Ember on stone: every initials avatar is the same round slate disc
+// with engraved Cinzel initials (see .eos-avatar in globals.css).
+const BG_COLORS = ['eos-avatar'];
 
 /**
  * Avatar with optional creator decoration. The decoration auto-
@@ -46,10 +40,10 @@ export function Avatar({ nickname, avatarUrl, size = 40, className }: Props) {
   // chip. Border / outline applied here directly so the decoration
   // sits flush against the circle.
   const innerClasses = cn(
-    'w-full h-full rounded-full flex items-center justify-center font-semibold object-cover',
+    'w-full h-full rounded-full flex items-center justify-center object-cover',
     isCreator
       ? 'outline outline-2 outline-amber-300 outline-offset-[2px]'
-      : 'border border-white/10',
+      : 'shadow-[0_0_0_1px_rgba(0,0,0,0.65),0_0_0_2px_rgba(255,255,255,0.06)]',
   );
 
   // Wrapper preserves the original `size × size` footprint so
@@ -70,7 +64,7 @@ export function Avatar({ nickname, avatarUrl, size = 40, className }: Props) {
       ) : (
         <div
           className={cn(innerClasses, color)}
-          style={{ fontSize: Math.round(size * 0.42) }}
+          style={{ fontSize: Math.round(size * 0.36) }}
           aria-label={nickname}
         >
           {initials}

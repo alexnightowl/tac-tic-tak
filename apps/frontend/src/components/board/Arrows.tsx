@@ -31,7 +31,8 @@ export function Arrows({ size, orientation, arrows, pending }: Props) {
   if (size === 0) return null;
   const all = [...arrows, ...(pending ? [pending] : [])];
   const sq = size / 8;
-  const stroke = 'rgba(255,170,0,0.55)';
+  // Ember on stone: muted blue, matches the last-move / selection tint.
+  const stroke = 'rgba(79, 120, 173, 0.78)';
   // Lichess-style arrow: thin shaft, butt-end at the source, and a
   // stout head wider than it is long. Two tricks make this clean:
   //   1. preserveAspectRatio="none" so markerWidth/Height can render
