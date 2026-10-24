@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
  * Themed tab-bar glyphs (Ember on stone).
  *  - Home    → clan crest, keeps its own colours (dimmed when inactive)
  *  - Play    → hand seal, mask-tinted with currentColor
- *  - Review  → hands framing a window, mask-tinted with currentColor
+ *  - Review  → open book, mask-tinted with currentColor
  *  - Board/Leaderboard, Stats → line icons
  *  - Settings → shuriken
  */
@@ -49,7 +49,7 @@ export function PlayIcon({ className }: IconProps) {
 }
 
 export function ReviewIcon({ className }: IconProps) {
-  return <Mask src="/design/icons/nav-review.png" w={32} h={24} className={className} />;
+  return <Mask src="/design/icons/nav-review-book.svg" w={28} h={24} className={className} />;
 }
 
 export function LeaderboardIcon({ active, className }: IconProps) {
