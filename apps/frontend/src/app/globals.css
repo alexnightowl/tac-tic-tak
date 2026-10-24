@@ -513,3 +513,10 @@ input[type="range"].ticks::-moz-range-thumb {
   font-family: var(--font-manrope), system-ui, sans-serif;
   letter-spacing: 0.12em;
 }
+
+/* Phone/tablet board screens: everything above the board lives in one
+   slot of fixed height, and the board is pinned right under it (not
+   centred in leftover space), so it sits at the same spot on play,
+   review and theme drills. Sized to the tallest stack (play runner with
+   its progress bar). */
+.board-top-slot { min-height: 218px; }

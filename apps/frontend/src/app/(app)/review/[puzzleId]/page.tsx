@@ -401,14 +401,16 @@ export default function ReviewPuzzle() {
           render the largest square that fits via cqw/cqh — same trick
           used in the play runner so the board matches session size. */}
       <div className="flex flex-col lg:flex-row items-stretch flex-1 min-h-0 w-full gap-2 lg:gap-6 lg:max-w-screen-2xl lg:mx-auto">
-        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
+        {/* Fixed-height slot: the board lands at the same y on every board
+            screen (play, session review, theme drill) and in every state. */}
+        <div className="board-top-slot lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
           {headerRow}
           {themesSlot}
           {turnCardBlock}
         </div>
 
         <div
-          className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
+          className="flex-1 grid justify-items-center items-start lg:items-center min-h-0 min-w-0 w-full"
           style={{ containerType: 'size' }}
         >
           <div

@@ -1,4 +1,11 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+// No env in local dev → talk to the API on the same host the page came
+// from, so opening the dev server from a phone on the LAN (http://<mac-ip>:3000)
+// reaches the API at <mac-ip>:4000 instead of the phone's own localhost.
+export const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ??
+  (typeof window !== 'undefined'
+    ? `${window.location.protocol}//${window.location.hostname}:4000/api`
+    : 'http://localhost:4000/api');
 // Host portion only, for serving static uploads (avatars, etc) that live
 // outside the /api prefix.
 export const API_HOST = API_URL.replace(/\/api\/?$/, '');

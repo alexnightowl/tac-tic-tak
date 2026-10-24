@@ -638,7 +638,9 @@ export default function PlayRunner() {
         {/* Mobile-only top stack — duplicates the controls into the
             stacked phone layout. Hidden on desktop so the right panel
             is the single source of truth. */}
-        <div className="lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
+        {/* Fixed-height slot: the board lands at the same y on every board
+            screen (play, session review, theme drill) and in every state. */}
+        <div className="board-top-slot lg:hidden w-full mx-auto max-w-[min(calc(100vh-240px),880px)] flex flex-col gap-2.5">
           <div className="flex items-center justify-between gap-2">
             {exitButton}
             {timerPill}
@@ -652,7 +654,7 @@ export default function PlayRunner() {
             sample its parent's resolved width AND height with cqw/cqh,
             so we can always render the largest square that fits. */}
         <div
-          className="flex-1 grid place-items-center min-h-0 min-w-0 w-full"
+          className="flex-1 grid justify-items-center items-start lg:items-center min-h-0 min-w-0 w-full"
           style={{ containerType: 'size' }}
         >
           <div
