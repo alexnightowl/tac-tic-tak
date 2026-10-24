@@ -11,6 +11,8 @@ type StyleRow = {
   currentPuzzleRating: number;
   unlockedStartRating: number;
   calibrationSessionsLeft: number;
+  /** Weak at-peak sessions in a row; WEAK_STREAK_THRESHOLD drops the norm. */
+  weakSessionStreak: number;
 };
 
 const AVATAR_ROOT = join(process.cwd(), 'uploads', 'avatars');
@@ -256,6 +258,7 @@ export class UsersService {
     currentPuzzleRating: number;
     unlockedStartRating: number;
     calibrationSessionsLeft: number;
+    weakSessionStreak: number;
   }>): Record<TrainingStyle, StyleRow> {
     const out: Record<TrainingStyle, StyleRow> = {} as any;
     for (const s of TRAINING_STYLES) {
@@ -266,6 +269,7 @@ export class UsersService {
             currentPuzzleRating: row.currentPuzzleRating,
             unlockedStartRating: row.unlockedStartRating,
             calibrationSessionsLeft: row.calibrationSessionsLeft,
+            weakSessionStreak: row.weakSessionStreak,
           }
         : {
             startPuzzleRating: 1200,
@@ -274,6 +278,7 @@ export class UsersService {
             // Style row missing — surface as full calibration window
             // so the UI prompts the user through it on first session.
             calibrationSessionsLeft: 5,
+            weakSessionStreak: 0,
           };
     }
     return out;

@@ -2,11 +2,11 @@
 
 import { createPortal } from 'react-dom';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Play } from 'lucide-react';
 import { http } from '@/lib/api';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, type Progression } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -64,6 +64,16 @@ function writeStoredDuration(style: TrainingStyle, sec: number) {
   } catch {}
 }
 
+// Where the rating slider opens for a style. Stable mode reopens at the
+// rating the player picked for their last rated session — never at
+// currentPuzzleRating, which drifts down through a rough session and
+// would silently drop the next one into the comfort zone. During
+// calibration the server picks the rating, so show that one.
+function initialStartRating(p: Progression): number {
+  if (p.calibrationSessionsLeft > 0) return p.currentPuzzleRating;
+  return Math.min(p.startPuzzleRating, p.unlockedStartRating + 200);
+}
+
 type DurationInit = { duration: number; customDuration: boolean; customMinutesSec: number };
 
 function resolveDurationFor(style: TrainingStyle): DurationInit {
@@ -100,7 +110,17 @@ export default function PlaySetup() {
   // the number so the player knows it isn't yet a settled measure.
   const provisional = styleProgression.calibrationSessionsLeft > 0;
 
-  const [startRating, setStartRating] = useState<number>(styleProgression.currentPuzzleRating);
+  const [startRating, setStartRatingRaw] = useState<number>(() => initialStartRating(styleProgression));
+  // Until the player touches the slider, keep it in sync with the
+  // progression — /users/me can land after the first render.
+  const ratingTouched = useRef(false);
+  const setStartRating = (v: number) => {
+    ratingTouched.current = true;
+    setStartRatingRaw(v);
+  };
+  useEffect(() => {
+    if (!ratingTouched.current) setStartRatingRaw(initialStartRating(styleProgression));
+  }, [styleProgression]);
   const [initialDuration] = useState<DurationInit>(() => resolveDurationFor(readLastStyle()));
   const [duration, setDuration] = useState<number>(initialDuration.duration);
   const [customDuration, setCustomDuration] = useState<boolean>(initialDuration.customDuration);
@@ -125,6 +145,11 @@ export default function PlaySetup() {
   const peakFloor = unlocked - PEAK_BAND;
   const showComfortNotice =
     mode !== 'theme' && !provisional && startRating < peakFloor;
+  // Last at-peak session was weak: one more drops the norm. Only a
+  // suggestion — the slider stays wherever the player put it.
+  const showOffForm =
+    mode !== 'theme' && !provisional && styleProgression.weakSessionStreak > 0 && startRating >= peakFloor;
+  const offFormRating = Math.max(400, Math.floor((peakFloor - 25) / 25) * 25);
 
   // When style changes, snap the rating + duration into that style's range
   // so users don't end up with nonsensical combos from the previous style.
@@ -136,7 +161,8 @@ export default function PlaySetup() {
   const selectStyle = (next: TrainingStyle) => {
     if (next === style) return;
     setStyle(next);
-    setStartRating(progressions[next].currentPuzzleRating);
+    ratingTouched.current = false;
+    setStartRatingRaw(initialStartRating(progressions[next]));
     const restored = resolveDurationFor(next);
     setDuration(restored.duration);
     setCustomDuration(restored.customDuration);
@@ -317,6 +343,21 @@ export default function PlaySetup() {
                   </>
                 )}
               </p>
+              {showOffForm && (
+                <div className="mt-3 rounded-xl p-3 border border-amber-500/40 bg-amber-500/10">
+                  <div className="text-sm font-semibold text-[#d7b777]">{t('play.off_form_title')}</div>
+                  <p className="text-xs text-zinc-300 mt-0.5 leading-snug">
+                    {t('play.off_form_hint').replace('{floor}', String(peakFloor))}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setStartRating(offFormRating)}
+                    className="mt-2 h-8 px-3 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 active:bg-amber-500/30 transition-colors text-xs font-semibold"
+                  >
+                    {t('play.off_form_cta').replace('{rating}', String(offFormRating))}
+                  </button>
+                </div>
+              )}
               {showComfortNotice && (
                 <p className="text-xs text-[#d7b777]/80 mt-2 leading-snug">
                   {t('play.comfort_notice').replace('{floor}', String(peakFloor))}

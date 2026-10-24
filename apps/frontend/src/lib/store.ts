@@ -76,6 +76,8 @@ export type Progression = {
    *  ceiling rides peakRating freely; in-session UI hides the unlock
    *  criteria bar and shows a calibration counter instead. */
   calibrationSessionsLeft: number;
+  /** Weak at-peak sessions in a row; the next one drops the norm. */
+  weakSessionStreak: number;
 };
 export type Progressions = Record<TrainingStyle, Progression>;
 
@@ -84,6 +86,7 @@ const EMPTY_PROGRESSION: Progression = {
   currentPuzzleRating: 1200,
   unlockedStartRating: 1200,
   calibrationSessionsLeft: 5,
+  weakSessionStreak: 0,
 };
 
 const DEFAULT_PROGRESSIONS: Progressions = TRAINING_STYLES.reduce((acc, s) => {
