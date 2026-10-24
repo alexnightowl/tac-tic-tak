@@ -32,7 +32,7 @@ export default function LeaderboardPage() {
   const showStreak = useAppStore((s) => s.settings.showStreak);
   const t = useT();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isPlaceholderData } = useQuery({
     queryKey: ['leaderboard', style, scope],
     queryFn: () => http.get<Row[]>(`/leaderboard?style=${style}&scope=${scope}&limit=100`),
   });
@@ -77,7 +77,7 @@ export default function LeaderboardPage() {
       )}
 
       {data && data.length > 0 && (
-        <div className="space-y-1.5">
+        <div className={cn('space-y-1.5 transition-opacity duration-150', isPlaceholderData && 'opacity-60')}>
           {data.map((r) => <Row key={r.user.id} row={r} style={style} showStreak={showStreak} />)}
         </div>
       )}

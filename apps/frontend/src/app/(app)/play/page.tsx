@@ -130,15 +130,19 @@ export default function PlaySetup() {
   // so users don't end up with nonsensical combos from the previous style.
   // Restore the last duration the player picked for this style if any.
   // Also pin the new pick to localStorage so the next visit pre-selects it.
-  useEffect(() => {
-    setStartRating(styleProgression.currentPuzzleRating);
-    const restored = resolveDurationFor(style);
+  // Done in the click handler (not an effect) so style, rating and
+  // duration change in ONE render — an effect would paint a frame with the
+  // new style but the previous style's rating/duration first.
+  const selectStyle = (next: TrainingStyle) => {
+    if (next === style) return;
+    setStyle(next);
+    setStartRating(progressions[next].currentPuzzleRating);
+    const restored = resolveDurationFor(next);
     setDuration(restored.duration);
     setCustomDuration(restored.customDuration);
     setCustomMinutes(String(Math.round(restored.customMinutesSec / 60)));
-    try { window.localStorage.setItem(LAST_STYLE_KEY, style); } catch {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [style]);
+    try { window.localStorage.setItem(LAST_STYLE_KEY, next); } catch {}
+  };
 
   const selectedBand = bandFor(startRating);
   const bandLabels = {
@@ -209,7 +213,7 @@ export default function PlaySetup() {
           <div className="text-xs font-bold uppercase tracking-[0.12em] text-eos-ash mb-2.5">{t('play.style')}</div>
           <Segmented
             value={style}
-            onChange={(v) => setStyle(v as TrainingStyle)}
+            onChange={(v) => selectStyle(v as TrainingStyle)}
             options={TRAINING_STYLES.map((s) => {
               const left = progressions[s]?.calibrationSessionsLeft ?? 0;
               const calibrating = left > 0;
@@ -411,7 +415,7 @@ function MobileStartBar({ children, disabled }: { children: React.ReactNode; dis
   if (!mounted) return null;
   return createPortal(
     <div
-      className="md:hidden fixed inset-x-0 z-30 pt-5 pb-2 backdrop-blur-xl pointer-events-none"
+      className="md:hidden fixed inset-x-0 z-30 pt-5 pb-2 pointer-events-none"
       style={{
         bottom: 'calc(58px + env(safe-area-inset-bottom))',
         background:

@@ -1,6 +1,6 @@
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, keepPreviousData } from '@tanstack/react-query';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { http, getToken } from './api';
 import { useAppStore } from './store';
@@ -25,7 +25,18 @@ type Me = {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(() => new QueryClient({
-    defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+        // Tab / filter switches change the query key. Keep showing the
+        // previous result until the new one lands instead of collapsing to
+        // a loading state, and treat fresh data as good for 30 s so flipping
+        // back to a tab is instant.
+        placeholderData: keepPreviousData,
+        staleTime: 30_000,
+      },
+    },
   }));
   const setUser = useAppStore((s) => s.setUser);
   const setSettings = useAppStore((s) => s.setSettings);
