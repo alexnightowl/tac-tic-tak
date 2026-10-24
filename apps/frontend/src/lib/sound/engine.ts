@@ -30,6 +30,13 @@ function ac(): AudioContext | null {
   return ctx;
 }
 
+/** Shared context + master gain, so sample clips mix through the same
+ *  volume stage (and clock) as the synth recipes. */
+export function audioOut(): { ctx: AudioContext; out: GainNode } | null {
+  const c = ac();
+  return c && out ? { ctx: c, out } : null;
+}
+
 function noiseBuf(c: AudioContext) {
   if (!noise) {
     const b = c.createBuffer(1, c.sampleRate * 2, c.sampleRate);
