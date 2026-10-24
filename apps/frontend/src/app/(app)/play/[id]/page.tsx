@@ -907,7 +907,10 @@ function SessionSummary({ s, ceilingBefore, styleLabel }: { s: FinishResponse; c
   }, [s, ceilingBefore]);
   const [ceremony, setCeremony] = useState(() => !!rankChange?.crossed);
   useEffect(() => {
-    if (rankChange && !rankChange.crossed && rankChange.up) sfx('gate');
+    // Band crossings get the full RankCeremony (it plays its own sound).
+    // A plain norm move inside the same band gets the gate / rank-down
+    // sound here, and the outcome card animates (see .norm-rise/.norm-drop).
+    if (rankChange && !rankChange.crossed) sfx(rankChange.up ? 'gate' : 'rankDown');
     return () => stopLongClip(400);
   }, [rankChange]);
   // Three branches for the level-up area at the top of the summary.
@@ -1115,14 +1118,19 @@ function DemoteOutcome({ check, demoted }: {
 
   if (demoted) {
     return (
-      <div className="rounded-2xl p-4 border border-[rgba(166,66,65,0.4)] bg-[rgba(166,66,65,0.1)] flex items-center gap-3">
-        <TrendingDown size={22} className="text-eos-rose shrink-0" />
+      <div className="norm-drop rounded-2xl p-4 border border-[rgba(166,66,65,0.4)] bg-[rgba(166,66,65,0.1)] flex items-center gap-3">
+        <TrendingDown size={22} className="norm-icon-drop text-eos-rose shrink-0" />
         <div>
           <div className="font-semibold text-eos-rose">
             {t('demote.summary_demoted').replace('{penalty}', String(check.penalty))}
           </div>
           <div className="text-xs text-zinc-300 mt-0.5">
-            {t('demote.summary_demoted_hint').replace('{ceiling}', String(check.unlockedStartRating))}
+            <FillCount
+              text={t('demote.summary_demoted_hint')}
+              token="{ceiling}"
+              from={check.unlockedStartRating + check.penalty}
+              to={check.unlockedStartRating}
+            />
           </div>
         </div>
       </div>
@@ -1156,14 +1164,14 @@ function UnlockOutcome({ check, unlocked }: {
 
   if (unlocked) {
     return (
-      <div className="rounded-2xl p-4 border border-[var(--accent)]/60 bg-[var(--accent)]/10 flex items-center gap-3">
-        <Sparkles size={24} className="text-[var(--accent)] shrink-0" />
+      <div className="norm-rise rounded-2xl p-4 border border-[var(--accent)]/60 bg-[var(--accent)]/10 flex items-center gap-3">
+        <Sparkles size={24} className="norm-icon-rise text-[var(--accent)] shrink-0" />
         <div>
           <div className="font-semibold text-[var(--accent)]">
             {t('unlock.summary_success')}
           </div>
           <div className="text-xs text-zinc-300 mt-0.5">
-            {t('unlock.summary_success_hint').replace('{reward}', String(UNLOCK_REWARD))}
+            <FillCount text={t('unlock.summary_success_hint')} token="{reward}" from={0} to={UNLOCK_REWARD} />
           </div>
         </div>
       </div>
@@ -1223,5 +1231,40 @@ function Stat({ label, v }: { label: string; v: string | number }) {
       <div className="text-xs uppercase tracking-wider text-zinc-400">{label}</div>
       <div className="text-2xl font-semibold mt-1">{v}</div>
     </div>
+  );
+}
+
+/** Animated number from → to (ease-out, ~900 ms, starts after the card lands). */
+function CountTo({ from, to, delay = 350, ms = 900 }: { from: number; to: number; delay?: number; ms?: number }) {
+  const [v, setV] = useState(from);
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      setV(to);
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now() + delay;
+    const tick = (now: number) => {
+      const k = Math.min(1, Math.max(0, (now - t0) / ms));
+      const e = 1 - Math.pow(1 - k, 3);
+      setV(Math.round(from + (to - from) * e));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [from, to, delay, ms]);
+  return <span className="tabular-nums">{v}</span>;
+}
+
+/** Renders an i18n string with one {token} replaced by a counting number. */
+function FillCount({ text, token, from, to }: { text: string; token: string; from: number; to: number }) {
+  const i = text.indexOf(token);
+  if (i < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <CountTo from={from} to={to} />
+      {text.slice(i + token.length)}
+    </>
   );
 }

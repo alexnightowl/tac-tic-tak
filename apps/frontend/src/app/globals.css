@@ -117,8 +117,35 @@ body.focus-mode {
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 @keyframes rank-flash { 0% { opacity: 0; } 15% { opacity: 0.55; } 100% { opacity: 0; } }
+/* Norm moved inside the same rank: the summary outcome card lands with a beat */
+.norm-drop { animation: norm-drop 900ms cubic-bezier(.2,.8,.3,1) both; }
+@keyframes norm-drop {
+  0%   { opacity: 0; translate: 0 -14px; box-shadow: 0 0 0 0 rgba(166,66,65,0); }
+  30%  { opacity: 1; translate: 0 3px;   box-shadow: 0 0 0 0 rgba(166,66,65,0.55); }
+  42%  { translate: -7px 3px; }
+  54%  { translate: 6px 2px; }
+  66%  { translate: -4px 1px; }
+  78%  { translate: 2px 0; }
+  100% { translate: 0 0; box-shadow: 0 0 0 14px rgba(166,66,65,0); }
+}
+.norm-icon-drop { animation: norm-icon-drop 900ms 250ms cubic-bezier(.3,1.4,.5,1) both; }
+@keyframes norm-icon-drop {
+  0%   { translate: 0 -10px; opacity: 0; }
+  100% { translate: 0 0; opacity: 1; }
+}
+.norm-rise { animation: norm-rise 900ms cubic-bezier(.2,1.25,.4,1) both; }
+@keyframes norm-rise {
+  0%   { opacity: 0; scale: 0.92; translate: 0 10px; box-shadow: 0 0 0 0 rgba(215,183,119,0); }
+  40%  { opacity: 1; box-shadow: 0 0 22px 2px rgba(215,183,119,0.45); }
+  100% { scale: 1; translate: 0 0; box-shadow: 0 0 0 0 rgba(215,183,119,0); }
+}
+.norm-icon-rise { animation: norm-icon-rise 1100ms 200ms cubic-bezier(.2,1.4,.4,1) both; }
+@keyframes norm-icon-rise {
+  0%   { scale: 0.3; rotate: -90deg; opacity: 0; }
+  100% { scale: 1; rotate: 0deg; opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .ember-spark, .piece-shake, .rank-spin, .rank-pop, .rank-flash { animation: none !important; }
+  .ember-spark, .piece-shake, .rank-spin, .rank-pop, .rank-flash, .norm-drop, .norm-icon-drop, .norm-rise, .norm-icon-rise { animation: none !important; }
 }
 @keyframes square-feedback {
   0%   { opacity: 0; }
