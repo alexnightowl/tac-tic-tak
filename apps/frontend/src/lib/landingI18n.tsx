@@ -16,177 +16,197 @@ type Dict = Record<string, string>;
 const EN: Dict = {
   'nav.login': 'Log in',
   'nav.signup': 'Sign up',
+  'nav.get_started': 'Get started',
+  'nav.paces': 'Paces',
+  'nav.ranks': 'Ranks',
   'nav.features': 'Features',
-  'nav.training': 'Training',
-  'nav.statistics': 'Statistics',
-  'nav.about': 'About',
+  'nav.how': 'How it works',
 
-  'hero.eyebrow': 'Chess tactics, done right',
-  'hero.title_1': 'Sharpen',
-  'hero.title_2': 'your instincts',
+  'hero.eyebrow': 'TACTICS TRAINER · 4M+ LICHESS PUZZLES',
+  'hero.title_1': 'Sharpen your',
+  'hero.title_2': 'instincts.',
   'hero.subtitle':
-    'Tacticore trains your chess tactics smarter, faster, every day. Adaptive puzzles, per-style ratings, real progression.',
+    'Adaptive puzzles that meet you at the edge of your ability — with a separate rating for every pace and ranks you actually earn.',
   'hero.cta_primary': 'Start training',
-  'hero.cta_primary_short': 'Get started',
   'hero.cta_secondary': 'I have an account',
-  'hero.stat_styles': 'Styles',
-  'hero.stat_adaptive': 'Adaptive',
-  'hero.stat_tiers': 'Tiers',
-  'hero.float_your_turn': 'Your turn',
-  'hero.float_find_best': 'Find the best move',
-  'hero.float_levelup': 'Level-up',
+  'hero.stat_paces': '3 paces, 3 ratings',
+  'hero.stat_ranks': '5 ranks to climb',
+  'hero.stat_motifs': '42 tactical motifs',
+  'hero.float_turn': 'Your turn',
+  'hero.float_find': 'Find the best move for white',
+  'hero.float_rating': 'BLITZ RATING',
 
-  'value.eyebrow': 'Why it works',
-  'value.title': 'Built around how you actually improve',
-  'value.subtitle':
-    "Grinding random puzzles doesn't build skill — calibrated pressure does. Each piece of the app is designed around a specific training principle.",
-  'value.adaptive.title': 'Adaptive difficulty',
-  'value.adaptive.body':
-    'Puzzle rating drifts toward yours after every attempt. Too easy? Next one climbs. Stuck? It eases off. You always train at the edge of your ability.',
-  'value.per_style.title': 'Per-style training',
-  'value.per_style.body':
-    "Bullet sharpens pattern recognition. Rapid builds deep calculation. We track them separately so your bullet rating can't smuggle weak rapid habits.",
-  'value.gate.title': 'Real level-up gate',
-  'value.gate.body':
-    'Your norm only rises when you meet four targets in a single session — count, accuracy, speed, peak. No shortcuts, no grinding for numbers.',
+  'rank.novice': 'Novice',
+  'rank.beginner': 'Beginner',
+  'rank.intermediate': 'Intermediate',
+  'rank.advanced': 'Advanced',
+  'rank.expert': 'Expert',
 
-  'features.eyebrow': 'Everything you need',
-  'features.title': 'The full toolkit, out of the box',
-  'features.subtitle':
-    'No pay-wall for the things that matter. The whole trainer — styles, review, social — is in the product from day one.',
-  'features.styles.title': 'Three training styles',
-  'features.styles.body':
-    'Bullet (1–3 min), Blitz (5–15 min), Rapid (10–30 min) — each with its own rating, pace and unlock formula.',
-  'features.focus.title': 'Focus mode',
-  'features.focus.body':
-    'Fullscreen, stats hidden, zero distractions. Nothing to look at but the position in front of you.',
-  'features.progress.title': 'Live level-up progress',
-  'features.progress.body':
-    'Every move ticks a progress bar toward the next unlock. You always know how close you are.',
-  'features.social.title': 'Friends & leaderboards',
-  'features.social.body':
-    "Add people by nickname, climb the style-specific boards, see friends-only standings when it's personal.",
+  'motifs.label': '42 MOTIFS\nFROM LICHESS',
+
+  'paces.eyebrow': 'Three paces',
+  'paces.title': 'Three paces. Three ratings.',
+  'paces.subtitle':
+    "Bullet reflexes and rapid calculation are different skills, so they never share a number. A fast session can't hide slow habits.",
+  'paces.rating_label': 'SEPARATE RATING',
+  'paces.rapid.name': 'Rapid',
+  'paces.rapid.time': '10–30 min',
+  'paces.rapid.body': 'Deep calculation. Longer think-time, harder positions, fewer of them.',
+  'paces.blitz.name': 'Blitz',
+  'paces.blitz.time': '5–15 min',
+  'paces.blitz.body': 'The all-rounder. Balanced pace and difficulty — where most sharpening happens.',
+  'paces.bullet.name': 'Bullet',
+  'paces.bullet.time': '1–3 min',
+  'paces.bullet.body': 'Pure pattern recognition. See it, play it, next — before the doubt kicks in.',
+
+  'ranks.eyebrow': 'Five ranks',
+  'ranks.title': 'Ranks you earn, not grind.',
+  'ranks.subtitle':
+    'From Novice to Expert, each rank is a band of puzzle difficulty. Your norm only rises when one session clears all four targets — enough solved, accurate, fast, and a high enough peak.',
+  'ranks.point_1': 'Difficulty drifts toward you after every puzzle',
+  'ranks.point_2': 'Unlock higher bands only by clearing the gate',
+  'ranks.point_3': 'The sharingan deepens as you climb',
+  'ranks.panel_rating': 'BLITZ RATING',
+  'ranks.gate': 'LEVEL-UP GATE',
+  'ranks.gate_badge': '4 / 4 · NORM +50',
+  'ranks.gate_solved': 'Solved',
+  'ranks.gate_accuracy': 'Accuracy',
+  'ranks.gate_speed': 'Avg speed',
+  'ranks.gate_peak': 'Peak rating',
+
+  'features.eyebrow': 'The toolkit',
+  'features.title': "Everything a trainer needs. Nothing it doesn't.",
+  'features.subtitle': 'No paywall on the parts that matter. Review, motifs, stats and social are in from day one.',
   'features.review.title': 'Review what you missed',
-  'features.review.body':
-    'Failed puzzles queue into a timerless Review mode. Work them out without pressure until they stick.',
-  'features.custom.title': 'Make it yours',
-  'features.custom.body':
-    "Pick your board theme, piece set, accent colour, sound pack. The app should feel like your setup, not ours.",
-  'features.banner':
-    'Over 4 million Lichess puzzles, curated by rating and theme. Every session pulls fresh positions calibrated to where you are right now.',
+  'features.review.body': 'Every miss lands in a timerless Review queue. Work it out without pressure until it sticks.',
+  'features.focus.title': 'Focus mode',
+  'features.focus.body': 'Fullscreen, stats hidden. Nothing on screen but the position in front of you.',
+  'features.motif.title': 'Drill by motif',
+  'features.motif.body': 'Pick any of 42 Lichess themes and grind exactly the pattern that keeps beating you.',
+  'features.stats.title': 'Honest statistics',
+  'features.stats.body': 'Per-pace rating history, a year of activity, and your weakest themes — ranked.',
+  'features.social.title': 'Friends & leaderboards',
+  'features.social.body': 'Add people by nickname and climb pace-specific boards, globally or among friends.',
+  'features.board.title': 'Stone & marble',
+  'features.board.body': 'A board carved for long sessions: marble and slate squares, ember pieces, calm highlights.',
 
   'how.eyebrow': 'How it works',
-  'how.title': 'Three steps. Real progress.',
-  'how.subtitle':
-    "You're not accumulating a vanity number. Each level-up is a specific, earned moment — and the bar shows you exactly how close you are to it.",
-  'how.step_1.title': 'Pick your style',
-  'how.step_1.body':
-    'Bullet, Blitz or Rapid. Choose a duration preset and the difficulty you want to push against — the slider shows where your cap is.',
+  'how.title': 'Three steps to the next rank.',
+  'how.step_1.title': 'Pick a pace',
+  'how.step_1.body': 'Rapid, Blitz or Bullet. Choose a duration and the difficulty you want to push against.',
   'how.step_2.title': 'Solve under pressure',
-  'how.step_2.body':
-    'The board fills the screen, the timer runs, puzzles adapt to you after every attempt. Missed moves are automatically queued for later review.',
-  'how.step_3.title': 'Hit all four to level up',
-  'how.step_3.body':
-    'Finish the session with enough solved, high enough accuracy, fast enough, with enough peak rating. Nail all four and your norm goes up.',
+  'how.step_2.body': 'The board fills the screen, the clock runs, and every puzzle adapts to your last answer.',
+  'how.step_3.title': 'Earn the next rank',
+  'how.step_3.body': 'Hit all four session targets and your norm rises. No grinding for numbers, no shortcuts.',
 
-  'cta.title_1': 'Your next rating jump is',
+  'cta.title_1': 'Your next rank is',
   'cta.title_2': 'one session away.',
-  'cta.subtitle':
-    'No email, no payment, no onboarding form. Pick a nickname, pick a style, start solving.',
+  'cta.subtitle': 'No email, no payment, no onboarding form. Pick a nickname, pick a pace, start solving.',
   'cta.primary': 'Create account',
   'cta.secondary': 'Log in',
 
   'footer.login': 'Log in',
   'footer.signup': 'Sign up',
   'footer.puzzles': 'Puzzles via Lichess',
+  'footer.credits': 'Theme icons: game-icons.net, CC BY 3.0',
 };
 
 const UK: Dict = {
   'nav.login': 'Увійти',
   'nav.signup': 'Реєстрація',
-  'nav.features': 'Фічі',
-  'nav.training': 'Тренування',
-  'nav.statistics': 'Статистика',
-  'nav.about': 'Про нас',
+  'nav.get_started': 'Почати',
+  'nav.paces': 'Темпи',
+  'nav.ranks': 'Ранги',
+  'nav.features': 'Можливості',
+  'nav.how': 'Як це працює',
 
-  'hero.eyebrow': 'Шахові тактики, як слід',
-  'hero.title_1': 'Загостри',
-  'hero.title_2': 'свої інстинкти',
+  'hero.eyebrow': 'ТРЕНАЖЕР ТАКТИКИ · 4М+ ЗАДАЧ LICHESS',
+  'hero.title_1': 'Загостри свої',
+  'hero.title_2': 'інстинкти.',
   'hero.subtitle':
-    'Tacticore тренує твої шахові тактики розумніше, швидше, щодня. Адаптивні задачі, рейтинги по стилях, реальний прогрес.',
+    'Адаптивні задачі на межі твоїх можливостей — з окремим рейтингом для кожного темпу і рангами, які треба заслужити.',
   'hero.cta_primary': 'Почати тренування',
-  'hero.cta_primary_short': 'Старт',
-  'hero.cta_secondary': 'У мене вже є акаунт',
-  'hero.stat_styles': 'Стилі',
-  'hero.stat_adaptive': 'Адаптивно',
-  'hero.stat_tiers': 'Рівні',
-  'hero.float_your_turn': 'Ваш хід',
-  'hero.float_find_best': 'Знайдіть найкращий хід',
-  'hero.float_levelup': 'Левел-ап',
+  'hero.cta_secondary': 'Маю акаунт',
+  'hero.stat_paces': '3 темпи, 3 рейтинги',
+  'hero.stat_ranks': '5 рангів',
+  'hero.stat_motifs': '42 тактичні мотиви',
+  'hero.float_turn': 'Твій хід',
+  'hero.float_find': 'Знайди найкращий хід за білих',
+  'hero.float_rating': 'РЕЙТИНГ БЛІЦ',
 
-  'value.eyebrow': 'Чому це працює',
-  'value.title': 'Побудовано навколо того, як ти реально прогресуєш',
-  'value.subtitle':
-    'Рішати випадкові задачі — не тренування. Працює лише дозована напруга. Кожна деталь додатку зав’язана на конкретний принцип тренування.',
-  'value.adaptive.title': 'Адаптивна складність',
-  'value.adaptive.body':
-    'Рейтинг задач підлаштовується під твій після кожної спроби. Легко — наступна буде складнішою. Застряг — стане простіше. Ти завжди тренуєшся на межі своїх можливостей.',
-  'value.per_style.title': 'Тренування по стилях',
-  'value.per_style.body':
-    'Пуля заточує розпізнавання патернів. Рапід розвиває глибокий розрахунок. Ми рахуємо їх окремо, щоб твій пулевий рейтинг не приховував слабких рапідних звичок.',
-  'value.gate.title': 'Чесний левел-ап',
-  'value.gate.body':
-    'Стеля рейтингу підіймається лише коли ти за одну сесію досягаєш чотирьох цілей: кількість, точність, швидкість, пік. Без обхідних шляхів, без накрутки цифр.',
+  'rank.novice': 'Новачок',
+  'rank.beginner': 'Початківець',
+  'rank.intermediate': 'Середній',
+  'rank.advanced': 'Просунутий',
+  'rank.expert': 'Експерт',
 
-  'features.eyebrow': 'Усе що потрібно',
-  'features.title': 'Повний набір інструментів одразу',
-  'features.subtitle':
-    'Жодного пейволу на важливому. Увесь тренажер — стилі, рев’ю, соціалка — у продукті з першого дня.',
-  'features.styles.title': 'Три стилі тренування',
-  'features.styles.body':
-    'Пуля (1–3 хв), Бліц (5–15 хв), Рапід (10–30 хв) — у кожного свій рейтинг, темп і формула розблокування.',
+  'motifs.label': '42 МОТИВИ\nЗ LICHESS',
+
+  'paces.eyebrow': 'Три темпи',
+  'paces.title': 'Три темпи. Три рейтинги.',
+  'paces.subtitle':
+    'Рефлекси в булеті й розрахунок у рапіді — різні навички, тому в них ніколи не спільне число. Швидка сесія не сховає повільних звичок.',
+  'paces.rating_label': 'ОКРЕМИЙ РЕЙТИНГ',
+  'paces.rapid.name': 'Рапід',
+  'paces.rapid.time': '10–30 хв',
+  'paces.rapid.body': 'Глибокий розрахунок. Більше часу на роздуми, складніші позиції, менше їх.',
+  'paces.blitz.name': 'Бліц',
+  'paces.blitz.time': '5–15 хв',
+  'paces.blitz.body': 'Універсал. Збалансовані темп і складність — тут відбувається найбільше заточування.',
+  'paces.bullet.name': 'Булет',
+  'paces.bullet.time': '1–3 хв',
+  'paces.bullet.body': 'Чисте розпізнавання патернів. Побачив, зіграв, далі — поки не встигли закрастися сумніви.',
+
+  'ranks.eyebrow': 'П’ять рангів',
+  'ranks.title': 'Ранги заслуговують, а не набивають.',
+  'ranks.subtitle':
+    'Від Новачка до Експерта: кожен ранг — це діапазон складності задач. Твоя норма росте лише тоді, коли одна сесія закриває всі чотири цілі — достатньо розв’язаних, точність, швидкість і пік рейтингу.',
+  'ranks.point_1': 'Складність підлаштовується після кожної задачі',
+  'ranks.point_2': 'Вищі рівні відкриваються лише через гейт',
+  'ranks.point_3': 'Шарінган глибшає, коли ти ростеш',
+  'ranks.panel_rating': 'РЕЙТИНГ БЛІЦ',
+  'ranks.gate': 'ГЕЙТ РІВНЯ',
+  'ranks.gate_badge': '4 / 4 · НОРМА +50',
+  'ranks.gate_solved': 'Розв’язано',
+  'ranks.gate_accuracy': 'Точність',
+  'ranks.gate_speed': 'Сер. швидкість',
+  'ranks.gate_peak': 'Пік рейтингу',
+
+  'features.eyebrow': 'Інструменти',
+  'features.title': 'Усе, що треба тренажеру. Нічого зайвого.',
+  'features.subtitle': 'Жодного пейволу на важливе. Ревʼю, мотиви, статистика й друзі — з першого дня.',
+  'features.review.title': 'Ревʼю помилок',
+  'features.review.body': 'Кожна помилка потрапляє в чергу Ревʼю без таймера. Розбирай без тиску, поки не засвоїш.',
   'features.focus.title': 'Режим фокусу',
-  'features.focus.body':
-    'Повний екран, статистика схована, жодних відволікань. Є лише позиція перед тобою — і все.',
-  'features.progress.title': 'Живий прогрес до левел-апу',
-  'features.progress.body':
-    'Кожен хід наповнює смужку прогресу до наступного розблокування. Ти завжди знаєш, скільки лишилось.',
-  'features.social.title': 'Друзі та лідерборди',
-  'features.social.body':
-    'Додавай людей за ніком, підіймайся в бордах по стилях, дивись рейтинг серед друзів — коли це особисто.',
-  'features.review.title': 'Розбирай помилки',
-  'features.review.body':
-    'Провалені задачі автоматично потрапляють у Рев’ю без таймера. Розбирай їх спокійно, поки не засвоїш.',
-  'features.custom.title': 'Підлаштуй під себе',
-  'features.custom.body':
-    'Обирай тему дошки, набір фігур, акцентний колір, пак звуків. Додаток має відчуватись як твій, а не наш.',
-  'features.banner':
-    'Понад 4 мільйони задач з Lichess, відібраних за рейтингом і темою. Кожна сесія підтягує свіжі позиції рівно під твій поточний рівень.',
+  'features.focus.body': 'Повний екран, статистика схована. Нічого, крім позиції перед тобою.',
+  'features.motif.title': 'Тренування за мотивом',
+  'features.motif.body': 'Обери будь-яку з 42 тем Lichess і відпрацьовуй саме той патерн, що тебе постійно ловить.',
+  'features.stats.title': 'Чесна статистика',
+  'features.stats.body': 'Історія рейтингу для кожного темпу, рік активності й найслабші теми — за рейтингом.',
+  'features.social.title': 'Друзі й лідерборди',
+  'features.social.body': 'Додавай людей за ніком і піднімайся в таблицях кожного темпу — глобально чи серед друзів.',
+  'features.board.title': 'Камінь і мармур',
+  'features.board.body': 'Дошка для довгих сесій: мармурові й сланцеві клітинки, фігури Ember, спокійні підсвітки.',
 
   'how.eyebrow': 'Як це працює',
-  'how.title': 'Три кроки. Реальний прогрес.',
-  'how.subtitle':
-    'Ти не накопичуєш «красиве» число. Кожен левел-ап — конкретний зароблений момент, і смужка показує, скільки лишилося до нього.',
-  'how.step_1.title': 'Обери стиль',
-  'how.step_1.body':
-    'Пуля, Бліц чи Рапід. Вибери тривалість і складність, проти якої хочеш іти — слайдер показує твою стелю.',
-  'how.step_2.title': 'Вирішуй під тиском',
-  'how.step_2.body':
-    'Дошка на весь екран, таймер іде, задачі підлаштовуються під тебе після кожної спроби. Пропущені ходи автоматично додаються в рев’ю.',
-  'how.step_3.title': 'Виконай усі чотири — левел-ап',
-  'how.step_3.body':
-    'Заверши сесію з достатньою кількістю розвʼязаних, достатньою точністю, швидкістю й піком рейтингу. Виконав усі чотири — норма росте.',
+  'how.title': 'Три кроки до наступного рангу.',
+  'how.step_1.title': 'Обери темп',
+  'how.step_1.body': 'Рапід, Бліц або Булет. Обери тривалість і складність, проти якої хочеш тиснути.',
+  'how.step_2.title': 'Розв’язуй під тиском',
+  'how.step_2.body': 'Дошка на весь екран, годинник іде, кожна задача підлаштовується під твою попередню відповідь.',
+  'how.step_3.title': 'Заслужи наступний ранг',
+  'how.step_3.body': 'Закрий усі чотири цілі сесії — і твоя норма зросте. Без накручування цифр і без обхідних шляхів.',
 
-  'cta.title_1': 'Твій наступний ривок у рейтингу',
-  'cta.title_2': 'уже в одній сесії.',
-  'cta.subtitle':
-    'Жодного email, жодної оплати, жодної анкети. Обери нік, обери стиль, починай рішати.',
+  'cta.title_1': 'Твій наступний ранг —',
+  'cta.title_2': 'за одну сесію.',
+  'cta.subtitle': 'Жодного email, жодної оплати, жодної анкети. Обери нік, обери темп і починай розв’язувати.',
   'cta.primary': 'Створити акаунт',
   'cta.secondary': 'Увійти',
 
   'footer.login': 'Увійти',
   'footer.signup': 'Реєстрація',
   'footer.puzzles': 'Задачі — з Lichess',
+  'footer.credits': 'Іконки тем: game-icons.net, CC BY 3.0',
 };
 
 const DICTS: Record<LandingLang, Dict> = { en: EN, uk: UK };

@@ -8,23 +8,14 @@ const OPTIONS: Array<{ value: 'en' | 'uk'; label: string }> = [
   { value: 'uk', label: 'УК' },
 ];
 
-type Props = {
-  tone?: 'dark' | 'light';
-};
-
-export function LangToggle({ tone = 'dark' }: Props) {
+/** Carved EN / УК switch (Ember on stone). */
+export function LangToggle() {
   const { lang, setLang } = useLandingT();
-  const isLight = tone === 'light';
   return (
     <div
       role="group"
       aria-label="Language"
-      className={cn(
-        'flex items-center rounded-lg p-0.5 text-[11px] font-semibold tracking-wider border',
-        isLight
-          ? 'bg-black/5 border-black/10'
-          : 'bg-white/5 border-white/10',
-      )}
+      className="eos-well flex items-center rounded-lg p-[3px] text-[11px] font-extrabold tracking-[0.05em]"
     >
       {OPTIONS.map((o) => (
         <button
@@ -33,10 +24,8 @@ export function LangToggle({ tone = 'dark' }: Props) {
           onClick={() => setLang(o.value)}
           aria-pressed={lang === o.value}
           className={cn(
-            'h-7 px-2.5 rounded-md transition-colors',
-            lang === o.value
-              ? isLight ? 'bg-black/10 text-black' : 'bg-white/10 text-white'
-              : isLight ? 'text-[#6a6a6a] hover:text-black' : 'text-zinc-500 hover:text-zinc-300',
+            'h-[26px] rounded-md px-[9px] transition-colors',
+            lang === o.value ? 'bg-eos-rise text-eos-bone' : 'text-eos-dust hover:text-eos-bone',
           )}
         >
           {o.label}

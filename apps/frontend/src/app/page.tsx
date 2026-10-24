@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { getToken } from '@/lib/api';
 import { LandingLangProvider } from '@/lib/landingI18n';
 import { Hero } from '@/components/landing/Hero';
-import { ValueProps } from '@/components/landing/ValueProps';
+import { Motifs } from '@/components/landing/Motifs';
+import { Paces } from '@/components/landing/Paces';
+import { Ranks } from '@/components/landing/Ranks';
 import { Features } from '@/components/landing/Features';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { CTA } from '@/components/landing/CTA';
@@ -24,9 +26,11 @@ export default function Home() {
 
   return (
     <LandingLangProvider>
-      <main className="relative">
+      <main className="relative overflow-x-hidden bg-eos-ink text-eos-bone">
         <Hero />
-        <ValueProps />
+        <Motifs />
+        <Paces />
+        <Ranks />
         <Features />
         <HowItWorks />
         <CTA />
