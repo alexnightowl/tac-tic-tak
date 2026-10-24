@@ -69,6 +69,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <OnboardingModal />
         </Providers>
         <ToastContainer />
+        <div className="eos-fade-tint" aria-hidden />
+        <div className="eos-fade-tint is-warm" aria-hidden />
         <div className="eos-fade" aria-hidden />
         <div className="rotate-lock" role="alert">
           <div className="rotate-lock-icon" aria-hidden>↻</div>

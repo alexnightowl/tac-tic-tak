@@ -480,8 +480,26 @@ input[type="range"].ticks::-moz-range-thumb {
   height: 100lvh;
   z-index: 60;
   pointer-events: none;
-  backdrop-filter: contrast(0.962) saturate(0.892) brightness(1.02) sepia(0.035);
-  -webkit-backdrop-filter: contrast(0.962) saturate(0.892) brightness(1.02) sepia(0.035);
+  /* No backdrop-filter: a full-screen backdrop-filter re-samples the page
+     lazily, so fast UI changes (tab switches) left ghosts of the previous
+     frame. Desaturation + warmth are blend layers that repaint with the
+     content (.eos-fade-tint below). */
+}
+.eos-fade-tint {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 100vh;
+  height: 100lvh;
+  z-index: 60;
+  pointer-events: none;
+  background: hsl(0, 0%, 50%);
+  mix-blend-mode: saturation;
+  opacity: 0.108;
+}
+.eos-fade-tint.is-warm {
+  background: rgb(112, 66, 20);
+  mix-blend-mode: color;
+  opacity: 0.035;
 }
 .eos-fade::before {
   content: '';
