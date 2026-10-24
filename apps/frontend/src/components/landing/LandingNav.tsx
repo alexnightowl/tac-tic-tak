@@ -21,13 +21,17 @@ export function LandingNav() {
         <Link href="/login" className="hidden text-sm font-bold text-eos-bone hover:text-white md:inline">
           {t('nav.login')}
         </Link>
-        <Link
-          href="/register"
-          className="btn-ember hidden h-11 items-center justify-center px-3 font-serif text-[13px] font-bold uppercase tracking-[0.1em] text-[#ece3d6] md:inline-flex"
-          style={{ borderWidth: '12px 13px' }}
-        >
-          {t('nav.get_started')}
-        </Link>
+        {/* .btn-ember sets display:inline-flex, so hide via a wrapper —
+            on phones the hero CTAs are right below anyway. */}
+        <span className="hidden md:inline-flex">
+          <Link
+            href="/register"
+            className="btn-ember h-11 px-3 font-serif text-[13px] font-bold uppercase tracking-[0.1em] text-[#ece3d6]"
+            style={{ borderWidth: '12px 13px' }}
+          >
+            {t('nav.get_started')}
+          </Link>
+        </span>
       </div>
     </header>
   );

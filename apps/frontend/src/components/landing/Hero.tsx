@@ -66,7 +66,8 @@ export function Hero() {
                 className="btn-ember inline-flex h-14 items-center justify-center gap-2.5 px-5 font-serif text-[15px] font-bold uppercase tracking-[0.1em] text-[#ece3d6]"
                 style={{ borderWidth: '15px 16px' }}
               >
-                <Play size={18} /> {t('hero.cta_primary')}
+                <Play size={16} strokeWidth={2.2} className="shrink-0 fill-current" aria-hidden />
+                <span>{t('hero.cta_primary')}</span>
               </Link>
               <Link
                 href="/login"
