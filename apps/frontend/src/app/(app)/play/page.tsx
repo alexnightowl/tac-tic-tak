@@ -291,7 +291,21 @@ export default function PlaySetup() {
                 labels={bandLabels}
                 currentRating={styleProgression.currentPuzzleRating}
                 ariaLabel={t('play.start_rating')}
+                levelUpFrom={mode !== 'theme' ? peakFloor : undefined}
+                norm={mode !== 'theme' ? unlocked : undefined}
               />
+              {mode !== 'theme' && (
+                <div className="mt-2 flex items-center gap-4 text-[11px] text-eos-ash">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="h-1.5 w-4 rounded-full bg-[#6f6a6e]" aria-hidden />
+                    {t('play.zone_comfort')}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="h-1.5 w-4 rounded-full bg-[#a64241] shadow-[0_0_0_1px_rgba(215,183,119,0.45)]" aria-hidden />
+                    {t('play.zone_levelup')}
+                  </span>
+                </div>
+              )}
               <p className="text-xs text-zinc-500 mt-2">
                 {mode === 'theme' ? (
                   <span className="text-zinc-400">{t('play.theme_unrated_hint')}</span>

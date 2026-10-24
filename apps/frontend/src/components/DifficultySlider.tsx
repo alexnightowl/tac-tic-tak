@@ -21,11 +21,23 @@ type Props = {
   thumbLabel?: string;
   currentLabel?: string;
   ariaLabel?: string;
+  /**
+   * Start of the level-up zone (norm − 50). Below it is the comfort zone:
+   * the session can't move the norm. When set, the track is split by
+   * colour and the thumb snaps to the zone checkpoints.
+   */
+  levelUpFrom?: number;
+  /** The player's norm (unlocked ceiling) — a checkpoint inside the zone. */
+  norm?: number;
 };
+
+/** Pointer within this many px of a checkpoint snaps onto it. */
+const SNAP_PX = 14;
 
 export function DifficultySlider({
   value, onChange, min = 400, max = 3000, cap, step = 25,
   labels, currentRating, thumbLabel, currentLabel, ariaLabel,
+  levelUpFrom, norm,
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -37,17 +49,31 @@ export function DifficultySlider({
   const valuePct = clampPct(pct(value));
   const capPct = clampPct(pct(cap));
   const currentPct = currentRating != null ? clampPct(pct(currentRating)) : null;
+  const zones = levelUpFrom != null && levelUpFrom < cap;
+  const zonePct = zones ? clampPct(pct(Math.max(min, levelUpFrom!))) : null;
+  const inLevelUp = zones ? value >= levelUpFrom! : true;
+  const checkpoints = useMemo(
+    () => (zones
+      ? Array.from(new Set([Math.max(min, levelUpFrom!), norm, cap].filter((v): v is number => v != null && v >= min && v <= cap)))
+      : []),
+    [zones, min, levelUpFrom, norm, cap],
+  );
 
   const setFromClientX = useCallback((clientX: number) => {
     const el = trackRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    // Magnet: close enough to a zone checkpoint → land exactly on it.
+    for (const c of checkpoints) {
+      const cx = (valueToPct(c, edges) / 100) * rect.width;
+      if (Math.abs(cx - ratio * rect.width) <= SNAP_PX) { if (c !== value) onChange(c); return; }
+    }
     const raw = pctToValue(ratio * 100, edges);
     const snapped = Math.round(raw / step) * step;
     const capped = Math.min(cap, Math.max(min, snapped));
-    onChange(capped);
-  }, [cap, step, min, onChange, edges]);
+    if (capped !== value) onChange(capped);
+  }, [cap, step, min, onChange, edges, checkpoints, value]);
 
   const onPointerDown = (e: React.PointerEvent) => {
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
@@ -67,6 +93,8 @@ export function DifficultySlider({
     if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { onChange(Math.min(cap, value + step)); e.preventDefault(); }
     if (e.key === 'Home') { onChange(min); e.preventDefault(); }
     if (e.key === 'End')  { onChange(cap); e.preventDefault(); }
+    if (e.key === 'PageUp')   { const n = checkpoints.find((c) => c > value); if (n != null) onChange(n); e.preventDefault(); }
+    if (e.key === 'PageDown') { const n = [...checkpoints].reverse().find((c) => c < value); if (n != null) onChange(n); e.preventDefault(); }
   };
 
   return (
@@ -93,11 +121,36 @@ export function DifficultySlider({
           className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-eos-well"
           style={{ boxShadow: 'inset 0 1px 2px rgba(17,15,17,0.7)' }}
         />
-        {/* Ember fill */}
+        {/* Level-up zone: gold band from norm−50 to the cap */}
+        {zonePct != null && (
+          <div
+            className="absolute top-1/2 -translate-y-1/2 h-1.5 rounded-full"
+            style={{
+              left: `${zonePct}%`,
+              width: `${Math.max(0, capPct - zonePct)}%`,
+              background: 'rgba(215,183,119,0.28)',
+              boxShadow: '0 0 0 1px rgba(215,183,119,0.35)',
+            }}
+          />
+        )}
+        {/* Fill: muted in the comfort zone, ember once it reaches the level-up zone */}
         <div
           className="absolute left-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full"
-          style={{ width: `${valuePct}%`, background: 'linear-gradient(90deg, #753132, #a64241)', boxShadow: 'inset 0 1px 0 rgba(255,255,254,0.15)' }}
+          style={{
+            width: `${valuePct}%`,
+            background: inLevelUp ? 'linear-gradient(90deg, #753132, #a64241)' : 'linear-gradient(90deg, #4a4549, #6f6a6e)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,254,0.15)',
+          }}
         />
+        {/* Checkpoint ticks (the magnets) */}
+        {checkpoints.filter((c) => c !== cap && c !== norm).map((c) => (
+          <div
+            key={c}
+            className="absolute top-1/2 -translate-y-1/2 h-3.5 w-[3px] rounded-full"
+            style={{ left: `calc(${clampPct(pct(c))}% - 1.5px)`, background: '#d7b777', boxShadow: '0 0 0 1px rgba(17,15,17,0.6)' }}
+            aria-hidden
+          />
+        ))}
 
         {/* Locked region overlay (beyond cap) */}
         {capPct < 100 && (
@@ -138,7 +191,10 @@ export function DifficultySlider({
           style={{
             left: `calc(${valuePct}% - 12px)`,
             background: 'radial-gradient(circle at 40% 32%, #f5eee5, #cbc5bf 60%, #938e90)',
-            boxShadow: '0 0 0 4px rgba(166,66,65,0.25), 0 2px 6px rgba(17,15,17,0.6)',
+            boxShadow: inLevelUp
+              ? '0 0 0 4px rgba(166,66,65,0.3), 0 2px 6px rgba(17,15,17,0.6)'
+              : '0 0 0 4px rgba(161,157,163,0.2), 0 2px 6px rgba(17,15,17,0.6)',
+            transition: 'left 90ms ease-out',
           }}
         />
       </div>
@@ -167,15 +223,15 @@ export function DifficultySlider({
         })}
       </div>
 
-      {/* Numeric anchors */}
+      {/* Numeric anchors: min, start of the level-up zone (gold), cap */}
       <div className="relative h-4 mt-1">
-        {[min, cap].map((t, i) => (
+        {anchorLabels(min, cap, zones ? levelUpFrom! : null, pct).map(({ v, gold }, i) => (
           <div
-            key={`${t}-${i}`}
-            className="absolute text-[10px] font-bold text-eos-dust tabular-nums"
-            style={{ left: `${clampPct(pct(t))}%`, transform: `translateX(-${clampPct(pct(t))}%)` }}
+            key={`${v}-${i}`}
+            className={cn('absolute text-[10px] font-bold tabular-nums', gold ? 'text-[#d7b777]' : 'text-eos-dust')}
+            style={{ left: `${clampPct(pct(v))}%`, transform: `translateX(-${clampPct(pct(v))}%)` }}
           >
-            {t}
+            {v}
           </div>
         ))}
       </div>
@@ -208,4 +264,15 @@ function pctToValue(p: number, e: number[]): number {
   const x = (Math.min(100, Math.max(0, p)) / 100) * n;
   const i = Math.min(n - 1, Math.floor(x));
   return e[i] + (x - i) * (e[i + 1] - e[i]);
+}
+
+/** min · zone start · cap, dropping the zone label when it would collide. */
+function anchorLabels(min: number, cap: number, zoneFrom: number | null, pct: (v: number) => number) {
+  const out: { v: number; gold: boolean }[] = [{ v: min, gold: false }];
+  if (zoneFrom != null && zoneFrom > min) {
+    const zp = pct(zoneFrom);
+    if (zp - pct(min) > 9 && pct(cap) - zp > 9) out.push({ v: zoneFrom, gold: true });
+  }
+  out.push({ v: cap, gold: false });
+  return out;
 }
