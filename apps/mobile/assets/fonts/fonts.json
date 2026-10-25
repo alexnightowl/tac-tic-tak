@@ -1,0 +1,182 @@
+{
+  "Manrope-Regular.ttf": {
+    "family": "Manrope",
+    "source": "ofl/manrope/Manrope[wght].ttf@wght=400",
+    "postScriptName": "Manrope-Regular",
+    "weight": 400,
+    "glyphs": 742,
+    "cyrillic": true,
+    "bytes": 97488,
+    "sha256": "ba79ab32b15d8384"
+  },
+  "Manrope-Medium.ttf": {
+    "family": "Manrope",
+    "source": "ofl/manrope/Manrope[wght].ttf@wght=500",
+    "postScriptName": "Manrope-Medium",
+    "weight": 500,
+    "glyphs": 742,
+    "cyrillic": true,
+    "bytes": 97560,
+    "sha256": "f258bd7dd269b7f7"
+  },
+  "Manrope-SemiBold.ttf": {
+    "family": "Manrope",
+    "source": "ofl/manrope/Manrope[wght].ttf@wght=600",
+    "postScriptName": "Manrope-SemiBold",
+    "weight": 600,
+    "glyphs": 742,
+    "cyrillic": true,
+    "bytes": 97608,
+    "sha256": "c0b3403544a0069c"
+  },
+  "Manrope-Bold.ttf": {
+    "family": "Manrope",
+    "source": "ofl/manrope/Manrope[wght].ttf@wght=700",
+    "postScriptName": "Manrope-Bold",
+    "weight": 700,
+    "glyphs": 742,
+    "cyrillic": true,
+    "bytes": 97488,
+    "sha256": "4ab34ff09600de46"
+  },
+  "Manrope-ExtraBold.ttf": {
+    "family": "Manrope",
+    "source": "ofl/manrope/Manrope[wght].ttf@wght=800",
+    "postScriptName": "Manrope-ExtraBold",
+    "weight": 800,
+    "glyphs": 742,
+    "cyrillic": true,
+    "bytes": 98080,
+    "sha256": "6bd50b4b6c2f9ef4"
+  },
+  "Cinzel-Regular.ttf": {
+    "family": "Cinzel",
+    "source": "ofl/cinzel/Cinzel[wght].ttf@wght=400",
+    "postScriptName": "Cinzel-Regular",
+    "weight": 400,
+    "glyphs": 548,
+    "cyrillic": false,
+    "bytes": 76868,
+    "sha256": "e5fc7a560892f894"
+  },
+  "Cinzel-Medium.ttf": {
+    "family": "Cinzel",
+    "source": "ofl/cinzel/Cinzel[wght].ttf@wght=500",
+    "postScriptName": "Cinzel-Medium",
+    "weight": 500,
+    "glyphs": 548,
+    "cyrillic": false,
+    "bytes": 77084,
+    "sha256": "18809ad5753b6ecc"
+  },
+  "Cinzel-SemiBold.ttf": {
+    "family": "Cinzel",
+    "source": "ofl/cinzel/Cinzel[wght].ttf@wght=600",
+    "postScriptName": "Cinzel-SemiBold",
+    "weight": 600,
+    "glyphs": 548,
+    "cyrillic": false,
+    "bytes": 77172,
+    "sha256": "51b9e7af8e69abb4"
+  },
+  "Cinzel-Bold.ttf": {
+    "family": "Cinzel",
+    "source": "ofl/cinzel/Cinzel[wght].ttf@wght=700",
+    "postScriptName": "Cinzel-Bold",
+    "weight": 700,
+    "glyphs": 548,
+    "cyrillic": false,
+    "bytes": 77276,
+    "sha256": "7f0457468c482236"
+  },
+  "Cinzel-ExtraBold.ttf": {
+    "family": "Cinzel",
+    "source": "ofl/cinzel/Cinzel[wght].ttf@wght=800",
+    "postScriptName": "Cinzel-ExtraBold",
+    "weight": 800,
+    "glyphs": 548,
+    "cyrillic": false,
+    "bytes": 77280,
+    "sha256": "4b7ac643e79a2dc9"
+  },
+  "Cinzel-Black.ttf": {
+    "family": "Cinzel",
+    "source": "ofl/cinzel/Cinzel[wght].ttf@wght=900",
+    "postScriptName": "Cinzel-Black",
+    "weight": 900,
+    "glyphs": 548,
+    "cyrillic": false,
+    "bytes": 77268,
+    "sha256": "ceb91d0fc1e2fb31"
+  },
+  "Forum.ttf": {
+    "family": "Forum",
+    "source": "ofl/forum/Forum-Regular.ttf",
+    "postScriptName": "Forum",
+    "weight": 400,
+    "glyphs": 584,
+    "cyrillic": true,
+    "bytes": 303316,
+    "sha256": "5c9fbe9c4ce76d02"
+  },
+  "CormorantSC-Light.ttf": {
+    "family": "CormorantSC",
+    "source": "ofl/cormorantsc/CormorantSC-Light.ttf",
+    "postScriptName": "CormorantSC-Light",
+    "weight": 300,
+    "glyphs": 3203,
+    "cyrillic": true,
+    "bytes": 764892,
+    "sha256": "d3dfcbf1aa928174"
+  },
+  "CormorantSC-Regular.ttf": {
+    "family": "CormorantSC",
+    "source": "ofl/cormorantsc/CormorantSC-Regular.ttf",
+    "postScriptName": "CormorantSC-Regular",
+    "weight": 400,
+    "glyphs": 3203,
+    "cyrillic": true,
+    "bytes": 763624,
+    "sha256": "a51985a075f3884d"
+  },
+  "CormorantSC-Medium.ttf": {
+    "family": "CormorantSC",
+    "source": "ofl/cormorantsc/CormorantSC-Medium.ttf",
+    "postScriptName": "CormorantSC-Medium",
+    "weight": 500,
+    "glyphs": 3203,
+    "cyrillic": true,
+    "bytes": 762320,
+    "sha256": "7ec02e6b6c20697f"
+  },
+  "CormorantSC-SemiBold.ttf": {
+    "family": "CormorantSC",
+    "source": "ofl/cormorantsc/CormorantSC-SemiBold.ttf",
+    "postScriptName": "CormorantSC-SemiBold",
+    "weight": 600,
+    "glyphs": 3203,
+    "cyrillic": true,
+    "bytes": 762872,
+    "sha256": "648cd1c932871e4e"
+  },
+  "CormorantSC-Bold.ttf": {
+    "family": "CormorantSC",
+    "source": "ofl/cormorantsc/CormorantSC-Bold.ttf",
+    "postScriptName": "CormorantSC-Bold",
+    "weight": 700,
+    "glyphs": 3203,
+    "cyrillic": true,
+    "bytes": 763124,
+    "sha256": "78f70c79b5c0a1e6"
+  },
+  "Prata-Regular.ttf": {
+    "family": "Prata",
+    "source": "ofl/prata/Prata-Regular.ttf",
+    "postScriptName": "Prata-Regular",
+    "weight": 400,
+    "glyphs": 560,
+    "cyrillic": true,
+    "bytes": 101284,
+    "sha256": "3b2b880737be3bda"
+  }
+}

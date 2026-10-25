@@ -1,0 +1,52 @@
+{
+  "slice": {
+    "top": 55,
+    "right": 60,
+    "bottom": 55,
+    "left": 60
+  },
+  "sizes": {
+    "sm": {
+      "height": 36,
+      "borderV": 10,
+      "borderH": 11,
+      "capWidth": 11,
+      "midTileWidth": {
+        "ember": 162.91,
+        "slate": 166.18
+      }
+    },
+    "md": {
+      "height": 44,
+      "borderV": 12,
+      "borderH": 13,
+      "capWidth": 13,
+      "midTileWidth": {
+        "ember": 195.49,
+        "slate": 199.42
+      }
+    },
+    "lg": {
+      "height": 52,
+      "borderV": 14,
+      "borderH": 15,
+      "capWidth": 15,
+      "midTileWidth": {
+        "ember": 228.07,
+        "slate": 232.65
+      }
+    }
+  },
+  "variants": {
+    "ember": {
+      "source": "public/design/plates/ember.webp",
+      "width": 1016,
+      "height": 201
+    },
+    "slate": {
+      "source": "public/design/plates/slate.webp",
+      "width": 1034,
+      "height": 194
+    }
+  }
+}

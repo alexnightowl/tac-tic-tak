@@ -1,0 +1,1875 @@
+{
+  "generatedBy": "tools/assets/build-manifest.mjs",
+  "note": "Sizes of scaled images (scales present) are in points; others in px. Durations in seconds.",
+  "totalBytes": 7493011,
+  "assets": [
+    {
+      "key": "board/board",
+      "path": "board/board.webp",
+      "kind": "board",
+      "format": "webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 92928
+    },
+    {
+      "key": "board/tile-dark",
+      "path": "board/tile-dark.webp",
+      "kind": "board",
+      "format": "webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 4286
+    },
+    {
+      "key": "board/tile-light",
+      "path": "board/tile-light.webp",
+      "kind": "board",
+      "format": "webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 6168
+    },
+    {
+      "key": "fonts/Cinzel-Black",
+      "path": "fonts/Cinzel-Black.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Cinzel",
+      "postScriptName": "Cinzel-Black",
+      "weight": 900,
+      "cyrillic": false,
+      "bytes": 77268
+    },
+    {
+      "key": "fonts/Cinzel-Bold",
+      "path": "fonts/Cinzel-Bold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Cinzel",
+      "postScriptName": "Cinzel-Bold",
+      "weight": 700,
+      "cyrillic": false,
+      "bytes": 77276
+    },
+    {
+      "key": "fonts/Cinzel-ExtraBold",
+      "path": "fonts/Cinzel-ExtraBold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Cinzel",
+      "postScriptName": "Cinzel-ExtraBold",
+      "weight": 800,
+      "cyrillic": false,
+      "bytes": 77280
+    },
+    {
+      "key": "fonts/Cinzel-Medium",
+      "path": "fonts/Cinzel-Medium.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Cinzel",
+      "postScriptName": "Cinzel-Medium",
+      "weight": 500,
+      "cyrillic": false,
+      "bytes": 77084
+    },
+    {
+      "key": "fonts/Cinzel-Regular",
+      "path": "fonts/Cinzel-Regular.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Cinzel",
+      "postScriptName": "Cinzel-Regular",
+      "weight": 400,
+      "cyrillic": false,
+      "bytes": 76868
+    },
+    {
+      "key": "fonts/Cinzel-SemiBold",
+      "path": "fonts/Cinzel-SemiBold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Cinzel",
+      "postScriptName": "Cinzel-SemiBold",
+      "weight": 600,
+      "cyrillic": false,
+      "bytes": 77172
+    },
+    {
+      "key": "fonts/CormorantSC-Bold",
+      "path": "fonts/CormorantSC-Bold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "CormorantSC",
+      "postScriptName": "CormorantSC-Bold",
+      "weight": 700,
+      "cyrillic": true,
+      "bytes": 763124
+    },
+    {
+      "key": "fonts/CormorantSC-Light",
+      "path": "fonts/CormorantSC-Light.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "CormorantSC",
+      "postScriptName": "CormorantSC-Light",
+      "weight": 300,
+      "cyrillic": true,
+      "bytes": 764892
+    },
+    {
+      "key": "fonts/CormorantSC-Medium",
+      "path": "fonts/CormorantSC-Medium.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "CormorantSC",
+      "postScriptName": "CormorantSC-Medium",
+      "weight": 500,
+      "cyrillic": true,
+      "bytes": 762320
+    },
+    {
+      "key": "fonts/CormorantSC-Regular",
+      "path": "fonts/CormorantSC-Regular.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "CormorantSC",
+      "postScriptName": "CormorantSC-Regular",
+      "weight": 400,
+      "cyrillic": true,
+      "bytes": 763624
+    },
+    {
+      "key": "fonts/CormorantSC-SemiBold",
+      "path": "fonts/CormorantSC-SemiBold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "CormorantSC",
+      "postScriptName": "CormorantSC-SemiBold",
+      "weight": 600,
+      "cyrillic": true,
+      "bytes": 762872
+    },
+    {
+      "key": "fonts/Forum",
+      "path": "fonts/Forum.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Forum",
+      "postScriptName": "Forum",
+      "weight": 400,
+      "cyrillic": true,
+      "bytes": 303316
+    },
+    {
+      "key": "fonts/Manrope-Bold",
+      "path": "fonts/Manrope-Bold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Manrope",
+      "postScriptName": "Manrope-Bold",
+      "weight": 700,
+      "cyrillic": true,
+      "bytes": 97488
+    },
+    {
+      "key": "fonts/Manrope-ExtraBold",
+      "path": "fonts/Manrope-ExtraBold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Manrope",
+      "postScriptName": "Manrope-ExtraBold",
+      "weight": 800,
+      "cyrillic": true,
+      "bytes": 98080
+    },
+    {
+      "key": "fonts/Manrope-Medium",
+      "path": "fonts/Manrope-Medium.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Manrope",
+      "postScriptName": "Manrope-Medium",
+      "weight": 500,
+      "cyrillic": true,
+      "bytes": 97560
+    },
+    {
+      "key": "fonts/Manrope-Regular",
+      "path": "fonts/Manrope-Regular.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Manrope",
+      "postScriptName": "Manrope-Regular",
+      "weight": 400,
+      "cyrillic": true,
+      "bytes": 97488
+    },
+    {
+      "key": "fonts/Manrope-SemiBold",
+      "path": "fonts/Manrope-SemiBold.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Manrope",
+      "postScriptName": "Manrope-SemiBold",
+      "weight": 600,
+      "cyrillic": true,
+      "bytes": 97608
+    },
+    {
+      "key": "fonts/Prata-Regular",
+      "path": "fonts/Prata-Regular.ttf",
+      "kind": "font",
+      "format": "ttf",
+      "family": "Prata",
+      "postScriptName": "Prata-Regular",
+      "weight": 400,
+      "cyrillic": true,
+      "bytes": 101284
+    },
+    {
+      "key": "fonts/fonts",
+      "path": "fonts/fonts.json",
+      "kind": "data",
+      "format": "json",
+      "bytes": 4789
+    },
+    {
+      "key": "fonts/licenses/Cinzel-OFL",
+      "path": "fonts/licenses/Cinzel-OFL.txt",
+      "kind": "license",
+      "format": "txt",
+      "bytes": 4383
+    },
+    {
+      "key": "fonts/licenses/CormorantSC-OFL",
+      "path": "fonts/licenses/CormorantSC-OFL.txt",
+      "kind": "license",
+      "format": "txt",
+      "bytes": 4387
+    },
+    {
+      "key": "fonts/licenses/Forum-OFL",
+      "path": "fonts/licenses/Forum-OFL.txt",
+      "kind": "license",
+      "format": "txt",
+      "bytes": 4399
+    },
+    {
+      "key": "fonts/licenses/Manrope-OFL",
+      "path": "fonts/licenses/Manrope-OFL.txt",
+      "kind": "license",
+      "format": "txt",
+      "bytes": 4387
+    },
+    {
+      "key": "fonts/licenses/Prata-OFL",
+      "path": "fonts/licenses/Prata-OFL.txt",
+      "kind": "license",
+      "format": "txt",
+      "bytes": 4476
+    },
+    {
+      "key": "icons/knight-logo",
+      "path": "icons/knight-logo.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 128,
+      "height": 128,
+      "px": {
+        "@2x": [
+          256,
+          256
+        ],
+        "@3x": [
+          384,
+          384
+        ]
+      },
+      "bytes": 31254
+    },
+    {
+      "key": "icons/mode-blitz",
+      "path": "icons/mode-blitz.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 32,
+      "px": {
+        "@2x": [
+          64,
+          64
+        ],
+        "@3x": [
+          96,
+          96
+        ]
+      },
+      "bytes": 1862
+    },
+    {
+      "key": "icons/mode-bullet",
+      "path": "icons/mode-bullet.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 32,
+      "px": {
+        "@2x": [
+          64,
+          64
+        ],
+        "@3x": [
+          96,
+          96
+        ]
+      },
+      "bytes": 2148
+    },
+    {
+      "key": "icons/mode-rapid",
+      "path": "icons/mode-rapid.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 32,
+      "px": {
+        "@2x": [
+          64,
+          64
+        ],
+        "@3x": [
+          96,
+          96
+        ]
+      },
+      "bytes": 3174
+    },
+    {
+      "key": "icons/nav-home",
+      "path": "icons/nav-home.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 32,
+      "px": {
+        "@2x": [
+          64,
+          64
+        ],
+        "@3x": [
+          96,
+          96
+        ]
+      },
+      "bytes": 6814
+    },
+    {
+      "key": "icons/nav-play",
+      "path": "icons/nav-play.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 32,
+      "px": {
+        "@2x": [
+          64,
+          64
+        ],
+        "@3x": [
+          96,
+          96
+        ]
+      },
+      "bytes": 3900
+    },
+    {
+      "key": "icons/nav-review-book.svg",
+      "path": "icons/nav-review-book.svg",
+      "kind": "icon",
+      "format": "svg",
+      "width": 32,
+      "height": 24,
+      "bytes": 708
+    },
+    {
+      "key": "icons/nav-review-book",
+      "path": "icons/nav-review-book.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 24,
+      "px": {
+        "@2x": [
+          64,
+          48
+        ],
+        "@3x": [
+          96,
+          72
+        ]
+      },
+      "bytes": 3544
+    },
+    {
+      "key": "icons/nav-review",
+      "path": "icons/nav-review.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 32,
+      "height": 24,
+      "px": {
+        "@2x": [
+          64,
+          48
+        ],
+        "@3x": [
+          96,
+          72
+        ]
+      },
+      "bytes": 3432
+    },
+    {
+      "key": "icons/rank-4",
+      "path": "icons/rank-4.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 42.67,
+      "height": 42.67,
+      "px": {
+        "@2x": [
+          85,
+          85
+        ],
+        "@3x": [
+          128,
+          128
+        ]
+      },
+      "bytes": 6970
+    },
+    {
+      "key": "icons/rank-5",
+      "path": "icons/rank-5.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 42.67,
+      "height": 42.67,
+      "px": {
+        "@2x": [
+          85,
+          85
+        ],
+        "@3x": [
+          128,
+          128
+        ]
+      },
+      "bytes": 6682
+    },
+    {
+      "key": "icons/tomoe-1",
+      "path": "icons/tomoe-1.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 42.67,
+      "height": 42.67,
+      "px": {
+        "@2x": [
+          85,
+          85
+        ],
+        "@3x": [
+          128,
+          128
+        ]
+      },
+      "bytes": 9832
+    },
+    {
+      "key": "icons/tomoe-2",
+      "path": "icons/tomoe-2.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 42.67,
+      "height": 42.67,
+      "px": {
+        "@2x": [
+          85,
+          85
+        ],
+        "@3x": [
+          128,
+          128
+        ]
+      },
+      "bytes": 9756
+    },
+    {
+      "key": "icons/tomoe-3",
+      "path": "icons/tomoe-3.webp",
+      "kind": "icon",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 42.67,
+      "height": 42.67,
+      "px": {
+        "@2x": [
+          85,
+          85
+        ],
+        "@3x": [
+          128,
+          128
+        ]
+      },
+      "bytes": 9952
+    },
+    {
+      "key": "images/android-icon-background",
+      "path": "images/android-icon-background.png",
+      "kind": "app-icon",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 67659
+    },
+    {
+      "key": "images/android-icon-foreground",
+      "path": "images/android-icon-foreground.png",
+      "kind": "app-icon",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 79345
+    },
+    {
+      "key": "images/android-icon-monochrome",
+      "path": "images/android-icon-monochrome.png",
+      "kind": "app-icon",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 53904
+    },
+    {
+      "key": "images/icon",
+      "path": "images/icon.png",
+      "kind": "app-icon",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 100356
+    },
+    {
+      "key": "images/splash-icon",
+      "path": "images/splash-icon.png",
+      "kind": "app-icon",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 155321
+    },
+    {
+      "key": "pieces/classic/bB",
+      "path": "pieces/classic/bB.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 5726
+    },
+    {
+      "key": "pieces/classic/bK",
+      "path": "pieces/classic/bK.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 7524
+    },
+    {
+      "key": "pieces/classic/bN",
+      "path": "pieces/classic/bN.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 6010
+    },
+    {
+      "key": "pieces/classic/bP",
+      "path": "pieces/classic/bP.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 4012
+    },
+    {
+      "key": "pieces/classic/bQ",
+      "path": "pieces/classic/bQ.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 7820
+    },
+    {
+      "key": "pieces/classic/bR",
+      "path": "pieces/classic/bR.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 5306
+    },
+    {
+      "key": "pieces/classic/wB",
+      "path": "pieces/classic/wB.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 6952
+    },
+    {
+      "key": "pieces/classic/wK",
+      "path": "pieces/classic/wK.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 8898
+    },
+    {
+      "key": "pieces/classic/wN",
+      "path": "pieces/classic/wN.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 7678
+    },
+    {
+      "key": "pieces/classic/wP",
+      "path": "pieces/classic/wP.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 4882
+    },
+    {
+      "key": "pieces/classic/wQ",
+      "path": "pieces/classic/wQ.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 9614
+    },
+    {
+      "key": "pieces/classic/wR",
+      "path": "pieces/classic/wR.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 6592
+    },
+    {
+      "key": "pieces/ember/bB",
+      "path": "pieces/ember/bB.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 7080
+    },
+    {
+      "key": "pieces/ember/bK",
+      "path": "pieces/ember/bK.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 8234
+    },
+    {
+      "key": "pieces/ember/bN",
+      "path": "pieces/ember/bN.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 9270
+    },
+    {
+      "key": "pieces/ember/bP",
+      "path": "pieces/ember/bP.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 4918
+    },
+    {
+      "key": "pieces/ember/bQ",
+      "path": "pieces/ember/bQ.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 9192
+    },
+    {
+      "key": "pieces/ember/bR",
+      "path": "pieces/ember/bR.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 6346
+    },
+    {
+      "key": "pieces/ember/wB",
+      "path": "pieces/ember/wB.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 7528
+    },
+    {
+      "key": "pieces/ember/wK",
+      "path": "pieces/ember/wK.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 9398
+    },
+    {
+      "key": "pieces/ember/wN",
+      "path": "pieces/ember/wN.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 10328
+    },
+    {
+      "key": "pieces/ember/wP",
+      "path": "pieces/ember/wP.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 5268
+    },
+    {
+      "key": "pieces/ember/wQ",
+      "path": "pieces/ember/wQ.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 10536
+    },
+    {
+      "key": "pieces/ember/wR",
+      "path": "pieces/ember/wR.webp",
+      "kind": "piece",
+      "format": "webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 7278
+    },
+    {
+      "key": "pieces/manifest",
+      "path": "pieces/manifest.json",
+      "kind": "data",
+      "format": "json",
+      "bytes": 818
+    },
+    {
+      "key": "plates/ember-lg-left",
+      "path": "plates/ember-lg-left.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 15,
+      "height": 52,
+      "px": {
+        "@2x": [
+          30,
+          104
+        ],
+        "@3x": [
+          45,
+          156
+        ]
+      },
+      "bytes": 5152
+    },
+    {
+      "key": "plates/ember-lg-mid",
+      "path": "plates/ember-lg-mid.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 228,
+      "height": 52,
+      "px": {
+        "@2x": [
+          456,
+          104
+        ],
+        "@3x": [
+          684,
+          156
+        ]
+      },
+      "bytes": 41166
+    },
+    {
+      "key": "plates/ember-lg-right",
+      "path": "plates/ember-lg-right.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 15,
+      "height": 52,
+      "px": {
+        "@2x": [
+          30,
+          104
+        ],
+        "@3x": [
+          45,
+          156
+        ]
+      },
+      "bytes": 4622
+    },
+    {
+      "key": "plates/ember-md-left",
+      "path": "plates/ember-md-left.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 13,
+      "height": 44,
+      "px": {
+        "@2x": [
+          26,
+          88
+        ],
+        "@3x": [
+          39,
+          132
+        ]
+      },
+      "bytes": 4344
+    },
+    {
+      "key": "plates/ember-md-mid",
+      "path": "plates/ember-md-mid.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 195.33,
+      "height": 44,
+      "px": {
+        "@2x": [
+          391,
+          88
+        ],
+        "@3x": [
+          586,
+          132
+        ]
+      },
+      "bytes": 31114
+    },
+    {
+      "key": "plates/ember-md-right",
+      "path": "plates/ember-md-right.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 13,
+      "height": 44,
+      "px": {
+        "@2x": [
+          26,
+          88
+        ],
+        "@3x": [
+          39,
+          132
+        ]
+      },
+      "bytes": 3674
+    },
+    {
+      "key": "plates/ember-sm-left",
+      "path": "plates/ember-sm-left.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 11,
+      "height": 36,
+      "px": {
+        "@2x": [
+          22,
+          72
+        ],
+        "@3x": [
+          33,
+          108
+        ]
+      },
+      "bytes": 3164
+    },
+    {
+      "key": "plates/ember-sm-mid",
+      "path": "plates/ember-sm-mid.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 163,
+      "height": 36,
+      "px": {
+        "@2x": [
+          326,
+          72
+        ],
+        "@3x": [
+          489,
+          108
+        ]
+      },
+      "bytes": 21402
+    },
+    {
+      "key": "plates/ember-sm-right",
+      "path": "plates/ember-sm-right.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 11,
+      "height": 36,
+      "px": {
+        "@2x": [
+          22,
+          72
+        ],
+        "@3x": [
+          33,
+          108
+        ]
+      },
+      "bytes": 2842
+    },
+    {
+      "key": "plates/plates",
+      "path": "plates/plates.json",
+      "kind": "data",
+      "format": "json",
+      "bytes": 903
+    },
+    {
+      "key": "plates/slate-lg-left",
+      "path": "plates/slate-lg-left.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 15,
+      "height": 52,
+      "px": {
+        "@2x": [
+          30,
+          104
+        ],
+        "@3x": [
+          45,
+          156
+        ]
+      },
+      "bytes": 4798
+    },
+    {
+      "key": "plates/slate-lg-mid",
+      "path": "plates/slate-lg-mid.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 232.67,
+      "height": 52,
+      "px": {
+        "@2x": [
+          465,
+          104
+        ],
+        "@3x": [
+          698,
+          156
+        ]
+      },
+      "bytes": 43422
+    },
+    {
+      "key": "plates/slate-lg-right",
+      "path": "plates/slate-lg-right.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 15,
+      "height": 52,
+      "px": {
+        "@2x": [
+          30,
+          104
+        ],
+        "@3x": [
+          45,
+          156
+        ]
+      },
+      "bytes": 5098
+    },
+    {
+      "key": "plates/slate-md-left",
+      "path": "plates/slate-md-left.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 13,
+      "height": 44,
+      "px": {
+        "@2x": [
+          26,
+          88
+        ],
+        "@3x": [
+          39,
+          132
+        ]
+      },
+      "bytes": 3804
+    },
+    {
+      "key": "plates/slate-md-mid",
+      "path": "plates/slate-md-mid.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 199.33,
+      "height": 44,
+      "px": {
+        "@2x": [
+          399,
+          88
+        ],
+        "@3x": [
+          598,
+          132
+        ]
+      },
+      "bytes": 32492
+    },
+    {
+      "key": "plates/slate-md-right",
+      "path": "plates/slate-md-right.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 13,
+      "height": 44,
+      "px": {
+        "@2x": [
+          26,
+          88
+        ],
+        "@3x": [
+          39,
+          132
+        ]
+      },
+      "bytes": 3982
+    },
+    {
+      "key": "plates/slate-sm-left",
+      "path": "plates/slate-sm-left.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 11,
+      "height": 36,
+      "px": {
+        "@2x": [
+          22,
+          72
+        ],
+        "@3x": [
+          33,
+          108
+        ]
+      },
+      "bytes": 2678
+    },
+    {
+      "key": "plates/slate-sm-mid",
+      "path": "plates/slate-sm-mid.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 166.33,
+      "height": 36,
+      "px": {
+        "@2x": [
+          332,
+          72
+        ],
+        "@3x": [
+          499,
+          108
+        ]
+      },
+      "bytes": 19464
+    },
+    {
+      "key": "plates/slate-sm-right",
+      "path": "plates/slate-sm-right.webp",
+      "kind": "plate",
+      "format": "webp",
+      "scales": [
+        2,
+        3
+      ],
+      "width": 11,
+      "height": 36,
+      "px": {
+        "@2x": [
+          22,
+          72
+        ],
+        "@3x": [
+          33,
+          108
+        ]
+      },
+      "bytes": 2948
+    },
+    {
+      "key": "sfx/capture-1",
+      "path": "sfx/capture-1.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.357,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 34290
+    },
+    {
+      "key": "sfx/castle-2",
+      "path": "sfx/castle-2.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.267,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 25704
+    },
+    {
+      "key": "sfx/check-1",
+      "path": "sfx/check-1.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.328,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 31552
+    },
+    {
+      "key": "sfx/correct-5",
+      "path": "sfx/correct-5.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.118,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 11356
+    },
+    {
+      "key": "sfx/gate-gongswell",
+      "path": "sfx/gate-gongswell.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 2.05,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 196844
+    },
+    {
+      "key": "sfx/mistake-thud",
+      "path": "sfx/mistake-thud.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.31,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 29804
+    },
+    {
+      "key": "sfx/move-1",
+      "path": "sfx/move-1.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.185,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 17848
+    },
+    {
+      "key": "sfx/promote",
+      "path": "sfx/promote.wav",
+      "kind": "sound",
+      "format": "wav",
+      "duration": 0.309,
+      "sampleRate": 48000,
+      "channels": 1,
+      "codec": "pcm16",
+      "bytes": 29676
+    },
+    {
+      "key": "sfx/rank-down-a",
+      "path": "sfx/rank-down-a.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 1.518,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 27384
+    },
+    {
+      "key": "sfx/rank-down-b",
+      "path": "sfx/rank-down-b.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 15.43,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 256812
+    },
+    {
+      "key": "sfx/rank-down-c",
+      "path": "sfx/rank-down-c.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 11.237,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 145024
+    },
+    {
+      "key": "sfx/rank-down-d",
+      "path": "sfx/rank-down-d.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 4.551,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 69848
+    },
+    {
+      "key": "sfx/rank-final",
+      "path": "sfx/rank-final.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 3.514,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 52972
+    },
+    {
+      "key": "sfx/rank-mangekyo",
+      "path": "sfx/rank-mangekyo.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 3.908,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 43280
+    },
+    {
+      "key": "sfx/rank-tomoe",
+      "path": "sfx/rank-tomoe.m4a",
+      "kind": "sound",
+      "format": "m4a",
+      "duration": 2.001,
+      "sampleRate": 48000,
+      "channels": 2,
+      "codec": "aac",
+      "bytes": 22240
+    },
+    {
+      "key": "surfaces/avatar-disc",
+      "path": "surfaces/avatar-disc.png",
+      "kind": "surface",
+      "format": "png",
+      "width": 256,
+      "height": 256,
+      "bytes": 56126
+    },
+    {
+      "key": "surfaces/background",
+      "path": "surfaces/background.png",
+      "kind": "surface",
+      "format": "png",
+      "width": 860,
+      "height": 1864,
+      "bytes": 21490
+    },
+    {
+      "key": "surfaces/top-glow",
+      "path": "surfaces/top-glow.png",
+      "kind": "surface",
+      "format": "png",
+      "width": 860,
+      "height": 520,
+      "bytes": 4886
+    },
+    {
+      "key": "surfaces/vignette",
+      "path": "surfaces/vignette.png",
+      "kind": "surface",
+      "format": "png",
+      "width": 860,
+      "height": 1864,
+      "bytes": 34083
+    },
+    {
+      "key": "textures/slate",
+      "path": "textures/slate.webp",
+      "kind": "texture",
+      "format": "webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 48600
+    },
+    {
+      "key": "themes/CREDITS",
+      "path": "themes/CREDITS.md",
+      "kind": "license",
+      "format": "md",
+      "bytes": 312
+    },
+    {
+      "key": "themes/advancedPawn",
+      "path": "themes/advancedPawn.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 833
+    },
+    {
+      "key": "themes/anastasiaMate",
+      "path": "themes/anastasiaMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1960
+    },
+    {
+      "key": "themes/arabianMate",
+      "path": "themes/arabianMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1261
+    },
+    {
+      "key": "themes/attackingF2F7",
+      "path": "themes/attackingF2F7.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 392
+    },
+    {
+      "key": "themes/attraction",
+      "path": "themes/attraction.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 916
+    },
+    {
+      "key": "themes/backRankMate",
+      "path": "themes/backRankMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2998
+    },
+    {
+      "key": "themes/bishopEndgame",
+      "path": "themes/bishopEndgame.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 45,
+      "height": 45,
+      "bytes": 471
+    },
+    {
+      "key": "themes/bodenMate",
+      "path": "themes/bodenMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1542
+    },
+    {
+      "key": "themes/capturingDefender",
+      "path": "themes/capturingDefender.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2223
+    },
+    {
+      "key": "themes/castling",
+      "path": "themes/castling.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1002
+    },
+    {
+      "key": "themes/defensiveMove",
+      "path": "themes/defensiveMove.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1600
+    },
+    {
+      "key": "themes/deflection",
+      "path": "themes/deflection.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 492
+    },
+    {
+      "key": "themes/discoveredAttack",
+      "path": "themes/discoveredAttack.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2410
+    },
+    {
+      "key": "themes/doubleBishopMate",
+      "path": "themes/doubleBishopMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 320
+    },
+    {
+      "key": "themes/doubleCheck",
+      "path": "themes/doubleCheck.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 888
+    },
+    {
+      "key": "themes/dovetailMate",
+      "path": "themes/dovetailMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1331
+    },
+    {
+      "key": "themes/enPassant",
+      "path": "themes/enPassant.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1861
+    },
+    {
+      "key": "themes/exposedKing",
+      "path": "themes/exposedKing.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2654
+    },
+    {
+      "key": "themes/fork",
+      "path": "themes/fork.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 888
+    },
+    {
+      "key": "themes/hangingPiece",
+      "path": "themes/hangingPiece.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1036
+    },
+    {
+      "key": "themes/hookMate",
+      "path": "themes/hookMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1269
+    },
+    {
+      "key": "themes/interference",
+      "path": "themes/interference.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2158
+    },
+    {
+      "key": "themes/intermezzo",
+      "path": "themes/intermezzo.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 924
+    },
+    {
+      "key": "themes/killBoxMate",
+      "path": "themes/killBoxMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 495
+    },
+    {
+      "key": "themes/kingsideAttack",
+      "path": "themes/kingsideAttack.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1351
+    },
+    {
+      "key": "themes/knightEndgame",
+      "path": "themes/knightEndgame.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 45,
+      "height": 45,
+      "bytes": 448
+    },
+    {
+      "key": "themes/mate",
+      "path": "themes/mate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 403
+    },
+    {
+      "key": "themes/pawnEndgame",
+      "path": "themes/pawnEndgame.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 45,
+      "height": 45,
+      "bytes": 313
+    },
+    {
+      "key": "themes/pin",
+      "path": "themes/pin.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 394
+    },
+    {
+      "key": "themes/promotion",
+      "path": "themes/promotion.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 280
+    },
+    {
+      "key": "themes/queenEndgame",
+      "path": "themes/queenEndgame.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 45,
+      "height": 45,
+      "bytes": 769
+    },
+    {
+      "key": "themes/queenRookEndgame",
+      "path": "themes/queenRookEndgame.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 45,
+      "height": 45,
+      "bytes": 1274
+    },
+    {
+      "key": "themes/queensideAttack",
+      "path": "themes/queensideAttack.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 3143
+    },
+    {
+      "key": "themes/quietMove",
+      "path": "themes/quietMove.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 3160
+    },
+    {
+      "key": "themes/rookEndgame",
+      "path": "themes/rookEndgame.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 45,
+      "height": 45,
+      "bytes": 357
+    },
+    {
+      "key": "themes/sacrifice",
+      "path": "themes/sacrifice.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1478
+    },
+    {
+      "key": "themes/skewer",
+      "path": "themes/skewer.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1017
+    },
+    {
+      "key": "themes/smotheredMate",
+      "path": "themes/smotheredMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1747
+    },
+    {
+      "key": "themes/trappedPiece",
+      "path": "themes/trappedPiece.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1120
+    },
+    {
+      "key": "themes/underPromotion",
+      "path": "themes/underPromotion.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2333
+    },
+    {
+      "key": "themes/vukovicMate",
+      "path": "themes/vukovicMate.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 2414
+    },
+    {
+      "key": "themes/xRayAttack",
+      "path": "themes/xRayAttack.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 4392
+    },
+    {
+      "key": "themes/zugzwang",
+      "path": "themes/zugzwang.svg",
+      "kind": "theme-glyph",
+      "format": "svg",
+      "width": 512,
+      "height": 512,
+      "bytes": 866
+    }
+  ]
+}
