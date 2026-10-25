@@ -1,0 +1,135 @@
+# Phase 2 slice, exit paths (PLAN §5 exit criteria):
+#  - board-render-count is unchanged across 10 s of timer ticks;
+#  - Exit with 0 attempts → Home at once, the session is discarded (row gone);
+#  - with ≥ 1 attempt the iOS edge swipe / Android back open the ExitSheet;
+#    Keep playing closes it, Discard → Home.
+# DB check after the flow: no session of E2E_USER started during the run is
+# left (both were discarded). Local backend only. Run with:
+#   maestro test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/02-slice-exit.yaml
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible:
+      id: "(home-screen|login-screen)"
+    timeout: 60000
+- runFlow:
+    when:
+      visible:
+        id: login-screen
+    commands:
+      - tapOn: { id: login-nickname }
+      - eraseText: 40
+      - inputText: ${E2E_USER}
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      - repeat:
+          times: 20
+          while:
+            notVisible:
+              id: home-screen
+          commands:
+            - tapOn:
+                text: Not Now
+                optional: true
+- extendedWaitUntil:
+    visible:
+      id: home-screen
+    timeout: 20000
+
+# Session 1: idle board under a ticking clock, then exit with 0 attempts.
+- tapOn: { id: home-play, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: play-setup }
+    timeout: 10000
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+# Let the board settle (its post-slide reconcile), then count.
+- extendedWaitUntil:
+    visible: { id: never-there }
+    timeout: 2000
+    optional: true
+- copyTextFrom: { id: runner-timer }
+- evalScript: ${output.timerBefore = maestro.copiedText}
+- copyTextFrom: { id: board-render-count }
+- evalScript: ${output.renders = maestro.copiedText}
+- extendedWaitUntil:
+    visible: { id: never-there }
+    timeout: 10000
+    optional: true
+- copyTextFrom: { id: runner-timer }
+# The clock did tick…
+- assertTrue:
+    condition: ${maestro.copiedText != output.timerBefore}
+    label: "timer ticked"
+# …and the board did not render.
+- assertVisible: { id: board-render-count, text: "${output.renders}" }
+- tapOn: { id: runner-exit, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 10000
+- assertNotVisible: { id: exit-sheet }
+
+# Session 2: one attempt, then the back gesture opens the ExitSheet.
+- tapOn: { id: home-play, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: play-setup }
+    timeout: 10000
+# Android: 2 minutes. Each Maestro tap on the emulator blocks ~11 s (see
+# 02-slice.yaml); five of them would outlast a 1-minute session.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: { id: setup-duration-120, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-solved, text: "1" }
+    timeout: 15000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      # Edge swipe (interactive pop) over the top slot, not the board (whose
+      # pan owns its touches): cancelled natively, opens the sheet.
+      - swipe:
+          start: 1%, 22%
+          end: 80%, 22%
+          duration: 400
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - pressKey: back
+- extendedWaitUntil:
+    visible: { id: exit-sheet }
+    timeout: 5000
+- assertVisible: { id: runner-timer }
+- tapOn: { id: exit-keep, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    notVisible: { id: exit-sheet }
+    timeout: 5000
+- assertVisible: { id: runner-solved, text: "1" }
+# The Exit button opens it too; Discard leaves for Home.
+- tapOn: { id: runner-exit, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: exit-sheet }
+    timeout: 5000
+- tapOn: { id: exit-discard, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 10000

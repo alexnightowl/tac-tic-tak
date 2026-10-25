@@ -1,0 +1,144 @@
+# Phase 2 slice (PLAN §5 exit criteria): log in if needed → /play → bullet
+# 1 min → Start → 3× e2e-solve + 1× e2e-wrong → 20 s in another app →
+# paused overlay with the clock frozen (±1 s) → Resume → time-up summary
+# (Android: 2 min, see the duration step)
+# Solved 3 / Failed 1. Then check the DB (see the end of this file).
+# Taps skip Maestro's settle wait and its re-tap when nothing visibly changed
+# (a queued e2e tap changes nothing yet; a re-tap would queue a second one).
+# Local backend only. Run with:
+#   maestro test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/02-slice.yaml
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible:
+      id: "(home-screen|login-screen)"
+    timeout: 60000
+- runFlow:
+    when:
+      visible:
+        id: login-screen
+    commands:
+      - tapOn: { id: login-nickname }
+      - eraseText: 40
+      - inputText: ${E2E_USER}
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      # iOS may offer to save the password (see 02-auth.yaml).
+      - repeat:
+          times: 20
+          while:
+            notVisible:
+              id: home-screen
+          commands:
+            - tapOn:
+                text: Not Now
+                optional: true
+- extendedWaitUntil:
+    visible:
+      id: home-screen
+    timeout: 20000
+
+# Setup: bullet, the 1-minute preset.
+- tapOn: { id: home-play, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible:
+      id: play-setup
+    timeout: 10000
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+# iOS: the 1-minute preset. Android: 2 minutes, because every Maestro tap
+# on the emulator blocks ~11 s in its post-tap hierarchy wait (measured in
+# maestro.log: "hierarchyBasedTap"), so four taps alone would eat a 1-min
+# session. The app path under test is the same.
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: { id: setup-duration-120, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible:
+      id: runner-phase
+      text: playerTurn
+    timeout: 15000
+
+# 3 solves and 1 mistake. The hooks queue, one per puzzle: each waits in
+# the app for its puzzle to be ready and plays through the runner's real
+# move path (Android Maestro is too slow to poll between puzzles).
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: e2e-wrong, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-failed, text: "1" }
+    timeout: 30000
+- assertVisible: { id: runner-solved, text: "3" }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+
+# Background for 20 s: another app, then back WITHOUT a restart.
+- copyTextFrom: { id: runner-timer }
+- evalScript: ${output.before = maestro.copiedText; output.t0 = Date.now()}
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - launchApp:
+          appId: com.apple.Preferences
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - launchApp:
+          appId: com.android.settings
+# The app is paused by now (it went inactive when the other app opened).
+- evalScript: ${output.t1 = Date.now()}
+# Maestro has no sleep: wait 20 s for something that never appears.
+- extendedWaitUntil:
+    visible: { id: never-there }
+    timeout: 20000
+    optional: true
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: { id: pause-overlay }
+    timeout: 10000
+- copyTextFrom: { id: pause-remaining }
+- evalScript: ${output.paused = maestro.copiedText}
+# Frozen while away: the 20 s outside did not count. The clock may only
+# have lost the time it took to switch apps (t0 → t1), ±1 s.
+- assertTrue:
+    condition: ${(function (a, b, switchMs) { var s = function (t) { var p = t.split(':'); return Number(p[0]) * 60 + Number(p[1]); }; var lost = s(a) - s(b); return lost >= -1 && lost <= switchMs / 1000 + 1; })(output.before, output.paused, output.t1 - output.t0)}
+    label: "paused clock frozen: lost only the app-switch time (±1 s)"
+- assertVisible: { id: runner-timer, text: "${output.paused}" }
+# And it stays frozen under the overlay.
+- extendedWaitUntil:
+    visible: { id: never-there }
+    timeout: 3000
+    optional: true
+- assertVisible: { id: pause-remaining, text: "${output.paused}" }
+
+- tapOn: { id: runner-resume, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    notVisible: { id: pause-overlay }
+    timeout: 5000
+- extendedWaitUntil:
+    visible: { id: summary-screen }
+    timeout: 150000
+- assertVisible: { id: summary-solved, text: "3" }
+- assertVisible: { id: summary-failed, text: "1" }
+# DB check (run after the flow, local only):
+#   select count(*) from "TrainingAttempt" where "sessionId" = <latest session of E2E_USER>  → 4
+#   select "endedAt" from "TrainingSession" where id = <same>                                → not null

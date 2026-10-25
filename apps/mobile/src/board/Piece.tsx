@@ -1,29 +1,25 @@
 import { pieceFitTransform, squareIndex, squareToXY, type AppPieceSet, type Orientation, type PieceType, type Square } from '@tac/core/board';
-import { easing as EASE } from '@tac/core/tokens';
 import { Image } from 'expo-image';
-import { memo, useLayoutEffect, useRef } from 'react';
+import { memo, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming, type SharedValue } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, type SharedValue } from 'react-native-reanimated';
 import { useRenderCount } from '@/dev/renderCount';
 import { PIECE_IMAGES, type PieceCode } from './assets';
-import { CAPTURE_END_SCALE, CAPTURE_FADE_MS } from './constants';
-
-const slideEasing = Easing.bezier(...EASE.slide);
+import type { PieceRegistry } from './shared';
 
 export type PieceProps = {
-  /** Stable piece id (dev render counter key). */
+  /** Stable piece id (registry key, dev render counter key). */
   id: number;
   code: PieceCode;
+  /** Square as React last saw it: the testID, and the mount-time placement. */
   sq: Square;
   size: number;
   orientation: Orientation;
   mirror: boolean;
   set: AppPieceSet;
-  /** Slide duration for this commit (0 = jump). Read only when the square changes. */
-  ms: number;
-  /** Captured on this commit: fade/scale out where it stands. */
+  /** Captured (React side): drops the testID. The fade itself runs on the UI thread. */
   dying: boolean;
-  z: number;
+  registry: PieceRegistry;
   /** Square index whose piece is hidden because the drag overlay shows it. */
   dragSq: SharedValue<number>;
   shakeSq: SharedValue<number>;
@@ -32,48 +28,40 @@ export type PieceProps = {
 };
 
 /**
- * One piece view. Its position lives in SharedValues; React only re-renders
- * it when its square/code changes (a committed move), never during a drag.
+ * One piece view. After mount its position, square, fade and visibility
+ * live in SharedValues that the board's plans drive on the UI thread, so a
+ * move starts sliding without a React commit and the later reconcile (new
+ * testID) never moves it again. React re-renders it only for that reconcile.
  */
-function PieceImpl({ id, code, sq, size, orientation, mirror, set, ms, dying, z, dragSq, shakeSq, shakeX }: PieceProps) {
+function PieceImpl({ id, code, sq, size, orientation, mirror, set, dying, registry, dragSq, shakeSq, shakeX }: PieceProps) {
   // Per-instance key: the lab sums 'Piece:*' for a total.
   useRenderCount(`Piece:${id}`);
   const s = size / 8;
-  const target = squareToXY(sq, size, orientation, mirror);
-  const x = useSharedValue(target.x);
-  const y = useSharedValue(target.y);
+  // Initial values only (useSharedValue ignores later ones).
+  const start = squareToXY(sq, size, orientation, mirror);
+  const x = useSharedValue(start.x);
+  const y = useSharedValue(start.y);
   const fade = useSharedValue(1);
   const scale = useSharedValue(1);
-  const idx = squareIndex(sq);
+  const at = useSharedValue(squareIndex(sq));
+  const hide = useSharedValue(0);
+  const dead = useSharedValue(0);
 
-  // Animate only when the square changes: a later commit that leaves this
-  // piece alone (ms back to 0) must not cut its running slide short, and a
-  // flip / mirror / resize jumps (`ms` is the last commit's, stale here).
-  const placed = useRef({ sq, x: target.x, y: target.y });
+  // Child layout effects run before the board's, so a plan queued behind
+  // this commit finds the handle.
   useLayoutEffect(() => {
-    const prev = placed.current;
-    if (prev.x === target.x && prev.y === target.y) return;
-    placed.current = { sq, x: target.x, y: target.y };
-    if (ms > 0 && prev.sq !== sq) {
-      x.set(withTiming(target.x, { duration: ms, easing: slideEasing }));
-      y.set(withTiming(target.y, { duration: ms, easing: slideEasing }));
-    } else {
-      x.set(target.x);
-      y.set(target.y);
-    }
-  }, [sq, target, ms, x, y]);
-
-  useLayoutEffect(() => {
-    if (!dying) return;
-    // The capturer covers the square first, then the victim fades under it.
-    const delay = Math.round(ms * 0.55);
-    fade.set(withDelay(delay, withTiming(0, { duration: CAPTURE_FADE_MS })));
-    scale.set(withDelay(delay, withTiming(CAPTURE_END_SCALE, { duration: CAPTURE_FADE_MS })));
-  }, [dying, ms, fade, scale]);
+    const handle = { code, x, y, fade, scale, at, hide, dead };
+    registry.set(id, handle);
+    return () => {
+      if (registry.get(id) === handle) registry.delete(id);
+    };
+  }, [registry, id, code, x, y, fade, scale, at, hide, dead]);
 
   const style = useAnimatedStyle(() => {
-    const hidden = !dying && dragSq.get() === idx;
-    const dx = shakeSq.get() === idx && !dying ? shakeX.get() * s : 0;
+    const a = at.get();
+    const live = dead.get() === 0;
+    const hidden = hide.get() === 1 || (live && dragSq.get() === a);
+    const dx = live && shakeSq.get() === a ? shakeX.get() * s : 0;
     return {
       opacity: hidden ? 0 : fade.get(),
       transform: [{ translateX: x.get() + dx }, { translateY: y.get() }, { scale: scale.get() }],
@@ -85,7 +73,7 @@ function PieceImpl({ id, code, sq, size, orientation, mirror, set, ms, dying, z,
     <Animated.View
       pointerEvents="none"
       testID={dying ? undefined : `piece-${sq}-${code}`}
-      style={[styles.piece, { width: s, height: s, zIndex: z }, style]}
+      style={[styles.piece, { width: s, height: s }, style]}
     >
       <Image
         source={PIECE_IMAGES[set][code]}
@@ -98,7 +86,7 @@ function PieceImpl({ id, code, sq, size, orientation, mirror, set, ms, dying, z,
   );
 }
 
-/** memo: a commit re-renders only the pieces whose props changed. */
+/** memo: a reconcile re-renders only the pieces whose square/code/fate changed. */
 export const Piece = memo(PieceImpl);
 
 const styles = StyleSheet.create({

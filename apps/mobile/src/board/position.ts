@@ -1,6 +1,6 @@
 // FEN → FEN diff with stable piece ids, so React keeps the same piece view
 // across a move and the view slides instead of remounting (PLAN §2.6).
-import { squareIndex, squareName, type Square } from '@tac/core/board';
+import { legalTable, squareIndex, squareName, type Square } from '@tac/core/board';
 import { Chess, type Move } from './chess';
 import { PIECE_CODES, type PieceCode } from './assets';
 
@@ -156,3 +156,56 @@ export function applyMove(fen: string, from: string, to: string, promotion?: str
 }
 
 export const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
+type InternalMoves = { _moves?: (opts: { legal: boolean }) => { from: number; to: number }[] };
+
+/** chess.js 0x88 square (a8 = 0, h1 = 119) → board index (a1 = 0). */
+const from0x88 = (s: number) => (7 - (s >> 4)) * 8 + (s & 15);
+
+/**
+ * Legal-target table (legalTable layout) for the side to move. The public
+ * `moves({ verbose: true })` builds SAN for every move (O(n²); ~2 ms on V8,
+ * several times that on Hermes, twice per move before this), but the board
+ * only needs from/to: read chess.js 1.4's internal list, and fall back to the
+ * public API if a chess.js upgrade drops it.
+ */
+export function legalTableOf(chess: Chess): number[] {
+  const internal = (chess as unknown as InternalMoves)._moves;
+  if (typeof internal !== 'function') return legalTable(chess.moves({ verbose: true }));
+  const t: number[] = new Array(128).fill(0);
+  for (const m of internal.call(chess, { legal: true })) {
+    const f = from0x88(m.from) * 2;
+    const to = from0x88(m.to);
+    if (to < 32) t[f] = (t[f] | (1 << to)) | 0;
+    else t[f + 1] = (t[f + 1] | (1 << (to - 32))) | 0;
+  }
+  return t;
+}
+
+/** Occupied squares as int32 lo/hi (a1 = bit 0): splits legal targets into dots and rings. */
+export function occupancy(p: Placement): [number, number] {
+  let lo = 0;
+  let hi = 0;
+  for (let i = 0; i < 64; i++) {
+    if (!p[i]) continue;
+    if (i < 32) lo = (lo | (1 << i)) | 0;
+    else hi = (hi | (1 << (i - 32))) | 0;
+  }
+  return [lo, hi];
+}
+
+/** The checked king's square, or null. */
+export function checkSquareOf(chess: Chess, p: Placement): Square | null {
+  if (!chess.inCheck()) return null;
+  const idx = p.indexOf(`${chess.turn()}K` as PieceCode);
+  return idx >= 0 ? squareName(idx) : null;
+}
+
+/** Plays a move on `chess` in place; null (and `chess` unchanged) when illegal. */
+export function tryMove(chess: Chess, from: string, to: string, promotion?: string): Move | null {
+  try {
+    return chess.move({ from, to, promotion }) ?? null;
+  } catch {
+    return null;
+  }
+}

@@ -3,8 +3,9 @@ import { ANIMATION_MS, eos, fontFamilies, fontSize, radii, space } from '@tac/co
 import { Stack } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Board, START_FEN, type BoardHandle } from '@/board';
+import { Board, START_FEN, type BoardHandle, type SlideTiming } from '@/board';
 import { useFrameStats, type FrameReport } from '@/dev/frameStats';
+import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 
 // The Opera Game: captures, a queenside castle and a mate, so autoplay
 // exercises slides, capture fades and the castling rook.
@@ -15,8 +16,43 @@ const OPERA = 'e2e4 e7e5 g1f3 d7d6 d2d4 c8g4 d4e5 g4f3 d1f3 d6e5 f1c4 g8f6 f3b3 
 /** Knight shuffle: always legal, so animateMove can be timed back to back. */
 const SHUFFLE: [Square, Square][] = [['g1', 'f3'], ['g8', 'f6'], ['f3', 'g1'], ['f6', 'g8']];
 
+/** Suite phase lengths (ms of wall time per FrameStats window). */
+const IDLE_MS = 3000;
+const AUTOPLAY_MS = 6000;
+
 const fmt = (r: FrameReport) =>
   `p50=${r.p50.toFixed(1)} p95=${r.p95.toFixed(1)} over16=${(r.over16 * 100).toFixed(1)}% over33=${(r.over33 * 100).toFixed(1)}% frames=${r.frames}`;
+
+/** "mean=… p95=… min=… max=…" of a sample list. */
+function dist(xs: number[]): string {
+  const sorted = [...xs].sort((a, c) => a - c);
+  const mean = xs.reduce((a, c) => a + c, 0) / xs.length;
+  const p95 = sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))];
+  return `mean=${mean.toFixed(1)} p95=${p95.toFixed(1)} min=${sorted[0].toFixed(1)} max=${sorted[sorted.length - 1].toFixed(1)}`;
+}
+
+/**
+ * performance.now() on the UI runtime is the raw steady clock; on the RN
+ * runtime it counts from a time origin. Offset (UI − JS) from the
+ * shortest of 20 round trips, error ≤ rtt / 2.
+ */
+async function calibrateUiClock(): Promise<{ offset: number; rtt: number }> {
+  let best = { offset: 0, rtt: Infinity };
+  for (let i = 0; i < 20; i++) {
+    const t0 = performance.now();
+    const ui = await new Promise<number>((resolve) => {
+      scheduleOnUI(() => {
+        'worklet';
+        scheduleOnRN(resolve, performance.now());
+      });
+    });
+    const t1 = performance.now();
+    if (t1 - t0 < best.rtt) best = { offset: ui - (t0 + t1) / 2, rtt: t1 - t0 };
+  }
+  return best;
+}
+
+const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 function BenchButton({ id, label, onPress, active }: { id: string; label: string; onPress: () => void; active?: boolean }) {
   return (
@@ -44,12 +80,18 @@ function jam(ms: number) {
 export default function Bench() {
   const board = useRef<BoardHandle>(null);
   const playing = useRef(false);
+  const autoplayDone = useRef<Promise<void>>(Promise.resolve());
+  const lastSlide = useRef<SlideTiming | null>(null);
+  // Where the next FrameStats report goes (manual start/stop or a suite phase).
+  const sink = useRef<(r: FrameReport) => void>(() => {});
   const [stats, setStats] = useState('');
   const [recording, setRecording] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
   const [timingResult, setTimingResult] = useState('');
+  const [timingUi, setTimingUi] = useState('');
+  const [suite, setSuite] = useState({ idle: '', autoplay: '', jam: '', status: '' });
   const [renders, setRenders] = useState(0);
-  const frames = useFrameStats((r) => setStats(fmt(r)));
+  const frames = useFrameStats((r) => sink.current(r));
 
   useEffect(() => () => {
     playing.current = false;
@@ -65,29 +107,95 @@ export default function Bench() {
     }
   };
 
+  const startAutoplay = () => {
+    playing.current = true;
+    setAutoplay(true);
+    autoplayDone.current = runAutoplay();
+  };
+  const stopAutoplay = () => {
+    playing.current = false;
+    setAutoplay(false);
+    return autoplayDone.current;
+  };
+
+  /** One FrameStats window of `ms` around `during()`. */
+  const record = (ms: number, during?: () => void) =>
+    new Promise<FrameReport>((resolve) => {
+      sink.current = resolve;
+      frames.start();
+      during?.();
+      void wait(ms).then(() => frames.stop());
+    });
+
   const runTiming = async () => {
     const b = board.current;
     if (!b) return;
     b.reset(START_FEN);
+    await wait(300);
+    const clock = await calibrateUiClock();
     const ms = ANIMATION_MS.normal;
-    const errs: number[] = [];
+    const fromCall: number[] = [];
+    const fromUi: number[] = [];
+    const startDelay: number[] = [];
+    const hop: number[] = [];
     setTimingResult('running…');
+    setTimingUi('');
     for (let i = 0; i < 50; i++) {
       const [from, to] = SHUFFLE[i % 4];
+      lastSlide.current = null;
       const t0 = performance.now();
       await b.animateMove(from, to, ms);
-      errs.push(performance.now() - t0 - ms);
+      const t1 = performance.now();
+      fromCall.push(t1 - t0 - ms);
+      const s = lastSlide.current as SlideTiming | null;
+      if (s) {
+        const uiStart = s.uiStart - clock.offset;
+        fromUi.push(t1 - uiStart - ms);
+        startDelay.push(uiStart - t0);
+        hop.push(t1 - (s.uiEnd - clock.offset));
+      }
     }
-    const sorted = [...errs].sort((a, c) => a - c);
-    const mean = errs.reduce((a, c) => a + c, 0) / errs.length;
-    const p95 = sorted[Math.floor(sorted.length * 0.95)];
-    setTimingResult(`n=50 ms=${ms} late mean=${mean.toFixed(1)} p95=${p95.toFixed(1)} min=${sorted[0].toFixed(1)} max=${sorted[sorted.length - 1].toFixed(1)}`);
+    setTimingResult(`n=50 ms=${ms} late ${dist(fromCall)}`);
+    setTimingUi(
+      fromUi.length
+        ? `fromUiStart ${dist(fromUi)} | callToUiStart ${dist(startDelay)} | uiEndToResolve ${dist(hop)} | clock ±${(clock.rtt / 2).toFixed(1)}`
+        : 'no slide timings',
+    );
+  };
+
+  // idle → autoplay → autoplay + JS jam → animateMove ×50, each in its own window (Release only).
+  const runSuite = async () => {
+    setSuite({ idle: '', autoplay: '', jam: '', status: 'idle…' });
+    board.current?.reset(START_FEN);
+    await wait(500);
+    const idle = fmt(await record(IDLE_MS));
+    setSuite((s) => ({ ...s, idle, status: 'autoplay…' }));
+    const auto = await record(AUTOPLAY_MS, startAutoplay);
+    await stopAutoplay();
+    setSuite((s) => ({ ...s, autoplay: fmt(auto), status: 'autoplay + jam…' }));
+    // A 500 ms JS jam a second into autoplay: slides already started must
+    // not care (the chain itself pauses until JS is free again).
+    const jammed = await record(AUTOPLAY_MS, () => {
+      startAutoplay();
+      void wait(1000).then(() => jam(500));
+    });
+    await stopAutoplay();
+    setSuite((s) => ({ ...s, jam: fmt(jammed), status: 'timing…' }));
+    await runTiming();
+    setSuite((s) => ({ ...s, status: 'suite done' }));
   };
 
   return (
     <View style={styles.root}>
       <Stack.Screen options={{ title: 'Board bench' }} />
-      <Board ref={board} style={styles.board} onRenderCount={setRenders} />
+      <Board
+        ref={board}
+        style={styles.board}
+        onRenderCount={setRenders}
+        onSlideTiming={(t) => {
+          lastSlide.current = t;
+        }}
+      />
       <ScrollView style={styles.panel} contentContainerStyle={styles.panelContent}>
         <View style={styles.row}>
           <BenchButton
@@ -97,6 +205,7 @@ export default function Bench() {
             onPress={() => {
               setRecording(true);
               setStats('recording…');
+              sink.current = (r) => setStats(fmt(r));
               frames.start();
             }}
           />
@@ -116,16 +225,20 @@ export default function Bench() {
             label={autoplay ? 'autoplay on' : 'autoplay off'}
             active={autoplay}
             onPress={() => {
-              const next = !playing.current;
-              playing.current = next;
-              setAutoplay(next);
-              if (next) void runAutoplay();
+              if (playing.current) void stopAutoplay();
+              else startAutoplay();
             }}
           />
           <BenchButton id="bench-timing" label="animateMove ×50" onPress={() => void runTiming()} />
+          <BenchButton id="bench-suite" label="suite" onPress={() => void runSuite()} />
         </View>
         <Text testID="framestats" style={styles.mono}>{stats}</Text>
         <Text testID="bench-timing-result" style={styles.mono}>{timingResult}</Text>
+        <Text testID="bench-timing-ui" style={styles.mono}>{timingUi}</Text>
+        <Text testID="bench-suite-idle" style={styles.mono}>{suite.idle ? `idle ${suite.idle}` : ''}</Text>
+        <Text testID="bench-suite-autoplay" style={styles.mono}>{suite.autoplay ? `autoplay ${suite.autoplay}` : ''}</Text>
+        <Text testID="bench-suite-jam" style={styles.mono}>{suite.jam ? `autoplay+jam ${suite.jam}` : ''}</Text>
+        <Text testID="bench-suite-status" style={styles.meta}>{suite.status}</Text>
         <View style={styles.row}>
           <Text style={styles.meta}>board renders </Text>
           <Text testID="board-render-count" style={styles.meta}>{renders}</Text>

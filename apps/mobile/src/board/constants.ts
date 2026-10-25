@@ -26,3 +26,9 @@ export const HOVER_THROTTLE_MS = 45;
 /** Captured piece: fade/scale out after the capturer has mostly arrived. */
 export const CAPTURE_FADE_MS = 140;
 export const CAPTURE_END_SCALE = 0.6;
+/**
+ * Quiet time after the last slide before React catches up with the board
+ * (testIDs, a11y labels, unmounting captured views). Back-to-back moves
+ * (autoplay, solution playback) start inside it and skip the reconcile.
+ */
+export const RECONCILE_IDLE_MS = 50;

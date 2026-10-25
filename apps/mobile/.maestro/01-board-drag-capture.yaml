@@ -1,0 +1,41 @@
+# Drag-capture e4xd5: the capturer lands, the victim's view loses its testID
+# and the whole capture (slide cover + fade + deferred reconcile) costs one
+# board commit. Square centres: see 01-board-open.yaml.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- swipe:
+    start: 216, 424   # e2
+    end: 216, 332     # e4
+    duration: 900
+- swipe:
+    start: 170, 194   # d7
+    end: 170, 286     # d5
+    duration: 900
+- extendedWaitUntil:
+    visible:
+      id: piece-d5-bP
+    timeout: 5000
+- copyTextFrom:
+    id: board-render-count
+- evalScript: ${output.rendersBefore = Number(maestro.copiedText)}
+- swipe:
+    start: 216, 332   # e4
+    end: 170, 286     # d5
+    duration: 900
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/ppp1pppp/8/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2"
+    timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: piece-d5-wP
+    timeout: 5000
+- assertNotVisible:
+    id: piece-d5-bP
+- assertNotVisible:
+    id: piece-e4-wP
+- copyTextFrom:
+    id: board-render-count
+- assertTrue: ${Number(maestro.copiedText) == output.rendersBefore + 1}

@@ -1,7 +1,7 @@
 // FEEL_TABLE: PLAN.md §2.8 defaults, one row per feel event. `feel.emit`
 // in apps/mobile is the only reader. Tunable; record changes in
 // docs/mobile/FEEL.md.
-import type { SoundEvent } from './catalog';
+import { moveSoundEvent, type SoundEvent } from './catalog';
 
 export type HapticKind =
   | 'selection'
@@ -147,4 +147,17 @@ export function streakUpHaptic(n: number): HapticKind {
 /** Normalises a HapticSpec to timed steps. */
 export function hapticSteps(spec: HapticSpec): readonly HapticStep[] {
   return typeof spec === 'string' ? [{ haptic: spec, at: 0 }] : spec;
+}
+
+/**
+ * The player's own move as a feel event (board click / capture / check /
+ * castle / promote). Shared by the board and the runner, which decides
+ * whether a move plays it at all (a winning move plays only `correct`, a
+ * wrong one only `mistake`).
+ */
+export function moveFeelEvent(
+  m: { san?: string; flags?: string; captured?: unknown; promotion?: unknown } | null | undefined,
+): Extract<FeelEvent, 'drop' | 'capture' | 'check' | 'castle' | 'promote'> {
+  const e = moveSoundEvent(m);
+  return e === 'promote' || e === 'castle' || e === 'check' || e === 'capture' ? e : 'drop';
 }

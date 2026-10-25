@@ -14,7 +14,7 @@ appId: online.tactictak.app
     timeout: 5000
 - copyTextFrom:
     id: lab-render-counts
-- evalScript: ${output.countsBefore = maestro.copiedText; console.log('counts before: ' + output.countsBefore)}
+- evalScript: ${output.countsBefore = maestro.copiedText; console.log('counts before =' + output.countsBefore)}
 - swipe:
     start: 216, 424   # e2
     end: 216, 286     # e5
@@ -34,7 +34,7 @@ appId: online.tactictak.app
     id: lab-counts
 - copyTextFrom:
     id: lab-render-counts
-- evalScript: ${console.log('counts after: ' + maestro.copiedText)}
+- evalScript: ${console.log('counts after =' + maestro.copiedText)}
 - assertTrue: ${maestro.copiedText == output.countsBefore}
 # Selection survives the snap-back (web parity): a tap on e4 now moves.
 - tapOn:

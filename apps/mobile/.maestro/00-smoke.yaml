@@ -1,10 +1,10 @@
-# Phase 0 smoke: the dev build launches into the app shell.
+# Smoke: the dev build launches into the app shell (login or Home).
 appId: online.tactictak.app
 ---
+- runFlow: common/dismiss-system.yaml
 - launchApp
+- runFlow: common/dismiss-system.yaml
 - extendedWaitUntil:
     visible:
-      id: hello-screen
+      id: open-dev
     timeout: 60000
-- assertVisible: tac·tic·tak
-- takeScreenshot: smoke-hello

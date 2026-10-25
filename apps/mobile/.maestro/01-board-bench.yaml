@@ -39,3 +39,35 @@ appId: online.tactictak.app
       text: "n=50.*"
     timeout: 60000
 - takeScreenshot: 01-board-bench
+# Suite: idle, autoplay, autoplay + JS jam and animateMove ×50 in separate FrameStats
+# windows; lateness is reported from the call and from the UI-thread start.
+- tapOn:
+    id: bench-suite
+# Sleep without polling the hierarchy (XCTest snapshots load the main
+# thread and show up as dropped frames): a still press in the panel's
+# right gutter, away from every control.
+- swipe:
+    start: 396, 578
+    end: 396, 578
+    duration: 34000
+- extendedWaitUntil:
+    visible:
+      id: bench-suite-status
+      text: "suite done"
+    timeout: 90000
+- copyTextFrom:
+    id: bench-suite-idle
+- evalScript: ${console.log(maestro.copiedText)}
+- copyTextFrom:
+    id: bench-suite-autoplay
+- evalScript: ${console.log(maestro.copiedText)}
+- copyTextFrom:
+    id: bench-suite-jam
+- evalScript: ${console.log(maestro.copiedText)}
+- copyTextFrom:
+    id: bench-timing-result
+- evalScript: ${console.log(maestro.copiedText)}
+- copyTextFrom:
+    id: bench-timing-ui
+- evalScript: ${console.log(maestro.copiedText)}
+- takeScreenshot: 01-board-bench-suite

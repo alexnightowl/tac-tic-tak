@@ -11,7 +11,7 @@ import { board as BOARD, feedback, fontFamilies, radii } from '@tac/core/tokens'
 import { Image } from 'expo-image';
 import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
 import Svg, { Defs, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { useRenderCount } from '@/dev/renderCount';
 import { PIECE_CODES, PIECE_IMAGES } from './assets';
@@ -60,16 +60,25 @@ export function Highlights({ sv, size, orientation, mirror }: Geo & { sv: BoardS
   );
 }
 
-// ─── Check glow (React: changes once per position) ───────────────────────
+// ─── Check glow (UI thread; React only names it for the testID) ─────────
 
-export function CheckGlow({ square, size, orientation, mirror }: Geo & { square: Square | null }) {
-  if (!square) return null;
+export function CheckGlow({ sv, square, size, orientation, mirror }: Geo & { sv: BoardShared; square: Square | null }) {
   const s = size / 8;
-  const p = squareToXY(square, size, orientation, mirror);
+  // Always mounted, moved by checkSq: a check costs no mount and shows
+  // in the same frame as the move's slide starts.
+  const style = useAnimatedStyle(() => {
+    const i = sv.checkSq.get();
+    const p = i >= 0 ? squareToXY(squareName(i), size, orientation, mirror) : { x: 0, y: 0 };
+    return { opacity: i >= 0 ? 1 : 0, transform: [{ translateX: p.x }, { translateY: p.y }] };
+  });
   const [c0, c1] = BOARD.check;
   const [o0, o1, o2] = BOARD.checkStops;
   return (
-    <View pointerEvents="none" testID={`check-${square}`} style={[styles.abs, { left: p.x, top: p.y, width: s, height: s }]}>
+    <Animated.View
+      pointerEvents="none"
+      testID={square ? `check-${square}` : undefined}
+      style={[styles.abs, { width: s, height: s }, style]}
+    >
       <Svg width={s} height={s}>
         <Defs>
           <RadialGradient id="checkGlow" cx="50%" cy="50%" r="50%">
@@ -80,7 +89,7 @@ export function CheckGlow({ square, size, orientation, mirror }: Geo & { square:
         </Defs>
         <Rect x={0} y={0} width={s} height={s} fill="url(#checkGlow)" />
       </Svg>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -134,14 +143,9 @@ function SquareCellImpl({ sq, idx, label, size, orientation, mirror, sv, onA11yT
   useRenderCount(`Square:${sq}`);
   const s = size / 8;
   const { col, row } = gridPos(sq, orientation, mirror);
-  const dot = useAnimatedStyle(() => {
-    const on = maskHas(sv.selLo.get(), sv.selHi.get(), idx) && sv.codes.get()[idx] < 0;
-    return { opacity: on ? 1 : 0 };
-  });
-  const ring = useAnimatedStyle(() => {
-    const on = maskHas(sv.selLo.get(), sv.selHi.get(), idx) && sv.codes.get()[idx] >= 0;
-    return { opacity: on ? 1 : 0 };
-  });
+  // Masks only (no `codes`): a move's position push re-runs none of these 128 mappers.
+  const dot = useAnimatedStyle(() => ({ opacity: maskHas(sv.dotLo.get(), sv.dotHi.get(), idx) ? 1 : 0 }));
+  const ring = useAnimatedStyle(() => ({ opacity: maskHas(sv.ringLo.get(), sv.ringHi.get(), idx) ? 1 : 0 }));
   const d = Math.round(s * 0.26);
   const inset = s * 0.04;
   return (
@@ -273,23 +277,33 @@ export function Sparks(props: Geo & { sv: BoardShared }) {
   );
 }
 
-// ─── Drag overlay: one lifted piece; all 12 sprites, one visible ─────────
+// ─── Drag overlay / slide cover: one piece above all; 12 sprites, one visible ─
 
-function OverlaySprite({ i, set, s, sv }: { i: number; set: AppPieceSet; s: number; sv: BoardShared }) {
-  const code = PIECE_CODES[i];
-  const fit = pieceFitTransform(set, code[1].toLowerCase() as PieceType, s);
+function OverlaySprite({ i, set, s, code }: { i: number; set: AppPieceSet; s: number; code: SharedValue<number> }) {
+  const pc = PIECE_CODES[i];
+  const fit = pieceFitTransform(set, pc[1].toLowerCase() as PieceType, s);
   // Switching the visible sprite by opacity keeps pickup free of React renders.
-  const style = useAnimatedStyle(() => ({ opacity: sv.dragCode.get() === i ? 1 : 0 }));
+  const style = useAnimatedStyle(() => ({ opacity: code.get() === i ? 1 : 0 }));
   return (
     <Animated.View style={[StyleSheet.absoluteFill, style]}>
       <Image
-        source={PIECE_IMAGES[set][code]}
+        source={PIECE_IMAGES[set][pc]}
         style={[StyleSheet.absoluteFill, { transform: [{ translateX: fit.translateX }, { translateY: fit.translateY }, { scale: fit.scale }] }]}
         contentFit="contain"
         cachePolicy="memory"
         transition={null}
       />
     </Animated.View>
+  );
+}
+
+function Sprites({ set, s, code }: { set: AppPieceSet; s: number; code: SharedValue<number> }) {
+  return (
+    <>
+      {PIECE_CODES.map((_, i) => (
+        <OverlaySprite key={i} i={i} set={set} s={s} code={code} />
+      ))}
+    </>
   );
 }
 
@@ -305,9 +319,30 @@ export function DragOverlay({ sv, size, set }: { sv: BoardShared; size: number; 
   }));
   return (
     <Animated.View pointerEvents="none" testID="board-drag-overlay" style={[styles.abs, styles.overlay, { width: s, height: s }, style]}>
-      {PIECE_CODES.map((_, i) => (
-        <OverlaySprite key={i} i={i} set={set} s={s} sv={sv} />
-      ))}
+      <Sprites set={set} s={s} code={sv.dragCode} />
+    </Animated.View>
+  );
+}
+
+/**
+ * The sliding main piece, drawn above every piece view (capturer over its
+ * victim, knight over what it jumps). Stacking piece views by zIndex would
+ * need a commit per move; this rides the same SharedValue timings instead,
+ * while the real view slides hidden underneath.
+ */
+export function SlideCover({ sv, size, set }: { sv: BoardShared; size: number; set: AppPieceSet }) {
+  const s = size / 8;
+  const style = useAnimatedStyle(() => {
+    // A drag-capture's cover waits under the settling drop overlay (no double piece).
+    const settling = sv.dropPhase.get() !== 0 && sv.dragSq.get() === sv.coverSq.get();
+    return {
+      opacity: sv.coverCode.get() >= 0 && !settling ? 1 : 0,
+      transform: [{ translateX: sv.coverX.get() }, { translateY: sv.coverY.get() }],
+    };
+  });
+  return (
+    <Animated.View pointerEvents="none" style={[styles.abs, { width: s, height: s }, style]}>
+      <Sprites set={set} s={s} code={sv.coverCode} />
     </Animated.View>
   );
 }

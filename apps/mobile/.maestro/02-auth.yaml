@@ -1,0 +1,104 @@
+# Phase 2 auth: wrong password → inline error; login → Home with the
+# nickname; kill + relaunch → Home without login; logout → login screen.
+# Local backend only. Run with:
+#   maestro test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/02-auth.yaml
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+# Fresh install state: no MMKV session, no keychain token.
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible:
+      id: login-screen
+    timeout: 60000
+- assertVisible:
+    id: open-dev
+
+# Wrong password: inline error under the password field, still on login.
+- tapOn:
+    id: login-nickname
+- inputText: ${E2E_USER}
+- tapOn:
+    id: login-password
+- inputText: definitely-wrong-1
+# Return key = submit (onSubmitEditing).
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: login-password-error
+    timeout: 15000
+- assertVisible: Wrong nickname or password
+- assertVisible:
+    id: login-screen
+- takeScreenshot: auth-error
+
+# Correct password.
+- tapOn:
+    id: login-password
+- eraseText: 40
+- inputText: ${E2E_PASSWORD}
+# A tap outside the fields dismisses the keyboard (keyboardShouldPersistTaps).
+- tapOn:
+    id: login-brand
+- tapOn:
+    id: login-submit
+# iOS may offer to save the password to the keychain; its sheet can land
+# before or after Home appears, and hides Home while it is up.
+- repeat:
+    times: 20
+    while:
+      notVisible:
+        id: home-screen
+    commands:
+      - tapOn:
+          text: Not Now
+          optional: true
+- tapOn:
+    text: Not Now
+    optional: true
+- extendedWaitUntil:
+    visible:
+      id: home-screen
+    timeout: 20000
+- assertVisible:
+    id: home-nickname
+    text: ${E2E_USER}
+- assertVisible:
+    id: home-rating-blitz
+- assertVisible:
+    id: open-dev
+- takeScreenshot: auth-home
+
+# Kill + relaunch: the stored session lands on Home without the login form.
+- stopApp
+- launchApp
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible:
+      id: home-screen
+    timeout: 60000
+- assertVisible:
+    id: home-nickname
+    text: ${E2E_USER}
+- assertNotVisible:
+    id: login-screen
+
+# Logout → login; a relaunch stays on login.
+- tapOn:
+    id: home-logout
+- extendedWaitUntil:
+    visible:
+      id: login-screen
+    timeout: 10000
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: login-screen
+    timeout: 60000
+- assertNotVisible:
+    id: home-screen
