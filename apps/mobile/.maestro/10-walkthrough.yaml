@@ -1,7 +1,7 @@
 # Integration walkthrough (the whole web flow on one fresh account, screenshots
 # at every stop): register → onboarding → Play session (2 solved, 1 missed)
 # → summary → Home → Review drill → history → session detail → viewer →
-# Stats → Achievements → Social (leaderboard, friends, own profile) →
+# Stats → Achievements → Rivals (leaderboard), friends, own profile →
 # Settings language en → uk → en → logout. iOS and Android.
 # Local backend only. Throwaway users are named wt_*; clean up with:
 #   delete from "User" where nickname like 'wt\_%';
@@ -149,14 +149,17 @@ appId: online.tactictak.app
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: wt-14-achievements
 
-# Social: leaderboard, friends, own profile.
-- tapOn: { id: tab-social }
-- extendedWaitUntil: { visible: { id: screen-social }, timeout: 8000 }
+# Rivals (leaderboard), friends, own profile.
+- tapOn: { id: tab-rivals }
+- extendedWaitUntil: { visible: { id: screen-rivals }, timeout: 8000 }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: wt-15-leaderboard
-- tapOn: { id: social-tab-friends }
+- tapOn: { id: header-avatar }
+- tapOn: { id: menu-friends }
+- extendedWaitUntil: { visible: { id: screen-friends }, timeout: 8000 }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: wt-16-friends
+- runFlow: common/shell-back.yaml
 - tapOn: { id: header-avatar }
 - extendedWaitUntil: { visible: { id: account-menu }, timeout: 5000 }
 - takeScreenshot: wt-17-menu
@@ -167,23 +170,20 @@ appId: online.tactictak.app
 - runFlow: common/shell-back.yaml
 
 # Settings: language en → uk → en.
-- tapOn: { id: header-avatar }
-- extendedWaitUntil: { visible: { id: account-menu }, timeout: 5000 }
-- tapOn: { id: menu-settings }
+- tapOn: { id: tab-settings }
 - extendedWaitUntil: { visible: { id: screen-settings }, timeout: 8000 }
 - takeScreenshot: wt-19-settings-en
 - scrollUntilVisible: { element: { id: settings-lang-uk }, direction: DOWN, timeout: 5000 }
 - tapOn: { id: settings-lang-uk }
 - extendedWaitUntil: { visible: { id: settings-replay-onboarding }, timeout: 5000 }
 - takeScreenshot: wt-20-settings-uk
-- runFlow: common/shell-back.yaml
 - tapOn: { id: tab-home }
 - extendedWaitUntil: { visible: { id: tab-label-home, text: Головна }, timeout: 5000 }
 - takeScreenshot: wt-21-home-uk
 - tapOn: { id: header-avatar }
 - extendedWaitUntil: { visible: { id: account-menu }, timeout: 5000 }
 - tapOn: { id: menu-lang-en }
-- extendedWaitUntil: { visible: { id: menu-settings, label: Settings }, timeout: 5000 }
+- extendedWaitUntil: { visible: { id: menu-friends, label: Friends }, timeout: 5000 }
 
 # Logout from the account menu.
 - tapOn: { id: menu-logout }

@@ -1,5 +1,5 @@
 # Phase 8 exit flow: A finds B and sends a request, logs out; B sees the
-# Social badge and the incoming request, swipes right to accept; both
+# Header friends badge and the incoming request, swipes right to accept; both
 # friends lists and the friends-scope leaderboard show the pair; A then
 # unfriends B (confirm alert) so the flow can run again.
 # Local backend only. Two local users with E2E_PASSWORD (default
@@ -14,8 +14,8 @@ env:
 - runFlow:
     file: 07-sub-login.yaml
     env: { E2E_USER: "${FRIEND_A}" }
-- tapOn: { id: tab-social }
-- tapOn: { id: social-tab-friends }
+- tapOn: { id: header-avatar }
+- tapOn: { id: menu-friends }
 - tapOn: { id: friends-find }
 - extendedWaitUntil:
     visible: { id: search-input }
@@ -41,11 +41,11 @@ env:
 - runFlow:
     file: 07-sub-login.yaml
     env: { E2E_USER: "${FRIEND_B}" }
-- tapOn: { id: tab-social }
 - extendedWaitUntil:
-    visible: { id: social-badge }
+    visible: { id: header-friends-badge }
     timeout: 8000
-- tapOn: { id: social-tab-friends }
+- tapOn: { id: header-avatar }
+- tapOn: { id: menu-friends }
 - extendedWaitUntil:
     visible: { id: "friends-in-${FRIEND_A}" }
     timeout: 8000
@@ -58,8 +58,9 @@ env:
     visible: { id: "friends-unfriend-${FRIEND_A}" }
     timeout: 15000
 - assertNotVisible: { id: friends-h-in }
-- assertNotVisible: { id: social-badge }
-- tapOn: { id: social-tab-leaderboard }
+- runFlow: common/shell-back.yaml
+- assertNotVisible: { id: header-friends-badge }
+- tapOn: { id: tab-rivals }
 - tapOn: { id: board-scope-friends }
 - extendedWaitUntil:
     visible: { id: "board-row-${FRIEND_A}" }
@@ -72,8 +73,8 @@ env:
 - runFlow:
     file: 07-sub-login.yaml
     env: { E2E_USER: "${FRIEND_A}" }
-- tapOn: { id: tab-social }
-- tapOn: { id: social-tab-friends }
+- tapOn: { id: header-avatar }
+- tapOn: { id: menu-friends }
 - extendedWaitUntil:
     visible: { id: "friends-unfriend-${FRIEND_B}" }
     timeout: 15000
@@ -87,4 +88,4 @@ env:
 - extendedWaitUntil:
     visible: { id: friends-empty }
     timeout: 15000
-- tapOn: { id: social-tab-leaderboard }
+- runFlow: common/shell-back.yaml

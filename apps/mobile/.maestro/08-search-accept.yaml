@@ -16,8 +16,8 @@ env:
 - runFlow:
     file: 07-sub-login.yaml
     env: { E2E_USER: "${FRIEND_B}" }
-- tapOn: { id: tab-social }
-- tapOn: { id: social-tab-friends }
+- tapOn: { id: header-avatar }
+- tapOn: { id: menu-friends }
 - extendedWaitUntil:
     visible: { id: "friends-in-${FRIEND_A}" }
     timeout: 8000

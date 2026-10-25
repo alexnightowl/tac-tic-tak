@@ -40,6 +40,7 @@ export const commonUk: Dict = {
   'ui.on': 'Увімк.',
   'ui.off': 'Вимк.',
   'nav.social': 'Спільнота',
+  'nav.rivals': 'Суперники',
   'brand.name': 'tac·tic·tak',
   'dev.open': 'Меню розробника',
 };

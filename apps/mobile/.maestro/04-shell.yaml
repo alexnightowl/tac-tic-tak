@@ -61,8 +61,10 @@ appId: online.tactictak.app
 - assertVisible: { id: screen-review }
 - tapOn: { id: tab-stats }
 - assertVisible: { id: screen-stats }
-- tapOn: { id: tab-social }
-- assertVisible: { id: screen-social }
+- tapOn: { id: tab-rivals }
+- assertVisible: { id: screen-rivals }
+- tapOn: { id: tab-settings }
+- assertVisible: { id: screen-settings }
 - tapOn: { id: tab-home }
 - assertVisible: { id: home-screen }
 # Home's Play plate switches to the Play tab.
@@ -94,12 +96,6 @@ appId: online.tactictak.app
     visible: { id: screen-friends }
     timeout: 5000
 - runFlow: common/shell-back.yaml
-- tapOn: { id: header-avatar }
-- tapOn: { id: menu-settings }
-- extendedWaitUntil:
-    visible: { id: screen-settings }
-    timeout: 5000
-- runFlow: common/shell-back.yaml
 
 # Every other stub route, by deep link (tactictak://<path>).
 - runFlow: { file: common/shell-route.yaml, env: { ROUTE: sessions, SCREEN: screen-sessions, KIND: push } }
@@ -129,7 +125,7 @@ appId: online.tactictak.app
     timeout: 5000
 - tapOn: { id: menu-lang-uk }
 - extendedWaitUntil:
-    visible: { id: menu-settings, label: Налаштування }
+    visible: { id: menu-friends, label: Друзі }
     timeout: 5000
 - takeScreenshot: shell-menu-uk
 - swipe:
@@ -140,7 +136,7 @@ appId: online.tactictak.app
     notVisible: { id: account-menu }
     timeout: 5000
 - assertVisible: { id: tab-label-home, text: Головна }
-- assertVisible: { id: tab-label-social, text: Спільнота }
+- assertVisible: { id: tab-label-rivals, text: Суперники }
 - takeScreenshot: shell-home-uk
 # Survives a relaunch (MMKV + server).
 - stopApp
@@ -155,7 +151,7 @@ appId: online.tactictak.app
     timeout: 5000
 - tapOn: { id: menu-lang-en }
 - extendedWaitUntil:
-    visible: { id: menu-settings, label: Settings }
+    visible: { id: menu-friends, label: Friends }
     timeout: 5000
 
 # Logout from the menu → login.

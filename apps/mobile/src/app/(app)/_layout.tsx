@@ -72,7 +72,6 @@ export default function AppLayout() {
         <Stack.Screen name="puzzles/[puzzleId]" />
         <Stack.Screen name="profile/[nickname]" />
         <Stack.Screen name="friends/index" />
-        <Stack.Screen name="settings/index" />
         <Stack.Screen name="settings/profile" />
         <Stack.Screen name="settings/gameplay" />
         <Stack.Screen name="settings/sound" />

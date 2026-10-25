@@ -10,5 +10,5 @@ appId: online.tactictak.app
     commands:
       - tapOn: { id: header-avatar, retryTapIfNoChange: false }
       - extendedWaitUntil: { visible: { id: account-menu }, timeout: 3000, optional: true }
-- tapOn: { id: menu-settings }
+- tapOn: { id: tab-settings }
 - extendedWaitUntil: { visible: { id: screen-settings }, timeout: 10000 }

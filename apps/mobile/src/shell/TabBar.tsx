@@ -1,9 +1,8 @@
-import { control, eos, fontSize, radii } from '@tac/core/tokens';
+import { eos, fontSize } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
-import { ChartColumn, Users } from 'lucide-react-native';
 import { useEffect, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   interpolate,
   interpolateColor,
@@ -14,9 +13,9 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 import { feel } from '@/feel';
-import { useIncomingRequestCount } from '@/features/social/badge';
 import { fontFamily } from '@/ui/fonts';
 import { useLang, useT } from '@/ui/lang';
 import { segmentedSpring } from '@/ui/motion';
@@ -28,6 +27,8 @@ const PLAY = require('../../assets/icons/nav-play.webp');
 const REVIEW = require('../../assets/icons/nav-review-book.webp');
 
 const BAR_H = 64;
+const SHURIKEN =
+  'M9.30 9.30 Q9.60 4.60 15.20 1.90 Q13.40 6.20 14.70 9.30 Q19.40 9.60 22.10 15.20 Q17.80 13.40 14.70 14.70 Q14.40 19.40 8.80 22.10 Q10.60 17.80 9.30 14.70 Q4.60 14.40 1.90 8.80 Q6.20 10.60 9.30 9.30Z';
 /** Web: the ember rule spans the middle 44% of the tab (left/right 28%). */
 const RULE = 0.44;
 
@@ -44,8 +45,6 @@ export function ShellTabBar({ state, emitter, navigateToTab }: BottomTabBarProps
   const reduced = useReducedMotion();
   const t = useT();
   const { lang } = useLang();
-  // Incoming friend requests, badged on the Social tab (web Nav badge).
-  const incoming = useIncomingRequestCount();
   const index = state.index;
   const pos = useSharedValue(index);
   const tabW = useSharedValue(0);
@@ -84,13 +83,12 @@ export function ShellTabBar({ state, emitter, navigateToTab }: BottomTabBarProps
         if (!tab) return null;
         const focused = i === index;
         const text = t(tab.labelKey);
-        const badge = tab.id === 'social' && incoming > 0 ? incoming : 0;
         return (
           <Tap
             key={route.key}
             testID={`tab-${tab.id}`}
             accessibilityRole="tab"
-            accessibilityLabel={badge ? `${text}, ${badge}` : text}
+            accessibilityLabel={text}
             accessibilityState={{ selected: focused }}
             style={styles.tab}
             onPress={() => {
@@ -101,16 +99,7 @@ export function ShellTabBar({ state, emitter, navigateToTab }: BottomTabBarProps
               navigateToTab(route.key);
             }}
           >
-            <View>
-              <TabIcon id={tab.id} pos={pos} i={i} />
-              {badge ? (
-                <View style={styles.badge} pointerEvents="none" testID="tab-social-badge">
-                  <Text style={[styles.badgeText, label]} maxFontSizeMultiplier={1}>
-                    {badge > 9 ? '9+' : String(badge)}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
+            <TabIcon id={tab.id} pos={pos} i={i} />
             <TabLabel pos={pos} i={i} style={label} text={text} testID={`tab-label-${tab.id}`} />
           </Tap>
         );
@@ -139,10 +128,27 @@ function TabIcon({ id, pos, i }: { id: ShellTabId; pos: SharedValue<number>; i: 
         return <Image source={PLAY} style={styles.i24} tintColor={color} />;
       case 'review':
         return <Image source={REVIEW} style={styles.book} tintColor={color} />;
+      case 'rivals':
+        return (
+          <Svg width={21} height={21} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+            <Rect x={3.5} y={3.5} width={17} height={17} rx={1.5} />
+            <Path d="M3.5 9.2h17M3.5 14.8h17M9.2 3.5v17M14.8 3.5v17" />
+          </Svg>
+        );
       case 'stats':
-        return <ChartColumn size={21} color={color} strokeWidth={strong ? 2 : 1.8} />;
+        return (
+          <Svg width={21} height={21} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+            <Path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+          </Svg>
+        );
       default:
-        return <Users size={21} color={color} strokeWidth={strong ? 2 : 1.8} />;
+        // Web ShurikenIcon.
+        return (
+          <Svg width={23} height={23} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+            <Path d={SHURIKEN} />
+            <Circle cx={12} cy={12} r={1.9} />
+          </Svg>
+        );
     }
   };
   // Two tinted copies crossfaded: SVG/tint colours can't animate on the UI thread.
@@ -189,19 +195,4 @@ const styles = StyleSheet.create({
   layer: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   i24: { width: 24, height: 24 },
   book: { width: 28, height: 24 },
-  badge: {
-    position: 'absolute',
-    top: -6,
-    right: -10,
-    minWidth: 18,
-    height: 18,
-    paddingHorizontal: 4,
-    borderRadius: radii.full,
-    backgroundColor: eos.ember,
-    borderWidth: 2,
-    borderColor: eos.shade,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeText: { color: control.segmentedActiveText, fontSize: 10, lineHeight: 12 },
 });

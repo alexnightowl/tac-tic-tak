@@ -40,6 +40,7 @@ export const commonEn: Dict = {
   'ui.on': 'On',
   'ui.off': 'Off',
   'nav.social': 'Social',
+  'nav.rivals': 'Rivals',
   'brand.name': 'tac·tic·tak',
   'dev.open': 'Dev menu',
 };

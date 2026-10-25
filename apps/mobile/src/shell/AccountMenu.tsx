@@ -1,13 +1,14 @@
 import type { Language } from '@tac/core/i18n';
-import { eos, fontSize, layout, radii, space } from '@tac/core/tokens';
+import { control, eos, fontSize, layout, radii, space } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
-import { ChevronRight, LogOut, Settings, Terminal, User, Users, type LucideIcon } from 'lucide-react-native';
+import { ChevronRight, LogOut, Terminal, User, Users, type LucideIcon } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { DEV_MENU } from '@/dev/flags';
 import { Avatar } from '@/features/profile/Avatar';
 import { resetAll } from '@/features/auth/session';
+import { useIncomingRequestCount } from '@/features/social/badge';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText } from '@/ui/AppText';
@@ -18,9 +19,9 @@ import { Tap } from '@/ui/Tap';
 import { patchSettings } from './settings';
 
 /**
- * The account sheet behind the header avatar (PLAN §2.3: Settings and
- * profile live here because the bar holds five tabs). A native formSheet
- * sized to its content; rows dismiss it and push their route.
+ * The account sheet behind the header avatar: profile, friends (with the
+ * incoming-request count), language, log out. Settings is a tab (D22). A
+ * native formSheet sized to its content; rows dismiss it and push their route.
  */
 export function AccountMenu() {
   const t = useT();
@@ -28,6 +29,7 @@ export function AccountMenu() {
   const user = useAuthStore((s) => s.user);
   const lang = useAppStore((s) => s.settings.language);
   const nickname = user?.nickname ?? '';
+  const incoming = useIncomingRequestCount();
 
   const go = (href: Href) => {
     // Close the sheet, then push onto the (app) stack beneath it.
@@ -62,8 +64,7 @@ export function AccountMenu() {
 
       <View style={styles.group}>
         <Row icon={User} label={t('shell.menu.profile')} testID="menu-profile" onPress={() => go(`/profile/${encodeURIComponent(nickname)}`)} />
-        <Row icon={Users} label={t('nav.friends')} testID="menu-friends" onPress={() => go('/friends')} />
-        <Row icon={Settings} label={t('settings.title')} testID="menu-settings" onPress={() => go('/settings')} />
+        <Row icon={Users} label={t('nav.friends')} testID="menu-friends" count={incoming} onPress={() => go('/friends')} />
       </View>
 
       <View style={styles.langRow}>
@@ -101,21 +102,31 @@ function Row({
   label,
   testID,
   onPress,
+  count = 0,
   danger = false,
 }: {
   icon: LucideIcon;
   label: string;
   testID: string;
   onPress: () => void;
+  /** Pending items, shown as an ember pill before the chevron. */
+  count?: number;
   danger?: boolean;
 }) {
   const color = danger ? eos.rose : eos.bone;
   return (
-    <Tap testID={testID} accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={styles.row}>
+    <Tap testID={testID} accessibilityRole="button" accessibilityLabel={count ? `${label}, ${count}` : label} onPress={onPress} style={styles.row}>
       <Icon size={20} color={danger ? eos.rose : eos.ash} strokeWidth={1.8} />
       <AppText variant="body" style={[styles.rowLabel, { color }]} numberOfLines={1}>
         {label}
       </AppText>
+      {count ? (
+        <View style={styles.count} testID={`${testID}-count`}>
+          <AppText variant="label" color={control.segmentedActiveText} style={styles.countText}>
+            {String(count)}
+          </AppText>
+        </View>
+      ) : null}
       {danger ? null : <ChevronRight size={18} color={eos.dust} />}
     </Tap>
   );
@@ -135,6 +146,16 @@ const styles = StyleSheet.create({
     boxShadow: [{ offsetX: 0, offsetY: -1, blurRadius: 0, spreadDistance: 0, color: eos.ink, inset: true }],
   },
   rowLabel: { flex: 1, fontSize: fontSize.base[0], lineHeight: fontSize.base[1] },
+  count: {
+    minWidth: 22,
+    height: 22,
+    paddingHorizontal: 6,
+    borderRadius: radii.full,
+    backgroundColor: eos.ember,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countText: { fontSize: 11, letterSpacing: 0 },
   langSeg: { width: 152 },
   langRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[3], paddingHorizontal: space[1] },
 });
