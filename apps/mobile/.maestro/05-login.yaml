@@ -34,15 +34,7 @@ appId: online.tactictak.app
       visible: { id: home-screen }
       notVisible: { id: home-nickname, text: "${E2E_USER}" }
     commands:
-      - scrollUntilVisible:
-          element: { id: home-logout }
-          direction: DOWN
-          centerElement: true
-          timeout: 10000
-      - tapOn: { id: home-logout }
-      - extendedWaitUntil:
-          visible: { id: login-screen }
-          timeout: 20000
+      - runFlow: common/logout.yaml
 - runFlow:
     when:
       visible: { id: login-screen }

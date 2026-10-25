@@ -72,8 +72,6 @@ appId: online.tactictak.app
     text: ${E2E_USER}
 - assertVisible:
     id: home-rating-blitz
-- assertVisible:
-    id: open-dev
 - takeScreenshot: auth-home
 
 # Kill + relaunch: the stored session lands on Home without the login form.
@@ -91,12 +89,7 @@ appId: online.tactictak.app
     id: login-screen
 
 # Logout → login; a relaunch stays on login.
-- tapOn:
-    id: home-logout
-- extendedWaitUntil:
-    visible:
-      id: login-screen
-    timeout: 10000
+- runFlow: common/logout.yaml
 - stopApp
 - launchApp
 - extendedWaitUntil:

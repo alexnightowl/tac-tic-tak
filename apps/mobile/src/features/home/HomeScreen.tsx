@@ -8,15 +8,13 @@ import { ChevronRight, Zap } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
-import { meQuery, resetAll } from '@/features/auth/session';
-import { DevMenuButton } from '@/features/auth/DevMenuButton';
+import { meQuery } from '@/features/auth/session';
 import { readLastSetup, repeatStartRating, type SessionSetup } from '@/features/play/setupPrefs';
 import { startSession } from '@/features/play/startSession';
 import { startErrorKey } from '@/features/play/strings';
 import { StyleIcon } from '@/features/play/ui';
 import { VerifiedBadge } from '@/features/profile/Avatar';
 import { SessionRow } from '@/features/sessions/SessionRow';
-import { DEV_MENU } from '@/dev/flags';
 import { feel } from '@/feel';
 import { readActiveSnapshot } from '@/runner';
 import { toast } from '@/shell/toast/store';
@@ -108,15 +106,6 @@ export function HomeScreen() {
         contentContainerStyle={styles.scroll}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void onRefresh()} tintColor={eos.ember} />}
       >
-        {/* Dev builds only, in the first viewport: the hooks the 01/02/04 Maestro flows start from (release logs out from the account menu). */}
-        {DEV_MENU && (
-          <View style={styles.dev}>
-            <DevMenuButton />
-            <Tap testID="home-logout" accessibilityRole="button" accessibilityLabel={t('logout')} onPress={() => void resetAll()} style={styles.devBtn}>
-              <AppText variant="caption">{t('logout')}</AppText>
-            </Tap>
-          </View>
-        )}
         <View style={styles.header}>
           <View style={styles.flex}>
             <AppText variant="sectionLabel">{t('dashboard.welcome')}</AppText>
@@ -270,6 +259,4 @@ const styles = StyleSheet.create({
   list: { gap: space[2] },
   state: { paddingVertical: space[4], alignItems: 'flex-start', gap: space[3] },
   retry: { height: space[10], paddingHorizontal: space[4], borderRadius: radii.lg, justifyContent: 'center', backgroundColor: eos.rise },
-  dev: { flexDirection: 'row', justifyContent: 'flex-end', gap: space[2], marginBottom: -space[3] },
-  devBtn: { minHeight: 44, justifyContent: 'center', paddingHorizontal: space[4], borderRadius: radii.control, borderWidth: 1, borderColor: eos.seam },
 });

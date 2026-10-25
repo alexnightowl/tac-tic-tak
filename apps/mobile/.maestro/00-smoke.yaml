@@ -6,5 +6,5 @@ appId: online.tactictak.app
 - runFlow: common/dismiss-system.yaml
 - extendedWaitUntil:
     visible:
-      id: open-dev
+      id: "(open-dev|home-screen)"
     timeout: 60000

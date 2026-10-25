@@ -1,0 +1,11 @@
+# Signed in → log out through the account menu → login screen.
+appId: online.tactictak.app
+---
+- tapOn: { id: header-avatar }
+- extendedWaitUntil:
+    visible: { id: menu-logout }
+    timeout: 10000
+- tapOn: { id: menu-logout }
+- extendedWaitUntil:
+    visible: { id: login-screen }
+    timeout: 20000

@@ -1,16 +1,17 @@
-import { eos, radii, space } from '@tac/core/tokens';
+import { eos, space } from '@tac/core/tokens';
 import { router } from 'expo-router';
+import { Terminal } from 'lucide-react-native';
 import { StyleSheet } from 'react-native';
 
 import { DEV_MENU } from '@/dev/flags';
-import { AppText } from '@/ui';
 import { Tap } from '@/ui/Tap';
 import { useAuthT } from './strings';
 
 /**
- * Dev-build entry to /dev. Maestro's common/open-dev.yaml expects testID
- * `open-dev` on the first screen after launch, so both login and Home
- * render it.
+ * Dev builds only: a dim glyph under the login / register forms that opens
+ * /dev while signed out (signed in, the account menu has the same entry).
+ * Maestro's common/open-dev.yaml taps it by testID `open-dev`. Release
+ * builds render nothing.
  */
 export function DevMenuButton() {
   const t = useAuthT();
@@ -21,21 +22,14 @@ export function DevMenuButton() {
       accessibilityRole="button"
       accessibilityLabel={t('dev.open')}
       onPress={() => router.push('/dev')}
+      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       style={styles.dev}
     >
-      <AppText variant="caption">{t('dev.open')}</AppText>
+      <Terminal size={16} color={eos.dust} />
     </Tap>
   );
 }
 
 const styles = StyleSheet.create({
-  dev: {
-    alignSelf: 'center',
-    minHeight: 44,
-    justifyContent: 'center',
-    paddingHorizontal: space[4],
-    borderRadius: radii.control,
-    borderWidth: 1,
-    borderColor: eos.seam,
-  },
+  dev: { alignSelf: 'center', padding: space[3], opacity: 0.6 },
 });

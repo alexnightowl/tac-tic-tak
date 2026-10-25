@@ -1,16 +1,17 @@
-# Launch fresh and open the dev menu. Use with runFlow, then tap a lab:
-#   - tapOn: { id: dev-board-lab }
+# Launch fresh and open the dev menu (dev builds). Use with runFlow, then
+# tap a lab:  - tapOn: { id: dev-board-lab }
+# Signed out: the dim glyph on login (open-dev). Signed in: account menu.
 appId: online.tactictak.app
 ---
 - runFlow: dismiss-system.yaml
 - launchApp:
     stopApp: true
 - runFlow: dismiss-system.yaml
-# A fresh account left on the welcome slides by another flow: close them.
 - extendedWaitUntil:
     visible:
-      id: "(open-dev|screen-onboarding)"
+      id: "(open-dev|header-avatar|screen-onboarding)"
     timeout: 60000
+# A fresh account left on the welcome slides by another flow: close them.
 - runFlow:
     when:
       visible: { id: screen-onboarding }
@@ -18,9 +19,23 @@ appId: online.tactictak.app
       - tapOn: { id: screen-onboarding-close }
 - extendedWaitUntil:
     visible:
-      id: open-dev
-    timeout: 60000
-- tapOn:
-    id: open-dev
-- assertVisible:
-    id: dev-menu
+      id: "(open-dev|header-avatar)"
+    timeout: 30000
+- runFlow:
+    when:
+      visible: { id: open-dev }
+    commands:
+      - tapOn: { id: open-dev }
+- runFlow:
+    when:
+      visible: { id: header-avatar }
+    commands:
+      - tapOn: { id: header-avatar }
+      - extendedWaitUntil:
+          visible: { id: menu-dev }
+          timeout: 10000
+      - tapOn: { id: menu-dev }
+- extendedWaitUntil:
+    visible:
+      id: dev-menu
+    timeout: 10000

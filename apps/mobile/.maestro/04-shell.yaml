@@ -37,7 +37,6 @@ appId: online.tactictak.app
     timeout: 20000
 - assertVisible: { id: shell-header }
 - assertVisible: { id: tab-bar }
-- assertVisible: { id: open-dev }
 
 # English to start (the account may have been left in uk by a failed run).
 - tapOn: { id: header-avatar }
