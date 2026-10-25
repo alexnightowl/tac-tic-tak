@@ -8,3 +8,4 @@ export { Segmented, type SegmentedOption, type SegmentedProps } from './Segmente
 export { useUiT } from './strings';
 export { Card, HeroCard, Well } from './Surfaces';
 export { Toggle, type ToggleProps } from './Toggle';
+export { BrandLogo } from './BrandLogo';

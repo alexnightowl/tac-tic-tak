@@ -1,6 +1,5 @@
 import { nicknameRules, passwordRules, registerFormValid, type RuleRow } from '@tac/core/validation';
 import { eos, layout, space } from '@tac/core/tokens';
-import { Image } from 'expo-image';
 import { Check, X } from 'lucide-react-native';
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, type TextInput } from 'react-native';
@@ -8,14 +7,12 @@ import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { feel } from '@/feel';
-import { AppText, Card, Input, PasswordInput, PlateButton, useLang } from '@/ui';
+import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton, useLang } from '@/ui';
 import { AuthSwitch } from './AuthSwitch';
 import { DevMenuButton } from './DevMenuButton';
 import { register } from './session';
 import { loginErrorKey, useAuthT } from './strings';
 import { useShake } from './useShake';
-
-const LOGO = require('../../../assets/icons/knight-logo.webp');
 
 type TextInputHandle = ComponentRef<typeof TextInput>;
 
@@ -75,7 +72,7 @@ export function RegisterScreen() {
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
           <View style={styles.brand}>
-            <Image source={LOGO} style={styles.logo} contentFit="contain" accessibilityIgnoresInvertColors />
+            <BrandLogo size={96} />
             <AppText variant="sectionTitle" style={styles.center} accessibilityRole="header">
               {t('brand.name')}
             </AppText>
@@ -174,7 +171,6 @@ const styles = StyleSheet.create({
     gap: space[6],
   },
   brand: { alignItems: 'center', gap: space[2] },
-  logo: { width: 112, height: 112 },
   center: { textAlign: 'center' },
   form: { gap: space[3] },
   rules: { gap: space[1], marginTop: -space[1] },

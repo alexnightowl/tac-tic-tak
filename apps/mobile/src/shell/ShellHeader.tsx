@@ -1,16 +1,15 @@
 import { eos, layout, space, wordmark } from '@tac/core/tokens';
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/features/profile/Avatar';
 import { useAuthStore } from '@/stores/authStore';
+import { BrandLogo } from '@/ui/BrandLogo';
 import { fontFamily } from '@/ui/fonts';
 import { useT } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 
-const LOGO = require('../../assets/icons/knight-logo.webp');
 const BAR_H = 56;
 /** Web mobile top bar: Logo 32 + wordmark at 20 px (wordmark(size) = size * 0.6). */
 const MARK = wordmark(20 / 0.6);
@@ -29,7 +28,7 @@ export function ShellHeader() {
     <View style={[styles.bar, { paddingTop: insets.top }]} testID="shell-header">
       <View style={styles.row}>
         <View style={styles.brand} accessible accessibilityRole="header" accessibilityLabel={t('brand.name')}>
-          <Image source={LOGO} style={styles.logo} contentFit="contain" />
+          <BrandLogo size={32} />
           {/* The wordmark is Latin in every language: always the Latin display face. */}
           <Text
             style={[styles.mark, { fontFamily: fontFamily('en', 'display', 700) }]}
@@ -63,6 +62,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: layout.gutter,
   },
   brand: { flexDirection: 'row', alignItems: 'center', gap: space[2.5], flexShrink: 1 },
-  logo: { width: 32, height: 32 },
   mark: { color: eos.bone, fontSize: MARK.fontSize, letterSpacing: MARK.letterSpacing, lineHeight: MARK.fontSize * 1.1 },
 });
