@@ -47,3 +47,33 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 - Dev loop note: `expo run:ios` exits 1 at the end only because macOS denies the background
   `osascript` call that focuses Simulator; the build and install succeed. Run Metro separately
   (`npx expo start`) and launch with `xcrun simctl launch booted online.tactictak.app`.
+
+## 2026-10-25 (night) — Phase 1: board + feel lab
+
+**Done**
+- Board v1 (`src/board`): Views + Reanimated 4 + RNGH 3 hook API, stable piece ids so every
+  move slides, drag overlay, promotion, hint rings + svg arrows, flash/shake/sparks, imperative
+  handle, 64 labelled squares, no `setTimeout`. A drag+drop = exactly 1 Board render; an
+  illegal drop = 0. 10 Maestro board flows (iPhone 17 Pro coordinates) + a device-independent
+  smoke that also passes on the Android emulator (tap and drag verified there).
+- Feel layer (`src/feel`): `feel.emit` over FEEL_TABLE, react-native-audio-api engine (decoded
+  buffers, ambient + mixWithOthers, long-clip fades, background suspend/resume), expo-haptics
+  facade with timed patterns, MMKV prefs; sounds preloaded at app start. Debug sim: emit →
+  `start()` p95 < 0.5 ms; gesture end → `start()` p95 < 3 ms.
+- Brand primitives (`src/ui`) + kitchen sink, typography sheet (uk display candidates), NativeTabs
+  vs custom tab-bar mocks. Screenshots in `docs/mobile/screens/phase1/`.
+
+**Measured (Release, iPhone 17 Pro sim, 60 Hz)**
+- Bench FrameStats p50 16.7 / p95 16.7 ms. Frames over 33 ms: idle 1.0% (simulator noise
+  floor), JS jam 1.5%, autoplay 3.1%. `animateMove(280)` resolves late by mean 28.8 / p95
+  42 ms from the call → a React commit precedes each slide. Fix in progress (Phase 2 stream
+  'board-perf'): start slides on the UI thread, reconcile React after.
+
+**Owner checks pending (need a real iPhone)**: drag feel at 120 Hz, haptics, metronome slow-mo
+(< 30 ms flash→click), Spotify mixing + silent switch, uk display font, tab-bar style.
+
+**Notes**
+- NativeTabs on iOS 26 render as Liquid Glass (background colour ignored, inactive items white);
+  the first tap on it is occasionally dropped under Maestro.
+- Reanimated 4.7 `FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS` re-renders its internal animated
+  wrapper when an animation settles (+2 commits per press in the kitchen sink); not our code.
