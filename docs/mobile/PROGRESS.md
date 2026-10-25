@@ -77,3 +77,33 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
   the first tap on it is occasionally dropped under Maestro.
 - Reanimated 4.7 `FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS` re-renders its internal animated
   wrapper when an animation settles (+2 commits per press in the kitchen sink); not our code.
+
+## 2026-10-25 (morning) — Phase 2: vertical slice
+
+**Done** (no backend changes; local API)
+- `@tac/core/runner` (pure reducer, effects as data, session mode complete, snapshot/restore) and
+  `@tac/core/api` (client + typed endpoints + query keys); core tests 173/173.
+- Platform: secure-store token, MMKV-hydrated zustand stores, `Stack.Protected` guard, login,
+  temporary Home, logout clears everything.
+- Play: setup with the UI-thread DifficultySlider, runner (effect interpreter over the Board
+  handle, Countdown, pause, ExitSheet with swipe-back/back, keep-awake, auto-pause in
+  background), summary; E2E hooks.
+- Board perf (Release, iPhone 17 Pro sim): call → UI slide start 2.4 ms mean (was 20.7);
+  board commits per bench run 15 (was 227); autoplay over-33 0.0% in clean windows.
+  `animateMove` lateness from the call 15.0 mean / 20.3 p95 ms — the remainder is frame rounding
+  (280 ms = 16.8 frames); proposal: measure the gate from the UI slide start (12.5 / 18.2 ms).
+- Feel: Board `moveFeel='caller'` → the runner plays the move click only for correct non-final
+  moves; winning = `correct` only, wrong = `mistake` only (as on the web).
+- Maestro: `00-smoke`, `02-auth`, `02-slice` (3 solved / 1 failed, 20 s backgrounded not
+  counted; psql 4 attempts + endedAt), `02-slice-exit` (0-attempt discard deletes the session;
+  swipe-back / Android back open the ExitSheet; board renders unchanged across 10 s of ticks).
+  Passing on iPhone Air sim and the Android emulator. Screenshots: `docs/mobile/screens/phase2/`.
+
+**Open**
+- Snapshot restore can re-send an unconfirmed attempt → duplicate until B6 (idempotent attempts).
+- Query cache not persisted yet (`@tanstack/query-persist-client` not installed) — Phase 4.
+- Temporary strings live in local `strings.ts` files; move into `@tac/core/i18n` in Phase 4.
+- Drag Maestro flows use iPhone 17 Pro coordinates.
+
+**Next**: Phase 3 (backend mobile contract, api/* branches the owner merges) — or the owner's
+device check first (OWNER-QUESTIONS #29).
