@@ -41,6 +41,8 @@ const config: ExpoConfig = {
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     predictiveBackGestureEnabled: false,
+    // Pulled in by native audio/media libraries; the app never records.
+    blockedPermissions: ['android.permission.RECORD_AUDIO'],
   },
   plugins: [
     'expo-router',
@@ -56,6 +58,16 @@ const config: ExpoConfig = {
     ['expo-font', { fonts: FONTS }],
     'expo-asset',
     'expo-secure-store',
+    'expo-localization',
+    [
+      'expo-image-picker',
+      {
+        photosPermission: 'tac·tic·tak uses your photos to set your profile picture.',
+        cameraPermission: 'tac·tic·tak uses the camera to take your profile picture.',
+        microphonePermission: false,
+      },
+    ],
+    ['expo-notifications', { color: '#a64241' }],
     [
       'react-native-audio-api',
       {
