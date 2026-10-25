@@ -178,4 +178,5 @@ solved/rating/failed counters and the level-up gate bar instead. The canvas gets
 
 ### D22. Tabs follow the canvas: Home · Play · Review · Leaderboard · Stats · Settings (owner, 2026-10-26)
 The canvas tab labelled "Board" (3x3 grid icon) is the Leaderboard screen, mislabelled. Supersedes
-provisional default #3. Where Friends lives (now the Social tab) is open: Q in OWNER-QUESTIONS.
+provisional default #3 (the "Social" tab was a provisional invention; the web nav has the same six
+items as the canvas). Friends are reached from the profile ("Friends · N"), as on the web.
