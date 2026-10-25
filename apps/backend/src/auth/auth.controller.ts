@@ -3,16 +3,19 @@ import { AuthService } from './auth.service';
 import { ChangePasswordDto, LoginDto, RegisterDto } from './dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { CurrentUser, AuthedUser } from './current-user.decorator';
+import { RateLimit } from '../throttle/rate-limit.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
+  @RateLimit('register')
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.auth.register(dto);
   }
 
+  @RateLimit('login-ip', 'login-nickname')
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.auth.login(dto);

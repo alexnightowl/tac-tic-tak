@@ -21,6 +21,7 @@ import { requireJwtSecret } from './jwt-secret';
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  exports: [AuthService],
+  // JwtModule is exported for the throttler's per-user tracker (B11).
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

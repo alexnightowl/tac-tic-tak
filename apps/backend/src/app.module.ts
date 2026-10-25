@@ -12,6 +12,7 @@ import { AchievementsModule } from './achievements/achievements.module';
 import { AdminModule } from './admin/admin.module';
 import { HealthModule } from './health/health.module';
 import { AppConfigModule } from './app-config/app-config.module';
+import { ThrottleModule } from './throttle/throttle.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AppConfigModule } from './app-config/app-config.module';
     AdminModule,
     HealthModule,
     AppConfigModule,
+    ThrottleModule,
   ],
 })
 export class AppModule {}

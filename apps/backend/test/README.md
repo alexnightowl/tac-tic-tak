@@ -43,8 +43,9 @@ then the puzzle fixture is re-inserted. Files run `--runInBand`.
 | `e2e/rating-transcript.e2e-spec.ts` | per-attempt rating sequence and finish outcomes of scripted sessions |
 
 Non-golden e2e: `e2e/bootstrap.e2e-spec.ts` (B2/B3: `/api/x` = `/api/v1/x`, health, helmet, trust proxy,
-shutdown hooks, P2025 → 404, JWT_SECRET fail-fast, app-config, 426 gate). `applyTestEnv()` also clears
-the app-config env keys, so a spec sets the ones it needs before `bootTestApp()`.
+shutdown hooks, P2025 → 404, JWT_SECRET fail-fast, app-config, 426 gate), `e2e/throttle.e2e-spec.ts`
+(B11 rate limits). `applyTestEnv()` also clears the app-config and `THROTTLE_*` env keys, so every spec
+runs under the default rate limits unless it sets the ones it needs before `bootTestApp()`.
 
 Parallel runs from several worktrees must not share a DB: point each at its own `*_test` DB and Redis
 index with `TEST_DATABASE_URL` / `TEST_REDIS_URL` (`createdb ... taktic_<topic>_test`).
@@ -67,3 +68,8 @@ pnpm --filter backend contract:smoke -- --base http://localhost:4100/api --compa
 
 It refuses non-local hosts and registers throwaway users, which `--db` deletes afterwards. The
 avatar step leaves a 1x1 PNG in the server's `uploads/avatars/`.
+
+Rate limits (B11) persist in Redis across runs: one run registers two accounts from 127.0.0.1, so a
+second run within the hour hits `register` 3/h/IP. Between runs delete the counters
+(`redis-cli -p 6380 -n 1 --scan --pattern 'throttle:*' | xargs redis-cli -p 6380 -n 1 del`) or
+start the throttled server with `THROTTLE_REGISTER_LIMIT=1000`.

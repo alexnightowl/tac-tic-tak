@@ -3,6 +3,7 @@ import { IsString, Length, Matches } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
 import { FriendshipService } from './friendship.service';
+import { RateLimit } from '../throttle/rate-limit.decorator';
 
 class SendFriendRequestDto {
   @IsString() @Length(3, 20)
@@ -25,6 +26,7 @@ export class FriendsController {
     return this.friends.listPending(u.id);
   }
 
+  @RateLimit('friend-request')
   @Post('request')
   request(@CurrentUser() u: AuthedUser, @Body() dto: SendFriendRequestDto) {
     return this.friends.sendRequest(u.id, dto.nickname);

@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
 import { UsersService } from './users.service';
 import { FriendshipService } from './friendship.service';
+import { RateLimit } from '../throttle/rate-limit.decorator';
 
 class UpdateSettingsDto {
   @IsOptional() @IsBoolean() focusMode?: boolean;
@@ -68,6 +69,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @RateLimit('avatar')
   @Post('me/avatar')
   uploadAvatar(@CurrentUser() u: AuthedUser, @Body() dto: UploadAvatarDto) {
     return this.users.setAvatar(u.id, dto.dataUrl);
@@ -81,6 +83,7 @@ export class UsersController {
 
   /** Prefix search by nickname. Requires auth to discourage scraping. */
   @UseGuards(JwtAuthGuard)
+  @RateLimit('search')
   @Get('search')
   async search(@CurrentUser() u: AuthedUser, @Query('q') q: string) {
     const rows = await this.friends.search(u.id, q ?? '', 10);

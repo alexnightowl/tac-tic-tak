@@ -47,4 +47,6 @@ export function applyTestEnv() {
   delete process.env.JWT_EXPIRES_IN;
   // B3 app-config comes from env; specs set what they need, nothing leaks in from the shell.
   for (const key of APP_CONFIG_ENV_KEYS) delete process.env[key];
+  // B11: specs run under the default rate limits unless they set THROTTLE_* themselves.
+  for (const key of Object.keys(process.env)) if (key.startsWith('THROTTLE_')) delete process.env[key];
 }

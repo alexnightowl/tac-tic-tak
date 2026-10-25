@@ -1,4 +1,5 @@
 import { Controller, Get, Header, ServiceUnavailableException } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 
@@ -25,6 +26,8 @@ async function probe(check: () => Promise<unknown>): Promise<Probe> {
  * Postgres and Redis both answer within 2 s; otherwise 503 with the same
  * keys and `status:'error'`, so a deploy check can tell which one is down.
  */
+// Uptime monitors and deploy checks poll it; never rate-limited (B11).
+@SkipThrottle({ global: true })
 @Controller('health')
 export class HealthController {
   constructor(
