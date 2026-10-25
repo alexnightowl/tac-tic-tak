@@ -4,10 +4,11 @@ import { AchievementsModule } from '../achievements/achievements.module';
 import { SessionsService } from './sessions.service';
 import { SessionsController } from './sessions.controller';
 import { IdempotencyService } from './idempotency.service';
+import { SessionSweeperService } from './session-sweeper.service';
 
 @Module({
   imports: [PuzzlesModule, AchievementsModule],
-  providers: [SessionsService, IdempotencyService],
+  providers: [SessionsService, IdempotencyService, SessionSweeperService],
   controllers: [SessionsController],
 })
 export class SessionsModule {}

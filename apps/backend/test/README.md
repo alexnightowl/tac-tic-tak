@@ -53,7 +53,8 @@ recorded once the same way.
 | Spec | Covers |
 |---|---|
 | `e2e/session-lifecycle.e2e-spec.ts` | B6: `clientAttemptId` replay (x5 → 1 row, 1 step, identical bodies), `includeNext`, `/next` `requestId`, `serverNow`, `GET /sessions/active`, finish `tz` + `progression`, Redis TTLs / recent-trim / DELETE cleanup, mobile flow rates like the web flow |
-| `unit/session-lifecycle.spec.ts` | tz helpers, key TTL |
+| `e2e/session-sweeper.e2e-spec.ts` | B7: sweeper policy on seeded idle sessions, Redis lock, `SESSION_SWEEPER_ENABLED` gating |
+| `unit/session-lifecycle.spec.ts`, `unit/session-sweeper.spec.ts` | tz helpers, key TTL, sweeper flag parsing |
 
 ## Legacy smoke (two running servers)
 
