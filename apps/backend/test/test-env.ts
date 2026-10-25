@@ -7,6 +7,8 @@
  * below refuse anything that is not clearly a local test target: the
  * owner's dev DB `taktic` (and prod) must never be truncated.
  */
+import { APP_CONFIG_ENV_KEYS } from '../src/app-config/app-config';
+
 export const TEST_DATABASE_URL =
   process.env.TEST_DATABASE_URL ?? 'postgresql://taktic:taktic@localhost:5433/taktic_test?schema=public';
 export const TEST_REDIS_URL = process.env.TEST_REDIS_URL ?? 'redis://localhost:6380/1';
@@ -43,4 +45,6 @@ export function applyTestEnv() {
   // The golden test asserts the code/compose default (7d); an inherited
   // shell value must not mask a regression of that default.
   delete process.env.JWT_EXPIRES_IN;
+  // B3 app-config comes from env; specs set what they need, nothing leaks in from the shell.
+  for (const key of APP_CONFIG_ENV_KEYS) delete process.env[key];
 }

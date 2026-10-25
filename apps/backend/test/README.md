@@ -42,6 +42,13 @@ then the puzzle fixture is re-inserted. Files run `--runInBand`.
 | `e2e/web-contract.e2e-spec.ts` | status code, response shape and error message of 117 web requests; login keys and the 7-day JWT |
 | `e2e/rating-transcript.e2e-spec.ts` | per-attempt rating sequence and finish outcomes of scripted sessions |
 
+Non-golden e2e: `e2e/bootstrap.e2e-spec.ts` (B2/B3: `/api/x` = `/api/v1/x`, health, helmet, trust proxy,
+shutdown hooks, P2025 → 404, JWT_SECRET fail-fast, app-config, 426 gate). `applyTestEnv()` also clears
+the app-config env keys, so a spec sets the ones it needs before `bootTestApp()`.
+
+Parallel runs from several worktrees must not share a DB: point each at its own `*_test` DB and Redis
+index with `TEST_DATABASE_URL` / `TEST_REDIS_URL` (`createdb ... taktic_<topic>_test`).
+
 Scripts run jest with `--ci`, so a missing snapshot fails instead of being written. A snapshot
 diff means the web would see something different. Update with
 `pnpm --filter backend exec jest --ci=false -u <spec>` only for a deliberate, documented change
