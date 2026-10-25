@@ -15,16 +15,66 @@ jobs:
           version: 9.12.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # 22 for the Expo app (SDK 58 needs >=22.13). The Docker images
+          # stay on node:20 until a deliberate bump.
+          node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile || pnpm install
+      # Strict: a lockfile out of sync with package.json fails here instead
+      # of being papered over by a fresh resolve.
+      - run: pnpm install --frozen-lockfile
       - run: pnpm --filter backend exec prisma generate
       - run: pnpm -r run typecheck
+      - run: pnpm -r --if-present run test
       - run: pnpm -r run build
 
+  mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # No-op until apps/mobile exists (the 'mobile' branch and later main).
+      - id: has
+        run: echo "mobile=$([ -f apps/mobile/package.json ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - if: steps.has.outputs.mobile == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+      - if: steps.has.outputs.mobile == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - if: steps.has.outputs.mobile == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.has.outputs.mobile == 'true'
+        run: pnpm --filter mobile run typecheck
+      - if: steps.has.outputs.mobile == 'true'
+        run: npx --yes expo-doctor
+        working-directory: apps/mobile
+
+  # Mobile- or docs-only pushes must not rebuild and restart prod.
+  changes:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.filter.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            deploy:
+              - 'apps/backend/**'
+              - 'apps/frontend/**'
+              - 'deploy/**'
+              - 'docker-compose*.yml'
+              - 'package.json'
+              - 'pnpm-workspace.yaml'
+              - '.github/workflows/**'
+
   deploy:
-    needs: build
-    if: github.ref == 'refs/heads/main'
+    needs: [build, changes]
+    if: github.ref == 'refs/heads/main' && needs.changes.outputs.deploy == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
