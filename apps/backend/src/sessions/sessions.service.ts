@@ -1,7 +1,12 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
-import { AttemptDto, CreateSessionDto } from './dto';
+import {
+  AttemptDto,
+  CreateSessionDto,
+  ListSessionsQueryDto,
+  SESSION_LIST_DEFAULT_LIMIT,
+} from './dto';
 import { computeRatingStep, deriveSessionStats } from './rating';
 import {
   evaluateUnlock,
@@ -18,6 +23,26 @@ import { AchievementsService } from '../achievements/achievements.service';
 const WINDOW = 4;
 const MIN_RATING = 400;
 const MAX_RATING = 3000;
+
+/**
+ * Opaque keyset cursor for GET /sessions: the last row's
+ * (startedAt ms, id), base64url-encoded. Keyset rather than offset so a
+ * session finished or deleted while the user scrolls neither duplicates
+ * nor skips rows; `id` breaks startedAt ties.
+ */
+export function encodeSessionCursor(startedAt: Date, id: string): string {
+  return Buffer.from(`${startedAt.getTime()}:${id}`, 'utf8').toString('base64url');
+}
+
+export function decodeSessionCursor(cursor: string): { startedAt: Date; id: string } | null {
+  if (!/^[A-Za-z0-9_-]+$/.test(cursor)) return null;
+  const raw = Buffer.from(cursor, 'base64url').toString('utf8');
+  const m = /^(\d{1,15}):([A-Za-z0-9_-]{1,64})$/.exec(raw);
+  if (!m) return null;
+  const startedAt = new Date(Number(m[1]));
+  if (Number.isNaN(startedAt.getTime())) return null;
+  return { startedAt, id: m[2] };
+}
 
 @Injectable()
 export class SessionsService {
@@ -580,6 +605,59 @@ export class SessionsService {
       lastDay: next.streakLastDay,
       freezeRegenAt: next.streakFreezeRegenAt,
       outcome,
+    };
+  }
+
+  /**
+   * GET /sessions (B9): the caller's finished sessions (endedAt set),
+   * startedAt desc then id desc, keyset-paginated. Rows have the same
+   * fields as /analytics recentSessions plus endedAt, so the mobile
+   * history list and the dashboard render one row type.
+   * `nextCursor` is null on the last page.
+   */
+  async list(userId: string, q: ListSessionsQueryDto) {
+    const limit = q.limit ?? SESSION_LIST_DEFAULT_LIMIT;
+    let after: { startedAt: Date; id: string } | null = null;
+    if (q.cursor !== undefined) {
+      after = decodeSessionCursor(q.cursor);
+      if (!after) throw new BadRequestException('invalid cursor');
+    }
+    const rows = await this.prisma.trainingSession.findMany({
+      where: {
+        userId,
+        endedAt: { not: null },
+        ...(q.style ? { style: q.style } : {}),
+        ...(after
+          ? {
+              OR: [
+                { startedAt: { lt: after.startedAt } },
+                { startedAt: after.startedAt, id: { lt: after.id } },
+              ],
+            }
+          : {}),
+      },
+      orderBy: [{ startedAt: 'desc' }, { id: 'desc' }],
+      take: limit + 1,
+    });
+    const page = rows.slice(0, limit);
+    const last = page[page.length - 1];
+    return {
+      items: page.map((s) => ({
+        id: s.id,
+        startedAt: s.startedAt,
+        endedAt: s.endedAt,
+        solved: s.solvedCount,
+        failed: s.failedCount,
+        accuracy: s.accuracy,
+        avgResponseMs: s.avgResponseMs,
+        peakRating: s.peakRating,
+        startRating: s.startRating,
+        durationSec: s.durationSec,
+        mode: s.mode,
+        style: s.style,
+        theme: s.theme,
+      })),
+      nextCursor: rows.length > limit && last ? encodeSessionCursor(last.startedAt, last.id) : null,
     };
   }
 

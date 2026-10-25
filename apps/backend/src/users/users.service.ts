@@ -1,5 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
 import { AchievementsService } from '../achievements/achievements.service';
 import { AnalyticsService } from '../analytics/analytics.service';
@@ -20,10 +22,13 @@ const MAX_AVATAR_BYTES = 4 * 1024 * 1024; // 4 MB after base64 decode
 
 @Injectable()
 export class UsersService {
+  private readonly log = new Logger(UsersService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly achievements: AchievementsService,
     private readonly analytics: AnalyticsService,
+    private readonly redis: RedisService,
   ) {}
 
   async getProfile(userId: string) {
@@ -250,6 +255,74 @@ export class UsersService {
     await this.prisma.user.update({ where: { id: userId }, data: { avatarUrl: url } });
     const newAchievements = await this.achievements.evaluate(userId).catch(() => []);
     return { avatarUrl: url, achievementsUnlocked: newAchievements };
+  }
+
+  /**
+   * DELETE /users/me (B10): self-service account deletion, required by
+   * the App Store and Google Play. The password must match (403
+   * otherwise, the same status B5 gives change-password). Deleting the
+   * User row removes every dependent row through the FK cascades
+   * (settings, progressions, sessions, attempts, puzzle history, review
+   * items, friendships in both directions, achievements); the e2e test
+   * asserts that every FK pointing at "User" is ON DELETE CASCADE, so a
+   * future model without one fails CI instead of blocking deletion.
+   * Models added later (B4 RefreshToken, B15 PushDevice/NotificationLog)
+   * must cascade too, or get an explicit delete in this transaction.
+   * After the row is gone, the avatar files and the user's Redis
+   * puzzle-buffer keys are removed best-effort: a failure there is logged
+   * and never turns a completed deletion into an error.
+   */
+  async deleteAccount(userId: string, password: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, passwordHash: true },
+    });
+    if (!user) throw new NotFoundException('user not found');
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    if (!ok) throw new ForbiddenException('password is incorrect');
+
+    // Live sessions are the only ones that may still own a Redis queue
+    // (finish clears its buffer); capture them before the cascade.
+    const openSessions = await this.prisma.trainingSession.findMany({
+      where: { userId, endedAt: null },
+      select: { id: true },
+    });
+
+    // deleteMany: a concurrent second DELETE that already removed the row
+    // is not an error (the first one answered 204).
+    await this.prisma.user.deleteMany({ where: { id: userId } });
+
+    await this.removeAvatarFiles(userId);
+    try {
+      const keys = [
+        `user:${userId}:recent`,
+        ...openSessions.flatMap((s) => [`session:${s.id}:queue`, `session:${s.id}:seen`]),
+      ];
+      for (let i = 0; i < keys.length; i += 500) {
+        await this.redis.client.del(...keys.slice(i, i + 500));
+      }
+    } catch (e: unknown) {
+      this.log.warn(`account ${userId} deleted; redis cleanup failed: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
+  /** Removes uploads/avatars/{userId}.* (any extension). */
+  private async removeAvatarFiles(userId: string) {
+    let names: string[];
+    try {
+      names = await fs.readdir(AVATAR_ROOT);
+    } catch {
+      return; // no avatars directory yet
+    }
+    const prefix = `${userId}.`;
+    for (const name of names) {
+      if (!name.startsWith(prefix)) continue;
+      try {
+        await fs.rm(join(AVATAR_ROOT, name), { force: true });
+      } catch (e: unknown) {
+        this.log.warn(`account ${userId} deleted; could not remove avatar ${name}: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    }
   }
 
   private mapStyleProgressions(rows: Array<{

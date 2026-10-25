@@ -49,6 +49,9 @@ export class ReviewService {
           },
         },
       },
+      // Deterministic order for equal ratings (the sort below is stable),
+      // so /review/themes' firstPuzzleId is exactly list(theme)[0].
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
     const enriched = items.map((i) => {
       const themes = i.puzzle.themes.map((pt) => pt.theme.slug);
@@ -96,8 +99,15 @@ export class ReviewService {
           },
         },
       },
+      // Same order as list(), so the first item reaching minRating is
+      // the one list(theme) serves first.
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
-    const counts = new Map<string, { count: number; minRating: number }>();
+    // firstPuzzleId (B9, additive): the puzzle GET /review?theme={slug}
+    // returns first (lowest rating, ties in queue order), so a client can
+    // link a card straight to /review/{firstPuzzleId}?theme={slug}
+    // without one list request per card.
+    const counts = new Map<string, { count: number; minRating: number; firstPuzzleId: string }>();
     for (const i of items) {
       for (const pt of i.puzzle.themes) {
         const slug = pt.theme.slug;
@@ -105,14 +115,17 @@ export class ReviewService {
         const prev = counts.get(slug);
         if (prev) {
           prev.count += 1;
-          if (i.puzzle.rating < prev.minRating) prev.minRating = i.puzzle.rating;
+          if (i.puzzle.rating < prev.minRating) {
+            prev.minRating = i.puzzle.rating;
+            prev.firstPuzzleId = i.puzzleId;
+          }
         } else {
-          counts.set(slug, { count: 1, minRating: i.puzzle.rating });
+          counts.set(slug, { count: 1, minRating: i.puzzle.rating, firstPuzzleId: i.puzzleId });
         }
       }
     }
     return Array.from(counts.entries())
-      .map(([slug, v]) => ({ slug, count: v.count, minRating: v.minRating }))
+      .map(([slug, v]) => ({ slug, count: v.count, minRating: v.minRating, firstPuzzleId: v.firstPuzzleId }))
       // Most-failed pattern first — that's where drilling pays off.
       .sort((a, b) => b.count - a.count || (a.slug < b.slug ? -1 : 1));
   }
@@ -125,11 +138,25 @@ export class ReviewService {
     return this.puzzles.get(puzzleId);
   }
 
+  /**
+   * Idempotent (B9): only an unresolved item is stamped, so a retried or
+   * repeated resolve keeps the first resolvedAt and answers { ok: true }
+   * again. A puzzle that was never in the caller's queue is a 404 with the
+   * same message as GET /review/:puzzleId (it used to surface Prisma's
+   * P2025 as a 500; the web ignores resolve errors either way).
+   */
   async resolve(userId: string, puzzleId: string) {
-    await this.prisma.reviewItem.update({
-      where: { userId_puzzleId: { userId, puzzleId } },
+    const { count } = await this.prisma.reviewItem.updateMany({
+      where: { userId, puzzleId, resolvedAt: null },
       data: { resolvedAt: new Date() },
     });
+    if (count === 0) {
+      const exists = await this.prisma.reviewItem.findUnique({
+        where: { userId_puzzleId: { userId, puzzleId } },
+        select: { id: true },
+      });
+      if (!exists) throw new NotFoundException('not in review queue');
+    }
     return { ok: true };
   }
 }

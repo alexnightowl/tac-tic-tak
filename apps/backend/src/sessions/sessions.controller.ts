@@ -2,12 +2,22 @@ import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@n
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
 import { SessionsService } from './sessions.service';
-import { AttemptDto, CreateSessionDto } from './dto';
+import { AttemptDto, CreateSessionDto, ListSessionsQueryDto } from './dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('sessions')
 export class SessionsController {
   constructor(private readonly sessions: SessionsService) {}
+
+  /**
+   * The caller's finished sessions, newest first, cursor-paginated (B9).
+   * New route: the web never calls GET /sessions (it reads the latest 20
+   * from /analytics), so this changes nothing for it.
+   */
+  @Get()
+  list(@CurrentUser() u: AuthedUser, @Query() q: ListSessionsQueryDto) {
+    return this.sessions.list(u.id, q);
+  }
 
   @Post()
   create(@CurrentUser() u: AuthedUser, @Body() dto: CreateSessionDto) {

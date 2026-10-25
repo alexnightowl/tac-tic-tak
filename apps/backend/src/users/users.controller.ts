@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { IsBoolean, IsHexColor, IsIn, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
@@ -42,6 +42,14 @@ class UploadAvatarDto {
   dataUrl!: string;
 }
 
+class DeleteAccountDto {
+  // Only presence is checked, like LoginDto: the current password may
+  // predate today's rules (or come from the admin set-password route),
+  // so length/charset rules here could lock a user out of deletion.
+  @IsString()
+  password!: string;
+}
+
 @Controller('users')
 export class UsersController {
   constructor(
@@ -77,6 +85,17 @@ export class UsersController {
   @Post('me/reset-progress')
   resetProgress(@CurrentUser() u: AuthedUser) {
     return this.users.resetProgress(u.id);
+  }
+
+  /**
+   * Self-service account deletion (B10, new route). Body { password };
+   * 204 on success, 403 on a wrong password, 400 without one.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Delete('me')
+  @HttpCode(204)
+  async deleteMe(@CurrentUser() u: AuthedUser, @Body() dto: DeleteAccountDto) {
+    await this.users.deleteAccount(u.id, dto.password);
   }
 
   /** Prefix search by nickname. Requires auth to discourage scraping. */

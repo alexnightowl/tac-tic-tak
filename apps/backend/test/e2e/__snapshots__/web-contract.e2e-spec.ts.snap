@@ -1091,6 +1091,7 @@ exports[`web contract (golden) replays every web request with the frozen status 
     "shape": [
       {
         "count": "number",
+        "firstPuzzleId": "string",
         "minRating": "number",
         "slug": "string",
       },
