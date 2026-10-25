@@ -1,0 +1,10 @@
+# Phase 0 smoke: the dev build launches into the app shell.
+appId: online.tactictak.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: hello-screen
+    timeout: 60000
+- assertVisible: tac·tic·tak
+- takeScreenshot: smoke-hello
