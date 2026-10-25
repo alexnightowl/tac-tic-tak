@@ -107,3 +107,26 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 **Next**: Phase 3 (backend mobile contract, api/* branches the owner merges) — or the owner's
 device check first (OWNER-QUESTIONS #29).
+
+## 2026-10-25 (day) — Phases 3 (backend branches) and 4–9 (all screens)
+
+**Backend (Phase 3)**: seven `api/*` branches pushed and verified, nothing merged — merge order and
+owner steps in `docs/mobile/backend-prs/README.md`.
+
+**Mobile (Phases 4–9, current API)**: shell (custom tab bar, account menu, route tree, i18n per area,
+toasts, offline banner, persisted query cache), Home, full play parity incl. RankCeremony and resume,
+review (drill, mistakes, viewer, history), stats + achievements, social (profile, avatar, friends,
+search, leaderboard), settings (gameplay, sound/haptics, local reminder, account, language, about),
+onboarding. Typecheck + lint clean, `@tac/core` 204/204. Commit `18c2022`.
+
+**Parity** (PARITY.md): 64 done · 19 partial · 4 todo · 6 deferred · 7 blocked on backend branches
+(B6/B7/B8/B9/B13). Todo: welcome pager + LandingBoard, BoardThumbnail in history rows, store icons
+and screenshots.
+
+**Decision (owner, 2026-10-25): iOS first.** Android is not a gate for now — no Android runs in
+phase exit criteria until the owner says so. The integration audit was stopped during its Android
+pass (Maestro's driver kept crashing on the emulator); the iOS suite had passed with reruns.
+
+**Open (iOS)**: two ThemeIcon implementations to merge into one; dedicated FEEL_TABLE events for
+borrowed haptics; VoiceOver pass by hand; RankCeremony reduced-motion timing; real-device checks
+(Q29) once the owner's phone is set up; Apple Developer enrollment pending (support ticket).

@@ -161,3 +161,7 @@ Each is adopted now and asked in OWNER-QUESTIONS.md under the same number.
 | 24 | Account purchase timing | Apple enrolment during Phase 5; Play and Firebase before Phase 10 | 5 | PROVISIONAL |
 | 25 | Admin after retirement | Trimmed web `/admin` | 12 | PROVISIONAL |
 | 26 | Web retirement trigger | 4 weeks after store launch, plus a 14-day zero-traffic window before B18 | 12 | PROVISIONAL |
+
+### iOS first (owner, 2026-10-25) — FINAL
+The owner prioritises iOS. Android stays supported by the code (cross-platform RN) but is not a
+phase gate: Android Maestro runs and Android-specific polish are deferred until the owner asks.
