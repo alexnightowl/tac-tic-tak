@@ -14,6 +14,9 @@ const BUNDLE_ID = 'online.tactictak.app';
 // real one is never claimed by the personal team before the paid account
 // registers it. Simulator builds keep the plain id (Maestro's appId).
 const BUNDLE_SUFFIX = process.env.APP_BUNDLE_SUFFIX ?? '';
+// Signing team for on-device builds: the owner's free Personal Team until the
+// paid account exists (then set APPLE_TEAM_ID / APPLE_TEAM_KIND=paid).
+const APPLE_TEAM_ID = process.env.APPLE_TEAM_ID ?? (PERSONAL_TEAM ? '72AATNYW7W' : undefined);
 
 // Embedded at build time. File name = PostScript name, so the same
 // fontFamily string resolves on iOS and Android (see @tac/core/tokens).
@@ -37,6 +40,7 @@ const config: ExpoConfig = {
   icon: './assets/images/icon.png',
   ios: {
     bundleIdentifier: BUNDLE_ID + BUNDLE_SUFFIX,
+    appleTeamId: APPLE_TEAM_ID,
     supportsTablet: false,
     infoPlist: {
       // Unlock 120 Hz on ProMotion iPhones.
