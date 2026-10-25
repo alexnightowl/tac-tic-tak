@@ -9,6 +9,8 @@
  * session steps the rating exactly like a web-style one.
  */
 import { randomUUID } from 'crypto';
+import { Logger } from '@nestjs/common';
+import { PuzzleBufferService } from '../../src/puzzles/puzzle-buffer.service';
 import { bootTestApp, bearer, sleep, TestApp } from '../helpers/app';
 import { resetDatabase } from '../helpers/db';
 import { backdateSession, createUser, primeQueue, tokenFor } from '../helpers/seed';
@@ -116,6 +118,32 @@ describe('session lifecycle (B6)', () => {
         .send({ puzzleId: nx.body.puzzle.id, correct: false, responseMs: 5000, clientAttemptId: randomUUID() });
       expect(r.status).toBe(201);
       expect(Object.keys(r.body)).toEqual(['newRating', 'step', 'streak']);
+    });
+
+    it('includeNext: a transient error serving next still returns the recorded step, with next: null', async () => {
+      const u = await newUser();
+      const { sid } = await createSession(u);
+      const nx = await t.http().post(`/api/sessions/${sid}/next`).set(u.auth);
+      const before = await rating(u.id);
+      const buffer = t.app.get(PuzzleBufferService);
+      const spy = jest.spyOn(buffer, 'getNext').mockRejectedValueOnce(new Error('redis down'));
+      const quiet = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
+      try {
+        const body = { puzzleId: nx.body.puzzle.id, correct: true, responseMs: 3000, clientAttemptId: randomUUID(), includeNext: true };
+        const r = await t.http().post(`/api/sessions/${sid}/attempt`).set(u.auth).send(body);
+        expect(r.status).toBe(201);
+        expect(r.body.next).toBeNull();
+        expect(r.body.step).not.toBe(0);
+        expect(r.body.newRating).toBe(before + r.body.step);
+        expect(spy).toHaveBeenCalledTimes(1);
+        // The outbox retry gets the same body (real step), not the step-0 fallback.
+        const retry = await t.http().post(`/api/sessions/${sid}/attempt`).set(u.auth).send(body);
+        expect(retry.text).toBe(r.text);
+        expect(await t.prisma.trainingAttempt.count({ where: { sessionId: sid } })).toBe(1);
+      } finally {
+        spy.mockRestore();
+        quiet.mockRestore();
+      }
     });
 
     it('cache lost (Redis flushed or > 24 h): no second row, no second step', async () => {

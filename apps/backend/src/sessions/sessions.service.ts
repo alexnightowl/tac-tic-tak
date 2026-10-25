@@ -246,13 +246,23 @@ export class SessionsService {
     return { ...result, next: await this.nextOrNull(userId, session.id, dto.client === 'mobile') };
   }
 
-  /** The embedded `next` of an includeNext attempt: null when nothing can be served. */
+  /**
+   * The embedded `next` of an includeNext attempt, or null when it could
+   * not be served (no puzzles, session ended, or a transient Redis/DB
+   * error). The attempt is already recorded and the rating stepped at
+   * this point, so a failure here must not turn the response into a 500:
+   * that would leave the client retrying a committed attempt and getting
+   * the `step: 0` fallback instead of the real step. On null the client
+   * calls /next itself, which reports the real error.
+   */
   private async nextOrNull(userId: string, sessionId: string, mobile: boolean) {
     try {
       return await this.serveNext(userId, sessionId, mobile);
     } catch (e) {
-      if (e instanceof NotFoundException || e instanceof BadRequestException) return null;
-      throw e;
+      if (!(e instanceof NotFoundException || e instanceof BadRequestException)) {
+        this.log.error(`includeNext failed: ${e instanceof Error ? e.message : String(e)}`);
+      }
+      return null;
     }
   }
 
