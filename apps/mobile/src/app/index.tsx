@@ -5,6 +5,8 @@ import { Link } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { DEV_MENU } from '@/dev/flags';
+
 // Phase 0 placeholder — proves the native shell, embedded fonts and that
 // Metro resolves @tac/core (tokens, i18n, chess.js via puzzle).
 const SAMPLE = initPuzzle({
@@ -26,7 +28,7 @@ export default function Hello() {
         <Text style={styles.mono} testID="hello-core">
           {SAMPLE.playerColor === 'w' ? 'white' : 'black'} to move · {SAMPLE.remaining.length} to play
         </Text>
-        {__DEV__ && (
+        {DEV_MENU && (
           <Link href="/dev" asChild>
             <Pressable testID="open-dev" style={styles.dev}>
               <Text style={styles.devText}>dev menu</Text>

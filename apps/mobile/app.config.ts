@@ -55,6 +55,7 @@ const config: ExpoConfig = {
     ],
     ['expo-font', { fonts: FONTS }],
     'expo-asset',
+    'expo-secure-store',
     [
       'react-native-audio-api',
       {

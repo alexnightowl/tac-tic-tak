@@ -1,0 +1,22 @@
+# Device-independent board smoke (testID taps only), for Android and any
+# iOS device: tap e2→e4 commits 1. e4.
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-board-lab
+- extendedWaitUntil:
+    visible:
+      id: sq-e2
+    timeout: 30000
+- tapOn:
+    id: sq-e2
+- tapOn:
+    id: sq-e4
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+    timeout: 8000
+- assertVisible:
+    id: piece-e4-wP
