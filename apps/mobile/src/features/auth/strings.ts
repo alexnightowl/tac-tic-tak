@@ -17,6 +17,7 @@ const LOCAL: Record<Language, Record<string, string>> = {
     'auth.err_timeout': 'The server is taking too long. Try again.',
     'auth.err_generic': 'Something went wrong. Try again.',
     'dev.open': 'Dev menu',
+    'auth.err_taken': 'That nickname is already taken',
   },
   uk: {
     'brand.name': 'tac·tic·tak',
@@ -26,6 +27,7 @@ const LOCAL: Record<Language, Record<string, string>> = {
     'auth.err_timeout': 'Сервер відповідає надто довго. Спробуйте ще раз.',
     'auth.err_generic': 'Щось пішло не так. Спробуйте ще раз.',
     'dev.open': 'Меню розробника',
+    'auth.err_taken': 'Цей нікнейм уже зайнятий',
   },
 };
 
@@ -45,6 +47,7 @@ export function loginErrorKey(e: unknown): string {
     if (e.kind === 'timeout') return 'auth.err_timeout';
     if (e.kind === 'network') return 'auth.err_network';
     if (e.status === 401) return 'auth.err_invalid';
+    if (e.status === 400 && /already taken/i.test(e.message)) return 'auth.err_taken';
   }
   return 'auth.err_generic';
 }

@@ -1,4 +1,5 @@
-import { queryKeys, type MeResponse } from '@tac/core/api';
+import { queryKeys, type AuthResponse, type MeResponse } from '@tac/core/api';
+import type { Language } from '@tac/core/i18n';
 import { queryOptions } from '@tanstack/react-query';
 
 import { api, currentToken, setTokenGate, setUnauthorizedHandler } from '@/platform/api';
@@ -107,7 +108,15 @@ export function boot(): Promise<void> {
 
 /** Login form submit. Throws the ApiError for the form to show. */
 export async function login(nickname: string, password: string): Promise<void> {
-  const r = await api.auth.login({ nickname, password });
+  await signIn(await api.auth.login({ nickname, password }));
+}
+
+/** Register form submit (web register page): creates the account and signs in. */
+export async function register(nickname: string, password: string, repeatPassword: string, language?: Language): Promise<void> {
+  await signIn(await api.auth.register({ nickname, password, repeatPassword, language }));
+}
+
+async function signIn(r: AuthResponse): Promise<void> {
   await saveToken(r.token);
   // Previous account's data must not leak into this one (web register comment).
   appStore.getState().reset();

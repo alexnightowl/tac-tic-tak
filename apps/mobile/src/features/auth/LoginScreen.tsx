@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { feel } from '@/feel';
 import { AppText, Card, Input, PasswordInput, PlateButton } from '@/ui';
+import { AuthSwitch } from './AuthSwitch';
 import { DevMenuButton } from './DevMenuButton';
 import { login } from './session';
 import { loginErrorKey, useAuthT } from './strings';
@@ -18,8 +19,8 @@ const LOGO = require('../../../assets/icons/knight-logo.webp');
 type TextInputHandle = ComponentRef<typeof TextInput>;
 
 /**
- * Minimal Phase 2 login (inventory "Login screen"). Register, welcome pager
- * and the refresh-token flow arrive in Phase 4. On success the auth guard
+ * Minimal Phase 2 login (inventory "Login screen"). The welcome pager and
+ * the refresh-token flow arrive in Phase 4. On success the auth guard
  * swaps the stack to (app); this screen never navigates itself.
  */
 export function LoginScreen() {
@@ -117,6 +118,7 @@ export function LoginScreen() {
               />
             </Card>
           </Animated.View>
+          <AuthSwitch prompt={t('auth.no_account')} action={t('auth.create_account')} to="/register" testID="login-to-register" />
           <DevMenuButton />
         </ScrollView>
       </KeyboardAvoidingView>

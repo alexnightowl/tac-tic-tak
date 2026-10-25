@@ -23,7 +23,7 @@ import { feel } from '@/feel';
 import { useRenderCount } from '@/dev/renderCount';
 import { DEFAULT_LABELS, squareLabel, type BoardLabels } from './a11y';
 import { BOARD_IMAGE, PIECE_CODES, type PieceCode } from './assets';
-import { Chess, type Move } from './chess';
+import { Chess } from './chess';
 import {
   CAPTURE_END_SCALE, CAPTURE_FADE_MS, DRAG_LIFT_SQ, DRAG_SCALE, DRAG_THRESHOLD, DROP_SETTLE_MS, HOVER_THROTTLE_MS,
   LIFT_SPRING, RECONCILE_IDLE_MS, SECONDARY_MOVE_MS, SNAP_BACK_SPRING, TAP_MOVE_MS,

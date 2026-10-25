@@ -1,0 +1,76 @@
+# Register: login → "Sign up" → live rule checklist → new account lands on
+# Home; taken nickname shows an inline error. Local backend only. Run with:
+#   maestro test -e E2E_USER=… .maestro/02-register.yaml
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible:
+      id: login-screen
+    timeout: 60000
+- tapOn:
+    id: login-to-register
+- assertVisible:
+    id: register-screen
+- assertVisible:
+    id: register-nick-rules-len-unmet
+- evalScript: ${output.nick = 'reg_' + Math.floor(Math.random() * 1e6)}
+
+# Taken nickname → inline error, still on register.
+- tapOn:
+    id: register-nickname
+- inputText: ${E2E_USER}
+- tapOn:
+    id: register-password
+# iOS offers "Use Strong Password?" for new-password fields (the autofill we
+# want). The sheet lives in another process, invisible to Maestro: close it
+# by its ✕ position (iPhone Air / 17-class screens).
+- waitForAnimationToEnd
+- tapOn:
+    point: 91%,60%
+    optional: true
+# Reveal both fields first: Maestro drops characters typed into secure
+# fields when the simulator keyboard isn't Latin.
+- tapOn:
+    id: register-password-eye
+- tapOn:
+    id: register-repeat-eye
+- tapOn:
+    id: register-password
+- inputText: secret123
+- assertVisible:
+    id: register-pw-rules-digit-met
+- tapOn:
+    id: register-repeat
+- inputText: secret123
+- assertVisible:
+    id: register-pw-rules-match-met
+# The keyboard covers the submit plate; Return on the last field submits.
+- tapOn:
+    id: register-repeat
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: "That nickname is already taken|Цей нікнейм уже зайнятий"
+    timeout: 10000
+
+# Fresh nickname → Home.
+- tapOn:
+    id: register-nickname
+- eraseText: 40
+- inputText: ${output.nick}
+# The keyboard covers the submit plate; Return on the last field submits.
+- tapOn:
+    id: register-repeat
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      id: home-screen
+    timeout: 15000
+- assertVisible:
+    id: home-nickname
+    text: ${output.nick}
