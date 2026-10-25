@@ -5,3 +5,6 @@ export * from './types';
 export * from './reducer';
 export * from './selectors';
 export * from './snapshot';
+// Phase 6: drill / mistakes / viewer run on practiceReducer (modes/).
+export * from './modes';
+export * from './outcome';

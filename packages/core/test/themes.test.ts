@@ -14,6 +14,9 @@ describe('theme labels', () => {
     expect(themeLabel('fork', 'uk')).toBe('Вилка');
     expect(themeLabel('backRankMate', 'uk')).toBe('Мат по останній горизонталі');
     expect(themeLabel('someNewTheme', 'uk')).toBe('Some New Theme');
+    // Dataset slugs the web never labelled.
+    expect(themeLabel('discoveredCheck')).toBe('Discovered check');
+    expect(themeLabel('clearance', 'uk')).toBe('Звільнення');
   });
 
   it('meta slugs', () => {

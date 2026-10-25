@@ -1,0 +1,15 @@
+# Leave a pushed screen: the native header back button (iOS id BackButton)
+# or Android back.
+appId: online.tactictak.app
+---
+- runFlow:
+    when: { platform: iOS }
+    commands:
+      - tapOn: { id: BackButton }
+- runFlow:
+    when: { platform: Android }
+    commands:
+      - pressKey: back
+- extendedWaitUntil:
+    visible: { id: tab-bar }
+    timeout: 5000

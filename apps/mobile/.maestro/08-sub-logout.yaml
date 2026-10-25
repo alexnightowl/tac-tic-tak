@@ -1,0 +1,11 @@
+# Subflow: log out through the avatar menu (from any tab screen).
+appId: online.tactictak.app
+---
+- tapOn: { id: header-avatar }
+- extendedWaitUntil:
+    visible: { id: account-menu }
+    timeout: 5000
+- tapOn: { id: menu-logout }
+- extendedWaitUntil:
+    visible: { id: login-screen }
+    timeout: 10000

@@ -1,6 +1,7 @@
 import type { MeResponse, Progression, Progressions, Streak, UserSettings } from '@tac/core/api';
 import type { Language } from '@tac/core/i18n';
 import type { TrainingStyle } from '@tac/core/rules';
+import { getLocales } from 'expo-localization';
 import { create } from 'zustand';
 
 import { setFeelPrefs } from '@/feel';
@@ -57,11 +58,30 @@ function isLang(v: unknown): v is Language {
   return v === 'en' || v === 'uk';
 }
 
+/**
+ * First-launch language from the device (PLAN Phase 4): uk and ru map to
+ * uk (the web's audience reads Ukrainian), everything else to en. Only
+ * used until the user or the account picks one.
+ */
+export function deviceLanguage(): Language {
+  try {
+    for (const l of getLocales()) {
+      if (l.languageCode === 'uk' || l.languageCode === 'ru') return 'uk';
+      if (l.languageCode) return 'en';
+    }
+  } catch {
+    // No locale info: en, like the web default.
+  }
+  return 'en';
+}
+
 function hydrate() {
   const lang = appKV.getString(APP_KEYS.lang);
   const settings = { ...DEFAULT_SETTINGS, ...readJSON<Partial<UserSettings>>(appKV, APP_KEYS.settings, {}) };
-  // taktic.lang outlives logout (login screen language), settings do not.
+  // taktic.lang outlives logout (login screen language), settings do not;
+  // with neither stored (fresh install), the device language.
   if (isLang(lang)) settings.language = lang;
+  else if (!appKV.contains(APP_KEYS.settings)) settings.language = deviceLanguage();
   const stored = readJSON<Partial<Progressions>>(appKV, APP_KEYS.progressions, {});
   const progressions: Progressions = {
     bullet: { ...EMPTY_PROGRESSION, ...stored.bullet },

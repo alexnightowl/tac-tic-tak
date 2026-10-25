@@ -1,0 +1,100 @@
+# Phase 9 account (PLAN Phase 9 exit criteria, the parts the current API
+# supports): a wrong current password shows an inline error and does NOT
+# log out (the web logged out on that 401); a correct change succeeds and
+# the session stays valid; then the password is changed back, logout, and
+# login with the original password works. logout-all and account deletion
+# wait for B4 / B10 (feature-flagged; dev builds show them disabled).
+# Local backend only; a user no other flow logs in with:
+#   maestro test -e E2E_USER=e2e_settings_pw -e E2E_PASSWORD=… .maestro/09-account.yaml
+appId: online.tactictak.app
+---
+- runFlow: 09-login.yaml
+- evalScript: ${output.newpw = E2E_PASSWORD + 'Z7'}
+
+- runFlow: 09-open-settings.yaml
+- tapOn: { id: settings-account }
+- extendedWaitUntil: { visible: { id: screen-settings-account }, timeout: 5000 }
+- assertVisible: { id: account-who, text: ".*${E2E_USER}.*" }
+- assertVisible: { id: account-password-save, enabled: false }
+
+# Wrong current password. Reveal every field first: secure fields drop
+# characters under a non-Latin keyboard, and a revealed new-password field
+# keeps iOS from offering a strong password over the form.
+- tapOn: { id: account-current-eye }
+- tapOn: { id: account-new-eye }
+- tapOn: { id: account-repeat-eye }
+- tapOn: { id: account-current }
+- inputText: wrong-password-1
+- tapOn: { id: account-new }
+- inputText: ${output.newpw}
+- tapOn: { id: account-repeat }
+- inputText: ${output.newpw}
+- hideKeyboard:
+    optional: true
+- tapOn: { id: account-password-save }
+- extendedWaitUntil: { visible: { id: account-password-error, text: "Current password is incorrect" }, timeout: 10000 }
+# Still signed in, still on the form: no logout on that 401.
+- assertVisible: { id: screen-settings-account }
+- assertNotVisible: { id: login-screen }
+
+# The right current password: success, session still valid. (Let the
+# error shake finish first, or the tap can miss the moving field.)
+- extendedWaitUntil: { visible: { id: never-there }, timeout: 800, optional: true }
+- tapOn: { id: account-current }
+- eraseText: 30
+- assertVisible: { id: account-current, text: "" }
+- inputText: ${E2E_PASSWORD}
+- hideKeyboard:
+    optional: true
+- assertNotVisible: { id: account-password-error }
+- tapOn: { id: account-password-save }
+- extendedWaitUntil: { visible: { id: account-password-ok }, timeout: 10000 }
+- tapOn: { id: BackButton }
+- extendedWaitUntil: { visible: { id: screen-settings }, timeout: 10000 }
+- tapOn: { id: BackButton }
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 5000 }
+- evalScript: >-
+    ${output.oldStatus = http.post('http://localhost:4000/api/auth/login', {headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nickname: E2E_USER, password: E2E_PASSWORD})}).status}
+- assertTrue:
+    condition: ${output.oldStatus == 401}
+    label: "the old password no longer logs in"
+
+# Change it back (re-runnable), then log out and in with the original.
+- runFlow: 09-open-settings.yaml
+- tapOn: { id: settings-account }
+- extendedWaitUntil: { visible: { id: screen-settings-account }, timeout: 5000 }
+- tapOn: { id: account-current-eye }
+- tapOn: { id: account-new-eye }
+- tapOn: { id: account-repeat-eye }
+- tapOn: { id: account-current }
+- inputText: ${output.newpw}
+- tapOn: { id: account-new }
+- inputText: ${E2E_PASSWORD}
+- tapOn: { id: account-repeat }
+- inputText: ${E2E_PASSWORD}
+- hideKeyboard:
+    optional: true
+- tapOn: { id: account-password-save }
+- extendedWaitUntil: { visible: { id: account-password-ok }, timeout: 10000 }
+
+- tapOn: { id: account-logout }
+- extendedWaitUntil: { visible: { id: login-screen }, timeout: 10000 }
+- tapOn: { id: login-nickname }
+- eraseText: 40
+- inputText: ${E2E_USER}
+- tapOn: { id: login-password-eye }
+- tapOn: { id: login-password }
+- eraseText: 40
+- inputText: ${E2E_PASSWORD}
+# Submit with Return (the password field's "go"): the keyboard can cover
+# the button, and hideKeyboard fails under some keyboards.
+- pressKey: Enter
+- repeat:
+    times: 20
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 20000 }

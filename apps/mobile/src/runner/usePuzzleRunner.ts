@@ -7,7 +7,7 @@ import type { BoardHandle, BoardMove } from '@/board';
 import { appStore } from '@/stores/appStore';
 import { RunnerController, type RunnerView } from './controller';
 
-export { RunnerController, SNAPSHOT_KEY, readSnapshot, type RunnerView } from './controller';
+export { RunnerController, SNAPSHOT_KEY, readSnapshot, readActiveSnapshot, clearActiveSnapshot, type RunnerView } from './controller';
 
 export type PuzzleRunner = {
   controller: RunnerController;
@@ -23,7 +23,11 @@ export type PuzzleRunner = {
  * the screen; its callbacks are stable, so the memoised Board never
  * re-renders because the runner state changed.
  */
-export function usePuzzleRunner(sessionId: string, takeStash: () => NextResponse | null): PuzzleRunner {
+export function usePuzzleRunner(
+  sessionId: string,
+  takeStash: () => NextResponse | null,
+  opts: { finishOnStart?: boolean } = {},
+): PuzzleRunner {
   const [controller] = useState(() => {
     const settings = appStore.getState().settings;
     return new RunnerController({
@@ -42,6 +46,9 @@ export function usePuzzleRunner(sessionId: string, takeStash: () => NextResponse
   // Boot after the Board's ref is attached (children commit first).
   useEffect(() => {
     controller.start(takeStash());
+    // Home's resume card "Finish": restore from the snapshot, then save
+    // (a pending attempt is re-sent first, see beginFinish).
+    if (opts.finishOnStart) controller.dispatch({ type: 'finish', save: true });
     return () => controller.dispose();
     // takeStash is read once at mount by design.
   }, [controller]); // eslint-disable-line react-hooks/exhaustive-deps

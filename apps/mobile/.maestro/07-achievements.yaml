@@ -1,0 +1,49 @@
+# Phase 7: the Achievements side lists the catalogue (star-repo hidden, PLAN
+# §8 #16), a tile opens the detail sheet, and a settings change that unlocks
+# an achievement shows the global toast. The toast step needs set-language
+# still locked for the user (local reset:
+#   delete from "UserAchievement" where slug='set-language' and "userId"=…).
+#   maestro test -e E2E_USER=e2e_stats -e E2E_PASSWORD=… .maestro/07-achievements.yaml
+appId: online.tactictak.app
+---
+- runFlow: 07-sub-login.yaml
+- tapOn: { id: tab-stats }
+- tapOn: { id: stats-tab-achievements }
+- extendedWaitUntil:
+    visible: { id: achievements-progress }
+    timeout: 15000
+- assertVisible: { id: achievements-total, text: "22" }
+- assertNotVisible: { id: achievement-star-repo }
+- tapOn: { id: achievement-first-session }
+- extendedWaitUntil:
+    visible: { id: screen-achievement }
+    timeout: 5000
+- assertVisible: { id: achievement-state }
+- tapOn: { id: screen-achievement-close }
+- extendedWaitUntil:
+    notVisible: { id: screen-achievement }
+    timeout: 5000
+# Settings change → achievementsUnlocked → toast (language via the menu).
+- tapOn: { id: header-avatar }
+- extendedWaitUntil:
+    visible: { id: account-menu }
+    timeout: 5000
+- tapOn: { id: menu-lang-uk }
+- extendedWaitUntil:
+    visible: { id: toast-achievement }
+    timeout: 8000
+- swipe:
+    from: { id: toast-achievement }
+    direction: UP
+    duration: 300
+- extendedWaitUntil:
+    visible: { id: account-menu }
+    timeout: 8000
+- tapOn: { id: menu-lang-en }
+- swipe:
+    start: "50%, 45%"
+    end: "50%, 95%"
+    duration: 300
+- extendedWaitUntil:
+    notVisible: { id: account-menu }
+    timeout: 5000

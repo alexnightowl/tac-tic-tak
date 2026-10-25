@@ -1,0 +1,107 @@
+# Phase 6: session history (own list) — sticky day headers, swipe-to-delete
+# with undo, and the delayed DELETE.
+# Seeds 2 sessions finished today (06-seed.js). Swipe the newest left: the
+# Delete action shows; deleting removes the row at once with an undo bar;
+# Undo brings it back. Deleting again and letting the bar expire sends
+# DELETE /sessions/:id, after which GET returns 404.
+# Pagination (3 pages of 60 sessions) and the Yesterday group need B9 and
+# seeded dates; today's API returns the latest 20 only.
+# Local backend only. Run with:
+#   maestro test -e E2E_USER=e2e_review -e E2E_PASSWORD=… .maestro/06-history.yaml
+appId: online.tactictak.app
+---
+- runScript:
+    file: 06-seed.js
+    env: { SEED: history }
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+# Login, retried: a Metro reload from another stream can remount the form mid-typing.
+- repeat:
+    times: 3
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - extendedWaitUntil:
+          visible: { id: login-screen }
+          timeout: 60000
+      - tapOn: { id: login-nickname }
+      - eraseText: 30
+      - inputText: ${E2E_USER}
+      # Reveal first: secure fields drop characters under a non-Latin keyboard.
+      - tapOn: { id: login-password-eye }
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      - extendedWaitUntil:
+          visible: { id: home-screen }
+          timeout: 15000
+          optional: true
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 20000
+
+# Review tab → Session history.
+- tapOn: { id: tab-review }
+- extendedWaitUntil:
+    visible: { id: review-history }
+    timeout: 10000
+- tapOn: { id: review-history }
+- extendedWaitUntil:
+    visible: { id: "history-row-${output.sessionId}" }
+    timeout: 10000
+- assertVisible: { id: history-day-Today }
+- takeScreenshot: 06-history
+
+# Swipe → Delete → Undo restores the row.
+- swipe:
+    from: { id: "history-open-${output.sessionId}" }
+    direction: LEFT
+- extendedWaitUntil:
+    visible: { id: "history-delete-${output.sessionId}" }
+    timeout: 3000
+- takeScreenshot: 06-history-swipe
+- tapOn: { id: "history-delete-${output.sessionId}" }
+- extendedWaitUntil:
+    visible: { id: history-undo-bar }
+    timeout: 3000
+- assertNotVisible: { id: "history-row-${output.sessionId}" }
+- tapOn: { id: history-undo }
+- extendedWaitUntil:
+    visible: { id: "history-row-${output.sessionId}" }
+    timeout: 3000
+# The restored row is back in place, closed (FlashList recycling resets it).
+- assertVisible: { id: "history-open-${output.sessionId}" }
+- takeScreenshot: 06-history-undone
+- runScript:
+    file: 06-seed.js
+    env: { SEED: status, SESSION_ID: "${output.sessionId}" }
+- assertTrue: ${output.status == '200'}
+
+# Delete again and let the undo window run out: the server deletes it.
+- swipe:
+    from: { id: "history-open-${output.sessionId}" }
+    direction: LEFT
+- extendedWaitUntil:
+    visible: { id: "history-delete-${output.sessionId}" }
+    timeout: 3000
+- tapOn: { id: "history-delete-${output.sessionId}" }
+- extendedWaitUntil:
+    visible: { id: history-undo-bar }
+    timeout: 3000
+- extendedWaitUntil:
+    notVisible: { id: history-undo-bar }
+    timeout: 10000
+- assertNotVisible: { id: "history-row-${output.sessionId}" }
+- runScript:
+    file: 06-seed.js
+    env: { SEED: status, SESSION_ID: "${output.sessionId}" }
+- assertTrue: ${output.status == '404'}

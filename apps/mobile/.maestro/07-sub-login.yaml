@@ -1,0 +1,32 @@
+# Subflow (also runnable alone): fresh launch, log in as ${E2E_USER}, land on
+# Home. Used by the 07-* and 08-* flows. Local backend only.
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible: { id: login-screen }
+    timeout: 60000
+- tapOn: { id: login-nickname }
+- inputText: ${E2E_USER}
+# Reveal first: secure fields drop characters under a non-Latin keyboard.
+- tapOn: { id: login-password-eye }
+- tapOn: { id: login-password }
+- inputText: ${E2E_PASSWORD}
+- tapOn: { id: login-brand }
+- tapOn: { id: login-submit }
+- repeat:
+    times: 20
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 20000

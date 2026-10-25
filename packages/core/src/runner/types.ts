@@ -82,11 +82,10 @@ type CommonConfig = {
 
 export type RunnerConfig =
   | (CommonConfig & { mode: 'session'; sessionId: string })
-  // TODO(phase 6): review drills (theme queue, hints, reset on wrong).
+  // Phase 6: drill / mistakes / viewer run on practiceReducer (./modes, PracticeConfig);
+  // these variants only keep createRunner's mode field total.
   | (CommonConfig & { mode: 'drill'; puzzles: ServerPuzzle[] })
-  // TODO(phase 6): mistakes runner (review items, resolve on solve).
   | (CommonConfig & { mode: 'mistakes'; puzzles: ServerPuzzle[] })
-  // TODO(phase 6): read-only viewer (step through the solution line).
   | (CommonConfig & { mode: 'viewer'; puzzle: ServerPuzzle });
 
 // ─── State ──────────────────────────────────────────────────────────────

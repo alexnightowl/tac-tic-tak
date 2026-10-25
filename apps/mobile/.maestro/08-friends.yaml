@@ -1,0 +1,90 @@
+# Phase 8 exit flow: A finds B and sends a request, logs out; B sees the
+# Social badge and the incoming request, swipes right to accept; both
+# friends lists and the friends-scope leaderboard show the pair; A then
+# unfriends B (confirm alert) so the flow can run again.
+# Local backend only. Two local users with E2E_PASSWORD (default
+# e2e_friend_a / e2e_friend_b) that are not friends when it starts:
+#   maestro test -e E2E_PASSWORD=… .maestro/08-friends.yaml
+appId: online.tactictak.app
+env:
+  FRIEND_A: e2e_friend_a
+  FRIEND_B: e2e_friend_b
+---
+# A: search B, Add → "Requested".
+- runFlow:
+    file: 07-sub-login.yaml
+    env: { E2E_USER: "${FRIEND_A}" }
+- tapOn: { id: tab-social }
+- tapOn: { id: social-tab-friends }
+- tapOn: { id: friends-find }
+- extendedWaitUntil:
+    visible: { id: search-input }
+    timeout: 5000
+- inputText: ${FRIEND_B}
+- extendedWaitUntil:
+    visible: { id: "search-add-${FRIEND_B}" }
+    timeout: 8000
+- tapOn: { id: "search-add-${FRIEND_B}" }
+# The "request sent" toast covers the app for Maestro until it goes.
+- extendedWaitUntil:
+    visible: { id: "search-state-${FRIEND_B}" }
+    timeout: 10000
+- assertVisible: "Requested"
+- tapOn: { id: screen-friend-search-close }
+- extendedWaitUntil:
+    visible: { id: friends-h-out }
+    timeout: 8000
+- assertVisible: { id: "friends-cancel-${FRIEND_B}" }
+- runFlow: 08-sub-logout.yaml
+
+# B: badge, incoming request, swipe right to accept.
+- runFlow:
+    file: 07-sub-login.yaml
+    env: { E2E_USER: "${FRIEND_B}" }
+- tapOn: { id: tab-social }
+- extendedWaitUntil:
+    visible: { id: social-badge }
+    timeout: 8000
+- tapOn: { id: social-tab-friends }
+- extendedWaitUntil:
+    visible: { id: "friends-in-${FRIEND_A}" }
+    timeout: 8000
+- swipe:
+    from: { id: "friends-in-${FRIEND_A}" }
+    direction: RIGHT
+    duration: 400
+# Accepted + (first run) the first-friend toast; wait them out.
+- extendedWaitUntil:
+    visible: { id: "friends-unfriend-${FRIEND_A}" }
+    timeout: 15000
+- assertNotVisible: { id: friends-h-in }
+- assertNotVisible: { id: social-badge }
+- tapOn: { id: social-tab-leaderboard }
+- tapOn: { id: board-scope-friends }
+- extendedWaitUntil:
+    visible: { id: "board-row-${FRIEND_A}" }
+    timeout: 8000
+- assertVisible: { id: board-row-self }
+- tapOn: { id: board-scope-global }
+- runFlow: 08-sub-logout.yaml
+
+# A: B is a friend now; then clean up through the unfriend confirm.
+- runFlow:
+    file: 07-sub-login.yaml
+    env: { E2E_USER: "${FRIEND_A}" }
+- tapOn: { id: tab-social }
+- tapOn: { id: social-tab-friends }
+- extendedWaitUntil:
+    visible: { id: "friends-unfriend-${FRIEND_B}" }
+    timeout: 15000
+- assertNotVisible: { id: friends-h-out }
+- tapOn: { id: "friends-unfriend-${FRIEND_B}" }
+# Native confirm; while it is up Maestro sees only the alert.
+- extendedWaitUntil:
+    visible: "Remove .* from friends\\?"
+    timeout: 5000
+- tapOn: "Unfriend"
+- extendedWaitUntil:
+    visible: { id: friends-empty }
+    timeout: 15000
+- tapOn: { id: social-tab-leaderboard }

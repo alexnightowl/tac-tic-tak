@@ -1,0 +1,26 @@
+# Open one route by deep link and close it again. Env: ROUTE (path without
+# the leading slash), SCREEN (root testID), KIND push | modal | sheet | notfound.
+appId: online.tactictak.app
+---
+- openLink: tactictak://${ROUTE}
+# iOS asks "Open in …?" for custom schemes launched from outside the app.
+- tapOn:
+    text: Open
+    optional: true
+- extendedWaitUntil:
+    visible: { id: "${SCREEN}" }
+    timeout: 8000
+- runFlow:
+    when: { true: "${KIND == 'push'}" }
+    file: shell-back.yaml
+- runFlow:
+    when: { true: "${KIND == 'modal' || KIND == 'sheet'}" }
+    commands:
+      - tapOn: { id: "${SCREEN}-close" }
+- runFlow:
+    when: { true: "${KIND == 'notfound'}" }
+    commands:
+      - tapOn: { id: not-found-home }
+- extendedWaitUntil:
+    visible: { id: tab-bar }
+    timeout: 8000

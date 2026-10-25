@@ -1,0 +1,16 @@
+# Deep link tactictak://profile/<nick> opens the public profile (PLAN Phase 8
+# exit). Assumes a signed-in session (run after 07-sub-login). The custom
+# scheme shows iOS's "Open in …?" alert first.
+appId: online.tactictak.app
+env:
+  PROFILE: e2e_slice
+---
+- openLink: "tactictak://profile/${PROFILE}"
+- tapOn:
+    text: Open
+    optional: true
+- extendedWaitUntil:
+    visible: { id: profile-hero }
+    timeout: 10000
+- assertVisible: { id: profile-name }
+- assertVisible: { id: profile-add-friend }

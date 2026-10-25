@@ -1,0 +1,18 @@
+# Phase 5 helper: from anywhere in the tabs, start a mixed bullet session of
+# DUR seconds (60 / 120 / 180) and wait for the first turn.
+appId: online.tactictak.app
+---
+- tapOn: { id: tab-play }
+- extendedWaitUntil:
+    visible: { id: play-setup }
+    timeout: 10000
+- swipe: { start: "50%, 30%", end: "50%, 85%", duration: 300 }
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- scrollUntilVisible: { element: { id: "setup-duration-${DUR}" }, direction: DOWN, centerElement: true, timeout: 5000 }
+- tapOn: { id: "setup-duration-${DUR}", retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- scrollUntilVisible: { element: { id: setup-mode-mixed }, direction: DOWN, centerElement: true, timeout: 5000 }
+- tapOn: { id: setup-mode-mixed, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000

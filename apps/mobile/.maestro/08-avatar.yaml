@@ -1,0 +1,40 @@
+# Phase 8 exit flow: change the avatar from the own profile. Library → the
+# system 1:1 crop → 512 px JPEG upload → avatar-image shows. Seed a photo
+# first (the newest one is picked):
+#   xcrun simctl addmedia <UDID> <image.jpg>
+#   maestro test -e E2E_USER=e2e_friend_a -e E2E_PASSWORD=… .maestro/08-avatar.yaml
+# Check the stored file afterwards: curl -I <API_HOST><avatarUrl> → 200, < 150 KB.
+appId: online.tactictak.app
+---
+- runFlow: 07-sub-login.yaml
+- tapOn: { id: header-avatar }
+- extendedWaitUntil:
+    visible: { id: account-menu }
+    timeout: 5000
+- tapOn: { id: menu-profile }
+- extendedWaitUntil:
+    visible: { id: profile-hero }
+    timeout: 10000
+- tapOn: { id: profile-avatar }
+- tapOn: "Choose from library"
+# First run: the photos permission prompt.
+- tapOn:
+    text: "Allow Full Access"
+    optional: true
+- tapOn:
+    text: "Allow Access to All Photos"
+    optional: true
+- extendedWaitUntil:
+    visible: "Photos"
+    timeout: 10000
+- tapOn:
+    point: "17%, 25%"
+# The 1:1 crop screen.
+- extendedWaitUntil:
+    visible: "Choose"
+    timeout: 10000
+- tapOn: "Choose"
+- extendedWaitUntil:
+    visible: { id: avatar-image }
+    timeout: 20000
+- assertVisible: { id: profile-hero }

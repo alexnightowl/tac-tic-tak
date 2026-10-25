@@ -1,0 +1,109 @@
+# Phase 6: Review tab → Fork drill on the shared practice runner.
+# Seeds 3 missed fork puzzles through the local API (06-seed.js), then:
+# a wrong move rewinds, hint 1 and hint 2 show, e2e-solve clears the theme
+# to the done screen without pushing routes, and the Fork card is gone.
+# Local backend only. Run with:
+#   maestro test -e E2E_USER=e2e_review -e E2E_PASSWORD=… .maestro/06-review.yaml
+appId: online.tactictak.app
+---
+- runScript:
+    file: 06-seed.js
+    env: { SEED: drill, THEME: fork }
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+# Login, retried: a Metro reload from another stream can remount the form mid-typing.
+- repeat:
+    times: 3
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - extendedWaitUntil:
+          visible: { id: login-screen }
+          timeout: 60000
+      - tapOn: { id: login-nickname }
+      - eraseText: 30
+      - inputText: ${E2E_USER}
+      # Reveal first: secure fields drop characters under a non-Latin keyboard.
+      - tapOn: { id: login-password-eye }
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      - extendedWaitUntil:
+          visible: { id: home-screen }
+          timeout: 15000
+          optional: true
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 20000
+
+# Review tab: the seeded theme card.
+- tapOn: { id: tab-review }
+- extendedWaitUntil:
+    visible: { id: review-theme-fork }
+    timeout: 10000
+- takeScreenshot: 06-review-tab
+- tapOn: { id: review-theme-fork }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+- assertVisible: { id: drill-counter, text: "1 / \\d+ · \\d+" }
+
+# Wrong move: the retry note, then the rewind back to the player's turn.
+- copyTextFrom: { id: viewer-fen }
+- evalScript: ${output.startFen = maestro.copiedText}
+- tapOn: { id: e2e-wrong }
+- extendedWaitUntil:
+    visible: { id: practice-rewinds, text: "1" }
+    timeout: 4000
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 3000
+- assertVisible: { id: viewer-fen, text: "${output.startFen}" }
+
+# Hints: level 1, level 2, then the button disables.
+- tapOn: { id: practice-hint }
+- assertVisible: { id: practice-hint-1 }
+- assertVisible: { id: board-hint-from }
+- tapOn: { id: practice-hint }
+- assertVisible: { id: practice-hint-2 }
+- takeScreenshot: 06-drill-hint
+
+# Solve until the theme is cleared; each tap solves one puzzle in place.
+- repeat:
+    times: 40
+    while:
+      notVisible: { id: drill-done }
+    commands:
+      - tapOn:
+          id: e2e-solve
+          optional: true
+      - extendedWaitUntil:
+          visible: { id: runner-phase, text: "solved|done" }
+          timeout: 8000
+          optional: true
+      - extendedWaitUntil:
+          visible: { id: runner-phase, text: "playerTurn" }
+          timeout: 8000
+          optional: true
+- extendedWaitUntil:
+    visible: { id: drill-done }
+    timeout: 10000
+- takeScreenshot: 06-drill-done
+
+# One step back lands on the tab: the drill never pushed a route per puzzle.
+- tapOn: { id: drill-done-back }
+- extendedWaitUntil:
+    visible: { id: screen-review }
+    timeout: 5000
+- extendedWaitUntil:
+    notVisible: { id: review-theme-fork }
+    timeout: 8000

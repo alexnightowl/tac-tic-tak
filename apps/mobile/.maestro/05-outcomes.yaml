@@ -1,0 +1,184 @@
+# Phase 5 exit criteria: the summary outcomes, one CASE per run, against a
+# progression 05-outcomes.sh seeds with psql first (local DB only):
+#   calibration  last calibration session      → LevelUpExplainer
+#   unlock       stable, criteria met in-band  → UnlockOutcome, reward counts to 50
+#   unlock-rank  stable, unlock crosses a band → RankCeremony up → Continue → summary
+#   demote       weak streak 1, weak session   → off-form card, DemoteOutcome
+#   demote-rank  demote crosses a band         → RankCeremony down → Continue → summary
+#   comfort      start below the peak band     → comfort notice, ComfortSessionNote
+#   early        Exit → Save mid-session       → EarlyExitNote
+# Bullet 1 min, so a time-up case takes ~70 s. Run them all with:
+#   apps/mobile/.maestro/05-outcomes.sh
+# or one:  maestro test -e E2E_USER=… -e E2E_PASSWORD=… -e CASE=demote \
+#            -e API=http://localhost:4000/api -e PUZZLES= .maestro/05-outcomes.yaml
+appId: online.tactictak.app
+---
+# A fresh sign-in, so the store holds the seeded progression.
+- runFlow: 05-login.yaml
+
+# Setup: bullet, mixed, the 1-minute preset, from the top of the Play tab.
+- tapOn: { id: tab-play }
+- extendedWaitUntil:
+    visible: { id: play-setup }
+    timeout: 10000
+- swipe: { start: "50%, 30%", end: "50%, 85%", duration: 300 }
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- scrollUntilVisible: { element: { id: setup-duration-60 }, direction: DOWN, centerElement: true, timeout: 5000 }
+- tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- scrollUntilVisible: { element: { id: setup-mode-mixed }, direction: DOWN, centerElement: true, timeout: 5000 }
+- tapOn: { id: setup-mode-mixed, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- runFlow:
+    when: { true: "${CASE == 'calibration'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: setup-calibration-preview }, direction: DOWN, timeout: 5000 }
+      - scrollUntilVisible: { element: { id: setup-calibrating }, direction: UP, timeout: 5000 }
+      - scrollUntilVisible: { element: { id: setup-cal-pill-bullet }, direction: UP, timeout: 5000 }
+- runFlow:
+    when: { true: "${CASE == 'unlock' || CASE == 'unlock-rank'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: setup-next-unlock }, direction: DOWN, timeout: 5000 }
+      - assertVisible: { id: setup-req-solved }
+- runFlow:
+    when: { true: "${CASE == 'demote' || CASE == 'demote-rank'}" }
+    commands:
+      # Last at-peak session was weak: the suggestion, never forced.
+      - scrollUntilVisible: { element: { id: setup-off-form }, direction: DOWN, timeout: 5000 }
+- runFlow:
+    when: { true: "${CASE == 'comfort'}" }
+    commands:
+      # The beginner eye: 1200, well under the peak band (norm 1500 − 50).
+      - scrollUntilVisible: { element: { id: slider-band-1 }, direction: UP, centerElement: true, timeout: 5000 }
+      - tapOn: { id: slider-band-1, retryTapIfNoChange: false }
+      - scrollUntilVisible: { element: { id: setup-comfort }, direction: DOWN, timeout: 5000 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+
+# In-session progress slot.
+- runFlow:
+    when: { true: "${CASE == 'calibration'}" }
+    commands:
+      - assertVisible: { id: runner-calibration-bar }
+- runFlow:
+    when: { true: "${CASE == 'unlock' || CASE == 'unlock-rank' || CASE == 'demote' || CASE == 'demote-rank'}" }
+    commands:
+      - assertVisible: { id: runner-unlock-bar }
+      - assertVisible: { id: runner-criterion-solved-pct, text: "0%" }
+- runFlow:
+    when: { true: "${CASE == 'comfort'}" }
+    commands:
+      - assertNotVisible: { id: runner-unlock-bar }
+
+# What happens in the session.
+- runFlow:
+    when: { true: "${CASE == 'unlock' || CASE == 'unlock-rank'}" }
+    commands:
+      - copyTextFrom: { id: session-id }
+      - runScript:
+          file: 05-inject-attempts.js
+          env:
+            API: ${API}
+            E2E_USER: ${E2E_USER}
+            E2E_PASSWORD: ${E2E_PASSWORD}
+            SESSION: ${maestro.copiedText}
+            PUZZLES: ${PUZZLES}
+      - assertTrue:
+          condition: ${output.injected == 7}
+          label: "7 correct attempts recorded"
+- runFlow:
+    when: { true: "${CASE == 'calibration' || CASE == 'demote' || CASE == 'demote-rank' || CASE == 'comfort'}" }
+    commands:
+      - tapOn: { id: e2e-wrong, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - extendedWaitUntil:
+          visible: { id: runner-failed, text: "1" }
+          timeout: 15000
+- runFlow:
+    when: { true: "${CASE == 'early'}" }
+    commands:
+      - tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - extendedWaitUntil:
+          visible: { id: runner-solved, text: "1" }
+          timeout: 15000
+      - tapOn: { id: runner-exit, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - extendedWaitUntil:
+          visible: { id: exit-sheet }
+          timeout: 5000
+      - tapOn: { id: exit-save, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+
+# Band crossings: the ceremony first, Continue, then the summary.
+- runFlow:
+    when: { true: "${CASE == 'unlock-rank' || CASE == 'demote-rank'}" }
+    commands:
+      - extendedWaitUntil:
+          visible: { id: rank-ceremony }
+          timeout: 100000
+      # Stage 2 lands at 950 / 750 ms and its text fades in. While the
+      # ceremony animates, Maestro's hierarchy polls can fail fast on iOS
+      # (seen on the down variant): wait it out on screenshots first.
+      - waitForAnimationToEnd: { timeout: 5000 }
+      - runFlow:
+          when: { true: "${CASE == 'unlock-rank'}" }
+          commands:
+            # The text block fades in at stage 2 (950 ms + 150 ms).
+            - extendedWaitUntil: { visible: { id: ceremony-up }, timeout: 15000 }
+            - assertVisible: { id: ceremony-band, text: "Intermediate|Середній" }
+      - runFlow:
+          when: { true: "${CASE == 'demote-rank'}" }
+          commands:
+            - extendedWaitUntil: { visible: { id: ceremony-down }, timeout: 15000 }
+            - assertVisible: { id: ceremony-band, text: "Beginner|Початківець" }
+      - extendedWaitUntil: { visible: { id: ceremony-norm }, timeout: 15000 }
+      - takeScreenshot: 05-ceremony-${CASE}
+      - tapOn: { id: ceremony-continue }
+
+- extendedWaitUntil:
+    visible: { id: summary-screen }
+    timeout: 100000
+- runFlow:
+    when: { true: "${CASE == 'calibration'}" }
+    commands:
+      - assertVisible: { id: summary-levelup-explainer }
+- runFlow:
+    when: { true: "${CASE == 'unlock' || CASE == 'unlock-rank'}" }
+    commands:
+      - assertVisible: { id: summary-unlocked }
+      # CountTo: 350 ms delay + 900 ms count, on the UI thread.
+      - extendedWaitUntil:
+          visible: { id: summary-reward, text: "50" }
+          timeout: 5000
+- runFlow:
+    when: { true: "${CASE == 'demote' || CASE == 'demote-rank'}" }
+    commands:
+      - assertVisible: { id: summary-demoted }
+- runFlow:
+    when: { true: "${CASE == 'comfort'}" }
+    commands:
+      - assertVisible: { id: summary-comfort }
+      - assertNotVisible: { id: summary-near }
+- runFlow:
+    when: { true: "${CASE == 'early'}" }
+    commands:
+      - assertVisible: { id: summary-early }
+      - assertNotVisible: { id: summary-near }
+- takeScreenshot: 05-summary-${CASE}
+
+# Home shows the new norm without a pull-to-refresh (patched from /finish).
+- scrollUntilVisible: { element: { id: summary-home }, direction: DOWN, timeout: 10000 }
+# A toast's overlay window can swallow the first tap: retry until Home.
+- repeat:
+    times: 5
+    while: { notVisible: { id: home-screen } }
+    commands:
+      - tapOn: { id: summary-home, optional: true }
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 10000
+# Exit criterion: the new norm is on Home at once (patched from the
+# /finish body, no pull-to-refresh). Values match 05-outcomes.sh `want`.
+- runFlow:
+    when: { true: "${CASE == 'calibration' || CASE == 'unlock' || CASE == 'unlock-rank' || CASE == 'demote' || CASE == 'demote-rank'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: home-norm-bullet }, direction: DOWN, timeout: 10000 }
+      - evalScript: "${output.norm = ({ calibration: '1200', unlock: '1550', 'unlock-rank': '1400', demote: '1475', 'demote-rank': '1375' })[CASE]}"
+      - assertVisible: { id: home-norm-bullet, text: ".*${output.norm}" }

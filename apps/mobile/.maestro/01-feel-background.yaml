@@ -21,7 +21,9 @@ appId: online.tactictak.app
     timeout: 10000
 - assertVisible:
     id: feel-plays
-    text: "plays: 1 · late: 1"
+    # Late on a cold start until the root layout started preloading the
+    # clips at launch (Phase 4); either is a pass, the latency is above.
+    text: "plays: 1 · late: [01]"
 - takeScreenshot: feel-cold
 # To the background and back.
 - launchApp:
@@ -37,10 +39,13 @@ appId: online.tactictak.app
     timeout: 10000
 - tapOn: { id: feel-capture }
 - tapOn: { id: feel-mistake }
+# Below the fold since the sound/haptics panel was added.
+- scrollUntilVisible: { element: { id: feel-normGateUp }, direction: DOWN, timeout: 20000 }
 - tapOn: { id: feel-normGateUp }
+- scrollUntilVisible: { element: { id: feel-plays }, direction: UP, timeout: 5000 }
 - assertVisible:
     id: feel-plays
-    text: "plays: 4 · late: 1"
+    text: "plays: 4 · late: [01]"
 - assertVisible:
     id: feel-errors
     text: "errors: 0"

@@ -1,0 +1,52 @@
+// social area, uk. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const socialUk: Dict = {
+  'leaderboard.title': 'Лідерборд',
+  'leaderboard.scope_global': 'Загальний',
+  'leaderboard.scope_friends': 'Друзі',
+  'leaderboard.empty': 'Ще немає рейтингів.',
+  'leaderboard.empty_friends': 'Додай друзів, щоб бачити їх рейтинги тут.',
+
+  'friends.title': 'Друзі',
+  'friends.find': 'Знайти гравців',
+  'friends.search_placeholder': 'Пошук за ніком (мінімум 2 символи)',
+  'friends.incoming': 'Вхідні запити',
+  'friends.outgoing': 'Надіслані запити',
+  'friends.my': 'Ваші друзі',
+  'friends.empty': 'Ще немає друзів. Знайдіть когось вгорі.',
+  'friends.accept': 'Прийняти',
+  'friends.decline': 'Відхилити',
+  'friends.cancel': 'Скасувати',
+  'friends.waiting': 'Очікується відповідь',
+  'friends.unfriend': 'Видалити з друзів',
+
+  // Mobile-only (Phase 8: Social tab, swipe rows, search sheet, toasts).
+  'social.sections': 'Розділи спільноти',
+  'leaderboard.style_label': 'Стиль лідерборду',
+  'leaderboard.scope_label': 'Охоплення лідерборду',
+  'leaderboard.you': 'Ви',
+  'leaderboard.rank_a11y': 'Місце {rank}, {name}, рейтинг {rating}',
+  'leaderboard.error': 'Не вдалося завантажити лідерборд.',
+  'friends.no_matches': 'Нікого не знайдено.',
+  'friends.add': 'Додати',
+  'friends.requested': 'Запит надіслано',
+  'friends.state_friends': 'Друзі',
+  'friends.search_close': 'Закрити пошук',
+  'friends.swipe_hint': 'Свайп праворуч — прийняти, ліворуч — відхилити',
+  'friends.unfriend_confirm_title': 'Видалити {name} з друзів?',
+  'friends.unfriend_confirm_body': 'Пізніше можна надіслати новий запит.',
+  'friends.toast_sent': 'Запит надіслано: {name}',
+  'friends.toast_accepted': 'Тепер ви з {name} друзі',
+  'friends.toast_declined': 'Запит відхилено',
+  'friends.toast_cancelled': 'Запит скасовано',
+  'friends.toast_removed': '{name} видалено з друзів',
+  'friends.toast_error': 'Щось пішло не так. Спробуйте ще раз.',
+  'friends.error': 'Не вдалося завантажити друзів.',
+  'friends.retry': 'Спробувати ще',
+  'friends.incoming_count.one': '{n} вхідний запит',
+  'friends.incoming_count.few': '{n} вхідні запити',
+  'friends.incoming_count.many': '{n} вхідних запитів',
+  'friends.incoming_count.other': '{n} вхідного запиту',
+};

@@ -1,0 +1,105 @@
+# Phase 6: session detail → mistakes runner.
+# Seeds a session with 1 missed, 1 slow and 1 quick solve (06-seed.js), opens
+# its detail by deep link (attempt times read like '4.0s', never '83:20'),
+# then drills the 2 flagged puzzles: Missed first (a wrong try counts), Slow
+# second, then the done screen and back to the session.
+# Local backend only. Run with:
+#   maestro test -e E2E_USER=e2e_review -e E2E_PASSWORD=… .maestro/06-mistakes.yaml
+appId: online.tactictak.app
+---
+- runScript:
+    file: 06-seed.js
+    env: { SEED: mistakes }
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+# Login, retried: a Metro reload from another stream can remount the form mid-typing.
+- repeat:
+    times: 3
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - extendedWaitUntil:
+          visible: { id: login-screen }
+          timeout: 60000
+      - tapOn: { id: login-nickname }
+      - eraseText: 30
+      - inputText: ${E2E_USER}
+      # Reveal first: secure fields drop characters under a non-Latin keyboard.
+      - tapOn: { id: login-password-eye }
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      - extendedWaitUntil:
+          visible: { id: home-screen }
+          timeout: 15000
+          optional: true
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 20000
+
+# Session detail.
+- openLink: tactictak://sessions/${output.sessionId}
+- tapOn:
+    text: Open
+    optional: true
+- extendedWaitUntil:
+    visible: { id: session-title }
+    timeout: 10000
+- assertVisible: { id: session-attempt-count, text: "3" }
+- assertVisible: { id: session-attempt-0-time, text: "\\d+\\.\\d+s" }
+- assertVisible: { id: session-attempt-1-time, text: "30\\.0s" }
+- assertVisible: { id: session-solved, text: "2" }
+- assertVisible: { id: session-failed, text: "1" }
+- extendedWaitUntil:
+    visible: { id: session-review-mistakes }
+    timeout: 8000
+- takeScreenshot: 06-session-detail
+
+# Mistakes runner: Missed first.
+- tapOn: { id: session-review-mistakes }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 10000
+- assertVisible: { id: mistakes-progress, text: "0 / 2" }
+- assertVisible: { id: mistakes-reason-failed }
+- tapOn: { id: e2e-wrong }
+- extendedWaitUntil:
+    visible: { id: mistakes-tries, text: "1" }
+    timeout: 3000
+- extendedWaitUntil:
+    visible: { id: practice-rewinds, text: "1" }
+    timeout: 3000
+- takeScreenshot: 06-mistakes-runner
+- tapOn: { id: e2e-solve }
+- extendedWaitUntil:
+    visible: { id: practice-solved }
+    timeout: 8000
+- extendedWaitUntil:
+    visible: { id: mistakes-progress, text: "1 / 2" }
+    timeout: 3000
+
+# Slow second, auto-advanced in place.
+- extendedWaitUntil:
+    visible: { id: mistakes-reason-slow }
+    timeout: 5000
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 8000
+- tapOn: { id: e2e-solve }
+- extendedWaitUntil:
+    visible: { id: mistakes-done }
+    timeout: 10000
+- takeScreenshot: 06-mistakes-done
+- tapOn: { id: mistakes-done-back }
+- extendedWaitUntil:
+    visible: { id: session-title }
+    timeout: 5000

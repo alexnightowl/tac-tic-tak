@@ -22,6 +22,9 @@ appId: online.tactictak.app
 - tapOn:
     id: login-nickname
 - inputText: ${E2E_USER}
+# Reveal first: secure fields drop characters under a non-Latin keyboard.
+- tapOn:
+    id: login-password-eye
 - tapOn:
     id: login-password
 - inputText: definitely-wrong-1

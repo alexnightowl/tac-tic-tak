@@ -27,6 +27,8 @@ appId: online.tactictak.app
 - tapOn: { id: feel-opponentLanding }
 - tapOn: { id: feel-correct }
 - tapOn: { id: feel-mistake }
+# The sound/haptics panel pushed the lower event rows below the fold.
+- scrollUntilVisible: { element: { id: feel-normGateUp }, direction: DOWN, timeout: 20000 }
 - tapOn: { id: feel-streakUp }
 - tapOn: { id: feel-streakBroken }
 - tapOn: { id: feel-timerWarning }
@@ -36,6 +38,7 @@ appId: online.tactictak.app
 - tapOn: { id: feel-exitSheet }
 - tapOn: { id: feel-discard }
 - tapOn: { id: feel-normGateUp }
+- scrollUntilVisible: { element: { id: feel-burst }, direction: UP, timeout: 20000 }
 - tapOn: { id: feel-burst }
 - tapOn: { id: feel-gesture-pad }
 - tapOn: { id: feel-gesture-pad }

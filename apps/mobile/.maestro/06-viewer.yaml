@@ -1,0 +1,96 @@
+# Phase 6: the puzzle viewer's solution stepper.
+# Seeds a session with an attempted puzzle whose line has ≥ 6 moves, opens
+# /puzzles/<id>, shows the solution, then 4 swipes forward and 2 back: the
+# board's FEN after them equals the one recorded after the 2nd swipe, and
+# the buttons and scrubber step it too.
+# Local backend only. Run with:
+#   maestro test -e E2E_USER=e2e_review -e E2E_PASSWORD=… .maestro/06-viewer.yaml
+appId: online.tactictak.app
+---
+- runScript:
+    file: 06-seed.js
+    env: { SEED: viewer }
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+# Login, retried: a Metro reload from another stream can remount the form mid-typing.
+- repeat:
+    times: 3
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - extendedWaitUntil:
+          visible: { id: login-screen }
+          timeout: 60000
+      - tapOn: { id: login-nickname }
+      - eraseText: 30
+      - inputText: ${E2E_USER}
+      # Reveal first: secure fields drop characters under a non-Latin keyboard.
+      - tapOn: { id: login-password-eye }
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      - extendedWaitUntil:
+          visible: { id: home-screen }
+          timeout: 15000
+          optional: true
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 20000
+
+- openLink: tactictak://puzzles/${output.puzzleId}
+- tapOn:
+    text: Open
+    optional: true
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 10000
+- assertVisible: { id: viewer-lichess }
+- tapOn: { id: viewer-solution }
+- extendedWaitUntil:
+    visible: { id: viewer-counter, text: "0 / \\d+" }
+    timeout: 5000
+
+# Swipe left = next move.
+- swipe: { start: "85%, 50%", end: "15%, 50%", duration: 250 }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "1 / \\d+" }, timeout: 3000 }
+- swipe: { start: "85%, 50%", end: "15%, 50%", duration: 250 }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "2 / \\d+" }, timeout: 3000 }
+- copyTextFrom: { id: viewer-fen }
+- evalScript: ${output.fen2 = maestro.copiedText}
+- swipe: { start: "85%, 50%", end: "15%, 50%", duration: 250 }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "3 / \\d+" }, timeout: 3000 }
+- copyTextFrom: { id: viewer-fen }
+- evalScript: ${output.fen3 = maestro.copiedText}
+- swipe: { start: "85%, 50%", end: "15%, 50%", duration: 250 }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "4 / \\d+" }, timeout: 3000 }
+- takeScreenshot: 06-viewer-solution
+# Swipe right = previous move.
+- swipe: { start: "15%, 50%", end: "85%, 50%", duration: 250 }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "3 / \\d+" }, timeout: 3000 }
+- assertVisible: { id: viewer-fen, text: "${output.fen3}" }
+- swipe: { start: "15%, 50%", end: "85%, 50%", duration: 250 }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "2 / \\d+" }, timeout: 3000 }
+- assertVisible: { id: viewer-fen, text: "${output.fen2}" }
+
+# Buttons step too; Try again goes back to solving.
+- tapOn: { id: viewer-next }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "3 / \\d+" }, timeout: 3000 }
+- tapOn: { id: viewer-prev }
+- extendedWaitUntil: { visible: { id: viewer-counter, text: "2 / \\d+" }, timeout: 3000 }
+- tapOn: { id: viewer-try-again }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 5000
+- tapOn: { id: e2e-solve }
+- extendedWaitUntil:
+    visible: { id: practice-solved }
+    timeout: 10000

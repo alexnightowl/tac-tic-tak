@@ -1,11 +1,11 @@
-import { BAND_ICON_KEY, DIFFICULTY_BANDS, type BandIconKey, type BandKey } from '@tac/core/rules';
+import { BAND_ICON_KEY, DIFFICULTY_BANDS, bandFor, type BandIconKey, type BandKey } from '@tac/core/rules';
 import { control, easing, eos, feedback, graphite, radii, rank, semantic, shadows, space, surface, text } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Lock } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { StyleSheet, TextInput, View, type LayoutChangeEvent } from 'react-native';
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
+import { GestureDetector, useExclusiveGestures, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
   useAnimatedProps,
@@ -147,7 +147,10 @@ export function DifficultySlider({
   const onLayout = (e: LayoutChangeEvent) => {
     const w = e.nativeEvent.layout.width;
     width.set(w);
-    thumbX.set((valueToPct(live.get(), edges) / 100) * w);
+    // `committed`, not `live`: on a remount (style / mode switch) the first
+    // layout can land before the effects that sync `live`, which still holds
+    // the previous style's value, and the thumb was drawn there.
+    thumbX.set((valueToPct(committed.get(), edges) / 100) * w);
   };
 
   const emit = (event: FeelEvent) => feel.emit(event);
@@ -193,9 +196,27 @@ export function DifficultySlider({
     thumbX.set(withTiming((valueToPct(v, edges) / 100) * w, { duration: THUMB_MS, easing: thumbEase }));
   };
 
+  const commit = () => {
+    'worklet';
+    const w = width.get();
+    if (atCap.get()) {
+      atCap.set(false);
+      thumbX.set(withSpring((capPct / 100) * w, RUBBER_SPRING));
+    }
+    const v = live.get();
+    if (v !== committed.get()) {
+      committed.set(v);
+      scheduleOnRN(onChange, v);
+    }
+  };
+
+  // fix (Phase 5): the drag activates on horizontal movement only and
+  // fails on vertical, so a scroll that starts on the slider scrolls the
+  // setup instead of dragging the thumb; a plain tap still jumps there.
   const pan = usePanGesture({
-    minDistance: 0,
-    onBegin: (e) => {
+    activeOffsetX: [-6, 6],
+    failOffsetY: [-10, 10],
+    onActivate: (e) => {
       'worklet';
       follow(e.x);
     },
@@ -205,18 +226,17 @@ export function DifficultySlider({
     },
     onFinalize: () => {
       'worklet';
-      const w = width.get();
-      if (atCap.get()) {
-        atCap.set(false);
-        thumbX.set(withSpring((capPct / 100) * w, RUBBER_SPRING));
-      }
-      const v = live.get();
-      if (v !== committed.get()) {
-        committed.set(v);
-        scheduleOnRN(onChange, v);
-      }
+      commit();
     },
   });
+  const tap = useTapGesture({
+    onActivate: (e) => {
+      'worklet';
+      follow(e.x);
+      commit();
+    },
+  });
+  const gesture = useExclusiveGestures(pan, tap);
 
   const thumbStyle = useAnimatedStyle(() => ({ transform: [{ translateX: thumbX.get() - THUMB / 2 }] }));
   const fillStyle = useAnimatedStyle(() => ({
@@ -229,14 +249,15 @@ export function DifficultySlider({
 
   return (
     <View testID={testID}>
-      <GestureDetector gesture={pan}>
+      <GestureDetector gesture={gesture}>
         <View
           style={styles.track}
           onLayout={onLayout}
           accessible
           accessibilityRole="adjustable"
           accessibilityLabel={accessibilityLabel}
-          accessibilityValue={{ min, max: cap, now: value }}
+          // iOS reads a bare min/max/now as a percentage: say the rating and its band.
+          accessibilityValue={{ min, max: cap, now: value, text: `${value}, ${bandLabels[bandFor(value).key]}` }}
           accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
           onAccessibilityAction={(e) => {
             const d = e.nativeEvent.actionName === 'increment' ? step : -step;

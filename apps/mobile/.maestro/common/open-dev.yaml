@@ -6,6 +6,16 @@ appId: online.tactictak.app
 - launchApp:
     stopApp: true
 - runFlow: dismiss-system.yaml
+# A fresh account left on the welcome slides by another flow: close them.
+- extendedWaitUntil:
+    visible:
+      id: "(open-dev|screen-onboarding)"
+    timeout: 60000
+- runFlow:
+    when:
+      visible: { id: screen-onboarding }
+    commands:
+      - tapOn: { id: screen-onboarding-close }
 - extendedWaitUntil:
     visible:
       id: open-dev

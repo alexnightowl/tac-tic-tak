@@ -1,0 +1,48 @@
+# Phase 9 helper (also a valid flow on its own): fresh launch → log in as
+# E2E_USER → Home. Clears app state so every 09 flow starts signed out, on
+# the device language. (iOS keeps the notification permission across
+# clearState; 09-reminder answers the prompt itself.)
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible: { id: login-screen }
+    timeout: 60000
+- tapOn: { id: login-nickname }
+- inputText: ${E2E_USER}
+# Reveal first: secure fields drop characters under a non-Latin keyboard.
+- tapOn: { id: login-password-eye }
+- tapOn: { id: login-password }
+- inputText: ${E2E_PASSWORD}
+# Submit with Return (the password field's "go"): the keyboard can cover
+# the button, and hideKeyboard fails under some keyboards.
+- pressKey: Enter
+- repeat:
+    times: 20
+    while:
+      notVisible: { id: "(home-screen|screen-onboarding)" }
+    commands:
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: "(home-screen|screen-onboarding)" }
+    timeout: 15000
+    optional: true
+# The shared dev Metro sometimes reloads the bundle mid-login (another
+# stream saved a file): submit once more if still on the form.
+- runFlow:
+    when: { visible: { id: login-submit } }
+    commands:
+      - hideKeyboard:
+          optional: true
+      - tapOn: { id: login-submit }
+# A fresh account lands on the welcome slides (onboarding gate) over Home.
+- extendedWaitUntil:
+    visible: { id: "(home-screen|screen-onboarding)" }
+    timeout: 20000

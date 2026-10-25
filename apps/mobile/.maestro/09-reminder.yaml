@@ -1,0 +1,77 @@
+# Phase 9 local streak reminder (PLAN §2.9, Phase 9 exit criteria): turn
+# it on for 23:00, and the OS holds one for today at 23:00 (dev builds list
+# the scheduled notifications under the form, testID reminder-scheduled).
+# Finish a session, and today's reminder is gone: the next is tomorrow.
+# The first run answers the iOS permission prompt with Allow (Maestro's
+# launchApp permissions don't cover notifications on the simulator).
+# Preconditions (local DB): E2E_USER has not played today and the clock is
+# before 23:00. Reset with:
+#   update "User" set "streakLastDay" = null, "streakDays" = 0 where nickname = 'e2e_settings';
+# Local backend only; an E2E build (e2e-solve):
+#   maestro test -e E2E_USER=e2e_settings -e E2E_PASSWORD=… .maestro/09-reminder.yaml
+appId: online.tactictak.app
+---
+- runFlow: 09-login.yaml
+# Local calendar days, the same way the app writes them (formatLocalDate).
+- evalScript: >-
+    ${(function () { var f = function (d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }; var n = new Date(); var m = new Date(n.getTime()); m.setDate(n.getDate() + 1); output.today = f(n); output.tomorrow = f(m); })()}
+
+- runFlow: 09-open-settings.yaml
+- tapOn: { id: settings-notifications }
+- extendedWaitUntil: { visible: { id: screen-settings-notifications }, timeout: 5000 }
+# Start from off, so the toggle below always turns it on.
+- runFlow:
+    when: { visible: { id: settings-reminder-toggle, checked: true } }
+    commands:
+      - tapOn: { id: settings-reminder-toggle }
+- extendedWaitUntil:
+    visible: { id: reminder-scheduled, text: ".*: —" }
+    timeout: 5000
+- tapOn: { id: settings-reminder-toggle }
+# The toggle is the soft pre-prompt: the first time, iOS asks.
+- tapOn:
+    text: "Allow"
+    optional: true
+- extendedWaitUntil: { visible: { id: reminder-permission-granted }, timeout: 5000 }
+- tapOn: { id: reminder-hour-23 }
+- extendedWaitUntil:
+    visible: { id: reminder-scheduled, text: ".*${output.today}T23:00.*" }
+    timeout: 5000
+- assertVisible: "Next reminder: today at .*"
+- assertVisible: { id: reminder-scheduled, text: ".*${output.tomorrow}T23:00.*" }
+
+# Finish a session (bullet, 1 minute, one solve, then time runs out).
+- tapOn: { id: BackButton }
+- tapOn: { id: BackButton }
+- extendedWaitUntil: { visible: { id: tab-bar }, timeout: 5000 }
+- tapOn: { id: tab-play }
+- extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+# A calibrated style shows the slider, which pushes the presets down.
+- scrollUntilVisible: { element: { id: setup-duration-60 }, direction: DOWN, centerElement: true, timeout: 5000 }
+- tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- swipe: { start: "50%, 70%", end: "50%, 25%", duration: 400 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil: { visible: { id: summary-screen }, timeout: 120000 }
+- tapOn: { id: summary-home }
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 10000 }
+
+# Played today: the queue now starts tomorrow.
+- runFlow: 09-open-settings.yaml
+- tapOn: { id: settings-notifications }
+- extendedWaitUntil: { visible: { id: screen-settings-notifications }, timeout: 5000 }
+- extendedWaitUntil:
+    visible: { id: reminder-scheduled, text: ".*: ${output.tomorrow}T23:00.*" }
+    timeout: 5000
+- assertNotVisible: { id: reminder-scheduled, text: ".*${output.today}T.*" }
+- assertVisible: "Next reminder: tomorrow at .*"
+
+# Leave it off (other flows don't expect notifications).
+- tapOn: { id: settings-reminder-toggle }
+- extendedWaitUntil:
+    visible: { id: reminder-scheduled, text: ".*: —" }
+    timeout: 5000

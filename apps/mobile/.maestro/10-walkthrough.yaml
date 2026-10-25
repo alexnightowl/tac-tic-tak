@@ -1,0 +1,192 @@
+# Integration walkthrough (the whole web flow on one fresh account, screenshots
+# at every stop): register → onboarding → Play session (2 solved, 1 missed)
+# → summary → Home → Review drill → history → session detail → viewer →
+# Stats → Achievements → Social (leaderboard, friends, own profile) →
+# Settings language en → uk → en → logout. iOS and Android.
+# Local backend only. Throwaway users are named wt_*; clean up with:
+#   delete from "User" where nickname like 'wt\_%';
+#   maestro --device <UDID> test --test-output-dir <dir> -e E2E_PASSWORD=… .maestro/10-walkthrough.yaml
+appId: online.tactictak.app
+---
+- evalScript: ${output.nick = 'wt_' + Date.now().toString(36)}
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil: { visible: { id: login-screen }, timeout: 60000 }
+- takeScreenshot: wt-01-login
+
+# Register through the real form.
+- tapOn: { id: login-to-register }
+- extendedWaitUntil: { visible: { id: register-screen }, timeout: 5000 }
+# Reveal both password fields before any keyboard is up (on Android the
+# keyboard covers the eyes; revealed fields also dodge the secure-field
+# character drops).
+- tapOn: { id: register-password-eye }
+- tapOn: { id: register-repeat-eye }
+- tapOn: { id: register-nickname }
+- inputText: ${output.nick}
+- tapOn: { id: register-password }
+# iOS "Use Strong Password?" sheet (see 02-register.yaml).
+- runFlow:
+    when: { platform: iOS }
+    commands:
+      - waitForAnimationToEnd
+      - tapOn: { point: "91%,58%", optional: true }
+- inputText: ${E2E_PASSWORD}
+- tapOn: { id: register-repeat }
+- inputText: ${E2E_PASSWORD}
+- tapOn: { id: register-repeat }
+- pressKey: Enter
+
+# The onboarding gate opens the welcome slides over Home.
+- extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 20000 }
+- takeScreenshot: wt-03-onboarding
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-done }, timeout: 5000 }
+- tapOn: { id: onboarding-done }
+
+# "Let's go" lands on Play: a short bullet session.
+- extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
+- takeScreenshot: wt-04-setup
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- runFlow:
+    when: { platform: iOS }
+    commands:
+      - scrollUntilVisible: { element: { id: setup-duration-60 }, direction: DOWN, centerElement: true, timeout: 5000 }
+      - tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- runFlow:
+    when: { platform: Android }
+    commands:
+      - scrollUntilVisible: { element: { id: setup-duration-120 }, direction: DOWN, centerElement: true, timeout: 5000 }
+      - tapOn: { id: setup-duration-120, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- swipe: { start: "50%, 70%", end: "50%, 25%", duration: 400 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+- takeScreenshot: wt-05-runner
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: e2e-wrong, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil: { visible: { id: runner-failed, text: "1" }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: "(summary-screen|rank-ceremony)" }, timeout: 150000 }
+- runFlow:
+    when: { visible: { id: rank-ceremony } }
+    commands:
+      - waitForAnimationToEnd: { timeout: 5000 }
+      - takeScreenshot: wt-06a-ceremony
+      - tapOn: { id: ceremony-continue }
+- extendedWaitUntil: { visible: { id: summary-screen }, timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 5000 }
+- takeScreenshot: wt-06-summary
+
+# Home.
+# The first-session achievement toast is up now; while it shows, XCUITest
+# reads only the toast's overlay window (see ToastHost), so retry the tap.
+- repeat:
+    times: 5
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - tapOn: { id: summary-home, optional: true }
+      - extendedWaitUntil: { visible: { id: home-screen }, timeout: 3000, optional: true }
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-07-home
+
+# Review: the missed puzzle's theme → drill.
+- tapOn: { id: tab-review }
+- extendedWaitUntil: { visible: { id: review-list }, timeout: 15000 }
+- takeScreenshot: wt-08-review
+- tapOn: { id: "review-theme-[A-Za-z0-9]+" }
+- extendedWaitUntil: { visible: { id: screen-drill }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+- takeScreenshot: wt-09-drill
+- tapOn: { id: screen-drill-close }
+- extendedWaitUntil: { visible: { id: screen-review }, timeout: 8000 }
+
+# History → session detail → viewer.
+- tapOn: { id: review-history }
+- extendedWaitUntil: { visible: { id: history-list }, timeout: 10000 }
+- takeScreenshot: wt-10-history
+- tapOn: { id: "history-open-.*" }
+- extendedWaitUntil: { visible: { id: session-title }, timeout: 10000 }
+- takeScreenshot: wt-11-session
+- tapOn: { id: session-attempt-0 }
+- extendedWaitUntil: { visible: { id: screen-puzzle }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: viewer-solution }, timeout: 10000 }
+- takeScreenshot: wt-12-viewer
+- tapOn: { id: viewer-solution }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-12b-viewer-solution
+# Native back through viewer → session → history → Review tab.
+- repeat:
+    times: 4
+    while:
+      notVisible: { id: tab-bar }
+    commands:
+      - runFlow:
+          when: { platform: iOS }
+          commands:
+            - tapOn: { id: BackButton }
+      - runFlow:
+          when: { platform: Android }
+          commands:
+            - pressKey: back
+      - waitForAnimationToEnd: { timeout: 2000 }
+- extendedWaitUntil: { visible: { id: tab-bar }, timeout: 5000 }
+
+# Stats and achievements.
+- tapOn: { id: tab-stats }
+- extendedWaitUntil: { visible: { id: screen-stats }, timeout: 8000 }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-13-stats
+- tapOn: { id: stats-tab-achievements }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-14-achievements
+
+# Social: leaderboard, friends, own profile.
+- tapOn: { id: tab-social }
+- extendedWaitUntil: { visible: { id: screen-social }, timeout: 8000 }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-15-leaderboard
+- tapOn: { id: social-tab-friends }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-16-friends
+- tapOn: { id: header-avatar }
+- extendedWaitUntil: { visible: { id: account-menu }, timeout: 5000 }
+- takeScreenshot: wt-17-menu
+- tapOn: { id: menu-profile }
+- extendedWaitUntil: { visible: { id: profile-hero }, timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: wt-18-profile
+- runFlow: common/shell-back.yaml
+
+# Settings: language en → uk → en.
+- tapOn: { id: header-avatar }
+- extendedWaitUntil: { visible: { id: account-menu }, timeout: 5000 }
+- tapOn: { id: menu-settings }
+- extendedWaitUntil: { visible: { id: screen-settings }, timeout: 8000 }
+- takeScreenshot: wt-19-settings-en
+- scrollUntilVisible: { element: { id: settings-lang-uk }, direction: DOWN, timeout: 5000 }
+- tapOn: { id: settings-lang-uk }
+- extendedWaitUntil: { visible: { id: settings-replay-onboarding }, timeout: 5000 }
+- takeScreenshot: wt-20-settings-uk
+- runFlow: common/shell-back.yaml
+- tapOn: { id: tab-home }
+- extendedWaitUntil: { visible: { id: tab-label-home, text: Головна }, timeout: 5000 }
+- takeScreenshot: wt-21-home-uk
+- tapOn: { id: header-avatar }
+- extendedWaitUntil: { visible: { id: account-menu }, timeout: 5000 }
+- tapOn: { id: menu-lang-en }
+- extendedWaitUntil: { visible: { id: menu-settings, label: Settings }, timeout: 5000 }
+
+# Logout from the account menu.
+- tapOn: { id: menu-logout }
+- extendedWaitUntil: { visible: { id: login-screen }, timeout: 10000 }
+- assertNotVisible: { id: tab-bar }
+- takeScreenshot: wt-22-logout

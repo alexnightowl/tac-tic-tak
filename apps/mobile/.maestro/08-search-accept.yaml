@@ -1,0 +1,62 @@
+# Phase 8: two incoming requests (A → B, C → B, seeded over the local API).
+# B swipes A's row to accept and C's row must still be on screen (the
+# recycled swipe cell resets); then B accepts C from the search sheet and
+# the row reads "Friends", not "Requested" (web bug). Cleans up after.
+# Local backend only; three local users sharing E2E_PASSWORD:
+#   maestro test -e E2E_PASSWORD=… .maestro/08-search-accept.yaml
+appId: online.tactictak.app
+env:
+  FRIEND_A: e2e_friend_a
+  FRIEND_B: e2e_friend_b
+  FRIEND_C: e2e_friend_c
+---
+- runScript:
+    file: 08-friends-seed.js
+    env: { SEED: requests }
+- runFlow:
+    file: 07-sub-login.yaml
+    env: { E2E_USER: "${FRIEND_B}" }
+- tapOn: { id: tab-social }
+- tapOn: { id: social-tab-friends }
+- extendedWaitUntil:
+    visible: { id: "friends-in-${FRIEND_A}" }
+    timeout: 8000
+- assertVisible: { id: "friends-in-${FRIEND_C}" }
+- swipe:
+    from: { id: "friends-in-${FRIEND_A}" }
+    direction: RIGHT
+    duration: 400
+- extendedWaitUntil:
+    visible: { id: "friends-unfriend-${FRIEND_A}" }
+    timeout: 15000
+# The other request's row is still in place (not left slid off-screen).
+- assertVisible: { id: "friends-in-${FRIEND_C}" }
+- assertVisible: { id: "friends-accept-${FRIEND_C}" }
+# Accept C from search: the row must end as "Friends".
+# Toasts (accepted, first-friend) sit over the top of the list for a few
+# seconds and swallow taps; retry until the sheet is up.
+- repeat:
+    times: 10
+    while:
+      notVisible: { id: search-input }
+    commands:
+      - tapOn: { id: friends-find }
+      - waitForAnimationToEnd: { timeout: 1500 }
+- inputText: ${FRIEND_C}
+- extendedWaitUntil:
+    visible: { id: "search-accept-${FRIEND_C}" }
+    timeout: 8000
+- tapOn: { id: "search-accept-${FRIEND_C}" }
+- extendedWaitUntil:
+    visible: { id: "search-state-${FRIEND_C}" }
+    timeout: 10000
+- assertVisible: "Friends"
+- assertNotVisible: "Requested"
+- tapOn: { id: screen-friend-search-close }
+- extendedWaitUntil:
+    visible: { id: "friends-unfriend-${FRIEND_C}" }
+    timeout: 10000
+- assertNotVisible: { id: friends-h-in }
+- runScript:
+    file: 08-friends-seed.js
+    env: { SEED: cleanup }

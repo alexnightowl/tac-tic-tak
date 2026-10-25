@@ -29,10 +29,10 @@ appId: online.tactictak.app
     id: register-password
 # iOS offers "Use Strong Password?" for new-password fields (the autofill we
 # want). The sheet lives in another process, invisible to Maestro: close it
-# by its ✕ position (iPhone Air / 17-class screens).
+# by its ✕ position (91%,58%: iPhone 17 and Air).
 - waitForAnimationToEnd
 - tapOn:
-    point: 91%,60%
+    point: 91%,58%
     optional: true
 # Reveal both fields first: Maestro drops characters typed into secure
 # fields when the simulator keyboard isn't Latin.
@@ -67,6 +67,13 @@ appId: online.tactictak.app
 - tapOn:
     id: register-repeat
 - pressKey: Enter
+# A new account meets the welcome slides (onboarding gate); skip them.
+- extendedWaitUntil:
+    visible:
+      id: screen-onboarding
+    timeout: 15000
+- tapOn:
+    id: onboarding-skip
 - extendedWaitUntil:
     visible:
       id: home-screen

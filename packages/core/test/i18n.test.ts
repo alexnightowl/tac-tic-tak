@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  DICTS, LANDING_DICTS, createTranslator, interpolate, pluralizeUk, type Dict,
+  AREAS, AREA_DICTS, DICTS, LANDING_DICTS, createTranslator, interpolate, pluralizeUk, type Dict,
 } from '../src/i18n';
 
 function missing(a: Dict, b: Dict): string[] {
@@ -16,6 +16,43 @@ describe('dictionary parity', () => {
   it('app en/uk keys match apart from plural forms', () => {
     expect(missing(DICTS.en, DICTS.uk)).toEqual(APP_ONLY_EN);
     expect(missing(DICTS.uk, DICTS.en)).toEqual(APP_ONLY_UK);
+  });
+
+  it('each area has the same keys in en and uk (plural forms aside)', () => {
+    for (const a of AREAS) {
+      const { en, uk } = AREA_DICTS[a];
+      const plural = (k: string) => /\.(zero|one|two|few|many|other)$/.test(k);
+      expect(missing(en, uk).filter((k) => !plural(k)), `${a}: en keys missing in uk`).toEqual([]);
+      expect(missing(uk, en).filter((k) => !plural(k)), `${a}: uk keys missing in en`).toEqual([]);
+    }
+  });
+
+  it('every plural key has its en one/other and uk one/few/many forms', () => {
+    const forms = (d: Dict) => {
+      const m = new Map<string, Set<string>>();
+      for (const k of Object.keys(d)) {
+        const hit = /^(.*)\.(zero|one|two|few|many|other)$/.exec(k);
+        if (hit) m.set(hit[1], (m.get(hit[1]) ?? new Set()).add(hit[2]));
+      }
+      return m;
+    };
+    const en = forms(DICTS.en);
+    const uk = forms(DICTS.uk);
+    expect([...en.keys()].sort()).toEqual([...uk.keys()].sort());
+    for (const [base, f] of en) expect([...f].sort(), `en ${base}`).toEqual(expect.arrayContaining(['one', 'other']));
+    for (const [base, f] of uk) expect([...f].sort(), `uk ${base}`).toEqual(expect.arrayContaining(['few', 'many', 'one']));
+  });
+
+  it('no key is defined in two areas', () => {
+    for (const lang of ['en', 'uk'] as const) {
+      const seen = new Map<string, string>();
+      for (const a of AREAS) {
+        for (const k of Object.keys(AREA_DICTS[a][lang])) {
+          expect(seen.get(k), `${lang} '${k}' in ${seen.get(k)} and ${a}`).toBeUndefined();
+          seen.set(k, a);
+        }
+      }
+    }
   });
 
   it('landing en/uk keys match', () => {

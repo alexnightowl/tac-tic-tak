@@ -65,6 +65,10 @@ export function E2EStrip({ controller, view }: { controller: RunnerController; v
         {s.paused ? 'paused' : s.phase}
       </AppText>
       <BoardRenderCount />
+      {/* Last: long, and it may run off the edge (Maestro still reads it). */}
+      <AppText variant="caption" color={FAINT} testID="session-id" numberOfLines={1} style={styles.sid}>
+        {s.sessionId}
+      </AppText>
     </View>
   );
 }
@@ -77,4 +81,5 @@ const styles = StyleSheet.create({
     height: space[8],
   },
   btn: { height: space[8], paddingHorizontal: space[3], justifyContent: 'center' },
+  sid: { flexShrink: 1 },
 });

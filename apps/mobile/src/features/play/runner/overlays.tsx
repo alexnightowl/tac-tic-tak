@@ -21,7 +21,7 @@ const fadeOut = FadeOut.duration(t200.duration).easing(ease);
  * web PauseOverlay: hides the position, shows the frozen time. Blur on
  * iOS, 92 % ink on Android (PLAN §2.5).
  */
-export function PauseOverlay({ remainingMs, onResume, t }: { remainingMs: number; onResume: () => void; t: PlayT }) {
+export function PauseOverlay({ remainingMs, onResume, restored = false, t }: { remainingMs: number; onResume: () => void; restored?: boolean; t: PlayT }) {
   return (
     <Animated.View entering={fadeIn} exiting={fadeOut} style={styles.fill} testID="pause-overlay">
       {Platform.OS === 'ios' ? (
@@ -37,8 +37,8 @@ export function PauseOverlay({ remainingMs, onResume, t }: { remainingMs: number
           {fmtDuration(Math.max(0, Math.ceil(remainingMs / 1000)))}
         </AppText>
         <AppText variant="title">{t('play.paused')}</AppText>
-        <AppText variant="body" color={eos.ash} style={styles.center}>
-          {t('play.paused_hint')}
+        <AppText variant="body" color={eos.ash} style={styles.center} testID={restored ? 'pause-restored' : undefined}>
+          {restored ? t('play.restored') : t('play.paused_hint')}
         </AppText>
         <PlateButton testID="runner-resume" label={t('play.resume')} onPress={onResume} size="lg" style={styles.resume} />
       </View>

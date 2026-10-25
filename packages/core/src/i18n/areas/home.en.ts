@@ -1,0 +1,48 @@
+// home area, en. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const homeEn: Dict = {
+  'dashboard.welcome': 'Welcome back',
+  'dashboard.ready': 'Ready to train?',
+  'dashboard.start': 'Start session',
+  'dashboard.current_rating': 'Current rating',
+  'dashboard.unlocked_start': 'Norm',
+  'dashboard.peak': 'All-time peak',
+  'dashboard.sessions': 'Sessions',
+  'dashboard.recent': 'Recent sessions',
+  'dashboard.empty': 'No sessions yet. Start your first!',
+  'streak.secured': 'Locked in today',
+  'streak.at_risk': 'Play today to keep it',
+
+  // Phase 5 mobile-only copy: quick start, resume card, recent list, streak sheet.
+  'home.quick_start': 'Quick start',
+  'home.quick_start_aria': 'Quick start: {setup}',
+  'home.resume_title': 'Session in progress',
+  'home.resume_hint': '{time} left · {solved} solved · {failed} missed',
+  'home.resume': 'Resume',
+  'home.finish': 'Finish',
+  'home.discard': 'Discard',
+  'home.discard_title': 'Discard this session?',
+  'home.discard_body': 'Its attempts are deleted and your rating goes back to where it started.',
+  'home.discard_failed': 'Couldn’t discard the session. Try again.',
+  'home.all_sessions': 'All sessions',
+  'home.solved': 'solved',
+  'home.error': 'Couldn’t load your sessions.',
+  'home.retry': 'Try again',
+  'home.rating_delta_aria': '{delta} since your last visit',
+  'home.open_streak': 'Daily streak details',
+  'streak.title': 'Daily streak',
+  'streak.state_secured': 'Today is locked in. Come back tomorrow to keep it going.',
+  'streak.state_at_risk': 'You played yesterday — finish a session today to keep the streak.',
+  'streak.state_broken': 'The streak broke. Your next session starts a new one.',
+  'streak.state_none': 'No streak yet. Finish a session today to start one.',
+  'streak.freeze_ready': 'Freeze ready: it covers one missed day automatically.',
+  'streak.freeze_used': 'Freeze used. It comes back on {date}.',
+  'streak.rules': 'Any saved session counts — rated, theme or ended early. Days follow your phone’s calendar.',
+  'streak.outcome_started': 'Streak started',
+  'streak.outcome_continued': 'Streak extended',
+  'streak.outcome_frozen': 'Freeze saved your streak',
+  'streak.outcome_frozen_hint': 'You missed a day, so your freeze kicked in. It comes back in 7 days.',
+  'streak.outcome_reset': 'New streak started',
+};

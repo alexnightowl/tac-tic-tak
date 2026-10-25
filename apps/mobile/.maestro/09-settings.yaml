@@ -1,0 +1,78 @@
+# Phase 9 settings round-trip (PLAN §5 Phase 9 exit criteria): mirror view
+# and the Ember piece set saved to the account, the language switched to
+# uk, then a cold relaunch whose first frame is already uk with both
+# settings kept. Server values are checked over HTTP, and everything is
+# put back (en, classic, mirror off) at the end so the flow re-runs.
+# Local backend only. Use a user no other flow asserts English on:
+#   maestro test -e E2E_USER=e2e_settings -e E2E_PASSWORD=… .maestro/09-settings.yaml
+appId: online.tactictak.app
+---
+- runFlow: 09-login.yaml
+
+# Settings from the avatar menu; start from en / classic / mirror off.
+- runFlow: 09-open-settings.yaml
+- tapOn: { id: settings-lang-en }
+- tapOn: { id: settings-gameplay }
+- extendedWaitUntil: { visible: { id: screen-settings-gameplay }, timeout: 5000 }
+- assertVisible: { id: settings-pieces-classic }
+- tapOn: { id: settings-pieces-ember }
+- assertVisible: { id: settings-pieces-ember, selected: true }
+- scrollUntilVisible:
+    element: { id: settings-mirror }
+    direction: DOWN
+- runFlow:
+    when: { visible: { id: settings-mirror, checked: false } }
+    commands:
+      - tapOn: { id: settings-mirror }
+- assertVisible: { id: settings-mirror, checked: true }
+- tapOn: { id: BackButton }
+
+# Language → uk: the whole app flips live (this screen's own copy too).
+- tapOn: { id: settings-lang-uk }
+- extendedWaitUntil:
+    visible: { id: settings-gameplay, text: "Ігровий процес.*" }
+    timeout: 5000
+- assertVisible: "Налаштування"
+
+# The server has all three (PATCH /users/me/settings is optimistic; give it a beat).
+- extendedWaitUntil: { visible: { id: never-there }, timeout: 1500, optional: true }
+- evalScript: >-
+    ${output.login = json(http.post('http://localhost:4000/api/auth/login', {headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nickname: E2E_USER, password: E2E_PASSWORD})}).body); output.me = json(http.get('http://localhost:4000/api/users/me', {headers: {Authorization: 'Bearer ' + output.login.token}}).body).settings}
+- assertTrue:
+    condition: ${output.me.language == 'uk' && output.me.pieceSet == 'ember' && output.me.mirrorView === true}
+    label: "server settings: language uk, pieceSet ember, mirrorView true"
+
+# Cold relaunch: the first frame after the splash is already Ukrainian
+# (MMKV-hydrated store, no wait for /users/me).
+- stopApp
+- launchApp:
+    stopApp: true
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 30000 }
+- assertVisible: { id: tab-home, text: "Головна" }
+- runFlow: 09-open-settings.yaml
+- tapOn: { id: settings-gameplay }
+- extendedWaitUntil: { visible: { id: screen-settings-gameplay }, timeout: 5000 }
+- assertVisible: { id: settings-pieces-ember, selected: true }
+- scrollUntilVisible:
+    element: { id: settings-mirror }
+    direction: DOWN
+- assertVisible: { id: settings-mirror, checked: true }
+
+# Put everything back.
+- tapOn: { id: settings-mirror }
+- assertVisible: { id: settings-mirror, checked: false }
+- scrollUntilVisible:
+    element: { id: settings-pieces-classic }
+    direction: UP
+- tapOn: { id: settings-pieces-classic }
+- tapOn: { id: BackButton }
+- tapOn: { id: settings-lang-en }
+- extendedWaitUntil:
+    visible: { id: settings-gameplay, text: "Gameplay.*" }
+    timeout: 5000
+- extendedWaitUntil: { visible: { id: never-there }, timeout: 1500, optional: true }
+- evalScript: >-
+    ${output.me = json(http.get('http://localhost:4000/api/users/me', {headers: {Authorization: 'Bearer ' + output.login.token}}).body).settings}
+- assertTrue:
+    condition: ${output.me.language == 'en' && output.me.pieceSet == 'classic' && output.me.mirrorView === false}
+    label: "server settings restored: en, classic, mirror off"

@@ -1,0 +1,129 @@
+# Phase 5 exit criterion "kill test" (PLAN §2.10): a session killed mid-puzzle
+# comes back from Home's resume card on the SAME puzzle with the remaining
+# time (±2 s), paused. Then the card's Finish (saved as an early exit) and
+# Discard (alert, session gone) paths.
+#   maestro test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/05-resume.yaml
+# DB check after the run (local only): the resumed session has exactly the
+# attempts made in the app (1 before the kill + 1 after), no duplicate:
+#   select count(*) from "TrainingAttempt" where "sessionId" = <id printed as output.sid>
+appId: online.tactictak.app
+---
+- runFlow: 05-login.yaml
+
+# 1. Resume.
+- runFlow: { file: 05-start-bullet.yaml, env: { DUR: "180" } }
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-solved, text: "1" }
+    timeout: 15000
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+- copyTextFrom: { id: puzzle-id }
+- evalScript: ${output.pid = maestro.copiedText}
+- copyTextFrom: { id: session-id }
+- evalScript: ${output.sid = maestro.copiedText}
+- copyTextFrom: { id: runner-timer }
+- evalScript: ${output.timer = maestro.copiedText}
+# SIGKILL-like: no background event reaches the app.
+- stopApp
+- launchApp:
+    stopApp: false
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible: { id: home-resume-card }
+    timeout: 60000
+- takeScreenshot: 05-resume-card
+- tapOn: { id: home-resume }
+- extendedWaitUntil:
+    visible: { id: pause-overlay }
+    timeout: 15000
+- assertVisible: { id: pause-restored }
+- assertVisible: { id: puzzle-id, text: "${output.pid}" }
+- copyTextFrom: { id: pause-remaining }
+- assertTrue:
+    condition: ${(function (a, b) { var s = function (t) { var p = t.split(':'); return Number(p[0]) * 60 + Number(p[1]); }; return Math.abs(s(a) - s(b)) <= 2; })(output.timer, maestro.copiedText)}
+    label: "remaining time restored within ±2 s"
+- tapOn: { id: runner-resume, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 10000
+- assertVisible: { id: puzzle-id, text: "${output.pid}" }
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-solved, text: "2" }
+    timeout: 15000
+- evalScript: ${console.log('resumed session ' + output.sid)}
+- tapOn: { id: runner-exit, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: exit-sheet }
+    timeout: 5000
+- tapOn: { id: exit-save, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: summary-early }
+    timeout: 20000
+- assertVisible: { id: summary-solved, text: "2" }
+- scrollUntilVisible: { element: { id: summary-home }, direction: DOWN, timeout: 10000 }
+# A toast's overlay window can swallow the first tap: retry until Home.
+- repeat:
+    times: 5
+    while: { notVisible: { id: home-screen } }
+    commands:
+      - tapOn: { id: summary-home, optional: true }
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 10000
+- assertNotVisible: { id: home-resume-card }
+
+# 2. Finish from the card: restored, then saved as it stands (early exit).
+- runFlow: { file: 05-start-bullet.yaml, env: { DUR: "180" } }
+- tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-solved, text: "1" }
+    timeout: 15000
+- stopApp
+- launchApp:
+    stopApp: false
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible: { id: home-resume-card }
+    timeout: 60000
+- tapOn: { id: home-finish }
+- extendedWaitUntil:
+    visible: { id: summary-early }
+    timeout: 20000
+- assertVisible: { id: summary-solved, text: "1" }
+- scrollUntilVisible: { element: { id: summary-home }, direction: DOWN, timeout: 10000 }
+# A toast's overlay window can swallow the first tap: retry until Home.
+- repeat:
+    times: 5
+    while: { notVisible: { id: home-screen } }
+    commands:
+      - tapOn: { id: summary-home, optional: true }
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 10000
+- assertNotVisible: { id: home-resume-card }
+
+# 3. Discard from the card (confirm alert): the card goes, nothing to resume.
+- runFlow: { file: 05-start-bullet.yaml, env: { DUR: "180" } }
+- tapOn: { id: e2e-wrong, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil:
+    visible: { id: runner-failed, text: "1" }
+    timeout: 15000
+- stopApp
+- launchApp:
+    stopApp: false
+- runFlow: common/dismiss-system.yaml
+- extendedWaitUntil:
+    visible: { id: home-resume-card }
+    timeout: 60000
+- tapOn: { id: home-discard }
+- extendedWaitUntil:
+    visible: { text: "Discard this session?" }
+    timeout: 5000
+# The alert button, not the card's own Discard (both read "Discard").
+- tapOn: { text: "Discard", below: { text: "Its attempts are deleted.*" } }
+- extendedWaitUntil:
+    notVisible: { id: home-resume-card }
+    timeout: 10000

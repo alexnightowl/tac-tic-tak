@@ -1,0 +1,52 @@
+// social area, en. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const socialEn: Dict = {
+  'leaderboard.title': 'Leaderboard',
+  'leaderboard.scope_global': 'Global',
+  'leaderboard.scope_friends': 'Friends',
+  'leaderboard.empty': 'No ratings yet.',
+  'leaderboard.empty_friends': 'Add some friends to see their ratings here.',
+
+  'friends.title': 'Friends',
+  'friends.find': 'Find players',
+  'friends.search_placeholder': 'Search by nickname (min 2 chars)',
+  'friends.incoming': 'Incoming requests',
+  'friends.outgoing': 'Sent requests',
+  'friends.my': 'Your friends',
+  'friends.empty': 'No friends yet. Search above to send a request.',
+  'friends.accept': 'Accept',
+  'friends.decline': 'Decline',
+  'friends.cancel': 'Cancel',
+  'friends.waiting': 'Waiting for response',
+  'friends.unfriend': 'Unfriend',
+
+  // Mobile-only (Phase 8: Social tab, swipe rows, search sheet, toasts).
+  'social.sections': 'Social sections',
+  'leaderboard.style_label': 'Leaderboard style',
+  'leaderboard.scope_label': 'Leaderboard scope',
+  'leaderboard.you': 'You',
+  'leaderboard.rank_a11y': 'Rank {rank}, {name}, rating {rating}',
+  'leaderboard.error': 'Couldn’t load the leaderboard.',
+  'friends.no_matches': 'No matches.',
+  'friends.add': 'Add',
+  'friends.requested': 'Requested',
+  'friends.state_friends': 'Friends',
+  'friends.search_close': 'Close search',
+  'friends.swipe_hint': 'Swipe right to accept, left to decline',
+  'friends.unfriend_confirm_title': 'Remove {name} from friends?',
+  'friends.unfriend_confirm_body': 'You can send a new request later.',
+  'friends.toast_sent': 'Request sent to {name}',
+  'friends.toast_accepted': 'You and {name} are now friends',
+  'friends.toast_declined': 'Request declined',
+  'friends.toast_cancelled': 'Request cancelled',
+  'friends.toast_removed': '{name} removed from friends',
+  'friends.toast_error': 'Something went wrong. Try again.',
+  'friends.error': 'Couldn’t load your friends.',
+  'friends.retry': 'Try again',
+  'friends.incoming_count.one': '{n} incoming request',
+  'friends.incoming_count.few': '{n} incoming requests',
+  'friends.incoming_count.many': '{n} incoming requests',
+  'friends.incoming_count.other': '{n} incoming requests',
+};

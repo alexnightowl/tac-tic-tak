@@ -1,0 +1,48 @@
+# Phase 7 exit flow: the Stats tab renders the heatmap, rating chart and
+# radar; a style-filter switch keeps them; a tap on the heatmap and on the
+# rating chart fills their tooltips (press-and-drag scrubs on a device).
+# Local backend only; a user with a year of sessions (local: e2e_stats,
+# seeded by SQL, same password as e2e_slice):
+#   maestro test -e E2E_USER=e2e_stats -e E2E_PASSWORD=… .maestro/07-stats.yaml
+appId: online.tactictak.app
+---
+- runFlow: 07-sub-login.yaml
+- tapOn: { id: tab-stats }
+- extendedWaitUntil:
+    visible: { id: stats-heatmap }
+    timeout: 15000
+- assertVisible: { id: stats-rating-plot }
+- assertVisible: { id: stats-heatmap-days }
+# Filter switch: the charts stay, the rating chart dims other styles.
+- tapOn: { id: stats-filter-blitz }
+- assertVisible: { id: stats-heatmap }
+- assertVisible: { id: stats-rating-plot }
+- tapOn: { id: stats-filter-all }
+# Heatmap: a tap picks a day; the tooltip shows its date.
+- tapOn:
+    id: stats-heatmap
+    point: "70%, 45%"
+- assertVisible:
+    id: stats-heatmap-tooltip
+    text: ".*\\d{4}-\\d{2}-\\d{2}.*"
+- tapOn:
+    id: stats-heatmap
+    point: "40%, 30%"
+- assertVisible:
+    id: stats-heatmap-tooltip
+    text: ".*\\d{4}-\\d{2}-\\d{2}.*"
+# Rating chart crosshair.
+- tapOn:
+    id: stats-rating-plot
+    point: "60%, 60%"
+- assertVisible:
+    id: stats-rating-tooltip
+    text: ".+ · .+ \\d+"
+- scrollUntilVisible:
+    element: { id: stats-radar }
+    direction: DOWN
+- scrollUntilVisible:
+    element: { id: stats-themes-tab }
+    direction: DOWN
+- tapOn: { id: stats-themes-tab-strongest }
+- tapOn: { id: stats-themes-tab-all }

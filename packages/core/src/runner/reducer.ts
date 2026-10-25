@@ -645,7 +645,7 @@ function sessionStep(tx: Tx, e: RunnerEvent) {
  */
 export function runnerReducer(state: RunnerState, event: RunnerEvent): Transition {
   if (state.mode !== 'session') {
-    // TODO(phase 6): drill / mistakes / viewer transitions.
+    // Practice modes have their own reducer: practiceReducer (./modes).
     return { state, effects: [] };
   }
   const tx = new Tx(state, event.at);

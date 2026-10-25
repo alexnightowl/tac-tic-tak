@@ -1,23 +1,28 @@
+import type { Progression } from '@tac/core/api';
 import { normalizePieceSet } from '@tac/core/board';
-import { turnCardOf } from '@tac/core/runner';
+import { CALIBRATION_SESSIONS } from '@tac/core/rules';
+import { eligibleForUnlock, turnCardOf, unlockProgressOf } from '@tac/core/runner';
 import { eos, layout, space } from '@tac/core/tokens';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { router, usePreventRemove, type Href } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Pause, Play, X } from 'lucide-react-native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { FocusStatusBar } from '@/shell/FocusStatusBar';
 import { Board } from '@/board';
 import { Countdown, usePuzzleRunner } from '@/runner';
 import { useAppStore } from '@/stores/appStore';
 import { AppText } from '@/ui';
 import { takeFirstPuzzle } from '../pendingPuzzle';
+import { readLastSetup, repeatStartRating } from '../setupPrefs';
+import { startSession } from '../startSession';
 import { usePlayT } from '../strings';
 import { E2E, E2EStrip, onBoardRenderCount } from './E2EStrip';
 import { ExitSheet, PauseOverlay } from './overlays';
 import { GlassButton, StatPills, TurnCard } from './parts';
+import { CalibrationProgressBar, UnlockProgressBar } from './progress';
 import { Summary } from './Summary';
 
 const HOME = '/' as Href;
@@ -30,16 +35,18 @@ const KEEP_AWAKE_TAG = 'runner';
  * memoised with stable props and never re-renders from them, and the
  * clock re-renders only <Countdown>.
  */
-export function RunnerScreen({ sessionId }: { sessionId: string }) {
+export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: string; finishOnStart?: boolean }) {
   const t = usePlayT();
   const insets = useSafeAreaInsets();
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const mirror = useAppStore((s) => s.settings.mirrorView);
-  const { controller, view, boardRef, onMove } = usePuzzleRunner(sessionId, () => takeFirstPuzzle(sessionId));
+  const { controller, view, boardRef, onMove } = usePuzzleRunner(sessionId, () => takeFirstPuzzle(sessionId), { finishOnStart });
   const s = view.state;
   const runnerStyle = s.style;
   // web RatingPill: the store's live rating (patched after every attempt).
   const storeRating = useAppStore((st) => (runnerStyle ? st.progressions[runnerStyle].currentPuzzleRating : null));
+  const storeProg = useAppStore((st) => (runnerStyle ? st.progressions[runnerStyle] : null));
+  const [againLoading, setAgainLoading] = useState(false);
   const result = s.result;
   const running = s.phase !== 'summary';
 
@@ -66,14 +73,37 @@ export function RunnerScreen({ sessionId }: { sessionId: string }) {
     };
   }, [running]);
 
+  // "Play again with the same settings": the last setup straight into a
+  // new session (the web went back to /play); on failure, the setup.
+  const playAgain = async () => {
+    const setup = readLastSetup();
+    const prog = setup ? useAppStore.getState().progressions[setup.style] : null;
+    if (!setup || !prog) {
+      router.dismissTo(SETUP);
+      return;
+    }
+    setAgainLoading(true);
+    try {
+      const id = await startSession({ ...setup, startRating: repeatStartRating(setup, prog) });
+      router.replace(`/play/${id}` as Href);
+    } catch {
+      setAgainLoading(false);
+      router.dismissTo(SETUP);
+    }
+  };
+
   if (result?.kind === 'summary') {
     return (
       <View style={styles.root}>
         <Summary
           summary={result.summary}
+          serverSummary={result.source === 'server'}
+          ceilingBefore={view.ceilingBefore}
+          styleLabel={runnerStyle ? t(`style.${runnerStyle}.name`) : ''}
           t={t}
           onHome={() => router.dismissTo(HOME)}
-          onPlayAgain={() => router.dismissTo(SETUP)}
+          onPlayAgain={() => void playAgain()}
+          playAgainLoading={againLoading}
         />
       </View>
     );
@@ -85,7 +115,7 @@ export function RunnerScreen({ sessionId }: { sessionId: string }) {
 
   return (
     <View style={[styles.root, { paddingTop: Math.max(layout.runnerPadding, insets.top), paddingBottom: Math.max(layout.runnerPadding, insets.bottom) }]}>
-      <StatusBar hidden />
+      <FocusStatusBar />
       <View style={styles.topSlot}>
         <View style={styles.topRow}>
           <GlassButton testID="runner-exit" label={t('play.exit')} onPress={() => controller.dispatch({ type: 'requestExit' })}>
@@ -113,6 +143,7 @@ export function RunnerScreen({ sessionId }: { sessionId: string }) {
           pieceSet={pieceSet}
           t={t}
         />
+        <ProgressSlot s={s} prog={storeProg} t={t} />
       </View>
 
       <View style={styles.boardSlot}>
@@ -145,6 +176,7 @@ export function RunnerScreen({ sessionId }: { sessionId: string }) {
 
       {s.paused && (
         <PauseOverlay
+          restored={view.restored}
           remainingMs={controller.remainingMs()}
           onResume={() => controller.dispatch({ type: 'resume', source: 'user' })}
           t={t}
@@ -172,6 +204,24 @@ export function RunnerScreen({ sessionId }: { sessionId: string }) {
     </View>
   );
 }
+
+/**
+ * web progress slot under the TurnCard: calibration bar while the style
+ * calibrates (rated sessions), else the live level-up bar for a session
+ * started inside the peak band, else nothing.
+ */
+function ProgressSlot({ s, prog, t }: { s: RunnerScreenState; prog: Progression | null; t: ReturnType<typeof usePlayT> }) {
+  if (!prog || !s.style || s.phase === 'booting' || s.sessionMode === 'theme') return null;
+  const calibrating = prog.calibrationSessionsLeft > 0;
+  if (calibrating) {
+    return <CalibrationProgressBar done={CALIBRATION_SESSIONS - prog.calibrationSessionsLeft} total={CALIBRATION_SESSIONS} style={s.style} t={t} />;
+  }
+  if (!eligibleForUnlock(s.sessionMode, calibrating, s.sessionStartRating, prog.unlockedStartRating)) return null;
+  const progress = unlockProgressOf(s);
+  return progress ? <UnlockProgressBar progress={progress} unlockedTo={prog.unlockedStartRating} t={t} /> : null;
+}
+
+type RunnerScreenState = ReturnType<typeof usePuzzleRunner>['view']['state'];
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },

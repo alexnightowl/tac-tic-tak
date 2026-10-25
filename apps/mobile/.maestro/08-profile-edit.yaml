@@ -1,0 +1,44 @@
+# Phase 8: profile editor sheet — explicit Save (no commit on blur), live
+# counters, country validation; the saved bio shows on the profile. Then the
+# deep link tactictak://profile/<other> opens a public profile with the
+# friend action.
+#   maestro test -e E2E_USER=e2e_friend_a -e E2E_PASSWORD=… .maestro/08-profile-edit.yaml
+appId: online.tactictak.app
+env:
+  OTHER: e2e_slice
+---
+- runFlow: 07-sub-login.yaml
+- tapOn: { id: header-avatar }
+- extendedWaitUntil:
+    visible: { id: account-menu }
+    timeout: 5000
+- tapOn: { id: menu-profile }
+- extendedWaitUntil:
+    visible: { id: profile-hero }
+    timeout: 10000
+- tapOn: { id: profile-edit }
+- extendedWaitUntil:
+    visible: { id: profile-editor }
+    timeout: 5000
+# A fresh bio each run, so the form is dirty (Save enabled) on reruns.
+- evalScript: ${output.bio = 'Maestro bio ' + (10000 + Date.now() % 90000)}
+- tapOn: { id: profile-editor-bio }
+- eraseText: 300
+- inputText: ${output.bio}
+- assertVisible: "17/280"
+- tapOn: { id: profile-editor-country }
+- eraseText: 3
+- inputText: "1"
+- inputText: "ua"
+# The digit was stripped: the field holds exactly the upper-cased code.
+- assertVisible: { id: profile-editor-country, text: "UA" }
+- tapOn: { id: profile-editor-save }
+- extendedWaitUntil:
+    notVisible: { id: profile-editor }
+    timeout: 10000
+- extendedWaitUntil:
+    visible: { id: profile-bio, text: "${output.bio}" }
+    timeout: 10000
+- runFlow:
+    file: 08-profile-deeplink.yaml
+    env: { PROFILE: "${OTHER}" }

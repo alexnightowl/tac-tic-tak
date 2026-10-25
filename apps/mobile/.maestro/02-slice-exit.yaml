@@ -24,6 +24,8 @@ appId: online.tactictak.app
       - tapOn: { id: login-nickname }
       - eraseText: 40
       - inputText: ${E2E_USER}
+      # Reveal first: secure fields drop characters under a non-Latin keyboard.
+      - tapOn: { id: login-password-eye }
       - tapOn: { id: login-password }
       - eraseText: 40
       - inputText: ${E2E_PASSWORD}
@@ -49,7 +51,17 @@ appId: online.tactictak.app
     visible: { id: play-setup }
     timeout: 10000
 - tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+# Phase 5: a calibrated style shows the slider above, pushing the presets
+# under the Start dock: bring them up first.
+- scrollUntilVisible: { element: { id: setup-duration-60 }, direction: DOWN, centerElement: true, timeout: 5000 }
 - tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+# Phase 4: setup is the Play tab (header + tab bar), so Start sits below
+# the fold, under the tab bar, where Maestro still counts it as on screen:
+# scroll the setup to its end first.
+- swipe:
+    start: "50%, 70%"
+    end: "50%, 25%"
+    duration: 400
 - tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
 - extendedWaitUntil:
     visible: { id: runner-phase, text: playerTurn }
@@ -91,7 +103,17 @@ appId: online.tactictak.app
     when:
       platform: Android
     commands:
+      # Phase 5: a calibrated style shows the slider above, pushing the presets
+      # under the Start dock: bring them up first.
+      - scrollUntilVisible: { element: { id: setup-duration-120 }, direction: DOWN, centerElement: true, timeout: 5000 }
       - tapOn: { id: setup-duration-120, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+# Phase 4: setup is the Play tab (header + tab bar), so Start sits below
+# the fold, under the tab bar, where Maestro still counts it as on screen:
+# scroll the setup to its end first.
+- swipe:
+    start: "50%, 70%"
+    end: "50%, 25%"
+    duration: 400
 - tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
 - extendedWaitUntil:
     visible: { id: runner-phase, text: playerTurn }

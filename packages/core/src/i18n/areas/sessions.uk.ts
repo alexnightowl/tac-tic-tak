@@ -1,0 +1,35 @@
+// sessions area, uk. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const sessionsUk: Dict = {
+  'sessions.title': 'Історія',
+  'sessions.detail_title': 'Сесія',
+  'sessions.mixed': 'Змішана',
+  'sessions.minutes': '{n} хв',
+  'sessions.start': 'Старт',
+  'sessions.peak': 'Пік',
+  'sessions.accuracy': 'Точність',
+  'sessions.avg_response': 'Сер. відповідь',
+  'sessions.solved': 'Розвʼязано',
+  'sessions.failed': 'Помилки',
+  'sessions.attempts': 'Спроби',
+  'sessions.no_attempts': 'Немає спроб',
+  'sessions.attempt_correct': 'розвʼязано',
+  'sessions.attempt_wrong': 'помилка',
+  'sessions.attempt_a11y': 'Задача {n}, {result}, рейтинг {rating}, {time}',
+  'sessions.not_found': 'Сесію не знайдено',
+  'sessions.error': 'Не вдалося завантажити сесію.',
+  'sessions.retry': 'Спробувати ще',
+  'sessions.row_solved': 'розвʼязано',
+  'sessions.row_a11y': '{time}, розвʼязано {solved}, рейтинг від {start} до {peak}',
+  'sessions.delete': 'Видалити',
+  'sessions.delete_a11y': 'Видалити сесію',
+  'sessions.deleted': 'Сесію видалено',
+  'sessions.undo': 'Скасувати',
+  'sessions.delete_failed': 'Не вдалося видалити сесію.',
+  'sessions.empty': 'Ще немає сесій. Почніть першу!',
+  'sessions.empty_cta': 'Почати сесію',
+  'sessions.recent_note': 'Ваші останні {n} сесій',
+  'sessions.list_error': 'Не вдалося завантажити сесії.',
+};

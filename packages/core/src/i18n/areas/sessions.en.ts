@@ -1,0 +1,35 @@
+// sessions area, en. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const sessionsEn: Dict = {
+  'sessions.title': 'History',
+  'sessions.detail_title': 'Session',
+  'sessions.mixed': 'Mixed',
+  'sessions.minutes': '{n} min',
+  'sessions.start': 'Start',
+  'sessions.peak': 'Peak',
+  'sessions.accuracy': 'Accuracy',
+  'sessions.avg_response': 'Avg response',
+  'sessions.solved': 'Solved',
+  'sessions.failed': 'Failed',
+  'sessions.attempts': 'Attempts',
+  'sessions.no_attempts': 'No attempts',
+  'sessions.attempt_correct': 'solved',
+  'sessions.attempt_wrong': 'missed',
+  'sessions.attempt_a11y': 'Puzzle {n}, {result}, rating {rating}, {time}',
+  'sessions.not_found': 'Session not found',
+  'sessions.error': 'Couldn’t load this session.',
+  'sessions.retry': 'Try again',
+  'sessions.row_solved': 'solved',
+  'sessions.row_a11y': '{time}, {solved} solved, rating {start} to {peak}',
+  'sessions.delete': 'Delete',
+  'sessions.delete_a11y': 'Delete session',
+  'sessions.deleted': 'Session deleted',
+  'sessions.undo': 'Undo',
+  'sessions.delete_failed': 'Couldn’t delete the session.',
+  'sessions.empty': 'No sessions yet. Start your first!',
+  'sessions.empty_cta': 'Start a session',
+  'sessions.recent_note': 'Your latest {n} sessions',
+  'sessions.list_error': 'Couldn’t load your sessions.',
+};

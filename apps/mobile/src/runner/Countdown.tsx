@@ -58,6 +58,7 @@ export function Countdown({ controller, accessibilityLabel }: { controller: Runn
         feel.emit('timerTick');
       }
       const ms = controller.remainingMs(now);
+      controller.persistTick();
       if (ms <= 0) {
         controller.dispatch({ type: 'tick' });
         return;

@@ -105,6 +105,28 @@ Deliberate improvement over the web, unified across all runner modes.
 Client resizes to 512 px JPEG q0.8 (about 100 KB base64, under the 6 MB JSON limit) and posts
 `POST /users/me/avatar {dataUrl}` unchanged. Multipart + sharp is in IDEAS.md.
 
+### D16. Focus mode = status bar on the focus routes: PROVISIONAL (Q38, 2026-10-25)
+The web's `focusMode` requested browser fullscreen. On mobile it now hides the status bar on the
+runner, the drill and the mistakes review (`src/shell/FocusStatusBar.tsx`); off, the status bar
+shows there like everywhere else. Keep-awake is not tied to it: every running session keeps the
+screen on. The Android immersive navigation bar needs `expo-navigation-bar` (not installed).
+
+### D17. Labels for every dataset theme slug: FINAL (2026-10-25)
+The web labels 61 slugs; the Lichess dataset in the DB has 12 more (`discoveredCheck`,
+`clearance`, `operaMate`, …) that the web shows as an untranslated camelCase fallback. Core
+`themeLabel` now has en + uk labels for them in separate `*_EXTRA` maps, so the theme picker
+(`KNOWN_THEME_SLUGS`) still offers exactly the web's 47.
+
+### D18. Stats theme row with nothing to review → Play in theme mode: PROVISIONAL (Q36)
+`/play?mode=theme&at=<stamp>`: the setup opens in theme mode with that theme picked, once per
+request (state adjusted during render). Starting the session stays a deliberate tap.
+
+### D19. Onboarding gate on for all signed-in accounts: FINAL (2026-10-25)
+`<SettingsEffects />` (onboarding gate, reminder re-plan, account sound → engine mirror) is
+mounted in `(app)/_layout.tsx`. Local e2e accounts have `onboardingCompleted = true`; flows that
+create a fresh account (`02-register`, `09-onboarding`, `10-walkthrough`) go through the slides,
+and `common/open-dev`, `05-login`, `09-login` close or accept them.
+
 ---
 
 ## Provisional defaults (PLAN.md §8)

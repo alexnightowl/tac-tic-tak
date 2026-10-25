@@ -35,12 +35,12 @@ appId: online.tactictak.app
     element: { id: ks-password }
     direction: DOWN
     centerElement: true
+# Reveal first: secure fields drop characters under a non-Latin keyboard.
+- tapOn: { id: ks-password-eye }
 - tapOn: { id: ks-password }
 - inputText: "hunter22"
-# Tap static text to dismiss the keyboard (hideKeyboard has no target here;
-# with the keyboard up the ScrollView would swallow the eye tap).
+# Tap static text to dismiss the keyboard (hideKeyboard has no target here).
 - tapOn: { id: ks-input-error-error }
-- tapOn: { id: ks-password-eye }
 - assertVisible: { id: ks-password, text: "hunter22" }
 - assertVisible: { label: "Hide password" }
 - takeScreenshot: ui-kitchen-sink-en-3
@@ -61,6 +61,8 @@ appId: online.tactictak.app
     centerElement: true
 - takeScreenshot: ui-kitchen-sink-uk-3
 - tapOn: { text: "Dev", index: 0 }
+# Leaving a typed password field makes iOS offer to save it.
+- tapOn: { text: "Not Now", optional: true }
 
 # --- typography -----------------------------------------------------------
 - tapOn: { id: dev-typography }

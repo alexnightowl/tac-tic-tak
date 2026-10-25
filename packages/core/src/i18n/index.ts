@@ -9,6 +9,7 @@ import type { Dict, Language, PluralForm } from './types';
 
 export type { Dict, Language, PluralForm } from './types';
 export { en, uk, landingEn, landingUk };
+export { AREAS, AREA_DICTS, mergeAreas, type Area } from './areas';
 
 export const LANGUAGES: readonly Language[] = ['en', 'uk'];
 

@@ -1,0 +1,14 @@
+# Phase 9 helper: from any tab, open Settings through the header avatar's
+# account sheet. Retries the avatar tap: right after login or a bundle
+# reload the first tap can land before the header is interactive.
+appId: online.tactictak.app
+---
+- repeat:
+    times: 4
+    while:
+      notVisible: { id: account-menu }
+    commands:
+      - tapOn: { id: header-avatar, retryTapIfNoChange: false }
+      - extendedWaitUntil: { visible: { id: account-menu }, timeout: 3000, optional: true }
+- tapOn: { id: menu-settings }
+- extendedWaitUntil: { visible: { id: screen-settings }, timeout: 10000 }

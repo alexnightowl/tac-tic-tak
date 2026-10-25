@@ -1,0 +1,48 @@
+// home area, uk. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const homeUk: Dict = {
+  'dashboard.welcome': 'З поверненням',
+  'dashboard.ready': 'Готові до тренування?',
+  'dashboard.start': 'Почати сесію',
+  'dashboard.current_rating': 'Поточний рейтинг',
+  'dashboard.unlocked_start': 'Норма',
+  'dashboard.peak': 'Піковий рейтинг',
+  'dashboard.sessions': 'Сесій',
+  'dashboard.recent': 'Останні сесії',
+  'dashboard.empty': 'Ще немає сесій. Почніть першу!',
+  'streak.secured': 'Закріплено сьогодні',
+  'streak.at_risk': 'Зіграй сьогодні, щоб не загубити',
+
+  // Phase 5 mobile-only copy: quick start, resume card, recent list, streak sheet.
+  'home.quick_start': 'Швидкий старт',
+  'home.quick_start_aria': 'Швидкий старт: {setup}',
+  'home.resume_title': 'Незавершена сесія',
+  'home.resume_hint': 'Залишилось {time} · розв’язано {solved} · помилок {failed}',
+  'home.resume': 'Продовжити',
+  'home.finish': 'Завершити',
+  'home.discard': 'Відкинути',
+  'home.discard_title': 'Відкинути цю сесію?',
+  'home.discard_body': 'Спроби буде видалено, а рейтинг повернеться до стартового.',
+  'home.discard_failed': 'Не вдалося відкинути сесію. Спробуйте ще раз.',
+  'home.all_sessions': 'Усі сесії',
+  'home.solved': 'розв’язано',
+  'home.error': 'Не вдалося завантажити сесії.',
+  'home.retry': 'Спробувати ще',
+  'home.rating_delta_aria': '{delta} з останнього візиту',
+  'home.open_streak': 'Деталі щоденної серії',
+  'streak.title': 'Щоденна серія',
+  'streak.state_secured': 'Сьогоднішній день зараховано. Повертайтеся завтра, щоб продовжити серію.',
+  'streak.state_at_risk': 'Ви грали вчора — завершіть сесію сьогодні, щоб не втратити серію.',
+  'streak.state_broken': 'Серія перервалася. Наступна сесія почне нову.',
+  'streak.state_none': 'Серії ще немає. Завершіть сесію сьогодні, щоб її почати.',
+  'streak.freeze_ready': 'Заморозка готова: автоматично покриє один пропущений день.',
+  'streak.freeze_used': 'Заморозку використано. Вона повернеться {date}.',
+  'streak.rules': 'Зараховується будь-яка збережена сесія — рейтингова, тематична чи завершена достроково. Дні рахуються за календарем телефона.',
+  'streak.outcome_started': 'Серію розпочато',
+  'streak.outcome_continued': 'Серію продовжено',
+  'streak.outcome_frozen': 'Заморозка зберегла серію',
+  'streak.outcome_frozen_hint': 'Ви пропустили день, тож спрацювала заморозка. Вона повернеться через 7 днів.',
+  'streak.outcome_reset': 'Почато нову серію',
+};

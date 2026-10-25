@@ -44,3 +44,13 @@ export function fontFamily(
   }
   return fontFamilies.sans[weight];
 }
+
+const CYRILLIC = /[Ѐ-ӿ]/;
+
+/**
+ * The face a user-typed name is set in: by its glyphs, not the UI language
+ * (a Latin nickname keeps Cinzel in uk; a Cyrillic one needs the uk face).
+ */
+export function scriptLang(text: string): Language {
+  return CYRILLIC.test(text) ? 'uk' : 'en';
+}

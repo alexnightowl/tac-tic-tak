@@ -1,41 +1,14 @@
 import { isApiError } from '@tac/core/api';
-import type { Language } from '@tac/core/i18n';
 
-import { useLang } from '@/ui';
+import { useT, type TFn } from '@/ui/lang';
 
-/**
- * Auth/Home copy @tac/core/i18n lacks. packages/core/i18n has no owner this
- * phase, so these live here until they move into en.ts / uk.ts (reported).
- * Lookup: this table → core dict → key.
- */
-const LOCAL: Record<Language, Record<string, string>> = {
-  en: {
-    'brand.name': 'tac·tic·tak',
-    'auth.err_invalid': 'Wrong nickname or password',
-    'auth.err_required': 'Enter your nickname and password',
-    'auth.err_network': 'Can’t reach the server. Check your connection.',
-    'auth.err_timeout': 'The server is taking too long. Try again.',
-    'auth.err_generic': 'Something went wrong. Try again.',
-    'dev.open': 'Dev menu',
-    'auth.err_taken': 'That nickname is already taken',
-  },
-  uk: {
-    'brand.name': 'tac·tic·tak',
-    'auth.err_invalid': 'Невірний нікнейм або пароль',
-    'auth.err_required': 'Введіть нікнейм і пароль',
-    'auth.err_network': 'Немає зв’язку із сервером. Перевірте мережу.',
-    'auth.err_timeout': 'Сервер відповідає надто довго. Спробуйте ще раз.',
-    'auth.err_generic': 'Щось пішло не так. Спробуйте ще раз.',
-    'dev.open': 'Меню розробника',
-    'auth.err_taken': 'Цей нікнейм уже зайнятий',
-  },
-};
+// The Phase 2 local table moved into @tac/core/i18n (areas/auth + common);
+// useAuthT is plain useT, kept so existing call sites stay unchanged.
 
-export type AuthT = (key: string, vars?: Record<string, string | number>) => string;
+export type AuthT = TFn;
 
 export function useAuthT(): AuthT {
-  const { lang, tr } = useLang();
-  return (key, vars) => LOCAL[lang][key] ?? LOCAL.en[key] ?? tr.t(key, vars);
+  return useT();
 }
 
 /**

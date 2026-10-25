@@ -1,0 +1,58 @@
+# Phase 4/9 onboarding for a fresh account: a new user (registered over
+# HTTP, so the iOS strong-password sheet never gets involved) logs in and
+# meets the 5 welcome slides (gate: settings.onboardingCompleted). Next,
+# Back and a swipe move the pager; "Let's go" lands on the Play tab, the
+# server has onboardingCompleted = true, and a relaunch doesn't show the
+# slides again. The gate (SettingsEffects in the (app) layout) opens them.
+# Local backend only. Throwaway users are named e2e_onb_*; clean up with:
+#   delete from "User" where nickname like 'e2e_onb_%';
+#   maestro test -e E2E_PASSWORD=… .maestro/09-onboarding.yaml
+appId: online.tactictak.app
+---
+- evalScript: >-
+    ${output.nick = 'e2e_onb_' + Date.now().toString(36); output.reg = http.post('http://localhost:4000/api/auth/register', {headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nickname: output.nick, password: E2E_PASSWORD, repeatPassword: E2E_PASSWORD})}); output.token = json(output.reg.body).token}
+- assertTrue:
+    condition: ${output.reg.status == 201}
+    label: "fresh account registered"
+- runFlow:
+    file: 09-login.yaml
+    env:
+      E2E_USER: ${output.nick}
+
+# The gate opens the slides by itself, no navigation needed.
+- extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 15000 }
+
+- assertVisible: { id: onboarding-step, text: "Step 1 of 5" }
+- assertVisible: { id: onboarding-title, text: "Welcome to tac·tic·tak" }
+- assertNotVisible: { id: onboarding-back }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 2 of 5" }, timeout: 3000 }
+- tapOn: { id: onboarding-back }
+- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 1 of 5" }, timeout: 3000 }
+# Swipe the pager like a native carousel.
+- swipe: { start: "85%, 45%", end: "15%, 45%", duration: 300 }
+- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 2 of 5" }, timeout: 3000 }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 3 of 5" }, timeout: 3000 }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 4 of 5" }, timeout: 3000 }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 5 of 5" }, timeout: 3000 }
+- assertNotVisible: { id: onboarding-next }
+- tapOn: { id: onboarding-done }
+- extendedWaitUntil: { visible: { id: play-setup }, timeout: 8000 }
+- assertNotVisible: { id: screen-onboarding }
+
+- extendedWaitUntil: { visible: { id: never-there }, timeout: 1500, optional: true }
+- evalScript: >-
+    ${output.done = json(http.get('http://localhost:4000/api/users/me', {headers: {Authorization: 'Bearer ' + output.token}}).body).settings.onboardingCompleted}
+- assertTrue:
+    condition: ${output.done === true}
+    label: "server: onboardingCompleted = true"
+
+# A relaunch does not bring the slides back.
+- launchApp:
+    stopApp: true
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 30000 }
+- extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 4000, optional: true }
+- assertNotVisible: { id: screen-onboarding }

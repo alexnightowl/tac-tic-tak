@@ -1,0 +1,30 @@
+# Phase 7: a Stats themes-list row starts a drill of that theme
+# (review/[puzzleId]?theme=). Seeds missed fork puzzles first (06-seed.js),
+# so the theme has queued review items.
+# Local backend only:
+#   maestro test -e E2E_USER=e2e_slice -e E2E_PASSWORD=… .maestro/07-theme-drill.yaml
+appId: online.tactictak.app
+---
+- runScript:
+    file: 06-seed.js
+    env: { SEED: drill, THEME: fork }
+- runFlow: 07-sub-login.yaml
+- tapOn: { id: tab-stats }
+- extendedWaitUntil:
+    visible: { id: stats-heatmap }
+    timeout: 15000
+- scrollUntilVisible:
+    element: { id: stats-themes-tab }
+    direction: DOWN
+- tapOn: { id: stats-themes-tab-all }
+- scrollUntilVisible:
+    element: { id: theme-row-fork }
+    direction: DOWN
+- tapOn: { id: theme-row-fork }
+- extendedWaitUntil:
+    visible: { id: screen-drill }
+    timeout: 10000
+- tapOn: { id: screen-drill-close }
+- extendedWaitUntil:
+    visible: { id: screen-stats }
+    timeout: 8000

@@ -72,6 +72,24 @@ const EN: Record<string, string> = {
   zugzwang: "Zugzwang",
 };
 
+// Slugs in the Lichess dataset that the web's label map lacks (it shows the
+// camelCase fallback, untranslated). Labels only: kept out of EN so the
+// theme picker (KNOWN_THEME_SLUGS) still offers exactly the web's 47.
+const EN_EXTRA: Record<string, string> = {
+  balestraMate: "Balestra mate",
+  blindSwineMate: "Blind swine mate",
+  clearance: "Clearance",
+  collinearMove: "Collinear move",
+  cornerMate: "Corner mate",
+  discoveredCheck: "Discovered check",
+  epauletteMate: "Epaulette mate",
+  morphysMate: "Morphy’s mate",
+  operaMate: "Opera mate",
+  pillsburysMate: "Pillsbury’s mate",
+  swallowstailMate: "Swallow’s tail mate",
+  triangleMate: "Triangle mate",
+};
+
 const UK: Record<string, string> = {
   advancedPawn: "Просунутий пішак",
   advantage: "Перевага",
@@ -136,6 +154,21 @@ const UK: Record<string, string> = {
   zugzwang: "Цугцванг",
 };
 
+const UK_EXTRA: Record<string, string> = {
+  balestraMate: "Мат Балестри",
+  blindSwineMate: "Мат «сліпі свині»",
+  clearance: "Звільнення",
+  collinearMove: "Колінеарний хід",
+  cornerMate: "Кутовий мат",
+  discoveredCheck: "Відкритий шах",
+  epauletteMate: "Еполетний мат",
+  morphysMate: "Мат Морфі",
+  operaMate: "Оперний мат",
+  pillsburysMate: "Мат Пілсбері",
+  swallowstailMate: "Мат «хвіст ластівки»",
+  triangleMate: "Трикутний мат",
+};
+
 /**
  * "Meta" themes — tagged on every Lichess puzzle but not actually
  * describing a tactic. Hide them from the analytics radar, the theme
@@ -173,6 +206,8 @@ export function themeLabel(slug: string, lang: "en" | "uk" = "en") {
   const dict = lang === "uk" ? UK : EN;
   if (dict[slug]) return dict[slug];
   if (EN[slug]) return EN[slug];
+  const extra = lang === "uk" ? UK_EXTRA : EN_EXTRA;
+  if (extra[slug]) return extra[slug];
   // Fallback: camelCase → spaced + capitalised.
   const spaced = slug
     .replace(/([A-Z])/g, " $1")
