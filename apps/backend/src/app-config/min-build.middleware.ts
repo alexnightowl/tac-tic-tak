@@ -16,7 +16,9 @@ export function minBuildGate(config: AppConfig) {
   return (req: Request, res: Response, next: NextFunction) => {
     const buildHeader = req.headers['x-app-build'];
     if (buildHeader === undefined || req.method === 'OPTIONS') return next();
-    const url = req.originalUrl ?? req.url;
+    // Express routing is case-insensitive (/api/App-Config reaches the
+    // controller), so the exemption check must be too.
+    const url = (req.originalUrl ?? req.url).toLowerCase();
     if (!url.startsWith('/api/') || EXEMPT.test(url)) return next();
 
     const platform = parsePlatform(asString(req.headers['x-platform']));

@@ -101,6 +101,12 @@ describe('minBuildGate', () => {
     }
     expect(run('/api/users/me', h, 'OPTIONS').next).toHaveBeenCalled();
   });
+  it('matches paths case-insensitively, like Express routing', () => {
+    const h = { 'x-app-build': '1', 'x-platform': 'ios' };
+    expect(run('/api/v1/App-Config', h).next).toHaveBeenCalled();
+    expect(run('/API/Health', h).next).toHaveBeenCalled();
+    expect(run('/API/users/me', h).next).not.toHaveBeenCalled();
+  });
   it('does not exempt look-alike paths', () => {
     const h = { 'x-app-build': '1', 'x-platform': 'ios' };
     expect(run('/api/healthz', h).next).not.toHaveBeenCalled();
