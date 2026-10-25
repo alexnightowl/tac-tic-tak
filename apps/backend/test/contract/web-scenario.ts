@@ -144,7 +144,7 @@ export async function runWebScenario(
   await call('avatar: upload png', 'POST', '/users/me/avatar', '/users/me/avatar', tA, { dataUrl: TINY_PNG });
   await call('avatar: bad format', 'POST', '/users/me/avatar', '/users/me/avatar', tA, { dataUrl: 'data:image/gif;base64,R0lG' });
 
-  // change-password (settings/page.tsx). 401 on a wrong current password is today's (buggy) behaviour; B5 changes it deliberately.
+  // change-password (settings/page.tsx). B5: a wrong current password is 403 (was 401, which logged the web user out).
   await call('change-password: wrong current', 'POST', '/auth/change-password', '/auth/change-password', tA, {
     currentPassword: 'wrong-pass1', newPassword: pw2,
   });

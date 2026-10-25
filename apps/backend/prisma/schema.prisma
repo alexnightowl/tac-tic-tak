@@ -45,6 +45,12 @@ model User {
   // GitHub OAuth set up.
   starredRepo           Boolean @default(false)
 
+  // Access-token version (B4). Mobile access tokens carry it as the
+  // `tv` claim; a token whose tv is below this value is rejected
+  // (JwtStrategy, 60 s Redis cache). A token without tv counts as 0.
+  // Bumped only by POST /auth/logout-all while the web is alive.
+  tokenVersion          Int     @default(0)
+
   achievements          UserAchievement[]
 
   settings       UserSetting?
@@ -56,6 +62,7 @@ model User {
   reviewItems    ReviewItem[]
   sentFriendRequests     Friendship[] @relation("FriendshipRequester")
   receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
+  refreshTokens  RefreshToken[]
 }
 
 model UserSetting {
@@ -245,4 +252,31 @@ model ReviewItem {
 
   @@unique([userId, puzzleId])
   @@index([userId, resolvedAt])
+}
+
+// Mobile refresh tokens (B4). Only clients that log in with
+// client:'mobile' get one; the web keeps its 7-day access token.
+// The token itself is an opaque 256-bit random string returned once;
+// only its SHA-256 hex digest is stored. Every refresh rotates it
+// (old row revoked, replacedById -> new row, same familyId). Presenting
+// a revoked token again is treated as theft and revokes the family.
+model RefreshToken {
+  id           String    @id @default(cuid())
+  userId       String
+  familyId     String
+  tokenHash    String    @unique
+  deviceId     String?
+  platform     String?
+  createdAt    DateTime  @default(now())
+  lastUsedAt   DateTime  @default(now())
+  // Sliding: each rotation issues a successor that expires
+  // REFRESH_TOKEN_TTL_DAYS (default 90) after the rotation.
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  replacedById String?
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
 }

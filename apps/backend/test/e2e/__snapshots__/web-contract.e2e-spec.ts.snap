@@ -359,7 +359,7 @@ exports[`web contract (golden) replays every web request with the frozen status 
       "message": "string",
       "statusCode": "number",
     },
-    "status": 401,
+    "status": 403,
     "step": "change-password: wrong current",
   },
   {

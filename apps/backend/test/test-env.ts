@@ -43,4 +43,7 @@ export function applyTestEnv() {
   // The golden test asserts the code/compose default (7d); an inherited
   // shell value must not mask a regression of that default.
   delete process.env.JWT_EXPIRES_IN;
+  // Same for the B4 mobile token lifetimes (code defaults 30m / 90 d).
+  delete process.env.ACCESS_TOKEN_TTL;
+  delete process.env.REFRESH_TOKEN_TTL_DAYS;
 }

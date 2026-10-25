@@ -14,7 +14,7 @@ pnpm --filter backend typecheck:test         # type pass over test/ + tools/cont
 |---|---|---|
 | Postgres | `postgresql://taktic:taktic@localhost:5433/taktic_test` | `TEST_DATABASE_URL` |
 | Redis | `redis://localhost:6380/1` | `TEST_REDIS_URL` |
-| JWT | fixed test secret, `JWT_EXPIRES_IN` unset (code default 7d) | |
+| JWT | fixed test secret, `JWT_EXPIRES_IN`, `ACCESS_TOKEN_TTL`, `REFRESH_TOKEN_TTL_DAYS` unset (code defaults 7d / 30m / 90) | |
 
 `test/test-env.ts` refuses a non-local host, a DB name not ending in `_test`, or Redis index 0.
 The DB must exist (`createdb -h localhost -p 5433 -U taktic taktic_test`); `globalSetup` runs
@@ -41,6 +41,11 @@ then the puzzle fixture is re-inserted. Files run `--runInBand`.
 | `unit/rules.golden.spec.ts` | rating step, session stats, solvedTarget, unlock, demote, calibration, streak on recorded inputs |
 | `e2e/web-contract.e2e-spec.ts` | status code, response shape and error message of 117 web requests; login keys and the 7-day JWT |
 | `e2e/rating-transcript.e2e-spec.ts` | per-attempt rating sequence and finish outcomes of scripted sessions |
+
+Behaviour specs (no snapshots): `e2e/auth-refresh.e2e-spec.ts` covers B4/B5 (web login unchanged,
+mobile login + refresh rotation, family revocation on reuse, logout, logout-all / `tv`,
+change-password 403 and family revocation); `unit/auth-config.spec.ts` the TTL env parsing and the
+`tv` cache's Redis fallback.
 
 Scripts run jest with `--ci`, so a missing snapshot fails instead of being written. A snapshot
 diff means the web would see something different. Update with
