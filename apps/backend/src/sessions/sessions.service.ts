@@ -1,7 +1,16 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { Prisma, TrainingAttempt, TrainingSession } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
 import { AttemptDto, CreateSessionDto } from './dto';
+import { IdempotencyService } from './idempotency.service';
+import { localDayInZone, normalizeTimeZone } from './timezone';
 import { computeRatingStep, deriveSessionStats } from './rating';
 import {
   evaluateUnlock,
@@ -19,6 +28,11 @@ const WINDOW = 4;
 const MIN_RATING = 400;
 const MAX_RATING = 3000;
 
+/** A replayed clientAttemptId returns the first response for this long. */
+export const ATTEMPT_REPLAY_TTL_S = 24 * 60 * 60;
+/** A replayed /next requestId returns the same puzzle for this long. */
+export const NEXT_REPLAY_TTL_S = 5 * 60;
+
 @Injectable()
 export class SessionsService {
   private readonly log = new Logger(SessionsService.name);
@@ -27,6 +41,7 @@ export class SessionsService {
     private readonly prisma: PrismaService,
     private readonly buffer: PuzzleBufferService,
     private readonly achievements: AchievementsService,
+    private readonly idem: IdempotencyService,
   ) {}
 
   async create(userId: string, dto: CreateSessionDto) {
@@ -87,6 +102,7 @@ export class SessionsService {
         userId,
         rating: servingRating,
         theme: dto.theme ?? null,
+        ttlSec: PuzzleBufferService.sessionKeyTtlSec(session.durationSec),
       });
     } catch (e: unknown) {
       this.log.error(`initial preload failed: ${e instanceof Error ? e.message : String(e)}`);
@@ -122,10 +138,29 @@ export class SessionsService {
             },
           }
         : null,
+      // Mobile only: the server clock, so the client can compute its
+      // offset from startedAt without trusting the device clock.
+      ...(dto.client === 'mobile' ? { serverNow: new Date() } : {}),
     };
   }
 
-  async next(userId: string, sessionId: string) {
+  /**
+   * POST /sessions/:id/next. Without `requestId` (the web) this is the
+   * original destructive pop. With one, the first response is cached for
+   * NEXT_REPLAY_TTL_S and a retry gets the very same puzzle back.
+   */
+  async next(userId: string, sessionId: string, opts: { requestId?: string; mobile?: boolean } = {}) {
+    if (!opts.requestId) return this.serveNext(userId, sessionId, opts.mobile === true);
+    const session = await this.ownedSession(userId, sessionId);
+    if (session.endedAt) throw new BadRequestException('session ended');
+    return this.idem.run(
+      `session:${sessionId}:next:${opts.requestId}`,
+      NEXT_REPLAY_TTL_S,
+      () => this.serveNext(userId, sessionId, opts.mobile === true),
+    );
+  }
+
+  private async serveNext(userId: string, sessionId: string, mobile: boolean) {
     const session = await this.ownedSession(userId, sessionId);
     if (session.endedAt) throw new BadRequestException('session ended');
 
@@ -156,6 +191,7 @@ export class SessionsService {
       userId,
       rating: servingRating,
       theme: session.theme,
+      ttlSec: PuzzleBufferService.sessionKeyTtlSec(session.durationSec),
     });
     if (!puzzle) throw new NotFoundException('no puzzles available');
 
@@ -169,11 +205,92 @@ export class SessionsService {
         style,
         mode: session.mode,
       },
+      ...(mobile ? { serverNow: new Date() } : {}),
     };
   }
 
+  /**
+   * POST /sessions/:id/attempt.
+   *
+   * Without `clientAttemptId` (the web) this is the original path,
+   * unchanged. With one, the attempt is recorded and the rating stepped
+   * at most once: the first response body is cached for 24 h and every
+   * replay (concurrent or later) gets it back verbatim, `next` included.
+   * The unique TrainingAttempt.clientAttemptId column backs this up if
+   * the cache is lost.
+   */
   async attempt(userId: string, sessionId: string, dto: AttemptDto) {
     const session = await this.ownedSession(userId, sessionId);
+    if (!dto.clientAttemptId) return this.attemptAndMaybeNext(userId, session, dto);
+
+    const clientAttemptId = dto.clientAttemptId;
+    return this.idem.run(`session:${sessionId}:attempt:${clientAttemptId}`, ATTEMPT_REPLAY_TTL_S, async () => {
+      const existing = await this.prisma.trainingAttempt.findUnique({ where: { clientAttemptId } });
+      if (existing) return this.replayRecordedAttempt(userId, session, existing, dto);
+      // Re-read: the session may have been finished while we waited for the lock.
+      const fresh = await this.ownedSession(userId, sessionId);
+      try {
+        return await this.attemptAndMaybeNext(userId, fresh, dto);
+      } catch (e) {
+        if (!isUniqueViolation(e)) throw e;
+        const raced = await this.prisma.trainingAttempt.findUnique({ where: { clientAttemptId } });
+        if (!raced) throw e;
+        return this.replayRecordedAttempt(userId, session, raced, dto);
+      }
+    });
+  }
+
+  private async attemptAndMaybeNext(userId: string, session: TrainingSession, dto: AttemptDto) {
+    const result = await this.recordAttempt(userId, session, dto);
+    if (!dto.includeNext) return result;
+    return { ...result, next: await this.nextOrNull(userId, session.id, dto.client === 'mobile') };
+  }
+
+  /** The embedded `next` of an includeNext attempt: null when nothing can be served. */
+  private async nextOrNull(userId: string, sessionId: string, mobile: boolean) {
+    try {
+      return await this.serveNext(userId, sessionId, mobile);
+    } catch (e) {
+      if (e instanceof NotFoundException || e instanceof BadRequestException) return null;
+      throw e;
+    }
+  }
+
+  /**
+   * A clientAttemptId whose row exists but whose cached body is gone
+   * (older than 24 h, or Redis lost it). Nothing is recorded or stepped
+   * again; the body is rebuilt from current state with step 0.
+   */
+  private async replayRecordedAttempt(
+    userId: string,
+    session: TrainingSession,
+    existing: TrainingAttempt,
+    dto: AttemptDto,
+  ) {
+    if (existing.sessionId !== session.id || existing.userId !== userId) {
+      throw new ConflictException('clientAttemptId already used');
+    }
+    const upTo = await this.prisma.trainingAttempt.findMany({
+      where: { sessionId: session.id, createdAt: { lte: existing.createdAt } },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      select: { correct: true },
+    });
+    let streak = 0;
+    for (const a of upTo) {
+      if (a.correct) streak++;
+      else break;
+    }
+    const newRating = session.mode === 'theme'
+      ? session.startRating
+      : (await this.styleProgression(userId, normalizeStyle(session.style))).currentPuzzleRating;
+    const result = { newRating, step: 0, streak };
+    if (!dto.includeNext) return result;
+    return { ...result, next: await this.nextOrNull(userId, session.id, dto.client === 'mobile') };
+  }
+
+  private async recordAttempt(userId: string, session: TrainingSession, dto: AttemptDto) {
+    const sessionId = session.id;
     if (session.endedAt) throw new BadRequestException('session ended');
 
     const puzzle = await this.prisma.puzzle.findUnique({ where: { id: dto.puzzleId } });
@@ -187,6 +304,7 @@ export class SessionsService {
         puzzleRating: puzzle.rating,
         correct: dto.correct,
         responseMs: dto.responseMs,
+        ...(dto.clientAttemptId ? { clientAttemptId: dto.clientAttemptId } : {}),
       },
     });
 
@@ -253,13 +371,57 @@ export class SessionsService {
     return { newRating: next, step, streak };
   }
 
+  /**
+   * POST /sessions/:id/finish. The web sends `save` and `localDate`;
+   * mobile may add `tz` (IANA zone: stored on the user, and used to derive
+   * localDate when that is missing or malformed) and `mobile` (adds
+   * `progression`, the style's row after this finish, to the response).
+   */
   async finish(
     userId: string,
     sessionId: string,
-    opts: { save?: boolean; localDate?: string } = {},
+    opts: { save?: boolean; localDate?: string; tz?: string; mobile?: boolean } = {},
+  ) {
+    const session = await this.ownedSession(userId, sessionId);
+    const tz = normalizeTimeZone(opts.tz);
+    let localDate = opts.localDate;
+    if (tz) {
+      await this.rememberTimeZone(userId, tz);
+      if (!localDate || !isValidDay(localDate)) localDate = localDayInZone(tz, new Date());
+    }
+    const result = await this.finishSession(userId, session, { save: opts.save, localDate });
+    if (!opts.mobile) return result;
+    return { ...result, progression: await this.progressionView(userId, normalizeStyle(session.style)) };
+  }
+
+  private async rememberTimeZone(userId: string, tz: string) {
+    await this.prisma.user.updateMany({
+      // Write only on change; `<>` alone would skip NULL rows.
+      where: { id: userId, OR: [{ timezone: null }, { timezone: { not: tz } }] },
+      data: { timezone: tz },
+    });
+  }
+
+  /** The style's progression row in the /users/me `progressions[style]` shape, plus `style`. */
+  private async progressionView(userId: string, style: TrainingStyle) {
+    const p = await this.styleProgression(userId, style);
+    return {
+      style,
+      startPuzzleRating: p.startPuzzleRating,
+      currentPuzzleRating: p.currentPuzzleRating,
+      unlockedStartRating: p.unlockedStartRating,
+      calibrationSessionsLeft: p.calibrationSessionsLeft,
+      weakSessionStreak: p.weakSessionStreak,
+    };
+  }
+
+  private async finishSession(
+    userId: string,
+    session: TrainingSession,
+    opts: { save?: boolean; localDate?: string },
   ) {
     const save = opts.save !== false;
-    const session = await this.ownedSession(userId, sessionId);
+    const sessionId = session.id;
     if (session.endedAt) return this.summary(session.id);
 
     // User chose to discard — the session must leave no trace on
@@ -587,7 +749,56 @@ export class SessionsService {
   async remove(userId: string, sessionId: string) {
     const session = await this.ownedSession(userId, sessionId);
     await this.prisma.trainingSession.delete({ where: { id: session.id } });
+    // An unfinished session still has its puzzle buffer in Redis.
+    await this.buffer.clearSession(session.id);
     return { ok: true };
+  }
+
+  /**
+   * GET /sessions/active: the caller's most recent unfinished session, or
+   * `session: null`. Mobile uses it on a cold start without a local
+   * snapshot to offer Finish (save) / Discard. The server only knows
+   * wall-clock time since startedAt, not active (unpaused) time, so no
+   * "remaining" is reported.
+   */
+  async active(userId: string) {
+    const s = await this.prisma.trainingSession.findFirst({
+      where: { userId, endedAt: null },
+      orderBy: { startedAt: 'desc' },
+    });
+    const serverNow = new Date();
+    if (!s) return { session: null, serverNow };
+
+    const [solved, failed, last] = await Promise.all([
+      this.prisma.trainingAttempt.count({ where: { sessionId: s.id, correct: true } }),
+      this.prisma.trainingAttempt.count({ where: { sessionId: s.id, correct: false } }),
+      this.prisma.trainingAttempt.findFirst({
+        where: { sessionId: s.id },
+        orderBy: { createdAt: 'desc' },
+        select: { createdAt: true },
+      }),
+    ]);
+    const style = normalizeStyle(s.style);
+    const currentRating = s.mode === 'theme'
+      ? s.startRating
+      : (await this.styleProgression(userId, style)).currentPuzzleRating;
+    return {
+      session: {
+        id: s.id,
+        mode: s.mode,
+        style,
+        theme: s.theme,
+        startRating: s.startRating,
+        durationSec: s.durationSec,
+        startedAt: s.startedAt,
+        lastActivityAt: last?.createdAt ?? s.startedAt,
+        attempts: solved + failed,
+        solved,
+        failed,
+        currentRating,
+      },
+      serverNow,
+    };
   }
 
   /**
@@ -722,4 +933,8 @@ export class SessionsService {
 
 function normalizeStyle(raw: string): TrainingStyle {
   return isTrainingStyle(raw) ? raw : 'blitz';
+}
+
+function isUniqueViolation(e: unknown): boolean {
+  return e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002';
 }

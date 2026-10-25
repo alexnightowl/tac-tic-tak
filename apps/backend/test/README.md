@@ -48,6 +48,13 @@ diff means the web would see something different. Update with
 (B5's 401 → 403, B8's rules fix), and show the diff in the PR. A new spec that adds snapshots is
 recorded once the same way.
 
+## Behaviour specs
+
+| Spec | Covers |
+|---|---|
+| `e2e/session-lifecycle.e2e-spec.ts` | B6: `clientAttemptId` replay (x5 → 1 row, 1 step, identical bodies), `includeNext`, `/next` `requestId`, `serverNow`, `GET /sessions/active`, finish `tz` + `progression`, Redis TTLs / recent-trim / DELETE cleanup, mobile flow rates like the web flow |
+| `unit/session-lifecycle.spec.ts` | tz helpers, key TTL |
+
 ## Legacy smoke (two running servers)
 
 `tools/contract/legacy-smoke.ts` replays the same scenario with `fetch` against running servers

@@ -29,6 +29,12 @@ model User {
   streakLastDay         String?
   streakFreezeRegenAt   String?
 
+  // Last valid IANA time zone a client sent on session finish (`tz`,
+  // mobile only; the web never sends it). Null until then. Used as the
+  // localDate fallback for the streak tick and, later, for scheduling
+  // reminders in the player's local time.
+  timezone              String?
+
   // Verified-checkmark flag, surfaced as a small icon next to the
   // nickname everywhere this user is displayed. No frontend admin
   // UI on purpose — flipped manually in the DB for users the
@@ -184,6 +190,9 @@ model TrainingAttempt {
   puzzleRating    Int
   correct         Boolean
   responseMs      Int
+  // Client-generated idempotency key (mobile outbox retries). Null for
+  // web attempts; unique so a replayed POST can never insert twice.
+  clientAttemptId String?  @unique
   createdAt       DateTime @default(now())
   session         TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)

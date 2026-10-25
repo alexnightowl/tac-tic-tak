@@ -20,7 +20,9 @@ export type CachedPuzzle = {
  * Keys:
  *   session:{sid}:queue   — List of pre-serialised puzzles for a session
  *   session:{sid}:seen    — Set of puzzle IDs already shown in this session
- *   user:{uid}:recent     — Sorted set (score=timestamp) of recent puzzle IDs
+ *                           (both EXPIRE durationSec + 24 h, refreshed per serve)
+ *   user:{uid}:recent     — Sorted set (score=timestamp) of puzzle IDs served in
+ *                           the last 30 days (older entries trimmed per serve)
  */
 @Injectable()
 export class PuzzleBufferService {
@@ -39,12 +41,23 @@ export class PuzzleBufferService {
   private seenKey(sid: string) { return `session:${sid}:seen`; }
   private recentKey(uid: string) { return `user:${uid}:recent`; }
 
+  /**
+   * TTL for a session's queue and seen keys: the session's length plus a
+   * day, refreshed on every serve, so an abandoned session's keys expire
+   * on their own instead of living forever.
+   */
+  static sessionKeyTtlSec(durationSec: number) {
+    return Math.max(0, Math.floor(durationSec)) + 24 * 60 * 60;
+  }
+
   /** Returns the next puzzle, pre-parsed. Triggers a background refill when low. */
   async getNext(opts: {
     sessionId: string;
     userId: string;
     rating: number;
     theme?: string | null;
+    /** EXPIRE for session:{sid}:queue and :seen (see sessionKeyTtlSec). */
+    ttlSec: number;
   }): Promise<CachedPuzzle | null> {
     const { sessionId } = opts;
     let len = await this.redis.client.llen(this.queueKey(sessionId));
@@ -56,9 +69,19 @@ export class PuzzleBufferService {
     const json = await this.redis.client.rpop(this.queueKey(sessionId));
     if (!json) return null;
     const puzzle = JSON.parse(json) as CachedPuzzle;
-    await this.redis.client.sadd(this.seenKey(sessionId), puzzle.id);
-    await this.redis.client.zadd(this.recentKey(opts.userId), Date.now(), puzzle.id);
-    await this.redis.client.expire(this.recentKey(opts.userId), this.RECENT_TTL_S);
+    const now = Date.now();
+    await this.redis.client
+      .multi()
+      .sadd(this.seenKey(sessionId), puzzle.id)
+      .expire(this.seenKey(sessionId), opts.ttlSec)
+      .expire(this.queueKey(sessionId), opts.ttlSec)
+      .zadd(this.recentKey(opts.userId), now, puzzle.id)
+      // "Recent" means the last 30 days: drop older entries so the zset
+      // (read whole on every preload) stays bounded for daily players,
+      // whose key TTL would otherwise never lapse.
+      .zremrangebyscore(this.recentKey(opts.userId), '-inf', `(${now - this.RECENT_TTL_S * 1000}`)
+      .expire(this.recentKey(opts.userId), this.RECENT_TTL_S)
+      .exec();
 
     // After serving, check depth and kick off a background refill if needed.
     if (len - 1 <= this.REFILL_BELOW) {
@@ -73,10 +96,12 @@ export class PuzzleBufferService {
     userId: string;
     rating: number;
     theme?: string | null;
+    ttlSec: number;
   }): Promise<void> {
     await this.preload(opts);
   }
 
+  /** Drops a session's queue and seen keys (finish, discard, delete, sweep). */
   async clearSession(sessionId: string) {
     await this.redis.client.del(this.queueKey(sessionId), this.seenKey(sessionId));
   }
@@ -95,6 +120,7 @@ export class PuzzleBufferService {
     userId: string;
     rating: number;
     theme?: string | null;
+    ttlSec: number;
   }) {
     const { sessionId, userId, rating, theme } = opts;
     const normal = Math.round(this.TARGET_SIZE * 0.6);
@@ -141,7 +167,11 @@ export class PuzzleBufferService {
       payloads.push(JSON.stringify(cached));
     }
     if (payloads.length === 0) return;
-    await this.redis.client.lpush(this.queueKey(sessionId), ...payloads);
+    await this.redis.client
+      .multi()
+      .lpush(this.queueKey(sessionId), ...payloads)
+      .expire(this.queueKey(sessionId), opts.ttlSec)
+      .exec();
   }
 
   private async pickIds(opts: {
