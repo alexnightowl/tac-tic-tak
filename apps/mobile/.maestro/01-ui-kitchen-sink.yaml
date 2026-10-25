@@ -1,0 +1,140 @@
+# Brand primitives v1: opens /dev/kitchen-sink, /dev/typography and both tab
+# mocks, exercises each primitive and screenshots en + uk.
+#   maestro --device <UDID> test --test-output-dir <dir> .maestro/01-ui-kitchen-sink.yaml
+# Screenshots land in <dir> (Maestro 2.x writes takeScreenshot there).
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+
+# --- kitchen sink ---------------------------------------------------------
+- tapOn: { id: dev-kitchen-sink }
+- extendedWaitUntil:
+    visible: { id: ks-lang }
+    timeout: 30000
+- assertVisible: { id: ks-plate-ember-md }
+- assertVisible: { id: ks-plate-ember-lg-disabled }
+- tapOn: { id: ks-plate-ember-md }
+- longPressOn: { id: ks-plate-slate-sm }
+- tapOn: { id: ks-refresh-counts }
+- assertVisible:
+    id: ks-render-count
+    text: ".*taps 2.*"
+- takeScreenshot: ui-kitchen-sink-en
+- scrollUntilVisible:
+    element: { id: ks-seg-md }
+    direction: DOWN
+    centerElement: true
+- tapOn: { id: ks-seg-md-all }
+- tapOn: { id: ks-seg-sm-ach }
+- tapOn: { id: ks-toggle-b }
+- assertVisible:
+    id: ks-toggle-b
+    checked: true
+- takeScreenshot: ui-kitchen-sink-en-2
+- scrollUntilVisible:
+    element: { id: ks-password }
+    direction: DOWN
+    centerElement: true
+- tapOn: { id: ks-password }
+- inputText: "hunter22"
+# Tap static text to dismiss the keyboard (hideKeyboard has no target here;
+# with the keyboard up the ScrollView would swallow the eye tap).
+- tapOn: { id: ks-input-error-error }
+- tapOn: { id: ks-password-eye }
+- assertVisible: { id: ks-password, text: "hunter22" }
+- assertVisible: { label: "Hide password" }
+- takeScreenshot: ui-kitchen-sink-en-3
+- scrollUntilVisible:
+    element: { id: ks-lang }
+    direction: UP
+    visibilityPercentage: 50
+- tapOn: { id: ks-lang-uk }
+- takeScreenshot: ui-kitchen-sink-uk
+- scrollUntilVisible:
+    element: { id: ks-seg-md }
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: ui-kitchen-sink-uk-2
+- scrollUntilVisible:
+    element: { id: ks-password-new }
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: ui-kitchen-sink-uk-3
+- tapOn: { text: "Dev", index: 0 }
+
+# --- typography -----------------------------------------------------------
+- tapOn: { id: dev-typography }
+- extendedWaitUntil:
+    visible: { id: ty-lang }
+    timeout: 30000
+- assertVisible: { id: ty-display-forum }
+- assertVisible: { id: ty-display-cormorant }
+- assertVisible: { id: ty-display-prata }
+- takeScreenshot: ui-typography-en
+- scrollUntilVisible:
+    element: { id: ty-plate-en }
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: ui-typography-en-2
+- scrollUntilVisible:
+    element: { id: ty-variant-caption }
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: ui-typography-en-3
+# The sheet is long: re-enter (fresh mount, at the top) instead of scrolling back.
+- tapOn: { text: "Dev", index: 0 }
+- tapOn: { id: dev-typography }
+- extendedWaitUntil:
+    visible: { id: ty-lang }
+    timeout: 30000
+- tapOn: { id: ty-lang-uk }
+- takeScreenshot: ui-typography-uk-candidates
+- scrollUntilVisible:
+    element: { id: ty-variant-display }
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: ui-typography-uk
+- tapOn: { text: "Dev", index: 0 }
+
+# --- NativeTabs mock ------------------------------------------------------
+- tapOn: { id: dev-tabs-native }
+- extendedWaitUntil:
+    visible: { id: tn-page-index }
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: ui-tabs-native-en
+# XCUITest's synthesized tap sometimes misses the iOS 26 Liquid Glass tab
+# bar (measured: 1 in 6 first taps, even after a 2 s settle; the bar stays on
+# the old tab, nothing half-switches). retryTapIfNoChange can't see the miss
+# because the glass redraws, so re-tap once when the page didn't change.
+- tapOn: { id: tn-tab-stats }
+- runFlow:
+    when:
+      notVisible: { id: tn-page-stats }
+    commands:
+      - tapOn: { id: tn-tab-stats }
+- assertVisible: { id: tn-page-stats }
+- tapOn: { id: tn-lang-uk }
+- tapOn: { id: tn-tab-social }
+- runFlow:
+    when:
+      notVisible: { id: tn-page-social }
+    commands:
+      - tapOn: { id: tn-tab-social }
+- assertVisible: { id: tn-page-social }
+- takeScreenshot: ui-tabs-native-uk
+- tapOn: { text: "Dev", index: 0 }
+
+# --- custom bar mock ------------------------------------------------------
+- tapOn: { id: dev-tabs-custom }
+- extendedWaitUntil:
+    visible: { id: tc-page-index }
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: ui-tabs-custom-en
+- tapOn: { id: tc-tab-review }
+- assertVisible: { id: tc-page-review }
+- tapOn: { id: tc-lang-uk }
+- tapOn: { id: tc-tab-social }
+- assertVisible: { id: tc-page-social }
+- takeScreenshot: ui-tabs-custom-uk

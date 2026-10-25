@@ -1,0 +1,41 @@
+# Bench smoke: FrameStats around autoplay + a JS jam, then animateMove ×50
+# timing. Numbers only mean something in a Release build.
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-bench
+- extendedWaitUntil:
+    visible:
+      id: sq-e2
+    timeout: 20000
+- tapOn:
+    id: bench-start
+- tapOn:
+    id: bench-autoplay
+- swipe:
+    start: 216, 470
+    end: 216, 470
+    duration: 3000
+- tapOn:
+    id: bench-jam
+- tapOn:
+    id: bench-autoplay
+- tapOn:
+    id: bench-stop
+- extendedWaitUntil:
+    visible:
+      id: framestats
+      text: "p50=.*"
+    timeout: 10000
+- copyTextFrom:
+    id: framestats
+- evalScript: ${output.framestats = maestro.copiedText}
+- tapOn:
+    id: bench-timing
+- extendedWaitUntil:
+    visible:
+      id: bench-timing-result
+      text: "n=50.*"
+    timeout: 60000
+- takeScreenshot: 01-board-bench

@@ -1,0 +1,21 @@
+# En passant e5xf6: the f5 pawn is removed though nothing landed on it.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- tapOn:
+    id: lab-preset-ep
+- assertVisible:
+    id: piece-f5-bP
+- tapOn:
+    id: sq-e5
+- tapOn:
+    id: sq-f6
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/ppp1p1pp/5P2/3p4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 3"
+    timeout: 5000
+- assertVisible:
+    id: piece-f6-wP
+- assertNotVisible:
+    id: piece-f5-bP

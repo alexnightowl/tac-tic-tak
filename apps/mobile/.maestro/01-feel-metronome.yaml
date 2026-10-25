@@ -1,0 +1,22 @@
+# Metronome: run ~5 s, stop; beats were counted and the screen itself did
+# not re-render per beat (only the 1 Hz readout does).
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-metronome
+- extendedWaitUntil:
+    visible:
+      id: metronome
+    timeout: 20000
+- tapOn: { id: metro-start }
+- extendedWaitUntil:
+    visible:
+      id: metro-beats
+      text: "beats (1[0-9]|[2-9][0-9])"
+    timeout: 15000
+- takeScreenshot: metronome-running
+- tapOn: { id: metro-stop }
+- assertVisible:
+    id: metro-render-count
+    text: "screen renders [1-3]"

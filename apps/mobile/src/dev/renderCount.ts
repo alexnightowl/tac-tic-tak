@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 /**
  * Counts React commits of a component (PLAN §2.6: zero board commits during
  * a drag). Read the latest values with `renderCounts()`; dev screens render
@@ -8,10 +6,12 @@ import { useRef } from 'react';
 const counts = new Map<string, number>();
 
 export function useRenderCount(name: string): number {
-  const n = useRef(0);
-  n.current += 1;
-  counts.set(name, n.current);
-  return n.current;
+  // Counting renders is a deliberate render-time side effect; keep the
+  // compiler from memoising it away.
+  'use no memo';
+  const n = (counts.get(name) ?? 0) + 1;
+  counts.set(name, n);
+  return n;
 }
 
 export function renderCounts(): Record<string, number> {

@@ -1,0 +1,23 @@
+# Pulsar trial: drag in every mode; the screen commits once per drag (at the
+# end), never during it, and nothing crashes on the simulator (no haptics HW).
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-pulsar-trial
+- extendedWaitUntil:
+    visible:
+      id: pulsar-trial
+    timeout: 20000
+- swipe: { from: { id: pulsar-pad }, direction: RIGHT, duration: 800 }
+- assertVisible: { id: pulsar-last, text: "last drag: [1-9][0-9]* detents" }
+- tapOn: { id: pulsar-mode-realtime }
+- swipe: { from: { id: pulsar-pad }, direction: RIGHT, duration: 800 }
+- tapOn: { id: pulsar-mode-pattern }
+- swipe: { from: { id: pulsar-pad }, direction: RIGHT, duration: 800 }
+- tapOn: { id: pulsar-mode-feel }
+- swipe: { from: { id: pulsar-pad }, direction: RIGHT, duration: 800 }
+- assertVisible: { id: pulsar-last, text: "last drag: [1-9][0-9]* detents" }
+# 1 mount + 3 mode taps + 4 drag ends (+ dev double-mount slack).
+- assertVisible: { id: pulsar-render-count, text: "screen renders ([0-9]|1[0-2])" }
+- takeScreenshot: pulsar-trial

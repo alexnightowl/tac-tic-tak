@@ -1,0 +1,50 @@
+# Cold start → first sound plays (late, while the context is created and the
+# clips decode); background (Settings app) → foreground → sound still plays.
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-feel-lab
+- extendedWaitUntil:
+    visible:
+      id: feel-lab
+    timeout: 20000
+# Nothing has played since launch: this tap is the cold path.
+- assertVisible:
+    id: feel-plays
+    text: "plays: 0.*"
+- tapOn: { id: feel-drop }
+- extendedWaitUntil:
+    visible:
+      id: feel-first
+      text: "first sound move .*13 decoded.*"
+    timeout: 10000
+- assertVisible:
+    id: feel-plays
+    text: "plays: 1 · late: 1"
+- takeScreenshot: feel-cold
+# To the background and back.
+- launchApp:
+    appId: com.apple.Preferences
+- waitForAnimationToEnd
+- launchApp:
+    appId: online.tactictak.app
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      id: feel-ctx
+      text: "ctx running.*"
+    timeout: 10000
+- tapOn: { id: feel-capture }
+- tapOn: { id: feel-mistake }
+- tapOn: { id: feel-normGateUp }
+- assertVisible:
+    id: feel-plays
+    text: "plays: 4 · late: 1"
+- assertVisible:
+    id: feel-errors
+    text: "errors: 0"
+- assertVisible:
+    id: feel-ctx
+    text: "ctx running.*suspends 1 · resumes 1"
+- takeScreenshot: feel-after-background

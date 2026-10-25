@@ -1,0 +1,22 @@
+# Drag g1 → f3 commits 1. Nf3; the drag itself renders the board zero times.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- copyTextFrom:
+    id: board-render-count
+- evalScript: ${output.rendersBefore = Number(maestro.copiedText)}
+- swipe:
+    start: 308, 470   # g1
+    end: 262, 378     # f3
+    duration: 900
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1"
+    timeout: 5000
+- assertVisible:
+    id: piece-f3-wN
+# Exactly one board commit for the whole drag + drop.
+- copyTextFrom:
+    id: board-render-count
+- assertTrue: ${Number(maestro.copiedText) == output.rendersBefore + 1}

@@ -1,0 +1,89 @@
+# Tap-to-move: e2 then e4 commits 1. e4.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- tapOn:
+    id: sq-e2
+- tapOn:
+    id: sq-e4
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+    timeout: 5000
+- assertVisible:
+    id: piece-e4-wP
+# setInteractive(false) blocks input: black's e7 → e5 taps do nothing.
+- tapOn:
+    id: lab-interactive
+- tapOn:
+    id: sq-e7
+- tapOn:
+    id: sq-e5
+- assertVisible:
+    id: lab-fen
+    text: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+- tapOn:
+    id: lab-interactive
+- tapOn:
+    id: sq-e7
+- tapOn:
+    id: sq-e5
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"
+    timeout: 5000
+# Sloppy tap: g1 selected, then a press on f3 that drifts 16 pt (past the
+# tap's 4 pt slop, so the pan takes it) but ends on f3 still moves.
+- tapOn:
+    id: sq-g1
+- swipe:
+    start: 254, 378   # f3, left part
+    end: 270, 378     # f3, right part
+    duration: 400
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"
+    timeout: 5000
+- assertVisible:
+    id: piece-f3-wN
+# Input is blocked while animateMove slides (the opponent is moving):
+# black's e7 → e5 during a 30 s slide does nothing, after it lands it moves.
+- tapOn:
+    id: lab-preset-start
+# XCTest waits (up to several seconds) for the app to go idle around each
+# tap, and a running slide keeps it busy: hence the long 30 s slide.
+- tapOn:
+    id: lab-animate-slow
+    waitToSettleTimeoutMs: 100
+    retryTapIfNoChange: false
+- tapOn:
+    id: sq-e7
+    waitToSettleTimeoutMs: 100
+    retryTapIfNoChange: false
+- tapOn:
+    id: sq-e5
+    waitToSettleTimeoutMs: 100
+    retryTapIfNoChange: false
+- assertVisible:
+    id: lab-busy
+    text: ".*animating"
+- assertNotVisible:
+    id: lab-fen
+    text: "rnbqkbnr/pppp1ppp/.*"
+- extendedWaitUntil:
+    visible:
+      id: lab-busy
+      text: ".*done.*"
+    timeout: 40000
+- tapOn:
+    id: sq-e7
+- tapOn:
+    id: sq-e5
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppp1ppp/8/4p3/.* w KQkq - 0 2"
+    timeout: 5000

@@ -1,0 +1,88 @@
+# Feel lab: 20 feel buttons tapped back to back (overlapping sounds), then a
+# burst of 20 emits in 1 s; the lab's error counter must stay at 0.
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-feel-lab
+- extendedWaitUntil:
+    visible:
+      id: feel-lab
+    timeout: 20000
+# What the splash gate will do; wait for every short clip.
+- tapOn: { id: feel-preload }
+- extendedWaitUntil:
+    visible:
+      id: feel-first
+      text: ".*13 decoded.*"
+    timeout: 10000
+- tapOn: { id: feel-pickup }
+- tapOn: { id: feel-hoverLegal }
+- tapOn: { id: feel-drop }
+- tapOn: { id: feel-capture }
+- tapOn: { id: feel-check }
+- tapOn: { id: feel-castle }
+- tapOn: { id: feel-promote }
+- tapOn: { id: feel-illegal }
+- tapOn: { id: feel-opponentLanding }
+- tapOn: { id: feel-correct }
+- tapOn: { id: feel-mistake }
+- tapOn: { id: feel-streakUp }
+- tapOn: { id: feel-streakBroken }
+- tapOn: { id: feel-timerWarning }
+- tapOn: { id: feel-timerTick }
+- tapOn: { id: feel-pause }
+- tapOn: { id: feel-resume }
+- tapOn: { id: feel-exitSheet }
+- tapOn: { id: feel-discard }
+- tapOn: { id: feel-normGateUp }
+- tapOn: { id: feel-burst }
+- tapOn: { id: feel-gesture-pad }
+- tapOn: { id: feel-gesture-pad }
+- tapOn: { id: feel-gesture-pad }
+- assertVisible:
+    id: feel-errors
+    text: "errors: 0"
+- assertVisible:
+    id: feel-ctx
+    text: "ctx running.*"
+- takeScreenshot: feel-lab
+# Every bundled clip once (15), then the long rank-down music faded out.
+- scrollUntilVisible:
+    element: { id: feel-clip-down-d }
+    direction: DOWN
+- tapOn: { id: feel-clip-move }
+- tapOn: { id: feel-clip-capture }
+- tapOn: { id: feel-clip-check }
+- tapOn: { id: feel-clip-castle }
+- tapOn: { id: feel-clip-promote }
+- tapOn: { id: feel-clip-correct }
+- tapOn: { id: feel-clip-mistake }
+- tapOn: { id: feel-clip-gate }
+- tapOn: { id: feel-clip-tomoe }
+- tapOn: { id: feel-clip-mangekyo }
+- tapOn: { id: feel-clip-final }
+- tapOn: { id: feel-clip-down-a }
+- tapOn: { id: feel-clip-down-d }
+- tapOn: { id: feel-clip-down-c }
+- tapOn: { id: feel-clip-down-b }
+- scrollUntilVisible:
+    element: { id: feel-stop-long }
+    direction: UP
+- tapOn: { id: feel-stop-long }
+- assertVisible:
+    id: feel-errors
+    text: "errors: 0"
+# Haptic scale stepper persists to MMKV and shows up in the JSON export.
+- scrollUntilVisible:
+    element: { id: feel-scale-drop-inc }
+    direction: DOWN
+- tapOn: { id: feel-scale-drop-inc }
+- assertVisible: { id: feel-scale-drop, text: "1.25" }
+- tapOn: { id: feel-scale-drop-dec }
+- assertVisible: { id: feel-scale-drop, text: "1.00" }
+- scrollUntilVisible:
+    element: { id: feel-export-show }
+    direction: DOWN
+- tapOn: { id: feel-export-show }
+- assertVisible: { id: feel-export-json, text: ".*hapticScale.*" }

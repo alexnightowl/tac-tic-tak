@@ -1,0 +1,15 @@
+# /dev/board-lab?fen=&orientation= deep link (dev builds only).
+appId: online.tactictak.app
+---
+- openLink: "tactictak://dev/board-lab?fen=7k%2FP7%2F8%2F8%2F8%2F8%2F8%2FK7%20w%20-%20-%200%201&orientation=black"
+- runFlow: common/dismiss-system.yaml
+- tapOn:
+    text: "Open"
+    optional: true
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "7k/P7/8/8/8/8/8/K7 w - - 0 1"
+    timeout: 30000
+- assertVisible:
+    id: piece-a7-wP

@@ -1,0 +1,46 @@
+# Illegal drop (e2 → e5) springs back: FEN unchanged, no board commit.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- copyTextFrom:
+    id: board-render-count
+- evalScript: ${output.rendersBefore = Number(maestro.copiedText)}
+- tapOn:
+    id: lab-counts
+- extendedWaitUntil:
+    visible:
+      id: lab-render-counts
+      text: "Board .*"
+    timeout: 5000
+- copyTextFrom:
+    id: lab-render-counts
+- evalScript: ${output.countsBefore = maestro.copiedText; console.log('counts before: ' + output.countsBefore)}
+- swipe:
+    start: 216, 424   # e2
+    end: 216, 286     # e5
+    duration: 900
+- assertVisible:
+    id: lab-fen
+    text: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+- assertVisible:
+    id: piece-e2-wP
+- assertNotVisible:
+    id: piece-e5-wP
+- copyTextFrom:
+    id: board-render-count
+- assertTrue: ${Number(maestro.copiedText) == output.rendersBefore}
+# Board, Square and Piece commits all unchanged by the drag.
+- tapOn:
+    id: lab-counts
+- copyTextFrom:
+    id: lab-render-counts
+- evalScript: ${console.log('counts after: ' + maestro.copiedText)}
+- assertTrue: ${maestro.copiedText == output.countsBefore}
+# Selection survives the snap-back (web parity): a tap on e4 now moves.
+- tapOn:
+    id: sq-e4
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+    timeout: 5000

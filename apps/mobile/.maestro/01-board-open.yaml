@@ -1,0 +1,16 @@
+# Opens the board lab on the start position (shared by the 01-board-* flows).
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- tapOn:
+    id: dev-board-lab
+- extendedWaitUntil:
+    visible:
+      id: sq-e2
+    timeout: 20000
+# Drag flows use literal square centres (Maestro parses swipe points before
+# any script runs): iPhone 17 Pro, board frame 9,125,368 → square 46 pt,
+# centre(col,row) = (32 + 46·col, 148 + 46·row), col/row as drawn.
+- assertVisible:
+    id: lab-board-frame
+    text: "9,125,368"

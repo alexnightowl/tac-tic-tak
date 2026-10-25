@@ -32,12 +32,12 @@ export function useFrameStats(onReport: (r: FrameReport) => void) {
     'worklet';
     const dt = info.timeSincePreviousFrame;
     if (dt == null) return;
-    const list = deltas.value;
+    const list = deltas.get();
     if (list.length < MAX_SAMPLES) list.push(dt);
   }, false);
 
   const start = useCallback(() => {
-    deltas.value = [];
+    deltas.set([]);
     frame.setActive(true);
   }, [deltas, frame]);
 

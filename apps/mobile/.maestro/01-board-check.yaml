@@ -1,0 +1,19 @@
+# Qh4+ (tap d8 → h4) puts the white king in check: check-e1 overlay.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- tapOn:
+    id: lab-preset-check
+- assertNotVisible:
+    id: check-e1
+- tapOn:
+    id: sq-d8
+- tapOn:
+    id: sq-h4
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3"
+    timeout: 5000
+- assertVisible:
+    id: check-e1

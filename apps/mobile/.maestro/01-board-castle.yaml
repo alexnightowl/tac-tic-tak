@@ -1,0 +1,37 @@
+# Castling by dragging the king e1 → g1: two piece views move (king + rook).
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- tapOn:
+    id: lab-preset-castle
+- swipe:
+    start: 216, 470   # e1
+    end: 308, 470     # g1
+    duration: 900
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R4RK1 b kq - 1 1"
+    timeout: 5000
+- assertVisible:
+    id: piece-g1-wK
+- assertVisible:
+    id: piece-f1-wR
+- assertNotVisible:
+    id: piece-e1-wK
+- assertNotVisible:
+    id: piece-h1-wR
+# Black castles long by tap: e8 then c8.
+- tapOn:
+    id: sq-e8
+- tapOn:
+    id: sq-c8
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "2kr3r/pppppppp/8/8/8/8/PPPPPPPP/R4RK1 w - - 2 2"
+    timeout: 5000
+- assertVisible:
+    id: piece-d8-bR
+- assertVisible:
+    id: piece-c8-bK

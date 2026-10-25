@@ -1,0 +1,30 @@
+# Black's view: hit-testing follows the orientation. Drag e2 → e4 where the
+# flipped board draws them (e2 at col 3,row 1; e4 at col 3,row 3).
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- tapOn:
+    id: lab-preset-black
+- swipe:
+    start: 170, 194   # e2 (flipped)
+    end: 170, 286     # e4 (flipped)
+    duration: 900
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+    timeout: 5000
+- assertVisible:
+    id: piece-e4-wP
+# Mirror on top of black = white's view again: drag e7 → e5 at white coordinates.
+- tapOn:
+    id: lab-mirror
+- swipe:
+    start: 216, 194   # e7 (white view)
+    end: 216, 286     # e5
+    duration: 900
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2"
+    timeout: 5000

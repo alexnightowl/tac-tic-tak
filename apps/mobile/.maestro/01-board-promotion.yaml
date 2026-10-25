@@ -1,0 +1,40 @@
+# Promotion: drag a7 → a8 opens the picker; knight gives piece-a8-wN.
+appId: online.tactictak.app
+---
+- runFlow: 01-board-open.yaml
+- tapOn:
+    id: lab-preset-promo
+- assertVisible:
+    id: lab-fen
+    text: "7k/P7/8/8/8/8/8/K7 w - - 0 1"
+- swipe:
+    start: 32, 194   # a7
+    end: 32, 148     # a8
+    duration: 900
+- assertVisible:
+    id: promo-q
+- assertVisible:
+    id: promo-n
+# Cancel keeps the pawn; then tap-to-move reopens the picker.
+- tapOn:
+    id: promo-cancel
+    point: 80%, 80%
+- assertNotVisible:
+    id: promo-n
+- assertVisible:
+    id: piece-a7-wP
+- tapOn:
+    id: sq-a7
+- tapOn:
+    id: sq-a8
+- tapOn:
+    id: promo-n
+- extendedWaitUntil:
+    visible:
+      id: lab-fen
+      text: "N6k/8/8/8/8/8/8/K7 b - - 0 1"
+    timeout: 5000
+- assertVisible:
+    id: piece-a8-wN
+- assertNotVisible:
+    id: piece-a7-wP
