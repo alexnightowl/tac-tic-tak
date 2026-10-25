@@ -82,7 +82,8 @@ export class AuthService {
 
   /** POST /auth/logout-all: every access token (web included) and every refresh token of the user dies. */
   async logoutAll(userId: string) {
-    await this.tokenVersions.bump(userId);
+    // Same answer as change-password for a token whose user row is gone.
+    if ((await this.tokenVersions.bump(userId)) === null) throw new UnauthorizedException('not authenticated');
     await this.refreshTokens.revokeAllForUser(userId);
     return { ok: true };
   }

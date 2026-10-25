@@ -53,16 +53,23 @@ export class TokenVersionService {
     return row.tokenVersion;
   }
 
-  /** Increments tokenVersion (invalidates every access token issued before) and refreshes the cache. */
-  async bump(userId: string): Promise<number> {
-    const { tokenVersion } = await this.prisma.user.update({
+  /**
+   * Increments tokenVersion (invalidates every access token issued before)
+   * and refreshes the cache. Returns null when the user row is gone (a
+   * deleted user's token still passes JwtStrategy), instead of letting
+   * Prisma's P2025 surface as a 500.
+   */
+  async bump(userId: string): Promise<number | null> {
+    const { count } = await this.prisma.user.updateMany({
       where: { id: userId },
       data: { tokenVersion: { increment: 1 } },
-      select: { tokenVersion: true },
     });
+    if (count === 0) return null;
+    const row = await this.prisma.user.findUnique({ where: { id: userId }, select: { tokenVersion: true } });
+    if (!row) return null;
     // Awaited so the very next request already sees the new version.
-    await this.cache(tokenVersionKey(userId), tokenVersion);
-    return tokenVersion;
+    await this.cache(tokenVersionKey(userId), row.tokenVersion);
+    return row.tokenVersion;
   }
 
   /** Best effort, never rejects: on a Redis failure the next request reads Postgres again. */

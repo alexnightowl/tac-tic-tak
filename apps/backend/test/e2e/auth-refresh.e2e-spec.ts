@@ -320,6 +320,10 @@ describe('auth refresh (B4) and change-password (B5)', () => {
       const web = (await login(u)).body.token as string;
       await t.prisma.user.delete({ where: { id: u.id } });
       expect((await me(web)).status).toBe(404);
+      // logout-all answers like change-password (401), not a P2025 500.
+      const res = await t.http().post('/api/auth/logout-all').set(bearer(web));
+      expect(res.status).toBe(401);
+      expect(res.body.message).toBe('not authenticated');
     });
   });
 
