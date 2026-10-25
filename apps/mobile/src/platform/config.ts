@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { Platform } from 'react-native';
+import { Platform, TurboModuleRegistry, type TurboModule } from 'react-native';
 
 // API base per target (apps/mobile/CLAUDE.md table). The Android emulator
 // reaches the host's loopback at 10.0.2.2. A dev build on an iPhone loads
@@ -7,8 +7,13 @@ import { Platform } from 'react-native';
 // reuse Metro's host (e.g. 192.168.x.y:8081 → :4000). A Release build has no
 // Metro and needs EXPO_PUBLIC_API_URL. Switch to /api/v1 once B2 lands.
 function devHostApi(): string | null {
-  const host = Constants.expoConfig?.hostUri?.split(':')[0];
-  return __DEV__ && host ? `http://${host}:4000/api` : null;
+  if (!__DEV__) return null;
+  // The URL the JS bundle was actually loaded from (http://<mac>:8081/…).
+  // expo-constants' hostUri only exists in Expo Go / dev-client builds.
+  const sourceCode = TurboModuleRegistry.get<{ getConstants(): { scriptURL?: string } } & TurboModule>('SourceCode');
+  const scriptURL = sourceCode?.getConstants().scriptURL;
+  const host = scriptURL?.match(/^https?:\/\/([^/:]+)/)?.[1] ?? Constants.expoConfig?.hostUri?.split(':')[0];
+  return host ? `http://${host}:4000/api` : null;
 }
 
 const LOCAL_API =
