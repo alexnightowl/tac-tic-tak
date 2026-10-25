@@ -165,3 +165,17 @@ Each is adopted now and asked in OWNER-QUESTIONS.md under the same number.
 ### iOS first (owner, 2026-10-25) — FINAL
 The owner prioritises iOS. Android stays supported by the code (cross-platform RN) but is not a
 phase gate: Android Maestro runs and Android-specific polish are deferred until the owner asks.
+
+### D20. The design canvas is the single source of truth: FINAL (owner, 2026-10-26)
+The owner's Claude Design canvas (https://claude.ai/code/artifact/6e1c9a2c-6619-402b-ae58-5b6f4252d104)
+wins over the web app and the inventories. Conflicts are settled by changing the canvas first,
+then the app follows it. Audit: `docs/mobile/DESIGN-AUDIT.md`. Where the canvas contradicts
+itself (board highlight hue, toggle size, nested-screen header) the owner fixes the canvas first.
+
+### D21. No Hint/Skip in a rated session: FINAL (owner, 2026-10-26)
+The canvas Session artboard shows Hint/Skip and a 10-segment bar; the app keeps the
+solved/rating/failed counters and the level-up gate bar instead. The canvas gets updated.
+
+### D22. Tabs follow the canvas: Home · Play · Review · Leaderboard · Stats · Settings (owner, 2026-10-26)
+The canvas tab labelled "Board" (3x3 grid icon) is the Leaderboard screen, mislabelled. Supersedes
+provisional default #3. Where Friends lives (now the Social tab) is open: Q in OWNER-QUESTIONS.
