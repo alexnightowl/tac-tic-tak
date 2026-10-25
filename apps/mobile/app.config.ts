@@ -54,6 +54,17 @@ const config: ExpoConfig = {
       },
     ],
     ['expo-font', { fonts: FONTS }],
+    'expo-asset',
+    [
+      'react-native-audio-api',
+      {
+        // Short SFX only: no background audio, no media foreground service
+        // (both would need store-review justification).
+        iosBackgroundMode: false,
+        androidForegroundService: false,
+        androidPermissions: [],
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

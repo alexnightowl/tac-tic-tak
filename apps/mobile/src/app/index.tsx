@@ -1,7 +1,8 @@
 import { initPuzzle } from '@tac/core/puzzle';
 import { createTranslator } from '@tac/core/i18n';
 import { eos, fontFamilies } from '@tac/core/tokens';
-import { StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Phase 0 placeholder — proves the native shell, embedded fonts and that
@@ -25,6 +26,13 @@ export default function Hello() {
         <Text style={styles.mono} testID="hello-core">
           {SAMPLE.playerColor === 'w' ? 'white' : 'black'} to move · {SAMPLE.remaining.length} to play
         </Text>
+        {__DEV__ && (
+          <Link href="/dev" asChild>
+            <Pressable testID="open-dev" style={styles.dev}>
+              <Text style={styles.devText}>dev menu</Text>
+            </Pressable>
+          </Link>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -35,5 +43,7 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 10 },
   title: { color: eos.bone, fontSize: 34, fontFamily: fontFamilies.serif[700], letterSpacing: 2 },
   sub: { color: eos.ash, fontSize: 16, fontFamily: fontFamilies.sans[500] },
+  dev: { marginTop: 24, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: eos.seam },
+  devText: { color: eos.ash, fontSize: 13, fontFamily: fontFamilies.sans[600] },
   mono: { color: eos.dust, fontSize: 13, fontFamily: fontFamilies.sans[400] },
 });

@@ -1,0 +1,13 @@
+# Fresh simulators throw system prompts (Maps widgets location, custom-scheme
+# "Open in …?" from simctl openurl). Clear them before driving the app.
+appId: online.tactictak.app
+---
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          text: "Don’t Allow"
+          optional: true
+      - tapOn:
+          text: "Cancel"
+          optional: true

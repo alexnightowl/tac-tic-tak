@@ -1,0 +1,4 @@
+appId: online.tactictak.app
+---
+- runFlow: common/open-dev.yaml
+- takeScreenshot: dev-menu

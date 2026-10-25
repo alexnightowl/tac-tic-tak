@@ -1,0 +1,16 @@
+# Launch fresh and open the dev menu. Use with runFlow, then tap a lab:
+#   - tapOn: { id: dev-board-lab }
+appId: online.tactictak.app
+---
+- runFlow: dismiss-system.yaml
+- launchApp:
+    stopApp: true
+- runFlow: dismiss-system.yaml
+- extendedWaitUntil:
+    visible:
+      id: open-dev
+    timeout: 60000
+- tapOn:
+    id: open-dev
+- assertVisible:
+    id: dev-menu
