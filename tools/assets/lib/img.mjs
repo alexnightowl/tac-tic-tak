@@ -98,9 +98,19 @@ export class Canvas {
   clip(mask) {
     for (let y = 0; y < this.h; y++) for (let x = 0; x < this.w; x++) this.px[(y * this.w + x) * 4 + 3] *= mask(x, y);
   }
-  toRGBA() {
+  /**
+   * 8-bit straight RGBA. `dither` adds seeded triangular noise (±1 LSB)
+   * before rounding: faint wide gradients (the splash glow peaks at alpha
+   * 0.42) otherwise quantise into visible rings.
+   */
+  toRGBA({ dither = false } = {}) {
     const out = new Uint8Array(this.w * this.h * 4);
-    for (let i = 0; i < out.length; i++) out[i] = Math.max(0, Math.min(255, Math.round(this.px[i] * 255)));
+    let seed = 0x9e3779b9;
+    const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+    for (let i = 0; i < out.length; i++) {
+      const n = dither ? rnd() - rnd() : 0;
+      out[i] = Math.max(0, Math.min(255, Math.round(this.px[i] * 255 + n)));
+    }
     return { w: this.w, h: this.h, data: out };
   }
 }

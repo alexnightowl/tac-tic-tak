@@ -490,6 +490,60 @@ function launcher(knight, tmp, N, knightH, { ground = true, glow = true, mono = 
   return cv.toRGBA();
 }
 
+/**
+ * Splash image: the login logo exactly as the design canvas draws it
+ * (Login.dc.html at 128 px): a 360 px circle offset −116 px holding
+ * `radial-gradient(circle at 50% 46%)` to the farthest corner, `blur(14px)`,
+ * the real knight-logo cut-out (not the flat icon silhouette) with
+ * `drop-shadow(0 8px 14px rgba(17,15,17,.55))`. Rendered at k = 3 (knight
+ * 384 px, its native size) on a transparent canvas of the glow box plus 3σ
+ * so the blur is never cut. Dithered: the glow is faint and wide, and plain
+ * 8-bit rounding bands it into rings. app.config: imageWidth = N / k pt.
+ */
+export const SPLASH_K = 3;
+function splashIcon(tmp) {
+  const k = SPLASH_K, L = 128 * k, box = 360 * k, sigma = 14 * k, pad = Math.ceil(3 * sigma);
+  const N = box + 2 * pad;
+  const logoFile = path.join(tmp, 'splash-logo.png');
+  magick(path.join(WEB, 'design-src/knight-logo.webp'), '-filter', 'Lanczos', '-resize', `${L}x${L}!`, logoFile);
+  const K = readRGBA(logoFile);
+  // Logo box centre = glow box centre (offset −116 of 360 at 128: centred).
+  const ox = Math.round((N - L) / 2), oy = Math.round((N - L) / 2);
+  // Glow, premultiplied, clipped to the circle (border-radius: 9999px).
+  const cx = N / 2, cyG = pad + box * 0.46, R = Math.hypot(box / 2, box * 0.54);
+  const ch = [0, 1, 2, 3].map(() => new Float64Array(N * N));
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const cov = discCoverage(x, y, cx, N / 2, box / 2);
+      if (cov <= 0) continue;
+      const [r, g, b, a] = glowAt(Math.hypot(x + 0.5 - cx, y + 0.5 - cyG) / R);
+      const A = a * cov, i = y * N + x;
+      ch[0][i] = (r / 255) * A; ch[1][i] = (g / 255) * A; ch[2][i] = (b / 255) * A; ch[3][i] = A;
+    }
+  }
+  const bl = ch.map((c) => gaussian(c, N, N, sigma));
+  const cv = new Canvas(N, N);
+  for (let i = 0; i < N * N; i++) {
+    const a = bl[3][i];
+    if (a > 1e-6) cv.over(i, bl[0][i] / a, bl[1][i] / a, bl[2][i] / a, Math.min(1, a));
+  }
+  // Drop shadow under the knight.
+  const dy = 8 * k, ss = 7 * k;
+  const sh = new Float64Array(N * N);
+  for (let y = 0; y < L; y++) for (let x = 0; x < L; x++) {
+    const ty = oy + y + dy;
+    if (ty < N) sh[ty * N + ox + x] = K.data[(y * L + x) * 4 + 3] / 255;
+  }
+  const sb = gaussian(sh, N, N, ss);
+  const black = hex('#110f11').map((v) => v / 255);
+  for (let i = 0; i < N * N; i++) if (sb[i] > 0) cv.over(i, black[0], black[1], black[2], sb[i] * 0.55);
+  for (let y = 0; y < L; y++) for (let x = 0; x < L; x++) {
+    const q = (y * L + x) * 4;
+    cv.over((oy + y) * N + ox + x, K.data[q] / 255, K.data[q + 1] / 255, K.data[q + 2] / 255, K.data[q + 3] / 255);
+  }
+  return cv.toRGBA({ dither: true });
+}
+
 function appicon() {
   const root = ensureDir(path.join(OUT, 'images'));
   const tmp = tempDir();
@@ -505,7 +559,7 @@ function appicon() {
   // Unlike the opaque icons, nothing may be cut at the canvas edge (a faint
   // red square would show on the stone), so the canvas is <Logo glow>'s own
   // 2.8 × size span: the glow has faded out by its inscribed circle.
-  writePNG(launcher(knight, tmp, 1024, 1 / 2.8, { ground: false }), path.join(root, 'splash-icon.png'));
+  writePNG(splashIcon(tmp), path.join(root, 'splash-icon.png'));
   rmSync(tmp, { recursive: true, force: true });
   log(`appicon: icon (knight ${Math.round(iosH * 100)}%), adaptive fg/bg/mono, splash`);
 }

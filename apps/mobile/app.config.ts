@@ -71,8 +71,9 @@ const config: ExpoConfig = {
       {
         backgroundColor: STONE,
         image: './assets/images/splash-icon.png',
-        // The splash art carries its own glow, so the knight is ~36% of it.
-        imageWidth: 240,
+        // The art is the design's glow box + blur margin at 3× (1332 px,
+        // tools/assets splashIcon): 444 pt makes the knight 128 pt, as on login.
+        imageWidth: 444,
       },
     ],
     ['expo-font', { fonts: FONTS }],
