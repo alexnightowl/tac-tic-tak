@@ -12,7 +12,8 @@ const PERSONAL_TEAM = (process.env.APPLE_TEAM_KIND ?? 'personal') !== 'paid';
 const BUNDLE_ID = 'online.tactictak.app';
 // On-device builds signed by a free team use a separate id (`.dev`), so the
 // real one is never claimed by the personal team before the paid account
-// registers it. Simulator builds keep the plain id (Maestro's appId).
+// registers it. Simulator builds keep the plain id (Maestro's appId). The
+// owner's everyday Release build against the prod API uses `.prod`.
 const BUNDLE_SUFFIX = process.env.APP_BUNDLE_SUFFIX ?? '';
 // Signing team for on-device builds: the owner's free Personal Team until the
 // paid account exists (then set APPLE_TEAM_ID / APPLE_TEAM_KIND=paid).
@@ -30,7 +31,8 @@ const FONTS = [
 ].map((name) => `./assets/fonts/${name}.ttf`);
 
 const config: ExpoConfig = {
-  name: 'tac·tic·tak',
+  // The dev build sits next to the prod-API one on the owner's phone: tell them apart.
+  name: BUNDLE_SUFFIX === '.dev' ? 'tac·tic·tak dev' : 'tac·tic·tak',
   slug: 'tactictak',
   scheme: 'tactictak',
   version: '0.1.0',
