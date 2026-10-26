@@ -65,6 +65,7 @@ const config: ExpoConfig = {
     // First on purpose: entitlement mods run in reverse plugin order, so this
     // one runs after expo-notifications has added aps-environment.
     ...(PERSONAL_TEAM ? ['./plugins/withoutPushEntitlement'] : []),
+    './plugins/withMetroHostname',
     'expo-router',
     [
       'expo-splash-screen',
