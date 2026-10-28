@@ -16,6 +16,7 @@ PR bodies are the `PR-*.md` files here. Open a PR with
 | 5 | `api/session-lifecycle` | B6 idempotent attempts, `/next` requestId, `/sessions/active`, tz, Redis TTLs; B7 sweeper (merged **disabled**) | test-harness | `User.timezone`, `TrainingAttempt.clientAttemptId` | `pg_dump` before; sweeper stays off until `SESSION_SWEEPER_ENABLED=true` |
 | 6 | `api/lists-account` | B9 paginated `/api/v1/sessions`, `firstPuzzleId`, idempotent resolve; B10 `DELETE /api/v1/users/me` | test-harness | — | — |
 | 7 | `api/hardening` | B11 throttling (Redis), B12 nginx gzip | **bootstrap** | — | Merge after #3. See the note on port 4000 below |
+| 8 | `api/norm-grid` | Norm (`unlockedStartRating`) always a multiple of 25; one-off rounding of existing rows | main | data-only `UPDATE` | `pg_dump` before; independent, can merge any time |
 
 After each merge: `curl https://tactictak.online/api/health` (from #3 on) and a quick web
 spot-check; then the agent merges `main` into `mobile`.
