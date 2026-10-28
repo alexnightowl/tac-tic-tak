@@ -96,7 +96,6 @@ export type DifficultySliderProps = {
   min?: number;
   max?: number;
   step?: number;
-  currentRating?: number | null;
   /** Start of the level-up zone (norm − 50); enables zones + magnets. */
   levelUpFrom?: number;
   norm?: number;
@@ -113,7 +112,6 @@ export function DifficultySlider({
   min = 400,
   max = 3000,
   step = 25,
-  currentRating,
   levelUpFrom,
   norm,
   bandLabels,
@@ -287,7 +285,6 @@ export function DifficultySlider({
               </View>
             </>
           )}
-          {currentRating != null && <CurrentMarker leftPct={pct(currentRating)} live={live} edges={edges} />}
           <Animated.View style={[styles.thumbWrap, thumbStyle]} pointerEvents="none">
             <Animated.View style={[styles.halo, haloStyle]} />
             <LinearGradient
@@ -329,12 +326,6 @@ export function DifficultySlider({
       </View>
     </View>
   );
-}
-
-/** web "you are here" marker; hidden when the thumb sits on it. */
-function CurrentMarker({ leftPct, live, edges }: { leftPct: number; live: SharedValue<number>; edges: number[] }) {
-  const style = useAnimatedStyle(() => ({ opacity: Math.abs(valueToPct(live.get(), edges) - leftPct) > 1 ? 0.8 : 0 }));
-  return <Animated.View pointerEvents="none" style={[styles.current, { left: `${leftPct}%` }, style]} />;
 }
 
 function BandEye({
@@ -503,15 +494,6 @@ const styles = StyleSheet.create({
     borderColor: eos.seam,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  current: {
-    position: 'absolute',
-    top: (TRACK_H - 16) / 2,
-    width: 3,
-    height: 16,
-    marginLeft: -1.5,
-    borderRadius: radii.full,
-    backgroundColor: eos.bone,
   },
   thumbWrap: { position: 'absolute', left: 0, top: (TRACK_H - THUMB) / 2, width: THUMB, height: THUMB },
   halo: { position: 'absolute', left: -4, top: -4, width: THUMB + 8, height: THUMB + 8, borderRadius: radii.full },

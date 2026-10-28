@@ -221,7 +221,6 @@ export function PlaySetupScreen() {
                   live={live}
                   onChange={setStartRating}
                   cap={cap}
-                  currentRating={prog.currentPuzzleRating}
                   levelUpFrom={rated ? floor : undefined}
                   norm={rated ? unlocked : undefined}
                   bandLabels={bandLabels}
