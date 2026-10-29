@@ -18,10 +18,13 @@ import { HintButton, PracticeTurnCard, SolvedBadge } from '@/features/review/pra
 import { usePractice } from '@/features/review/practice/usePractice';
 import { StateView } from '@/features/review/states';
 import { useAppStore } from '@/stores/appStore';
-import { AppText } from '@/ui';
+import { AppText, PillButton, stackHeader } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { BoardSwipe, SolutionStepper } from './SolutionStepper';
+
+/** MobPuzzleViewer: the `.float` round back button. */
+const FLOAT_HEADER = stackHeader('float');
 
 const lichessUrl = (id: string) => `https://lichess.org/training/${encodeURIComponent(id)}`;
 
@@ -53,6 +56,7 @@ export function ViewerScreen({ puzzleId }: { puzzleId: string }) {
     <Stack.Screen
       options={{
         title: t('puzzle.title'),
+        header: FLOAT_HEADER,
         headerRight: puzzle ? () => <LichessButton id={puzzle.id} rating={puzzle.rating} t={t} /> : undefined,
       }}
     />
@@ -127,7 +131,7 @@ export function ViewerScreen({ puzzleId }: { puzzleId: string }) {
           <View style={styles.actions}>
             {title === 'solved' ? (
               <>
-                <SolvedBadge t={t} />
+                <SolvedBadge t={t} fit />
                 <ActionButton testID="viewer-try-again" label={t('puzzle.try_again')} onPress={() => controller.dispatch({ type: 'tryAgain' })}>
                   <RotateCcw size={16} color={eos.bone} />
                 </ActionButton>
@@ -181,13 +185,15 @@ function ActionButton({
   );
 }
 
+/** `.float` pill in the header's right slot: 44 pt, padding 0/14, gap 4, "1212 · Lichess" + 14 pt link glyph. */
 function LichessButton({ id, rating, t }: { id: string; rating: number; t: TFn }) {
   return (
-    <Tap
+    <PillButton
       testID="viewer-lichess"
-      accessibilityRole="link"
       accessibilityLabel={t('puzzle.open_lichess')}
-      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      label={`${rating} · Lichess`}
+      labelVariant="caption"
+      contentStyle={styles.lichess}
       onPress={() =>
         void WebBrowser.openBrowserAsync(lichessUrl(id), {
           controlsColor: eos.ember,
@@ -195,13 +201,9 @@ function LichessButton({ id, rating, t }: { id: string; rating: number; t: TFn }
           dismissButtonStyle: 'close',
         })
       }
-      style={styles.lichess}
     >
-      <AppText variant="caption" color={eos.bone} style={styles.counter}>
-        {`${rating} · Lichess`}
-      </AppText>
-      <ExternalLink size={14} color={eos.ash} />
-    </Tap>
+      <ExternalLink size={14} strokeWidth={2} color={eos.ash} />
+    </PillButton>
   );
 }
 
@@ -226,5 +228,5 @@ const styles = StyleSheet.create({
   },
   disabled: { opacity: 0.5 },
   counter: { fontVariant: ['tabular-nums'] },
-  lichess: { flexDirection: 'row', alignItems: 'center', gap: space[1], paddingHorizontal: space[2], height: space[9] },
+  lichess: { paddingHorizontal: space[3.5], gap: space[1] },
 });

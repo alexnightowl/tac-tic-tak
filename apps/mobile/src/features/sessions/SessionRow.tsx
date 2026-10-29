@@ -1,6 +1,6 @@
 import { formatSessionTime, type SessionRow as Row } from '@tac/core/format';
 import { isTrainingStyle } from '@tac/core/rules';
-import { control, eos, radii, space, surface } from '@tac/core/tokens';
+import { eos, radii, shadows, space, surface, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { router, type Href } from 'expo-router';
 import { ArrowDownRight, ArrowUpRight, ChevronRight, Trash2 } from 'lucide-react-native';
@@ -132,8 +132,8 @@ export function SessionRow({ row, lang, t, onDelete }: { row: Row; lang: 'en' | 
       {onDelete ? (
         <Animated.View style={[styles.action, actionStyle]}>
           <Tap testID={`history-delete-${row.id}`} accessibilityRole="button" accessibilityLabel={t('sessions.delete_a11y')} onPress={del} style={styles.actionTap}>
-            <Trash2 size={18} color={control.segmentedActiveText} />
-            <AppText variant="caption" color={control.segmentedActiveText}>
+            <Trash2 size={18} color={tone.onEmber} />
+            <AppText variant="caption" color={tone.onEmber}>
               {t('sessions.delete')}
             </AppText>
           </Tap>
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: radii['2xl'],
     borderWidth: 1,
     borderColor: surface.cardBorder,
-    overflow: 'hidden',
+    boxShadow: [...shadows.card],
   },
   inner: { flexDirection: 'row', alignItems: 'center', gap: space[3], padding: space[3] },
   styleTile: { width: space[9], height: space[9], borderRadius: radii.lg, alignItems: 'center', justifyContent: 'center', backgroundColor: eos.rise },

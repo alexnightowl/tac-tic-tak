@@ -11,10 +11,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feel } from '@/feel';
 import { reviewKeys, sessionApi } from '@/features/review/api';
 import { Skeleton, StateView } from '@/features/review/states';
-import { AppText, Card, PlateButton } from '@/ui';
+import { AppText, Card, PlateButton, stackHeader } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { formatSessionTitle, pct, responseTime, sessionThemeLabel } from './format';
+
+/** MobSessions / MobSessionDetail: the `.float` round back button. */
+const FLOAT_HEADER = stackHeader('float');
 
 type Attempt = SessionDetail['attempts'][number];
 
@@ -51,7 +54,7 @@ export function SessionDetailScreen({ id }: { id: string }) {
     }
   };
 
-  const title = <Stack.Screen options={{ title: t('sessions.detail_title') }} />;
+  const title = <Stack.Screen options={{ title: t('sessions.detail_title'), header: FLOAT_HEADER }} />;
 
   if (q.isPending) {
     return (
@@ -60,7 +63,7 @@ export function SessionDetailScreen({ id }: { id: string }) {
         <View style={styles.pad} testID="session-loading">
           <Skeleton style={styles.skTitle} />
           <View style={styles.grid}>
-            {[0, 1, 2, 3].map((i) => (
+            {[0, 1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} style={styles.skStat} />
             ))}
           </View>
@@ -108,8 +111,6 @@ export function SessionDetailScreen({ id }: { id: string }) {
         <Stat label={t('sessions.peak')} value={String(s.peakRating)} testID="session-peak" />
         <Stat label={t('sessions.accuracy')} value={pct(s.accuracy)} testID="session-accuracy" />
         <Stat label={t('sessions.avg_response')} value={responseTime(s.avgResponseMs)} testID="session-avg" />
-      </View>
-      <View style={styles.grid}>
         <Stat label={t('sessions.solved')} value={String(s.solved)} color={eos.sage} testID="session-solved" />
         <Stat label={t('sessions.failed')} value={String(s.failed)} color={eos.rose} testID="session-failed" />
       </View>

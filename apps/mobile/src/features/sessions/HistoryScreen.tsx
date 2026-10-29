@@ -15,10 +15,13 @@ import { reviewKeys, sessionApi, type OverviewResponse } from '@/features/review
 import { Skeleton, StateView } from '@/features/review/states';
 import { queryClient } from '@/platform/query';
 import { toast } from '@/shell/toast/store';
-import { AppText } from '@/ui';
+import { AppText, stackHeader } from '@/ui';
 import { useLang, useT } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { SessionRow } from './SessionRow';
+
+/** MobSessions / MobSessionDetail: the `.float` round back button. */
+const FLOAT_HEADER = stackHeader('float');
 
 /**
  * B9 (paginated /sessions) is not on the API yet: the history is the
@@ -118,7 +121,7 @@ export function HistoryScreen() {
     }
   };
 
-  const title = <Stack.Screen options={{ title: t('sessions.title') }} />;
+  const title = <Stack.Screen options={{ title: t('sessions.title'), header: FLOAT_HEADER }} />;
 
   if (q.isPending) {
     return (

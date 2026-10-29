@@ -229,7 +229,8 @@ export function BoardSwipe({ onStep }: { onStep: (delta: number, source: StepSou
   );
 }
 
-const THUMB = space[4];
+/** Design: 20 pt bone thumb. */
+const THUMB = space[5];
 
 const styles = StyleSheet.create({
   wrap: { gap: space[2] },
