@@ -111,6 +111,8 @@ export type PracticeEvent =
   | AnimationDoneEvent
   | { type: 'timer'; id: PracticeTimer }
   | { type: 'hint' }
+  /** Drill / mistakes: give up on the puzzle on the board and move on (offline runner Skip). */
+  | { type: 'skip' }
   | { type: 'showSolution' }
   | { type: 'tryAgain' }
   | { type: 'step'; delta: number; source: StepSource }

@@ -192,6 +192,62 @@ describe('practice: drill advance', () => {
   });
 });
 
+describe('practice: skip', () => {
+  it('drill: skip mid-puzzle cancels timers and asks for the next puzzle', () => {
+    const d = new Driver({ mode: 'drill' });
+    d.send({ type: 'start', items: [{ puzzle: LONG }] });
+    d.land();
+    d.move('e6e7');
+    expect(d.s.phase).toBe('opponentReplying');
+    d.send({ type: 'skip' });
+    expect(d.types()).toEqual(['cancel', 'interactive', 'advance']);
+    expect(d.s.phase).toBe('advancing');
+    expect(d.last('advance')!.puzzleId).toBe('00008');
+    expect(d.s.drilled).toBe(0);
+    // The cancelled reply timer is inert.
+    d.timer('reply');
+    expect(d.s.phase).toBe('advancing');
+  });
+
+  it('skip during a wrong-move rewind and during the setup slide', () => {
+    const d = new Driver({ mode: 'drill' });
+    d.send({ type: 'start', items: [{ puzzle: MATE }] });
+    d.send({ type: 'skip' });
+    expect(d.s.phase).toBe('advancing');
+    const d2 = new Driver({ mode: 'drill' });
+    d2.send({ type: 'start', items: [{ puzzle: MATE }] });
+    d2.land();
+    d2.move('a1a7');
+    expect(d2.s.phase).toBe('rewinding');
+    d2.send({ type: 'skip' });
+    expect(d2.s.phase).toBe('advancing');
+    d2.timer('rewind');
+    expect(d2.s.phase).toBe('advancing');
+  });
+
+  it('is ignored when solved, idle, or in the viewer; mistakes pops the head', () => {
+    const d = new Driver({ mode: 'drill' });
+    d.send({ type: 'skip' });
+    expect(d.s.phase).toBe('idle');
+    d.send({ type: 'start', items: [{ puzzle: MATE }] });
+    d.land();
+    d.move('a1a8');
+    d.send({ type: 'skip' });
+    expect(d.s.phase).toBe('solved');
+    const v = new Driver({ mode: 'viewer' });
+    v.send({ type: 'start', items: [{ puzzle: MATE }] });
+    v.land();
+    v.send({ type: 'skip' });
+    expect(v.s.phase).toBe('playerTurn');
+    const m = new Driver({ mode: 'mistakes' });
+    m.send({ type: 'start', items: [{ puzzle: MATE }, { puzzle: { ...MATE, id: 'm2' } }] });
+    m.land();
+    m.send({ type: 'skip' });
+    expect(m.s.phase).toBe('swapping');
+    expect(m.s.queue.map((i) => i.puzzle.id)).toEqual(['m2']);
+  });
+});
+
 describe('practice: mistakes queue', () => {
   it('FIFO with progress; failed items resolve the review queue (Q14), slow ones do not', () => {
     const d = new Driver({ mode: 'mistakes' });

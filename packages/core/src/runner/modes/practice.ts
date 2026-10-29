@@ -326,6 +326,27 @@ function onHint(tx: Tx) {
   tx.emit({ type: 'feel', event: level === 1 ? 'pickup' : 'hoverLegal' });
 }
 
+// ─── Skip ───────────────────────────────────────────────────────────────
+
+/** Phases with a live puzzle the player can give up on. */
+const SKIPPABLE = new Set<PracticeState['phase']>(['setupAnimating', 'playerTurn', 'opponentReplying', 'rewinding']);
+
+/**
+ * Give up on the puzzle on the board (offline runner Skip): drill asks for
+ * the next one through `advance`, mistakes pops its head. The screen owns
+ * what a skip means for results (offline: a miss).
+ */
+function onSkip(tx: Tx) {
+  const s = tx.s;
+  if (s.mode === 'viewer' || !s.item || !SKIPPABLE.has(s.phase)) return;
+  tx.cancelAll();
+  tx.clearHint();
+  s.anim = null;
+  tx.interactive(false);
+  if (s.mode === 'mistakes') return popHead(tx);
+  requestAdvance(tx);
+}
+
 // ─── Viewer ─────────────────────────────────────────────────────────────
 
 function showSolution(tx: Tx) {
@@ -439,6 +460,8 @@ function stepEvent(tx: Tx, e: PracticeEvent) {
       return onTimer(tx, e.id);
     case 'hint':
       return onHint(tx);
+    case 'skip':
+      return onSkip(tx);
     case 'showSolution':
       return showSolution(tx);
     case 'tryAgain':
