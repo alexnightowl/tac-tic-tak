@@ -4,13 +4,14 @@ import { formatLocalDate } from '../format';
 
 export type HeatmapDatum = { date: string; count: number };
 export type HeatmapCell = { date: string; dateObj: Date; count: number; level: number };
-/** weeks[col][row]: col 0 is the oldest week, row 0 is Monday. Future
- *  days in the current week are null. */
+/** weeks[col][row]: col 0 is the oldest week, row 0 is Sunday (design v2:
+ *  Mon / Wed / Fri labels on rows 1 / 3 / 5). Future days in the current
+ *  week are null. */
 export type HeatmapGrid = { weeks: Array<Array<HeatmapCell | null>> };
 
 export const HEATMAP_DAY_LABELS = {
-  en: ['Mon', '', 'Wed', '', 'Fri', '', ''],
-  uk: ['Пн', '', 'Ср', '', 'Пт', '', ''],
+  en: ['', 'Mon', '', 'Wed', '', 'Fri', ''],
+  uk: ['', 'Пн', '', 'Ср', '', 'Пт', ''],
 };
 
 export const HEATMAP_MONTH_LABELS = {
@@ -36,18 +37,18 @@ export function bucketByLocalDay(points: Array<{ endedAt: string }>): HeatmapDat
 }
 
 /**
- * GitHub-style grid: 7 rows (Mon..Sun) × `weeks` columns ending at the
+ * GitHub-style grid: 7 rows (Sun..Sat) × `weeks` columns ending at the
  * current week. Missing days count as 0.
  */
 export function buildGrid(data: HeatmapDatum[], weeks: number, now: Date = new Date()): HeatmapGrid {
   const counts = new Map(data.map((d) => [d.date, d.count]));
   const today = new Date(now);
   today.setHours(0, 0, 0, 0);
-  // Walk back to Monday-of-current-week so each column is Mon..Sun.
-  const dayOfWeek = (today.getDay() + 6) % 7; // Mon=0 ... Sun=6
+  // Walk back to Sunday-of-current-week so each column is Sun..Sat.
+  const dayOfWeek = today.getDay(); // Sun=0 ... Sat=6
   const endMon = new Date(today);
   endMon.setDate(today.getDate() - dayOfWeek);
-  // Start of grid = Monday of (weeks - 1) weeks before endMon.
+  // Start of grid = Sunday of (weeks - 1) weeks before endMon.
   const startMon = new Date(endMon);
   startMon.setDate(endMon.getDate() - (weeks - 1) * 7);
 
@@ -83,8 +84,8 @@ export function levelFor(count: number): number {
   return 4;
 }
 
-/** Month label above the first column whose first day falls in a new
- *  month's first week. */
+/** Month label above the first column whose first day (a Sunday) falls in
+ *  a new month's first week. */
 export function monthMarkers(grid: HeatmapGrid, language: 'en' | 'uk' = 'en'): Array<{ col: number; label: string }> {
   const monthLabels = HEATMAP_MONTH_LABELS[language] ?? HEATMAP_MONTH_LABELS.en;
   const marks: Array<{ col: number; label: string }> = [];

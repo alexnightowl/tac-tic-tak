@@ -2,16 +2,30 @@
 // The web draws into a 1000-wide viewBox stretched with
 // preserveAspectRatio="none"; here the caller passes real pixel sizes.
 import type { TrainingStyle } from '../rules';
+import { eos, tone } from '../tokens/colors';
 
 export type RatingPoint = { endedAt: string; style: TrainingStyle; rating: number };
 export type XY = { x: number; y: number };
 
-// Ember on stone chart palette.
+// Chart palette (design v2 MobStats / MobProfile): rapid sage, blitz ember,
+// bullet smoke. Area fills fade from these at RATING_AREA_OPACITY to 0.
 export const RATING_STYLE_HEX: Record<TrainingStyle, string> = {
-  bullet: '#928e94', // graphite
-  blitz: '#a64241',  // ember
-  rapid: '#afc0a9',  // sage
+  bullet: tone.smoke,
+  blitz: eos.ember,
+  rapid: tone.sage,
 };
+
+/** Top stop opacity of each series' area gradient (the canvas: .22 / .3). */
+export const RATING_AREA_OPACITY: Record<TrainingStyle, number> = {
+  bullet: 0.22,
+  blitz: 0.3,
+  rapid: 0.22,
+};
+
+/** Straight segments through every point (the canvas draws polylines). */
+export function linearPath(pts: XY[]): string {
+  return pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+}
 
 export const RATING_STYLE_ORDER: TrainingStyle[] = ['rapid', 'blitz', 'bullet'];
 
@@ -92,10 +106,19 @@ export type RatingChartLayout = {
  */
 export function ratingChartLayout(
   data: RatingPoint[],
-  box: { width: number; height: number; padL?: number; padR?: number; padT?: number; padB?: number },
+  box: {
+    width: number;
+    height: number;
+    padL?: number;
+    padR?: number;
+    padT?: number;
+    padB?: number;
+    /** 'smooth' = the web's cardinal spline; 'linear' = the design v2 polyline. */
+    curve?: 'smooth' | 'linear';
+  },
 ): RatingChartLayout | null {
   if (data.length === 0) return null;
-  const { width: W, height: H, padL = 0, padR = 12, padT = 10, padB = 14 } = box;
+  const { width: W, height: H, padL = 0, padR = 12, padT = 10, padB = 14, curve = 'smooth' } = box;
   const { yMin, yMax, gridStops } = ratingScale(data.map((p) => p.rating));
 
   const ordered = [...data].sort((a, b) => +new Date(a.endedAt) - +new Date(b.endedAt));
@@ -128,7 +151,7 @@ export function ratingChartLayout(
       rating: p.rating,
       endedAt: p.endedAt,
     }));
-    const linePath = smoothPath(points);
+    const linePath = curve === 'linear' ? linearPath(points) : smoothPath(points);
     const first = points[0];
     const last = points[points.length - 1];
     series.push({

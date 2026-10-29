@@ -1,7 +1,7 @@
 import { localeFor } from '@tac/core/format';
-import { ratingChartLayout, RATING_STYLE_HEX, type RatingPoint } from '@tac/core/charts';
+import { ratingChartLayout, RATING_AREA_OPACITY, RATING_STYLE_HEX, type RatingPoint } from '@tac/core/charts';
 import type { TrainingStyle } from '@tac/core/rules';
-import { black, eos, radii, semantic, space } from '@tac/core/tokens';
+import { eos, radii, semantic, space } from '@tac/core/tokens';
 import { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { GestureDetector, usePanGesture, useTapGesture, useExclusiveGestures } from 'react-native-gesture-handler';
@@ -13,7 +13,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Svg, {
-  Circle,
   ClipPath,
   Defs,
   G,
@@ -33,13 +32,19 @@ import { useLang, useT } from '@/ui/lang';
 import { drawIn, fade, scrubIn } from './motion';
 import { StyleIcon } from './StyleIcon';
 
-// Per-style rating line chart (web RatingHistoryChart) laid out in real
-// pixels from onLayout, so the y labels live inside the Svg instead of an
-// HTML overlay. Native additions: a left-to-right draw-in on mount and a
-// press-and-drag crosshair (tap also picks a session) with a tick per point.
+// Per-style rating line chart (design v2 MobStats "Rating over time"):
+// straight polylines over an area fade, y labels left-aligned in a 40 pt
+// gutter, grid lines from x 40 to the right edge less 12, the plot from
+// x 44. Laid out in real pixels from onLayout. Native additions: a
+// left-to-right draw-in on mount and a press-and-drag crosshair (tap also
+// picks a session) with a tick per point.
 
 const H = 200;
-const LABEL_W = 40;
+/** Grid lines start here; the y labels sit left of it. */
+const GRID_X = 40;
+/** The plot (points) starts here. */
+const PLOT_X = 44;
+const PAD_R = 12;
 const TIP_W = 168;
 const LONG_PRESS_MS = 150;
 /** Tooltip lane above the plot. */
@@ -64,7 +69,10 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
   const reduced = useReducedMotion();
   const progress = useSharedValue(reduced ? 1 : 0);
 
-  const layout = width > 0 ? ratingChartLayout(data, { width: width - LABEL_W, height: H }) : null;
+  const layout =
+    width > 0
+      ? ratingChartLayout(data, { width, height: H, padL: PLOT_X, padR: PAD_R, padT: 6, padB: 6, curve: 'linear' })
+      : null;
 
   // Draw in once the first layout with data exists.
   const hasLayout = !!layout;
@@ -74,7 +82,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
   }, [hasLayout, reduced, progress]);
 
   const clip = useAnimatedProps(() => ({
-    width: progress.get() * Math.max(0, width - LABEL_W + 4),
+    width: PLOT_X + progress.get() * Math.max(0, width - PLOT_X + 4),
   }));
 
   // Every session point, left to right, for the crosshair.
@@ -88,7 +96,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
         year: '2-digit',
       });
       points.push({
-        x: p.x + LABEL_W,
+        x: p.x,
         y: p.y,
         color: RATING_STYLE_HEX[s.style],
         label: `${date} · ${t(`style.${s.style}.name`)} ${p.rating}`,
@@ -160,7 +168,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
   });
   const tip = useAnimatedStyle(() => {
     const i = sel.get();
-    const x = i < 0 ? 0 : Math.min(width - TIP_W, Math.max(LABEL_W, xs[i] - TIP_W / 2));
+    const x = i < 0 ? 0 : Math.min(width - TIP_W, Math.max(GRID_X, xs[i] - TIP_W / 2));
     return { opacity: i < 0 ? 0 : shown.get(), transform: [{ translateX: x }] };
   });
   const tipText = useAnimatedProps(() => {
@@ -169,11 +177,14 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
     return { text: s, defaultValue: s } as object;
   });
 
-  if (data.length === 0) {
+  // One session draws no line (design v2 "new account" state).
+  if (data.length < 2) {
     return (
-      <AppText variant="body" color={eos.dust} style={styles.empty} testID={`${testID}-empty`}>
-        {t('stats.chart_empty')}
-      </AppText>
+      <View style={styles.empty} testID={`${testID}-empty`}>
+        <AppText variant="body" color={eos.dust}>
+          {t('stats.chart_empty')}
+        </AppText>
+      </View>
     );
   }
 
@@ -199,7 +210,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
                 <Defs>
                   {layout.series.map((s) => (
                     <LinearGradient key={s.style} id={`rh-${s.style}`} x1="0" y1="0" x2="0" y2="1">
-                      <Stop offset="0" stopColor={RATING_STYLE_HEX[s.style]} stopOpacity={0.28} />
+                      <Stop offset="0" stopColor={RATING_STYLE_HEX[s.style]} stopOpacity={RATING_AREA_OPACITY[s.style]} />
                       <Stop offset="1" stopColor={RATING_STYLE_HEX[s.style]} stopOpacity={0} />
                     </LinearGradient>
                   ))}
@@ -209,27 +220,19 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
                 </Defs>
                 {layout.grid.map((g) => (
                   <G key={g.value}>
-                    <Line x1={LABEL_W} x2={width - 12} y1={g.y} y2={g.y} stroke={GRID} strokeWidth={1} />
-                    <SvgText
-                      x={LABEL_W - 8}
-                      y={g.y + 4}
-                      fontSize={11}
-                      fill={eos.ash}
-                      textAnchor="end"
-                      fontFamily={labelFont}
-                    >
+                    <Line x1={GRID_X} x2={width - PAD_R} y1={g.y} y2={g.y} stroke={GRID} strokeWidth={1} />
+                    <SvgText x={0} y={g.y + 4} fontSize={11} fill={eos.ash} fontFamily={labelFont}>
                       {String(g.value)}
                     </SvgText>
                   </G>
                 ))}
-                <G clipPath="url(#rh-draw)" x={LABEL_W}>
+                <G clipPath="url(#rh-draw)">
                   {layout.series.map((s) => (
                     <Series
                       key={s.style}
                       style={s.style}
                       linePath={s.linePath}
                       areaPath={s.areaPath}
-                      dots={s.showDots ? s.points : null}
                       dimmed={highlightStyle != null && highlightStyle !== s.style}
                     />
                   ))}
@@ -252,10 +255,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
       </View>
       <View style={styles.legend}>
         {(layout?.series ?? []).map((s) => (
-          <View
-            key={s.style}
-            style={[styles.legendItem, highlightStyle != null && highlightStyle !== s.style && styles.legendDim]}
-          >
+          <View key={s.style} style={styles.legendItem}>
             <View style={[styles.swatch, { backgroundColor: RATING_STYLE_HEX[s.style] }]} />
             <StyleIcon style={s.style} size={12} color={eos.ash} />
             <AppText variant="caption" color={eos.ash}>
@@ -275,13 +275,11 @@ function Series({
   style,
   linePath,
   areaPath,
-  dots,
   dimmed,
 }: {
   style: TrainingStyle;
   linePath: string;
   areaPath: string;
-  dots: { x: number; y: number }[] | null;
   dimmed: boolean;
 }) {
   const opacity = useSharedValue(dimmed ? 0.18 : 1);
@@ -294,9 +292,6 @@ function Series({
     <AnimatedG animatedProps={props}>
       <Path d={areaPath} fill={`url(#rh-${style})`} />
       <Path d={linePath} fill="none" stroke={color} strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
-      {dots?.map((p, i) => (
-        <Circle key={i} cx={p.x} cy={p.y} r={3} fill={color} stroke={black} strokeOpacity={0.4} strokeWidth={1} />
-      ))}
     </AnimatedG>
   );
 }
@@ -304,7 +299,7 @@ function Series({
 const styles = StyleSheet.create({
   plotWrap: { height: H + TIP_LANE },
   plot: { height: H + TIP_LANE, paddingTop: TIP_LANE },
-  empty: { textAlign: 'center', paddingVertical: space[6] },
+  empty: { height: 230, alignItems: 'center', justifyContent: 'center' },
   cross: {
     position: 'absolute',
     top: TIP_LANE,
@@ -344,11 +339,11 @@ const styles = StyleSheet.create({
   legend: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: space[3],
+    rowGap: 6,
+    columnGap: 14,
     marginTop: space[2],
   },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  legendDim: { opacity: 0.5 },
   swatch: { width: 16, height: 3, borderRadius: 2 },
   tabular: { fontVariant: ['tabular-nums'] },
 });

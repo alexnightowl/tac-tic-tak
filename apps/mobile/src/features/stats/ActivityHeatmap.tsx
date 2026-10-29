@@ -230,13 +230,13 @@ export function ActivityHeatmap({ data, weeks = 52, testID }: Props) {
           {daysText}
         </AppText>
         <View style={styles.legend} accessible={false}>
-          <AppText variant="caption" color={eos.dust} style={styles.legendText}>
+          <AppText variant="caption" color={eos.dust} style={styles.legendLess}>
             {t('stats.heatmap_less')}
           </AppText>
           {LEVEL_FILL.map((c, i) => (
             <View key={i} style={[styles.swatch, { backgroundColor: c }]} />
           ))}
-          <AppText variant="caption" color={eos.dust} style={styles.legendText}>
+          <AppText variant="caption" color={eos.dust} style={styles.legendMore}>
             {t('stats.heatmap_more')}
           </AppText>
         </View>
@@ -286,7 +286,8 @@ const styles = StyleSheet.create({
     marginTop: space[2],
   },
   summary: { flexShrink: 1 },
-  legend: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  legendText: { fontSize: 10 },
-  swatch: { width: 11, height: 11, borderRadius: R },
+  legend: { flexDirection: 'row', alignItems: 'center', gap: 3 },
+  legendLess: { marginRight: 3 },
+  legendMore: { marginLeft: 3 },
+  swatch: { width: 10, height: 10, borderRadius: R },
 });

@@ -69,7 +69,7 @@ export function radarGeometry(
 ): RadarGeometry | null {
   const n = data.length;
   if (n === 0) return null;
-  const { size = 320, rings = 5 } = opts;
+  const { size = 320, rings = 4 } = opts;
   const values = data.map((d) => d.value);
   const scaleMin = opts.min ?? Math.min(...values, 0);
   const scaleMax = opts.max ?? Math.max(...values, scaleMin + 100);
@@ -91,9 +91,10 @@ export function radarGeometry(
   for (let i = 0; i < rings; i++) {
     const f = (i + 1) / rings;
     ringPaths.push(closedPath(data.map((_, idx) => spokePoint(idx, f))));
+    // Inside the ring, just under its top vertex (design v2).
     ringLabels.push({
       x: cx + 4,
-      y: cy - r * f + 4,
+      y: cy - r * f + 11,
       value: Math.round(scaleMin + (scaleMax - scaleMin) * f),
     });
   }

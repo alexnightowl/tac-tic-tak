@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   bucketByLocalDay, buildGrid, heatmapTooltip, levelFor, monthMarkers, niceStep, radarBounds,
-  radarGeometry, ratingChartLayout, ratingScale, selectRadarThemes, smoothPath, wrapLabel,
+  linearPath, radarGeometry, ratingChartLayout, ratingScale, selectRadarThemes, smoothPath, wrapLabel,
   type RatingPoint,
 } from '../src/charts';
 
@@ -12,30 +12,30 @@ describe('heatmap', () => {
     expect([0, -1, 1, 2, 3, 4, 7, 8, 100].map(levelFor)).toEqual([0, 0, 1, 2, 2, 3, 3, 4, 4]);
   });
 
-  it('buildGrid ends on the current week, Mon..Sun, future days null', () => {
+  it('buildGrid ends on the current week, Sun..Sat, future days null', () => {
     const now = at(2026, 10, 22); // Thursday
     const grid = buildGrid([{ date: '2026-10-22', count: 2 }, { date: '2026-10-05', count: 9 }], 52, now);
     expect(grid.weeks).toHaveLength(52);
     expect(grid.weeks.every((w) => w.length === 7)).toBe(true);
     const last = grid.weeks[51];
-    expect(last[0]?.date).toBe('2026-10-19'); // Monday
-    expect(last[3]).toMatchObject({ date: '2026-10-22', count: 2, level: 2 });
-    expect(last.slice(4)).toEqual([null, null, null]);
-    expect(grid.weeks[0][0]?.date).toBe('2025-10-27');
+    expect(last[0]?.date).toBe('2026-10-18'); // Sunday
+    expect(last[4]).toMatchObject({ date: '2026-10-22', count: 2, level: 2 });
+    expect(last.slice(5)).toEqual([null, null]);
+    expect(grid.weeks[0][0]?.date).toBe('2025-10-26');
     const oct5 = grid.weeks.flat().find((c) => c?.date === '2026-10-05');
     expect(oct5?.level).toBe(4);
-    expect(grid.weeks.flat().filter(Boolean)).toHaveLength(51 * 7 + 4);
+    expect(grid.weeks.flat().filter(Boolean)).toHaveLength(51 * 7 + 5);
   });
 
-  it('a Sunday "now" fills the whole last column', () => {
-    const grid = buildGrid([], 4, at(2026, 10, 25));
+  it('a Saturday "now" fills the whole last column', () => {
+    const grid = buildGrid([], 4, at(2026, 10, 24));
     expect(grid.weeks[3].every((c) => c !== null)).toBe(true);
-    expect(grid.weeks[3][6]?.date).toBe('2026-10-25');
+    expect(grid.weeks[3][6]?.date).toBe('2026-10-24');
   });
 
-  it('month markers go on the first column whose Monday is a day 1-7', () => {
-    // Columns start Aug 24; Sep 1 falls in the Aug 31 column, so Sep is
-    // marked on the Sep 7 column, as on the web.
+  it('month markers go on the first column whose Sunday is a day 1-7', () => {
+    // Columns start Aug 23; Sep 1 falls in the Aug 30 column, so Sep is
+    // marked on the Sep 6 column, as on the web.
     const grid = buildGrid([], 9, at(2026, 10, 22));
     expect(monthMarkers(grid, 'en')).toEqual([
       { col: 2, label: 'Sep' },
@@ -76,6 +76,11 @@ describe('rating history', () => {
     );
   });
 
+  it('linearPath', () => {
+    expect(linearPath([])).toBe('');
+    expect(linearPath([{ x: 0, y: 0 }, { x: 12, y: 6 }])).toBe('M0,0 L12,6');
+  });
+
   it('ratingScale', () => {
     expect(ratingScale([])).toEqual({ yMin: 1100, yMax: 1500, gridStops: [1100, 1200, 1300, 1400, 1500] });
     expect(ratingScale([1210, 1390])).toEqual({ yMin: 1175, yMax: 1425, gridStops: [1200, 1250, 1300, 1350, 1400] });
@@ -100,6 +105,8 @@ describe('rating history', () => {
     expect(blitz.areaPath.endsWith('L100,110 L0,110 Z')).toBe(true);
     for (const g of l.grid) expect(g.y).toBeGreaterThanOrEqual(10);
     expect(ratingChartLayout([], { width: 100, height: 100 })).toBeNull();
+    const lin = ratingChartLayout(pts, { width: 112, height: 124, curve: 'linear' })!;
+    expect(lin.series[1].linePath).toBe(`M0,${lin.series[1].points[0].y} L100,${lin.series[1].points[1].y}`);
   });
 
   it('identical points get distinct x (web bug fixed)', () => {
@@ -127,8 +134,9 @@ describe('radar', () => {
     expect(g.poly[0].y).toBeCloseTo(44);   // top spoke at full scale
     expect(g.poly[1].x).toBeCloseTo(194);  // right spoke at half scale
     expect(g.poly[2].y).toBeCloseTo(144);  // bottom spoke at min collapses to centre
-    expect(g.ringPaths).toHaveLength(5);
-    expect(g.ringLabels.map((l) => l.value)).toEqual([1200, 1400, 1600, 1800, 2000]);
+    expect(g.ringPaths).toHaveLength(4);
+    expect(g.ringLabels.map((l) => l.value)).toEqual([1250, 1500, 1750, 2000]);
+    expect(g.ringLabels[3].y).toBe(144 - 100 + 11);
     expect(g.axisLabels.map((l) => l.anchor)).toEqual(['middle', 'start', 'middle', 'end']);
     expect(radarGeometry([])).toBeNull();
   });
