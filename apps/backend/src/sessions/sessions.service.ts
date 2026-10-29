@@ -18,6 +18,10 @@ import { AchievementsService } from '../achievements/achievements.service';
 const WINDOW = 4;
 const MIN_RATING = 400;
 const MAX_RATING = 3000;
+// The level-up ceiling ("norm") lives on the play slider's 25-point grid,
+// and so does its floor (norm - 50); live ratings stay unsnapped.
+const NORM_GRID = 25;
+const onNormGrid = (n: number) => Math.round(n / NORM_GRID) * NORM_GRID;
 
 @Injectable()
 export class SessionsService {
@@ -469,8 +473,10 @@ export class SessionsService {
         nextUnlocked = progression.unlockedStartRating + UNLOCK_REWARD;
         nextWeakStreak = 0;
       } else if (demote.demoted) {
+        // Entry rating rounded down to the grid, so the clamp can't
+        // swallow the demotion or leave the norm off-grid.
         nextUnlocked = Math.max(
-          progression.startPuzzleRating,
+          Math.floor(progression.startPuzzleRating / NORM_GRID) * NORM_GRID,
           progression.unlockedStartRating - demote.penalty,
         );
         nextWeakStreak = demote.streakAfter;
@@ -488,6 +494,9 @@ export class SessionsService {
         unlockedStartRating: nextUnlocked,
       };
     }
+
+    nextUnlocked = onNormGrid(nextUnlocked);
+    if (demoteResponse) demoteResponse.unlockedStartRating = nextUnlocked;
 
     if (
       nextUnlocked !== progression.unlockedStartRating ||
