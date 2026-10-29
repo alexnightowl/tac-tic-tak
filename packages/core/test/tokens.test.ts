@@ -42,8 +42,10 @@ describe('colours', () => {
     expect(mixed.heat2).toBe(mixTransparent(eos.ember, 0.45));
     expect(mixed.heat3).toBe(mixTransparent(eos.ember, 0.7));
     expect(mixed.heroViolet22).toBe(mixTransparent('#6a6be0', 0.22));
-    expect(mixed.ctaDockBottom).toBe(mixOpaque(eos.ember, 0.1, eos.ink));
-    expect(mixed.ctaDockMid).toBe(mixOpaque(eos.ember, 0.06, eos.ink));
+    // The design v2 canvas keeps the play-setup dock baked from the web
+    // ember (#a64241), even though its flat ember moved to #8e4542.
+    expect(mixed.ctaDockBottom).toBe(mixOpaque('#a64241', 0.1, eos.ink));
+    expect(mixed.ctaDockMid).toBe(mixOpaque('#a64241', 0.06, eos.ink));
     expect(mixed.ctaDockFade).toBe(mixTransparent(eos.ink, 0.75));
   });
 
