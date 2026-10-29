@@ -26,7 +26,9 @@ const COUNTRY_RE = /^[A-Za-z]{2}$/;
 export type ProfileFields = { displayName: string | null; bio: string | null; country: string | null };
 
 /**
- * Profile editor (web ProfileEditor) as a native page sheet. Explicit Save
+ * Profile editor (design v2 MobProfileEditor) as a native page sheet: ×,
+ * Cinzel 15 title, Save plate; 64 pt avatar + Change avatar; display name,
+ * bio and country with counters. Explicit Save
  * only: nothing commits on blur (the web settings tab saved per field on
  * blur, which mobile can't rely on). Closing with changes asks first; the
  * swipe-down dismissal is off while the form is dirty.
@@ -172,6 +174,7 @@ function EditorBody({
             loading={uploading}
             onPress={chooseAvatar}
             testID="profile-editor-avatar"
+            style={styles.center}
           />
         </View>
 
@@ -271,7 +274,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: layout.inputPaddingX,
     paddingTop: space[3],
     paddingBottom: space[3],
+    lineHeight: 22,
     textAlignVertical: 'top',
   },
   title: { flex: 1 },
+  center: { alignSelf: 'center' },
 });
