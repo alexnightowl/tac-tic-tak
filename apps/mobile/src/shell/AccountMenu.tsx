@@ -18,6 +18,9 @@ import { Segmented } from '@/ui/Segmented';
 import { Tap } from '@/ui/Tap';
 import { patchSettings } from './settings';
 
+/** MobAccountMenu bottom padding; the native sheet already adds the home-indicator inset. */
+const PAD_BOTTOM = 34;
+
 /**
  * The account sheet behind the header avatar: profile, friends (with the
  * incoming-request count), language, log out. Settings is a tab (D22). A
@@ -43,7 +46,7 @@ export function AccountMenu() {
   ] as const;
 
   return (
-    <View style={[styles.root, { paddingBottom: Math.max(insets.bottom, space[4]) }]} testID="account-menu">
+    <View style={[styles.root, { paddingBottom: Math.max(0, PAD_BOTTOM - insets.bottom) }]} testID="account-menu">
       <Tap
         testID="menu-me"
         accessibilityRole="button"
