@@ -152,6 +152,8 @@ appId: online.tactictak.app
     when: { true: "${CASE == 'demote' || CASE == 'demote-rank'}" }
     commands:
       - assertVisible: { id: summary-demoted }
+      # One outcome card (design): the demote card replaces "So close".
+      - assertNotVisible: { id: summary-near }
 - runFlow:
     when: { true: "${CASE == 'comfort'}" }
     commands:

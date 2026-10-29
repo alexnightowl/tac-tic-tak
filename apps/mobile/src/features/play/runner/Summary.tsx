@@ -138,7 +138,10 @@ function SummaryBody({
         <LevelUpExplainer ceiling={outcome.calibrationComplete.ceiling} floor={outcome.calibrationComplete.floor} t={t} />
       )}
       {outcome.comfort && <ComfortSessionNote floor={outcome.comfort.floor} t={t} />}
-      {outcome.unlock && <UnlockOutcome unlocked={outcome.unlock.unlocked} criteria={outcome.unlock.criteria} t={t} />}
+      {/* Design: one outcome card per session — a demote / weak-at-peak card replaces "So close". */}
+      {outcome.unlock && (outcome.unlock.unlocked || !outcome.demote) && (
+        <UnlockOutcome unlocked={outcome.unlock.unlocked} criteria={outcome.unlock.criteria} t={t} />
+      )}
       {outcome.demote && <DemoteOutcomeCard demote={outcome.demote} t={t} />}
 
       <View style={styles.grid}>

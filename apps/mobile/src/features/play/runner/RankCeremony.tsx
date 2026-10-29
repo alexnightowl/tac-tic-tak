@@ -42,10 +42,21 @@ type Props = {
 };
 
 const EYE = 200;
+/** See styles.dim. */
+const DIM_MATCH = 0.88;
 /** drop-shadow(0 0 26px): a halo about 40 pt past the eye's rim. */
 const GLOW = EYE + 80;
 const bez = (b: readonly [number, number, number, number]) => Easing.bezier(b[0], b[1], b[2], b[3]);
 const GLOW_RGB = `rgb(${ceremony.glowRgb.join(',')})`;
+
+/**
+ * SVG stops ignore an rgba() colour's alpha: split it into an opaque
+ * colour + stopOpacity (else the 12 % mid stop paints the screen red).
+ */
+function stopOf(c: string): { stopColor: string; stopOpacity: number } {
+  const m = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)$/.exec(c);
+  return m ? { stopColor: `rgb(${m[1]},${m[2]},${m[3]})`, stopOpacity: Number(m[4]) } : { stopColor: c, stopOpacity: 1 };
+}
 
 /** CSS keyframes ease each segment: one withTiming per stop. */
 function keyframed(stops: readonly (readonly [number, number])[], duration: number, ease: ReturnType<typeof bez>) {
@@ -241,8 +252,8 @@ function BackdropGlow({ alpha }: { alpha: SharedValue<number> }) {
         <Defs>
           <RadialGradient id="ceremonyGlow" cx={cx} cy={cy} r={r} fx={cx} fy={cy} gradientUnits="userSpaceOnUse">
             <Stop offset="0" stopColor={GLOW_RGB} stopOpacity={peak} />
-            <Stop offset="0.35" stopColor={ceremony.glowMid} />
-            <Stop offset="0.65" stopColor={ceremony.glowEnd} />
+            <Stop offset="0.35" {...stopOf(ceremony.glowMid)} />
+            <Stop offset="0.65" {...stopOf(ceremony.glowEnd)} />
           </RadialGradient>
         </Defs>
         <Rect x="0" y="0" width={w} height={h} fill="url(#ceremonyGlow)" />
@@ -259,8 +270,8 @@ function EyeGlow({ color, opacity }: { color: string; opacity: SharedValue<numbe
       <Svg width={GLOW} height={GLOW}>
         <Defs>
           <RadialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
-            <Stop offset={String(EYE / GLOW - 0.06)} stopColor={color} />
-            <Stop offset="1" stopColor={color} stopOpacity={0} />
+            <Stop offset={String(EYE / GLOW - 0.06)} {...stopOf(color)} />
+            <Stop offset="1" stopColor={stopOf(color).stopColor} stopOpacity={0} />
           </RadialGradient>
         </Defs>
         <Rect x="0" y="0" width={GLOW} height={GLOW} fill="url(#eyeGlow)" />
@@ -290,7 +301,10 @@ const styles = StyleSheet.create({
     mixBlendMode: 'saturation',
     opacity: ceremony.downFilter.grayscale,
   },
-  dim: { opacity: 1 - ceremony.downFilter.brightness },
+  // brightness(0.75) after the saturation blend: the blend keeps the
+  // backdrop's luminance a little high, so the black layer is matched to
+  // the canvas render (eye mean 48 vs 55 at 0.25) rather than 1 − 0.75.
+  dim: { opacity: 1 - ceremony.downFilter.brightness * DIM_MATCH },
   glow: { position: 'absolute', width: GLOW, height: GLOW, left: (EYE - GLOW) / 2, top: (EYE - GLOW) / 2 },
   text: { marginTop: space[10], alignItems: 'center', gap: space[2] },
   kicker: { letterSpacing: 3 },
