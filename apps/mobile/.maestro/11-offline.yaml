@@ -1,0 +1,118 @@
+# Offline puzzles (docs/mobile/OFFLINE.md): download a pack, go "offline"
+# (the e2e force-offline switch stands in for airplane mode: simulators
+# can't cut the network, and the sync engine treats it as no network),
+# solve one puzzle and skip one (= missed), check the pending counter, come
+# back online and see the "Welcome back" summary with the server's numbers.
+# Local backend only (needs GET /offline/pack + POST /offline/sync). Run with:
+#   maestro test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/11-offline.yaml
+appId: online.tactictak.app
+---
+- runFlow: common/dismiss-system.yaml
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    stopApp: true
+- runFlow: common/dismiss-system.yaml
+# Login, retried: a Metro reload from another stream can remount the form mid-typing.
+- repeat:
+    times: 3
+    while:
+      notVisible: { id: home-screen }
+    commands:
+      - extendedWaitUntil:
+          visible: { id: login-screen }
+          timeout: 60000
+      - tapOn: { id: login-nickname }
+      - eraseText: 30
+      - inputText: ${E2E_USER}
+      - tapOn: { id: login-password-eye }
+      - tapOn: { id: login-password }
+      - eraseText: 40
+      - inputText: ${E2E_PASSWORD}
+      - tapOn: { id: login-brand }
+      - tapOn: { id: login-submit }
+      - extendedWaitUntil:
+          visible: { id: home-screen }
+          timeout: 15000
+          optional: true
+      - tapOn:
+          text: Not Now
+          optional: true
+- extendedWaitUntil:
+    visible: { id: home-screen }
+    timeout: 20000
+
+# Play tab → Offline puzzles.
+- tapOn: { id: tab-play }
+- extendedWaitUntil:
+    visible: { id: play-setup }
+    timeout: 10000
+- scrollUntilVisible:
+    element: { id: play-offline }
+    direction: DOWN
+    centerElement: true
+- tapOn: { id: play-offline }
+- extendedWaitUntil:
+    visible: { id: offline-packs }
+    timeout: 10000
+- takeScreenshot: 11-offline-packs-empty
+
+# Download "Mate patterns" (40 puzzles): Get → Saved.
+- tapOn: { id: offline-pack-mate-action }
+- extendedWaitUntil:
+    visible: { id: offline-pack-mate-open }
+    timeout: 30000
+- assertVisible: { id: offline-pack-mate-meta, text: ".*40.*" }
+- takeScreenshot: 11-offline-packs-saved
+
+# "Airplane mode" on.
+- tapOn: { id: e2e-force-offline }
+- extendedWaitUntil:
+    visible: { id: offline-note }
+    timeout: 5000
+- tapOn: { id: offline-pack-mate-open }
+- extendedWaitUntil:
+    visible: { id: offline-solve }
+    timeout: 10000
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 10000
+- assertVisible: { id: offline-chip }
+- assertVisible: { id: offline-rating, text: "\\d+\\*" }
+- takeScreenshot: 11-offline-solve
+
+# Solve one: the result is queued.
+- tapOn: { id: e2e-solve }
+- extendedWaitUntil:
+    visible: { id: offline-waiting, text: "1 .*" }
+    timeout: 15000
+# The next puzzle swaps in; skip it (counts as missed).
+- extendedWaitUntil:
+    visible: { id: runner-phase, text: playerTurn }
+    timeout: 15000
+- tapOn: { id: offline-skip }
+- extendedWaitUntil:
+    visible: { id: offline-waiting, text: "2 .*" }
+    timeout: 5000
+- takeScreenshot: 11-offline-pending
+- tapOn: { id: offline-exit }
+- extendedWaitUntil:
+    visible: { id: offline-pending, text: "2 .*" }
+    timeout: 10000
+
+# Back online: the queue syncs and "Welcome back" opens with real numbers.
+- tapOn: { id: e2e-force-offline }
+- extendedWaitUntil:
+    visible: { id: offline-synced }
+    timeout: 30000
+- assertVisible: { id: offline-stat-solved, text: "1 / 2" }
+- assertVisible: { id: offline-stat-accuracy, text: "50%" }
+- assertVisible: { id: offline-rating-after }
+- takeScreenshot: 11-offline-synced
+- tapOn: { id: offline-synced-close }
+- extendedWaitUntil:
+    visible: { id: offline-packs }
+    timeout: 10000
+- assertNotVisible: { id: offline-pending-card }
+# The two played puzzles left the phone with their results.
+- assertVisible: { id: offline-pack-mate-meta, text: ".*38.*" }
