@@ -253,6 +253,10 @@ export const tone = {
   medalEmber: ['#a5524b', '#7a3634', '#4d2426'] as const,
   medalStone: ['#36343a', '#262429', '#1b191d'] as const,
   medalStoneRing: '#3a383e',
+  /** Hot core of the ember glows (onboarding hero glow, rank glow, mate square); the logo glow's first stop. */
+  emberGlow: '#c95146',
+  /** Onboarding demo board: the target-square ring (rgba(144,143,142,.42)). */
+  legalGrey: '#908f8e',
 } as const;
 
 /**
