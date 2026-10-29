@@ -32,7 +32,8 @@ appId: online.tactictak.app
     commands:
       - scrollUntilVisible: { element: { id: setup-calibration-preview }, direction: DOWN, timeout: 5000 }
       - scrollUntilVisible: { element: { id: setup-calibrating }, direction: UP, timeout: 5000 }
-      - scrollUntilVisible: { element: { id: setup-cal-pill-bullet }, direction: UP, timeout: 5000 }
+      # The bullet tab carries its `?4/5` calibration badge (spoken as "4 of 5").
+      - scrollUntilVisible: { element: { id: setup-style-bullet, text: ".*4 of 5.*" }, direction: UP, timeout: 5000 }
 - runFlow:
     when: { true: "${CASE == 'unlock' || CASE == 'unlock-rank'}" }
     commands:

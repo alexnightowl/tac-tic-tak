@@ -53,6 +53,7 @@ export default function AppLayout() {
         <Stack.Screen name="play/[id]" options={{ headerShown: false, animation: 'fade' }} />
         <Stack.Screen name="review/[puzzleId]" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="sessions/[id]/review" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="play/norm" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen
           name="onboarding"
           options={{

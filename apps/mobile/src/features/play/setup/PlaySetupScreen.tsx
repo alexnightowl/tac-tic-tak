@@ -1,7 +1,7 @@
 import type { Progression } from '@tac/core/api';
 import { CALIBRATION_SESSIONS, STYLE_FORMULAS, UI_STYLE_ORDER, offFormRating, peakFloor, type BandKey, type TrainingStyle } from '@tac/core/rules';
 import { themeLabel } from '@tac/core/themes';
-import { control, eos, layout, mixed, radii, rank, semantic, space, text } from '@tac/core/tokens';
+import { control, eos, graphite, layout, mixed, radii, rank, semantic, space, surface, tone } from '@tac/core/tokens';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
@@ -12,12 +12,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
+import { fontFamily } from '@/ui/fonts';
 import { Tap } from '@/ui/Tap';
 import { clampMinutes, initialStartRating, minuteRange, ratingCap, readLastStyle, resolveDurationFor, writeLastDuration, writeLastStyle } from '../setupPrefs';
 import { startSession, useThemePick } from '../startSession';
 import { startErrorKey, usePlayT } from '../strings';
 import { ThemeIcon } from '../themes/ThemeIcon';
-import { StyleIcon, STRONG } from '../ui';
+import { STRONG, STYLE_ICON, StyleIcon } from '../ui';
 import { DifficultySlider, SliderReadout } from './DifficultySlider';
 import { CalibrationPreview, NextUnlockPreview, ThemePracticeNote } from './Previews';
 
@@ -155,6 +156,7 @@ export function PlaySetupScreen() {
 
   const presets = STYLE_FORMULAS[style].durationPresetsSec;
   const calDone = CALIBRATION_SESSIONS - prog.calibrationSessionsLeft;
+  const newAccount = UI_STYLE_ORDER.every((s) => progressions[s].calibrationSessionsLeft >= CALIBRATION_SESSIONS);
 
   return (
     <View style={styles.root} testID="play-setup">
@@ -170,16 +172,30 @@ export function PlaySetupScreen() {
           {/* 1. Style */}
           <View style={styles.section}>
             <AppText variant="sectionLabel">{t('play.style')}</AppText>
-            <View>
-              <Segmented
-                testID="setup-style"
-                accessibilityLabel={t('play.style')}
-                value={style}
-                onChange={selectStyle}
-                options={UI_STYLE_ORDER.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
-              />
-              <CalibrationPills progressions={progressions} active={style} t={t} />
-            </View>
+            <Segmented
+              testID="setup-style"
+              accessibilityLabel={t('play.style')}
+              size="tight"
+              value={style}
+              onChange={selectStyle}
+              options={UI_STYLE_ORDER.map((s) => {
+                const left = progressions[s].calibrationSessionsLeft;
+                const done = CALIBRATION_SESSIONS - left;
+                // MobPlaySetupNew: a brand-new account shows the style glyphs
+                // and one calibration chip in the blurb; later, each style
+                // still calibrating carries its own `?2/5` badge.
+                return {
+                  value: s,
+                  label: t(`style.${s}.name`),
+                  icon: newAccount ? STYLE_ICON[s] : undefined,
+                  badge: !newAccount && left > 0 ? `?${done}/${CALIBRATION_SESSIONS}` : undefined,
+                  accessibilityLabel:
+                    left > 0
+                      ? `${t(`style.${s}.name`)}, ${t('play.calibration_progress_aria', { done, total: CALIBRATION_SESSIONS })}`
+                      : undefined,
+                };
+              })}
+            />
             <View style={styles.blurb}>
               <View style={styles.blurbIcon}>
                 <StyleIcon style={style} size={16} color={eos.ash} />
@@ -188,9 +204,25 @@ export function PlaySetupScreen() {
                 <AppText variant="caption" color={eos.bone}>
                   {t(`style.${style}.desc`)}
                 </AppText>
-                <AppText variant="label" color={eos.dust} style={styles.blurbRange}>
-                  {`${minMinutes}–${maxMinutes} ${t('play.minutes')}`}
-                </AppText>
+                {newAccount ? (
+                  <View style={styles.blurbFoot}>
+                    <AppText variant="label" color={eos.dust}>
+                      {`${minMinutes}–${maxMinutes} ${t('play.minutes')}`}
+                    </AppText>
+                    <View style={styles.calChip} testID={`setup-cal-chip-${style}`}>
+                      <AppText variant="captionStrong" color={tone.gold} style={styles.calChipText}>
+                        {`${t('play.calibration_chip')} `}
+                        <AppText variant="captionStrong" color={tone.gold} style={[styles.calChipText, styles.tabular]}>
+                          {`${calDone}/${CALIBRATION_SESSIONS}`}
+                        </AppText>
+                      </AppText>
+                    </View>
+                  </View>
+                ) : (
+                  <AppText variant="label" color={eos.dust} style={styles.blurbRange}>
+                    {`${minMinutes}–${maxMinutes} ${t('play.minutes')}`}
+                  </AppText>
+                )}
               </View>
             </View>
           </View>
@@ -198,18 +230,28 @@ export function PlaySetupScreen() {
           {/* 2. Rating */}
           <View style={styles.section}>
             <View style={styles.ratingHead}>
-              <AppText variant="sectionLabel" style={styles.shrink} numberOfLines={1}>
-                {t(`style.${style}.rating_label`)}
-              </AppText>
+              <View style={styles.ratingLabel}>
+                <AppText variant="sectionLabel" style={styles.shrink} numberOfLines={1}>
+                  {t(`style.${style}.rating_label`)}
+                </AppText>
+                <Tap
+                  testID="setup-norm-help"
+                  accessibilityRole="button"
+                  accessibilityLabel={t('play.norm_help')}
+                  onPress={() => router.push(`/play/norm?style=${style}` as Href)}
+                  hitSlop={{ top: 11, bottom: 11, left: 11, right: 11 }}
+                  style={styles.help}
+                >
+                  <AppText variant="captionStrong" color={eos.ash} style={styles.helpText}>
+                    {'?'}
+                  </AppText>
+                </Tap>
+              </View>
               <SliderReadout live={live} bandLabels={bandLabels} provisional={provisional} />
             </View>
             {hideSlider ? (
-              <AppText variant="caption" color={rank.intermediate.color} testID="setup-calibrating">
-                {t('play.calibration_per_style', {
-                  done: calDone,
-                  total: CALIBRATION_SESSIONS,
-                  style: t(`style.${style}.name`).toLowerCase(),
-                })}
+              <AppText variant="caption" color={eos.dust} testID="setup-calibrating">
+                {t('play.slider_after_calibration')}
               </AppText>
             ) : (
               <>
@@ -225,32 +267,7 @@ export function PlaySetupScreen() {
                   norm={rated ? unlocked : undefined}
                   bandLabels={bandLabels}
                 />
-                {rated && (
-                  <View style={styles.legend}>
-                    <View style={styles.legendItem}>
-                      <View style={[styles.swatch, styles.swatchComfort]} />
-                      <AppText variant="caption">{t('play.zone_comfort')}</AppText>
-                    </View>
-                    <View style={styles.legendItem}>
-                      <View style={[styles.swatch, styles.swatchLevelUp]} />
-                      <AppText variant="caption">{t('play.zone_levelup')}</AppText>
-                    </View>
-                  </View>
-                )}
-                {rated ? (
-                  <AppText variant="caption" color={eos.dust} testID="setup-cap">
-                    {`${t('play.unlocked')}: `}
-                    <AppText variant="caption" color={eos.bone}>
-                      {String(unlocked)}
-                    </AppText>
-                    {`  ·  ${t('play.cap')}: `}
-                    <AppText variant="caption" color={eos.bone}>
-                      {String(cap)}
-                    </AppText>
-                  </AppText>
-                ) : (
-                  <AppText variant="caption">{t('play.theme_unrated_hint')}</AppText>
-                )}
+                {!rated && <AppText variant="caption">{t('play.theme_unrated_hint')}</AppText>}
                 {showOffForm && (
                   <View style={styles.offForm} testID="setup-off-form">
                     <AppText variant="body" color={rank.intermediate.color} style={STRONG}>
@@ -289,6 +306,7 @@ export function PlaySetupScreen() {
             <Segmented
               testID="setup-duration"
               accessibilityLabel={t('play.duration')}
+              size="tight"
               value={dur.custom ? 'custom' : String(dur.duration)}
               onChange={selectDuration}
               options={[
@@ -337,6 +355,7 @@ export function PlaySetupScreen() {
             <Segmented
               testID="setup-mode"
               accessibilityLabel={t('play.mode')}
+              size="tight"
               value={mode}
               onChange={setMode}
               options={[
@@ -370,7 +389,7 @@ export function PlaySetupScreen() {
           {/* 5. Preview */}
           {mode === 'mixed' ? (
             provisional ? (
-              <CalibrationPreview done={calDone} total={CALIBRATION_SESSIONS} style={style} t={t} />
+              <CalibrationPreview done={calDone} total={CALIBRATION_SESSIONS} t={t} />
             ) : (
               <NextUnlockPreview style={style} durationSec={effectiveDuration} unlockedTo={unlocked} t={t} />
             )
@@ -410,35 +429,6 @@ export function PlaySetupScreen() {
   );
 }
 
-/** web '?{done}/5' pills on the style tabs while a style is calibrating. */
-function CalibrationPills({ progressions, active, t }: { progressions: Record<TrainingStyle, Progression>; active: TrainingStyle; t: (k: string, v?: Record<string, string | number>) => string }) {
-  return (
-    <View style={styles.pills} pointerEvents="none">
-      {UI_STYLE_ORDER.map((s) => {
-        const left = progressions[s].calibrationSessionsLeft;
-        const done = CALIBRATION_SESSIONS - left;
-        const on = s === active;
-        return (
-          <View key={s} style={styles.pillCell}>
-            {left > 0 && (
-              <View
-                style={[styles.pill, on ? styles.pillOn : styles.pillOff]}
-                testID={`setup-cal-pill-${s}`}
-                accessible
-                accessibilityLabel={t('play.calibration_progress_aria', { done, total: CALIBRATION_SESSIONS })}
-              >
-                <AppText variant="label" color={on ? control.segmentedActiveText : rank.intermediate.color} style={styles.pillText}>
-                  {`?${done}/${CALIBRATION_SESSIONS}`}
-                </AppText>
-              </View>
-            )}
-          </View>
-        );
-      })}
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
   scroll: { paddingHorizontal: layout.gutter, gap: space[5] },
@@ -455,7 +445,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: space[3],
     paddingVertical: space[2.5],
     borderRadius: radii.xl,
-    backgroundColor: control.platePressEmber,
+    backgroundColor: surface.noteNeutral,
   },
   blurbIcon: {
     width: space[8],
@@ -466,17 +456,22 @@ const styles = StyleSheet.create({
     backgroundColor: control.ghostPressBg,
   },
   blurbRange: { marginTop: space[1] },
-  pills: { ...StyleSheet.absoluteFill, flexDirection: 'row', paddingHorizontal: layout.segmentedTrackPadding },
-  pillCell: { flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingRight: space[1] },
-  pill: { paddingHorizontal: space[1], paddingVertical: 1, borderRadius: radii.sm * 2 },
-  pillOn: { backgroundColor: control.platePressEmber },
-  pillOff: { backgroundColor: rank.intermediate.glow },
-  pillText: { fontSize: text.label.fontSize - 2, letterSpacing: 0 },
-  legend: { flexDirection: 'row', gap: space[4] },
-  legendItem: { flexDirection: 'row', alignItems: 'center', gap: space[1.5] },
-  swatch: { width: space[4], height: space[1.5], borderRadius: radii.full },
-  swatchComfort: { backgroundColor: eos.dust },
-  swatchLevelUp: { backgroundColor: eos.ember, borderWidth: 1, borderColor: rank.intermediate.glow },
+  blurbFoot: { marginTop: space[1.5], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2] },
+  // MobPlaySetupNew: gold pill, 11 / 700, 0.6 px tracking.
+  calChip: { paddingHorizontal: space[2], paddingVertical: space[0.5], borderRadius: radii.full, backgroundColor: control.goldTint16 },
+  calChipText: { fontSize: 11, lineHeight: 15, letterSpacing: 0.6, textTransform: 'uppercase' },
+  tabular: { fontVariant: ['tabular-nums'] },
+  ratingLabel: { flexDirection: 'row', alignItems: 'center', gap: space[2], flexShrink: 1 },
+  // The "?" disc: 22 pt, a 1.5 pt graphite ring (box-shadow inset), ash 12 / 800.
+  help: {
+    width: 22,
+    height: 22,
+    borderRadius: radii.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1.5, color: graphite[600], inset: true }],
+  },
+  helpText: { fontFamily: fontFamily('en', 'body', 800), lineHeight: 14 },
   offForm: {
     padding: space[3],
     gap: space[1],

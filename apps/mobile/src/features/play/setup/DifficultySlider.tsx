@@ -1,5 +1,5 @@
 import { BAND_ICON_KEY, DIFFICULTY_BANDS, bandFor, type BandIconKey, type BandKey } from '@tac/core/rules';
-import { control, easing, eos, feedback, graphite, radii, rank, semantic, shadows, space, surface, text } from '@tac/core/tokens';
+import { alpha, control, easing, eos, feedback, graphite, radii, rank, shadows, space, surface, text, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Lock } from 'lucide-react-native';
@@ -44,7 +44,8 @@ const thumbEase = Easing.bezier(...easing.easeOut);
 const RUBBER = 0.3;
 const RUBBER_MAX = 24;
 const RUBBER_SPRING = { damping: 18, stiffness: 260 };
-const THUMB = 24;
+/** Design v2 thumb: 14 pt bone-to-graphite bead with a 4 pt ember ring. */
+const THUMB = 14;
 const TRACK_H = 36;
 
 /** Equal track slices per band, so the thumb sits above its eye (web bandEdges). */
@@ -126,7 +127,8 @@ export function DifficultySlider({
     ? Array.from(new Set([Math.max(min, levelUpFrom), norm, cap].filter((v): v is number => v != null && v >= min && v <= cap)))
     : [];
   const capPct = pct(cap);
-  const levelUp = zones ? levelUpFrom : min;
+  // Unrated (theme) slider: the fill stays graphite all the way (design).
+  const levelUp = zones ? levelUpFrom : Number.POSITIVE_INFINITY;
 
   const width = useSharedValue(0);
   const thumbX = useSharedValue(0);
@@ -241,9 +243,6 @@ export function DifficultySlider({
     width: Math.min(thumbX.get(), (capPct / 100) * width.get()),
   }));
   const levelUpFill = useAnimatedStyle(() => ({ opacity: live.get() >= levelUp ? 1 : 0 }));
-  const haloStyle = useAnimatedStyle(() => ({
-    backgroundColor: live.get() >= levelUp ? semantic.accentSoft : semantic.borderStrong,
-  }));
 
   return (
     <View testID={testID}>
@@ -286,11 +285,12 @@ export function DifficultySlider({
             </>
           )}
           <Animated.View style={[styles.thumbWrap, thumbStyle]} pointerEvents="none">
-            <Animated.View style={[styles.halo, haloStyle]} />
+            {/* linear-gradient(150deg, #f5eee5 0%, #cbc5bf 55%, #807c81 100%) */}
             <LinearGradient
-              colors={[semantic.accentContrast, graphite[300], graphite[500]]}
-              start={{ x: 0.3, y: 0.2 }}
-              end={{ x: 0.8, y: 1 }}
+              colors={[tone.onEmber, graphite[300], graphite[500]]}
+              locations={[0, 0.55, 1]}
+              start={{ x: 0.25, y: 0.07 }}
+              end={{ x: 0.75, y: 0.93 }}
               style={styles.thumb}
             />
           </Animated.View>
@@ -495,20 +495,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  thumbWrap: { position: 'absolute', left: 0, top: (TRACK_H - THUMB) / 2, width: THUMB, height: THUMB },
-  halo: { position: 'absolute', left: -4, top: -4, width: THUMB + 8, height: THUMB + 8, borderRadius: radii.full },
-  thumb: { width: THUMB, height: THUMB, borderRadius: radii.full, boxShadow: [...shadows.toggleThumb] },
+  // 0 1px 2px black/60 + a 4 pt ember/12 ring (box-shadow spread).
+  thumbWrap: {
+    position: 'absolute',
+    left: 0,
+    top: (TRACK_H - THUMB) / 2,
+    width: THUMB,
+    height: THUMB,
+    borderRadius: radii.full,
+    boxShadow: [...shadows.toggleThumb, { offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 4, color: alpha(eos.ember, 0.12) }],
+  },
+  thumb: { width: THUMB, height: THUMB, borderRadius: radii.full },
   eyes: { flexDirection: 'row', marginTop: space[2] },
   eyeCell: { flex: 1, alignItems: 'center' },
   eye: { width: space[8], height: space[8], alignItems: 'center', justifyContent: 'center' },
   eyeIcon: { width: space[6], height: space[6] },
   anchors: { height: space[4], marginTop: space[1] },
   anchor: { position: 'absolute', width: ANCHOR_W },
-  anchorText: { fontSize: text.caption.fontSize - 2 },
+  anchorText: { fontSize: text.caption.fontSize - 2, lineHeight: 14 },
   readout: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
-  readoutBand: { flexDirection: 'row', alignItems: 'center', gap: space[1.5] },
+  readoutBand: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   readoutIcon: { position: 'absolute', left: 0, width: 18, height: 18 },
   readoutIconImg: { width: 18, height: 18 },
-  readoutBandText: { paddingLeft: 18 + space[1.5], padding: 0, minWidth: space[20] },
-  readoutValue: { padding: 0, minWidth: space[14] },
+  // `.lbl` at 12 px (the class keeps its 1.32 px tracking).
+  readoutBandText: { paddingLeft: 18 + space[2], padding: 0, fontSize: 12, minWidth: space[20] },
+  // A single-line TextInput centres its text in `height` (lineHeight would pin it to the top).
+  readoutValue: { padding: 0, height: 28, lineHeight: undefined, minWidth: space[14] },
 });

@@ -49,14 +49,11 @@ export function NextUnlockPreview({ style, durationSec, unlockedTo, t }: { style
           </View>
         ))}
       </View>
-      <AppText variant="caption" color={eos.dust}>
-        {t('unlock.hint')}
-      </AppText>
     </Shell>
   );
 }
 
-export function CalibrationPreview({ done, total, style, t }: { done: number; total: number; style: TrainingStyle; t: TFn }) {
+export function CalibrationPreview({ done, total, t }: { done: number; total: number; t: TFn }) {
   return (
     <Shell testID="setup-calibration-preview">
       <View style={styles.head}>
@@ -70,7 +67,7 @@ export function CalibrationPreview({ done, total, style, t }: { done: number; to
       </View>
       <ProgressBar ratio={done / total} color={rank.intermediate.color} />
       <AppText variant="caption" color={eos.dust}>
-        {t('calibration.preview_hint', { style: t(`style.${style}.name`).toLowerCase() })}
+        {t('calibration.preview_lede')}
       </AppText>
     </Shell>
   );
