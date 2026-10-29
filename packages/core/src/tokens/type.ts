@@ -74,14 +74,28 @@ function v(
   return { role, weight, fontSize, letterSpacing: emToPx(fontSize, em), ...extra };
 }
 
-/** AppText variants (PLAN §2.5). Sources noted per line. */
+/** Same as v() with the tracking given in px, as the design canvas writes it. */
+function px(
+  role: FontRole, weight: FontWeight, fontSize: number, letterSpacing: number,
+  extra: Partial<Omit<TextVariant, 'role' | 'weight' | 'fontSize' | 'letterSpacing'>> = {},
+): TextVariant {
+  return { role, weight, fontSize, letterSpacing, ...extra };
+}
+
+/** AppText variants (PLAN §2.5 + design v2). Sources noted per line. */
 export const text = {
   /** Landing hero h1: font-serif 44px bold, leading 1.05, no tracking. */
   display: v('serif', 700, 44, 0, { lineHeight: 46, maxFontSizeMultiplier: 1.2 }),
   /** SectionTitle: Cinzel 700 34px, leading 1.12. */
   sectionTitle: v('serif', 700, 34, 0, { lineHeight: 38, maxFontSizeMultiplier: 1.2 }),
-  /** Page h1/h2: Cinzel 700 22px, 0.02em (app-shell heading rule). */
-  title: v('serif', 700, 22, 0.02, { maxFontSizeMultiplier: 1.3 }),
+  /** Page h1/h2: Cinzel 700 22/28, 0.02em (0.44 px). */
+  title: v('serif', 700, 22, 0.02, { lineHeight: 28, maxFontSizeMultiplier: 1.3 }),
+  /** Big name / hero heading: Cinzel 700 26/32, 0.44 px (Home name, profile). */
+  heading: px('serif', 700, 26, 0.44, { lineHeight: 32, maxFontSizeMultiplier: 1.3 }),
+  /** Nested-screen header title: Cinzel 700 18, no tracking. */
+  navTitle: v('serif', 700, 18, 0, { lineHeight: 24, maxFontSizeMultiplier: 1.2 }),
+  /** Header wordmark 'tac·tic·tak': Cinzel 700 20/22, 0.8 px. */
+  brand: px('serif', 700, 20, 0.8, { lineHeight: 22, maxFontSizeMultiplier: 1.2 }),
   /** Uppercase h2/h3 section labels: Manrope 700 12px, 0.12em. */
   sectionLabel: v('sans', 700, 12, 0.12, { uppercase: true }),
   /** Plate buttons: Cinzel 700 uppercase 0.1em at 13/14/15px. */
@@ -90,6 +104,8 @@ export const text = {
   plateLabelLg: v('serif', 700, 15, 0.1, { uppercase: true, maxFontSizeMultiplier: 1.2 }),
   /** Eyebrow: Manrope 800 12px uppercase 0.16em, ember. */
   eyebrow: v('sans', 800, 12, 0.16, { uppercase: true }),
+  /** `.kick` onboarding kicker: Manrope 700 12px, 2 px tracking, rose. */
+  kicker: px('sans', 700, 12, 2, { uppercase: true }),
   /** CardTitle: Manrope 700 11px uppercase 0.12em, ash. */
   label: v('sans', 700, 11, 0.12, { uppercase: true }),
   /** CardValue: 24px 800 tabular-nums. */
@@ -98,10 +114,22 @@ export const text = {
   timer: v('sans', 800, 20, 0, { lineHeight: 28, tabular: true, maxFontSizeMultiplier: 1.2 }),
   /** Body copy (text-sm). */
   body: v('sans', 400, 14, 0, { lineHeight: 20 }),
+  /** Body, bold (callout titles, resume card). */
+  bodyStrong: v('sans', 700, 14, 0, { lineHeight: 20 }),
+  /** `.row .lbl`: grouped-list row label, 16/24. */
+  bodyLg: v('sans', 400, 16, 0, { lineHeight: 24 }),
   /** Input text: 15px 500. */
   input: v('sans', 500, 15, 0),
-  /** Captions / meta (text-xs). */
+  /** Captions / meta (text-xs); `.hint` (ash) and `.cap` (dust). */
   caption: v('sans', 400, 12, 0, { lineHeight: 16 }),
+  /** Caption, bold (chips' small numbers, rule lines). */
+  captionStrong: v('sans', 700, 12, 0, { lineHeight: 16 }),
+  /** Tab bar labels: Manrope 700 10/14. */
+  tabLabel: v('sans', 700, 10, 0, { lineHeight: 14, maxFontSizeMultiplier: 1.2 }),
+  /** `.chip`: Manrope 700 12.5. */
+  chip: v('sans', 700, 12.5, 0, { maxFontSizeMultiplier: 1.3 }),
+  /** Small value (runner counters, session rows): 20/28 800 tabular. */
+  valueSm: v('sans', 800, 20, 0, { lineHeight: 28, tabular: true }),
   /** Segmented tabs: bold 12 (sm) / 14 (md). */
   segmentedSm: v('sans', 700, 12, 0),
   segmented: v('sans', 700, 14, 0),

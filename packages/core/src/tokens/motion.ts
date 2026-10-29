@@ -168,4 +168,8 @@ export const transitions = {
   chevron: { duration: 150, easing: easing.twDefault },
   turnCardStreak: { duration: 500, easing: easing.twDefault },
   reveal: { duration: 700, easing: easing.reveal, stagger: 80, fromY: 24 },
+  /** Bottom sheets (ui/Sheet): slide + backdrop fade, as the 200 ms toggle. */
+  sheet: { duration: 200, easing: easing.twEaseOut },
+  /** Row / small-button press highlight. */
+  press: { duration: 150, easing: easing.twDefault },
 } as const;
