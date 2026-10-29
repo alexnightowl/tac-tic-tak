@@ -130,3 +130,21 @@ pass (Maestro's driver kept crashing on the emulator); the iOS suite had passed 
 **Open (iOS)**: two ThemeIcon implementations to merge into one; dedicated FEEL_TABLE events for
 borrowed haptics; VoiceOver pass by hand; RankCeremony reduced-motion timing; real-device checks
 (Q29) once the owner's phone is set up; Apple Developer enrollment pending (support ticket).
+
+## 2026-10-30 (night) — Design v2: the canvas "Mobile app" page
+
+All 42 artboards of the owner's new mobile page implemented (foundation agent + five area agents in
+one checkout, disjoint ownership): tokens (ember #8e4542, tone palette), shared primitives in
+`src/ui` (docs/mobile/DESIGN-SYSTEM-V2.md), tab header/bar, nested header; auth + new 4-step animated
+onboarding, account menu, streak sheet, avatar disc; Home, Play setup (+ norm explainer `play/norm`),
+runner, pause, exit, summary, ceremony (gradient alpha bug fixed), theme picker; Review, drill,
+history, session detail, mistakes, viewer; Stats, achievements (+ sheet), Rivals, friends, search,
+profile, profile editor; all Settings screens. Modal sheets now measure their own safe area.
+Screenshots: `docs/mobile/screens/design-v2/`. Typecheck + lint clean, `@tac/core` 205/205; area
+Maestro flows green (02-slice failed only under 5-agent load, green when idle).
+
+App-only states the canvas lacked were drawn into the canvas as a new row "App states not drawn
+above" (MobStates{Shell,Play,Review,Social,Settings}). Open design questions: OWNER-QUESTIONS 41–45.
+Also: issues #4 (capture overlap, mobile), #5/#6 (web session detail) fixed and closed; CI now dumps
+the prod DB before migration deploys; norm snapped to the 25 grid (prod).
+
