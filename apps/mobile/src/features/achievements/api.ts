@@ -9,11 +9,14 @@ import { appStore } from '@/stores/appStore';
 import { translatorFor } from '@/ui/lang';
 
 /**
- * PLAN §8 #16 (PROVISIONAL Q16): the trust-based "star the repo" unlock is
- * hidden in the app (store review risk) and kept on the web. Hidden from the
- * grid and from the done/total count.
+ * Hidden from the grid and from the done/total count:
+ *  - star-repo: PLAN §8 #16 (PROVISIONAL Q16), the trust-based "star the
+ *    repo" unlock (store review risk), kept on the web;
+ *  - set-accent, set-board: the app has no accent or board-theme setting
+ *    (DECISIONS #19), so they can't be earned here, and the design v2
+ *    "Style" section leaves them out.
  */
-export const HIDDEN_ACHIEVEMENTS = new Set<string>(['star-repo']);
+export const HIDDEN_ACHIEVEMENTS = new Set<string>(['star-repo', 'set-accent', 'set-board']);
 
 export const achievementsQuery = () =>
   queryOptions({

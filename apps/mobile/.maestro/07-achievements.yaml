@@ -1,5 +1,6 @@
-# Phase 7: the Achievements side lists the catalogue (star-repo hidden, PLAN
-# §8 #16), a tile opens the detail sheet, and a settings change that unlocks
+# Phase 7 / design v2: the Achievements side lists the catalogue (star-repo,
+# set-accent and set-board hidden), a medal opens the detail sheet (swipe
+# down closes it), and a settings change that unlocks
 # an achievement shows the global toast. The toast step needs set-language
 # still locked for the user (local reset:
 #   delete from "UserAchievement" where slug='set-language' and "userId"=…).
@@ -12,14 +13,23 @@ appId: online.tactictak.app
 - extendedWaitUntil:
     visible: { id: achievements-progress }
     timeout: 15000
-- assertVisible: { id: achievements-total, text: "22" }
+- assertVisible: { id: achievements-total, text: "20" }
 - assertNotVisible: { id: achievement-star-repo }
+- assertNotVisible: { id: achievement-set-accent }
+- tapOn: { id: achievements-chip-streak }
+- assertVisible: { id: achievements-section-streak }
+- assertNotVisible: { id: achievements-section-play }
+- tapOn: { id: achievements-chip-all }
 - tapOn: { id: achievement-first-session }
 - extendedWaitUntil:
     visible: { id: screen-achievement }
     timeout: 5000
 - assertVisible: { id: achievement-state }
-- tapOn: { id: screen-achievement-close }
+- assertVisible: { id: achievement-tier }
+- swipe:
+    start: "50%, 60%"
+    end: "50%, 98%"
+    duration: 300
 - extendedWaitUntil:
     notVisible: { id: screen-achievement }
     timeout: 5000
