@@ -1,5 +1,5 @@
 import { BAND_ICON_KEY, DIFFICULTY_BANDS, bandFor, type BandIconKey, type BandKey } from '@tac/core/rules';
-import { alpha, control, easing, eos, feedback, graphite, radii, rank, shadows, space, surface, text, tone } from '@tac/core/tokens';
+import { alpha, black, control, easing, eos, graphite, radii, rank, space, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Lock } from 'lucide-react-native';
@@ -44,9 +44,15 @@ const thumbEase = Easing.bezier(...easing.easeOut);
 const RUBBER = 0.3;
 const RUBBER_MAX = 24;
 const RUBBER_SPRING = { damping: 18, stiffness: 260 };
-/** Design v2 thumb: 14 pt bone-to-graphite bead with a 4 pt ember ring. */
-const THUMB = 14;
-const TRACK_H = 36;
+/** Design v2 thumb: 18 pt bone-to-graphite bead with a 4 pt ember ring. */
+const THUMB = 18;
+/** The touch strip around the bar: lock disc (22) is the tallest layer. */
+const TRACK_H = 24;
+const BAR_H = 8;
+const BAR_TOP = (TRACK_H - BAR_H) / 2;
+const EYE_ROW = 36;
+const EYE_ON = 34;
+const EYE_OFF = 24;
 
 /** Equal track slices per band, so the thumb sits above its eye (web bandEdges). */
 function bandEdges(min: number, max: number): number[] {
@@ -127,8 +133,6 @@ export function DifficultySlider({
     ? Array.from(new Set([Math.max(min, levelUpFrom), norm, cap].filter((v): v is number => v != null && v >= min && v <= cap)))
     : [];
   const capPct = pct(cap);
-  // Unrated (theme) slider: the fill stays graphite all the way (design).
-  const levelUp = zones ? levelUpFrom : Number.POSITIVE_INFINITY;
 
   const width = useSharedValue(0);
   const thumbX = useSharedValue(0);
@@ -213,7 +217,10 @@ export function DifficultySlider({
   // fix (Phase 5): the drag activates on horizontal movement only and
   // fails on vertical, so a scroll that starts on the slider scrolls the
   // setup instead of dragging the thumb; a plain tap still jumps there.
+  // The strip is 24 pt tall: grow the touch area down over the numbers.
+  const hitSlop = { top: 6, bottom: 16 };
   const pan = usePanGesture({
+    hitSlop,
     activeOffsetX: [-6, 6],
     failOffsetY: [-10, 10],
     onActivate: (e) => {
@@ -230,6 +237,7 @@ export function DifficultySlider({
     },
   });
   const tap = useTapGesture({
+    hitSlop,
     onActivate: (e) => {
       'worklet';
       follow(e.x);
@@ -239,13 +247,31 @@ export function DifficultySlider({
   const gesture = useExclusiveGestures(pan, tap);
 
   const thumbStyle = useAnimatedStyle(() => ({ transform: [{ translateX: thumbX.get() - THUMB / 2 }] }));
-  const fillStyle = useAnimatedStyle(() => ({
-    width: Math.min(thumbX.get(), (capPct / 100) * width.get()),
-  }));
-  const levelUpFill = useAnimatedStyle(() => ({ opacity: live.get() >= levelUp ? 1 : 0 }));
+
+  // Settled band (React side) for the number row; the eyes follow the drag.
+  const settledBand = bandIndexOf(value);
+  const fillColors = zones ? control.rankProgress : ([eos.seam, eos.dust] as const);
 
   return (
     <View testID={testID}>
+      <View style={styles.eyes}>
+        {DIFFICULTY_BANDS.map((b, i) => (
+          <BandEye
+            key={b.key}
+            index={i}
+            live={live}
+            locked={b.min >= cap}
+            icon={BAND_ICONS[BAND_ICON_KEY[b.key]]}
+            label={bandLabels[b.key]}
+            onPress={() => {
+              const mid = (Math.max(b.min, min) + Math.min(b.max, max)) / 2;
+              const v = Math.min(cap, Math.max(min, Math.round(mid / step) * step));
+              if (v !== value) onChange(v);
+            }}
+          />
+        ))}
+      </View>
+
       <GestureDetector gesture={gesture}>
         <View
           style={styles.track}
@@ -261,26 +287,23 @@ export function DifficultySlider({
             onChange(Math.min(cap, Math.max(min, value + d)));
           }}
         >
-          <View style={styles.rail} />
+          {/* One carved slice per band, each filled by the thumb. */}
+          <View style={styles.bar}>
+            {DIFFICULTY_BANDS.map((b, i) => (
+              <BandSlice key={b.key} index={i} count={DIFFICULTY_BANDS.length} thumbX={thumbX} width={width} capPct={capPct} colors={fillColors} />
+            ))}
+          </View>
+          {DIFFICULTY_BANDS.slice(1).map((b, i) => (
+            <View key={b.key} style={[styles.divider, { left: `${((i + 1) / DIFFICULTY_BANDS.length) * 100}%` }]} />
+          ))}
           {zoneFrom != null && (
             <View style={[styles.zone, { left: `${pct(zoneFrom)}%`, width: `${Math.max(0, capPct - pct(zoneFrom))}%` }]} />
           )}
-          <Animated.View style={[styles.fill, fillStyle]}>
-            <LinearGradient colors={[eos.seam, eos.dust]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
-            <Animated.View style={[StyleSheet.absoluteFill, levelUpFill]}>
-              <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
-            </Animated.View>
-          </Animated.View>
-          {checkpoints
-            .filter((c) => c !== cap && c !== norm)
-            .map((c) => (
-              <View key={c} style={[styles.tick, { left: `${pct(c)}%` }]} />
-            ))}
           {capPct < 100 && (
             <>
               <View style={[styles.locked, { left: `${capPct}%` }]} />
               <View style={[styles.lock, { left: `${capPct}%` }]}>
-                <Lock size={10} color={graphite[400]} />
+                <Lock size={10} color={eos.ash} strokeWidth={2.6} />
               </View>
             </>
           )}
@@ -297,33 +320,52 @@ export function DifficultySlider({
         </View>
       </GestureDetector>
 
-      <View style={styles.eyes}>
+      <View style={styles.numbers}>
         {DIFFICULTY_BANDS.map((b, i) => (
-          <BandEye
-            key={b.key}
-            index={i}
-            live={live}
-            locked={b.min > cap}
-            icon={BAND_ICONS[BAND_ICON_KEY[b.key]]}
-            label={bandLabels[b.key]}
-            onPress={() => {
-              const mid = (Math.max(b.min, min) + Math.min(b.max, max)) / 2;
-              const v = Math.min(cap, Math.max(min, Math.round(mid / step) * step));
-              if (v !== value) onChange(v);
-            }}
-          />
-        ))}
-      </View>
-
-      <View style={styles.anchors}>
-        {anchorLabels(min, cap, zoneFrom, pct).map(({ v, gold }) => (
-          <View key={`${v}-${gold}`} style={[styles.anchor, { left: `${pct(v)}%`, marginLeft: -(ANCHOR_W * pct(v)) / 100 }]}>
-            <AppText variant="caption" color={gold ? rank.intermediate.color : eos.dust} style={[styles.anchorText, { textAlign: pct(v) > 90 ? 'right' : pct(v) < 10 ? 'left' : 'center' }]}>
-              {String(v)}
+          <View key={b.key} style={styles.numberCell}>
+            <AppText
+              variant="caption"
+              color={i === settledBand ? eos.bone : b.min >= cap ? tone.lockRim : eos.dust}
+              style={[styles.number, i > 0 && styles.numberShift]}
+            >
+              {String(Math.max(b.min, min))}
             </AppText>
           </View>
         ))}
       </View>
+    </View>
+  );
+}
+
+/** One band's slice of the bar: filled up to the thumb (and never past the lock). */
+function BandSlice({
+  index,
+  count,
+  thumbX,
+  width,
+  capPct,
+  colors,
+}: {
+  index: number;
+  count: number;
+  thumbX: SharedValue<number>;
+  width: SharedValue<number>;
+  capPct: number;
+  colors: readonly [string, string, ...string[]];
+}) {
+  const fill = useAnimatedStyle(() => {
+    const w = width.get();
+    const slice = w / count;
+    const x = Math.min(thumbX.get(), (capPct / 100) * w);
+    const f = slice > 0 ? Math.min(1, Math.max(0, (x - index * slice) / slice)) : 0;
+    return { width: `${f * 100}%` };
+  });
+  const round = index === 0 ? styles.sliceFirst : index === count - 1 ? styles.sliceLast : null;
+  return (
+    <View style={[styles.slice, round]}>
+      <Animated.View style={[styles.sliceFill, fill]}>
+        <LinearGradient colors={colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+      </Animated.View>
     </View>
   );
 }
@@ -344,10 +386,12 @@ function BandEye({
   onPress: () => void;
 }) {
   const style = useAnimatedStyle(() => {
-    const active = bandIndexOf(live.get()) === index;
+    const band = bandIndexOf(live.get());
+    const active = band === index;
+    const opacity = active ? 1 : locked ? 0.35 : index < band ? 0.85 : 0.55;
     return {
-      opacity: withTiming(active ? 1 : locked ? 0.25 : 0.5, colorsTiming),
-      transform: [{ scale: withTiming(active ? 1.15 : 1, colorsTiming) }],
+      opacity: withTiming(opacity, colorsTiming),
+      transform: [{ scale: withTiming(active ? 1 : EYE_OFF / EYE_ON, colorsTiming) }],
     };
   });
   return (
@@ -426,76 +470,69 @@ function ReadoutIcon({ index, live, icon }: { index: number; live: SharedValue<n
   );
 }
 
-const ANCHOR_W = 44;
-
-/** min · zone start · cap, dropping the zone label when it would collide (web anchorLabels). */
-function anchorLabels(min: number, cap: number, zoneFrom: number | null, pct: (v: number) => number) {
-  const out: { v: number; gold: boolean }[] = [{ v: min, gold: false }];
-  if (zoneFrom != null && zoneFrom > min) {
-    const zp = pct(zoneFrom);
-    if (zp - pct(min) > 9 && pct(cap) - zp > 9) out.push({ v: zoneFrom, gold: true });
-  }
-  out.push({ v: cap, gold: false });
-  return out;
-}
-
-const RAIL = 6;
-const railTop = (TRACK_H - RAIL) / 2;
-
 const styles = StyleSheet.create({
-  track: { height: TRACK_H, justifyContent: 'center' },
-  rail: {
+  // The bar sits in a 24 pt strip (the lock disc's height); the pan's
+  // hitSlop grows the touch area to the eyes and the numbers.
+  track: { height: TRACK_H, marginTop: 10 - BAR_TOP },
+  bar: {
     position: 'absolute',
     left: 0,
     right: 0,
-    top: railTop,
-    height: RAIL,
-    borderRadius: radii.full,
-    backgroundColor: eos.well,
-    boxShadow: [...shadows.well],
+    top: BAR_TOP,
+    height: BAR_H,
+    flexDirection: 'row',
   },
+  slice: {
+    flex: 1,
+    height: BAR_H,
+    backgroundColor: eos.well,
+    overflow: 'hidden',
+    boxShadow: [{ offsetX: 0, offsetY: 1, blurRadius: 2, spreadDistance: 0, color: alpha(black, 0.6), inset: true }],
+  },
+  sliceFirst: { borderTopLeftRadius: radii.full, borderBottomLeftRadius: radii.full },
+  sliceLast: { borderTopRightRadius: radii.full, borderBottomRightRadius: radii.full },
+  sliceFill: { position: 'absolute', left: 0, top: 0, bottom: 0 },
+  divider: {
+    position: 'absolute',
+    top: BAR_TOP - 2,
+    width: 2,
+    height: 12,
+    marginLeft: -1,
+    borderRadius: 1,
+    backgroundColor: tone.tick,
+  },
+  // Level-up zone: a gold outline from the floor to the lock.
   zone: {
     position: 'absolute',
-    top: railTop,
-    height: RAIL,
-    borderRadius: radii.full,
-    backgroundColor: rank.intermediate.glow,
-    borderWidth: 1,
-    borderColor: feedback.normGold,
-  },
-  fill: { position: 'absolute', left: 0, top: railTop, height: RAIL, borderRadius: radii.full, overflow: 'hidden' },
-  tick: {
-    position: 'absolute',
-    top: (TRACK_H - 14) / 2,
-    width: 3,
+    top: BAR_TOP - 3,
     height: 14,
-    marginLeft: -1.5,
     borderRadius: radii.full,
-    backgroundColor: rank.intermediate.color,
+    borderWidth: 1.5,
+    borderColor: alpha(tone.gold, 0.75),
   },
   locked: {
     position: 'absolute',
     right: 0,
-    top: (TRACK_H - 8) / 2,
-    height: 8,
+    top: BAR_TOP - 1,
+    height: 10,
     borderTopRightRadius: radii.full,
     borderBottomRightRadius: radii.full,
-    backgroundColor: surface.backdrop,
+    backgroundColor: alpha(black, 0.72),
   },
   lock: {
     position: 'absolute',
-    top: (TRACK_H - 20) / 2,
-    width: 20,
-    height: 20,
-    marginLeft: -10,
+    top: (TRACK_H - 22) / 2,
+    width: 22,
+    height: 22,
+    marginLeft: -11,
     borderRadius: radii.full,
     backgroundColor: eos.well,
     borderWidth: 1,
-    borderColor: eos.seam,
+    borderColor: tone.lockRim,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // 0 1px 2px black/60 + a 4 pt ember/12 ring (box-shadow spread).
+  // 0 1px 3px black/70 + a 4 pt ember/25 ring (box-shadow spread).
   thumbWrap: {
     position: 'absolute',
     left: 0,
@@ -503,16 +540,21 @@ const styles = StyleSheet.create({
     width: THUMB,
     height: THUMB,
     borderRadius: radii.full,
-    boxShadow: [...shadows.toggleThumb, { offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 4, color: alpha(eos.ember, 0.12) }],
+    boxShadow: [
+      { offsetX: 0, offsetY: 1, blurRadius: 3, spreadDistance: 0, color: alpha(black, 0.7) },
+      { offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 4, color: alpha(eos.ember, 0.25) },
+    ],
   },
   thumb: { width: THUMB, height: THUMB, borderRadius: radii.full },
-  eyes: { flexDirection: 'row', marginTop: space[2] },
-  eyeCell: { flex: 1, alignItems: 'center' },
-  eye: { width: space[8], height: space[8], alignItems: 'center', justifyContent: 'center' },
-  eyeIcon: { width: space[6], height: space[6] },
-  anchors: { height: space[4], marginTop: space[1] },
-  anchor: { position: 'absolute', width: ANCHOR_W },
-  anchorText: { fontSize: text.caption.fontSize - 2, lineHeight: 14 },
+  eyes: { flexDirection: 'row', paddingTop: 2 },
+  eyeCell: { flex: 1, height: EYE_ROW, alignItems: 'center', justifyContent: 'flex-end' },
+  // Drawn at the current-band size and scaled down for the others, bottom-anchored.
+  eye: { width: EYE_ON, height: EYE_ON, transformOrigin: 'bottom' },
+  eyeIcon: { width: EYE_ON, height: EYE_ON },
+  numbers: { flexDirection: 'row', marginTop: 8 - BAR_TOP },
+  numberCell: { flex: 1 },
+  number: { fontSize: 10, lineHeight: 12, fontWeight: '700', fontVariant: ['tabular-nums'] },
+  numberShift: { marginLeft: -12 },
   readout: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   readoutBand: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   readoutIcon: { position: 'absolute', left: 0, width: 18, height: 18 },

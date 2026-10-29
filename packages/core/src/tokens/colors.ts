@@ -236,6 +236,8 @@ export const tone = {
   smoke: '#928e94', // bullet series
   stone: '#6b6870', // engraved medal numerals
   pewter: '#5a575e', // locked glyphs
+  tick: '#55525a', // difficulty slider band dividers
+  lockRim: '#4a474e', // slider lock rim, locked band numbers
   iron: '#535058',
   ringTrack: '#2c2a30', // progress ring track
   /** Blue accents (onboarding, achievements "new"). */
