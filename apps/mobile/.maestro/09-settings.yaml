@@ -9,7 +9,7 @@ appId: online.tactictak.app
 ---
 - runFlow: 09-login.yaml
 
-# Settings from the avatar menu; start from en / classic / mirror off.
+# The Settings tab; start from en / classic / mirror off.
 - runFlow: 09-open-settings.yaml
 - tapOn: { id: settings-lang-en }
 - tapOn: { id: settings-gameplay }
@@ -32,7 +32,7 @@ appId: online.tactictak.app
 - extendedWaitUntil:
     visible: { id: settings-gameplay, text: "Ігровий процес.*" }
     timeout: 5000
-- assertVisible: "Налаштування"
+- assertVisible: { id: tab-settings, text: "Налашт.*" }
 
 # The server has all three (PATCH /users/me/settings is optimistic; give it a beat).
 - extendedWaitUntil: { visible: { id: never-there }, timeout: 1500, optional: true }

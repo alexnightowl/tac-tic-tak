@@ -1,14 +1,20 @@
-# Phase 9 helper: from any tab, open Settings through the header avatar's
-# account sheet. Retries the avatar tap: right after login or a bundle
-# reload the first tap can land before the header is interactive.
+# Phase 9 helper: from any tab (or a pushed settings screen's tab root),
+# open the Settings tab (design v2: Settings is the sixth tab). Retries the
+# tab tap: right after login or a bundle reload the first tap can land
+# before the tab bar is interactive. Scrolls back to the top, because a
+# visited tab keeps its scroll position.
 appId: online.tactictak.app
 ---
+- extendedWaitUntil: { visible: { id: tab-settings }, timeout: 10000 }
 - repeat:
     times: 4
     while:
-      notVisible: { id: account-menu }
+      notVisible: { id: screen-settings }
     commands:
-      - tapOn: { id: header-avatar, retryTapIfNoChange: false }
-      - extendedWaitUntil: { visible: { id: account-menu }, timeout: 3000, optional: true }
-- tapOn: { id: tab-settings }
+      - tapOn: { id: tab-settings, retryTapIfNoChange: false }
+      - extendedWaitUntil: { visible: { id: screen-settings }, timeout: 3000, optional: true }
 - extendedWaitUntil: { visible: { id: screen-settings }, timeout: 10000 }
+- scrollUntilVisible:
+    element: { id: settings-profile }
+    direction: UP
+    timeout: 5000
