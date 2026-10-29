@@ -41,11 +41,15 @@ function PieceImpl({ id, code, sq, size, orientation, mirror, set, dying, regist
   const start = squareToXY(sq, size, orientation, mirror);
   const x = useSharedValue(start.x);
   const y = useSharedValue(start.y);
-  const fade = useSharedValue(1);
+  // A piece that mounts already captured was never on screen alive: its
+  // fade plan ran before this view existed (e.g. the opponent's first move
+  // played before the board had a size), so it starts gone instead of
+  // standing under its capturer.
+  const fade = useSharedValue(dying ? 0 : 1);
   const scale = useSharedValue(1);
   const at = useSharedValue(squareIndex(sq));
   const hide = useSharedValue(0);
-  const dead = useSharedValue(0);
+  const dead = useSharedValue(dying ? 1 : 0);
 
   // Child layout effects run before the board's, so a plan queued behind
   // this commit finds the handle.
