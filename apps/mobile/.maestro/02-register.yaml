@@ -45,6 +45,11 @@ appId: online.tactictak.app
 - inputText: secret123
 - assertVisible:
     id: register-pw-rules-digit-met
+# The keyboard can cover the repeat field: drop it before tapping there.
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: register-brand
 - tapOn:
     id: register-repeat
 - inputText: secret123
@@ -59,16 +64,32 @@ appId: online.tactictak.app
     timeout: 10000
 
 # Fresh nickname → Home.
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: register-brand
 - tapOn:
     id: register-nickname
 - eraseText: 40
 - inputText: ${output.nick}
 # The keyboard covers the submit plate; Return on the last field submits.
+- hideKeyboard:
+    optional: true
+- tapOn:
+    id: register-brand
 - tapOn:
     id: register-repeat
 - pressKey: Enter
 # A new account meets the welcome steps (onboarding gate); the top bar's
-# Skip closes them.
+# Skip closes them. iOS may ask to save the password first.
+- repeat:
+    times: 15
+    while:
+      notVisible: { id: screen-onboarding }
+    commands:
+      - tapOn:
+          text: "Not Now|Не зараз"
+          optional: true
 - extendedWaitUntil:
     visible:
       id: screen-onboarding

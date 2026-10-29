@@ -71,7 +71,7 @@ export function RegisterScreen() {
     <SafeAreaView style={styles.root} testID="register-screen">
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <View style={styles.brand}>
+          <View style={styles.brand} testID="register-brand">
             <BrandLogo size={96} />
             {/* The wordmark is Latin in both languages: always Cinzel. */}
             <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
