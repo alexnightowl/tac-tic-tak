@@ -8,12 +8,12 @@ import { RefreshControl, StyleSheet, View } from 'react-native';
 
 import { feel } from '@/feel';
 import { AppText } from '@/ui/AppText';
+import { MiniButton } from '@/ui/Buttons';
 import { useT } from '@/ui/lang';
 import { Card } from '@/ui/Surfaces';
 import { Tap } from '@/ui/Tap';
 import { acceptRequest, confirmUnfriend, displayNameOf, removeRequest } from './actions';
 import { friendsQuery, pendingQuery, type FriendRow, type PendingRow } from './api';
-import { MiniButton } from './MiniButton';
 import { SwipeRow } from './SwipeRow';
 import { openProfile, UserIdentity } from './UserIdentity';
 
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: layout.inputPaddingX,
   },
   header: { marginTop: space[4] },
-  hint: { marginTop: -space[1] },
+  hint: { marginTop: -2 },
   center: { textAlign: 'center' },
   row: {
     flexDirection: 'row',

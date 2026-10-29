@@ -8,11 +8,11 @@ import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText, textStyle } from '@/ui/AppText';
+import { MiniButton } from '@/ui/Buttons';
 import { useLang, useT } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { sendRequest } from './actions';
 import { searchQuery, type FriendshipStatus, type SearchResult } from './api';
-import { MiniButton } from './MiniButton';
 import { openProfile, UserIdentity } from './UserIdentity';
 
 const DEBOUNCE_MS = 250;
