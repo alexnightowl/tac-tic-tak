@@ -1,5 +1,5 @@
 import type { Language } from '@tac/core/i18n';
-import { eos, text, type TextVariant } from '@tac/core/tokens';
+import { eos, text, tone, type TextVariant } from '@tac/core/tokens';
 import type { ColorValue, TextProps, TextStyle } from 'react-native';
 import { Text } from 'react-native';
 
@@ -11,10 +11,12 @@ export type TextVariantName = keyof typeof text;
 /** Default ink per variant (web: eyebrow ember, CardTitle/caption ash). */
 const DEFAULT_COLOR: Partial<Record<TextVariantName, ColorValue>> = {
   eyebrow: eos.ember,
+  kicker: tone.rose,
   label: eos.ash,
   sectionLabel: eos.ash,
   caption: eos.ash,
   turnSubtitle: eos.ash,
+  chip: eos.ash,
 };
 
 const cache = new Map<string, TextStyle>();

@@ -33,3 +33,15 @@ export const colorsTiming: WithTimingConfig = {
  * past a neighbour, so two tabs never look half-lit.
  */
 export const segmentedSpring: WithSpringConfig = { damping: 22, stiffness: 320, mass: 1 };
+
+/** Bottom sheet slide / backdrop fade: 200 ms Tailwind ease-out. */
+export const sheetTiming: WithTimingConfig = {
+  duration: transitions.sheet.duration,
+  easing: bezier(transitions.sheet.easing),
+};
+
+/** Sheet snap-back after a short drag (no overshoot). */
+export const sheetSpring: WithSpringConfig = { damping: 26, stiffness: 320, mass: 1 };
+
+/** Drag distance (pt) or downward velocity (pt/s) that dismisses a sheet. */
+export const SHEET_DISMISS = { distance: 80, velocity: 800 } as const;

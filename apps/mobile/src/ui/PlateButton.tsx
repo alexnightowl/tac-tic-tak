@@ -1,6 +1,6 @@
 import { control, eos, layout, textShadows } from '@tac/core/tokens';
 import { Image } from 'expo-image';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -72,6 +72,8 @@ export type PlateButtonProps = {
   loading?: boolean;
   /** Stretch to the parent's width. */
   block?: boolean;
+  /** Leading glyph (gap 8), e.g. a 16–18 pt icon in the label colour. */
+  icon?: ReactNode;
   /**
    * Feel event on pressIn. None by default: FEEL_TABLE has no generic
    * button-press event yet (reported); pass one where a screen has a fitting
@@ -93,6 +95,7 @@ export function PlateButton({
   disabled = false,
   loading = false,
   block = false,
+  icon,
   pressFeel,
   accessibilityLabel,
   style,
@@ -142,6 +145,7 @@ export function PlateButton({
             <PlateBackground variant={variant} size={size} tint={variant === 'ember' ? eos.slate : eos.ink} />
           </View>
         )}
+        {icon && !loading ? <View style={disabled ? styles.dimIcon : null}>{icon}</View> : null}
         <AppText
           variant={LABEL[size]}
           numberOfLines={1}
@@ -172,7 +176,8 @@ const slateShadow = textShadows.plateSlate[0];
 const styles = StyleSheet.create({
   inline: { alignSelf: 'flex-start' },
   block: { alignSelf: 'stretch' },
-  plate: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
+  plate: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
+  dimIcon: { opacity: 0.7 },
   plateRow: { ...StyleSheet.absoluteFill, flexDirection: 'row' },
   mid: { flex: 1, flexDirection: 'row' },
   midTile: { flex: 1, height: '100%' },

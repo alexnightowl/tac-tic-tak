@@ -20,9 +20,23 @@ import {
 } from '@/ui';
 import { DevLangProvider, DevLangSwitch } from '@/ui/dev/devLang';
 import { useDevT } from '@/ui/dev/devStrings';
+import {
+  CardsSection,
+  HeadersSection,
+  InputsV2,
+  LabelsSection,
+  ListsSection,
+  SegmentedV2Section,
+  SheetSection,
+  SmallButtonsSection,
+  SurfacesV2Section,
+  TypeScaleSection,
+} from '@/ui/dev/KitchenSinkV2';
 
 // /dev/kitchen-sink: every primitive in every state, en and uk (PLAN §2.5;
 // the only screen with pixel baselines). Each element has a stable testID.
+// Phase 1 sections (ks-*) first, then the design v2 primitives (ks2-*,
+// src/ui/dev/KitchenSinkV2.tsx; docs/mobile/DESIGN-SYSTEM-V2.md).
 
 const VARIANTS: PlateVariant[] = ['ember', 'slate'];
 const SIZES: PlateSize[] = ['sm', 'md', 'lg'];
@@ -171,7 +185,22 @@ function KitchenSink() {
           defaultValue="short1"
           error={t('auth.rule_pw_len')}
         />
+        <InputsV2 />
       </Section>
+
+      <SmallButtonsSection />
+      <SurfacesV2Section />
+      <Section title={`${d('segmented')} v2`}>
+        <Profiler id="segmented-v2" onRender={onRender}>
+          <SegmentedV2Section />
+        </Profiler>
+      </Section>
+      <ListsSection />
+      <LabelsSection />
+      <CardsSection />
+      <HeadersSection />
+      <SheetSection />
+      <TypeScaleSection />
 
     </ScrollView>
   );

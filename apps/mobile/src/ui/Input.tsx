@@ -16,6 +16,10 @@ export type InputProps = Omit<TextInputProps, 'style'> & {
   accessibilityLabel: string;
   /** Field label above the well (CardTitle style). */
   label?: string;
+  /** Right side of the label row (`.cnt`: "12/40" counter or a short hint), 12/16 dust. */
+  labelRight?: string;
+  /** Leading glyph inside the well (search fields); 16 pt dust. */
+  leading?: ReactNode;
   /** Error message; also turns the border danger. */
   error?: string | null;
   /** Absolutely positioned control at the right edge (PasswordInput's eye). */
@@ -31,6 +35,8 @@ export function Input({
   testID,
   accessibilityLabel,
   label,
+  labelRight,
+  leading,
   error,
   accessory,
   disabled = false,
@@ -38,6 +44,8 @@ export function Input({
   onBlur,
   ...rest
 }: InputProps) {
+  const multiline = !!rest.multiline;
+  const restBorder = multiline ? surface.textareaBorder : surface.inputBorder;
   const { lang } = useLang();
   const focus = useSharedValue(0);
   const hasError = !!error;
@@ -45,17 +53,25 @@ export function Input({
   const ring = useAnimatedStyle(() => ({
     borderColor: hasError
       ? semantic.danger
-      : interpolateColor(focus.value, [0, 1], [surface.inputBorder, surface.inputBorderFocus]),
+      : interpolateColor(focus.get(), [0, 1], [restBorder, surface.inputBorderFocus]),
   }));
 
   return (
     <View style={styles.root}>
-      {label ? (
-        <AppText variant="label" style={styles.label}>
-          {label}
-        </AppText>
+      {label || labelRight ? (
+        <View style={styles.head}>
+          {label ? <AppText variant="label">{label}</AppText> : <View />}
+          {labelRight ? (
+            <AppText variant="caption" color={eos.dust} style={styles.count} numberOfLines={1}>
+              {labelRight}
+            </AppText>
+          ) : null}
+        </View>
       ) : null}
-      <Animated.View style={[styles.well, ring, disabled && styles.disabled]}>
+      <Animated.View
+        style={[styles.well, multiline && styles.wellMulti, leading ? styles.withLeading : null, ring, disabled && styles.disabled]}
+      >
+        {leading ? <View style={styles.leading}>{leading}</View> : null}
         <TextInput
           testID={testID}
           accessibilityLabel={accessibilityLabel}
@@ -75,7 +91,13 @@ export function Input({
             focus.set(withTiming(0, colorsTiming));
             onBlur?.(e);
           }}
-          style={[textStyle('input', lang), styles.input, accessory ? styles.withAccessory : null]}
+          style={[
+            textStyle('input', lang),
+            styles.input,
+            multiline && styles.inputMulti,
+            leading ? styles.inputLeading : null,
+            accessory ? styles.withAccessory : null,
+          ]}
         />
         {accessory}
       </Animated.View>
@@ -130,7 +152,15 @@ export function PasswordInput({ kind = 'current', testID, ...rest }: PasswordInp
 
 const styles = StyleSheet.create({
   root: { alignSelf: 'stretch' },
-  label: { marginBottom: space[1.5] },
+  // `.head`: label left, counter right, baseline-aligned, 6 pt above the well.
+  head: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    gap: space[2],
+    marginBottom: space[1.5],
+  },
+  count: { flexShrink: 1, textAlign: 'right', fontVariant: ['tabular-nums'] },
   well: {
     height: layout.inputHeight,
     borderRadius: radii.control,
@@ -140,7 +170,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   disabled: { opacity: 0.5 },
+  // Bio textarea: min 104, padding 12/14, 15/22, a graphite-800 border.
+  wellMulti: { height: undefined, minHeight: 104, justifyContent: 'flex-start' },
+  withLeading: { flexDirection: 'row', alignItems: 'center' },
+  leading: { paddingLeft: layout.inputPaddingX },
   input: { flex: 1, paddingHorizontal: layout.inputPaddingX, paddingVertical: 0 },
+  inputMulti: { paddingVertical: space[3], lineHeight: 22, textAlignVertical: 'top', minHeight: 104 },
+  inputLeading: { paddingLeft: space[2] },
   withAccessory: { paddingRight: 40 },
   eye: {
     position: 'absolute',

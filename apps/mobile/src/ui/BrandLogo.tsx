@@ -13,10 +13,20 @@ const GLOW_STOPS = logoGlow.map(([offset, rgba]) => {
   return { offset, color: `rgb(${r},${g},${b})`, opacity: a };
 });
 
+/** Glow disc diameter and blur in pt (the canvas draws it per screen). */
+export type LogoGlow = { box: number; blur: number };
+
+/** Tab header (MobRivals / MobStats): 120 pt disc around the 32 pt logo, blur 5. */
+export const HEADER_LOGO_GLOW: LogoGlow = { box: 120, blur: 5 };
+
 type Props = {
   size: number;
-  /** Soft ember glow behind the knight. */
-  glow?: boolean;
+  /**
+   * Soft ember glow behind the knight. `true` = the Login proportions
+   * (360 / 128 of the logo, blur 14 / 128); an object sets the disc size
+   * and blur directly (always centred on the logo, gradient at 50% 46%).
+   */
+  glow?: boolean | LogoGlow;
 };
 
 /**
@@ -30,10 +40,13 @@ type Props = {
 export function BrandLogo({ size, glow = true }: Props) {
   const id = useId().replace(/:/g, '');
   const k = size / 128;
-  const box = 360 * k;
-  const sigma = 14 * k;
+  const spec = typeof glow === 'object' ? glow : null;
+  const box = spec ? spec.box : 360 * k;
+  // CSS blur(r) is a Gaussian with σ = r.
+  const sigma = spec ? spec.blur : 14 * k;
   const pad = Math.ceil(sigma * 3);
   const c = pad + box / 2;
+  const offset = (size - box) / 2;
   return (
     <View style={{ width: size, height: size }} accessibilityIgnoresInvertColors>
       {glow && (
@@ -41,7 +54,7 @@ export function BrandLogo({ size, glow = true }: Props) {
           pointerEvents="none"
           width={box + pad * 2}
           height={box + pad * 2}
-          style={[styles.glow, { left: -116 * k - pad, top: -116 * k - pad }]}
+          style={[styles.glow, { left: offset - pad, top: offset - pad }]}
         >
           <Defs>
             <RadialGradient

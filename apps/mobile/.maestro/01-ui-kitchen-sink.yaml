@@ -40,14 +40,21 @@ appId: online.tactictak.app
 - tapOn: { id: ks-password }
 - inputText: "hunter22"
 # Tap static text to dismiss the keyboard (hideKeyboard has no target here).
-- tapOn: { id: ks-input-error-error }
+# The new-password error sits just below the focused field, so it stays on
+# screen wherever the scroll centred ks-password.
+- tapOn: { id: ks-password-new-error }
 - assertVisible: { id: ks-password, text: "hunter22" }
 - assertVisible: { label: "Hide password" }
 - takeScreenshot: ui-kitchen-sink-en-3
-- scrollUntilVisible:
-    element: { id: ks-lang }
-    direction: UP
-    visibilityPercentage: 50
+# The sheet is long (design v2 sections): re-enter (fresh mount, at the top)
+# instead of scrolling back up.
+- tapOn: { text: "Dev", index: 0 }
+# Leaving a typed password field makes iOS offer to save it.
+- tapOn: { text: "Not Now", optional: true }
+- tapOn: { id: dev-kitchen-sink }
+- extendedWaitUntil:
+    visible: { id: ks-lang }
+    timeout: 30000
 - tapOn: { id: ks-lang-uk }
 - takeScreenshot: ui-kitchen-sink-uk
 - scrollUntilVisible:

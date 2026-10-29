@@ -1,4 +1,4 @@
-import { eos, fontSize } from '@tac/core/tokens';
+import { eos, layout, text } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 import { useEffect, type ReactNode } from 'react';
@@ -26,18 +26,19 @@ const HOME = require('../../assets/icons/nav-home.webp');
 const PLAY = require('../../assets/icons/nav-play.webp');
 const REVIEW = require('../../assets/icons/nav-review-book.webp');
 
-const BAR_H = 64;
+const BAR_H = layout.tabBarHeight;
 const SHURIKEN =
   'M9.30 9.30 Q9.60 4.60 15.20 1.90 Q13.40 6.20 14.70 9.30 Q19.40 9.60 22.10 15.20 Q17.80 13.40 14.70 14.70 Q14.40 19.40 8.80 22.10 Q10.60 17.80 9.30 14.70 Q4.60 14.40 1.90 8.80 Q6.20 10.60 9.30 9.30Z';
-/** Web: the ember rule spans the middle 44% of the tab (left/right 28%). */
-const RULE = 0.44;
+/** The ember rule spans the middle 44% of the tab (left/right 28%). */
+const RULE = layout.tabRule.span;
 
 /**
- * The app's tab bar (PROVISIONAL Q3/Q31: custom JS bar over NativeTabs, whose
- * iOS 26 Liquid Glass ignores the ember-on-stone ground). Port of the Phase 1
- * mock (src/ui/dev/CustomTabBar.tsx), itself the web Nav.tsx mobile bar:
- * shade ground, seam top rule, 10 px bold labels, bone active / dust idle,
- * 2 px ember rule over the active tab. The rule slides and icon/label
+ * The app's tab bar (design v2 tab artboards; custom JS bar over
+ * NativeTabs, whose iOS 26 Liquid Glass ignores the ground): shade ground,
+ * 1 px seam top rule, six 64 pt tabs with a 28 × 24 icon box and a 10/14
+ * bold label (gap 4), bone active / dust idle (Home's painted icon dims to
+ * 0.5 instead), line icons 1.8 → 2 pt when active, and a 2 pt ember rule
+ * over the middle 44 % of the active tab. The rule slides and icon/label
  * colours crossfade on one SharedValue; React only swaps the page.
  */
 export function ShellTabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
@@ -63,8 +64,8 @@ export function ShellTabBar({ state, emitter, navigateToTab }: BottomTabBarProps
 
   const label = {
     fontFamily: fontFamily(lang, 'body', 700),
-    fontSize: fontSize['2xs'][0],
-    lineHeight: fontSize['2xs'][1],
+    fontSize: text.tabLabel.fontSize,
+    lineHeight: text.tabLabel.lineHeight,
   };
 
   return (
@@ -144,7 +145,7 @@ function TabIcon({ id, pos, i }: { id: ShellTabId; pos: SharedValue<number>; i: 
       default:
         // Web ShurikenIcon.
         return (
-          <Svg width={23} height={23} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+          <Svg width={23} height={23} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
             <Path d={SHURIKEN} />
             <Circle cx={12} cy={12} r={1.9} />
           </Svg>
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: eos.shade,
     boxShadow: [{ offsetX: 0, offsetY: 1, blurRadius: 0, spreadDistance: 0, color: eos.seam, inset: true }],
   },
-  rule: { position: 'absolute', top: 0, left: 0, height: 2, borderRadius: 1, backgroundColor: eos.ember },
+  rule: { position: 'absolute', top: 0, left: 0, height: layout.tabRule.height, borderRadius: 1, backgroundColor: eos.ember },
   tab: { flex: 1, height: BAR_H, alignItems: 'center', justifyContent: 'center', gap: 4 },
   icon: { width: 28, height: 24, alignItems: 'center', justifyContent: 'center' },
   layer: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },

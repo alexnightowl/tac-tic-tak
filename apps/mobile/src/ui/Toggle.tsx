@@ -68,8 +68,9 @@ const styles = StyleSheet.create({
   root: { width: T.width, height: T.height },
   disabled: { opacity: 0.5 },
   track: { ...StyleSheet.absoluteFill, borderRadius: radii.full },
-  well: { backgroundColor: control.toggleOff, boxShadow: [...shadows.well] },
-  ember: { backgroundColor: control.toggleOn, boxShadow: [...shadows.toggleOn] },
+  // Design v2 `.tg`: off = well + inset 0 2px 3px; on = ember + inset 0 1px 2px.
+  well: { backgroundColor: control.toggleOff, boxShadow: [...shadows.toggleTrackOff] },
+  ember: { backgroundColor: control.toggleOn, boxShadow: [...shadows.toggleTrackOn] },
   thumb: {
     position: 'absolute',
     top: T.inset,
@@ -78,6 +79,6 @@ const styles = StyleSheet.create({
     height: T.thumb,
     borderRadius: radii.full,
     backgroundColor: control.toggleThumb,
-    boxShadow: [...shadows.toggleThumb],
+    boxShadow: [...shadows.toggleKnob],
   },
 });

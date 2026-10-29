@@ -1,4 +1,4 @@
-import { eos, fontSize, radii } from '@tac/core/tokens';
+import { eos, radii, surface } from '@tac/core/tokens';
 import { Stack } from 'expo-router';
 
 // Module side effect: every achievement toast gets its glyph, whichever
@@ -6,29 +6,33 @@ import { Stack } from 'expo-router';
 import '@/features/achievements/icons';
 import { SettingsEffects } from '@/features/settings/SettingsEffects';
 import { ShellErrorBoundary } from '@/shell/ErrorScreen';
-import { fontFamily } from '@/ui/fonts';
-import { useLang, useT } from '@/ui/lang';
+import { useT } from '@/ui/lang';
+import { stackHeader } from '@/ui/NavHeader';
 
 export const ErrorBoundary = ShellErrorBoundary;
+
+/** One header component for every push route (stable identity across renders). */
+const DEFAULT_HEADER = stackHeader('back');
 
 // Signed-in stack (PLAN §2.3). The tab shell sits at the bottom; every
 // other screen covers it. Presentation lives here, not in the screens, so
 // streams that fill a stub never have to touch this file:
-//  - push (native header, ember-on-stone): history, session, viewer,
-//    profile, friends, settings/*;
+//  - push, with the design v2 nested header (`.back`: round back button,
+//    Cinzel 18 title; ui/NavHeader via stackHeader()): history, session,
+//    viewer, profile, friends, settings/*. A screen picks another back
+//    style with `options={{ header: stackHeader('float' | 'glass') }}`;
 //  - full screen, no header: the runner (fade; its swipe-back / Android
 //    back open the ExitSheet via usePreventRemove, so the gesture stays on),
 //    drill and mistakes review (fullScreenModal), onboarding;
 //  - formSheet: the account menu and the small pickers.
 export default function AppLayout() {
-  const { lang } = useLang();
   const t = useT();
   const sheet = {
     presentation: 'formSheet',
     headerShown: false,
     sheetGrabberVisible: true,
     sheetCornerRadius: radii.sheet,
-    contentStyle: { backgroundColor: eos.shade },
+    contentStyle: { backgroundColor: surface.sheet },
   } as const;
   return (
     <>
@@ -37,17 +41,9 @@ export default function AppLayout() {
       <Stack
         screenOptions={{
           headerShown: true,
-          headerStyle: { backgroundColor: eos.ink },
-          headerTintColor: eos.bone,
-          headerShadowVisible: false,
-          headerBackButtonDisplayMode: 'minimal',
-          // VoiceOver reads the back title; without it, it says "(tabs)".
+          header: DEFAULT_HEADER,
+          // Kept for the native back menu / VoiceOver ("(tabs)" otherwise).
           headerBackTitle: t('shell.back'),
-          headerTitleStyle: {
-            fontFamily: fontFamily(lang, 'display', 700),
-            fontSize: fontSize.lg[0],
-            color: eos.bone,
-          },
           contentStyle: { backgroundColor: eos.ink },
         }}
       >
