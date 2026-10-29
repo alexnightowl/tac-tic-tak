@@ -1,6 +1,7 @@
 import type { NextResponse } from '@tac/core/runner';
 import { create } from 'zustand';
 
+import { syncBeforeOnlineSession } from '@/features/offline/sync';
 import { api } from '@/platform/api';
 import { stashFirstPuzzle } from './pendingPuzzle';
 import { readLastTheme, writeLastDuration, writeLastSetup, writeLastTheme, type SessionSetup } from './setupPrefs';
@@ -11,6 +12,9 @@ import { readLastTheme, writeLastDuration, writeLastSetup, writeLastTheme, type 
  * setup. Resolves the new session id; throws the ApiError.
  */
 export async function startSession(setup: SessionSetup): Promise<string> {
+  // Offline results first: a session that ticks today's streak can't
+  // backfill an earlier offline day (OFFLINE.md). Bounded, never throws.
+  await syncBeforeOnlineSession();
   const r = await api.sessions.create({
     startRating: setup.startRating,
     durationSec: setup.durationSec,

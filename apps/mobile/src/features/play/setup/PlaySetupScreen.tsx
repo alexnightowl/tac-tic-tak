@@ -4,12 +4,13 @@ import { themeLabel } from '@tac/core/themes';
 import { control, eos, graphite, layout, mixed, radii, rank, semantic, space, surface, tone } from '@tac/core/tokens';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { ChevronRight } from 'lucide-react-native';
+import { ChevronRight, CloudOff } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { OfflineEntry } from '@/features/offline/OfflineEntry';
 import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
 import { fontFamily } from '@/ui/fonts';
@@ -63,6 +64,7 @@ export function PlaySetupScreen() {
   }
   const [pick, setPick] = useState<Pick | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [netErr, setNetErr] = useState(false);
   const [loading, setLoading] = useState(false);
   /** Only a tap on Custom opens the number pad, not a restored custom pick. */
   const [focusCustom, setFocusCustom] = useState(false);
@@ -137,6 +139,7 @@ export function PlaySetupScreen() {
 
   const start = async () => {
     setErr(null);
+    setNetErr(false);
     setLoading(true);
     try {
       const id = await startSession({
@@ -148,7 +151,9 @@ export function PlaySetupScreen() {
       });
       router.push(`/play/${id}` as Href);
     } catch (e) {
-      setErr(t(startErrorKey(e)));
+      const key = startErrorKey(e);
+      setErr(t(key));
+      setNetErr(key === 'play.err_network');
     } finally {
       setLoading(false);
     }
@@ -403,7 +408,24 @@ export function PlaySetupScreen() {
               {err}
             </AppText>
           )}
+          {netErr && (
+            <Tap
+              testID="setup-offline-link"
+              accessibilityRole="link"
+              accessibilityLabel={t('offline.entry_network')}
+              onPress={() => router.push('/offline' as Href)}
+              hitSlop={{ top: 12, bottom: 12 }}
+              style={styles.offlineLink}
+            >
+              <CloudOff size={16} color={eos.ember} />
+              <AppText variant="captionStrong" color={eos.ember} style={styles.flex}>
+                {t('offline.entry_network')}
+              </AppText>
+            </Tap>
+          )}
         </Card>
+
+        <OfflineEntry />
       </ScrollView>
 
       {/* web MobileStartBar: a full-width CTA docked above the tab bar. */}
@@ -490,6 +512,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: rank.intermediate.glow,
   },
+  offlineLink: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   customRow: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
   customInput: { width: space[20] + space[6] },
   doneBtn: {

@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 // Module side effect: every achievement toast gets its glyph, whichever
 // screen raised it (the shell's icon registry).
 import '@/features/achievements/icons';
+import { OfflineSyncHost } from '@/features/offline/OfflineSyncHost';
 import { SettingsEffects } from '@/features/settings/SettingsEffects';
 import { ShellErrorBoundary } from '@/shell/ErrorScreen';
 import { useT } from '@/ui/lang';
@@ -38,6 +39,8 @@ export default function AppLayout() {
     <>
       {/* Onboarding gate, reminder re-plan, account sound → engine mirror. */}
       <SettingsEffects />
+      {/* Offline results sync (start, foreground, network back) + the summary. */}
+      <OfflineSyncHost />
       <Stack
         screenOptions={{
           headerShown: true,
@@ -54,6 +57,8 @@ export default function AppLayout() {
         <Stack.Screen name="review/[puzzleId]" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="sessions/[id]/review" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="play/norm" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="offline/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="offline/synced" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen
           name="onboarding"
           options={{
@@ -64,6 +69,7 @@ export default function AppLayout() {
         />
 
         {/* Push routes (titles set by each screen). */}
+        <Stack.Screen name="offline/index" options={{ headerShown: false }} />
         <Stack.Screen name="sessions/index" />
         <Stack.Screen name="sessions/[id]/index" />
         <Stack.Screen name="puzzles/[puzzleId]" />
