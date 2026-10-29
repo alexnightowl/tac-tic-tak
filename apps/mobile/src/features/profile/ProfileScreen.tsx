@@ -1,11 +1,11 @@
 import { bucketByLocalDay, selectRadarThemes, RADAR_MIN_THEMES, type RadarDatum } from '@tac/core/charts';
 import { localeFor, streakState } from '@tac/core/format';
-import { eos, fontSize, graphite, layout, radii, rank, space } from '@tac/core/tokens';
+import { eos, fontSize, graphite, layout, radii, space, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
-import { CalendarDays, Flame, Share as ShareIcon, Trophy } from 'lucide-react-native';
+import { Calendar, Trophy } from 'lucide-react-native';
 import { useState } from 'react';
-import { Platform, Pressable, RefreshControl, Share, StyleSheet, View } from 'react-native';
+import { Platform, RefreshControl, Share, StyleSheet, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedScrollHandler,
@@ -13,12 +13,14 @@ import Animated, {
   useSharedValue,
   type SharedValue,
 } from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
 
 import { feel } from '@/feel';
 import '@/features/achievements/icons';
 import { SessionRow } from '@/features/sessions/SessionRow';
 import { profileQuery, type PublicProfile } from '@/features/social/api';
 import { FriendActionButton } from '@/features/social/FriendActionButton';
+import { FlameGlyph } from '@/features/social/glyphs';
 import { ActivityHeatmap } from '@/features/stats/ActivityHeatmap';
 import { profileThemesQuery, profileTimelineQuery, toRatingPoints } from '@/features/stats/api';
 import { RadarChart } from '@/features/stats/RadarChart';
@@ -27,8 +29,10 @@ import { StyleIcon, STYLE_ORDER } from '@/features/stats/StyleIcon';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText } from '@/ui/AppText';
+import { IconButton } from '@/ui/Buttons';
 import { fontFamily, scriptLang } from '@/ui/fonts';
 import { useLang, useT } from '@/ui/lang';
+import { stackHeader } from '@/ui/NavHeader';
 import { PlateButton } from '@/ui/PlateButton';
 import { Card, HeroCard } from '@/ui/Surfaces';
 import { Tap } from '@/ui/Tap';
@@ -44,6 +48,9 @@ const DASH = '—';
 
 /** Hero collapse: the header title fades in as the name scrolls under it. */
 const COLLAPSE = [40, 110];
+
+/** Design v2 MobProfile: compact 44 pt header, `.glass` back and share. */
+const PROFILE_HEADER = stackHeader('glass', { compact: true });
 
 /** Web profile radar bounds (differs from the analytics page on purpose). */
 function profileRadarBounds(data: RadarDatum[]) {
@@ -100,18 +107,20 @@ export function ProfileScreen({ nickname }: { nickname: string }) {
     <Stack.Screen
       options={{
         title: name,
+        header: PROFILE_HEADER,
         headerTitle: () => <HeaderTitle y={y} text={name} />,
         headerRight: () => (
-          <Pressable
+          <IconButton
+            variant="glass"
             onPress={share}
-            accessibilityRole="button"
             accessibilityLabel={t('profile.share')}
             testID="profile-share"
-            hitSlop={10}
-            style={styles.headerBtn}
-          >
-            <ShareIcon size={20} color={eos.bone} />
-          </Pressable>
+            icon={
+              <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke={eos.bone} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <Path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" />
+              </Svg>
+            }
+          />
         ),
       }}
     />
@@ -289,15 +298,15 @@ function Hero({
         </AppText>
       ) : null}
       <View style={styles.meta}>
-        <Meta icon={<CalendarDays size={12} color={eos.dust} />} text={`${t('profile.joined')} ${joined}`} />
+        <Meta icon={<Calendar size={12} color={eos.dust} strokeWidth={2} />} text={`${t('profile.joined')} ${joined}`} />
         {data.allTimePeak != null ? (
-          <Meta icon={<Trophy size={12} color={eos.dust} />} text={`${t('profile.peak')} ${data.allTimePeak}`} testID="profile-peak" />
+          <Meta icon={<Trophy size={12} color={eos.dust} strokeWidth={2} />} text={`${t('profile.peak')} ${data.allTimePeak}`} testID="profile-peak" />
         ) : null}
         {streakLive ? (
           <Meta
-            icon={<Flame size={12} color={rank.intermediate.color} />}
+            icon={<FlameGlyph size={12} color={tone.gold} />}
             text={`${t('profile.streak')} ${data.streak!.days}`}
-            color={rank.intermediate.color}
+            color={tone.gold}
             testID="profile-streak"
           />
         ) : null}
@@ -388,7 +397,6 @@ function RecentSessions({ data, isSelf }: { data: PublicProfile; isSelf: boolean
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
   scroll: { padding: layout.gutter, gap: space[5], paddingBottom: space[12] },
-  headerBtn: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center' },
   skeleton: { padding: layout.gutter, gap: space[4] },
   skelBlock: { borderRadius: radii.cardComponent, backgroundColor: eos.slate },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space[3], padding: layout.gutter },
