@@ -67,13 +67,14 @@ appId: online.tactictak.app
 - tapOn:
     id: register-repeat
 - pressKey: Enter
-# A new account meets the welcome slides (onboarding gate); skip them.
+# A new account meets the welcome steps (onboarding gate); the top bar's
+# Skip closes them.
 - extendedWaitUntil:
     visible:
       id: screen-onboarding
     timeout: 15000
 - tapOn:
-    id: onboarding-skip
+    id: screen-onboarding-close
 - extendedWaitUntil:
     visible:
       id: home-screen

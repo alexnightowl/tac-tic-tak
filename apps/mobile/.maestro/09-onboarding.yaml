@@ -1,9 +1,8 @@
 # Phase 4/9 onboarding for a fresh account: a new user (registered over
 # HTTP, so the iOS strong-password sheet never gets involved) logs in and
-# meets the 5 welcome slides (gate: settings.onboardingCompleted). Next,
-# Back and a swipe move the pager; "Let's go" lands on the Play tab, the
-# server has onboardingCompleted = true, and a relaunch doesn't show the
-# slides again. The gate (SettingsEffects in the (app) layout) opens them.
+# meets the 4-step welcome (gate: settings.onboardingCompleted). Continue
+# walks the steps; "Find my level" lands on the Play tab, the server has
+# onboardingCompleted = true, and a relaunch doesn't show the steps again. The gate (SettingsEffects in the (app) layout) opens them.
 # Local backend only. Throwaway users are named e2e_onb_*; clean up with:
 #   delete from "User" where nickname like 'e2e_onb_%';
 #   maestro test -e E2E_PASSWORD=… .maestro/09-onboarding.yaml
@@ -22,23 +21,22 @@ appId: online.tactictak.app
 # The gate opens the slides by itself, no navigation needed.
 - extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 15000 }
 
-- assertVisible: { id: onboarding-step, text: "Step 1 of 5" }
-- assertVisible: { id: onboarding-title, text: "Welcome to tac·tic·tak" }
-- assertNotVisible: { id: onboarding-back }
+# Design v2: 4 steps (Welcome, The training, Your path, The habit), one
+# plate button each; the top bar shows 4 progress segments.
+- assertVisible: { id: onboarding-step, text: "Step 1 of 4" }
+- assertVisible: { id: onboarding-slide-welcome }
+- assertVisible: { id: onboarding-next, text: "Begin" }
 - tapOn: { id: onboarding-next }
-- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 2 of 5" }, timeout: 3000 }
-- tapOn: { id: onboarding-back }
-- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 1 of 5" }, timeout: 3000 }
-# Swipe the pager like a native carousel.
-- swipe: { start: "85%, 45%", end: "15%, 45%", duration: 300 }
-- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 2 of 5" }, timeout: 3000 }
+- extendedWaitUntil: { visible: { id: onboarding-slide-training }, timeout: 3000 }
+- assertVisible: { id: onboarding-step, text: "Step 2 of 4" }
 - tapOn: { id: onboarding-next }
-- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 3 of 5" }, timeout: 3000 }
+- extendedWaitUntil: { visible: { id: onboarding-slide-path }, timeout: 3000 }
 - tapOn: { id: onboarding-next }
-- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 4 of 5" }, timeout: 3000 }
-- tapOn: { id: onboarding-next }
-- extendedWaitUntil: { visible: { id: onboarding-step, text: "Step 5 of 5" }, timeout: 3000 }
+- extendedWaitUntil: { visible: { id: onboarding-slide-habit }, timeout: 3000 }
+- assertVisible: { id: onboarding-step, text: "Step 4 of 4" }
 - assertNotVisible: { id: onboarding-next }
+- assertVisible: { id: onboarding-skip }
+# "Find my level" = the Play tab, where the first sessions calibrate.
 - tapOn: { id: onboarding-done }
 - extendedWaitUntil: { visible: { id: play-setup }, timeout: 8000 }
 - assertNotVisible: { id: screen-onboarding }
@@ -56,3 +54,23 @@ appId: online.tactictak.app
 - extendedWaitUntil: { visible: { id: home-screen }, timeout: 30000 }
 - extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 4000, optional: true }
 - assertNotVisible: { id: screen-onboarding }
+
+# Replay from Settings, walk to the last step and take "Skip — start at
+# 1200": the steps close onto Home and the flag is saved again.
+- tapOn: { id: tab-settings }
+- scrollUntilVisible: { element: { id: settings-replay-onboarding }, direction: DOWN }
+- tapOn: { id: settings-replay-onboarding }
+- extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 8000 }
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-skip }, timeout: 3000 }
+- tapOn: { id: onboarding-skip }
+- extendedWaitUntil: { visible: { id: home-screen }, timeout: 8000 }
+- assertNotVisible: { id: screen-onboarding }
+- extendedWaitUntil: { visible: { id: never-there }, timeout: 1500, optional: true }
+- evalScript: >-
+    ${output.done2 = json(http.get('http://localhost:4000/api/users/me', {headers: {Authorization: 'Bearer ' + output.token}}).body).settings.onboardingCompleted}
+- assertTrue:
+    condition: ${output.done2 === true}
+    label: "server: onboardingCompleted = true after the replay"

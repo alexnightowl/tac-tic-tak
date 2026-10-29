@@ -47,11 +47,10 @@ appId: online.tactictak.app
 - tapOn: { id: onboarding-next }
 - tapOn: { id: onboarding-next }
 - tapOn: { id: onboarding-next }
-- tapOn: { id: onboarding-next }
 - extendedWaitUntil: { visible: { id: onboarding-done }, timeout: 5000 }
 - tapOn: { id: onboarding-done }
 
-# "Let's go" lands on Play: a short bullet session.
+# "Find my level" lands on Play: a short bullet session.
 - extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
 - takeScreenshot: wt-04-setup
 - tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }

@@ -1,18 +1,9 @@
-import { eos, layout, radii, rank, space, surface } from '@tac/core/tokens';
-import { router } from 'expo-router';
-import { Compass, Flame, Layers, Sparkles, Swords, X, type LucideIcon } from 'lucide-react-native';
+import { eos, layout, space, tone } from '@tac/core/tokens';
+import { router, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { BackHandler, StyleSheet, useWindowDimensions, View } from 'react-native';
-import Animated, {
-  interpolate,
-  useAnimatedRef,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  type SharedValue,
-} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { feel } from '@/feel';
 import { patchSettings } from '@/shell/settings';
@@ -21,60 +12,59 @@ import { useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
 import { Tap } from '@/ui/Tap';
 import { markOnboardingDismissed, setOnboardingOpen } from './gate';
+import { HabitArt } from './Habit';
+import { RankPath } from './RankPath';
+import { Rise, StepBar, StepCopy } from './parts';
+import { TrainingBoard } from './TrainingBoard';
+import { WelcomeArt } from './Welcome';
 
-// Port of the web OnboardingModal (5 slides) as a full-screen modal pager:
-// swipe or Back/Next, dots stretch with the scroll offset (UI thread),
-// icons drift a little slower than the page. Skip, the close button and
-// "Let's go" all mark onboardingCompleted (optimistic; the web ignored a
-// failed save the same way); "Let's go" lands on the Play tab.
+// Design v2 onboarding (MobOnboarding1–4): Welcome → The training → Your
+// path → The habit. Each step mounts fresh so its entrance keyframes play;
+// the top bar's Skip, Android back on step 1, "Skip — start at 1200" and
+// "Find my level" all mark onboardingCompleted (optimistic; the web ignored
+// a failed save the same way). Placement does not exist on the backend:
+// "Find my level" opens the Play tab, where the first five sessions in a
+// style calibrate the rating; "Skip — start at 1200" lands on Home.
 
-type Slide = { id: string; Icon: LucideIcon; color: string };
+const STEPS = ['welcome', 'training', 'path', 'habit'] as const;
+const LAST = STEPS.length - 1;
+/** The backend's starting puzzle rating (Rating.startPuzzleRating default). */
+const START_RATING = 1200;
 
-// Web: amber-300 for welcome / calibration / streak, the accent for the
-// other two. Amber is the intermediate rank gold here (no amber token).
-const AMBER = rank.intermediate.color;
-const SLIDES: readonly Slide[] = [
-  { id: 'welcome', Icon: Sparkles, color: AMBER },
-  { id: 'styles', Icon: Layers, color: eos.ember },
-  { id: 'calibration', Icon: Compass, color: AMBER },
-  { id: 'streak', Icon: Flame, color: AMBER },
-  { id: 'start', Icon: Swords, color: eos.ember },
-];
-
-const DOT = 6;
-const DOT_ACTIVE = 24;
+type Finish = 'close' | 'play' | 'home';
 
 export function OnboardingScreen() {
   const t = useT();
   const insets = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const x = useSharedValue(0);
   const [step, setStep] = useState(0);
-  const reduced = useReducedMotion();
   const finished = useRef(false);
-  const last = SLIDES.length - 1;
+  // Mirrors `step` for the Android back handler registered once on mount.
+  const stepRef = useRef(0);
 
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: (e) => {
-      x.value = e.contentOffset.x;
-    },
-  });
-
-  const finish = (toPlay: boolean) => {
+  const finish = (to: Finish) => {
     if (finished.current) return;
     finished.current = true;
     markOnboardingDismissed();
     void patchSettings({ onboardingCompleted: true });
     router.back();
-    if (toPlay) router.navigate('/play');
+    if (to === 'play') router.navigate('/play' as Href);
+    else if (to === 'home') router.navigate('/' as Href);
+  };
+
+  const goTo = (i: number) => {
+    const next = Math.max(0, Math.min(LAST, i));
+    if (next === stepRef.current) return;
+    feel.emit('tabChange');
+    stepRef.current = next;
+    setStep(next);
   };
 
   useEffect(() => {
     setOnboardingOpen(true);
-    // Android back = skip (web: X and Skip both persist "done").
+    // Android back: one step back; on the first step it skips (web: X = done).
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      finish(false);
+      if (stepRef.current > 0) goTo(stepRef.current - 1);
+      else finish('close');
       return true;
     });
     return () => {
@@ -90,172 +80,144 @@ export function OnboardingScreen() {
     };
   }, []);
 
-  const goTo = (i: number) => {
-    const next = Math.max(0, Math.min(last, i));
-    if (next === step) return;
-    feel.emit('tabChange');
-    setStep(next);
-    scrollRef.current?.scrollTo({ x: next * width, animated: !reduced });
-  };
-
+  const id = STEPS[step];
   return (
-    <View style={[styles.root, { paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, space[4]) }]} testID="screen-onboarding">
-      <View style={styles.topBar}>
-        <AppText variant="caption" testID="onboarding-step" accessibilityLiveRegion="polite">
-          {t('onboarding.step', { n: step + 1, total: SLIDES.length })}
-        </AppText>
-        <Tap
-          testID="screen-onboarding-close"
-          accessibilityRole="button"
-          accessibilityLabel={t('onboarding.skip')}
-          onPress={() => finish(false)}
-          style={styles.close}
-        >
-          <X size={22} color={eos.ash} />
-        </Tap>
-      </View>
-
-      <Animated.ScrollView
-        ref={scrollRef}
-        horizontal
-        pagingEnabled
-        bounces={false}
-        showsHorizontalScrollIndicator={false}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        onMomentumScrollEnd={(e) => {
-          const i = Math.round(e.nativeEvent.contentOffset.x / width);
-          if (i !== step) {
-            feel.emit('tabChange');
-            setStep(i);
-          }
-        }}
-        style={styles.pager}
-        testID="onboarding-pager"
-      >
-        {SLIDES.map((s, i) => (
-          <SlideView key={s.id} slide={s} index={i} width={width} x={x} t={t} active={i === step} still={reduced} />
-        ))}
-      </Animated.ScrollView>
-
-      <View style={styles.dots} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        {SLIDES.map((s, i) => (
-          <Dot key={s.id} i={i} x={x} width={width} />
-        ))}
-      </View>
-
-      <View style={styles.controls}>
-        <Tap
-          testID="onboarding-skip"
-          accessibilityRole="button"
-          accessibilityLabel={t('onboarding.skip')}
-          onPress={() => finish(false)}
-          style={styles.skip}
-        >
-          <AppText variant="caption" color={eos.dust}>
-            {t('onboarding.skip')}
-          </AppText>
-        </Tap>
-        <View style={styles.buttons}>
-          {step > 0 ? (
-            <PlateButton testID="onboarding-back" label={t('onboarding.back')} variant="slate" onPress={() => goTo(step - 1)} />
-          ) : null}
-          {step < last ? (
-            <PlateButton testID="onboarding-next" label={t('onboarding.next')} onPress={() => goTo(step + 1)} />
+    <View style={[styles.root, { paddingTop: insets.top, paddingBottom: insets.bottom }]} testID="screen-onboarding">
+      <Backdrop />
+      <StepBar
+        step={step}
+        total={STEPS.length}
+        label={t('onboarding.step', { n: step + 1, total: STEPS.length })}
+        skipLabel={t('onboarding.skip')}
+        onSkip={() => finish('close')}
+      />
+      {/* key: a fresh mount per step replays the step's entrance keyframes. */}
+      <View key={id} style={styles.flex} testID={`onboarding-slide-${id}`}>
+        {id === 'welcome' ? (
+          <>
+            <View style={styles.art}>
+              <WelcomeArt />
+            </View>
+            <StepCopy kicker={t('brand.name')} title={t('onboarding.welcome.title')} body={t('onboarding.welcome.body')} />
+          </>
+        ) : id === 'training' ? (
+          <>
+            <View style={styles.art}>
+              <TrainingBoard label={t('onboarding.training.board')} pill={t('onboarding.training.pill')} />
+            </View>
+            <StepCopy
+              kicker={t('onboarding.training.kicker')}
+              title={t('onboarding.training.title')}
+              body={t('onboarding.training.body')}
+            />
+          </>
+        ) : id === 'path' ? (
+          <>
+            <View style={styles.art}>
+              <RankPath
+                names={{
+                  novice: t('levels.novice'),
+                  beginner: t('levels.beginner'),
+                  intermediate: t('levels.intermediate'),
+                  advanced: t('levels.advanced'),
+                  expert: t('levels.expert'),
+                }}
+                you={t('onboarding.path.you', { level: t('levels.intermediate') })}
+              />
+            </View>
+            <StepCopy kicker={t('onboarding.path.kicker')} title={t('onboarding.path.title')} body={t('onboarding.path.body')} />
+          </>
+        ) : (
+          <>
+            <View style={[styles.art, styles.habitArt]}>
+              <HabitArt
+                copy={{
+                  days: t('onboarding.habit.days'),
+                  unit: t('onboarding.habit.unit'),
+                  best: t('onboarding.habit.best'),
+                  weekdays: t('onboarding.habit.weekdays').split(','),
+                  freezeNote: t('onboarding.habit.freeze_note'),
+                  reviewTitle: t('onboarding.habit.review_title'),
+                  reviewBody: t('onboarding.habit.review_body'),
+                  reviewCount: t('onboarding.habit.review_count'),
+                }}
+              />
+            </View>
+            <StepCopy kicker={t('onboarding.habit.kicker')} title={t('onboarding.habit.title')} body={t('onboarding.habit.body')} />
+          </>
+        )}
+        <Rise index={3} style={styles.cta}>
+          {step < LAST ? (
+            <PlateButton
+              testID="onboarding-next"
+              label={step === 0 ? t('onboarding.begin') : t('onboarding.continue')}
+              onPress={() => goTo(step + 1)}
+              size="lg"
+              block
+            />
           ) : (
-            <PlateButton testID="onboarding-done" label={t('onboarding.done')} onPress={() => finish(true)} pressFeel="toggle" />
+            <>
+              <PlateButton
+                testID="onboarding-done"
+                label={t('onboarding.find_level')}
+                onPress={() => finish('play')}
+                pressFeel="toggle"
+                size="lg"
+                block
+              />
+              <Tap
+                testID="onboarding-skip"
+                accessibilityRole="button"
+                accessibilityLabel={t('onboarding.skip_start', { rating: START_RATING })}
+                onPress={() => finish('home')}
+                style={styles.textButton}
+              >
+                <AppText variant="caption" color={eos.ash} style={styles.textButtonLabel}>
+                  {t('onboarding.skip_start', { rating: START_RATING })}
+                </AppText>
+              </Tap>
+            </>
           )}
-        </View>
+        </Rise>
       </View>
     </View>
   );
 }
 
-function SlideView({
-  slide,
-  index,
-  width,
-  x,
-  t,
-  active,
-  still,
-}: {
-  slide: Slide;
-  index: number;
-  width: number;
-  x: SharedValue<number>;
-  t: (k: string) => string;
-  active: boolean;
-  /** Reduced motion: no parallax. */
-  still: boolean;
-}) {
-  const { Icon } = slide;
-  // Parallax: the icon tile lags the page by 35 %.
-  const drift = useAnimatedStyle(() => ({
-    transform: [{ translateX: still ? 0 : interpolate(x.value, [(index - 1) * width, index * width, (index + 1) * width], [-width * 0.35, 0, width * 0.35]) }],
-  }));
+/**
+ * `radial-gradient(ellipse at 50% 30%, #2a2023 0%, #1d1b20 60%)`: an
+ * ellipse through the farthest corner with the closest-side aspect ratio
+ * (CSS's default sizing), drawn in screen points.
+ */
+function Backdrop() {
+  const { width: w, height: h } = useWindowDimensions();
+  const cx = w / 2;
+  const cy = h * 0.3;
+  // Closest-side ratio, then scaled so the ellipse reaches the farthest corner.
+  const ratio = Math.min(cx, w - cx) / Math.min(cy, h - cy);
+  const dx = Math.max(cx, w - cx);
+  const dy = Math.max(cy, h - cy);
+  const ry = Math.sqrt((dx / ratio) ** 2 + dy ** 2);
+  const rx = ry * ratio;
   return (
-    <View
-      style={[styles.slide, { width }]}
-      testID={`onboarding-slide-${slide.id}`}
-      accessibilityElementsHidden={!active}
-      importantForAccessibility={active ? 'auto' : 'no-hide-descendants'}
-    >
-      <Animated.View style={[styles.tile, drift]}>
-        <Icon size={28} color={slide.color} strokeWidth={1.8} />
-      </Animated.View>
-      <AppText variant="title" accessibilityRole="header" style={styles.center} testID={active ? 'onboarding-title' : undefined}>
-        {t(`onboarding.${slide.id}.title`)}
-      </AppText>
-      <AppText variant="body" color={eos.ash} style={[styles.center, styles.body]}>
-        {t(`onboarding.${slide.id}.body`)}
-      </AppText>
-    </View>
+    <Svg width={w} height={h} style={StyleSheet.absoluteFill} pointerEvents="none">
+      <Defs>
+        <RadialGradient id="obBackdrop" gradientUnits="userSpaceOnUse" cx={cx} cy={cy} rx={rx} ry={ry} fx={cx} fy={cy}>
+          <Stop offset={0} stopColor={tone.warmGlow} />
+          <Stop offset={0.6} stopColor={eos.ink} />
+        </RadialGradient>
+      </Defs>
+      <Rect width={w} height={h} fill="url(#obBackdrop)" />
+    </Svg>
   );
-}
-
-/** Web dot: 6 → 24 pt wide and accent when active; here interpolated from the scroll offset. */
-function Dot({ i, x, width }: { i: number; x: SharedValue<number>; width: number }) {
-  const style = useAnimatedStyle(() => {
-    const d = Math.min(1, Math.abs(x.value / Math.max(1, width) - i));
-    return {
-      width: interpolate(d, [0, 1], [DOT_ACTIVE, DOT]),
-      backgroundColor: d < 0.5 ? eos.ember : surface.heroRing,
-      opacity: interpolate(d, [0, 1], [1, 0.9]),
-    };
-  });
-  return <Animated.View style={[styles.dot, style]} />;
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
-  topBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: layout.gutter, paddingRight: space[2] },
-  close: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
-  pager: { flex: 1 },
-  slide: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: layout.gutter * 2, gap: space[3] },
-  tile: {
-    width: 64,
-    height: 64,
-    borderRadius: radii['2xl'],
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: eos.slate,
-    borderWidth: 1,
-    borderColor: eos.seam,
-    marginBottom: space[2],
-  },
-  center: { textAlign: 'center' },
-  body: { maxWidth: 360, lineHeight: 22 },
-  dots: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space[1.5], height: space[6] },
-  dot: { height: DOT, borderRadius: radii.full },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: layout.gutter,
-    paddingTop: space[4],
-    minHeight: 60,
-  },
-  skip: { minHeight: 44, minWidth: 44, justifyContent: 'center', paddingHorizontal: space[1] },
-  buttons: { flexDirection: 'row', gap: space[2] },
+  flex: { flex: 1 },
+  art: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  habitArt: { paddingHorizontal: layout.gutter },
+  cta: { paddingTop: space[6], paddingHorizontal: layout.gutter, gap: space[1] },
+  textButton: { height: 44, alignItems: 'center', justifyContent: 'center' },
+  textButtonLabel: { fontSize: 13, lineHeight: 18 },
 });

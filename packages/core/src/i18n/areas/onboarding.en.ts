@@ -1,23 +1,42 @@
-// onboarding area, en. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
-// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+// onboarding area, en. The 4-step welcome (design v2 MobOnboarding1–4);
+// the web's 5-slide copy was retired with it. Edit only your area's files.
 import type { Dict } from '../types';
 
 export const onboardingEn: Dict = {
   'onboarding.skip': 'Skip',
-  'onboarding.back': 'Back',
-  'onboarding.next': 'Next',
-  'onboarding.done': 'Let\'s go',
-  'onboarding.welcome.title': 'Welcome to tac·tic·tak',
-  'onboarding.welcome.body': 'Sharpen your tactical instincts in short, focused sessions. Real progression — every solved puzzle moves your rating, every session tells the system what to throw at you next.',
-  'onboarding.styles.title': 'Bullet, blitz, rapid — pick your pace',
-  'onboarding.styles.body': 'Three training styles, each with its own rating. Bullet rewards raw pattern recognition under tight time, blitz balances speed and depth, rapid is for deep calculation. Pick whichever matches the time-control you actually play.',
-  'onboarding.calibration.title': 'First five sessions: calibration',
-  'onboarding.calibration.body': 'Your starting rating is provisional. The first five sessions in each style let the system find your real level — your rating shows a "?" badge until calibration finishes. Manual rating selection is locked here so the result reflects your actual strength.',
-  'onboarding.streak.title': 'Show up daily, drill what you missed',
-  'onboarding.streak.body': 'A daily streak rewards consistency — one freeze a week covers a missed day, automatic. Failed or slow puzzles flow into Review, where you can drill them without time pressure. Achievements unlock for streaks, ratings, and exploring the app.',
-  'onboarding.start.title': 'Pick a style and start',
-  'onboarding.start.body': 'We\'ll drop you on the play screen — pick a style, choose a duration, and go. You can replay this walkthrough any time from Settings → App.',
-
-  // Mobile-only.
   'onboarding.step': 'Step {n} of {total}',
+  'onboarding.begin': 'Begin',
+  'onboarding.continue': 'Continue',
+  'onboarding.find_level': 'Find my level',
+  'onboarding.skip_start': 'Skip — start at {rating}',
+
+  // 1 · Welcome (kicker = brand.name).
+  'onboarding.welcome.title': 'See the strike\nbefore it lands',
+  'onboarding.welcome.body': 'Short tactical sessions built around one idea — find the move that wins.',
+
+  // 2 · The training (animated back-rank mate).
+  'onboarding.training.kicker': 'The training',
+  'onboarding.training.title': 'One move wins.\nFind it.',
+  'onboarding.training.body': 'Every session is a run of puzzles matched to your level. Solve fast and clean — your rating follows.',
+  'onboarding.training.board': 'Back-rank mate: rook d1 to d8',
+  'onboarding.training.pill': 'Rd8# · solved in 4 s',
+
+  // 3 · Your path (the rank eyes).
+  'onboarding.path.kicker': 'Your path',
+  'onboarding.path.title': 'Every level\nawakens a new eye',
+  'onboarding.path.body': 'Climb from Novice to Expert. Your rank follows your rating — and it can slip if you stop sharpening.',
+  'onboarding.path.you': '{level} · you',
+
+  // 4 · The habit (sample streak card; illustrative values).
+  'onboarding.habit.kicker': 'The habit',
+  'onboarding.habit.title': 'A few minutes a day',
+  'onboarding.habit.body': 'Keep the flame alive — one freeze a week covers a missed day.',
+  'onboarding.habit.days': '4',
+  'onboarding.habit.unit': 'day streak',
+  'onboarding.habit.best': 'Best: 12 days',
+  'onboarding.habit.weekdays': 'M,T,W,T,F,S,S',
+  'onboarding.habit.freeze_note': 'Wednesday was covered by your weekly freeze',
+  'onboarding.habit.review_title': 'Missed puzzles come back',
+  'onboarding.habit.review_body': 'Drill them in Review until they stick',
+  'onboarding.habit.review_count': '3',
 };

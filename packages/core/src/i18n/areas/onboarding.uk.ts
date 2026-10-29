@@ -1,23 +1,42 @@
-// onboarding area, uk. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
-// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+// onboarding area, uk. The 4-step welcome (design v2 MobOnboarding1–4);
+// the web's 5-slide copy was retired with it. Edit only your area's files.
 import type { Dict } from '../types';
 
 export const onboardingUk: Dict = {
   'onboarding.skip': 'Пропустити',
-  'onboarding.back': 'Назад',
-  'onboarding.next': 'Далі',
-  'onboarding.done': 'Почати',
-  'onboarding.welcome.title': 'Ласкаво просимо в tac·tic·tak',
-  'onboarding.welcome.body': 'Заточуй тактичну інтуїцію короткими сфокусованими сесіями. Справжній прогрес — кожна розвʼязана задача рухає твій рейтинг, а кожна сесія підказує системі що показати далі.',
-  'onboarding.styles.title': 'Пуля, бліц, рапід — обери темп',
-  'onboarding.styles.body': 'Три стилі тренування, кожен зі своїм рейтингом. Пуля — швидке розпізнавання патернів, бліц балансує швидкість і глибину, рапід — для глибоких розрахунків. Обирай той що відповідає часовому контролю в реальній грі.',
-  'onboarding.calibration.title': 'Перші 5 сесій: калібровка',
-  'onboarding.calibration.body': 'Стартовий рейтинг провізорний. Перші пʼять сесій у кожному стилі дають системі знайти твій реальний рівень — поряд з рейтингом світиться «?». Ручний вибір рейтингу заблоковано спеціально, щоб результат відображав реальну силу.',
-  'onboarding.streak.title': 'Грай щодня, повторюй що пропустив',
-  'onboarding.streak.body': 'Щоденний стрік нагороджує сталість — одна заморозка на тиждень автоматично прикриває пропущений день. Провалені і повільні задачі попадають у Ревʼю, де можна спокійно їх прокатати без таймера. Ачівки відкриваються за стріки, рейтинги і відкриття функцій.',
-  'onboarding.start.title': 'Обирай стиль і починай',
-  'onboarding.start.body': 'Зараз перейдемо на екран гри — обери стиль, тривалість, поїхали. Цей онбординг можна перепройти у Налаштуваннях → Додаток.',
-
-  // Mobile-only.
   'onboarding.step': 'Крок {n} з {total}',
+  'onboarding.begin': 'Почати',
+  'onboarding.continue': 'Далі',
+  'onboarding.find_level': 'Визначити мій рівень',
+  'onboarding.skip_start': 'Пропустити — почати з {rating}',
+
+  // 1 · Welcome (kicker = brand.name).
+  'onboarding.welcome.title': 'Побач удар,\nперш ніж він влучить',
+  'onboarding.welcome.body': 'Короткі тактичні сесії навколо однієї ідеї — знайди хід, що виграє.',
+
+  // 2 · The training (animated back-rank mate).
+  'onboarding.training.kicker': 'Тренування',
+  'onboarding.training.title': 'Один хід виграє.\nЗнайди його.',
+  'onboarding.training.body': 'Кожна сесія — серія задач під твій рівень. Розвʼязуй швидко й чисто — рейтинг піде слідом.',
+  'onboarding.training.board': 'Мат по останній горизонталі: тура d1–d8',
+  'onboarding.training.pill': 'Rd8# · розвʼязано за 4 с',
+
+  // 3 · Your path (the rank eyes).
+  'onboarding.path.kicker': 'Твій шлях',
+  'onboarding.path.title': 'Кожен рівень\nпробуджує нове око',
+  'onboarding.path.body': 'Піднімайся від Новачка до Експерта. Ранг іде за рейтингом — і може впасти, якщо перестанеш тренуватися.',
+  'onboarding.path.you': '{level} · ти',
+
+  // 4 · The habit (sample streak card; illustrative values).
+  'onboarding.habit.kicker': 'Звичка',
+  'onboarding.habit.title': 'Кілька хвилин на день',
+  'onboarding.habit.body': 'Підтримуй вогонь — одна заморозка на тиждень прикриває пропущений день.',
+  'onboarding.habit.days': '4',
+  'onboarding.habit.unit': 'дні поспіль',
+  'onboarding.habit.best': 'Рекорд: 12 днів',
+  'onboarding.habit.weekdays': 'П,В,С,Ч,П,С,Н',
+  'onboarding.habit.freeze_note': 'Середу прикрила тижнева заморозка',
+  'onboarding.habit.review_title': 'Пропущені задачі повертаються',
+  'onboarding.habit.review_body': 'Прокатуй їх у Рев’ю, доки не закріпляться',
+  'onboarding.habit.review_count': '3',
 };
