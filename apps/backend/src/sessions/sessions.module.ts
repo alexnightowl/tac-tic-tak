@@ -8,5 +8,6 @@ import { SessionsController } from './sessions.controller';
   imports: [PuzzlesModule, AchievementsModule],
   providers: [SessionsService],
   controllers: [SessionsController],
+  exports: [SessionsService],
 })
 export class SessionsModule {}

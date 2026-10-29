@@ -15,9 +15,9 @@ import {
 import { applyStreakOnPlay, isValidDay, StreakState } from './streak';
 import { AchievementsService } from '../achievements/achievements.service';
 
-const WINDOW = 4;
-const MIN_RATING = 400;
-const MAX_RATING = 3000;
+export const WINDOW = 4;
+export const MIN_RATING = 400;
+export const MAX_RATING = 3000;
 // The level-up ceiling ("norm") lives on the play slider's 25-point grid,
 // and so does its floor (norm - 50); live ratings stay unsnapped.
 const NORM_GRID = 25;
@@ -535,7 +535,7 @@ export class SessionsService {
    * untouched and return null — better than guessing UTC and
    * ticking the wrong day for someone several timezones west.
    */
-  private async tickStreak(
+  async tickStreak(
     userId: string,
     localDate: string | undefined,
   ): Promise<{
@@ -704,7 +704,7 @@ export class SessionsService {
    * Loads the per-style progression row, creating a default one if somehow
    * missing (e.g. a user imported before the backfill migration ran).
    */
-  private async styleProgression(userId: string, style: TrainingStyle) {
+  async styleProgression(userId: string, style: TrainingStyle) {
     const existing = await this.prisma.userStyleProgression.findUnique({
       where: { userId_style: { userId, style } },
     });
