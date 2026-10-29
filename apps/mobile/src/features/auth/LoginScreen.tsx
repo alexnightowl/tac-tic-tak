@@ -61,7 +61,8 @@ export function LoginScreen() {
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
           <View style={styles.brand} testID="login-brand">
             <BrandLogo size={128} />
-            <AppText variant="sectionTitle" style={styles.center} accessibilityRole="header">
+            {/* The wordmark is Latin in both languages: always Cinzel. */}
+            <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
               {t('brand.name')}
             </AppText>
             <AppText variant="body" color={eos.ash} style={styles.center}>
@@ -87,7 +88,7 @@ export function LoginScreen() {
                 returnKeyType="next"
                 submitBehavior="submit"
                 onSubmitEditing={() => passwordRef.current?.focus()}
-                disabled={loading}
+                editable={!loading}
               />
               <PasswordInput
                 {...passwordRefProp}
@@ -102,23 +103,24 @@ export function LoginScreen() {
                 returnKeyType="go"
                 onSubmitEditing={() => void submit()}
                 error={error}
-                disabled={loading}
+                editable={!loading}
               />
               <PlateButton
                 testID="login-submit"
                 label={loading ? t('auth.logging_in') : t('auth.login')}
                 accessibilityLabel={t('auth.login')}
                 onPress={() => void submit()}
-                loading={loading}
+                // MobLogin "loading": the plate keeps its look and reads
+                // "Logging in…" (no spinner); submit() ignores repeat taps.
                 size="lg"
                 block
               />
             </Card>
           </Animated.View>
           <AuthSwitch prompt={t('auth.no_account')} action={t('auth.create_account')} to="/register" testID="login-to-register" />
-          <DevMenuButton />
         </ScrollView>
       </KeyboardAvoidingView>
+      <DevMenuButton />
     </SafeAreaView>
   );
 }

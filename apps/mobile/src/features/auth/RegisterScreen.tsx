@@ -1,10 +1,10 @@
 import { nicknameRules, passwordRules, registerFormValid, type RuleRow } from '@tac/core/validation';
 import { eos, layout, space } from '@tac/core/tokens';
-import { Check, X } from 'lucide-react-native';
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, type TextInput } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
 
 import { feel } from '@/feel';
 import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton, useLang } from '@/ui';
@@ -73,7 +73,8 @@ export function RegisterScreen() {
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
           <View style={styles.brand}>
             <BrandLogo size={96} />
-            <AppText variant="sectionTitle" style={styles.center} accessibilityRole="header">
+            {/* The wordmark is Latin in both languages: always Cinzel. */}
+            <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
               {t('brand.name')}
             </AppText>
             <AppText variant="body" color={eos.ash} style={styles.center}>
@@ -96,7 +97,7 @@ export function RegisterScreen() {
                 returnKeyType="next"
                 submitBehavior="submit"
                 onSubmitEditing={() => passwordRef.current?.focus()}
-                disabled={loading}
+                editable={!loading}
               />
               <Rules rows={nickRows} t={t} testID="register-nick-rules" />
               <PasswordInput
@@ -109,7 +110,7 @@ export function RegisterScreen() {
                 kind="new"
                 returnKeyType="next"
                 onSubmitEditing={() => repeatRef.current?.focus()}
-                disabled={loading}
+                editable={!loading}
               />
               <PasswordInput
                 {...({ ref: repeatRef } as object)}
@@ -122,7 +123,7 @@ export function RegisterScreen() {
                 returnKeyType="go"
                 onSubmitEditing={() => void submit()}
                 error={error}
-                disabled={loading}
+                editable={!loading}
               />
               <Rules rows={pwRows} t={t} testID="register-pw-rules" />
               <PlateButton
@@ -130,7 +131,7 @@ export function RegisterScreen() {
                 label={loading ? t('auth.creating') : t('auth.register')}
                 accessibilityLabel={t('auth.register')}
                 onPress={() => void submit()}
-                loading={loading}
+                // Like MobLogin "loading": the label changes, no spinner.
                 disabled={!valid}
                 size="lg"
                 block
@@ -138,19 +139,31 @@ export function RegisterScreen() {
             </Card>
           </Animated.View>
           <AuthSwitch prompt={t('auth.have_account')} action={t('auth.login')} to="/login" testID="register-to-login" />
-          <DevMenuButton />
         </ScrollView>
       </KeyboardAvoidingView>
+      <DevMenuButton />
     </SafeAreaView>
   );
 }
+
+// MobRegister's own glyphs (not Lucide's check / x).
+const RULE_MET = 'M5 12l5 5 9-10';
+const RULE_UNMET = 'M6 6l12 12M18 6L6 18';
 
 function Rules({ rows, t, testID }: { rows: RuleRow<string>[]; t: (k: string) => string; testID: string }) {
   return (
     <View style={styles.rules} testID={testID}>
       {rows.map((r) => (
         <View key={r.id} style={styles.rule} testID={`${testID}-${r.id}-${r.met ? 'met' : 'unmet'}`}>
-          {r.met ? <Check size={14} color={eos.sage} /> : <X size={14} color={eos.dust} />}
+          <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+            <Path
+              d={r.met ? RULE_MET : RULE_UNMET}
+              stroke={r.met ? eos.sage : eos.dust}
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </Svg>
           <AppText variant="caption" color={r.met ? eos.sage : eos.dust}>
             {t(r.labelKey)}
           </AppText>
