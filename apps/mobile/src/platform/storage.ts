@@ -11,6 +11,14 @@ export const queryKV: MMKV = createMMKV({ id: 'query' });
 /** Active runner snapshot + attempt outbox. */
 export const sessionKV: MMKV = createMMKV({ id: 'session' });
 
+/**
+ * Offline puzzles (docs/mobile/OFFLINE.md): packs, the Review pack and the
+ * pending-results queue, namespaced by user id. Deliberately NOT wiped by
+ * resetAll(): queued results must survive a logout (or a 401) until that
+ * account signs in again and syncs them.
+ */
+export const offlineKV: MMKV = createMMKV({ id: 'offline' });
+
 /** The three instances by PLAN name (`sessionKV` avoids shadowing the web global). */
 export const storage = { app: appKV, query: queryKV, session: sessionKV } as const;
 
