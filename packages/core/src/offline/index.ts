@@ -16,8 +16,8 @@ export const PACK_MAX_COUNT = 150;
 export const FLIGHT_PACK_COUNT = PACK_MAX_COUNT;
 /** "Keep topped up" / "Refill to 50" target for the level pack. */
 export const TOP_UP_TARGET = 50;
-/** Attempts per POST (one TrainingSession each); a long trip splits into a few. */
-export const SYNC_BATCH_MAX = 200;
+/** Attempts per POST (server cap 1000; one TrainingSession each). */
+export const SYNC_BATCH_MAX = 1000;
 
 export type OfflinePuzzle = { id: string; fen: string; moves: string[]; rating: number; themes: string[] };
 
@@ -56,8 +56,24 @@ export type OfflineSyncBody = { style: TrainingStyle; tzOffsetMin: number; attem
 
 export type OfflineStreakOutcome = 'same-day' | 'continued' | 'frozen' | 'reset' | 'started' | 'skipped';
 
-/** POST /offline/sync response. */
+/** The finish-shaped streak the sync returns (`skipped` when no day applied). */
+export type OfflineSyncStreak = {
+  days: number;
+  outcome: OfflineStreakOutcome;
+  freezes?: number;
+  lastDay?: string | null;
+  freezeRegenAt?: string | null;
+  daysApplied?: number;
+};
+
+/**
+ * POST /offline/sync response. solved / total / accuracy / timeMs /
+ * mistakesToReview count pack attempts only; a batch without pack attempts
+ * has `sessionId: null`. Unknown puzzle ids are skipped (and receipted):
+ * the client treats them as synced.
+ */
 export type OfflineSyncResponse = {
+  style?: TrainingStyle;
   sessionId: string | null;
   ratingBefore: number;
   ratingAfter: number;
@@ -69,7 +85,12 @@ export type OfflineSyncResponse = {
   mistakesToReview: number;
   reviewResolved: number;
   duplicates: number;
-  streak: { days: number; outcome: OfflineStreakOutcome } | null;
+  unknownPuzzles?: number;
+  /** Achievement slugs unlocked by this sync. */
+  achievementsUnlocked?: string[];
+  /** weak packs: the themes the server picked. */
+  weakThemes?: string[];
+  streak: OfflineSyncStreak | null;
 };
 
 /** A stored pack. Played puzzles stay until their results sync. */
@@ -140,17 +161,18 @@ export function syncBatches(queue: readonly PendingResult[], tzOffsetMin: number
   return out;
 }
 
-/** Minutes east of UTC, as the server's streak day math expects (-240 = UTC-4). */
+/** `Date#getTimezoneOffset()`: UTC minus local, in minutes (UTC-4 → 240), as the server expects. */
 export function tzOffsetMinutes(d: Date): number {
-  const off = -d.getTimezoneOffset();
-  return off === 0 ? 0 : off;
+  return d.getTimezoneOffset();
 }
 
 /** The "Welcome back" numbers over every batch of one sync. */
 export type OfflineSyncSummary = {
   /** Rating catch-up per style that had pack attempts, in sync order. */
   ratings: Array<{ style: TrainingStyle; before: number; after: number; delta: number }>;
-  /** Attempts the server took this time (duplicates excluded). */
+  /** Attempts synced this time, pack and review (duplicates excluded). */
+  synced: number;
+  /** Pack attempts the server rated. */
   total: number;
   solved: number;
   accuracy: number;
@@ -158,8 +180,9 @@ export type OfflineSyncSummary = {
   mistakesToReview: number;
   reviewResolved: number;
   duplicates: number;
-  /** The last batch's streak, if any batch touched it. */
-  streak: OfflineSyncResponse['streak'];
+  /** The last batch's streak that applied a day (else the last one seen). */
+  streak: OfflineSyncStreak | null;
+  achievements: string[];
 };
 
 export function summarizeSync(results: ReadonlyArray<{ body: OfflineSyncBody; res: OfflineSyncResponse }>): OfflineSyncSummary {
@@ -170,15 +193,19 @@ export function summarizeSync(results: ReadonlyArray<{ body: OfflineSyncBody; re
   let mistakesToReview = 0;
   let reviewResolved = 0;
   let duplicates = 0;
-  let streak: OfflineSyncResponse['streak'] = null;
+  let streak: OfflineSyncStreak | null = null;
+  let synced = 0;
+  const achievements: string[] = [];
   for (const { body, res } of results) {
+    synced += Math.max(0, body.attempts.length - res.duplicates);
+    for (const a of res.achievementsUnlocked ?? []) if (!achievements.includes(a)) achievements.push(a);
     total += res.total;
     solved += res.solved;
     timeMs += res.timeMs;
     mistakesToReview += res.mistakesToReview;
     reviewResolved += res.reviewResolved;
     duplicates += res.duplicates;
-    if (res.streak) streak = res.streak;
+    if (res.streak && (res.streak.outcome !== 'skipped' || !streak || streak.outcome === 'skipped')) streak = res.streak;
     if (!body.attempts.some((a) => a.source === 'pack')) continue;
     const prev = ratings.find((r) => r.style === body.style);
     if (prev) {
@@ -190,6 +217,7 @@ export function summarizeSync(results: ReadonlyArray<{ body: OfflineSyncBody; re
   }
   return {
     ratings,
+    synced,
     total,
     solved,
     accuracy: total > 0 ? solved / total : 0,
@@ -198,6 +226,7 @@ export function summarizeSync(results: ReadonlyArray<{ body: OfflineSyncBody; re
     reviewResolved,
     duplicates,
     streak,
+    achievements,
   };
 }
 

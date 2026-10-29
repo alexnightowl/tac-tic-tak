@@ -76,6 +76,7 @@ describe('offline: sync batches', () => {
     expect(s.solved).toBe(4);
     expect(s.accuracy).toBeCloseTo(4 / 6);
     expect(s.duplicates).toBe(1);
+    expect(s.synced).toBe(2);
     expect(s.streak).toEqual({ days: 4, outcome: 'continued' });
   });
 });
