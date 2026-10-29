@@ -12,7 +12,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { SHEET_DISMISS, sheetSpring, sheetTiming } from './motion';
@@ -73,20 +73,24 @@ export function Sheet({
 }) {
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={onClose} statusBarTranslucent>
-      <GestureHandlerRootView style={styles.fill}>
-        {visible ? (
-          <SheetBody
-            onClose={onClose}
-            testID={testID}
-            closeLabel={closeLabel}
-            grabber={grabber}
-            dismissible={dismissible}
-            style={style}
-          >
-            {children}
-          </SheetBody>
-        ) : null}
-      </GestureHandlerRootView>
+      {/* The Modal is its own window: measure its insets here, or a sheet
+          opened from a tab inherits the tab scene's zeroed bottom inset. */}
+      <SafeAreaProvider initialMetrics={initialWindowMetrics} style={styles.fill}>
+        <GestureHandlerRootView style={styles.fill}>
+          {visible ? (
+            <SheetBody
+              onClose={onClose}
+              testID={testID}
+              closeLabel={closeLabel}
+              grabber={grabber}
+              dismissible={dismissible}
+              style={style}
+            >
+              {children}
+            </SheetBody>
+          ) : null}
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
     </Modal>
   );
 }
