@@ -1,8 +1,8 @@
 import { streakState } from '@tac/core/format';
-import { eos, keyframeStops, keyframes, rank, space, text } from '@tac/core/tokens';
+import { eos, keyframeStops, keyframes, space, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
   cancelAnimation,
@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { StreakBadge } from '@/features/social/StreakBadge';
+import { FlameGlyph, SEMI, TABULAR } from '@/features/play/ui';
 import { useAppStore } from '@/stores/appStore';
 import { AppText } from '@/ui';
 import type { TFn } from '@/ui/lang';
@@ -47,6 +47,7 @@ export function HomeStreak({ t }: { t: TFn }) {
   }, [o, pulse]);
   const style = useAnimatedStyle(() => ({ opacity: o.get() }));
   if (!show || streak.days <= 0) return null;
+  const ink = st === 'broken' ? eos.dust : tone.gold;
   const caption = st === 'at_risk' ? t('streak.at_risk') : st === 'secured' ? t('streak.secured') : null;
   return (
     <Tap
@@ -57,11 +58,17 @@ export function HomeStreak({ t }: { t: TFn }) {
       hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       style={styles.root}
     >
+      {/* Design: gold flame + 14/20 600 count; a broken streak keeps its stale count in dust (app-only). */}
       <Animated.View style={style}>
-        <StreakBadge days={streak.days} state={st} testID={`home-streak-${st}`} />
+        <View style={styles.badge} testID={`home-streak-${st}`}>
+          <FlameGlyph size={14} color={ink} />
+          <AppText variant="body" color={ink} style={[SEMI, TABULAR]}>
+            {String(streak.days)}
+          </AppText>
+        </View>
       </Animated.View>
       {caption ? (
-        <AppText variant="caption" color={st === 'at_risk' ? rank.intermediate.color : eos.dust} style={styles.caption}>
+        <AppText variant="caption" color={st === 'at_risk' ? tone.gold : eos.dust} style={styles.caption}>
           {caption}
         </AppText>
       ) : null}
@@ -71,6 +78,7 @@ export function HomeStreak({ t }: { t: TFn }) {
 
 const styles = StyleSheet.create({
   root: { alignItems: 'flex-end', gap: space[0.5], marginTop: space[1.5], flexShrink: 0, maxWidth: space[20] + space[14] },
-  // web text-[10px].
-  caption: { fontSize: text.label.fontSize - 1, lineHeight: text.label.fontSize + 1, textAlign: 'right' },
+  badge: { flexDirection: 'row', alignItems: 'center', gap: 3 },
+  // 10 / 12, right-aligned.
+  caption: { fontSize: 10, lineHeight: 12, textAlign: 'right' },
 });

@@ -111,7 +111,7 @@ export function HomeScreen() {
             <AppText variant="sectionLabel">{t('dashboard.welcome')}</AppText>
             <View style={styles.nameRow}>
               <AppText
-                variant="title"
+                variant="heading"
                 lang={scriptLang(nickname)}
                 style={styles.nickname}
                 testID="home-nickname"
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
   header: { flexDirection: 'row', alignItems: 'flex-start', gap: space[3] },
   nameRow: { flexDirection: 'row', alignItems: 'center', gap: space[1.5], marginTop: space[1.5] },
-  nickname: { fontSize: fontSize['2xl'][0] + 2, lineHeight: fontSize['2xl'][1], flexShrink: 1 },
+  nickname: { flexShrink: 1 },
   heroCta: { marginTop: space[4] },
   quick: {
     flexDirection: 'row',
