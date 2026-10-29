@@ -1,4 +1,4 @@
-import { eos, layout, radii, space, surface } from '@tac/core/tokens';
+import { eos, layout, radii, shadows, space, surface } from '@tac/core/tokens';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: surface.card,
     borderWidth: 1,
     borderColor: surface.cardBorder,
+    boxShadow: [...shadows.card],
   },
   center: { textAlign: 'center' },
   action: { marginTop: space[2] },

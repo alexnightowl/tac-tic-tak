@@ -4,7 +4,7 @@ import { eos, layout, radii, space } from '@tac/core/tokens';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { router, useFocusEffect, type Href } from 'expo-router';
-import { BookOpen, ChevronRight, CloudOff, PartyPopper } from 'lucide-react-native';
+import { ChevronRight, CloudOff, History, PartyPopper } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -189,7 +189,7 @@ function HistoryLink({ t }: { t: (k: string) => string }) {
       <Animated.View style={anim}>
         <Card style={styles.historyCard}>
           <View style={styles.tile}>
-            <BookOpen size={20} color={eos.ash} />
+            <History size={20} strokeWidth={2} color={eos.ash} />
           </View>
           <View style={styles.cardText}>
             <AppText variant="turnTitle" numberOfLines={1}>
@@ -199,7 +199,7 @@ function HistoryLink({ t }: { t: (k: string) => string }) {
               {t('review.history_hint')}
             </AppText>
           </View>
-          <ChevronRight size={18} color={eos.dust} />
+          <ChevronRight size={18} strokeWidth={2} color={eos.dust} />
         </Card>
       </Animated.View>
     </Tap>
@@ -253,7 +253,7 @@ function ThemeCard({
               {`${row.count} ${noun} · ${t('review.theme_from')} ${row.minRating}`}
             </AppText>
           </View>
-          {opening ? <ActivityIndicator color={eos.ember} /> : <ChevronRight size={18} color={eos.dust} />}
+          {opening ? <ActivityIndicator color={eos.ember} /> : <ChevronRight size={18} strokeWidth={2} color={eos.dust} />}
         </Card>
       </Animated.View>
     </Tap>
