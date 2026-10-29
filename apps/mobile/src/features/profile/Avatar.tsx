@@ -1,6 +1,5 @@
 import { isCreatorNickname } from '@tac/core/catalogs';
 import { board, eos, rank } from '@tac/core/tokens';
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BadgeCheck, Crown } from 'lucide-react-native';
 import { memo } from 'react';
@@ -20,8 +19,8 @@ type Props = {
 };
 
 /**
- * The shared Avatar (web components/Avatar.tsx): photo or slate initials
- * disc (ShellAvatar), plus the creator decoration — gold ring with a 2 px
+ * The shared Avatar (web components/Avatar.tsx): the design v2 `.av` disc
+ * (ShellAvatar: photo, upload preview or slate initials, same shadows), plus the creator decoration — gold ring with a 2 px
  * gap and a crown chip at the bottom-right (sizes from the web). Memoised:
  * it sits in every leaderboard and friends row.
  */
@@ -34,16 +33,7 @@ export const Avatar = memo(function Avatar({ nickname, avatarUrl, size, previewU
   return (
     <View style={{ width: size, height: size }} testID={testID}>
       {creator ? <View pointerEvents="none" style={[styles.ring, { borderRadius: size / 2 + 4 }]} /> : null}
-      {previewUri ? (
-        <Image
-          source={{ uri: previewUri }}
-          style={{ width: size, height: size, borderRadius: size / 2 }}
-          contentFit="cover"
-          testID="avatar-image"
-        />
-      ) : (
-        <ShellAvatar nickname={nickname} avatarUrl={avatarUrl} size={size} />
-      )}
+      <ShellAvatar nickname={nickname} avatarUrl={avatarUrl} size={size} localUri={previewUri} />
       {creator ? (
         <View
           style={[styles.chipOuter, { width: chip + 4, height: chip + 4, borderRadius: chip, right: off - 2, bottom: off - 2 }]}
