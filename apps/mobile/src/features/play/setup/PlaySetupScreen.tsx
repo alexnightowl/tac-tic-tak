@@ -231,7 +231,8 @@ export function PlaySetupScreen() {
           <View style={styles.section}>
             <View style={styles.ratingHead}>
               <View style={styles.ratingLabel}>
-                <AppText variant="sectionLabel" style={styles.shrink} numberOfLines={1}>
+                {/* Two lines when the band name is long (uk "Рейтинг / бліцу"), never an ellipsis. */}
+                <AppText variant="sectionLabel" style={styles.shrink} numberOfLines={2}>
                   {t(`style.${style}.rating_label`)}
                 </AppText>
                 <Tap
