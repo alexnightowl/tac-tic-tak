@@ -116,7 +116,9 @@ export function HintButton({ level, disabled, onPress, t }: { level: number; dis
       accessibilityState={{ disabled }}
       onPress={onPress}
       disabled={disabled}
-      style={[styles.hint, disabled && styles.disabled]}
+      // Both hints used: the design keeps the lit button at full strength (it is
+      // still inert); only a not-yet-usable hint dims.
+      style={[styles.hint, disabled && level < 2 && styles.disabled]}
     >
       <Lightbulb size={16} color={level > 0 ? eos.ember : eos.bone} />
       <AppText variant="label" color={eos.bone}>
@@ -131,8 +133,8 @@ export function HintButton({ level, disabled, onPress, t }: { level: number; dis
   );
 }
 
-/** The hint button morphs into this (web .review-solved-pop). */
-export function SolvedBadge({ t }: { t: TFn }) {
+/** The hint button morphs into this (web .review-solved-pop). `fit`: no 120 pt min width (viewer). */
+export function SolvedBadge({ t, fit = false }: { t: TFn; fit?: boolean }) {
   const reduced = useReducedMotion();
   const k = useSharedValue(reduced ? 1 : 0);
   useEffect(() => {
@@ -140,7 +142,7 @@ export function SolvedBadge({ t }: { t: TFn }) {
   }, [k, reduced]);
   const anim = useAnimatedStyle(() => ({ opacity: Math.min(1, k.get() * 1.6), transform: [{ scale: 0.9 + 0.1 * k.get() }] }));
   return (
-    <Animated.View style={[styles.badge, anim]} testID="practice-solved" accessible accessibilityLabel={t('review.solved')}>
+    <Animated.View style={[styles.badge, fit && styles.badgeFit, anim]} testID="practice-solved" accessible accessibilityLabel={t('review.solved')}>
       <Check size={16} color={eos.sage} />
       <AppText variant="label" color={eos.sage}>
         {t('review.solved')}
@@ -180,6 +182,10 @@ export function DoneView({
     </View>
   );
 }
+
+/** Done screen window (MobDrill / MobSessionMistakes `done`: top 160, bottom 140). */
+const DONE_TOP = space[20] * 2;
+const DONE_BOTTOM = space[20] + space[14] + space[1];
 
 const styles = StyleSheet.create({
   round: {
@@ -244,7 +250,19 @@ const styles = StyleSheet.create({
     gap: space[2],
     backgroundColor: control.sageTint16,
   },
-  done: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space[3], paddingHorizontal: layout.gutter },
+  badgeFit: { minWidth: 0 },
+  // Design: the block is centred in a fixed window (top 160, bottom 140 of the
+  // screen), not in the space under the close button.
+  done: {
+    position: 'absolute',
+    left: layout.gutter,
+    right: layout.gutter,
+    top: DONE_TOP,
+    bottom: DONE_BOTTOM,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: space[3],
+  },
   doneIcon: {
     width: space[16],
     height: space[16],

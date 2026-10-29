@@ -110,7 +110,7 @@ export function DrillScreen({ puzzleId, theme }: { puzzleId: string; theme?: str
     const missing = notFound(puzzleQ.error);
     return (
       <View style={[styles.root, pad]} testID="screen-drill">
-        <View style={styles.topRow}>{closeButton}</View>
+        <View style={styles.doneTop}>{closeButton}</View>
         <StateView
           testID={missing ? 'drill-not-found' : 'drill-error'}
           title={missing ? t('review.not_in_queue') : t('review.error_title')}
@@ -134,7 +134,7 @@ export function DrillScreen({ puzzleId, theme }: { puzzleId: string; theme?: str
       : t('review.done_hint', { n: total, noun });
     return (
       <View style={[styles.root, pad]} testID="screen-drill">
-        <View style={styles.topRow}>{closeButton}</View>
+        <View style={styles.doneTop}>{closeButton}</View>
         <DoneView
           testID="drill-done"
           title={theme ? t('review.theme_done_title') : t('review.done_title')}
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
   topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2], paddingHorizontal: space[2] },
   counter: { flex: 1, alignItems: 'center', gap: space[0.5] },
   sideSpacer: { width: space[11] },
+  doneTop: { flexDirection: 'row', paddingHorizontal: layout.gutter },
   bottom: { paddingHorizontal: space[2], paddingTop: space[3], gap: space[1] },
   cta: { alignItems: 'center', minHeight: space[11] },
 });

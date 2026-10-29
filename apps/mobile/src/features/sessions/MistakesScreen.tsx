@@ -81,7 +81,7 @@ export function MistakesScreen({ sessionId }: { sessionId: string }) {
   if (q.isError && !q.data) {
     return (
       <View style={[styles.root, pad]} testID="screen-session-review">
-        <View style={styles.topRow}>{closeButton}</View>
+        <View style={styles.doneTop}>{closeButton}</View>
         <StateView
           testID="mistakes-error"
           icon={<CloudOff size={24} color={eos.ash} />}
@@ -97,7 +97,7 @@ export function MistakesScreen({ sessionId }: { sessionId: string }) {
     const nothing = s.total === 0;
     return (
       <View style={[styles.root, pad]} testID="screen-session-review">
-        <View style={styles.topRow}>{closeButton}</View>
+        <View style={styles.doneTop}>{closeButton}</View>
         {nothing ? (
           <StateView
             testID="mistakes-nothing"
@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   topSlot: { minHeight: layout.boardTopSlot, paddingHorizontal: space[2], gap: space[2.5] },
   topRow: { flexDirection: 'row', alignItems: 'center', gap: space[3], paddingHorizontal: space[2] },
+  doneTop: { flexDirection: 'row', paddingHorizontal: layout.gutter },
   progressBox: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: space[2.5] },
   track: { flex: 1, height: space[1.5], borderRadius: radii.full, backgroundColor: eos.rise, overflow: 'hidden' },
   fill: { height: '100%', borderRadius: radii.full, backgroundColor: eos.sage },

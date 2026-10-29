@@ -1,7 +1,7 @@
 import { normalizePieceSet } from '@tac/core/board';
 import { eos } from '@tac/core/tokens';
 import { useEffect, type ReactNode } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -32,6 +32,8 @@ export function PracticeBoard({
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const mirror = useAppStore((s) => s.settings.mirrorView);
   const opacity = useSharedValue(1);
+  // Yoga drops aspectRatio on a stretched child: the square comes from the window width.
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     controller.setFader((to, done) => {
@@ -49,7 +51,7 @@ export function PracticeBoard({
   const fade = useAnimatedStyle(() => ({ opacity: opacity.get() }));
 
   return (
-    <View style={styles.slot}>
+    <View style={[styles.slot, { height: width }]}>
       <Animated.View style={[styles.fill, fade]}>
         <Board
           ref={boardRef}
@@ -71,7 +73,9 @@ export function PracticeBoard({
 }
 
 const styles = StyleSheet.create({
-  slot: { flex: 1, minHeight: 0 },
+  // Square, so the controls below sit right under the board (design: 12 pt
+  // gap); on a short phone it shrinks and the board centres in it.
+  slot: { alignSelf: 'stretch', flexShrink: 1, minHeight: 0 },
   fill: { flex: 1 },
   // Top-aligned so the board sits at the same y on every board screen.
   board: { flex: 1, alignSelf: 'stretch', justifyContent: 'flex-start' },
