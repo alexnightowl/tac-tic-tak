@@ -16,6 +16,8 @@ const t200 = transitions.toggle;
 const ease = Easing.bezier(...t200.easing);
 const fadeIn = FadeIn.duration(t200.duration).easing(ease);
 const fadeOut = FadeOut.duration(t200.duration).easing(ease);
+/** Design `backdrop-filter: blur(14px)` under the 70 % veil: the position must not read through. */
+const PAUSE_BLUR = 75;
 
 /**
  * web PauseOverlay: hides the position, shows the frozen time. Blur on
@@ -26,7 +28,7 @@ export function PauseOverlay({ remainingMs, onResume, restored = false, t }: { r
     <Animated.View entering={fadeIn} exiting={fadeOut} style={styles.fill} testID="pause-overlay">
       {Platform.OS === 'ios' ? (
         <>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <BlurView intensity={PAUSE_BLUR} tint="dark" style={StyleSheet.absoluteFill} />
           <View style={[StyleSheet.absoluteFill, styles.backdrop]} />
         </>
       ) : (

@@ -1,7 +1,7 @@
 import type { AppPieceSet } from '@tac/core/board';
 import { board, control, eos, layout, radii, semantic, space, surface } from '@tac/core/tokens';
 import { Image } from 'expo-image';
-import { Check, Flame, XCircle } from 'lucide-react-native';
+import { Check, XCircle } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -9,6 +9,7 @@ import { PIECE_IMAGES } from '@/board/assets';
 import { AppText } from '@/ui';
 import { Tap } from '@/ui/Tap';
 import type { PlayT } from '../strings';
+import { FlameGlyph } from '../ui';
 
 // Runner chrome: round glass buttons, TurnCard with the streak chip, and
 // the stat pills (web PlayRunner TurnCard / StatPill / RatingPill).
@@ -86,7 +87,7 @@ function StreakChip({ n, broken = false }: { n: number; broken?: boolean }) {
   const color = broken ? eos.rose : control.streakChipText;
   return (
     <View style={styles.chip} testID="streak-chip">
-      <Flame size={14} color={color} />
+      <FlameGlyph size={14} color={color} />
       <AppText
         variant="label"
         color={color}
@@ -115,7 +116,7 @@ export function StatPills({
   return (
     <View style={styles.stats}>
       <View style={styles.pill} accessible accessibilityLabel={`${t('play.solved')} ${solved}`}>
-        <Check size={14} color={eos.sage} />
+        <Check size={14} color={eos.sage} strokeWidth={2.4} />
         <AppText variant="timer" color={eos.sage} testID="runner-solved">
           {String(solved)}
         </AppText>

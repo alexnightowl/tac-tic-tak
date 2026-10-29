@@ -1,7 +1,7 @@
 import { UNLOCK_REWARD, type CriterionId } from '@tac/core/rules';
 import { formatCriterion, type DemoteOutcome as Demote, type FinishResponse } from '@tac/core/runner';
-import { countTo, easing, eos, keyframes, keyframeStops, radii, rank, space, transitions } from '@tac/core/tokens';
-import { Check, Flame, Snowflake, Sparkles, TrendingDown, X } from 'lucide-react-native';
+import { alpha, countTo, easing, eos, keyframes, keyframeStops, radii, rank, space, tone, transitions } from '@tac/core/tokens';
+import { Check, Snowflake, Sparkles, TrendingDown, X } from 'lucide-react-native';
 import { useEffect, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -18,7 +18,7 @@ import Animated, {
 import { feel } from '@/feel';
 import { AppText } from '@/ui';
 import type { PlayT } from '../strings';
-import { NoteCard, STRONG, TABULAR, TONE } from '../ui';
+import { FlameGlyph, NoteCard, STRONG, TABULAR, TONE } from '../ui';
 import { FillCount } from './CountTo';
 
 // Summary outcome cards (web EarlyExitNote, LevelUpExplainer,
@@ -109,7 +109,7 @@ function Rise({ children, icon }: { children: ReactNode; icon: ReactNode }) {
   }));
   return (
     <Animated.View style={card}>
-      <NoteCard tone="accent" style={styles.rowCard} testID="summary-unlocked">
+      <NoteCard tone="accent" style={[styles.rowCard, styles.unlockGlow]} testID="summary-unlocked">
         <Animated.View style={ic}>{icon}</Animated.View>
         <View style={styles.flex}>{children}</View>
       </NoteCard>
@@ -260,18 +260,18 @@ export function StreakOutcomeChip({ streak, t }: { streak: StreakOutcome; t: Pla
         : kind === 'frozen'
           ? t('streak.outcome_frozen')
           : t('streak.outcome_reset');
-  const tone = kind === 'reset' ? TONE.neutral : kind === 'frozen' ? TONE.sage : TONE.amber;
-  const Icon = kind === 'frozen' ? Snowflake : Flame;
+  const chipTone = kind === 'reset' ? TONE.neutral : kind === 'frozen' ? TONE.sage : TONE.amber;
+  const ink = kind === 'reset' ? eos.ash : chipTone.ink;
   return (
     <Animated.View style={[styles.chipWrap, pop]}>
       <View
-        style={[styles.chip, { backgroundColor: tone.bg, borderColor: tone.border }]}
+        style={[styles.chip, { backgroundColor: chipTone.bg, borderColor: chipTone.border }]}
         testID={`summary-streak-${kind}`}
         accessible
         accessibilityLabel={`${label}: ${streak.days}`}
       >
-        <Icon size={16} color={kind === 'reset' ? eos.ash : tone.ink} />
-        <AppText variant="body" color={kind === 'reset' ? eos.ash : tone.ink} style={[STRONG, TABULAR]} testID="summary-streak-days">
+        {kind === 'frozen' ? <Snowflake size={16} color={ink} /> : <FlameGlyph size={16} color={ink} />}
+        <AppText variant="body" color={ink} style={[STRONG, TABULAR]} testID="summary-streak-days">
           {String(streak.days)}
         </AppText>
         <AppText variant="caption" color={eos.ash}>
@@ -285,6 +285,8 @@ export function StreakOutcomeChip({ streak, t }: { streak: StreakOutcome; t: Pla
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   rowCard: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
+  // Design: the level-up card keeps a gold halo (0 0 22px 2px gold/25).
+  unlockGlow: { boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 22, spreadDistance: 2, color: alpha(tone.gold, 0.25) }] },
   flex: { flex: 1, minWidth: 0, gap: space[0.5] },
   bullets: { gap: space[1], paddingTop: space[1] },
   criteria: { gap: space[1.5], marginTop: space[2] },

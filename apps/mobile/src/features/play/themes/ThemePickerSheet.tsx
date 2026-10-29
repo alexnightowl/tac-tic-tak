@@ -12,11 +12,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { feel } from '@/feel';
 import { apiClient } from '@/platform/api';
 import { AppText, Input, Segmented, useLang } from '@/ui';
+import { fontFamily } from '@/ui/fonts';
 import { Tap } from '@/ui/Tap';
 import { useThemePick } from '../startSession';
 import { usePlayT } from '../strings';
-import { SEMI, STRONG, TABULAR } from '../ui';
+import { TABULAR } from '../ui';
 import { ThemeIcon } from './ThemeIcon';
+
+/** Design: theme names in Manrope 500, selected or not. */
+const MEDIUM = { fontFamily: fontFamily('en', 'body', 500) } as const;
 
 // play/theme-picker formSheet: web components/ThemePicker.tsx (weakest /
 // popular / all tabs, search by localised label, stat chip per tab) on a
@@ -132,7 +136,7 @@ export function ThemePickerSheet() {
         <Segmented
           testID="theme-picker-tab"
           accessibilityLabel={t('play.choose_theme')}
-          size="sm"
+          size="tight"
           value={tab}
           onChange={setTab}
           options={[
@@ -155,7 +159,7 @@ export function ThemePickerSheet() {
           accessory={
             query ? undefined : (
               <View style={styles.searchIcon} pointerEvents="none">
-                <Search size={14} color={eos.dust} />
+                <Search size={18} color={eos.dust} strokeWidth={2} />
               </View>
             )
           }
@@ -205,12 +209,12 @@ function ThemeRowView({
       <View style={[styles.tile, active ? styles.tileOn : styles.tileOff]}>
         <ThemeIcon slug={item.slug} size={16} color={active ? control.segmentedActiveText : eos.ash} />
       </View>
-      <AppText variant="body" color={eos.bone} numberOfLines={1} style={[styles.flex, active ? STRONG : SEMI]}>
+      <AppText variant="body" color={eos.bone} numberOfLines={1} style={[styles.flex, MEDIUM]}>
         {label}
       </AppText>
       {stat && (
         <View style={styles.stat}>
-          <stat.Icon size={11} color={stat.color} strokeWidth={2.2} />
+          <stat.Icon size={13} color={stat.color} strokeWidth={2} />
           <AppText variant="caption" color={stat.color} style={TABULAR}>
             {stat.text}
           </AppText>
