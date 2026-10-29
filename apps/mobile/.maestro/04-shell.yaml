@@ -113,7 +113,7 @@ appId: online.tactictak.app
 - runFlow: { file: common/shell-route.yaml, env: { ROUTE: play/theme-picker, SCREEN: screen-theme-picker, KIND: sheet } }
 - runFlow: { file: common/shell-route.yaml, env: { ROUTE: friends/search, SCREEN: screen-friend-search, KIND: sheet } }
 - runFlow: { file: common/shell-route.yaml, env: { ROUTE: avatar-source, SCREEN: screen-avatar-source, KIND: sheet } }
-- runFlow: { file: common/shell-route.yaml, env: { ROUTE: achievement/first-session, SCREEN: screen-achievement, KIND: sheet } }
+- runFlow: { file: common/shell-route.yaml, env: { ROUTE: achievement/first-session, SCREEN: screen-achievement, KIND: drag } }
 - runFlow: { file: common/shell-route.yaml, env: { ROUTE: streak, SCREEN: screen-streak, KIND: sheet } }
 - runFlow: { file: common/shell-route.yaml, env: { ROUTE: no/such/page, SCREEN: not-found-screen, KIND: notfound } }
 

@@ -1,5 +1,6 @@
 # Open one route by deep link and close it again. Env: ROUTE (path without
-# the leading slash), SCREEN (root testID), KIND push | modal | sheet | notfound.
+# the leading slash), SCREEN (root testID), KIND push | modal | sheet | drag |
+# notfound (drag = a sheet with no close button, swiped down).
 appId: online.tactictak.app
 ---
 - openLink: tactictak://${ROUTE}
@@ -17,6 +18,13 @@ appId: online.tactictak.app
     when: { true: "${KIND == 'modal' || KIND == 'sheet'}" }
     commands:
       - tapOn: { id: "${SCREEN}-close" }
+- runFlow:
+    when: { true: "${KIND == 'drag'}" }
+    commands:
+      - swipe:
+          start: "50%, 60%"
+          end: "50%, 98%"
+          duration: 300
 - runFlow:
     when: { true: "${KIND == 'notfound'}" }
     commands:
