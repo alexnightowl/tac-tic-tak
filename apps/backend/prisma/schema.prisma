@@ -56,6 +56,7 @@ model User {
   reviewItems    ReviewItem[]
   sentFriendRequests     Friendship[] @relation("FriendshipRequester")
   receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
+  offlineReceipts        OfflineAttemptReceipt[]
 }
 
 model UserSetting {
@@ -245,4 +246,16 @@ model ReviewItem {
 
   @@unique([userId, puzzleId])
   @@index([userId, resolvedAt])
+}
+
+// Idempotency receipts for POST /offline/sync: one row per client-
+// generated attempt id, so a retried or duplicated batch never applies
+// an offline result twice.
+model OfflineAttemptReceipt {
+  clientId  String   @id
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
