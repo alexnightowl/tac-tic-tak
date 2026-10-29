@@ -257,7 +257,7 @@ export default function PuzzleView() {
 
   const headerRow = (
     <div className="flex items-center justify-between gap-2">
-      <Button variant="ghost" size="sm" onClick={() => router.back()}>
+      <Button variant="ghost" size="sm" className="-ml-4 px-3" onClick={() => router.back()}>
         <ChevronLeft size={16} /> {t('review.back')}
       </Button>
       <a
