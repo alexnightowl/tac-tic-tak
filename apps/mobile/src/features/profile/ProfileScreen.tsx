@@ -272,9 +272,18 @@ function Hero({
     <HeroCard testID="profile-hero">
       <View style={styles.heroTop}>
         {isSelf ? (
-          <Tap testID="profile-avatar" accessibilityRole="button" accessibilityLabel={t('profile.change_avatar')} onPress={chooseAvatar}>
+          // The tap target overlays the avatar rather than wrapping it, so the
+          // image (testID avatar-image) stays visible to tests.
+          <View>
             {avatar}
-          </Tap>
+            <Tap
+              testID="profile-avatar"
+              accessibilityRole="button"
+              accessibilityLabel={t('profile.change_avatar')}
+              onPress={chooseAvatar}
+              style={StyleSheet.absoluteFill}
+            />
+          </View>
         ) : (
           avatar
         )}

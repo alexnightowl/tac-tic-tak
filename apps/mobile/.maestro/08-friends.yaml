@@ -35,6 +35,8 @@ env:
     visible: { id: friends-h-out }
     timeout: 8000
 - assertVisible: { id: "friends-cancel-${FRIEND_B}" }
+# Friends is a pushed screen (D22): back to the tabs before logging out.
+- runFlow: common/shell-back.yaml
 - runFlow: 08-sub-logout.yaml
 
 # B: badge, incoming request, swipe right to accept.
