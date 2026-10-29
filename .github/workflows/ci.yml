@@ -37,6 +37,7 @@ jobs:
           script: |
             set -e
             cd /opt/tac-tic-tak
+            BEFORE=$(git rev-parse HEAD)
             # fetch + reset instead of pull --ff-only so deploys
             # survive a force-push on main. The VPS clone is a
             # deploy-only mirror; it never has local edits worth
@@ -44,6 +45,21 @@ jobs:
             git fetch --prune origin main
             git reset --hard origin/main
             docker compose --profile app build
+            # The backend runs `prisma migrate deploy` on start: dump the
+            # whole DB first whenever this deploy brings new migrations
+            # (~300 MB, ~30 s; the site keeps serving meanwhile). A failed
+            # dump stops the deploy before any migration runs. Restore:
+            # docs/mobile/backend-prs/PR-deploy-backup.md.
+            if git diff --name-only "$BEFORE" HEAD -- apps/backend/prisma/migrations | grep -q 'migration.sql$'; then
+              mkdir -p "$HOME/tac-tic-tak-backups"
+              DUMP="$HOME/tac-tic-tak-backups/pre-migrate-$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short HEAD).dump"
+              docker compose exec -T postgres pg_dump -U taktic -d taktic -Fc > "$DUMP.part"
+              mv "$DUMP.part" "$DUMP"
+              # Keep the last 5.
+              ls -1t "$HOME"/tac-tic-tak-backups/pre-migrate-*.dump | tail -n +6 | xargs -r rm --
+              ls -lh "$HOME/tac-tic-tak-backups"
+              df -h "$HOME" | tail -1
+            fi
             docker compose --profile app up -d --remove-orphans
             # nginx.conf is a bind-mount; `up -d` doesn't recreate the
             # container when only file content changes, and `nginx -s reload`
