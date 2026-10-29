@@ -6,7 +6,7 @@ import { PuzzlesService } from '../puzzles/puzzles.service';
 // "Meta" themes describe game phase / length / outcome / source — they
 // don't carry a tactical pattern, so we skip them when picking a
 // puzzle's primary theme for the review queue grouping.
-const META_THEME_SLUGS = new Set<string>([
+export const META_THEME_SLUGS = new Set<string>([
   'opening', 'middlegame', 'endgame',
   'oneMove', 'short', 'long', 'veryLong',
   'master', 'masterVsMaster', 'superGM',
