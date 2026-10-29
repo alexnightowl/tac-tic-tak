@@ -38,9 +38,10 @@ export function OfflineHost() {
   const signedIn = useAuthStore((s) => s.status === 'authed');
   const pathname = usePathname();
   const t = useT();
-  if (!offline) return null;
-  // Not over the offline screens themselves (nor where a tap would leave a runner).
-  const linked = signedIn && !/^\/(offline|play\/[^/]+$|review\/|sessions\/[^/]+\/review|onboarding)/.test(pathname);
+  // The offline screens carry their own offline state (note, OFFLINE chip).
+  if (!offline || pathname.startsWith('/offline')) return null;
+  // No link where a tap would pull the player out of a runner.
+  const linked = signedIn && !/^\/(play\/[^/]+$|review\/|sessions\/[^/]+\/review|onboarding)/.test(pathname);
   return (
     <View pointerEvents="box-none" style={[styles.host, { top: insets.top + space[2] }]}>
       {linked ? (
