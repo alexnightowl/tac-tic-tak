@@ -66,21 +66,27 @@ if (SEED === 'drill') {
   output.puzzleId = m.puzzles[0];
 } else if (SEED === 'viewer') {
   // Play quick solves until a long line comes up (the stepper needs ≥ 5 steps).
-  var vs = call('POST', '/sessions', { startRating: 1500, durationSec: 180, mode: 'mixed', style: 'blitz' }, token).data;
-  var vn = vs.firstPuzzle;
-  for (var k = 0; k < 25; k++) {
-    if (!vn) vn = call('POST', '/sessions/' + vs.sessionId + '/next', undefined, token).data;
-    call('POST', '/sessions/' + vs.sessionId + '/attempt', { puzzleId: vn.puzzle.id, correct: true, responseMs: 3000 }, token);
-    if (vn.puzzle.moves.length >= 6) {
-      output.puzzleId = vn.puzzle.id;
-      output.moves = String(vn.puzzle.moves.length);
-      break;
+  // startRating 1200: a higher one 400s once the account's unlocked cap is
+  // lower ("startRating exceeds unlocked cap"). A session can run dry (/next
+  // without a puzzle): start another, up to 3.
+  for (var round = 0; round < 3 && !output.puzzleId; round++) {
+    var vs = call('POST', '/sessions', { startRating: 1200, durationSec: 180, mode: 'mixed', style: 'blitz' }, token).data;
+    var vn = vs.firstPuzzle;
+    for (var k = 0; k < 25; k++) {
+      if (!vn) vn = call('POST', '/sessions/' + vs.sessionId + '/next', undefined, token).data;
+      if (!vn || !vn.puzzle) break;
+      call('POST', '/sessions/' + vs.sessionId + '/attempt', { puzzleId: vn.puzzle.id, correct: true, responseMs: 3000 }, token);
+      if (vn.puzzle.moves.length >= 6) {
+        output.puzzleId = vn.puzzle.id;
+        output.moves = String(vn.puzzle.moves.length);
+        break;
+      }
+      vn = null;
     }
-    vn = null;
+    call('POST', '/sessions/' + vs.sessionId + '/finish?localDate=' + localDate(), undefined, token);
+    output.sessionId = vs.sessionId;
   }
-  call('POST', '/sessions/' + vs.sessionId + '/finish?localDate=' + localDate(), undefined, token);
-  output.sessionId = vs.sessionId;
-  if (!output.puzzleId) throw new Error('no long puzzle in 25 tries');
+  if (!output.puzzleId) throw new Error('no long puzzle in 3 sessions');
 } else if (SEED === 'history') {
   session(token, 'mixed', null, [[true, 3000], [false, 5000]]);
   var h = session(token, 'mixed', null, [[true, 2500]]);
