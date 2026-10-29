@@ -155,9 +155,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFill,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingHorizontal: THUMB / 2 - 0.5,
-    top: 30,
+    // Design: the tick row starts 32 pt down the 44 pt slider (under the track).
+    top: 32,
     bottom: 0,
   },
   tick: { width: 1, height: 4, backgroundColor: eos.seam },

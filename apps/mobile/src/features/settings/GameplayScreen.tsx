@@ -1,6 +1,6 @@
 import type { AnimationSpeedSetting, ColorMode } from '@tac/core/api';
 import { APP_PIECE_SETS, normalizePieceSet, pieceFitTransform, type AppPieceSet, type PieceType } from '@tac/core/board';
-import { ANIMATION_MS, board as boardColors, eos, radii, space } from '@tac/core/tokens';
+import { ANIMATION_MS, board as boardColors, eos, radii, shadows, space } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -8,14 +8,12 @@ import { StyleSheet, View } from 'react-native';
 import { Board, type BoardHandle } from '@/board';
 import { PIECE_IMAGES, type PieceCode } from '@/board/assets';
 import { useAppStore } from '@/stores/appStore';
-import { AppText } from '@/ui/AppText';
+import { AppText, ControlBlock, ListSection, Segmented, Tap, ToggleRow } from '@/ui';
 import { useT } from '@/ui/lang';
-import { Segmented } from '@/ui/Segmented';
-import { Tap } from '@/ui/Tap';
-import { ControlRow, GroupBody, Section, SettingsPage, ToggleRow } from './parts';
+import { SettingsPage } from './parts';
 import { saveSettings } from './patch';
 
-// Settings › Gameplay (web GameplayTab). Every UserSettings field the app
+// Settings › Gameplay (design v2 MobGameplay; web GameplayTab). Every UserSettings field the app
 // uses, each saved optimistically. Hidden on mobile (PLAN §8 #19, D6):
 // accentColor, boardTheme, soundPack, reviewAutoAdvance, and knightArrow
 // (no user-drawn arrows on mobile). Sound moved to its own screen.
@@ -30,44 +28,46 @@ export function GameplayScreen() {
 
   return (
     <SettingsPage testID="screen-settings-gameplay" title={t('settings.gameplay')}>
-      <Section title={t('settings.preview')} footer={t('settings.preview_hint')}>
-        <GroupBody>
+      <ListSection title={t('settings.preview')} footer={t('settings.preview_hint')}>
+        <ControlBlock style={styles.center}>
           <LiveBoard
             pieceSet={pieceSet}
             mirror={settings.mirrorView}
             fixedColor={settings.fixedColor}
             speed={settings.animationSpeed}
           />
-        </GroupBody>
-      </Section>
+        </ControlBlock>
+      </ListSection>
 
-      <Section title={t('settings.pieces')}>
-        <GroupBody>
+      <ListSection title={t('settings.pieces')}>
+        <ControlBlock>
           <PieceSetPicker value={pieceSet} onChange={(v) => void saveSettings({ pieceSet: v })} />
-        </GroupBody>
-      </Section>
+        </ControlBlock>
+      </ListSection>
 
-      <Section title={t('settings.section.board')}>
-        <ControlRow label={t('settings.animation')}>
+      <ListSection title={t('settings.section.board')}>
+        <ControlBlock label={t('settings.animation')}>
           <Segmented
             options={(['instant', 'fast', 'normal', 'slow'] as const).map((v) => ({ value: v, label: t(`settings.animation.${v}`) }))}
             value={settings.animationSpeed}
             onChange={(v: AnimationSpeedSetting) => void saveSettings({ animationSpeed: v })}
             size="sm"
+            tone="soft"
             testID="settings-animation"
             accessibilityLabel={t('settings.animation')}
           />
-        </ControlRow>
-        <ControlRow label={t('settings.fixed_color')} hint={t('settings.fixed_color_hint')}>
+        </ControlBlock>
+        <ControlBlock label={t('settings.fixed_color')} hint={t('settings.fixed_color_hint')}>
           <Segmented
             options={(['auto', 'white', 'black'] as const).map((v) => ({ value: v, label: t(`settings.fixed_color.${v}`) }))}
             value={settings.fixedColor}
             onChange={(v: ColorMode) => void saveSettings({ fixedColor: v })}
             size="sm"
+            tone="soft"
             testID="settings-fixed-color"
             accessibilityLabel={t('settings.fixed_color')}
           />
-        </ControlRow>
+        </ControlBlock>
         <ToggleRow
           label={t('settings.mirror_view')}
           hint={t('settings.mirror_view_hint')}
@@ -75,9 +75,9 @@ export function GameplayScreen() {
           onChange={(v) => void saveSettings({ mirrorView: v })}
           testID="settings-mirror"
         />
-      </Section>
+      </ListSection>
 
-      <Section title={t('settings.section.display')}>
+      <ListSection title={t('settings.section.display')}>
         <ToggleRow
           label={t('settings.focus')}
           hint={t('settings.focus_hint_mobile')}
@@ -92,7 +92,7 @@ export function GameplayScreen() {
           onChange={(v) => void saveSettings({ showStreak: v })}
           testID="settings-show-streak"
         />
-      </Section>
+      </ListSection>
     </SettingsPage>
   );
 }
@@ -146,19 +146,22 @@ function LiveBoard({
 
   return (
     <View style={styles.boardWrap} testID="settings-preview-board" pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      <Board
-        ref={ref}
-        initialFen={PREVIEW_FEN}
-        orientation={orientation}
-        mirror={mirror}
-        pieceSet={pieceSet}
-        moveFeel="board"
-        style={styles.board}
-      />
+      <View style={styles.boardClip}>
+        <Board
+          ref={ref}
+          initialFen={PREVIEW_FEN}
+          orientation={orientation}
+          mirror={mirror}
+          pieceSet={pieceSet}
+          moveFeel="board"
+          style={styles.board}
+        />
+      </View>
     </View>
   );
 }
 
+const PREVIEW_SIZE = 300;
 const PREVIEW: readonly PieceCode[] = ['wK', 'wN', 'bQ', 'bP'];
 const TILE = 36;
 
@@ -196,7 +199,7 @@ function PieceSetPicker({ value, onChange }: { value: AppPieceSet; onChange: (v:
                 );
               })}
             </View>
-            <AppText variant="label" color={active ? eos.bone : eos.ash}>
+            <AppText variant="label" color={active ? eos.bone : eos.ash} style={styles.setName}>
               {name}
             </AppText>
           </Tap>
@@ -207,7 +210,16 @@ function PieceSetPicker({ value, onChange }: { value: AppPieceSet; onChange: (v:
 }
 
 const styles = StyleSheet.create({
-  boardWrap: { alignSelf: 'center', width: '100%', maxWidth: 300, aspectRatio: 1 },
+  center: { alignItems: 'center' },
+  // 300 pt square (fixed: Yoga sizes a %-wide aspectRatio box before its
+  // maxWidth clamp), radius 6, a bone/8 % ring and a soft drop.
+  boardWrap: {
+    width: PREVIEW_SIZE,
+    height: PREVIEW_SIZE,
+    borderRadius: radii.board,
+    boxShadow: [...shadows.boardPreview],
+  },
+  boardClip: { flex: 1, borderRadius: radii.board, overflow: 'hidden' },
   board: { flex: 1 },
   sets: { flexDirection: 'row', gap: space[2] },
   set: {
@@ -222,5 +234,7 @@ const styles = StyleSheet.create({
   setActive: { borderColor: eos.ember },
   tiles: { flexDirection: 'row', borderRadius: radii.md, overflow: 'hidden', alignSelf: 'center' },
   tile: { width: TILE, height: TILE },
+  // The design's caps label has the browser's normal line height (~1.36 × 11).
+  setName: { lineHeight: 15 },
   piece: { width: TILE, height: TILE },
 });

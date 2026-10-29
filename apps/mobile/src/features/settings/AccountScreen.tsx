@@ -1,5 +1,5 @@
-import { control, eos, layout, radii, semantic, space } from '@tac/core/tokens';
-import { LogOut, MonitorSmartphone, Trash2 } from 'lucide-react-native';
+import { eos, space, tone } from '@tac/core/tokens';
+import { Eye, EyeOff, LogOut, MonitorSmartphone, Trash2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -8,16 +8,26 @@ import { resetAll } from '@/features/auth/session';
 import { useShake } from '@/features/auth/useShake';
 import { feel } from '@/feel';
 import { useAuthStore } from '@/stores/authStore';
-import { AppText } from '@/ui/AppText';
-import { Input, PasswordInput } from '@/ui/Input';
+import {
+  AppText,
+  ControlBlock,
+  DangerButton,
+  GroupedList,
+  Input,
+  ListSection,
+  PasswordInput,
+  PlateButton,
+  Row,
+  Sheet,
+  Tap,
+  type PasswordInputProps,
+} from '@/ui';
 import { useT } from '@/ui/lang';
-import { PlateButton } from '@/ui/PlateButton';
-import { Tap } from '@/ui/Tap';
 import { changePassword, deleteAccount, formErrorKey, logoutAll } from './api';
 import { ACCOUNT_DELETE, ACCOUNT_LOGOUT_ALL } from './flags';
-import { BottomSheet, GroupBody, NavRow, Section, SettingsPage } from './parts';
+import { SettingsPage } from './parts';
 
-// Settings › Account: change password (web ChangePasswordSection, with the
+// Settings › Account (design v2 MobAccount): change password (web ChangePasswordSection, with the
 // wrong-current-password fix: an inline error, never a logout), log out,
 // and the two server-pending actions behind flags (B4 logout-all, B10
 // delete account).
@@ -41,16 +51,16 @@ export function AccountScreen() {
         {t('settings.account.signed_in_as', { nickname })}
       </AppText>
 
-      <Section title={t('profile.change_password')}>
-        <GroupBody>
+      <ListSection title={t('profile.change_password')}>
+        <ControlBlock>
           <ChangePasswordForm />
-        </GroupBody>
-      </Section>
+        </ControlBlock>
+      </ListSection>
 
-      <Section>
-        <NavRow icon={LogOut} label={t('logout')} testID="account-logout" danger onPress={() => void resetAll()} />
+      <GroupedList>
+        <Row icon={LogOut} label={t('logout')} testID="account-logout" danger onPress={() => void resetAll()} />
         {ACCOUNT_LOGOUT_ALL || showPending ? (
-          <NavRow
+          <Row
             icon={MonitorSmartphone}
             label={t('settings.account.logout_all')}
             hint={ACCOUNT_LOGOUT_ALL ? t('settings.account.logout_all_hint') : t('settings.account.needs_server')}
@@ -63,11 +73,11 @@ export function AccountScreen() {
             }}
           />
         ) : null}
-      </Section>
+      </GroupedList>
 
       {ACCOUNT_DELETE || showPending ? (
-        <Section title={t('settings.section.danger')} footer={t('settings.account.delete_hint')}>
-          <NavRow
+        <ListSection title={t('settings.section.danger')} footer={t('settings.account.delete_hint')}>
+          <Row
             icon={Trash2}
             label={t('settings.account.delete')}
             hint={ACCOUNT_DELETE ? null : t('settings.account.needs_server')}
@@ -79,7 +89,7 @@ export function AccountScreen() {
               setDeleteOpen(true);
             }}
           />
-        </Section>
+        </ListSection>
       ) : null}
 
       <LogoutAllSheet visible={logoutAllOpen} onClose={() => setLogoutAllOpen(false)} />
@@ -133,7 +143,7 @@ function ChangePasswordForm() {
 
   return (
     <Animated.View style={[styles.form, shakeStyle]} testID="account-password-form">
-      <PasswordInput
+      <AccountPasswordField
         testID="account-current"
         accessibilityLabel={t('profile.current_password')}
         label={t('profile.current_password')}
@@ -141,7 +151,7 @@ function ChangePasswordForm() {
         onChangeText={edit(setCurrent)}
         returnKeyType="next"
       />
-      <PasswordInput
+      <AccountPasswordField
         kind="new"
         testID="account-new"
         accessibilityLabel={t('profile.new_password')}
@@ -150,7 +160,7 @@ function ChangePasswordForm() {
         onChangeText={edit(setNext)}
         returnKeyType="next"
       />
-      <PasswordInput
+      <AccountPasswordField
         kind="new"
         testID="account-repeat"
         accessibilityLabel={t('profile.repeat_new_password')}
@@ -165,7 +175,7 @@ function ChangePasswordForm() {
         {ruleText}
       </AppText>
       {error ? (
-        <AppText variant="body" color={semantic.danger} testID="account-password-error" accessibilityLiveRegion="polite">
+        <AppText variant="body" color={tone.danger} testID="account-password-error" accessibilityLiveRegion="polite">
           {error}
         </AppText>
       ) : null}
@@ -206,21 +216,27 @@ function LogoutAllSheet({ visible, onClose }: { visible: boolean; onClose: () =>
     }
   };
   return (
-    <BottomSheet visible={visible} onClose={onClose} testID="logout-all-sheet" closeLabel={t('common.cancel')}>
+    <Sheet visible={visible} onClose={onClose} dismissible={!busy} testID="logout-all-sheet" closeLabel={t('common.cancel')}>
       <AppText variant="title">{t('settings.account.logout_all')}</AppText>
       <AppText variant="body" color={eos.ash}>
         {t('settings.account.logout_all_confirm')}
       </AppText>
       {error ? (
-        <AppText variant="caption" color={semantic.danger}>
+        <AppText variant="caption" color={tone.danger}>
           {error}
         </AppText>
       ) : null}
       <View style={styles.sheetButtons}>
-        <DangerButton testID="logout-all-confirm" label={t('settings.account.logout_all')} busy={busy} onPress={() => void confirm()} />
+        <DangerButton
+          testID="logout-all-confirm"
+          label={t('settings.account.logout_all')}
+          filled
+          busy={busy}
+          onPress={() => void confirm()}
+        />
         <PlateButton testID="logout-all-cancel" label={t('common.cancel')} variant="slate" block onPress={onClose} disabled={busy} />
       </View>
-    </BottomSheet>
+    </Sheet>
   );
 }
 
@@ -256,8 +272,8 @@ function DeleteSheet({ visible, nickname, onClose }: { visible: boolean; nicknam
     }
   };
   return (
-    <BottomSheet visible={visible} onClose={close} testID="delete-sheet" closeLabel={t('common.cancel')}>
-      <AppText variant="title" color={control.dangerText}>
+    <Sheet visible={visible} onClose={close} dismissible={!busy} testID="delete-sheet" closeLabel={t('common.cancel')}>
+      <AppText variant="title" color={tone.danger}>
         {t('settings.account.delete')}
       </AppText>
       <AppText variant="body" color={eos.ash}>
@@ -286,44 +302,52 @@ function DeleteSheet({ visible, nickname, onClose }: { visible: boolean; nicknam
         <DangerButton
           testID="delete-confirm"
           label={t('settings.account.delete_cta')}
+          filled
           busy={busy}
           disabled={!nickOk || !password}
           onPress={() => void confirm()}
         />
         <PlateButton testID="delete-cancel" label={t('common.cancel')} variant="slate" block onPress={close} disabled={busy} />
       </View>
-    </BottomSheet>
+    </Sheet>
   );
 }
 
-function DangerButton({
-  testID,
-  label,
-  busy,
-  disabled = false,
-  onPress,
-}: {
-  testID: string;
-  label: string;
-  busy: boolean;
-  disabled?: boolean;
-  onPress: () => void;
-}) {
-  const off = busy || disabled;
+/**
+ * MobAccount `.field`: the shared PasswordInput with the account form's
+ * eye (18 pt ash line icon, 6 pt in from the field's right edge).
+ */
+function AccountPasswordField({ kind = 'current', testID, ...rest }: PasswordInputProps) {
+  const t = useT();
+  const [visible, setVisible] = useState(false);
+  const Icon = visible ? EyeOff : Eye;
   return (
-    <Tap
+    <Input
       testID={testID}
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ busy, disabled }}
-      disabled={off}
-      onPress={onPress}
-      style={[styles.danger, off && styles.dim]}
-    >
-      <AppText variant="plateLabel" color={control.dangerText}>
-        {label}
-      </AppText>
-    </Tap>
+      textContentType={kind === 'new' ? 'newPassword' : 'password'}
+      autoComplete={kind === 'new' ? 'new-password' : 'current-password'}
+      passwordRules={kind === 'new' ? 'minlength: 8; required: lower; required: digit;' : undefined}
+      autoCapitalize="none"
+      autoCorrect={false}
+      spellCheck={false}
+      {...rest}
+      secureTextEntry={!visible}
+      accessory={
+        <Tap
+          testID={`${testID}-eye`}
+          accessibilityRole="button"
+          accessibilityLabel={t(visible ? 'ui.password_hide' : 'ui.password_show')}
+          accessibilityState={{ checked: visible }}
+          onPress={() => {
+            feel.emit('toggle');
+            setVisible((v) => !v);
+          }}
+          style={styles.eye}
+        >
+          <Icon size={18} strokeWidth={1.8} color={eos.ash} />
+        </Tap>
+      }
+    />
   );
 }
 
@@ -331,14 +355,5 @@ const styles = StyleSheet.create({
   who: { paddingHorizontal: space[1] },
   form: { gap: space[3] },
   sheetButtons: { gap: space[2.5], marginTop: space[2] },
-  danger: {
-    height: layout.plateHeight.md,
-    borderRadius: radii.xl,
-    borderWidth: 1,
-    borderColor: control.dangerBorder,
-    backgroundColor: control.dangerPressBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dim: { opacity: 0.5 },
+  eye: { position: 'absolute', right: space[1.5], top: 1, width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
 });

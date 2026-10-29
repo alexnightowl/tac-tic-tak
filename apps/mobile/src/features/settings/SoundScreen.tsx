@@ -7,16 +7,14 @@ import { StyleSheet, View } from 'react-native';
 
 import { feel, setFeelPrefs, stopLongClip, useFeelPrefs, type FeelContext, type FeelEvent } from '@/feel';
 import { useAppStore } from '@/stores/appStore';
-import { AppText } from '@/ui/AppText';
+import { AppText, ControlBlock, ListSection, PlateButton, Sheet, Tap, ToggleRow } from '@/ui';
 import { useT } from '@/ui/lang';
-import { PlateButton } from '@/ui/PlateButton';
-import { Tap } from '@/ui/Tap';
-import { BottomSheet, ControlRow, Section, SettingsPage, ToggleRow } from './parts';
+import { SettingsPage } from './parts';
 import { saveSettings } from './patch';
 import { startSoundMirror } from './soundMirror';
 import { VolumeSlider } from './VolumeSlider';
 
-// Settings › Sound & haptics (web SoundSettings + the Gameplay sound
+// Settings › Sound & haptics (design v2 MobSound; web SoundSettings + the Gameplay sound
 // toggle, plus the mobile-only haptics switch). soundEnabled is an account
 // setting (PATCH); volume, picks and haptics are per device (PLAN §8 #20,
 // MMKV via src/feel/prefs). Previews go through feel.emit with `force`, so
@@ -62,7 +60,7 @@ export function SoundScreen() {
 
   return (
     <SettingsPage testID="screen-settings-sound" title={t('settings.sound_haptics')}>
-      <Section footer={soundEnabled ? t('settings.silent_hint') : t('settings.sound_off_hint')}>
+      <ListSection footer={soundEnabled ? t('settings.silent_hint') : t('settings.sound_off_hint')}>
         <ToggleRow
           label={t('settings.sound')}
           hint={t('settings.sound_hint')}
@@ -70,7 +68,7 @@ export function SoundScreen() {
           onChange={(v) => void saveSettings({ soundEnabled: v })}
           testID="settings-sound-toggle"
         />
-        <ControlRow label={t('settings.sound_volume')}>
+        <ControlBlock label={t('settings.sound_volume')}>
           <VolumeSlider
             value={prefs.volume}
             onCommit={(v) => {
@@ -81,7 +79,7 @@ export function SoundScreen() {
             testID="settings-volume"
             accessibilityLabel={t('settings.sound_volume')}
           />
-        </ControlRow>
+        </ControlBlock>
         <ToggleRow
           label={t('settings.haptics')}
           hint={t('settings.haptics_hint')}
@@ -89,13 +87,13 @@ export function SoundScreen() {
           onChange={(v) => setFeelPrefs({ hapticsEnabled: v })}
           testID="settings-haptics-toggle"
         />
-      </Section>
+      </ListSection>
 
-      <Section title={t('settings.sound_section')} footer={t('settings.sound_section_hint')} testID="settings-sound-events">
+      <ListSection title={t('settings.sound_section')} footer={t('settings.sound_section_hint')} testID="settings-sound-events">
         {SOUND_EVENT_ORDER.map((ev) => (
           <EventRow key={ev} ev={ev} pick={prefs.picks[ev]} onPick={() => setPicking(ev)} />
         ))}
-      </Section>
+      </ListSection>
 
       <VariantSheet
         ev={picking}
@@ -158,7 +156,7 @@ function VariantSheet({ ev, pick, onClose }: { ev: SoundEvent | null; pick?: str
   const prefs = useFeelPrefs();
   const name = ev ? t(`sound.ev.${ev}`) : '';
   return (
-    <BottomSheet visible={ev !== null} onClose={onClose} testID="sound-variant-sheet" closeLabel={t('common.cancel')}>
+    <Sheet visible={ev !== null} onClose={onClose} testID="sound-variant-sheet" closeLabel={t('common.cancel')}>
       <AppText variant="title">{t('settings.sound_pick_title', { event: name })}</AppText>
       <View style={styles.variantList}>
         {ev
@@ -188,7 +186,7 @@ function VariantSheet({ ev, pick, onClose }: { ev: SoundEvent | null; pick?: str
           : null}
       </View>
       <PlateButton testID="sound-variant-done" label={t('settings.done')} variant="slate" block onPress={onClose} />
-    </BottomSheet>
+    </Sheet>
   );
 }
 

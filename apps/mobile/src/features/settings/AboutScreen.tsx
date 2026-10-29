@@ -5,13 +5,12 @@ import { ExternalLink, ShieldCheck } from 'lucide-react-native';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { APP_VERSION } from '@/platform/config';
-import { AppText } from '@/ui/AppText';
+import { AppText, GroupedList, InfoRow, ListSection, Row, Tap } from '@/ui';
 import { useT } from '@/ui/lang';
-import { Tap } from '@/ui/Tap';
 import { PRIVACY_URL } from './flags';
-import { GroupBody, NavRow, Section, SettingsPage } from './parts';
+import { SettingsPage } from './parts';
 
-// Settings › About (new; PLAN Phase 9): version and build, the licences the
+// Settings › About (design v2 MobAbout; new, PLAN Phase 9): version and build, the licences the
 // app ships under (Lichess puzzle DB, game-icons theme glyphs, OFL fonts;
 // gaps.md "Outbound external links": the landing CTA credits move here),
 // and the privacy policy.
@@ -41,12 +40,12 @@ export function AboutScreen() {
         <AppText variant="caption">{t('brand.tagline')}</AppText>
       </View>
 
-      <Section>
+      <GroupedList>
         <InfoRow label={t('settings.about.version')} value={APP_VERSION} testID="about-version" />
         <InfoRow label={t('settings.about.build')} value={build()} testID="about-build" />
-      </Section>
+      </GroupedList>
 
-      <Section title={t('settings.about.licences')}>
+      <ListSection title={t('settings.about.licences')}>
         <Credit
           title={t('settings.about.puzzles')}
           body={t('settings.about.puzzles_body')}
@@ -65,31 +64,18 @@ export function AboutScreen() {
           testID="about-fonts"
           onPress={() => open(LINKS.ofl)}
         />
-      </Section>
+      </ListSection>
 
-      <Section>
-        <NavRow
+      <GroupedList>
+        <Row
           icon={ShieldCheck}
           label={t('settings.about.privacy')}
           hint={t('settings.about.open_hint')}
           testID="about-privacy"
           onPress={() => open(PRIVACY_URL)}
         />
-      </Section>
+      </GroupedList>
     </SettingsPage>
-  );
-}
-
-function InfoRow({ label, value, testID }: { label: string; value: string; testID: string }) {
-  return (
-    <View style={styles.info}>
-      <AppText variant="body" style={styles.flex}>
-        {label}
-      </AppText>
-      <AppText variant="body" color={eos.ash} testID={testID} selectable>
-        {value}
-      </AppText>
-    </View>
   );
 }
 
@@ -97,30 +83,28 @@ function InfoRow({ label, value, testID }: { label: string; value: string; testI
 function Credit({ title, body, testID, onPress }: { title: string; body: string; testID: string; onPress: () => void }) {
   const t = useT();
   return (
-    <GroupBody>
-      <View style={styles.credit}>
-        <View style={styles.flex}>
-          <AppText variant="body">{title}</AppText>
-          <AppText variant="caption">{body}</AppText>
-        </View>
-        <LinkButton testID={testID} label={`${title}, ${t('settings.about.open_hint')}`} onPress={onPress} />
+    <View style={styles.credit}>
+      <View style={styles.flex}>
+        <AppText variant="body">{title}</AppText>
+        <AppText variant="caption">{body}</AppText>
       </View>
-    </GroupBody>
+      <LinkButton testID={testID} label={`${title}, ${t('settings.about.open_hint')}`} onPress={onPress} />
+    </View>
   );
 }
 
 function LinkButton({ testID, label, onPress }: { testID: string; label: string; onPress: () => void }) {
   return (
     <Tap testID={testID} accessibilityRole="link" accessibilityLabel={label} onPress={onPress} style={styles.link}>
-      <ExternalLink size={18} color={eos.ash} />
+      <ExternalLink size={18} strokeWidth={2} color={eos.ash} />
     </Tap>
   );
 }
 
 const styles = StyleSheet.create({
   brand: { alignItems: 'center', gap: space[1], paddingVertical: space[2] },
-  info: { flexDirection: 'row', alignItems: 'center', minHeight: 48, paddingHorizontal: space[4], gap: space[3] },
   flex: { flex: 1, minWidth: 0, gap: space[0.5] },
-  credit: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
+  // Credit row: padding 14/16, text column (gap 2) · 44 pt link pulled 8 pt into the padding.
+  credit: { flexDirection: 'row', alignItems: 'center', gap: space[3], paddingHorizontal: space[4], paddingVertical: space[3.5] },
   link: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center', marginRight: -space[2] },
 });

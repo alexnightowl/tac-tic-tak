@@ -19,13 +19,11 @@ import {
 } from '@/features/notifications/reminder';
 import { feel } from '@/feel';
 import { useAppStore } from '@/stores/appStore';
-import { AppText } from '@/ui/AppText';
+import { AppText, ControlBlock, ListSection, PlateButton, Tap, ToggleRow } from '@/ui';
 import { useT } from '@/ui/lang';
-import { PlateButton } from '@/ui/PlateButton';
-import { Tap } from '@/ui/Tap';
-import { ControlRow, GroupBody, Section, SettingsPage, ToggleRow } from './parts';
+import { SettingsPage } from './parts';
 
-// Settings › Notifications: the local daily streak reminder (PLAN §2.9 /
+// Settings › Notifications (design v2 MobNotifications): the local daily streak reminder (PLAN §2.9 /
 // Phase 9). Remote pushes (friend requests, achievements) come in Phase 10
 // with accounts; their switches will join this screen then.
 
@@ -69,7 +67,7 @@ export function NotificationsScreen() {
 
   return (
     <SettingsPage testID="screen-settings-notifications" title={t('settings.notifications')}>
-      <Section
+      <ListSection
         footer={prefs.enabled ? (next?.at ? t('settings.reminder_next', { when: describe(next.at, lang, t) }) : t('settings.reminder_none')) : null}
       >
         <ToggleRow
@@ -80,11 +78,11 @@ export function NotificationsScreen() {
           disabled={busy}
           testID="settings-reminder-toggle"
         />
-        <ControlRow label={t('settings.reminder_time')}>
+        <ControlBlock label={t('settings.reminder_time')}>
           <View style={[styles.hours, !prefs.enabled && styles.off]} accessibilityRole="radiogroup" testID="reminder-hours">
             {HOURS.map((h) => {
               const active = h === prefs.hour;
-              const label = formatHour(h, lang);
+              const label = formatHour(h);
               return (
                 <Tap
                   key={h}
@@ -107,11 +105,11 @@ export function NotificationsScreen() {
               );
             })}
           </View>
-        </ControlRow>
-      </Section>
+        </ControlBlock>
+      </ListSection>
 
-      <Section title={t('settings.perm.title')}>
-        <GroupBody testID="reminder-permission">
+      <ListSection title={t('settings.perm.title')}>
+        <ControlBlock testID="reminder-permission">
           <AppText variant="body" testID={`reminder-permission-${perm ?? 'unknown'}`}>
             {perm === 'granted'
               ? t('settings.perm.granted')
@@ -125,11 +123,12 @@ export function NotificationsScreen() {
               label={t('settings.perm.open')}
               variant="slate"
               size="sm"
+              style={styles.start}
               onPress={() => void Linking.openSettings()}
             />
           ) : null}
-        </GroupBody>
-      </Section>
+        </ControlBlock>
+      </ListSection>
 
       {DEV_MENU ? (
         // Dev builds: what the OS actually holds (09-reminder asserts on it).
@@ -145,7 +144,7 @@ export function NotificationsScreen() {
 
 /** "today at 20:00" / "tomorrow at 20:00" / "Mon 28 Oct at 20:00". */
 function describe(at: Date, lang: string, t: (k: string, v?: Record<string, string | number>) => string): string {
-  const time = formatHour(at.getHours(), lang, at);
+  const time = formatHour(at.getHours(), at);
   const day = formatLocalDate(at);
   const now = new Date();
   const tomorrow = new Date(now);
@@ -164,6 +163,7 @@ function stamp(at: Date): string {
 const styles = StyleSheet.create({
   hours: { flexDirection: 'row', flexWrap: 'wrap', gap: space[1.5] },
   off: { opacity: 0.5 },
+  start: { alignSelf: 'flex-start' },
   hour: {
     width: '14.5%',
     flexGrow: 1,

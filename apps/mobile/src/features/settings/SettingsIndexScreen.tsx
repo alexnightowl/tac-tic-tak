@@ -1,104 +1,86 @@
 import type { Language } from '@tac/core/i18n';
-import { control, eos, layout, radii, space } from '@tac/core/tokens';
+import { control, eos, space, tone } from '@tac/core/tokens';
 import { router } from 'expo-router';
 import { AlertTriangle, Bell, ChevronRight, Gamepad2, Info, KeyRound, RotateCcw, Volume2 } from 'lucide-react-native';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { initialWindowMetrics, SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { feel } from '@/feel';
-import { useReminderPrefs, formatHour } from '@/features/notifications/reminder';
+import { formatHour, useReminderPrefs } from '@/features/notifications/reminder';
 import { openOnboarding } from '@/features/onboarding/gate';
-import { APP_VERSION } from '@/platform/config';
 import { Avatar } from '@/features/profile/Avatar';
+import { APP_VERSION } from '@/platform/config';
 import { toast } from '@/shell/toast/store';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
-import { AppText } from '@/ui/AppText';
+import { AppText, ControlBlock, DangerButton, GroupedList, ListSection, PlateButton, Row, Segmented, Sheet, Tap } from '@/ui';
 import { scriptLang } from '@/ui/fonts';
 import { useT } from '@/ui/lang';
-import { PlateButton } from '@/ui/PlateButton';
-import { Segmented } from '@/ui/Segmented';
-import { Tap } from '@/ui/Tap';
+import { colorsTiming } from '@/ui/motion';
 import { resetProgress } from './api';
-import { BottomSheet, ControlRow, NavRow, Section, SettingsPage } from './parts';
+import { SettingsPage } from './parts';
 import { saveSettings } from './patch';
 
 /**
- * Settings home (web /settings, its three tabs regrouped as a native
- * list): the profile card, one row per section screen, and the web's App
- * tab inline (language, replay onboarding, reset progress).
+ * Settings tab (design v2 MobSettings; web /settings, its three tabs
+ * regrouped as a native list): the profile card, one row per section
+ * screen, the App group inline (language, replay onboarding) and the
+ * danger zone (reset progress → MobResetSheet).
  */
 export function SettingsIndexScreen() {
   const t = useT();
-  const user = useAuthStore((s) => s.user);
   const lang = useAppStore((s) => s.settings.language);
   const reminder = useReminderPrefs();
   const [resetOpen, setResetOpen] = useState(false);
-  const nickname = user?.nickname ?? '';
 
   return (
-    <SettingsPage testID="screen-settings" title={t('settings.title')}>
-      <Section>
-        <Tap
-          testID="settings-profile"
-          accessibilityRole="button"
-          accessibilityLabel={`${t('settings.tab.profile')}, ${user?.displayName || nickname}`}
-          onPress={() => router.push('/settings/profile')}
-          style={styles.me}
-        >
-          <Avatar nickname={nickname} avatarUrl={user?.avatarUrl} size={52} />
-          <View style={styles.meText}>
-            <AppText variant="title" lang={scriptLang(user?.displayName || nickname)} numberOfLines={1}>
-              {user?.displayName || nickname}
-            </AppText>
-            <AppText variant="caption" numberOfLines={1}>
-              {t('settings.profile_hint')}
-            </AppText>
-          </View>
-          <ChevronRight size={18} color={eos.dust} />
-        </Tap>
-      </Section>
+    <SettingsPage testID="screen-settings">
+      <GroupedList>
+        <ProfileCard />
+      </GroupedList>
 
-      <Section>
-        <NavRow
+      <GroupedList>
+        <Row
           icon={Gamepad2}
           label={t('settings.gameplay')}
           hint={t('settings.gameplay_hint')}
           testID="settings-gameplay"
           onPress={() => router.push('/settings/gameplay')}
         />
-        <NavRow
+        <Row
           icon={Volume2}
           label={t('settings.sound_haptics')}
           hint={t('settings.sound_haptics_hint')}
           testID="settings-sound"
           onPress={() => router.push('/settings/sound')}
         />
-        <NavRow
+        <Row
           icon={Bell}
           label={t('settings.notifications')}
-          value={reminder.enabled ? formatHour(reminder.hour, lang) : t('ui.off')}
+          value={reminder.enabled ? formatHour(reminder.hour) : t('ui.off')}
           testID="settings-notifications"
           onPress={() => router.push('/settings/notifications')}
         />
-        <NavRow
+        <Row
           icon={KeyRound}
           label={t('settings.account')}
           hint={t('settings.account_hint')}
           testID="settings-account"
           onPress={() => router.push('/settings/account')}
         />
-        <NavRow
+        <Row
           icon={Info}
           label={t('settings.about')}
           value={APP_VERSION}
           testID="settings-about"
           onPress={() => router.push('/settings/about')}
         />
-      </Section>
+      </GroupedList>
 
-      <Section title={t('settings.tab.app')}>
-        <ControlRow label={t('settings.language')}>
+      <ListSection title={t('settings.tab.app')}>
+        <ControlBlock label={t('settings.language')}>
           <Segmented
             options={[
               { value: 'en', label: t('settings.lang.en') },
@@ -106,11 +88,12 @@ export function SettingsIndexScreen() {
             ]}
             value={lang}
             onChange={(v: Language) => void saveSettings({ language: v })}
+            tone="soft"
             testID="settings-lang"
             accessibilityLabel={t('settings.language')}
           />
-        </ControlRow>
-        <NavRow
+        </ControlBlock>
+        <Row
           icon={RotateCcw}
           label={t('settings.replay_onboarding')}
           hint={t('settings.replay_onboarding_hint')}
@@ -122,10 +105,10 @@ export function SettingsIndexScreen() {
             openOnboarding();
           }}
         />
-      </Section>
+      </ListSection>
 
-      <Section title={t('settings.section.danger')} footer={t('settings.reset_progress.body')}>
-        <NavRow
+      <ListSection title={t('settings.section.danger')} footer={t('settings.reset_progress.body')}>
+        <Row
           icon={AlertTriangle}
           label={t('settings.reset_progress.title')}
           testID="settings-reset"
@@ -135,14 +118,52 @@ export function SettingsIndexScreen() {
             setResetOpen(true);
           }}
         />
-      </Section>
+      </ListSection>
 
       <ResetSheet visible={resetOpen} onClose={() => setResetOpen(false)} />
     </SettingsPage>
   );
 }
 
-/** web ResetProgressSection's inline two-step confirm, as a destructive sheet. */
+/**
+ * The profile row: 16 pt padding, 52 pt avatar, the name in Cinzel 22
+ * (in the name's own script), "Name, avatar, bio", chevron. A local `.row`
+ * because the name needs its script's font (Row's label follows the UI
+ * language).
+ */
+function ProfileCard() {
+  const t = useT();
+  const user = useAuthStore((s) => s.user);
+  const nickname = user?.nickname ?? '';
+  const name = user?.displayName || nickname;
+  const pressed = useSharedValue(0);
+  const overlay = useAnimatedStyle(() => ({ opacity: pressed.get() }));
+  return (
+    <Tap
+      testID="settings-profile"
+      accessibilityRole="button"
+      accessibilityLabel={`${t('settings.tab.profile')}, ${name}`}
+      onPress={() => router.push('/settings/profile')}
+      pressed={pressed}
+      pressedTiming={colorsTiming}
+      style={styles.me}
+    >
+      <Animated.View pointerEvents="none" style={[styles.pressed, overlay]} />
+      <Avatar nickname={nickname} avatarUrl={user?.avatarUrl} size={52} />
+      <View style={styles.meText}>
+        <AppText variant="title" lang={scriptLang(name)} numberOfLines={1}>
+          {name}
+        </AppText>
+        <AppText variant="caption" numberOfLines={1}>
+          {t('settings.profile_hint')}
+        </AppText>
+      </View>
+      <ChevronRight size={18} strokeWidth={2} color={eos.dust} />
+    </Tap>
+  );
+}
+
+/** MobResetSheet: the web ResetProgressSection's two-step confirm as a destructive sheet. */
 function ResetSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const t = useT();
   const [busy, setBusy] = useState(false);
@@ -173,55 +194,55 @@ function ResetSheet({ visible, onClose }: { visible: boolean; onClose: () => voi
   };
 
   return (
-    <BottomSheet visible={visible} onClose={close} testID="reset-sheet" closeLabel={t('common.cancel')}>
-      <View style={styles.sheetHead}>
-        <AlertTriangle size={20} color={control.dangerText} />
-        <AppText variant="title" color={control.dangerText}>
-          {t('settings.reset_progress.title')}
-        </AppText>
-      </View>
-      <AppText variant="body" color={eos.ash}>
-        {t('settings.reset_progress.body')}
-      </AppText>
-      <AppText variant="body">{t('settings.reset_progress.confirm')}</AppText>
-      {error ? (
-        <AppText variant="caption" color={control.dangerText} testID="reset-error">
-          {error}
-        </AppText>
-      ) : null}
-      <View style={styles.sheetButtons}>
-        <Tap
-          testID="reset-confirm"
-          accessibilityRole="button"
-          accessibilityLabel={t('settings.reset_progress.confirm_cta')}
-          accessibilityState={{ busy }}
-          disabled={busy}
-          onPress={() => void confirm()}
-          style={[styles.danger, busy && styles.busy]}
-        >
-          <AppText variant="plateLabel" color={control.dangerText}>
-            {busy ? '…' : t('settings.reset_progress.confirm_cta')}
+    <WindowInsets>
+      <Sheet visible={visible} onClose={close} dismissible={!busy} testID="reset-sheet" closeLabel={t('common.cancel')}>
+        <View style={styles.sheetHead}>
+          <AlertTriangle size={20} strokeWidth={2} color={tone.danger} />
+          <AppText variant="title" color={tone.danger} style={styles.flex}>
+            {t('settings.reset_progress.title')}
           </AppText>
-        </Tap>
-        <PlateButton testID="reset-cancel" label={t('common.cancel')} variant="slate" block onPress={close} disabled={busy} />
-      </View>
-    </BottomSheet>
+        </View>
+        <AppText variant="body" color={eos.ash}>
+          {t('settings.reset_progress.body')}
+        </AppText>
+        <AppText variant="body">{t('settings.reset_progress.confirm')}</AppText>
+        {error ? (
+          <AppText variant="caption" color={tone.danger} testID="reset-error" accessibilityLiveRegion="polite">
+            {error}
+          </AppText>
+        ) : null}
+        <View style={styles.sheetButtons}>
+          <DangerButton
+            testID="reset-confirm"
+            label={t('settings.reset_progress.confirm_cta')}
+            filled
+            busy={busy}
+            onPress={() => void confirm()}
+          />
+          <PlateButton testID="reset-cancel" label={t('common.cancel')} variant="slate" block onPress={close} disabled={busy} />
+        </View>
+      </Sheet>
+    </WindowInsets>
   );
 }
 
+/**
+ * The tab scene zeroes the vertical insets (shell/TabSceneInsets) but a
+ * Sheet is a full-window Modal: give it the window's own insets back so
+ * its bottom padding clears the home indicator (34 + 8, as designed).
+ */
+function WindowInsets({ children }: { children: ReactNode }) {
+  const scene = useSafeAreaInsets();
+  const win = initialWindowMetrics?.insets;
+  const value = win ? { ...scene, top: win.top, bottom: win.bottom } : scene;
+  return <SafeAreaInsetsContext value={value}>{children}</SafeAreaInsetsContext>;
+}
+
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   me: { flexDirection: 'row', alignItems: 'center', gap: space[3], padding: space[4] },
+  pressed: { ...StyleSheet.absoluteFill, backgroundColor: control.ghostPressBg },
   meText: { flex: 1, minWidth: 0, gap: space[0.5] },
   sheetHead: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   sheetButtons: { gap: space[2.5], marginTop: space[2] },
-  danger: {
-    height: layout.plateHeight.md,
-    borderRadius: radii.xl,
-    borderWidth: 1,
-    borderColor: control.dangerBorder,
-    backgroundColor: control.dangerPressBg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  busy: { opacity: 0.6 },
 });

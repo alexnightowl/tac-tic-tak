@@ -1,5 +1,5 @@
 import type { Streak } from '@tac/core/api';
-import { formatLocalDate, localeFor } from '@tac/core/format';
+import { formatLocalDate } from '@tac/core/format';
 import { applyStreakOnPlay } from '@tac/core/rules';
 import { router, type Href } from 'expo-router';
 import * as Notifications from 'expo-notifications';
@@ -289,11 +289,14 @@ export async function setReminderHour(hour: number): Promise<void> {
   await syncReminders();
 }
 
-/** "20:00" / "8:00 PM" in the app language. */
-export function formatHour(hour: number, language: string, at?: Date): string {
-  const d = at ? new Date(at) : new Date();
-  if (!at) d.setHours(hour, 0, 0, 0);
-  return d.toLocaleTimeString(localeFor(language), { hour: 'numeric', minute: '2-digit' });
+/**
+ * "20:00": 24-hour in both languages, as the design draws it (the hour
+ * grid is 00–23, the Settings row and the "Next reminder" footer match it).
+ */
+export function formatHour(hour: number, at?: Date): string {
+  const h = at ? at.getHours() : hour;
+  const m = at ? at.getMinutes() : 0;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 }
 
 // ---- lifecycle --------------------------------------------------------------------

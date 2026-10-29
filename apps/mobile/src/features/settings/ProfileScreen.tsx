@@ -10,12 +10,12 @@ import { chooseAvatar } from '@/features/profile/avatarUpload';
 import { ProfileEditorSheet } from '@/features/profile/ProfileEditorSheet';
 import { Avatar } from '@/features/profile/Avatar';
 import { useAuthStore } from '@/stores/authStore';
-import { AppText } from '@/ui/AppText';
+import { AppText, GroupedList, Row } from '@/ui';
 import { scriptLang } from '@/ui/fonts';
 import { useT } from '@/ui/lang';
-import { NavRow, Section, SettingsPage } from './parts';
+import { SettingsPage } from './parts';
 
-// Settings › Profile. The profile editor (display name, bio, country,
+// Settings › Profile (design v2 MobSettingsProfile). The profile editor (display name, bio, country,
 // avatar) belongs to the social stream, on the own-profile screen and the
 // avatar chooser; this screen opens those same components (no second
 // editor). Password lives in Settings › Account.
@@ -33,39 +33,39 @@ export function ProfileScreen() {
     <SettingsPage testID="screen-settings-profile" title={t('settings.tab.profile')}>
       <View style={styles.head}>
         <Avatar nickname={nickname} avatarUrl={user?.avatarUrl} size={72} />
-        <AppText variant="title" lang={scriptLang(user?.displayName || nickname)} numberOfLines={1}>
+        <AppText variant="title" lang={scriptLang(user?.displayName || nickname)} numberOfLines={1} testID="settings-profile-name">
           {user?.displayName || nickname}
         </AppText>
         <AppText variant="caption">{`@${nickname}`}</AppText>
       </View>
-      <Section>
-        <NavRow
+      <GroupedList>
+        <Row
           icon={UserRound}
           label={t('profile.edit_title')}
           hint={t('settings.profile_hint')}
           testID="settings-profile-edit"
           onPress={() => (me.data ? setEditing(true) : router.push(profileHref))}
         />
-        <NavRow
+        <Row
           icon={Camera}
           label={t('profile.change_avatar')}
           testID="settings-profile-avatar"
           onPress={chooseAvatar}
         />
-        <NavRow
+        <Row
           icon={KeyRound}
           label={t('profile.change_password')}
           testID="settings-profile-password"
           onPress={() => router.push('/settings/account')}
         />
-      </Section>
-      <Section>
-        <NavRow
+      </GroupedList>
+      <GroupedList>
+        <Row
           label={t('settings.profile.view')}
           testID="settings-profile-view"
           onPress={() => router.push(profileHref)}
         />
-      </Section>
+      </GroupedList>
       {me.data ? (
         <ProfileEditorSheet
           visible={editing}
