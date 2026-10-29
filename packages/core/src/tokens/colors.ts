@@ -221,6 +221,7 @@ export const tone = {
   /** Positive deltas, solved. */
   sage: '#afc0a9',
   sageDeep: '#94a58e', // dots, gate bar end
+  moss: '#6d7a68', // offline "Mate patterns" pack swatch
   /** Streak flame, rank gold, calibration pills. */
   gold: '#d7b777',
   copper: '#c98c55', // achievement progress / XP

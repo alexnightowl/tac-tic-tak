@@ -30,6 +30,8 @@ import { onboardingEn } from './onboarding.en';
 import { onboardingUk } from './onboarding.uk';
 import { shellEn } from './shell.en';
 import { shellUk } from './shell.uk';
+import { offlineEn } from './offline.en';
+import { offlineUk } from './offline.uk';
 
 export const AREAS = [
   'common',
@@ -45,6 +47,7 @@ export const AREAS = [
   'settings',
   'onboarding',
   'shell',
+  'offline',
 ] as const;
 
 export type Area = (typeof AREAS)[number];
@@ -63,6 +66,7 @@ export const AREA_DICTS: Record<Area, Record<Language, Dict>> = {
   settings: { en: settingsEn, uk: settingsUk },
   onboarding: { en: onboardingEn, uk: onboardingUk },
   shell: { en: shellEn, uk: shellUk },
+  offline: { en: offlineEn, uk: offlineUk },
 };
 
 /** All areas of one language merged into a flat dict (the web shape). */
