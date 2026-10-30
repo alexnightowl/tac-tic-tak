@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@ne
 import { IsBoolean, IsHexColor, IsIn, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser, AuthedUser } from '../auth/current-user.decorator';
+import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
 import { UsersService } from './users.service';
 import { FriendshipService } from './friendship.service';
 
@@ -35,6 +36,11 @@ class UpdateProfileDto {
 
   @IsOptional() @IsString() @Matches(/^([a-z]{2})?$/i, { message: 'country must be a 2-letter code or empty' })
   country?: string;
+}
+
+class RecalibrateDto {
+  // Omitted: every style.
+  @IsOptional() @IsIn(TRAINING_STYLES) style?: TrainingStyle;
 }
 
 class UploadAvatarDto {
@@ -71,6 +77,13 @@ export class UsersController {
   @Post('me/avatar')
   uploadAvatar(@CurrentUser() u: AuthedUser, @Body() dto: UploadAvatarDto) {
     return this.users.setAvatar(u.id, dto.dataUrl);
+  }
+
+  /** Re-opens the calibration window; ratings and history stay. */
+  @UseGuards(JwtAuthGuard)
+  @Post('me/recalibrate')
+  recalibrate(@CurrentUser() u: AuthedUser, @Body() dto: RecalibrateDto) {
+    return this.users.recalibrate(u.id, dto.style);
   }
 
   @UseGuards(JwtAuthGuard)
