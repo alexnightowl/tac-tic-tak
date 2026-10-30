@@ -9,6 +9,11 @@ export const onboardingUk: Dict = {
   'onboarding.continue': 'Далі',
   'onboarding.find_level': 'Визначити мій рівень',
   'onboarding.skip_start': 'Пропустити — почати з {rating}',
+  // Replayed by a player who already has a level (calibration done).
+  'onboarding.recalibrate': 'Перекалібрувати рівень',
+  'onboarding.keep_level': 'Залишити мій рівень',
+  'onboarding.recalibrate_note': 'Наступні 5 сесій у кожному стилі заново визначать твій рівень. Рейтинг та історія залишаться.',
+  'onboarding.recalibrate_error': 'Не вдалося зв’язатися із сервером. Спробуй ще раз.',
 
   // 1 · Welcome (kicker = brand.name).
   'onboarding.welcome.title': 'Побач удар,\nперш ніж він влучить',

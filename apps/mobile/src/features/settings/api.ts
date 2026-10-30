@@ -1,4 +1,4 @@
-import { createApiClient, isApiError, queryKeys, type MeResponse } from '@tac/core/api';
+import { createApiClient, isApiError, queryKeys, type MeResponse, type Progressions } from '@tac/core/api';
 import { Platform } from 'react-native';
 
 import { resetAll } from '@/features/auth/session';
@@ -69,6 +69,16 @@ export async function resetProgress(): Promise<void> {
   appStore.getState().applyMe(me);
   queryClient.setQueryData(queryKeys.me(), me);
   await queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] !== 'me' });
+}
+
+/**
+ * POST /users/me/recalibrate: every style gets a fresh calibration window
+ * (ratings and history stay), so the next rated sessions re-place the norm.
+ */
+export async function recalibrate(): Promise<void> {
+  const res = await apiClient.post<{ progressions: Progressions }>('/users/me/recalibrate', {});
+  appStore.getState().setProgressions(res.progressions);
+  await queryClient.invalidateQueries({ queryKey: queryKeys.me() });
 }
 
 /** B4 (not on the server yet): revokes every refresh family and bumps tokenVersion. */

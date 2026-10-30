@@ -9,6 +9,11 @@ export const onboardingEn: Dict = {
   'onboarding.continue': 'Continue',
   'onboarding.find_level': 'Find my level',
   'onboarding.skip_start': 'Skip — start at {rating}',
+  // Replayed by a player who already has a level (calibration done).
+  'onboarding.recalibrate': 'Recalibrate my level',
+  'onboarding.keep_level': 'Keep my level',
+  'onboarding.recalibrate_note': 'Your next 5 sessions in each style will find your level again. Rating and history stay.',
+  'onboarding.recalibrate_error': "Couldn't reach the server. Try again.",
 
   // 1 · Welcome (kicker = brand.name).
   'onboarding.welcome.title': 'See the strike\nbefore it lands',

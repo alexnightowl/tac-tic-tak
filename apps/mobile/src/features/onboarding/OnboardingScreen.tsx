@@ -1,3 +1,4 @@
+import { CALIBRATION_SESSIONS } from '@tac/core/rules';
 import { eos, layout, space, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -6,7 +7,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { feel } from '@/feel';
+import { recalibrate } from '@/features/settings/api';
 import { patchSettings } from '@/shell/settings';
+import { useAppStore } from '@/stores/appStore';
 import { AppText } from '@/ui/AppText';
 import { useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
@@ -25,6 +28,9 @@ import { WelcomeArt } from './Welcome';
 // a failed save the same way). Placement does not exist on the backend:
 // "Find my level" opens the Play tab, where the first five sessions in a
 // style calibrate the rating; "Skip — start at 1200" lands on Home.
+// Replayed by a player who already finished calibration in some style, the
+// last step offers "Recalibrate my level" (POST /users/me/recalibrate, then
+// Play) and "Keep my level" (Home) instead.
 
 const STEPS = ['welcome', 'training', 'path', 'habit'] as const;
 const LAST = STEPS.length - 1;
@@ -40,6 +46,21 @@ export function OnboardingScreen() {
   const finished = useRef(false);
   // Mirrors `step` for the Android back handler registered once on mount.
   const stepRef = useRef(0);
+  // Read once: recalibrating flips it mid-screen.
+  const [veteran] = useState(() =>
+    Object.values(useAppStore.getState().progressions).some((p) => p.calibrationSessionsLeft < CALIBRATION_SESSIONS),
+  );
+  const [recalState, setRecalState] = useState<'idle' | 'busy' | 'error'>('idle');
+
+  const onRecalibrate = async () => {
+    setRecalState('busy');
+    try {
+      await recalibrate();
+      finish('play');
+    } catch {
+      setRecalState('error');
+    }
+  };
 
   const finish = (to: Finish) => {
     if (finished.current) return;
@@ -155,6 +176,37 @@ export function OnboardingScreen() {
               size="lg"
               block
             />
+          ) : veteran ? (
+            <>
+              <AppText
+                variant="caption"
+                color={recalState === 'error' ? tone.danger : eos.dust}
+                style={styles.note}
+                testID="onboarding-recalibrate-note"
+              >
+                {t(recalState === 'error' ? 'onboarding.recalibrate_error' : 'onboarding.recalibrate_note')}
+              </AppText>
+              <PlateButton
+                testID="onboarding-recalibrate"
+                label={t('onboarding.recalibrate')}
+                onPress={() => void onRecalibrate()}
+                loading={recalState === 'busy'}
+                pressFeel="toggle"
+                size="lg"
+                block
+              />
+              <Tap
+                testID="onboarding-keep-level"
+                accessibilityRole="button"
+                accessibilityLabel={t('onboarding.keep_level')}
+                onPress={() => finish('home')}
+                style={styles.textButton}
+              >
+                <AppText variant="caption" color={eos.ash} style={styles.textButtonLabel}>
+                  {t('onboarding.keep_level')}
+                </AppText>
+              </Tap>
+            </>
           ) : (
             <>
               <PlateButton
@@ -220,4 +272,5 @@ const styles = StyleSheet.create({
   cta: { paddingTop: space[6], paddingHorizontal: layout.gutter, gap: space[1] },
   textButton: { height: 44, alignItems: 'center', justifyContent: 'center' },
   textButtonLabel: { fontSize: 13, lineHeight: 18 },
+  note: { textAlign: 'center', paddingBottom: space[2] },
 });

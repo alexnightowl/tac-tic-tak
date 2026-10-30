@@ -1,0 +1,24 @@
+# Onboarding replayed by a player who already has a level: the last step
+# offers "Recalibrate my level" / "Keep my level" instead of the new-user
+# pair. Driven by 09-recalibrate.sh, which seeds RECAL_USER as calibrated
+# and checks the DB afterwards.
+appId: online.tactictak.app
+---
+- runFlow:
+    file: 09-login.yaml
+    env:
+      E2E_USER: ${RECAL_USER}
+- extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 15000 }
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- tapOn: { id: onboarding-next }
+- extendedWaitUntil: { visible: { id: onboarding-slide-habit }, timeout: 3000 }
+- assertVisible: { id: onboarding-recalibrate }
+- assertVisible: { id: onboarding-keep-level }
+- assertVisible: { id: onboarding-recalibrate-note }
+- assertNotVisible: { id: onboarding-done }
+- assertNotVisible: { id: onboarding-skip }
+- takeScreenshot: ${SHOT}
+- tapOn: { id: onboarding-recalibrate }
+- extendedWaitUntil: { visible: { id: play-setup }, timeout: 8000 }
+- assertNotVisible: { id: screen-onboarding }

@@ -180,3 +180,11 @@ solved/rating/failed counters and the level-up gate bar instead. The canvas gets
 The canvas tab labelled "Board" (3x3 grid icon) is the Leaderboard screen, mislabelled. Supersedes
 provisional default #3 (the "Social" tab was a provisional invention; the web nav has the same six
 items as the canvas). Friends are reached from the profile ("Friends · N"), as on the web.
+
+### D23. Recalibration from a replayed onboarding: PROVISIONAL (owner request, 2026-10-30)
+The owner asked for a way to find the level again after a long break, offered where onboarding
+already asks "Find my level". When a player who finished calibration in any style replays
+onboarding, step 4 shows "Recalibrate my level" / "Keep my level". Recalibrate calls
+`POST /users/me/recalibrate` (no body = every style): 5 fresh calibration sessions per style,
+weak streak cleared, ratings and history kept. Provisional: all styles at once (the route accepts
+`style` for a per-style control later). Canvas: MobStatesShell, last section.

@@ -148,3 +148,16 @@ above" (MobStates{Shell,Play,Review,Social,Settings}). Open design questions: OW
 Also: issues #4 (capture overlap, mobile), #5/#6 (web session detail) fixed and closed; CI now dumps
 the prod DB before migration deploys; norm snapped to the 25 grid (prod).
 
+
+## 2026-10-30 (late) — Demotion fix (B8) and recalibration
+
+- **B8 on main (2be9508, deployed).** Demotion and calibration clamped the norm at
+  `startPuzzleRating`, which every session overwrites with its picked start, so two weak sessions
+  at or above the norm never dropped it (and raised it when the start was higher). Both now clamp
+  at a fixed floor of 450. Reproduced locally: norm 1500, two weak sessions from 1600 → 1600
+  before, 1475 after. Q11 answered.
+- **Recalibration (D23).** `api/recalibrate` pushed (`POST /users/me/recalibrate`), waiting for the
+  owner's merge. Mobile: onboarding step 4 for a player with a level shows "Recalibrate my level" /
+  "Keep my level". Maestro `09-recalibrate.sh` (seeds a calibrated user, runs the flow, checks
+  every style is back to 5 sessions with the norm kept) passes in en and uk; `09-onboarding`
+  still passes. Screenshots: `screens/recalibrate/`. Canvas: MobStatesShell section added.
