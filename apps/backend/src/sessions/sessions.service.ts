@@ -22,6 +22,11 @@ export const MAX_RATING = 3000;
 // and so does its floor (norm - 50); live ratings stay unsnapped.
 const NORM_GRID = 25;
 const onNormGrid = (n: number) => Math.round(n / NORM_GRID) * NORM_GRID;
+// Lowest norm demotion and calibration may reach: its floor stays at
+// MIN_RATING. Not startPuzzleRating, which create() overwrites with every
+// session's picked start, so a session at or above the norm swallowed the
+// drop.
+const NORM_FLOOR = MIN_RATING + DEMOTE_PEAK_BAND;
 
 @Injectable()
 export class SessionsService {
@@ -413,7 +418,7 @@ export class SessionsService {
       // until calibration ends.
       const cal = evaluateCalibration(
         progression.unlockedStartRating,
-        progression.startPuzzleRating,
+        NORM_FLOOR,
         session.startRating,
         check,
         progression.calibrationSessionsLeft,
@@ -473,12 +478,7 @@ export class SessionsService {
         nextUnlocked = progression.unlockedStartRating + UNLOCK_REWARD;
         nextWeakStreak = 0;
       } else if (demote.demoted) {
-        // Entry rating rounded down to the grid, so the clamp can't
-        // swallow the demotion or leave the norm off-grid.
-        nextUnlocked = Math.max(
-          Math.floor(progression.startPuzzleRating / NORM_GRID) * NORM_GRID,
-          progression.unlockedStartRating - demote.penalty,
-        );
+        nextUnlocked = Math.max(NORM_FLOOR, progression.unlockedStartRating - demote.penalty);
         nextWeakStreak = demote.streakAfter;
       } else {
         nextWeakStreak = demote.streakAfter;
