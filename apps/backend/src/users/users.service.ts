@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
+import { CALIBRATION_SESSIONS, TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
 import { AchievementsService } from '../achievements/achievements.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { promises as fs } from 'fs';
@@ -206,6 +206,22 @@ export class UsersService {
       }),
     ]);
     return { ok: true };
+  }
+
+  /**
+   * Starts a fresh calibration window for one style (or all of them) for
+   * a player whose level drifted, e.g. after a long break. Unlike
+   * resetProgress it keeps ratings, sessions and the review queue: the
+   * next CALIBRATION_SESSIONS rated sessions re-place the norm from the
+   * ratings actually played, the same way a new account's first ones do.
+   */
+  async recalibrate(userId: string, style?: TrainingStyle) {
+    await this.prisma.userStyleProgression.updateMany({
+      where: style ? { userId, style } : { userId },
+      data: { calibrationSessionsLeft: CALIBRATION_SESSIONS, weakSessionStreak: 0 },
+    });
+    const rows = await this.prisma.userStyleProgression.findMany({ where: { userId } });
+    return { progressions: this.mapStyleProgressions(rows) };
   }
 
   async updateProfile(userId: string, patch: Partial<{ displayName: string; bio: string; country: string }>) {
