@@ -194,6 +194,7 @@ export class UsersService {
           unlockedStartRating: 1200,
           weakSessionStreak: 0,
           calibrationSessionsLeft: 5,
+          calibrationStartedAt: null,
         },
       }),
       this.prisma.userProgression.updateMany({
@@ -218,7 +219,11 @@ export class UsersService {
   async recalibrate(userId: string, style?: TrainingStyle) {
     await this.prisma.userStyleProgression.updateMany({
       where: style ? { userId, style } : { userId },
-      data: { calibrationSessionsLeft: CALIBRATION_SESSIONS, weakSessionStreak: 0 },
+      data: {
+        calibrationSessionsLeft: CALIBRATION_SESSIONS,
+        calibrationStartedAt: new Date(),
+        weakSessionStreak: 0,
+      },
     });
     const rows = await this.prisma.userStyleProgression.findMany({ where: { userId } });
     return { progressions: this.mapStyleProgressions(rows) };

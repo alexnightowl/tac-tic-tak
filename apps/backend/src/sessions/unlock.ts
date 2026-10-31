@@ -19,19 +19,10 @@ export const DEMOTE_MAX_CRITERIA = 1;
 export const WEAK_STREAK_THRESHOLD = 2;
 
 // Provisional / calibration window: number of rated sessions a brand-
-// new style progression aggressively settles its ceiling before the
-// usual +50 / -25 rules engage. Tuned short — five passes over the
-// 3-criteria step ladder is enough to land within ±50 of the true
-// "comfortable level-up zone" for most players.
+// new style progression (or a recalibrating one) uses to place its
+// ceiling before the usual +50 / -25 rules engage. The placement
+// itself lives in calibration.ts.
 export const CALIBRATION_SESSIONS = 5;
-
-// Per-criterion-met-count step applied to the SESSION'S startRating
-// to produce the next ceiling. Hits the same three signals as a
-// stable-mode unlock check (solved-count, accuracy, peakDelta). The
-// step ladder is asymmetric on purpose: 0 of 3 means the player is
-// genuinely overwhelmed at startRating, so we drop a full puzzle-
-// band; 3 of 3 lifts +50 (same as a real unlock).
-export const CALIBRATION_STEP_BY_CRITERIA: readonly number[] = [-125, -50, 0, 50];
 
 export type StyleFormula = {
   solvedPerMin: number;
@@ -131,36 +122,29 @@ export type CalibrationCheck = {
   sessionsLeftAfter: number;
   ceilingBefore: number;
   ceilingAfter: number;
-  // How many of the three unlock criteria the player actually met.
-  // Drives the step taken this session.
+  // How many of the three unlock criteria the player met this session.
   criteriaMet: number;
-  // Signed step applied: +50 / 0 / -50 / -125.
+  // Signed change of the ceiling.
   delta: number;
+  // Fitted puzzle rating over the whole window so far.
+  performance: number;
 };
 
+/**
+ * Applies a calibration session: the ceiling moves to `target` (from
+ * calibrationNorm over the whole window), never below `normFloor`. A
+ * null target (no attempts yet) keeps the ceiling.
+ */
 export function evaluateCalibration(
   unlockedStartRating: number,
-  startPuzzleRating: number,
-  startRating: number,
+  normFloor: number,
+  target: number | null,
+  performance: number,
   unlockCheck: UnlockCheck,
   calibrationSessionsLeft: number,
 ): CalibrationCheck {
   const criteriaMet = unlockCheck.criteria.filter((c) => c.met).length;
-  const step = CALIBRATION_STEP_BY_CRITERIA[criteriaMet] ?? 0;
-  // Anchor the new ceiling on the rating the player ACTUALLY tried
-  // (session.startRating), not on the previous ceiling — the goal is
-  // to land at a level where the player will hit ~2/3 criteria next
-  // time, which means moving from where they just played. Floor at
-  // startPuzzleRating so the level can never drift below entry.
-  //
-  // Snap to the 50-grid: stable-mode unlocks fire +50 increments, so
-  // a rating like 1495 reads as broken next to a 1500-step ladder.
-  // The calibration step ladder is 25-aligned (-75, -125) and
-  // session.startRating drifts off-grid via per-puzzle Glicko
-  // updates, so without this snap the post-calibration ceiling
-  // lands on an arbitrary integer.
-  const raw = Math.max(startPuzzleRating, startRating + step);
-  const after = Math.round(raw / 50) * 50;
+  const after = target === null ? unlockedStartRating : Math.max(normFloor, target);
   return {
     active: true,
     sessionsLeftBefore: calibrationSessionsLeft,
@@ -169,6 +153,7 @@ export function evaluateCalibration(
     ceilingAfter: after,
     criteriaMet,
     delta: after - unlockedStartRating,
+    performance,
   };
 }
 

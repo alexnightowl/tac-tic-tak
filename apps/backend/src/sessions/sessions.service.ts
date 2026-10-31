@@ -11,7 +11,14 @@ import {
   TrainingStyle,
   UNLOCK_REWARD,
   DEMOTE_PEAK_BAND,
+  CALIBRATION_SESSIONS,
 } from './unlock';
+import {
+  calibrationNorm,
+  calibrationProbe,
+  CalibrationAttempt,
+  CALIBRATION_PROBE_BELOW,
+} from './calibration';
 import { applyStreakOnPlay, isValidDay, StreakState } from './streak';
 import { AchievementsService } from '../achievements/achievements.service';
 
@@ -42,14 +49,18 @@ export class SessionsService {
     const styleRow = await this.styleProgression(userId, dto.style);
 
     // Calibration sessions ignore whatever startRating the client sent
-    // and use the server-controlled progression rating instead. Without
-    // this, a player could pick a low rating, sail through 5 easy
-    // sessions, and call calibration "done" at a rating that doesn't
-    // reflect their real strength. UI hides the picker during
-    // calibration too — this is the belt to that suspenders.
+    // and start a little below the level fitted so far. Without this, a
+    // player could pick a low rating, sail through 5 easy sessions, and
+    // call calibration "done" at a rating that doesn't reflect their
+    // real strength. UI hides the picker during calibration too — this
+    // is the belt to that suspenders.
     const calibrating =
       dto.mode !== 'theme' && styleRow.calibrationSessionsLeft > 0;
-    const startRating = calibrating ? styleRow.currentPuzzleRating : dto.startRating;
+    let startRating = dto.startRating;
+    if (calibrating) {
+      const win = await this.calibrationWindow(userId, dto.style, styleRow);
+      startRating = calibrationProbe(win.attempts, win.anchor, win.lastStart);
+    }
 
     // The +200 unlock-cap check only applies in stable mode. During
     // calibration the player's currentPuzzleRating is allowed to
@@ -406,6 +417,7 @@ export class SessionsService {
       ceilingBefore: number;
       ceilingAfter: number;
       delta: number;
+      performance: number;
     } | null = null;
 
     if (progression.calibrationSessionsLeft > 0) {
@@ -416,10 +428,13 @@ export class SessionsService {
       // unlocked/demoted cards based on direction so the player just
       // sees a normal session summary with a "?" next to their rating
       // until calibration ends.
+      const win = await this.calibrationWindow(userId, style, progression);
+      const placed = calibrationNorm(style, win.attempts, win.anchor, session.durationSec);
       const cal = evaluateCalibration(
         progression.unlockedStartRating,
         NORM_FLOOR,
-        session.startRating,
+        placed.target,
+        placed.performance,
         check,
         progression.calibrationSessionsLeft,
       );
@@ -433,6 +448,7 @@ export class SessionsService {
         ceilingBefore: cal.ceilingBefore,
         ceilingAfter: cal.ceilingAfter,
         delta: cal.delta,
+        performance: cal.performance,
       };
 
       // Mirror the calibration outcome onto the standard
@@ -698,6 +714,47 @@ export class SessionsService {
     const s = await this.prisma.trainingSession.findUnique({ where: { id: sessionId } });
     if (!s || s.userId !== userId) throw new NotFoundException('session not found');
     return s;
+  }
+
+  /**
+   * Attempts of every finished rated session in the open calibration
+   * window, oldest first. `anchor` is the rating the window opened at:
+   * the live rating before its first session, recovered from that
+   * session's start when there is one.
+   */
+  private async calibrationWindow(
+    userId: string,
+    style: TrainingStyle,
+    progression: { currentPuzzleRating: number; calibrationStartedAt: Date | null },
+  ): Promise<{ attempts: CalibrationAttempt[]; anchor: number; lastStart: number | null }> {
+    const sessions = await this.prisma.trainingSession.findMany({
+      where: {
+        userId,
+        style,
+        mode: { not: 'theme' },
+        endedAt: { not: null },
+        ...(progression.calibrationStartedAt
+          ? { startedAt: { gte: progression.calibrationStartedAt } }
+          : {}),
+      },
+      // A new account's window has no start date; its history is the
+      // window, bounded here in case it's long.
+      orderBy: { startedAt: 'desc' },
+      take: 4 * CALIBRATION_SESSIONS,
+      select: {
+        startRating: true,
+        attempts: { select: { correct: true, responseMs: true, puzzleRating: true } },
+      },
+    });
+    sessions.reverse();
+    if (sessions.length === 0) {
+      return { attempts: [], anchor: progression.currentPuzzleRating, lastStart: null };
+    }
+    return {
+      attempts: sessions.flatMap((s) => s.attempts),
+      anchor: sessions[0].startRating + CALIBRATION_PROBE_BELOW,
+      lastStart: sessions[sessions.length - 1].startRating,
+    };
   }
 
   /**
