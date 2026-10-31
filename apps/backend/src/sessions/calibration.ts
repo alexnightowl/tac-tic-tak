@@ -13,7 +13,8 @@
 // Deterministic (fixed seed) so a window always places the same norm.
 
 import { computeRatingStep, deriveSessionStats } from './rating';
-import { evaluateUnlock, TrainingStyle } from './unlock';
+import { evaluateUnlock } from './unlock';
+import type { TrainingStyle } from './unlock';
 
 // Calibration sessions start this far below the fitted rating, so the
 // player meets mostly solvable puzzles while the fit still sees the
