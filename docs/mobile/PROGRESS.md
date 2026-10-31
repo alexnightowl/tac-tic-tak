@@ -161,3 +161,17 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   "Keep my level". Maestro `09-recalibrate.sh` (seeds a calibrated user, runs the flow, checks
   every style is back to 5 sessions with the norm kept) passes in en and uk; `09-onboarding`
   still passes. Screenshots: `screens/recalibrate/`. Canvas: MobStatesShell section added.
+
+## 2026-10-31 — Calibration places a reachable norm (D24)
+
+- **Owner report:** calibrated to 1450 and can't level up from it.
+- **Diagnosis by simulation:** synthetic players of known strength, 4 styles/speeds. The old ladder
+  gave level-up odds of 0-9% at the calibrated norm.
+- **Fix on main** (0df01d9 + c9afc80): fitted rating + session replay, see D24. Same simulation:
+  ~60-65% level-up at the new norm, 75-90% from norm - 50; placement < 70 ms per finish.
+  Local API e2e (5 calibration sessions after a recalibrate): a 1300 player with an old 1650
+  rating fits 1357 and lands at 1100; a 1800 player fits 1824 and lands at 1575.
+- New nullable column `UserStyleProgression.calibrationStartedAt`; finish's `calibration` gains
+  `performance`. Core mirror `rules/calibration.ts` + parity test; `@tac/core` 218/218.
+- CI on c9afc80 (only an `import type` change) failed at `pnpm -r run build`; logs need GitHub auth.
+  0df01d9, whose emitted JS is identical, built and deployed, so prod has the fix.

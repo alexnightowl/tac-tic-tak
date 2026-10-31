@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   BAND_EDGES, BAND_ICON_KEY, DEMOTE_PEAK_BAND, TRAINING_STYLES, UI_STYLE_ORDER,
   applyStreakOnPlay, bandFor, computeRatingStep, computeUnlockProgress,
+  calibrationNorm, calibrationProbe, estimatePerformance, levelUpOdds, fitResponseTime,
   evaluateCalibration, evaluateDemote, evaluateUnlock, offFormRating, peakFloor, solvedTarget,
 } from '../src/rules';
 
@@ -53,12 +54,36 @@ describe('unlock rules', () => {
     1500,
   );
 
-  it('calibration snaps to the 50 grid and floors at the entry rating', () => {
-    const c = evaluateCalibration(1200, 1000, 1495, check(3), 5);
-    expect(c.ceilingAfter).toBe(1550);
-    expect(c.delta).toBe(350);
-    expect(c.sessionsLeftAfter).toBe(4);
-    expect(evaluateCalibration(1200, 1000, 1010, check(0), 1).ceilingAfter).toBe(1000);
+  it('calibration moves the ceiling to the target, floored', () => {
+    const c = evaluateCalibration(1200, 450, 1550, 1700, check(3), 5);
+    expect(c).toMatchObject({ ceilingAfter: 1550, delta: 350, sessionsLeftAfter: 4, criteriaMet: 3 });
+    expect(evaluateCalibration(1200, 450, 300, 900, check(0), 1).ceilingAfter).toBe(450);
+    expect(evaluateCalibration(1200, 450, null, 1200, check(0), 5).ceilingAfter).toBe(1200);
+  });
+
+  it('calibration fits the level and places a reachable norm below it', () => {
+    // 60 attempts of a ~1500 player: solves 1400s, misses 1600s.
+    const attempts = Array.from({ length: 60 }, (_, i) => {
+      const puzzleRating = 1350 + (i % 6) * 60;
+      return { correct: puzzleRating < 1500 || i % 3 === 0, responseMs: 9000, puzzleRating };
+    });
+    const performance = estimatePerformance(attempts, 1500);
+    expect(performance).toBeGreaterThan(1450);
+    expect(performance).toBeLessThan(1700);
+    const { target } = calibrationNorm('blitz', attempts, 1500, 300);
+    expect(target).not.toBeNull();
+    expect(target! % 25).toBe(0);
+    expect(target!).toBeLessThan(performance);
+    const time = fitResponseTime(attempts, performance);
+    expect(levelUpOdds('blitz', performance, time, target!, 300)).toBeGreaterThanOrEqual(0.6);
+    expect(levelUpOdds('blitz', performance, time, target! + 25, 300)).toBeLessThan(0.6);
+    expect(calibrationNorm('blitz', [], 1500, 300).target).toBeNull();
+  });
+
+  it('calibration sessions start below the fit and rise at most 200', () => {
+    expect(calibrationProbe([], 1600, null)).toBe(1525);
+    const flawless = Array.from({ length: 30 }, () => ({ correct: true, responseMs: 3000, puzzleRating: 1500 }));
+    expect(calibrationProbe(flawless, 1500, 1425)).toBe(1625);
   });
 
   it('demote needs two weak at-peak sessions', () => {

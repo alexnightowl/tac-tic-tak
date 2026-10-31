@@ -3,6 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import * as beUnlock from '../../../apps/backend/src/sessions/unlock';
 import * as beRating from '../../../apps/backend/src/sessions/rating';
+import * as beCalibration from '../../../apps/backend/src/sessions/calibration';
 import * as beStreak from '../../../apps/backend/src/sessions/streak';
 import * as webLevels from '../../../apps/frontend/src/lib/levels';
 import * as core from '../src/rules';
@@ -79,9 +80,30 @@ describe('backend unlock.ts parity', () => {
     const r = prng(2);
     for (let i = 0; i < N; i++) {
       const check = beUnlock.evaluateUnlock(...genUnlockArgs(r));
-      const startPuzzle = r.int(400, 1600);
-      const args = [r.int(400, 3000), startPuzzle, r.int(400, 3000), check, r.int(0, 6)] as const;
+      const target = r.bool(0.1) ? null : r.int(400, 3000);
+      const args = [r.int(400, 3000), 450, target, r.int(400, 3000), check, r.int(0, 6)] as const;
       expect(core.evaluateCalibration(...args)).toEqual(beUnlock.evaluateCalibration(...args));
+    }
+  });
+
+  it('calibrationNorm and calibrationProbe', () => {
+    const r = prng(7);
+    // Each norm replays hundreds of sessions, so fewer inputs here.
+    for (let i = 0; i < 40; i++) {
+      const level = r.int(600, 2400);
+      const attempts = Array.from({ length: r.int(0, 60) }, () => ({
+        correct: r.bool(),
+        responseMs: r.int(1000, 60_000),
+        puzzleRating: level + r.int(-300, 300),
+      }));
+      const anchor = r.int(400, 3000);
+      const style = r.pick(STYLES);
+      const duration = r.pick([60, 120, 300, 600, 900]);
+      expect(core.calibrationNorm(style, attempts, anchor, duration))
+        .toEqual(beCalibration.calibrationNorm(style, attempts, anchor, duration));
+      const prev = r.bool() ? null : r.int(400, 3000);
+      expect(core.calibrationProbe(attempts, anchor, prev))
+        .toEqual(beCalibration.calibrationProbe(attempts, anchor, prev));
     }
   });
 

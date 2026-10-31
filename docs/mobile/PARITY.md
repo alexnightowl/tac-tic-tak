@@ -80,7 +80,7 @@ DECISIONS.md, or `D#`). When a web fix lands on `main`, add or update the row he
 | Exit flow: save vs discard (i18n-ised) | 2, 5 | done | `02-slice-exit`; fix: ExitDialog strings translated |
 | Finish and summary outcome cards | 2 (basic), 5 | done | `05-outcomes`: calibration, unlock, unlock-rank, demote, demote-rank, comfort, early. Fix: progression patched from `/finish`, Home shows the new norm at once |
 | RankCeremony | 5 | partial | Up and down ceremonies (`05-outcomes`). Haptic timeline vs clip hit points needs a real device; reduced-motion timing not measured |
-| Backend session rules (in core, parity-tested; startPuzzleRating fix) | 0, 3 | done | Core rules parity-tested. B8 fixed on main 2be9508: demotion and calibration clamp at a fixed norm floor (450), not startPuzzleRating |
+| Backend session rules (in core, parity-tested; startPuzzleRating fix) | 0, 3 | done | Core rules parity-tested. B8 fixed on main 2be9508: demotion and calibration clamp at a fixed norm floor (450), not startPuzzleRating. Calibration placement replaced (D24, `calibration.ts`) |
 | StyleIcon and style catalogue | 2 | done |  |
 | First-puzzle hand-off | 2 | done |  |
 | creators.ts badge | 5 / 8 | done | Crown on the shared Avatar (header, menu, profile, lists); Q17 |

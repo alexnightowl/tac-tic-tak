@@ -188,3 +188,17 @@ onboarding, step 4 shows "Recalibrate my level" / "Keep my level". Recalibrate c
 `POST /users/me/recalibrate` (no body = every style): 5 fresh calibration sessions per style,
 weak streak cleared, ratings and history kept. Provisional: all styles at once (the route accepts
 `style` for a per-style control later). Canvas: MobStatesShell, last section.
+
+### D24. Calibration places a reachable norm: PROVISIONAL tuning (owner request, 2026-10-31)
+The owner calibrated to a norm he could not level up from. Simulation confirmed it: the old ladder
+(+50 / 0 / -50 / -125 from each session's start, anchored on the live rating, which climbs within a
+session) gave norms players levelled up from in under 10% of sessions. Now (`calibration.ts`, main
+0df01d9): fit the puzzle rating (logistic, 400 scale) and response times (ln ms vs. difficulty) to
+every attempt of the calibration window; replay 200 sessions under the real buffer mix, rating step
+and unlock criteria; the norm is the highest 25-grid start that levels up in >= 60% of them
+(75-90% from norm - 50). Calibration sessions start 75 below the fit, rising <= 200 per session.
+The window starts at `calibrationStartedAt` (set by recalibrate; null = whole history).
+Provisional knobs: CALIBRATION_LEVEL_UP_ODDS 0.6, CALIBRATION_PROBE_BELOW 75, 1 s between puzzles.
+Side effect: norms land 180-400 below the fitted rating, because the in-session rating step rewards
+a fast solve about twice what a miss costs, so a session's puzzles outgrow the player. That bias in
+`rating.ts` is a separate owner decision (OWNER-QUESTIONS).
