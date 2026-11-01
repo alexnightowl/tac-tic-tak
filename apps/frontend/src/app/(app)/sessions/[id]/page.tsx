@@ -9,7 +9,7 @@ import { useAppStore } from '@/lib/store';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { themeLabel } from '@/lib/theme-labels';
-import { cn, fmtDuration, fmtResponseTime } from '@/lib/utils';
+import { cn, fmtResponseTime } from '@/lib/utils';
 
 type Attempt = {
   id: string;
@@ -58,7 +58,7 @@ export default function SessionDetail() {
   return (
     <div className="space-y-5 max-w-3xl">
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm" onClick={() => router.back()}>
+        <Button variant="ghost" size="sm" className="-ml-4 px-3" onClick={() => router.back()}>
           <ChevronLeft size={16} /> {language === 'uk' ? 'Назад' : 'Back'}
         </Button>
       </div>
@@ -126,7 +126,7 @@ export default function SessionDetail() {
                 {a.correct ? <Check size={14} /> : <X size={14} />}
               </div>
               <div className="flex-1 text-sm tabular-nums">{a.puzzleRating}</div>
-              <div className="text-xs text-zinc-500 tabular-nums">{fmtDuration(a.responseMs)}</div>
+              <div className="text-xs text-zinc-500 tabular-nums">{fmtResponseTime(a.responseMs)}</div>
               <ChevronRight size={14} className="text-zinc-600 shrink-0" />
             </Link>
           ))}

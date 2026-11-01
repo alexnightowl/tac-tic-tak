@@ -46,6 +46,8 @@ model User {
   starredRepo           Boolean @default(false)
 
   achievements          UserAchievement[]
+  experience            UserExperience?
+  xpEvents              XpEvent[]
 
   settings       UserSetting?
   progression    UserProgression?
@@ -56,6 +58,7 @@ model User {
   reviewItems    ReviewItem[]
   sentFriendRequests     Friendship[] @relation("FriendshipRequester")
   receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
+  offlineReceipts        OfflineAttemptReceipt[]
 }
 
 model UserSetting {
@@ -105,6 +108,13 @@ model UserStyleProgression {
   // sessions don't consume it. New rows start at 5; existing rows
   // were backfilled to 0 (already past calibration).
   calibrationSessionsLeft Int  @default(5)
+  // When the current calibration window opened (POST /users/me/recalibrate).
+  // Null: every session of the style belongs to it (a new account).
+  calibrationStartedAt DateTime?
+  // Play v2 level (sessions/progress.ts). Null until the first v2 session.
+  level               Int?
+  // v2 rated sessions in a row that ended under level - 50.
+  levelGuard          Int      @default(0)
   updatedAt           DateTime @updatedAt
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -157,7 +167,10 @@ model PuzzleTheme {
 model TrainingSession {
   id              String   @id @default(cuid())
   userId          String
-  mode            String   // "mixed" | "theme"
+  mode            String   // "mixed" | "theme" | "casual" | "offline"
+  // "v2": started by the Play v2 client (levels instead of the norm).
+  // Null: the original rules.
+  ruleset         String?
   style           String   @default("blitz") // bullet | blitz | rapid
   theme           String?
   startRating     Int
@@ -245,4 +258,39 @@ model ReviewItem {
 
   @@unique([userId, puzzleId])
   @@index([userId, resolvedAt])
+}
+
+// Idempotency receipts for POST /offline/sync: one row per client-
+// generated attempt id, so a retried or duplicated batch never applies
+// an offline result twice.
+model OfflineAttemptReceipt {
+  clientId  String   @id
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// Play v2 experience (sessions/progress.ts): effort, never lost.
+model UserExperience {
+  userId          String   @id
+  xp              Int      @default(0)
+  trainingSec     Int      @default(0)
+  reviewsResolved Int      @default(0)
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// One row per XP award, for the weekly figures.
+model XpEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  // "session" | "review" | "offline"
+  source    String
+  amount    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }

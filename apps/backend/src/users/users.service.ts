@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
+import { initialLevel } from '../sessions/progress';
+import { CALIBRATION_SESSIONS, TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
 import { AchievementsService } from '../achievements/achievements.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { promises as fs } from 'fs';
@@ -13,6 +14,10 @@ type StyleRow = {
   calibrationSessionsLeft: number;
   /** Weak at-peak sessions in a row; WEAK_STREAK_THRESHOLD drops the norm. */
   weakSessionStreak: number;
+  /** Play v2 level (sessions/progress.ts). */
+  level: number;
+  /** v2 rated sessions in a row under level - 50; 2 drop the level. */
+  levelGuard: number;
 };
 
 const AVATAR_ROOT = join(process.cwd(), 'uploads', 'avatars');
@@ -194,8 +199,13 @@ export class UsersService {
           unlockedStartRating: 1200,
           weakSessionStreak: 0,
           calibrationSessionsLeft: 5,
+          calibrationStartedAt: null,
+          level: null,
+          levelGuard: 0,
         },
       }),
+      this.prisma.userExperience.deleteMany({ where: { userId } }),
+      this.prisma.xpEvent.deleteMany({ where: { userId } }),
       this.prisma.userProgression.updateMany({
         where: { userId },
         data: {
@@ -206,6 +216,27 @@ export class UsersService {
       }),
     ]);
     return { ok: true };
+  }
+
+  /**
+   * Starts a fresh calibration window for one style (or all of them) for
+   * a player whose level drifted, e.g. after a long break. Unlike
+   * resetProgress it keeps ratings, sessions and the review queue: the
+   * next CALIBRATION_SESSIONS rated sessions re-place the norm from the
+   * ratings actually played, the same way a new account's first ones do.
+   */
+  async recalibrate(userId: string, style?: TrainingStyle) {
+    await this.prisma.userStyleProgression.updateMany({
+      where: style ? { userId, style } : { userId },
+      data: {
+        calibrationSessionsLeft: CALIBRATION_SESSIONS,
+        calibrationStartedAt: new Date(),
+        weakSessionStreak: 0,
+        levelGuard: 0,
+      },
+    });
+    const rows = await this.prisma.userStyleProgression.findMany({ where: { userId } });
+    return { progressions: this.mapStyleProgressions(rows) };
   }
 
   async updateProfile(userId: string, patch: Partial<{ displayName: string; bio: string; country: string }>) {
@@ -259,6 +290,8 @@ export class UsersService {
     unlockedStartRating: number;
     calibrationSessionsLeft: number;
     weakSessionStreak: number;
+    level: number | null;
+    levelGuard: number;
   }>): Record<TrainingStyle, StyleRow> {
     const out: Record<TrainingStyle, StyleRow> = {} as any;
     for (const s of TRAINING_STYLES) {
@@ -270,6 +303,8 @@ export class UsersService {
             unlockedStartRating: row.unlockedStartRating,
             calibrationSessionsLeft: row.calibrationSessionsLeft,
             weakSessionStreak: row.weakSessionStreak,
+            level: row.level ?? initialLevel(row.currentPuzzleRating, row.unlockedStartRating),
+            levelGuard: row.levelGuard,
           }
         : {
             startPuzzleRating: 1200,
@@ -279,6 +314,8 @@ export class UsersService {
             // so the UI prompts the user through it on first session.
             calibrationSessionsLeft: 5,
             weakSessionStreak: 0,
+            level: 1200,
+            levelGuard: 0,
           };
     }
     return out;

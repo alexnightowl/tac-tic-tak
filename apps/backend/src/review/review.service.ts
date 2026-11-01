@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PuzzlesService } from '../puzzles/puzzles.service';
+import { ExperienceService } from '../experience/experience.service';
+import { XP_PER_REVIEW } from '../sessions/progress';
 
 // Mirror of apps/frontend/src/lib/theme-labels.ts META_THEME_SLUGS.
 // "Meta" themes describe game phase / length / outcome / source — they
 // don't carry a tactical pattern, so we skip them when picking a
 // puzzle's primary theme for the review queue grouping.
-const META_THEME_SLUGS = new Set<string>([
+export const META_THEME_SLUGS = new Set<string>([
   'opening', 'middlegame', 'endgame',
   'oneMove', 'short', 'long', 'veryLong',
   'master', 'masterVsMaster', 'superGM',
@@ -27,6 +29,7 @@ export class ReviewService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly puzzles: PuzzlesService,
+    private readonly experience: ExperienceService,
   ) {}
 
   async list(userId: string, themeSlug?: string) {
@@ -126,10 +129,19 @@ export class ReviewService {
   }
 
   async resolve(userId: string, puzzleId: string) {
+    const before = await this.prisma.reviewItem.findUnique({
+      where: { userId_puzzleId: { userId, puzzleId } },
+      select: { resolvedAt: true },
+    });
     await this.prisma.reviewItem.update({
       where: { userId_puzzleId: { userId, puzzleId } },
       data: { resolvedAt: new Date() },
     });
+    // XP once per mistake cleared, not per repeat resolve.
+    if (before && before.resolvedAt === null) {
+      const xp = await this.experience.award(userId, { source: 'review', xp: XP_PER_REVIEW, reviews: 1 });
+      return { ok: true, xp };
+    }
     return { ok: true };
   }
 }

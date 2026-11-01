@@ -8,14 +8,18 @@ export class CreateSessionDto {
   @IsInt() @Min(60) @Max(3600)
   durationSec!: number;
 
-  @IsIn(['mixed', 'theme'])
-  mode!: 'mixed' | 'theme';
+  @IsIn(['mixed', 'theme', 'casual'])
+  mode!: 'mixed' | 'theme' | 'casual';
 
   @IsIn(['bullet', 'blitz', 'rapid'])
   style!: 'bullet' | 'blitz' | 'rapid';
 
   @IsOptional() @IsString()
   theme?: string;
+
+  // Play v2 client: levels instead of the norm (sessions/progress.ts).
+  @IsOptional() @IsIn(['v2'])
+  ruleset?: 'v2';
 }
 
 export class AttemptDto {

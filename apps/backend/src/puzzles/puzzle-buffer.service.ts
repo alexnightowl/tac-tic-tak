@@ -11,6 +11,10 @@ export type CachedPuzzle = {
   gameUrl: string | null;
 };
 
+/** Puzzle quality floor, see pickIds. Shared with the offline packs. */
+export const MIN_POPULARITY = 95;
+export const MIN_PLAYS = 1000;
+
 /**
  * Redis-backed puzzle selector.
  *
@@ -82,6 +86,37 @@ export class PuzzleBufferService {
   }
 
   /**
+   * Loads full puzzle rows for `ids` in one Postgres round-trip, in the
+   * order given (missing ids are dropped). Same shape `/next` serves.
+   */
+  async hydrate(ids: string[]): Promise<CachedPuzzle[]> {
+    if (ids.length === 0) return [];
+    const rows = await this.prisma.puzzle.findMany({
+      where: { id: { in: ids } },
+      select: {
+        id: true, fen: true, moves: true, rating: true, gameUrl: true,
+        themes: { include: { theme: true } },
+      },
+    });
+    // Preserve the picked ordering so difficulty buckets interleave by natural order.
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    const out: CachedPuzzle[] = [];
+    for (const id of ids) {
+      const r = byId.get(id);
+      if (!r) continue;
+      out.push({
+        id: r.id,
+        fen: r.fen,
+        moves: r.moves.split(' '),
+        rating: r.rating,
+        gameUrl: r.gameUrl,
+        themes: r.themes.map((pt) => pt.theme.slug),
+      });
+    }
+    return out;
+  }
+
+  /**
    * Picks IDs by rating windows, loads the full puzzle data in one Postgres
    * round-trip, then stores serialised JSON in the session queue.
    *
@@ -115,31 +150,7 @@ export class PuzzleBufferService {
     const ids = idGroups.flat();
     if (ids.length === 0) return;
 
-    // One Postgres query to hydrate them all.
-    const rows = await this.prisma.puzzle.findMany({
-      where: { id: { in: ids } },
-      select: {
-        id: true, fen: true, moves: true, rating: true, gameUrl: true,
-        themes: { include: { theme: true } },
-      },
-    });
-
-    // Preserve the picked ordering so difficulty buckets interleave by natural order.
-    const byId = new Map(rows.map((r) => [r.id, r]));
-    const payloads: string[] = [];
-    for (const id of ids) {
-      const r = byId.get(id);
-      if (!r) continue;
-      const cached: CachedPuzzle = {
-        id: r.id,
-        fen: r.fen,
-        moves: r.moves.split(' '),
-        rating: r.rating,
-        gameUrl: r.gameUrl,
-        themes: r.themes.map((pt) => pt.theme.slug),
-      };
-      payloads.push(JSON.stringify(cached));
-    }
+    const payloads = (await this.hydrate(ids)).map((p) => JSON.stringify(p));
     if (payloads.length === 0) return;
     await this.redis.client.lpush(this.queueKey(sessionId), ...payloads);
   }
@@ -167,9 +178,6 @@ export class PuzzleBufferService {
     // for 1900-2100, ~8k for 2100-2300. The 2100+ bucket is the
     // tightest — if heavy high-rated users start seeing repeats we
     // can relax to plays>=500 (doubles the pool there).
-    const MIN_POPULARITY = 95;
-    const MIN_PLAYS = 1000;
-
     const rows = await this.prisma.$queryRawUnsafe<{ id: string }[]>(
       opts.theme
         ? `

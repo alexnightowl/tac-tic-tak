@@ -1,31 +1,18 @@
 import type { Metadata, Viewport } from 'next';
-import { Oswald, Cinzel, Manrope } from 'next/font/google';
+import './fonts.css';
 import './globals.css';
 import { Providers } from '@/lib/providers';
 import { ToastContainer } from '@/components/Toast';
 import { OnboardingModal } from '@/components/Onboarding';
 
-const displayFont = Oswald({
-  subsets: ['latin', 'latin-ext', 'cyrillic'],
-  weight: ['500', '600', '700'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
 // Ember on stone: Cinzel for display (titles, numbers, buttons),
-// Manrope for UI text. Oswald stays for the landing page.
-const serifFont = Cinzel({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['500', '600', '700'],
-  variable: '--font-cinzel',
-  display: 'swap',
-});
-const uiFont = Manrope({
-  subsets: ['latin', 'latin-ext', 'cyrillic'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-manrope',
-  display: 'swap',
-});
+// Manrope for UI text. Oswald stays for the landing page. Self-hosted in
+// public/fonts (fonts.css), the way next/font used to emit them.
+const PRELOAD_FONTS = [
+  'oswald-latin', 'oswald-latin-ext', 'oswald-cyrillic',
+  'cinzel-latin', 'cinzel-latin-ext',
+  'manrope-latin', 'manrope-latin-ext', 'manrope-cyrillic',
+];
 
 export const metadata: Metadata = {
   title: 'tac·tic·tak — Sharpen your instincts',
@@ -62,7 +49,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`dark ${displayFont.variable} ${serifFont.variable} ${uiFont.variable}`} suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        {PRELOAD_FONTS.map((f) => (
+          <link key={f} rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
+        ))}
+      </head>
       <body className="app-shell">
         <Providers>
           {children}
