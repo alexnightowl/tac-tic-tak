@@ -11,6 +11,7 @@ import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { LibraryEntry } from '@/features/library/LibraryEntry';
 import { OfflineEntry } from '@/features/offline/OfflineEntry';
 import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
@@ -353,6 +354,7 @@ export function PlaySetupScreen() {
           )}
         </Card>
 
+        <LibraryEntry />
         <OfflineEntry />
       </ScrollView>
 

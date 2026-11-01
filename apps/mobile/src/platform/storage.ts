@@ -19,6 +19,13 @@ export const sessionKV: MMKV = createMMKV({ id: 'session' });
  */
 export const offlineKV: MMKV = createMMKV({ id: 'offline' });
 
+/**
+ * Library (docs/mobile/LIBRARY.md): downloaded books (shared by every
+ * account on the phone), and per user id the synced results and the
+ * pending-results queue. Not wiped by resetAll(), like `offline`.
+ */
+export const libraryKV: MMKV = createMMKV({ id: 'library' });
+
 /** The three instances by PLAN name (`sessionKV` avoids shadowing the web global). */
 export const storage = { app: appKV, query: queryKV, session: sessionKV } as const;
 

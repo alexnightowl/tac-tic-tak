@@ -1,0 +1,103 @@
+# Library (docs/mobile/LIBRARY.md). One CASE per run; 13-library.sh
+# registers a local user, seeds it with psql and checks the DB after.
+#   read    shelf → book → download → "airplane mode" → chapter I of ${BOOK}: a wrong move,
+#           a hint, a shown solution, the rest
+#           solved → chapter complete → back online, results sync.
+#   cycle2  cycle 1 seeded (48 s a puzzle): chapter I again in cycle 2 →
+#           the comparison and the next target.
+appId: online.tactictak.app
+---
+- runFlow:
+    file: 09-login.yaml
+- runFlow:
+    when: { visible: { id: screen-onboarding } }
+    commands:
+      - tapOn: { id: onboarding-skip, optional: true }
+- tapOn: { id: tab-play }
+- extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: play-library }, direction: DOWN, centerElement: true, timeout: 8000 }
+- takeScreenshot: ${SHOTS}/00-play-entry
+- tapOn: { id: play-library }
+- extendedWaitUntil: { visible: { id: library-book-${BOOK} }, timeout: 15000 }
+- takeScreenshot: ${SHOTS}/01-shelf-${CASE}
+- tapOn: { id: library-book-${BOOK} }
+- extendedWaitUntil: { visible: { id: library-cycles }, timeout: 10000 }
+- takeScreenshot: ${SHOTS}/02-book-${CASE}
+
+- runFlow:
+    when: { true: "${CASE == 'read'}" }
+    commands:
+      - tapOn: { id: library-download }
+      - extendedWaitUntil: { visible: { id: library-offline-chip }, timeout: 15000 }
+      # "Airplane mode": the e2e switch on the Offline puzzles screen.
+      - openLink: tactictak://offline
+      - extendedWaitUntil: { visible: { id: e2e-force-offline }, timeout: 10000 }
+      - tapOn: { id: e2e-force-offline }
+      - extendedWaitUntil: { visible: { id: offline-note }, timeout: 5000 }
+      - openLink: tactictak://library/${BOOK}
+      - extendedWaitUntil: { visible: { id: library-cta }, timeout: 10000 }
+
+- tapOn: { id: library-cta }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+- assertVisible: { id: library-cycle-chip, text: ".*${CYCLE}.*" }
+- takeScreenshot: ${SHOTS}/03-solve-${CASE}
+
+- runFlow:
+    when: { true: "${CASE == 'read'}" }
+    commands:
+      # Puzzle 1: a wrong move → missed, then solved.
+      - tapOn: { id: e2e-wrong }
+      - extendedWaitUntil: { visible: { id: library-note }, timeout: 5000 }
+      - takeScreenshot: ${SHOTS}/04-missed
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 5000 }
+      - tapOn: { id: e2e-solve }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      # Puzzle 2: a hint, then solved.
+      - tapOn: { id: library-hint }
+      - extendedWaitUntil: { visible: { id: library-note }, timeout: 5000 }
+      - tapOn: { id: e2e-solve }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      # Puzzle 3: the solution, stepped, then Next.
+      - tapOn: { id: library-show-solution }
+      - extendedWaitUntil: { visible: { id: library-next }, timeout: 5000 }
+      - tapOn: { id: viewer-next }
+      - takeScreenshot: ${SHOTS}/05-solution
+      - tapOn: { id: library-next }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+
+# The rest of the chapter, solved.
+- repeat:
+    times: 25
+    while:
+      notVisible: { id: library-done }
+    commands:
+      - extendedWaitUntil: { visible: { id: "(library-done|e2e-solve)" }, timeout: 15000 }
+      - runFlow:
+          when: { visible: { id: runner-phase, text: playerTurn } }
+          commands:
+            - tapOn: { id: e2e-solve, retryTapIfNoChange: false }
+      - extendedWaitUntil: { visible: { id: "(library-done|runner-phase)" }, timeout: 15000 }
+      - waitForAnimationToEnd: { timeout: 3000 }
+- extendedWaitUntil: { visible: { id: library-done-stats }, timeout: 15000 }
+- assertVisible: { id: library-done-kicker, text: ".*${CYCLE}.*" }
+- takeScreenshot: ${SHOTS}/06-done-${CASE}
+- runFlow:
+    when: { true: "${CASE == 'cycle2'}" }
+    commands:
+      - assertVisible: { id: library-done-cycle-1 }
+      - assertVisible: { id: library-done-cycle-2 }
+      - assertVisible: { id: library-done-target }
+
+- runFlow:
+    when: { true: "${CASE == 'read'}" }
+    commands:
+      - assertVisible: { id: library-done-misses, text: "^3 .*" }
+      # Back online: the queue syncs.
+      - tapOn: { id: library-done-back }
+      - openLink: tactictak://offline
+      - extendedWaitUntil: { visible: { id: e2e-force-offline }, timeout: 10000 }
+      - tapOn: { id: e2e-force-offline }
+      - openLink: tactictak://library/${BOOK}
+      - extendedWaitUntil: { visible: { id: library-cycles }, timeout: 10000 }
+      - assertVisible: { id: library-chapter-0-count, text: "${CH1} / ${CH1}" }
+      - takeScreenshot: ${SHOTS}/07-book-after

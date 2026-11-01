@@ -59,6 +59,8 @@ export default function AppLayout() {
         <Stack.Screen name="play/levels" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="offline/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="offline/synced" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
+        <Stack.Screen name="library/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="library/done" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen
           name="onboarding"
           options={{
@@ -70,6 +72,8 @@ export default function AppLayout() {
 
         {/* Push routes (titles set by each screen). */}
         <Stack.Screen name="offline/index" options={{ headerShown: false }} />
+        <Stack.Screen name="library/index" options={{ headerShown: false }} />
+        <Stack.Screen name="library/[bookId]" options={{ headerShown: false }} />
         <Stack.Screen name="sessions/index" />
         <Stack.Screen name="sessions/[id]/index" />
         <Stack.Screen name="puzzles/[puzzleId]" />
