@@ -202,3 +202,23 @@ Provisional knobs: CALIBRATION_LEVEL_UP_ODDS 0.6, CALIBRATION_PROBE_BELOW 75, 1 
 Side effect: norms land 180-400 below the fitted rating, because the in-session rating step rewards
 a fast solve about twice what a miss costs, so a session's puzzles outgrow the player. That bias in
 `rating.ts` is a separate owner decision (OWNER-QUESTIONS).
+
+### D25. Play v2: levels from the rating, Casual, experience (owner, 2026-11-01)
+Design page "Play — simplified" (owner) plus the owner's requirement to keep level-ups. Replaces
+the norm in the app (the web keeps the norm until Phase 12).
+- **Rated** sessions start at the player's rating (no slider, no cap). **Casual** (new mode
+  `casual`) and **Themes** pick any difficulty (600–2600, presets −200 / mine / +200) and never
+  touch the rating.
+- **Rating step** is per-puzzle Elo against the puzzle (K 16, ×2 for the first 5 "settling in"
+  sessions, up to +25% for a fast solve). The old window step paid a fast solve twice what a miss
+  cost (Q46): ratings outgrew players. Applies to the web too.
+- **Level** = rating in steps of 50. Up as soon as a full rated session ends above the next mark
+  (can jump several); down only after 2 rated sessions in a row end more than 50 under it, then
+  it matches the rating. A level crossing a band opens the eye ceremony. A progression's first
+  level is min(levelOf(rating), levelOf(norm)), so drifted ratings start from the earned norm.
+- **Experience**: 2 XP per minute trained (any mode, offline too), 15 XP per mistake cleared;
+  XP levels at 100·L·(L−1); ranks Pawn 0, Knight 3k, Bishop 6k, Rook 12k, Queen 25k, King 50k.
+  Backfilled from past sessions and cleared mistakes. Experience screen from the profile.
+- PROVISIONAL knobs: K 16, step 50, guard 2 sessions / 50 points, XP rates and rank thresholds,
+  casual range 600–2600. Recalibrate now restarts the settling-in sessions.
+- Calibration placement (D24) still runs for web sessions only.

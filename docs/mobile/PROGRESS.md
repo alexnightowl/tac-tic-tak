@@ -175,3 +175,24 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   `performance`. Core mirror `rules/calibration.ts` + parity test; `@tac/core` 218/218.
 - CI on c9afc80 (only an `import type` change) failed at `pnpm -r run build`; logs need GitHub auth.
   0df01d9, whose emitted JS is identical, built and deployed, so prod has the fix.
+
+## 2026-11-01 — Play v2: levels from the rating, Casual, experience (D25)
+
+- **Design.** Owner's "Play — simplified" page (Rated / Casual / Themes, no norm) plus the owner's
+  requirement to keep level-ups. Added to the canvas: the level on the rated card, the runner
+  bar (progress / in reach / casual), "How your level works", six summary states (level up,
+  progress, protected, level down, casual, new experience rank), Experience and the profile card.
+- **Backend (main 2343d4e, deployed with 6e98e9d):** Elo step against the puzzle (Q46), `casual`
+  mode, `ruleset: 'v2'` sessions with levels and the two-session guard, experience
+  (UserExperience + XpEvent, backfilled), GET /users/me/experience. Additive; the web keeps the
+  norm. Local API e2e: a 1700 player levels 1450 → 1550; two weak sessions guard then drop.
+- **Deploys were blocked since 31.10:** CI's `next build` failed in next/font/google (Google
+  started serving font URLs next@14 can't parse). Owner-approved fix 6e98e9d: the same font files
+  self-hosted in `apps/frontend/public/fonts` with an @font-face sheet; no visual change.
+- **Mobile:** new setup, runner bar, summary, level sheet, Experience screen, Home and profile
+  show the level. Maestro `12-play-v2.sh` (levelup, guard, down, casual, early) passes in en,
+  and levelup / guard / casual in uk, DB-checked. Screenshots: `screens/play-v2/{en,uk}/`.
+- `@tac/core` 225/225. `pnpm -r run typecheck`: backend, core, mobile pass; apps/frontend fails
+  only on the mobile branch (React 18 vs 19 types in one workspace), unchanged frontend code.
+- Fixed on the way: the runner treated casual as rated and could write the casual difficulty
+  into the stored rating.

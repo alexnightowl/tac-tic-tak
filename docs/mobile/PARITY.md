@@ -71,14 +71,14 @@ DECISIONS.md, or `D#`). When a web fix lands on `main`, add or update the row he
 
 | Feature | Phase | Status | Notes |
 |---|---|---|---|
-| Play setup (styles, durations, modes, previews, off-form, comfort) | 2 (minimal), 5 | done | `05-outcomes` (7 cases, DB-checked), `02-slice`. Fix: start rating clamped to the current cap |
-| DifficultySlider (bands, magnets) | 2, 5 | done | Fixes: thumb position after a style switch; a pick survives `['me']` revalidation; drag starts only on horizontal movement. Look: locked part is a solid fill, not the web's stripes |
+| Play setup (styles, durations, modes, previews, off-form, comfort) | 2 (minimal), 5, v2 | done | Replaced by Play v2 (D25): Rated / Casual / Themes, rated card with the level, casual difficulty with presets. `12-play-v2` (5 cases, DB-checked) |
+| DifficultySlider (bands, magnets) | 2, 5, v2 | done | Replaced by the v2 DifficultyTrack (600–2600, YOU marker, presets); the norm zones, magnets and lock are gone with the norm (D25) |
 | ThemePicker | 5 | done | Sheet with search; theme mode from Stats rows (D18) |
 | Session runner state machine (stale-style fix, pause cancels timeouts) | 2, 5 | done | `02-slice`, `05-outcomes` |
 | TurnCard and in-session streak chip | 2 | done |  |
 | Pause / resume, plus auto-pause on background | 2 | done | `02-slice` (20 s in another app not counted) |
 | Exit flow: save vs discard (i18n-ised) | 2, 5 | done | `02-slice-exit`; fix: ExitDialog strings translated |
-| Finish and summary outcome cards | 2 (basic), 5 | done | `05-outcomes`: calibration, unlock, unlock-rank, demote, demote-rank, comfort, early. Fix: progression patched from `/finish`, Home shows the new norm at once |
+| Finish and summary outcome cards | 2 (basic), 5, v2 | done | v2 (D25): rating card with the level, level up / protected / level down / casual / early cards, XP card (new rank in copper). `12-play-v2` |
 | RankCeremony | 5 | partial | Up and down ceremonies (`05-outcomes`). Haptic timeline vs clip hit points needs a real device; reduced-motion timing not measured |
 | Backend session rules (in core, parity-tested; startPuzzleRating fix) | 0, 3 | done | Core rules parity-tested. B8 fixed on main 2be9508: demotion and calibration clamp at a fixed norm floor (450), not startPuzzleRating. Calibration placement replaced (D24, `calibration.ts`) |
 | StyleIcon and style catalogue | 2 | done |  |
@@ -161,6 +161,7 @@ DECISIONS.md, or `D#`). When a web fix lands on `main`, add or update the row he
 | Motion catalogue | 1, 5 | done | `src/feel/motion.ts` |
 | App shell / PWA chrome → native splash and icons | 0, 11 | partial | Splash done; store icons and screenshots in Phase 11 |
 | Visual asset packaging | 0 | done |  |
+| Play v2 experience (XP, ranks, Experience screen) | v2 | done | D25: XP card on the summary, profile card, `/experience`. Mobile-only (the web has no XP) |
 
 ## Counts (2026-10-25)
 

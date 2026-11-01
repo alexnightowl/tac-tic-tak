@@ -182,7 +182,7 @@ export const playUk: Dict = {
   'summary.level': 'Рівень {level}',
   'summary.protected': 'Захист · {n} з {total}',
   'level.up_title': 'Новий рівень! {level}',
-  'level.up_body': 'Твій рівень у {style} тепер {level}. Одна погана сесія його не відбере.',
+  'level.up_body': 'Твій рівень ({style}) тепер {level}. Одна погана сесія його не відбере.',
   'level.guard_title': 'Рівень {level} під захистом',
   'level.guard_body': 'Сесія закінчилась на {n} нижче рівня. Ще одна сесія нижче {line} — і рівень опуститься до твого рейтингу.',
   'level.down_title': 'Рівень знизився · {level}',
