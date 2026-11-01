@@ -1,5 +1,5 @@
-// Verbatim copy of apps/backend/src/sessions/calibration.ts. Do not edit
-// here without editing the backend too: test/parity.test.ts fails on drift.
+// Verbatim copy of apps/backend/src/sessions/calibration.ts. Do not edit here
+// without editing the backend too: test/parity.test.ts fails on drift.
 
 // Calibration placement: where a new (or recalibrating) player's norm
 // lands after each session of the calibration window.
@@ -139,7 +139,6 @@ export function levelUpOdds(
   for (let s = 0; s < SIM_SESSIONS; s++) {
     let live = start;
     let clock = 0;
-    let streak = 0;
     const queue: number[] = [];
     const attempts: CalibrationAttempt[] = [];
     const refill = () => {
@@ -159,8 +158,7 @@ export function levelUpOdds(
       clock += responseMs + BETWEEN_PUZZLES_MS;
       const correct = rand() < expectedScore(puzzleRating, performance);
       attempts.push({ correct, responseMs, puzzleRating });
-      streak = correct ? streak + 1 : 0;
-      const step = computeRatingStep(live, attempts.slice(-4), streak);
+      const step = computeRatingStep(live, { correct, responseMs, puzzleRating });
       live = Math.max(MIN_RATING, Math.min(MAX_RATING, live + step));
     }
     if (evaluateUnlock(style, deriveSessionStats(attempts, start), durationSec, start).met) met++;

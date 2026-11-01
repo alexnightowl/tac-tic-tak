@@ -4,11 +4,11 @@
 import type { FeelEvent } from '../feel';
 import type { Orientation, PromotionPiece, Square } from '../board';
 import type { ServerPuzzle } from '../puzzle';
-import type { CriterionId, TrainingStyle } from '../rules';
+import type { CriterionId, LevelCheck, TrainingStyle, XpStanding } from '../rules';
 
 // ─── Server shapes (today's /api/*; apps/backend/src/sessions) ──────────
 
-export type SessionMode = 'mixed' | 'theme';
+export type SessionMode = 'mixed' | 'theme' | 'casual';
 
 /** POST /sessions/:id/next, and POST /sessions `firstPuzzle` (same shape). */
 export type NextResponse = {
@@ -63,6 +63,12 @@ export type FinishResponse = {
     outcome: 'same-day' | 'continued' | 'frozen' | 'reset' | 'started' | 'skipped';
   } | null;
   achievementsUnlocked?: string[];
+  /** Experience this session earned (every saved session). */
+  xp?: { gained: number; before: XpStanding; after: XpStanding };
+  /** Play v2 rated sessions: the rating move and the level check. */
+  rating?: { before: number; after: number };
+  level?: LevelCheck;
+  settling?: { sessionsLeft: number };
 };
 
 /** GET /sessions/:id: only the aggregates the boot fallback summary needs. */

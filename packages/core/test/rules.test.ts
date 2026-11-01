@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   BAND_EDGES, BAND_ICON_KEY, DEMOTE_PEAK_BAND, TRAINING_STYLES, UI_STYLE_ORDER,
-  applyStreakOnPlay, bandFor, computeRatingStep, computeUnlockProgress,
+  applyStreakOnPlay, bandFor, computeRatingStep, computeUnlockProgress, expectedSolve,
+  evaluateLevel, initialLevel, trainingXp, xpStanding,
   calibrationNorm, calibrationProbe, estimatePerformance, levelUpOdds, fitResponseTime,
   evaluateCalibration, evaluateDemote, evaluateUnlock, offFormRating, peakFloor, solvedTarget,
 } from '../src/rules';
@@ -98,14 +99,53 @@ describe('unlock rules', () => {
 });
 
 describe('rating step', () => {
-  it('fast correct beats slow correct, streak boosts only gains', () => {
-    const fast = computeRatingStep(1500, [{ correct: true, responseMs: 1000, puzzleRating: 1500 }]);
-    const slow = computeRatingStep(1500, [{ correct: true, responseMs: 20000, puzzleRating: 1500 }]);
-    expect(fast).toBe(18);
-    expect(slow).toBe(6);
-    expect(computeRatingStep(1500, [{ correct: true, responseMs: 1000, puzzleRating: 1500 }], 20)).toBe(24);
-    expect(computeRatingStep(1500, [{ correct: false, responseMs: 1000, puzzleRating: 1500 }], 20)).toBe(-6);
-    expect(computeRatingStep(1500, [])).toBe(0);
+  const at = (correct: boolean, responseMs = 8000, puzzleRating = 1500) => ({ correct, responseMs, puzzleRating });
+  it('is Elo against the puzzle, a fast solve earns a little more', () => {
+    expect(computeRatingStep(1500, at(true, 20000))).toBe(8);
+    expect(computeRatingStep(1500, at(true, 1000))).toBe(10);
+    expect(computeRatingStep(1500, at(false))).toBe(-8);
+    // A miss on an easy puzzle costs more than a miss on a hard one.
+    expect(computeRatingStep(1500, at(false, 8000, 1300))).toBeLessThan(computeRatingStep(1500, at(false, 8000, 1700)));
+    expect(computeRatingStep(1500, at(false), { provisional: true })).toBe(-16);
+  });
+
+  it('settles where the player solves about half the puzzles at their rating', () => {
+    // A 1500 player: expected gain is zero at 1500.
+    const drift = (r: number) => {
+      // The player solves a puzzle rated r with this chance.
+      const p = expectedSolve(r, 1500);
+      return p * computeRatingStep(r, at(true, 20000, r)) + (1 - p) * computeRatingStep(r, at(false, 20000, r));
+    };
+    expect(drift(1500)).toBeCloseTo(0, 5);
+    expect(drift(1700)).toBeLessThan(0);
+    expect(drift(1300)).toBeGreaterThan(0);
+  });
+});
+
+describe('levels and experience', () => {
+  it('levels up as soon as a session ends above the next mark', () => {
+    expect(evaluateLevel(1600, 1661, 0)).toMatchObject({ after: 1650, up: true, next: 1700 });
+    expect(evaluateLevel(1600, 1712, 1)).toMatchObject({ after: 1700, up: true, guardAfter: 0 });
+  });
+
+  it('drops a level only after two sessions in a row end 50+ under it', () => {
+    const first = evaluateLevel(1600, 1543, 0);
+    expect(first).toMatchObject({ after: 1600, down: false, guardAfter: 1 });
+    expect(evaluateLevel(1600, 1531, first.guardAfter)).toMatchObject({ after: 1500, down: true, guardAfter: 0 });
+    // Ending within 50 of the level clears the guard.
+    expect(evaluateLevel(1600, 1560, 1)).toMatchObject({ after: 1600, guardAfter: 0 });
+  });
+
+  it('starts from the earned norm when the rating drifted above it', () => {
+    expect(initialLevel(1612, 1450)).toBe(1450);
+    expect(initialLevel(1180, 1450)).toBe(1150);
+  });
+
+  it('ranks and levels experience', () => {
+    expect(trainingXp(10 * 60_000 + 59_000)).toBe(20);
+    expect(xpStanding(4820)).toMatchObject({ level: 7, levelXp: 4200, nextLevelXp: 5600, rank: 'knight', nextRank: 'bishop', nextRankXp: 6000 });
+    expect(xpStanding(0)).toMatchObject({ level: 1, rank: 'pawn' });
+    expect(xpStanding(60_000)).toMatchObject({ rank: 'king', nextRank: null, nextRankXp: null });
   });
 });
 

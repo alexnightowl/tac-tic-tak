@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import * as beUnlock from '../../../apps/backend/src/sessions/unlock';
 import * as beRating from '../../../apps/backend/src/sessions/rating';
 import * as beCalibration from '../../../apps/backend/src/sessions/calibration';
+import * as beProgress from '../../../apps/backend/src/sessions/progress';
 import * as beStreak from '../../../apps/backend/src/sessions/streak';
 import * as webLevels from '../../../apps/frontend/src/lib/levels';
 import * as core from '../src/rules';
@@ -133,10 +134,24 @@ describe('backend rating.ts parity', () => {
     const r = prng(4);
     for (let i = 0; i < N; i++) {
       const cur = r.int(400, 3000);
-      const w = genWindow(r);
-      const streak = r.int(0, 15);
-      expect(core.computeRatingStep(cur, w, streak)).toBe(beRating.computeRatingStep(cur, w, streak));
-      expect(core.computeRatingStep(cur, w)).toBe(beRating.computeRatingStep(cur, w));
+      const a = { correct: r.bool(0.6), responseMs: r.pick([0, 4000, 12000, r.int(0, 30000)]), puzzleRating: r.int(400, 3000) };
+      const provisional = r.bool();
+      expect(core.computeRatingStep(cur, a, { provisional })).toBe(beRating.computeRatingStep(cur, a, { provisional }));
+      expect(core.computeRatingStep(cur, a)).toBe(beRating.computeRatingStep(cur, a));
+    }
+  });
+
+  it('progress: levels and experience', () => {
+    const r = prng(9);
+    for (let i = 0; i < N; i++) {
+      const level = r.int(8, 60) * 50;
+      const rating = level + r.int(-300, 300);
+      const guard = r.int(0, 2);
+      expect(core.evaluateLevel(level, rating, guard)).toEqual(beProgress.evaluateLevel(level, rating, guard));
+      expect(core.initialLevel(rating, level)).toBe(beProgress.initialLevel(rating, level));
+      const xp = r.int(0, 80_000);
+      expect(core.xpStanding(xp)).toEqual(beProgress.xpStanding(xp));
+      expect(core.trainingXp(xp * 100)).toBe(beProgress.trainingXp(xp * 100));
     }
   });
 

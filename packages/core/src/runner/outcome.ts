@@ -4,8 +4,10 @@
 import {
   DEMOTE_PEAK_BAND,
   DIFFICULTY_BANDS,
+  LEVEL_STEP,
   UNLOCK_REWARD,
   bandFor,
+  levelOf,
   type BandKey,
   type CriterionId,
 } from '../rules';
@@ -98,6 +100,69 @@ export function summaryOutcome(s: FinishResponse, ceilingBefore: number | null):
   return out;
 }
 
+/** Where a rating sits between its level and the next mark (Play v2). */
+export function levelProgress(rating: number, level: number): { next: number; toNext: number; ratio: number } {
+  const next = level + LEVEL_STEP;
+  return {
+    next,
+    toNext: Math.max(0, next - rating),
+    ratio: Math.min(1, Math.max(0, (rating - level) / LEVEL_STEP)),
+  };
+}
+
+/** The player's level for a progression; derived from the rating before the server sent one. */
+export function levelFor(p: { level?: number; currentPuzzleRating: number }): number {
+  return p.level ?? levelOf(p.currentPuzzleRating);
+}
+
+/** What a Play v2 rated finish shows: the rating move and the level outcome. */
+export type LevelOutcome = {
+  ratingBefore: number;
+  ratingAfter: number;
+  delta: number;
+  level: number;
+  levelBefore: number;
+  next: number;
+  toNext: number;
+  ratio: number;
+  up: boolean;
+  down: boolean;
+  /** First session under the guard line: the level held, one more drops it. */
+  guarded: boolean;
+  /** Ended early: the rating moved, the level waits for a full session. */
+  early: boolean;
+};
+
+export function levelOutcomeOf(s: FinishResponse): LevelOutcome | null {
+  if (s.discarded || !s.rating || !s.level) return null;
+  const { before, after } = s.rating;
+  const lv = s.level;
+  const p = levelProgress(after, lv.after);
+  return {
+    ratingBefore: before,
+    ratingAfter: after,
+    delta: after - before,
+    level: lv.after,
+    levelBefore: lv.before,
+    next: p.next,
+    toNext: p.toNext,
+    ratio: p.ratio,
+    up: lv.up,
+    down: lv.down,
+    guarded: !s.early && !lv.down && lv.guardAfter > 0,
+    early: !!s.early,
+  };
+}
+
+/** A v2 level move across a difficulty band: the RankCeremony. */
+export function levelRankChangeOf(s: FinishResponse): RankChange | null {
+  const o = levelOutcomeOf(s);
+  if (!o || o.early || o.level === o.levelBefore) return null;
+  const from = bandFor(o.levelBefore).key;
+  const to = bandFor(o.level).key;
+  return { from, to, before: o.levelBefore, after: o.level, crossed: from !== to, up: o.level > o.levelBefore };
+}
+
 /**
  * The progression fields a saved finish changed, derived from the
  * response (fix: the web never patched the store and relied on the full
@@ -108,8 +173,17 @@ export function progressionPatchOf(s: FinishResponse): {
   unlockedStartRating?: number;
   calibrationSessionsLeft?: number;
   weakSessionStreak?: number;
+  level?: number;
+  levelGuard?: number;
 } | null {
   if (s.discarded || s.early) return null;
+  if (s.level) {
+    return {
+      level: s.level.after,
+      levelGuard: s.level.guardAfter,
+      ...(s.settling ? { calibrationSessionsLeft: s.settling.sessionsLeft } : null),
+    };
+  }
   if (s.calibration?.active) {
     return {
       unlockedStartRating: s.calibration.ceilingAfter,
@@ -140,13 +214,13 @@ export function formatCriterion(c: { id: CriterionId | string; current: number; 
  * rated, calibrated session started inside the peak band.
  */
 export function eligibleForUnlock(
-  sessionMode: 'mixed' | 'theme',
+  sessionMode: 'mixed' | 'theme' | 'casual',
   calibrating: boolean,
   sessionStartRating: number | null,
   unlockedStartRating: number,
 ): boolean {
   return (
-    sessionMode !== 'theme' &&
+    sessionMode === 'mixed' &&
     !calibrating &&
     sessionStartRating != null &&
     sessionStartRating >= unlockedStartRating - DEMOTE_PEAK_BAND

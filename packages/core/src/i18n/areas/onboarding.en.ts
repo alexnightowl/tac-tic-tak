@@ -12,7 +12,7 @@ export const onboardingEn: Dict = {
   // Replayed by a player who already has a level (calibration done).
   'onboarding.recalibrate': 'Recalibrate my level',
   'onboarding.keep_level': 'Keep my level',
-  'onboarding.recalibrate_note': 'Your next 5 sessions in each style will find your level again. Rating and history stay.',
+  'onboarding.recalibrate_note': 'For the next 5 sessions in each style your rating moves faster, so it finds your level again. Rating, level and history stay.',
   'onboarding.recalibrate_error': "Couldn't reach the server. Try again.",
 
   // 1 · Welcome (kicker = brand.name).

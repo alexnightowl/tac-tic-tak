@@ -3,12 +3,12 @@
 // users.service.ts). Dates arrive as ISO strings over JSON.
 import type { Language } from '../i18n';
 import type { ServerPuzzle } from '../puzzle';
-import type { TrainingStyle, UnlockCheck } from '../rules';
+import type { LevelCheck, TrainingStyle, UnlockCheck, XpStanding } from '../rules';
 
 export type ColorMode = 'auto' | 'white' | 'black';
 export type AnimationSpeedSetting = 'instant' | 'fast' | 'normal' | 'slow';
 export type KnightArrowSetting = 'bent' | 'straight';
-export type SessionMode = 'mixed' | 'theme';
+export type SessionMode = 'mixed' | 'theme' | 'casual';
 
 // ---- auth ----
 
@@ -54,6 +54,10 @@ export type Progression = {
   calibrationSessionsLeft: number;
   /** Weak at-peak sessions in a row; the next one drops the norm. */
   weakSessionStreak: number;
+  /** Play v2 level (rules/progress.ts). Absent before the server shipped it. */
+  level?: number;
+  /** v2 rated sessions in a row under level - 50; two drop the level. */
+  levelGuard?: number;
 };
 export type Progressions = Record<TrainingStyle, Progression>;
 
@@ -91,6 +95,8 @@ export type CreateSessionBody = {
   mode: SessionMode;
   style: TrainingStyle;
   theme?: string;
+  /** Play v2: rated sessions start at the server's rating, levels instead of the norm. */
+  ruleset?: 'v2';
 };
 
 /** POST /sessions/:id/next, and `firstPuzzle` of POST /sessions. */
@@ -174,6 +180,22 @@ export type FinishSaved = SessionSummary & {
   calibration?: CalibrationResponse | null;
   streak?: StreakOutcome | null;
   achievementsUnlocked?: string[];
+  /** Experience earned by this session (every saved session). */
+  xp?: XpAward;
+  /** Play v2 rated sessions. */
+  rating?: { before: number; after: number };
+  level?: LevelCheck;
+  settling?: { sessionsLeft: number };
+};
+
+export type XpAward = { gained: number; before: XpStanding; after: XpStanding };
+
+/** GET /users/me/experience */
+export type ExperienceResponse = XpStanding & {
+  trainingSec: number;
+  reviewsResolved: number;
+  weekXp: number;
+  weekReviews: number;
 };
 export type FinishDiscarded = { discarded: true };
 export type FinishResponse = FinishSaved | FinishDiscarded;

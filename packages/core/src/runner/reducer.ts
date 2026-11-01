@@ -138,8 +138,8 @@ const lastMoveOf = (uci: string): LastMove => {
 const styleOf = (r: NextResponse): TrainingStyle | null => (isTrainingStyle(r.session.style) ? r.session.style : null);
 
 function patchProgression(tx: Tx, style: TrainingStyle | null, rating: number) {
-  // fix: theme sessions are unrated; the web patched the store anyway.
-  if (tx.s.sessionMode === 'theme' || !style) return;
+  // fix: theme and casual sessions are unrated; the web patched the store anyway.
+  if (tx.s.sessionMode !== 'mixed' || !style) return;
   tx.emit({ type: 'patchProgression', style, currentPuzzleRating: rating });
 }
 
@@ -161,7 +161,8 @@ function loadPuzzle(tx: Tx, r: NextResponse): boolean {
   const s = tx.s;
   const style = styleOf(r);
   if (style) s.style = style;
-  if (r.session.mode === 'theme' || r.session.mode === 'mixed') s.sessionMode = r.session.mode;
+  const mode = r.session.mode;
+  if (mode === 'theme' || mode === 'mixed' || mode === 'casual') s.sessionMode = mode;
   s.rating = r.currentRating;
   s.puzzle = p;
   s.playerColor = init.playerColor;

@@ -26,4 +26,5 @@ export const queryKeys = {
   friendsPending: () => ['friends-pending'] as const,
   friendshipWith: (nickname: string) => ['friendship-with', nickname] as const,
   achievements: () => ['achievements'] as const,
+  experience: () => ['experience'] as const,
 } as const;

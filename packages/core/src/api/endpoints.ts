@@ -8,6 +8,7 @@ import type {
   AuthResponse,
   CreateSessionBody,
   CreateSessionResponse,
+  ExperienceResponse,
   FinishQuery,
   FinishResponse,
   LoginBody,
@@ -27,6 +28,7 @@ export function createEndpoints(client: ApiClient) {
     },
     users: {
       me: () => client.get<MeResponse>('/users/me'),
+      experience: () => client.get<ExperienceResponse>('/users/me/experience'),
     },
     sessions: {
       create: (body: CreateSessionBody) => client.post<CreateSessionResponse>('/sessions', body),

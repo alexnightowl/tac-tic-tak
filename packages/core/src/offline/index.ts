@@ -2,6 +2,7 @@
 // GET /offline/pack and POST /offline/sync, and the pure queue / pack
 // bookkeeping the mobile store and sync engine run on.
 import type { TrainingStyle } from '../rules';
+import type { XpAward } from '../api/types';
 import { normalizeMoves } from '../runner';
 
 export type OfflinePackKind = 'level' | 'weak' | 'mate' | 'endgame' | 'hard';
@@ -91,6 +92,8 @@ export type OfflineSyncResponse = {
   /** weak packs: the themes the server picked. */
   weakThemes?: string[];
   streak: OfflineSyncStreak | null;
+  /** Experience for the synced time and cleared mistakes. */
+  xp?: XpAward;
 };
 
 /** A stored pack. Played puzzles stay until their results sync. */

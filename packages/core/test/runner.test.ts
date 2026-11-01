@@ -367,9 +367,10 @@ describe('runner: streak, theme, clamps', () => {
     expect(d.s.streak).toBe(4);
   });
 
-  it('theme sessions never patch progressions', () => {
+  it.each(['theme', 'casual'] as const)('%s sessions never patch progressions', (mode) => {
     const d = new Driver();
-    d.send({ type: 'boot', stash: next(MATE, { mode: 'theme' }) }, T0);
+    d.send({ type: 'boot', stash: next(MATE, { mode }) }, T0);
+    expect(d.s.sessionMode).toBe(mode);
     expect(d.types()).not.toContain('patchProgression');
     d.send({ type: 'animationDone', id: d.s.anim!.id }, T0 + 300);
     d.send({ type: 'move', from: sq('a1'), to: sq('a8') }, T0 + 1000);
