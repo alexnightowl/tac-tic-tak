@@ -1,0 +1,1082 @@
+{
+  "id": "greco",
+  "version": 1,
+  "chapters": [
+    {
+      "id": "greco-1",
+      "title": {
+        "en": "The King's Gambit",
+        "uk": "Королівський гамбіт"
+      },
+      "subtitle": {
+        "en": "Open lines, a king left in the centre",
+        "uk": "Відкриті лінії, король у центрі"
+      },
+      "puzzles": [
+        {
+          "id": "lib-greco-1-01",
+          "fen": "rn3k1r/pp5p/2p2Q1n/8/2B5/2N5/PPP5/4RK1R b - - 0 19",
+          "moves": "h6f7 f6f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272517"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Bishop's Gambit. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, гамбіт слона. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-02",
+          "fen": "rn2k3/ppp4p/8/2bb4/2p2p2/7P/PPPP2P1/RNB1qQKR w q - 4 18",
+          "moves": "g1h2 e1g3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272508"
+          },
+          "note": {
+            "en": "NN vs Greco, King’s Gambit Accepted, late in the game. Greco has Black.",
+            "uk": "NN проти Греко, прийнятий королівський гамбіт, наприкінці партії. Греко грає чорними."
+          }
+        },
+        {
+          "id": "lib-greco-1-03",
+          "fen": "rn1k1b2/pppb2p1/8/3Q1P2/8/3n1N2/PPPPB3/RNBKq3 w - - 7 18",
+          "moves": "f3e1 d3f2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "smotheredMate",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1625,
+            "date": "1625.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1240657"
+          },
+          "note": {
+            "en": "NN vs Greco, King's Gambit met by the counterthrust 2...f5. Greco has Black. Manuscript game, c. 1620.",
+            "uk": "NN проти Греко, королівський гамбіт і контрудар 2...f5. Греко грає чорними. Рукописна партія, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-04",
+          "fen": "rnb2knr/ppp2ppp/1b1p4/1B6/1P1PqP2/P4N2/5KPP/RNBQR3 b - - 4 11",
+          "moves": "e4f5 e1e8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1251889"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit Declined with 2...Bc5. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, відхилений королівський гамбіт, 2...Bc5. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-05",
+          "fen": "rnbk2nr/ppp2ppp/1b1p4/1B6/3PqP2/5N2/PP3KPP/RNBQR3 b - - 5 9",
+          "moves": "e4f5 e1e8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "backRankMate"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2014175"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit Declined. Greco came from Calabria, in the south of Italy.",
+            "uk": "Греко проти NN, відхилений королівський гамбіт. Греко походив із Калабрії, на півдні Італії."
+          }
+        },
+        {
+          "id": "lib-greco-1-06",
+          "fen": "rnb3kr/pp2R1pp/1bpq1N1n/8/3P4/1B1Q1N2/PPP3PP/5K1R b - - 1 17",
+          "moves": "g8f8 e7e8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272513"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Bishop's Gambit: White's king steps to f1 after the queen check. c. 1620.",
+            "uk": "Греко проти NN, гамбіт слона: після шаху ферзем білий король іде на f1. Бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-07",
+          "fen": "rnb3kr/pp2B1p1/1b4pn/3B4/3P4/5N2/PPP3PP/4RK1R b - - 0 18",
+          "moves": "g8h7 f3g5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272514"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Bishop's Gambit, a sister of another game in this chapter, with its own ending.",
+            "uk": "Греко проти NN, гамбіт слона: споріднена з іншою партією цього розділу, але з власним фіналом."
+          }
+        },
+        {
+          "id": "lib-greco-1-08",
+          "fen": "rn6/ppp3p1/3p4/6B1/3kQ3/2N3P1/PPr5/R5K1 b - - 5 23",
+          "moves": "d4c5 g5e3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272515"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Bishop's Gambit. Greco visited Paris and London in the early 1620s.",
+            "uk": "Греко проти NN, гамбіт слона. На початку 1620-х Греко побував у Парижі та Лондоні."
+          }
+        },
+        {
+          "id": "lib-greco-1-09",
+          "fen": "rnbq1bnr/pppp4/3k3p/3Q2p1/2B1Pp1P/8/PPPP2P1/RNB1K2R b KQ - 5 9",
+          "moves": "d6e7 d5e5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1251884"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Knight's Gambit with 3...h6. From Greco's manuscripts, c. 1620.",
+            "uk": "Греко проти NN, гамбіт коня з 3...h6. З рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-10",
+          "fen": "rnbq1br1/pppp1Q2/3k1p2/8/2NPP2p/8/PPP3P1/RNB1K3 b Q - 5 17",
+          "moves": "d6c6 f7d5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272510"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit with 3...Ne7 4.h4. Greco often recorded several endings to one opening.",
+            "uk": "Греко проти NN, королівський гамбіт, 3...Ne7 4.h4. Греко часто записував кілька фіналів одного дебюту."
+          }
+        },
+        {
+          "id": "lib-greco-1-11",
+          "fen": "rnbq1b2/pppp4/3k4/3Q2N1/3PP3/6p1/PPP5/RNB1K3 b Q - 4 17",
+          "moves": "d6e7 d5e5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1499332"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit with 3...Ne7 4.h4: the opening of another game here, a new finish.",
+            "uk": "Греко проти NN, королівський гамбіт, 3...Ne7 4.h4: дебют іншої партії цього розділу, новий фінал."
+          }
+        },
+        {
+          "id": "lib-greco-1-12",
+          "fen": "rnbk1b1r/pppp1B1p/2N5/8/3P2p1/6K1/PPP1Q1P1/RNq5 b - - 1 13",
+          "moves": "b8c6 e2e8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272507"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit Accepted with 3...g5. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, прийнятий королівський гамбіт, 3...g5. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-13",
+          "fen": "rnb2k1b/pp3Pq1/2p2n2/6pQ/2B1PB2/2N5/PPP3P1/R3K3 b Q - 0 15",
+          "moves": "f6h5 f4d6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272504"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit Accepted with 3...g5 4.Bc4 Bg7. From Greco's manuscripts, c. 1620.",
+            "uk": "Греко проти NN, прийнятий королівський гамбіт, 3...g5 4.Bc4 Bg7. З рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-14",
+          "fen": "rnbkQr2/3pn2p/2pN4/pp6/4PB2/1Bq5/P1P1K1P1/R6R b - - 12 23",
+          "moves": "f8e8 d6f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272155"
+          },
+          "note": {
+            "en": "Greco vs NN, Bishop's Opening with an early f4. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, дебют слона з раннім f4. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-15",
+          "fen": "rnbqkb1r/ppp2p1p/8/3p4/2B1PpQ1/8/PPPP2PP/RNB1K2R w KQkq - 0 8",
+          "moves": "g4f4 d5c4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "opening",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272508"
+          },
+          "note": {
+            "en": "NN vs Greco, King's Gambit Accepted. Here Greco has the black pieces. From his manuscripts, c. 1620.",
+            "uk": "NN проти Греко, прийнятий королівський гамбіт. Тут Греко грає чорними. З його рукописів, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-16",
+          "fen": "rnb1kb1r/pppp1ppp/6n1/8/2BPPp1q/5QP1/PPP4P/RNB1K1NR b KQkq - 0 6",
+          "moves": "f4g3 c4f7 e8e7 h2g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "opening",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1251887"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Bishop's Gambit. Greco's games are teaching lines, and most were probably composed.",
+            "uk": "Греко проти NN, гамбіт слона. Партії Греко — навчальні варіанти, і більшість із них, імовірно, складені."
+          }
+        },
+        {
+          "id": "lib-greco-1-17",
+          "fen": "rnb1k1nr/ppp2p1p/3p3b/8/3PPNp1/4KpP1/PPP3qP/RNBQ1B1R b kq - 8 13",
+          "moves": "g2h1 f1b5 c7c6 d1h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "intermezzo",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272506"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit Accepted with 3...g5 4.Bc4 g4. From Greco's collection, c. 1620.",
+            "uk": "Греко проти NN, прийнятий королівський гамбіт, 3...g5 4.Bc4 g4. Зі збірки Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-18",
+          "fen": "r1b1k2r/ppppPppp/8/8/1b3p2/2NB4/PPP1n1PP/R1B1K1NR b KQkq - 0 9",
+          "moves": "e2c3 a2a3 b4e7 b2c3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "opening",
+            "quietMove",
+            "advancedPawn"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272520"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit. Greco's games reached English readers in a London edition of 1656.",
+            "uk": "Греко проти NN, королівський гамбіт. Англійські читачі отримали партії Греко в лондонському виданні 1656 року."
+          }
+        },
+        {
+          "id": "lib-greco-1-19",
+          "fen": "rnbqk2r/ppp2p2/3p3n/7R/2BPPPN1/8/PPP5/RN1QK3 b Qkq - 0 12",
+          "moves": "c8g4 d1g4 h6g4 h5h8 e8e7 h8d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "skewer"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272509"
+          },
+          "note": {
+            "en": "Greco vs NN, King's Gambit with 4.h4: a line later named after Kieseritzky. From Greco's manuscripts, c. 1620.",
+            "uk": "Греко проти NN, королівський гамбіт із 4.h4: цю систему пізніше назвали на честь Кізерицького. З рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-1-20",
+          "fen": "r1bk3Q/pp1p4/nbp2qp1/4N3/3P1p2/6P1/PPP4P/R1B1R1K1 b - - 0 18",
+          "moves": "f6h8 e5f7 d8c7 c1f4 h8e5 f4e5 d7d6 e5d6 c7d7 e1e7",
+          "goal": "mate",
+          "mateIn": 5,
+          "rating": 2100,
+          "themes": [
+            "mateIn5",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272152"
+          },
+          "note": {
+            "en": "Greco vs NN, Bishop's Opening with 2...Nf6 3.f4. From Greco's manuscripts, c. 1620.",
+            "uk": "Греко проти NN, дебют слона, 2...Nf6 3.f4. З рукописів Греко, бл. 1620."
+          }
+        }
+      ]
+    },
+    {
+      "id": "greco-2",
+      "title": {
+        "en": "The Italian Game and Others",
+        "uk": "Італійська партія та інші"
+      },
+      "subtitle": {
+        "en": "Giuoco Piano, Philidor, Damiano",
+        "uk": "Джуоко піано, Філідор, Даміано"
+      },
+      "puzzles": [
+        {
+          "id": "lib-greco-2-01",
+          "fen": "rnbq1bnr/pppp1Qkp/8/6p1/2BPP2P/8/PPP2PP1/RNB1K2R b KQ - 2 10",
+          "moves": "g7h6 h4g5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "doubleCheck",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271142"
+          },
+          "note": {
+            "en": "Greco vs NN, Damiano Defence 2...f6, named after a Portuguese author whose book appeared in 1512.",
+            "uk": "Греко проти NN, захист Даміано 2...f6, названий на честь португальського автора, чия книга вийшла 1512 року."
+          }
+        },
+        {
+          "id": "lib-greco-2-02",
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 3 3",
+          "moves": "g8f6 h5f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2014170"
+          },
+          "note": {
+            "en": "Greco vs NN, an early queen sortie with 2.Qh5. The shortest game in this chapter.",
+            "uk": "Греко проти NN, ранній вихід ферзя 2.Qh5. Найкоротша партія цього розділу."
+          }
+        },
+        {
+          "id": "lib-greco-2-03",
+          "fen": "rnb2bnr/pppp2pp/5qk1/4R1N1/3P4/3Q4/PPP2PPP/RNB3K1 b - - 4 10",
+          "moves": "g6h6 g5f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "doubleCheck",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271140"
+          },
+          "note": {
+            "en": "Greco vs NN, 2...Qf6, an early queen move that Greco punishes more than once. c. 1620.",
+            "uk": "Греко проти NN, 2...Qf6 — ранній вихід ферзя, який Греко карає не раз. Бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-04",
+          "fen": "rn1qkb1r/p1ppp2P/1p3n2/7Q/3P4/3B4/PPP2PbP/RNB1K1NR b KQkq - 0 7",
+          "moves": "f6h5 d3g6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1623,
+            "date": "1623.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1243022"
+          },
+          "note": {
+            "en": "Greco vs NN, 1...b6, now called Owen's Defence after a 19th-century English player. c. 1620.",
+            "uk": "Греко проти NN, 1...b6 — нині захист Оуена, на честь англійського шахіста XIX століття. Бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-05",
+          "fen": "r1bq1rk1/pppp2p1/2n1p1P1/3nPp1Q/3P4/8/PPP2PP1/RNB1K2R b KQ - 0 11",
+          "moves": "f8e8 h5h8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271143"
+          },
+          "note": {
+            "en": "Greco vs NN, French Defence 1...e6. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, французький захист 1...e6. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-06",
+          "fen": "r1b1q1Br/ppp3kp/1bnp4/4p1B1/3PP3/2P2Q2/PP3PPP/RN3RK1 b - - 0 13",
+          "moves": "h8g8 f3f6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271128"
+          },
+          "note": {
+            "en": "Greco vs NN, Giuoco Piano with 4.c3 Qe7. From Greco's manuscripts, c. 1620.",
+            "uk": "Греко проти NN, джуоко піано, 4.c3 Qe7. З рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-07",
+          "fen": "r2q1b1r/pp1b2pp/2p5/3NP3/2k5/3Q4/PPP2PPP/R1B3K1 b - - 1 16",
+          "moves": "c4c5 b2b4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271138"
+          },
+          "note": {
+            "en": "Greco vs NN, Two Knights Defence with 4.Ng5 d5. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, захист двох коней, 4.Ng5 d5. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-08",
+          "fen": "rnb1kb1Q/pppp4/6p1/5p2/5q2/3P4/PPPKBnPP/RNB4R w q - 4 12",
+          "moves": "d2c3 f4b4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1273702"
+          },
+          "note": {
+            "en": "NN vs Greco, 2...f5, today's Latvian Gambit, once called the Greco Counter-Gambit. Greco has Black.",
+            "uk": "NN проти Греко, 2...f5 — нинішній латиський гамбіт, колись контргамбіт Греко. Греко грає чорними."
+          }
+        },
+        {
+          "id": "lib-greco-2-09",
+          "fen": "r1b2r1k/ppp2Np1/2n2q2/7Q/2BPp3/2P5/P4PPP/R1B3K1 b - - 2 16",
+          "moves": "h8g8 h5h8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271129"
+          },
+          "note": {
+            "en": "Greco vs NN, Giuoco Piano with 4.c3 d6. Greco came from Calabria, in the south of Italy.",
+            "uk": "Греко проти NN, джуоко піано, 4.c3 d6. Греко походив із Калабрії, на півдні Італії."
+          }
+        },
+        {
+          "id": "lib-greco-2-10",
+          "fen": "r1bk1r2/ppp1q2p/1bnp1P1Q/6B1/2B2P2/8/Pp4PP/RN3R1K b - - 0 16",
+          "moves": "b2a1q f6e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271127"
+          },
+          "note": {
+            "en": "Greco vs NN, Giuoco Piano with 4.c3. Greco's games are teaching lines; most were probably composed.",
+            "uk": "Греко проти NN, джуоко піано з 4.c3. Партії Греко — навчальні варіанти; більшість, імовірно, складені."
+          }
+        },
+        {
+          "id": "lib-greco-2-11",
+          "fen": "r1bk3r/ppp1BBqp/1bnp4/8/3PP1QP/2P5/PP1N2P1/R3KR2 b Q - 0 18",
+          "moves": "c6e7 g4g7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272153"
+          },
+          "note": {
+            "en": "Greco vs NN, Bishop's Opening, 2.Bc4 Bc5 3.Qe2. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, дебют слона, 2.Bc4 Bc5 3.Qe2. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-12",
+          "fen": "rn3bBr/p2k2pp/2P5/4p3/8/1q5P/PPPP1PP1/R1B1K2R b KQ - 0 13",
+          "moves": "b8c6 g8b3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271136"
+          },
+          "note": {
+            "en": "Greco vs NN, Philidor Defence with 3.Bc4 Bg4. From Greco's manuscripts, c. 1620.",
+            "uk": "Греко проти NN, захист Філідора, 3.Bc4 Bg4. З рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-13",
+          "fen": "r2q1k1r/ppp1n1pp/4BB2/3p4/8/5Q2/P4PPP/5RK1 b - - 0 18",
+          "moves": "g7f6 f3f6 f8e8 f6f7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "attackingF2F7",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1270339"
+          },
+          "note": {
+            "en": "Greco vs NN, Giuoco Piano with 4.c3 and 5.d4. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, джуоко піано з 4.c3 і 5.d4. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-14",
+          "fen": "rnb1k2r/ppp1b1pp/3p4/8/2NPn3/2NBB3/PPP3qP/R2QK2R w KQkq - 0 11",
+          "moves": "d3e4 e7h4 e3f2 g2f2",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "opening",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "event": "Rome",
+            "site": "Rome ITA",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1481288"
+          },
+          "note": {
+            "en": "NN vs Greco, 2...f5: the reply known today as the Latvian Gambit. Greco has Black. c. 1620.",
+            "uk": "NN проти Греко, 2...f5: відповідь, яку нині називають латиським гамбітом. Греко грає чорними. Бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-15",
+          "fen": "rnbqkb1r/ppp2ppp/3p1n2/4p3/4P3/2P2N1P/PP1P1PP1/RNBQKB1R b KQkq - 0 4",
+          "moves": "f6e4 d1a4 c7c6 a4e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "opening",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271137"
+          },
+          "note": {
+            "en": "Greco vs NN, Philidor Defence, named after a player born more than a century after Greco.",
+            "uk": "Греко проти NN, захист Філідора, названий на честь шахіста, що народився понад століття після Греко."
+          }
+        },
+        {
+          "id": "lib-greco-2-16",
+          "fen": "rnb1k2r/pp1pqppp/2p2n2/4Q3/2B1P3/2N2N2/PPPP1bPP/R1B1K2R w KQkq - 0 7",
+          "moves": "e1f2 f6g4 f2f1 g4e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "opening",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1272150"
+          },
+          "note": {
+            "en": "NN vs Greco, Bishop's Opening with an early Qh5. Greco has Black. From his manuscripts, c. 1620.",
+            "uk": "NN проти Греко, дебют слона з раннім Qh5. Греко грає чорними. З його рукописів, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-17",
+          "fen": "rnb1kb1Q/pppp4/6p1/5p2/4q1n1/8/PPPP1PPP/RNBK1B1R w q - 1 9",
+          "moves": "h8h4 g4e3 d2e3 e4h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "opening",
+            "sacrifice",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1273701"
+          },
+          "note": {
+            "en": "NN vs Greco, 2...f5, the Latvian Gambit of today. Greco has Black. Manuscript game, c. 1620.",
+            "uk": "NN проти Греко, 2...f5, сьогоднішній латиський гамбіт. Греко грає чорними. Рукописна партія, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-18",
+          "fen": "r1b2rk1/pppp1ppp/8/2b1P3/2BN2nq/8/PP3PPP/RNBQR1K1 w - - 1 11",
+          "moves": "d4f3 h4f2 g1h1 f2g1 f3g1 g4f2",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1825,
+          "themes": [
+            "mateIn3",
+            "opening",
+            "smotheredMate",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Gioachino Greco",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271130"
+          },
+          "note": {
+            "en": "NN vs Greco, Giuoco Piano: Italian for \"quiet game\". Greco has Black. From his manuscripts, c. 1620.",
+            "uk": "NN проти Греко, джуоко піано — італійською «тиха гра». Греко грає чорними. З його рукописів, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-19",
+          "fen": "r1b3nr/pppkq2p/1bnp4/4p1BQ/2BPP3/2P5/PP3PPP/RN3RK1 b - - 0 11",
+          "moves": "e7g7 c4e6 d7e6 h5e8 g8e7 d4d5",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1850,
+          "themes": [
+            "mateIn3",
+            "opening",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271125"
+          },
+          "note": {
+            "en": "Greco vs NN, Giuoco Piano with 4.c3. From Greco's manuscript collection, c. 1620.",
+            "uk": "Греко проти NN, джуоко піано з 4.c3. Зі збірки рукописів Греко, бл. 1620."
+          }
+        },
+        {
+          "id": "lib-greco-2-20",
+          "fen": "r1bkR2r/pppp1p1p/5n2/3P2B1/8/2P2N2/P4PPP/R5K1 b - - 0 16",
+          "moves": "d8e8 a1e1 e8f8 g5h6 f8g8 e1e5 a7a6 e5g5",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 1950,
+          "themes": [
+            "mateIn4",
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gioachino Greco",
+            "black": "NN",
+            "year": 1620,
+            "date": "1620.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2815642"
+          },
+          "note": {
+            "en": "Greco vs NN, Giuoco Piano with 4.c3 and 5.d4. Greco's games were printed in London in 1656.",
+            "uk": "Греко проти NN, джуоко піано з 4.c3 і 5.d4. Партії Греко надрукували в Лондоні 1656 року."
+          }
+        }
+      ]
+    }
+  ]
+}

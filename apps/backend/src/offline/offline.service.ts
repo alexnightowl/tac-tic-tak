@@ -370,9 +370,9 @@ export class OfflineService {
   /**
    * Applies each distinct local day from the last STREAK_GRACE_DAYS
    * (inclusive of today, by the client's tz offset) in ascending order
-   * through the same path `finish` uses.
+   * through the same path `finish` uses. Also used by the Library sync.
    */
-  private async applyStreak(
+  async applyStreak(
     userId: string,
     attempts: { localDay: string }[],
     tzOffsetMin: number,

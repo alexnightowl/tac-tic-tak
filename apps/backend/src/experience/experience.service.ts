@@ -22,7 +22,7 @@ export class ExperienceService {
    */
   async award(
     userId: string,
-    award: { source: 'session' | 'review' | 'offline'; xp: number; trainingSec?: number; reviews?: number },
+    award: { source: 'session' | 'review' | 'offline' | 'library'; xp: number; trainingSec?: number; reviews?: number },
     tx: Prisma.TransactionClient = this.prisma,
   ): Promise<XpAward> {
     const before = await tx.userExperience.findUnique({ where: { userId } });
