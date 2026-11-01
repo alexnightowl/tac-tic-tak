@@ -1,5 +1,1715 @@
 {
   "id": "steinitz",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "steinitz-1",
+      "title": {
+        "en": "The First World Champion",
+        "uk": "Перший чемпіон світу"
+      },
+      "subtitle": {
+        "en": "Wilhelm Steinitz, 1873–1894",
+        "uk": "Вільгельм Стейніц, 1873–1894"
+      },
+      "puzzles": [
+        {
+          "id": "lib-steinitz-1-01",
+          "fen": "4rr1k/ppb4p/4b2Q/6p1/P1BRp3/1PP1N2n/6P1/5RqK w - - 6 32",
+          "moves": "f1g1 h3f2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "James Moore Hanham",
+            "black": "Wilhelm Steinitz",
+            "event": "2nd City CC Masters, New York",
+            "site": "New York, NY USA",
+            "year": 1894,
+            "date": "1894.10.30",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1104074"
+          },
+          "note": {
+            "en": "New York 1894, a Giuoco Piano.",
+            "uk": "Нью-Йорк, 1894, італійська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-02",
+          "fen": "r4rk1/pb3ppB/2q1p2P/1p2P2Q/1n1B1P2/7R/1P3K2/8 b - - 2 24",
+          "moves": "g8h7 h6g7 h7g7 h5g5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "discoveredAttack",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "NN",
+            "event": "Odds game",
+            "site": "London ENG",
+            "year": 1873,
+            "date": "1873.06.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2032480"
+          },
+          "note": {
+            "en": "London 1873, odds game.",
+            "uk": "Лондон, 1873, партія з форою."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-03",
+          "fen": "8/pp2R2p/3BNkb1/3P1p2/7p/8/PP1rr2P/5R1K w - - 1 32",
+          "moves": "d6b4 e2h2 h1g1 d2g2",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Wilhelm Steinitz",
+            "event": "Steinitz - Chigorin World Championship Rematch",
+            "site": "Havana CUB",
+            "year": 1892,
+            "date": "1892.02.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036366"
+          },
+          "note": {
+            "en": "Havana 1892, world championship match, a King's Gambit. Steinitz kept his world title in this match.",
+            "uk": "Гавана, 1892, матч за звання чемпіона світу, королівський гамбіт. У цьому матчі Стейніц зберіг звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-04",
+          "fen": "rnbk2Q1/ppp4p/8/1B1Pp1q1/8/2N3B1/PPP3P1/R5K1 b - - 0 19",
+          "moves": "g5g8 g3h4 g8g5 h4g5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Belaiev",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1873,
+            "date": "1873.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1075748"
+          },
+          "note": {
+            "en": "London 1873, casual game, a King's Gambit.",
+            "uk": "Лондон, 1873, товариська партія, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-05",
+          "fen": "r1bq1b1r/ppppkp2/n1n2N2/4P1pQ/2BP4/8/PPP3PP/2B2RK1 b - - 1 13",
+          "moves": "h8h5 f6g8 e7e8 c4f7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "NN",
+            "event": "Odds game",
+            "site": "London ENG",
+            "year": 1874,
+            "date": "1874.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1284062"
+          },
+          "note": {
+            "en": "London 1874, odds game.",
+            "uk": "Лондон, 1874, партія з форою."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-06",
+          "fen": "r1b1kb1N/ppp1n2p/2n5/3p3N/2BP4/2P5/PP5P/R1B3KR b - - 0 24",
+          "moves": "d5c4 h5f6 e8d8 h8f7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "William Jacob Ferris",
+            "event": "Steinitz Simul 20b, Wilmington CC",
+            "site": "Wilmington, DE USA",
+            "year": 1885,
+            "date": "1885.04.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2564061"
+          },
+          "note": {
+            "en": "Wilmington 1885, simultaneous display on 20 boards, a King's Gambit.",
+            "uk": "Вілмінгтон, 1885, сеанс одночасної гри на 20 дошках, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-07",
+          "fen": "6k1/pp4b1/2p3q1/3p4/5Q2/2P2b2/PPN5/R5K1 w - - 1 33",
+          "moves": "g1f2 g6g2 f2e1 g2e2",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "William C Paine",
+            "black": "Wilhelm Steinitz",
+            "event": "Casual Game, Boston CC",
+            "site": "Boston, MA USA",
+            "year": 1885,
+            "date": "1885.03.09",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2564136"
+          },
+          "note": {
+            "en": "Boston 1885, casual game, a Two Knights Defence.",
+            "uk": "Бостон, 1885, товариська партія, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-08",
+          "fen": "r3k2r/ppp1qQpp/2n1B3/4P1b1/3P4/2P5/PP1B2PP/nN1K2NR b kq - 0 13",
+          "moves": "e7f7 e6f7 e8f7 d2g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Charles Baxter Snow",
+            "event": "Steinitz Blindfold Simul 4b, Boston CC",
+            "site": "Boston, MA USA",
+            "year": 1885,
+            "date": "1885.03.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2715063"
+          },
+          "note": {
+            "en": "Boston 1885, blindfold display, a Bishop's Opening.",
+            "uk": "Бостон, 1885, сеанс наосліп, дебют слона."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-09",
+          "fen": "r1b2q1r/ppp1kB1N/2np3p/4p1p1/1b2Pp1Q/3P4/PPP2PPP/R1B2RK1 w - - 0 15",
+          "moves": "h7f8 g5h4 f8g6 e7f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Edwyn Anthony",
+            "black": "Wilhelm Steinitz",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1880,
+            "date": "1880.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1718616"
+          },
+          "note": {
+            "en": "London 1880, casual game, an Italian Game.",
+            "uk": "Лондон, 1880, товариська партія, італійська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-10",
+          "fen": "1R1r4/8/p2p1k2/P1NP1p1p/3P2bP/1P1B4/3K2P1/8 b - - 0 47",
+          "moves": "d8b8 c5d7 f6e7 d7b8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Vincenz Hruby",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1882,
+            "date": "1882.06.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001719"
+          },
+          "note": {
+            "en": "Vienna 1882, a King's Gambit. Steinitz and Winawer shared first place.",
+            "uk": "Відень, 1882, королівський гамбіт. Стейніц і Вінавер поділили перше місце."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-11",
+          "fen": "rn1q3r/pkp3b1/R6p/3PP1p1/4P3/8/1P2Q2p/2B2R1K b - - 0 19",
+          "moves": "b8a6 e2b5 b7c8 b5a6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "NN",
+            "event": "Odds Game (Nb1)",
+            "site": "New York, NY USA",
+            "year": 1884,
+            "date": "1884.05.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2255724"
+          },
+          "note": {
+            "en": "New York 1884, odds game.",
+            "uk": "Нью-Йорк, 1884, партія з форою."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-12",
+          "fen": "1r4k1/1q2bp2/2p4p/3npPpP/p1Q1B1P1/P4P2/1PR2B2/2K5 b - - 12 39",
+          "moves": "e7a3 b2a3 b7b1 c1d2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Johannes Zukertort",
+            "event": "Steinitz - Zukertort World Championship Match",
+            "site": "New Orleans, LA USA",
+            "year": 1886,
+            "date": "1886.03.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1132648"
+          },
+          "note": {
+            "en": "New Orleans 1886, world championship match, a Ruy Lopez. The first official world title match; Steinitz won it.",
+            "uk": "Новий Орлеан, 1886, матч за звання чемпіона світу, іспанська партія. Перший офіційний матч за світову корону; його виграв Стейніц."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-13",
+          "fen": "r4r1k/pp1qb3/3p1pp1/2pP4/4P1R1/2P4Q/PP4PP/R5K1 b - - 1 22",
+          "moves": "h8g7 g4g6 g7g6 h3d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "J N Burt",
+            "event": "Blindfold simul, 7b",
+            "site": "Cardiff WLS",
+            "year": 1873,
+            "date": "1873.04.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1337186"
+          },
+          "note": {
+            "en": "Cardiff 1873, blindfold display on 7 boards, a King's Gambit Declined.",
+            "uk": "Кардіфф, 1873, сеанс наосліп на 7 дошках, відхилений королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-14",
+          "fen": "rn3rk1/ppp2pb1/8/3p1PQ1/2BP4/2P5/PP5p/R6K b - - 0 15",
+          "moves": "d5c4 f5f6 a7a6 g5g7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1550,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "quietMove",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "James Fish",
+            "event": "Odds game (Nb1)",
+            "site": "Manchester ENG",
+            "year": 1874,
+            "date": "1874.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2089867"
+          },
+          "note": {
+            "en": "Manchester 1874, odds game.",
+            "uk": "Манчестер, 1874, партія з форою."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-15",
+          "fen": "r7/1Q2bk2/4q2p/2pp4/2nP1P1P/1P6/P1PBR3/R3K1r1 w Q - 1 28",
+          "moves": "e1f2 g1g2 f2g2 e6e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard P Fleming",
+            "black": "Wilhelm Steinitz",
+            "event": "Montreal Chess Club, Casual Game",
+            "site": "Montreal, PQ CAN",
+            "year": 1893,
+            "date": "1893.11.18",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1132668"
+          },
+          "note": {
+            "en": "Montreal 1893, casual game, a Vienna Game.",
+            "uk": "Монреаль, 1893, товариська партія, віденська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-16",
+          "fen": "r4rk1/1bn2qnp/3p1BPQ/p2P1p2/1pp5/5N1P/PPB2P2/2KR3R b - - 0 27",
+          "moves": "f7g6 f6g7 g6h6 g7h6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Joseph Henry Blackburne",
+            "event": "Steinitz - Blackburne",
+            "site": "London ENG",
+            "year": 1876,
+            "date": "1876.02.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1028959"
+          },
+          "note": {
+            "en": "London 1876, match game, a Ruy Lopez. Steinitz won this match without losing a game.",
+            "uk": "Лондон, 1876, матчева партія, іспанська партія. Стейніц виграв цей матч без жодної поразки."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-17",
+          "fen": "2q5/r5bk/1ppQ1rpp/1b2p3/PP2Pp2/3P4/3B1PPP/R3NRK1 w - - 1 25",
+          "moves": "d6e5 f6f7 e5d6 g7a1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Celso Golmayo Zupide",
+            "black": "Wilhelm Steinitz",
+            "event": "Casual Game",
+            "site": "Havana CUB",
+            "year": 1888,
+            "date": "1888.03.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1695803"
+          },
+          "note": {
+            "en": "Havana 1888, casual game, a Ruy Lopez.",
+            "uk": "Гавана, 1888, товариська партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-18",
+          "fen": "5r2/p1Q3p1/2p1B2k/7R/b1Pb1pR1/qP1P1P2/P1K5/8 b - - 5 44",
+          "moves": "h6h5 e6f7 g7g6 f7g6 h5h6 c7h7",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1750,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Henderson, John / Fleming, Richard P / Babson, Joseph Ney",
+            "event": "Montreal Chess Club, Consultation Simul 2b",
+            "site": "Montreal, PQ CAN",
+            "year": 1893,
+            "date": "1893.11.18",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2167049"
+          },
+          "note": {
+            "en": "Montreal 1893, simultaneous display, a Two Knights Defence.",
+            "uk": "Монреаль, 1893, сеанс одночасної гри, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-19",
+          "fen": "2kr1bnr/pppn3p/3p1pq1/6B1/3PP1Q1/3K3B/PPP4P/5RR1 b - - 1 15",
+          "moves": "f6g5 g4d7 d8d7 f1f8 g6e8 f8e8",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1825,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "backRankMate",
+            "sacrifice",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "NN",
+            "event": "Odds Game (Nb1), Manhattan CC",
+            "site": "New York, NY USA",
+            "year": 1884,
+            "date": "1884.04.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2255503"
+          },
+          "note": {
+            "en": "New York 1884, odds game at the Manhattan Chess Club.",
+            "uk": "Нью-Йорк, 1884, партія з форою в Манхеттенському шаховому клубі."
+          }
+        },
+        {
+          "id": "lib-steinitz-1-20",
+          "fen": "2kr3r/Qppbqpb1/3p1n1p/3P2p1/4P3/2PB1nN1/PP3K1P/R1B1R3 b - - 1 17",
+          "moves": "d7g4 a7a8 c8d7 d3b5 c7c6 b5c6 b7c6 a8c6",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 2050,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "sacrifice",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "NN",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1875,
+            "date": "1875.01.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2246393"
+          },
+          "note": {
+            "en": "London 1875, casual game, a Vienna Game.",
+            "uk": "Лондон, 1875, товариська партія, віденська партія."
+          }
+        }
+      ]
+    },
+    {
+      "id": "steinitz-2",
+      "title": {
+        "en": "Mikhail Chigorin",
+        "uk": "Михайло Чигорін"
+      },
+      "subtitle": {
+        "en": "Attack from St. Petersburg, 1874–1892",
+        "uk": "Атака з Петербурга, 1874–1892"
+      },
+      "puzzles": [
+        {
+          "id": "lib-steinitz-2-01",
+          "fen": "5rk1/pb5p/8/2p1P3/2P3r1/2Bp1q2/P6P/R2R1Q1K w - - 0 36",
+          "moves": "f1f3 b7f3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Eugen Johann Heinrich Schmidt",
+            "black": "Mikhail Chigorin",
+            "event": "Casual game",
+            "site": "St. Petersburg RUE",
+            "year": 1878,
+            "date": "1878.07.23",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036236"
+          },
+          "note": {
+            "en": "St. Petersburg 1878, casual game, a Ruy Lopez.",
+            "uk": "Санкт-Петербург, 1878, товариська партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-02",
+          "fen": "7k/pbp3bp/3p4/1p6/3n2p1/6P1/PP1NrN2/1Q1BRRKq w - - 1 27",
+          "moves": "f2h1 e2g2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Mikhail Chigorin",
+            "event": "St Petersburg",
+            "site": "St. Petersburg RUS",
+            "year": 1875,
+            "date": "1875.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1075753"
+          },
+          "note": {
+            "en": "St. Petersburg 1875, a King's Gambit.",
+            "uk": "Санкт-Петербург, 1875, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-03",
+          "fen": "r2r4/p1p2p1p/n4R2/1p6/2p3k1/5N2/P1K4P/6R1 b - - 1 25",
+          "moves": "g4h5 g1g5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Ilya Shumov",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1876,
+            "date": "1876.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1361082"
+          },
+          "note": {
+            "en": "St. Petersburg 1876, a Centre Game.",
+            "uk": "Санкт-Петербург, 1876, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-04",
+          "fen": "6n1/1Q4bk/2pp3p/2p1p3/2P5/1P6/P2K1r1N/q5RR w - - 0 33",
+          "moves": "d2e3 a1d4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emmanuel Schiffers",
+            "black": "Mikhail Chigorin",
+            "event": "Chigorin - Schiffers Second Match",
+            "site": "St. Petersburg RUE",
+            "year": 1878,
+            "date": "1878.04.14",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036241"
+          },
+          "note": {
+            "en": "St. Petersburg 1878, match game, a Ruy Lopez.",
+            "uk": "Санкт-Петербург, 1878, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-05",
+          "fen": "r1b1rk2/ppp2q2/3p1BpQ/5P2/4P3/8/PPP1B1P1/3K4 b - - 1 28",
+          "moves": "f8g8 h6h8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Pavel Otto",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1881,
+            "date": "1881.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2781745"
+          },
+          "note": {
+            "en": "St. Petersburg 1881, a Centre Game.",
+            "uk": "Санкт-Петербург, 1881, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-06",
+          "fen": "r1bqk2r/pp3pQp/4p3/8/4p3/2P2nP1/P1P2P1P/R1B2R1K b kq - 2 13",
+          "moves": "d8d5 g7h8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Emmanuel Schiffers",
+            "event": "Chigorin - Schiffers Second Match",
+            "site": "St. Petersburg RUE",
+            "year": 1878,
+            "date": "1878.05.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1551266"
+          },
+          "note": {
+            "en": "St. Petersburg 1878, match game, a Sicilian Defence.",
+            "uk": "Санкт-Петербург, 1878, матчева партія, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-07",
+          "fen": "6k1/7r/p3p1p1/1pp1p3/3nP1P1/PP1P1Q2/1B1q1b2/1BR2K1R w - - 5 39",
+          "moves": "b2d4 d2c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Isidor Gunsberg",
+            "black": "Mikhail Chigorin",
+            "event": "Chigorin - Gunsberg",
+            "site": "Havana CUB",
+            "year": 1890,
+            "date": "1890.01.03",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036320"
+          },
+          "note": {
+            "en": "Havana 1890, match game, a Ruy Lopez.",
+            "uk": "Гавана, 1890, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-08",
+          "fen": "1Q6/p1pk1ppp/2Rrrn2/q2p4/4P3/3P3P/3B2P1/1R4K1 b - - 5 26",
+          "moves": "d6c6 d2a5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Emmanuel Schiffers",
+            "event": "Chigorin - Schiffers First Match",
+            "site": "St. Petersburg RUE",
+            "year": 1878,
+            "date": "1878.03.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1551255"
+          },
+          "note": {
+            "en": "St. Petersburg 1878, match game, a King's Gambit Declined.",
+            "uk": "Санкт-Петербург, 1878, матчева партія, відхилений королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-09",
+          "fen": "r1k1r3/ppp1np1p/4B3/2N5/3Q2bq/3P4/PPP5/5RK1 b - - 7 25",
+          "moves": "c8b8 c5a6 b7a6 d4b4",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1500,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "sacrifice",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Davydow",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1874,
+            "date": "1874.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036230"
+          },
+          "note": {
+            "en": "St. Petersburg 1874, a King's Gambit.",
+            "uk": "Санкт-Петербург, 1874, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-10",
+          "fen": "8/pp1k1r1R/2p5/6PP/5r2/3P1p2/PPP2K2/8 w - - 1 35",
+          "moves": "h7f7 f4f7 h5h6 f7h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emmanuel Schiffers",
+            "black": "Mikhail Chigorin",
+            "event": "Chigorin - Schiffers Second Match",
+            "site": "St. Petersburg RUE",
+            "year": 1878,
+            "date": "1878.05.15",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1551263"
+          },
+          "note": {
+            "en": "St. Petersburg 1878, match game, a King's Gambit.",
+            "uk": "Санкт-Петербург, 1878, матчева партія, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-11",
+          "fen": "5rk1/5ppp/p3p3/1p3n2/8/5Q1P/PPP1q1P1/3R3K w - - 0 25",
+          "moves": "f3e2 f5g3 h1h2 g3e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Semion Alapin",
+            "black": "Mikhail Chigorin",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUS",
+            "year": 1879,
+            "date": "1879.01.10",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1581106"
+          },
+          "note": {
+            "en": "St. Petersburg 1879, a Sicilian Defence.",
+            "uk": "Санкт-Петербург, 1879, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-12",
+          "fen": "8/2pk2p1/3p1b2/1p2n1BP/p7/7r/R4PRP/5K2 w - - 8 35",
+          "moves": "g5f6 g7f6 g2g7 d7c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Andreas Ascharin",
+            "black": "Mikhail Chigorin",
+            "event": "Riga Match",
+            "site": "Riga RUE",
+            "year": 1892,
+            "date": "1892.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036332"
+          },
+          "note": {
+            "en": "Riga 1892, match game, an Evans Gambit.",
+            "uk": "Рига, 1892, матчева партія, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-13",
+          "fen": "r2Nk2r/ppp5/3p1n2/2b1p3/2BnP1b1/3P2p1/PPPQ1PPP/RN3RK1 w kq - 3 13",
+          "moves": "b1c3 d4f3 g2f3 g4f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Victor Knorre",
+            "black": "Mikhail Chigorin",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg",
+            "year": 1874,
+            "date": "1874.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1337259"
+          },
+          "note": {
+            "en": "St. Petersburg 1874, an Italian Game.",
+            "uk": "Санкт-Петербург, 1874, італійська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-14",
+          "fen": "6rk/ppp4p/3pr2Q/5p2/4q2N/6BP/6R1/7K w - - 0 37",
+          "moves": "g3e5 e4e5 g2g8 h8g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emmanuel Schiffers",
+            "black": "Mikhail Chigorin",
+            "event": "St. Petersburg Tournament-A",
+            "site": "St. Petersburg RUE",
+            "year": 1876,
+            "date": "1876.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2010898"
+          },
+          "note": {
+            "en": "St. Petersburg 1876, an Evans Gambit.",
+            "uk": "Санкт-Петербург, 1876, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-15",
+          "fen": "3r1Q1k/1ppqn3/6pb/p3p3/4P3/P2P1Q2/1P2KP2/7R b - - 0 31",
+          "moves": "d8f8 f3f8 e7g8 h1h6 d7h7 h6h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Emmanuel Schiffers",
+            "event": "Chigorin - Schiffers Third Match",
+            "site": "St. Petersburg RUE",
+            "year": 1879,
+            "date": "1879.05.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036246"
+          },
+          "note": {
+            "en": "St. Petersburg 1879, match game, a Ruy Lopez.",
+            "uk": "Санкт-Петербург, 1879, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-16",
+          "fen": "2k5/pp6/3Q4/B4Ppq/1PP2n2/8/P6K/R7 w - - 1 33",
+          "moves": "h2g1 h5g4 g1f2 g4e2 f2g3 e2g2",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1750,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emmanuel Schiffers",
+            "black": "Mikhail Chigorin",
+            "event": "Chigorin - Schiffers First Match",
+            "site": "St. Petersburg RUE",
+            "year": 1878,
+            "date": "1878.03.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036240"
+          },
+          "note": {
+            "en": "St. Petersburg 1878, match game, a Scotch Game.",
+            "uk": "Санкт-Петербург, 1878, матчева партія, шотландська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-17",
+          "fen": "3r2k1/pn3r2/2p1Q2p/5p1q/2B2RbP/6P1/P1P4K/4R3 b - - 2 35",
+          "moves": "d8d6 e6e8 g8g7 c4f7 h5f7 e1e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Mikhail Stepanovich Beskrovny",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1877,
+            "date": "1877.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036233"
+          },
+          "note": {
+            "en": "St. Petersburg 1877, a Two Knights Defence.",
+            "uk": "Санкт-Петербург, 1877, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-18",
+          "fen": "6k1/pp4pp/2p1r1r1/5p2/5q2/1QPB1P1P/PP3P2/4RK2 b - - 5 25",
+          "moves": "f4f3 e1e3 f3e3 f2e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Semion Alapin",
+            "event": "Match",
+            "site": "St. Petersburg RUE",
+            "year": 1880,
+            "date": "1880.10.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1581111"
+          },
+          "note": {
+            "en": "St. Petersburg 1880, match game, a French Defence.",
+            "uk": "Санкт-Петербург, 1880, матчева партія, французький захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-19",
+          "fen": "4rr1q/p1p1Q1kp/2p3p1/2N3P1/5P2/2pB4/PP5P/4R1K1 b - - 0 24",
+          "moves": "e8e7 e1e7 f8f7 c5e6 g7g8 e7e8 f7f8 e8f8",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 1875,
+          "themes": [
+            "mateIn4",
+            "endgame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Emmanuel Schiffers",
+            "event": "Chigorin - Schiffers Fourth Match",
+            "site": "St. Petersburg RUE",
+            "year": 1880,
+            "date": "1880.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036255"
+          },
+          "note": {
+            "en": "St. Petersburg 1880, match game, a Scotch Game.",
+            "uk": "Санкт-Петербург, 1880, матчева партія, шотландська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-2-20",
+          "fen": "8/8/6p1/5p2/5P2/pK4PP/8/k7 b - - 3 49",
+          "moves": "a3a2 b3c2 g6g5 f4g5 f5f4 g5g6 f4f3 g6g7 f3f2 g7g8q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2150,
+          "themes": [
+            "endgame",
+            "promotion",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Emmanuel Schiffers",
+            "event": "St. Petersburg National t",
+            "site": "St. Petersburg RUE",
+            "year": 1877,
+            "date": "1877.10.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2010906"
+          },
+          "note": {
+            "en": "St. Petersburg 1877, a King's Gambit Declined.",
+            "uk": "Санкт-Петербург, 1877, відхилений королівський гамбіт."
+          }
+        }
+      ]
+    },
+    {
+      "id": "steinitz-3",
+      "title": {
+        "en": "Steinitz's Rivals",
+        "uk": "Суперники Стейніца"
+      },
+      "subtitle": {
+        "en": "Zukertort, Blackburne, Chigorin",
+        "uk": "Цукерторт, Блекберн, Чигорін"
+      },
+      "puzzles": [
+        {
+          "id": "lib-steinitz-3-01",
+          "fen": "2kr4/1pp4q/1pn5/3n2p1/3Bb1P1/P1PB1p2/1PQ5/R3NRKr w - - 4 27",
+          "moves": "g1f2 h7h4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Franciscus G Janssens",
+            "black": "Johannes Zukertort",
+            "event": "Simpson's Divan, London",
+            "site": "London ENG",
+            "year": 1876,
+            "date": "1876.03.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1575356"
+          },
+          "note": {
+            "en": "London 1876, an Italian Game.",
+            "uk": "Лондон, 1876, італійська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-02",
+          "fen": "2r5/1p2Q2B/p6B/5k2/3p4/2q5/2P3P1/6K1 b - - 3 40",
+          "moves": "f5g4 e7g5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "Franciscus G Janssens",
+            "event": "Simpson's Divan, London",
+            "site": "London ENG",
+            "year": 1876,
+            "date": "1876.03.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1575360"
+          },
+          "note": {
+            "en": "London 1876, a Sicilian Defence.",
+            "uk": "Лондон, 1876, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-03",
+          "fen": "4k2r/1p3pb1/2p5/4PN2/3Q1P2/2P1Bp1p/PP5q/R4Kr1 w - - 4 36",
+          "moves": "e3g1 h2e2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Von Zabern",
+            "black": "Joseph Henry Blackburne",
+            "event": "Manchester",
+            "site": "Manchester",
+            "year": 1880,
+            "date": "1880.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1029005"
+          },
+          "note": {
+            "en": "Manchester 1880, a King's Gambit.",
+            "uk": "Манчестер, 1880, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-04",
+          "fen": "6k1/4rpb1/p2r2p1/4P1Pp/3B1P1P/5R2/P7/6K1 w - - 0 37",
+          "moves": "e5d6 g7d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jean Taubenhaus",
+            "black": "Johannes Zukertort",
+            "event": "2nd BCA Congress",
+            "site": "London ENG",
+            "year": 1886,
+            "date": "1886.07.16",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2457948"
+          },
+          "note": {
+            "en": "London 1886, a Ruy Lopez.",
+            "uk": "Лондон, 1886, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-05",
+          "fen": "8/5Rbk/Q3p1p1/1p5p/1Pq5/7P/6P1/5rK1 w - - 0 37",
+          "moves": "f7f1 g7d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Samuel Rosenthal",
+            "black": "Johannes Zukertort",
+            "event": "Rosenthal - Zukertort",
+            "site": "London ENG",
+            "year": 1880,
+            "date": "1880.06.07",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1255760"
+          },
+          "note": {
+            "en": "London 1880, match game, a Ruy Lopez.",
+            "uk": "Лондон, 1880, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-06",
+          "fen": "8/4P1pk/8/3p2qp/2pP1r2/4Q2P/2p3P1/4R1K1 b - - 0 33",
+          "moves": "f4e4 e3g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Joseph Henry Blackburne",
+            "black": "Johannes Zukertort",
+            "event": "Blackburne - Zukertort",
+            "site": "London ENG",
+            "year": 1887,
+            "date": "1887.05.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1029138"
+          },
+          "note": {
+            "en": "London 1887, match game, a Ruy Lopez.",
+            "uk": "Лондон, 1887, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-07",
+          "fen": "6k1/1pp3pp/p1p2p2/5N1q/P2P4/2P2Q2/2PBr1Pb/R5K1 w - - 0 23",
+          "moves": "g1f1 h5f3 g2f3 e2d2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "James Mortimer",
+            "black": "Johannes Zukertort",
+            "event": "3rd BCA Congress",
+            "site": "London ENG",
+            "year": 1887,
+            "date": "1887.11.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1590067"
+          },
+          "note": {
+            "en": "London 1887, a Ruy Lopez.",
+            "uk": "Лондон, 1887, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-08",
+          "fen": "6k1/p1p2p1p/5Pp1/4r3/Pb1p3R/6Q1/P3K1PP/2r5 w - - 0 32",
+          "moves": "g3e5 c1e1 e2d3 e1e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Joseph Henry Blackburne",
+            "black": "Johannes Zukertort",
+            "event": "Simpson's Divan, London",
+            "site": "London ENG",
+            "year": 1876,
+            "date": "1876.04.08",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1028963"
+          },
+          "note": {
+            "en": "London 1876, a Scotch Game.",
+            "uk": "Лондон, 1876, шотландська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-09",
+          "fen": "r1b4r/pp1p1pk1/3NQ1p1/4q2p/2Bn3P/2B3P1/PPP5/2KR3R b - - 0 20",
+          "moves": "d7e6 c3d4 e5d4 d1d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "pin"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "NN",
+            "event": "Casual game",
+            "site": "The Hague NED",
+            "year": 1876,
+            "date": "1876.07.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2091057"
+          },
+          "note": {
+            "en": "The Hague 1876, casual game, a Sicilian Defence.",
+            "uk": "Гаага, 1876, товариська партія, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-10",
+          "fen": "r4rk1/pppqn1p1/1bnp3p/1B1P4/4Pp2/2N2Q1P/PPP2BP1/R4RK1 b - - 0 17",
+          "moves": "c6e5 b5d7 e5f3 g2f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "intermezzo"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "August Wilhelm Franke",
+            "event": "3rd MSB Congress, Leipzig",
+            "site": "Leipzig GER",
+            "year": 1877,
+            "date": "1877.07.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1228251"
+          },
+          "note": {
+            "en": "Leipzig 1877, a Vienna Game.",
+            "uk": "Лейпциг, 1877, віденська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-11",
+          "fen": "r2B2k1/5ppp/p1p5/b3qb2/8/6Q1/P4PPP/3R1RK1 b - - 4 22",
+          "moves": "e5g3 f2g3 a5d8 f1f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "James Innes Minchin",
+            "event": "St.George's CC m",
+            "year": 1879,
+            "date": "1879.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1586918"
+          },
+          "note": {
+            "en": "London 1879, match game, an Evans Gambit.",
+            "uk": "Лондон, 1879, матчева партія, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-12",
+          "fen": "8/1p2k1p1/1Pp1P3/2K2P2/B7/8/1P2n2p/8 w - - 0 35",
+          "moves": "a4c6 b7c6 b6b7 h2h1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "promotion",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Mikhail Chigorin",
+            "event": "Steinitz - Chigorin World Championship Match",
+            "site": "Havana CUB",
+            "year": 1889,
+            "date": "1889.01.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036302"
+          },
+          "note": {
+            "en": "Havana 1889, world championship match, a Queen's Pawn opening. Steinitz kept his world title in this match.",
+            "uk": "Гавана, 1889, матч за звання чемпіона світу, дебют ферзевого пішака. У цьому матчі Стейніц зберіг звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-13",
+          "fen": "3rn1k1/pp2qbpp/5p2/1PN1pN2/P1R5/7P/5PPK/2Q5 b - - 5 35",
+          "moves": "e7c7 c5e6 c7d7 e6d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "fork",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Hermann Zukertort",
+            "black": "Henry William Birkmyre Gifford",
+            "event": "Zukertort Blind Simul, 12b Rotterdam",
+            "site": "Rotterdam NED",
+            "year": 1876,
+            "date": "1876.07.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=3059619"
+          },
+          "note": {
+            "en": "Rotterdam 1876, blindfold display on 12 boards, a Scandinavian Defence.",
+            "uk": "Роттердам, 1876, сеанс наосліп на 12 дошках, скандинавський захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-14",
+          "fen": "3rb1k1/pq3pbp/4n1p1/8/2p5/2P2QB1/PP3PPP/1B1R2K1 w - - 0 38",
+          "moves": "d1d8 e6d8 f3b7 d8b7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Johannes Zukertort",
+            "event": "Steinitz - Zukertort World Championship Match",
+            "site": "New York, NY USA",
+            "year": 1886,
+            "date": "1886.01.18",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1132651"
+          },
+          "note": {
+            "en": "New York 1886, world championship match, a Ruy Lopez. Zukertort lost this first world championship match to Steinitz.",
+            "uk": "Нью-Йорк, 1886, матч за звання чемпіона світу, іспанська партія. Цей перший матч за звання чемпіона світу Цукерторт програв Стейніцу."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-15",
+          "fen": "r4rk1/ppp2p2/5p1p/2bP4/5P1q/3Q3b/PPB3P1/R1B2RK1 w - - 2 19",
+          "moves": "c1e3 h3f5 e3c5 f5d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Johannes Metger",
+            "black": "Johannes Zukertort",
+            "event": "3rd MSB Congress, Leipzig",
+            "site": "Leipzig GER",
+            "year": 1877,
+            "date": "1877.07.20",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1152035"
+          },
+          "note": {
+            "en": "Leipzig 1877, an open game.",
+            "uk": "Лейпциг, 1877, відкритий дебют."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-16",
+          "fen": "1q3rk1/2R3b1/4p1p1/1pQbP2p/3B4/1P6/4B1PP/6K1 b - - 0 35",
+          "moves": "d5b3 c5e7 b8c7 e7c7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Joseph Henry Blackburne",
+            "black": "Celso Golmayo Zupide",
+            "event": "Blackburne - Golmayo",
+            "site": "Havana CUB",
+            "year": 1891,
+            "date": "1891.02.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1029192"
+          },
+          "note": {
+            "en": "Havana 1891, match game, a Sicilian Defence. Blackburne's attacking play earned him the nickname \"the Black Death\".",
+            "uk": "Гавана, 1891, матчева партія, сицилійський захист. За атакувальний стиль Блекберна прозвали «Чорною смертю»."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-17",
+          "fen": "3r4/8/5kpp/np2p3/p3Pp2/2P4P/1P1N1PP1/R3K3 w - - 1 42",
+          "moves": "e1e2 d8d2 e2d2 a5b3 d2d3 b3a1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "endgame",
+            "fork",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Samuel Rosenthal",
+            "black": "Johannes Zukertort",
+            "event": "Rosenthal - Zukertort",
+            "site": "London ENG",
+            "year": 1880,
+            "date": "1880.05.31",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1255758"
+          },
+          "note": {
+            "en": "London 1880, match game, a Ruy Lopez.",
+            "uk": "Лондон, 1880, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-18",
+          "fen": "3R3k/1pp3r1/1b4R1/4rBp1/1P4Pq/p1P4P/P7/1K6 b - - 1 32",
+          "moves": "h8h7 g6h6 h7h6 d8h8 g7h7 h8h7",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1850,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "doubleCheck",
+            "fork",
+            "attraction"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "NN",
+            "event": "Odds game (Nb1)",
+            "site": "West End CC, London ENG",
+            "year": 1877,
+            "date": "1877.04.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=3116897"
+          },
+          "note": {
+            "en": "London 1877, odds game.",
+            "uk": "Лондон, 1877, партія з форою."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-19",
+          "fen": "2r1k1nr/5ppp/p3b3/1Bp3B1/6q1/8/2P1QPPP/1R1R2K1 b k - 0 21",
+          "moves": "a6b5 e2b5 e6d7 d1d7 g4d7 b1e1 e8f8 b5d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1925,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Joseph Henry Blackburne",
+            "black": "V B Crake",
+            "event": "Blackburne Blind Simul 8b, Queen's Hotel",
+            "site": "Hastings ENG",
+            "year": 1890,
+            "date": "1890.04.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2920097"
+          },
+          "note": {
+            "en": "Hastings 1890, blindfold display on 8 boards, a Sicilian Defence.",
+            "uk": "Гастінгс, 1890, сеанс наосліп на 8 дошках, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-steinitz-3-20",
+          "fen": "5rbk/pp1qr1pp/1bp2p1B/3p1P2/3PP3/1P4R1/P1B3QP/6RK b - - 1 27",
+          "moves": "f8f7 e4e5 b6d4 e5e6 d4g1 e6d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "William Wayte",
+            "event": "Casual game",
+            "site": "St. George's CC, London ENG",
+            "year": 1877,
+            "date": "1877.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1075189"
+          },
+          "note": {
+            "en": "London 1877, casual game, a King's Gambit.",
+            "uk": "Лондон, 1877, товариська партія, королівський гамбіт."
+          }
+        }
+      ]
+    }
+  ]
 }
