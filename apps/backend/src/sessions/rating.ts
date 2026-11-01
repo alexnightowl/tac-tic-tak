@@ -1,68 +1,52 @@
 /**
- * Adaptive rating update for the SESSION puzzle rating (not a true Elo).
+ * Per-puzzle update of the style rating: Elo against the puzzle's rating.
  *
- * Inputs from a rolling window of the last N attempts:
- *   correct   — did the solver get it right
- *   responseMs — how fast
- *   puzzleRating — rating of the puzzle attempted
+ *   step = K * (score - expected),  expected = 1 / (1 + 10^((puzzle - rating) / 400))
  *
- * Output: the new currentPuzzleRating.
+ * A solve against a puzzle you'd be expected to solve earns little, a
+ * miss against one costs a lot, and the other way round for hard ones,
+ * so the rating settles where the player solves about half of the
+ * puzzles at their own rating. A fast solve earns up to SPEED_BONUS
+ * more; a miss always costs the plain K, so speed can't inflate the
+ * rating by much (about +40 for a player who is always fast).
  *
- * Algorithm intent (per spec):
- *   - correctness drives the step sign
- *   - speed scales the step (fast correct => bigger step up; slow correct => smaller)
- *   - puzzle rating vs current rating scales the step (beat a harder puzzle => bigger step)
+ * The step used to average a window of attempts and reward a fast solve
+ * about twice what a miss cost, which let the rating outgrow the player
+ * within a session (docs/mobile/DECISIONS.md D24, D25).
  */
-export type AttemptWindow = {
+export type RatedAttempt = {
   correct: boolean;
   responseMs: number;
   puzzleRating: number;
-}[];
+};
 
+export const RATING_K = 16;
+// "Settling in": a new or recalibrating player's first sessions move
+// the rating this many times faster.
+export const PROVISIONAL_K_FACTOR = 2;
+export const SPEED_BONUS = 0.25;
 const FAST_MS = 4_000;
 const SLOW_MS = 12_000;
 
-function speedFactor(ms: number, correct: boolean): number {
-  // Faster correct attempts earn more; slower correct earn less.
-  // Faster wrong attempts cost slightly less (you were guessing / acting quickly).
-  const clamped = Math.max(FAST_MS, Math.min(SLOW_MS, ms));
-  const norm = 1 - (clamped - FAST_MS) / (SLOW_MS - FAST_MS); // 1 at fast, 0 at slow
-  if (correct) return 0.5 + norm; // 0.5..1.5
-  return 0.8 - norm * 0.3;        // 0.5..0.8
+export function expectedSolve(puzzleRating: number, rating: number): number {
+  return 1 / (1 + Math.pow(10, (puzzleRating - rating) / 400));
 }
 
-function difficultyFactor(puzzleRating: number, currentRating: number): number {
-  const delta = puzzleRating - currentRating;
-  // clamp [-200, +200] -> [0.5, 1.5]
-  const c = Math.max(-200, Math.min(200, delta));
-  return 1 + c / 400;
+// 1 at FAST_MS or quicker, 0 at SLOW_MS or slower.
+function speedNorm(ms: number): number {
+  const clamped = Math.max(FAST_MS, Math.min(SLOW_MS, ms));
+  return 1 - (clamped - FAST_MS) / (SLOW_MS - FAST_MS);
 }
 
 export function computeRatingStep(
   currentRating: number,
-  window: AttemptWindow,
-  currentStreak: number = 0,
+  attempt: RatedAttempt,
+  opts: { provisional?: boolean } = {},
 ): number {
-  if (window.length === 0) return 0;
-  let total = 0;
-  const base = 12;
-  for (const a of window) {
-    const sign = a.correct ? 1 : -1;
-    const speed = speedFactor(a.responseMs, a.correct);
-    const diff = difficultyFactor(a.puzzleRating, currentRating);
-    // Mistakes against easy puzzles sting more; successes vs hard puzzles reward more.
-    const diffAdj = a.correct ? diff : 2 - diff;
-    total += sign * base * speed * diffAdj;
-  }
-  // Average over the window so magnitude doesn't scale with N.
-  let step = total / window.length;
-  // Streak reward: only boosts positive (correct-driven) momentum, never
-  // softens losses. +4% per step past the first, capped at 10 → 1.36x.
-  if (step > 0 && currentStreak > 1) {
-    const capped = Math.min(currentStreak - 1, 9);
-    step *= 1 + capped * 0.04;
-  }
-  return Math.round(step);
+  const expected = expectedSolve(attempt.puzzleRating, currentRating);
+  let k = RATING_K * (opts.provisional ? PROVISIONAL_K_FACTOR : 1);
+  if (attempt.correct) k *= 1 + SPEED_BONUS * speedNorm(attempt.responseMs);
+  return Math.round(k * ((attempt.correct ? 1 : 0) - expected));
 }
 
 /**

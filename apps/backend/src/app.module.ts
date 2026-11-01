@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { AdminModule } from './admin/admin.module';
 import { OfflineModule } from './offline/offline.module';
+import { ExperienceModule } from './experience/experience.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { OfflineModule } from './offline/offline.module';
     AchievementsModule,
     AdminModule,
     OfflineModule,
+    ExperienceModule,
   ],
 })
 export class AppModule {}
