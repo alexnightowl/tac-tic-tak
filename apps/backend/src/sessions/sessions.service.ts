@@ -19,10 +19,18 @@ import {
   CalibrationAttempt,
   CALIBRATION_PROBE_BELOW,
 } from './calibration';
+import {
+  evaluateLevel,
+  initialLevel,
+  LevelCheck,
+  LEVEL_GUARD_SESSIONS,
+  LEVEL_STEP,
+  trainingXp,
+} from './progress';
+import { ExperienceService } from '../experience/experience.service';
 import { applyStreakOnPlay, isValidDay, StreakState } from './streak';
 import { AchievementsService } from '../achievements/achievements.service';
 
-export const WINDOW = 4;
 export const MIN_RATING = 400;
 export const MAX_RATING = 3000;
 // The level-up ceiling ("norm") lives on the play slider's 25-point grid,
@@ -43,6 +51,7 @@ export class SessionsService {
     private readonly prisma: PrismaService,
     private readonly buffer: PuzzleBufferService,
     private readonly achievements: AchievementsService,
+    private readonly experience: ExperienceService,
   ) {}
 
   async create(userId: string, dto: CreateSessionDto) {
@@ -54,10 +63,15 @@ export class SessionsService {
     // call calibration "done" at a rating that doesn't reflect their
     // real strength. UI hides the picker during calibration too — this
     // is the belt to that suspenders.
-    const calibrating =
-      dto.mode !== 'theme' && styleRow.calibrationSessionsLeft > 0;
+    // Play v2 rated sessions always start at the player's rating (no
+    // slider, no norm cap); casual and theme sessions are unrated.
+    const unrated = isUnrated(dto.mode);
+    const v2 = dto.ruleset === 'v2';
+    const calibrating = !unrated && !v2 && styleRow.calibrationSessionsLeft > 0;
     let startRating = dto.startRating;
-    if (calibrating) {
+    if (v2 && !unrated) {
+      startRating = styleRow.currentPuzzleRating;
+    } else if (calibrating) {
       const win = await this.calibrationWindow(userId, dto.style, styleRow);
       startRating = calibrationProbe(win.attempts, win.anchor, win.lastStart);
     }
@@ -69,7 +83,7 @@ export class SessionsService {
     // their level. We're using `startRating` (post-override) here so
     // the comparison is against the value that's actually going to
     // be persisted on the session row.
-    if (dto.mode !== 'theme' && !calibrating && startRating > styleRow.unlockedStartRating + 200) {
+    if (!unrated && !v2 && !calibrating && startRating > styleRow.unlockedStartRating + 200) {
       throw new BadRequestException(`startRating exceeds unlocked cap (${styleRow.unlockedStartRating})`);
     }
 
@@ -81,9 +95,10 @@ export class SessionsService {
         theme: dto.theme ?? null,
         startRating,
         durationSec: dto.durationSec,
+        ruleset: v2 ? 'v2' : null,
       },
     });
-    if (dto.mode !== 'theme') {
+    if (!unrated) {
       await this.prisma.userStyleProgression.update({
         where: { userId_style: { userId, style: dto.style } },
         data: { currentPuzzleRating: startRating, startPuzzleRating: startRating },
@@ -165,9 +180,9 @@ export class SessionsService {
       });
     }
 
-    // Theme sessions are unrated — they pin puzzle difficulty to the user's
-    // chosen startRating and never touch the adaptive progression.
-    const servingRating = session.mode === 'theme'
+    // Theme and casual sessions are unrated — they pin puzzle difficulty to
+    // the user's chosen startRating and never touch the adaptive progression.
+    const servingRating = isUnrated(session.mode)
       ? session.startRating
       : progression.currentPuzzleRating;
 
@@ -242,27 +257,19 @@ export class SessionsService {
       else break;
     }
 
-    // Theme sessions are unrated — skip the rating step entirely and keep the
-    // user's progression untouched. We still want attempts + review items
-    // recorded above, so they show up in history.
-    if (session.mode === 'theme') {
+    // Theme and casual sessions are unrated — skip the rating step entirely
+    // and keep the user's progression untouched. We still want attempts +
+    // review items recorded above, so they show up in history.
+    if (isUnrated(session.mode)) {
       return { newRating: session.startRating, step: 0, streak };
     }
 
-    const windowAttempts = await this.prisma.trainingAttempt.findMany({
-      where: { sessionId },
-      orderBy: { createdAt: 'desc' },
-      take: WINDOW,
-    });
     const progression = await this.styleProgression(userId, style);
     const step = computeRatingStep(
       progression.currentPuzzleRating,
-      windowAttempts.map((a) => ({
-        correct: a.correct,
-        responseMs: a.responseMs,
-        puzzleRating: a.puzzleRating,
-      })),
-      streak,
+      { correct: dto.correct, responseMs: dto.responseMs, puzzleRating: puzzle.rating },
+      // v2 "settling in": the first sessions move the rating faster.
+      { provisional: session.ruleset === 'v2' && progression.calibrationSessionsLeft > 0 },
     );
     const next = Math.max(MIN_RATING, Math.min(MAX_RATING, progression.currentPuzzleRating + step));
     await this.prisma.userStyleProgression.update({
@@ -302,7 +309,7 @@ export class SessionsService {
       // session.startRating, so restoring to that value mirrors the
       // just-after-create state. Theme sessions don't touch
       // progression rating, so the restore is a no-op for them.
-      if (session.mode !== 'theme') {
+      if (!isUnrated(session.mode)) {
         await this.prisma.userStyleProgression.update({
           where: { userId_style: { userId, style: normalizeStyle(session.style) } },
           data: {
@@ -336,10 +343,11 @@ export class SessionsService {
 
     const attempts = await this.prisma.trainingAttempt.findMany({ where: { sessionId } });
     const stats = deriveSessionStats(attempts, session.startRating);
+    const endedAt = new Date();
     await this.prisma.trainingSession.update({
       where: { id: sessionId },
       data: {
-        endedAt: new Date(),
+        endedAt,
         solvedCount: stats.solved,
         failedCount: stats.failed,
         accuracy: stats.accuracy,
@@ -356,8 +364,19 @@ export class SessionsService {
 
     const style = normalizeStyle(session.style);
 
-    // Theme sessions are unrated — no unlock check, no reward.
-    if (session.mode === 'theme') {
+    // Experience for the time actually trained, in any mode.
+    const activeSec = Math.max(
+      0,
+      Math.min((endedAt.getTime() - session.startedAt.getTime()) / 1000, session.durationSec),
+    );
+    const xp = await this.experience.award(userId, {
+      source: 'session',
+      xp: trainingXp(activeSec * 1000),
+      trainingSec: activeSec,
+    });
+
+    // Theme and casual sessions are unrated — no unlock check, no reward.
+    if (isUnrated(session.mode)) {
       await this.buffer.clearSession(sessionId);
       const newAchievements = await this.achievements.evaluate(userId);
       return {
@@ -366,8 +385,11 @@ export class SessionsService {
         streak: streakOutcome,
         achievementsUnlocked: newAchievements,
         style,
+        xp,
       };
     }
+
+    const v2 = session.ruleset === 'v2';
 
     // Early-exit guard. The play runner only calls `finish` two ways:
     // (a) timer naturally expired, (b) user pressed the exit dialog's
@@ -381,6 +403,7 @@ export class SessionsService {
     if (earlyExit) {
       await this.buffer.clearSession(sessionId);
       const newAchievements = await this.achievements.evaluate(userId);
+      const row = v2 ? await this.styleProgression(userId, style) : null;
       return {
         ...(await this.summary(sessionId)),
         unlocked: false,
@@ -388,10 +411,48 @@ export class SessionsService {
         streak: streakOutcome,
         achievementsUnlocked: newAchievements,
         style,
+        xp,
+        // v2: the rating moved, the level waits for a full session.
+        ...(row
+          ? {
+              rating: { before: session.startRating, after: row.currentPuzzleRating },
+              level: evaluateLevelHeld(row, session.startRating),
+            }
+          : {}),
       };
     }
 
     const progression = await this.styleProgression(userId, style);
+
+    if (v2) {
+      // Play v2: the level follows the rating (sessions/progress.ts); the
+      // norm, weak streak and calibration placement stay out of it. The
+      // calibration counter only drives the faster "settling in" steps.
+      const level = evaluateLevel(
+        progression.level ?? initialLevel(session.startRating, progression.unlockedStartRating),
+        progression.currentPuzzleRating,
+        progression.levelGuard,
+      );
+      const settlingLeft = Math.max(0, progression.calibrationSessionsLeft - 1);
+      await this.prisma.userStyleProgression.update({
+        where: { userId_style: { userId, style } },
+        data: { level: level.after, levelGuard: level.guardAfter, calibrationSessionsLeft: settlingLeft },
+      });
+      await this.buffer.clearSession(sessionId);
+      const newAchievements = await this.achievements.evaluate(userId);
+      return {
+        ...(await this.summary(sessionId)),
+        unlocked: false,
+        streak: streakOutcome,
+        achievementsUnlocked: newAchievements,
+        style,
+        xp,
+        rating: { before: session.startRating, after: progression.currentPuzzleRating },
+        level,
+        settling: { sessionsLeft: settlingLeft },
+      };
+    }
+
     // Criteria check runs in either mode — UI uses it for the in-
     // session progress bar regardless of whether unlock fires.
     const check = evaluateUnlock(style, stats, session.durationSec, session.startRating);
@@ -541,6 +602,7 @@ export class SessionsService {
       streak: streakOutcome,
       achievementsUnlocked: newAchievements,
       style,
+      xp,
     };
   }
 
@@ -784,6 +846,28 @@ export class SessionsService {
       style: s.style,
     };
   }
+}
+
+/** A v2 level that this session leaves as it was (early exit). */
+function evaluateLevelHeld(
+  row: { level: number | null; levelGuard: number; unlockedStartRating: number },
+  startRating: number,
+): LevelCheck {
+  const level = row.level ?? initialLevel(startRating, row.unlockedStartRating);
+  return {
+    before: level,
+    after: level,
+    up: false,
+    down: false,
+    guardBefore: row.levelGuard,
+    guardAfter: row.levelGuard,
+    guardThreshold: LEVEL_GUARD_SESSIONS,
+    next: level + LEVEL_STEP,
+  };
+}
+
+function isUnrated(mode: string): boolean {
+  return mode === 'theme' || mode === 'casual';
 }
 
 function normalizeStyle(raw: string): TrainingStyle {

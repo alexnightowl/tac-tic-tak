@@ -14,10 +14,11 @@ import {
   MAX_RATING,
   MIN_RATING,
   SessionsService,
-  WINDOW,
 } from '../sessions/sessions.service';
 import { computeRatingStep, deriveSessionStats } from '../sessions/rating';
 import { isValidDay } from '../sessions/streak';
+import { trainingXp, XP_PER_REVIEW } from '../sessions/progress';
+import { ExperienceService } from '../experience/experience.service';
 import { TrainingStyle } from '../sessions/unlock';
 import { OfflineAttemptDto, PackKind, PackQueryDto, SyncDto } from './dto';
 
@@ -55,6 +56,7 @@ export class OfflineService {
     private readonly analytics: AnalyticsService,
     private readonly achievements: AchievementsService,
     private readonly sessions: SessionsService,
+    private readonly experience: ExperienceService,
   ) {}
 
   async pack(userId: string, q: PackQueryDto) {
@@ -194,7 +196,21 @@ export class OfflineService {
           reviewResolved += r.count;
         }
 
-        return { packResult, reviewResolved, unknownPuzzles, freshCount: fresh.size };
+        // Experience: the time spent on every fresh attempt, plus the
+        // mistakes cleared from Review.
+        const trainingMs = known.reduce((sum, a) => sum + a.responseMs, 0);
+        const xp = await this.experience.award(
+          userId,
+          {
+            source: 'offline',
+            xp: trainingXp(trainingMs) + reviewResolved * XP_PER_REVIEW,
+            trainingSec: trainingMs / 1000,
+            reviews: reviewResolved,
+          },
+          tx,
+        );
+
+        return { packResult, reviewResolved, unknownPuzzles, freshCount: fresh.size, xp };
       },
       { maxWait: 10_000, timeout: 30_000 },
     );
@@ -222,6 +238,7 @@ export class OfflineService {
       mistakesToReview: p?.mistakesToReview ?? 0,
       reviewResolved: result.reviewResolved,
       duplicates: all.length - result.freshCount,
+      xp: result.xp,
       unknownPuzzles: result.unknownPuzzles,
       streak,
       achievementsUnlocked,
@@ -230,8 +247,8 @@ export class OfflineService {
 
   /**
    * One offline TrainingSession for the batch's pack attempts, rated like
-   * the online `attempt` handler steps them (sliding WINDOW + correct-run
-   * multiplier, clamped), in solve order. No unlock/demote/calibration.
+   * the online `attempt` handler steps them (per-puzzle Elo step, clamped),
+   * in solve order. No unlock/demote/calibration, no level change.
    */
   private async applyPack(
     tx: Prisma.TransactionClient,
@@ -259,13 +276,10 @@ export class OfflineService {
       puzzleRating: ratingOf.get(a.puzzleId)!,
     }));
     let rating = ratingBefore;
-    let run = 0;
-    rows.forEach((row, i) => {
-      run = row.correct ? run + 1 : 0;
-      const window = rows.slice(Math.max(0, i + 1 - WINDOW), i + 1);
-      const step = computeRatingStep(rating, window, run);
+    for (const row of rows) {
+      const step = computeRatingStep(rating, row);
       rating = Math.max(MIN_RATING, Math.min(MAX_RATING, rating + step));
-    });
+    }
 
     const stats = deriveSessionStats(rows, ratingBefore);
     const timeMs = rows.reduce((s, r) => s + r.responseMs, 0);
