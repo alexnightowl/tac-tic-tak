@@ -1,0 +1,800 @@
+{
+ "id": "attack",
+ "version": 1,
+ "out": "apps/backend/src/library/content/attack.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "Pillsbury at the Board",
+    "uk": "Пільсбері за дошкою"
+   },
+   "subtitle": {
+    "en": "Harry Nelson Pillsbury, 1895–1905",
+    "uk": "Гаррі Нельсон Пільсбері, 1895–1905"
+   },
+   "picks": [
+    {
+     "key": "1109091:45",
+     "note": {
+      "en": "St. Petersburg 1895, a Petrov Defence. Lasker won this four-player event; Pillsbury finished third.",
+      "uk": "Санкт-Петербург, 1895, захист Петрова. Цей турнір чотирьох виграв Ласкер; Пільсбері посів третє місце."
+     }
+    },
+    {
+     "key": "1002559:78",
+     "note": {
+      "en": "Budapest 1896, a Queen's Gambit Declined. Chigorin won the tournament after a play-off with Charousek.",
+      "uk": "Будапешт, 1896, відхилений ферзевий гамбіт. Турнір виграв Чигорін після додаткового матчу з Шарушеком."
+     }
+    },
+    {
+     "key": "1099481:66",
+     "note": {
+      "en": "Monte Carlo 1903, a Slav Defence. Tarrasch won this tournament.",
+      "uk": "Монте-Карло, 1903, словʼянський захист. Цей турнір виграв Тарраш."
+     }
+    },
+    {
+     "key": "1109151:52",
+     "note": {
+      "en": "Vienna 1898, a Ruy Lopez. Pillsbury tied for first with Tarrasch, who won the play-off.",
+      "uk": "Відень, 1898, іспанська партія. Пільсбері поділив перше місце з Таррашем, який виграв додатковий матч."
+     },
+     "themes": [
+      "middlegame",
+      "fork"
+     ]
+    },
+    {
+     "key": "1109157:55",
+     "note": {
+      "en": "Vienna 1898, a Ruy Lopez.",
+      "uk": "Відень, 1898, іспанська партія."
+     },
+     "themes": [
+      "middlegame",
+      "capturingDefender"
+     ]
+    },
+    {
+     "key": "1099307:73",
+     "note": {
+      "en": "Monte Carlo 1902, a 1.Nf3 opening. Maróczy won this tournament.",
+      "uk": "Монте-Карло, 1902, дебют 1.Nf3. Цей турнір виграв Мароці."
+     }
+    },
+    {
+     "key": "1000091:42",
+     "note": {
+      "en": "Paris 1900, a Queen's Gambit Declined. Lasker won the tournament; Pillsbury was second.",
+      "uk": "Париж, 1900, відхилений ферзевий гамбіт. Турнір виграв Ласкер; Пільсбері став другим."
+     }
+    },
+    {
+     "key": "2028013:73",
+     "note": {
+      "en": "St. Louis 1901, exhibition match game, a Ruy Lopez.",
+      "uk": "Сент-Луїс, 1901, показовий матч, іспанська партія."
+     }
+    },
+    {
+     "key": "2811778:54",
+     "note": {
+      "en": "Clayton 1897, New York v Pennsylvania team match, a Queen's Gambit Declined.",
+      "uk": "Клейтон, 1897, командний матч Нью-Йорк — Пенсильванія, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1099325:56",
+     "note": {
+      "en": "Monte Carlo 1902, a Ruy Lopez.",
+      "uk": "Монте-Карло, 1902, іспанська партія."
+     }
+    },
+    {
+     "key": "1109191:42",
+     "note": {
+      "en": "St. Louis 1898, a Queen's Gambit Declined.",
+      "uk": "Сент-Луїс, 1898, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1099422:60",
+     "note": {
+      "en": "Monte Carlo 1903, a Sicilian Defence.",
+      "uk": "Монте-Карло, 1903, сицилійський захист."
+     }
+    },
+    {
+     "key": "2749882:15",
+     "note": {
+      "en": "Atlantic City 1904, casual game, a King's Knight opening.",
+      "uk": "Атлантик-Сіті, 1904, товариська партія, дебют королівського коня."
+     }
+    },
+    {
+     "key": "2749828:13",
+     "note": {
+      "en": "Atlantic City 1905, casual game, a Centre Game. One of Pillsbury's last recorded games: he died the next year.",
+      "uk": "Атлантик-Сіті, 1905, товариська партія, центральний дебют. Одна з останніх відомих партій Пільсбері: наступного року він помер."
+     }
+    },
+    {
+     "key": "1109187:45",
+     "note": {
+      "en": "New Orleans 1899, a Vienna Game.",
+      "uk": "Новий Орлеан, 1899, віденська партія."
+     }
+    },
+    {
+     "key": "1000032:57",
+     "note": {
+      "en": "Paris 1900, a Ruy Lopez.",
+      "uk": "Париж, 1900, іспанська партія."
+     }
+    },
+    {
+     "key": "1109153:40",
+     "note": {
+      "en": "Vienna 1898, a Queen's Gambit Declined.",
+      "uk": "Відень, 1898, відхилений ферзевий гамбіт."
+     },
+     "themes": [
+      "middlegame",
+      "pin"
+     ]
+    },
+    {
+     "key": "1109168:61",
+     "note": {
+      "en": "London 1899, a Vienna Game. Lasker won this tournament.",
+      "uk": "Лондон, 1899, віденська партія. Цей турнір виграв Ласкер."
+     }
+    },
+    {
+     "key": "1099430:56",
+     "note": {
+      "en": "Monte Carlo 1903, a Petrov Defence.",
+      "uk": "Монте-Карло, 1903, захист Петрова."
+     }
+    },
+    {
+     "key": "1109219:66",
+     "note": {
+      "en": "Buffalo 1901, a Sicilian Defence. Pillsbury held the US title from 1897 until his death.",
+      "uk": "Баффало, 1901, сицилійський захист. Пільсбері був чемпіоном США від 1897 року до своєї смерті."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Pillsbury Blindfold",
+    "uk": "Пільсбері наосліп"
+   },
+   "subtitle": {
+    "en": "Simultaneous displays, 1895–1904",
+    "uk": "Сеанси одночасної гри, 1895–1904"
+   },
+   "picks": [
+    {
+     "key": "1859600:44",
+     "note": {
+      "en": "New York 1895, blindfold display on 4 boards. Pillsbury became the leading blindfold player of his time.",
+      "uk": "Нью-Йорк, 1895, сеанс наосліп на 4 дошках. Пільсбері став найсильнішим гравцем наосліп свого часу."
+     }
+    },
+    {
+     "key": "1609926:64",
+     "note": {
+      "en": "Chicago 1898, simultaneous display.",
+      "uk": "Чикаго, 1898, сеанс одночасної гри."
+     }
+    },
+    {
+     "key": "1992447:38",
+     "note": {
+      "en": "Philadelphia 1898, blindfold display on 8 boards.",
+      "uk": "Філадельфія, 1898, сеанс наосліп на 8 дошках."
+     },
+     "themes": [
+      "middlegame",
+      "intermezzo"
+     ]
+    },
+    {
+     "key": "1819062:54",
+     "note": {
+      "en": "Lexington 1899, blindfold display.",
+      "uk": "Лексінгтон, 1899, сеанс наосліп."
+     }
+    },
+    {
+     "key": "1109193:40",
+     "note": {
+      "en": "Toledo 1900, blindfold display on 12 boards.",
+      "uk": "Толідо, 1900, сеанс наосліп на 12 дошках."
+     }
+    },
+    {
+     "key": "1109213:14",
+     "note": {
+      "en": "Havana 1900, blindfold display on 12 boards.",
+      "uk": "Гавана, 1900, сеанс наосліп на 12 дошках."
+     }
+    },
+    {
+     "key": "1697503:64",
+     "note": {
+      "en": "Lincoln 1900, blindfold display on 12 boards.",
+      "uk": "Лінкольн, 1900, сеанс наосліп на 12 дошках."
+     }
+    },
+    {
+     "key": "1728408:48",
+     "note": {
+      "en": "Chicago 1900, blindfold display on 16 boards.",
+      "uk": "Чикаго, 1900, сеанс наосліп на 16 дошках."
+     }
+    },
+    {
+     "key": "1728417:74",
+     "note": {
+      "en": "Chicago 1900, blindfold display on 16 boards.",
+      "uk": "Чикаго, 1900, сеанс наосліп на 16 дошках."
+     }
+    },
+    {
+     "key": "2754720:26",
+     "note": {
+      "en": "Washington 1901, blindfold display on 10 boards.",
+      "uk": "Вашингтон, 1901, сеанс наосліп на 10 дошках."
+     }
+    },
+    {
+     "key": "2754721:34",
+     "note": {
+      "en": "Washington 1901, blindfold display on 10 boards.",
+      "uk": "Вашингтон, 1901, сеанс наосліп на 10 дошках."
+     }
+    },
+    {
+     "key": "2690293:48",
+     "note": {
+      "en": "Hanover 1902, blindfold display on 21 boards. Pillsbury played all 21 games without sight of the boards.",
+      "uk": "Ганновер, 1902, сеанс наосліп на 21 дошці. Пільсбері провів усі 21 партію, не бачачи дошок."
+     },
+     "themes": [
+      "middlegame",
+      "hangingPiece"
+     ]
+    },
+    {
+     "key": "2754102:60",
+     "note": {
+      "en": "Paris 1902, blindfold display on 16 boards.",
+      "uk": "Париж, 1902, сеанс наосліп на 16 дошках."
+     }
+    },
+    {
+     "key": "2754108:22",
+     "note": {
+      "en": "Paris 1902, blindfold display on 16 boards.",
+      "uk": "Париж, 1902, сеанс наосліп на 16 дошках."
+     }
+    },
+    {
+     "key": "2754114:86",
+     "note": {
+      "en": "Hastings 1902, blindfold display on 16 boards. Pillsbury had won the great Hastings tournament of 1895.",
+      "uk": "Гастінгс, 1902, сеанс наосліп на 16 дошках. У 1895 році Пільсбері виграв великий турнір у Гастінгсі."
+     }
+    },
+    {
+     "key": "2754134:42",
+     "note": {
+      "en": "Philadelphia 1902, blindfold display on 17 boards.",
+      "uk": "Філадельфія, 1902, сеанс наосліп на 17 дошках."
+     }
+    },
+    {
+     "key": "1109238:36",
+     "note": {
+      "en": "Hastings 1903, blindfold display on 16 boards.",
+      "uk": "Гастінгс, 1903, сеанс наосліп на 16 дошках."
+     }
+    },
+    {
+     "key": "1551408:76",
+     "note": {
+      "en": "Chicago 1903, simultaneous display against consulting teams on 7 boards.",
+      "uk": "Чикаго, 1903, сеанс на 7 дошках проти команд, що радилися."
+     }
+    },
+    {
+     "key": "2751082:38",
+     "note": {
+      "en": "Plymouth 1903, blindfold display on 16 boards.",
+      "uk": "Плімут, 1903, сеанс наосліп на 16 дошках."
+     }
+    },
+    {
+     "key": "2749836:66",
+     "note": {
+      "en": "Memphis 1904, blindfold display on 5 boards.",
+      "uk": "Мемфіс, 1904, сеанс наосліп на 5 дошках."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Marshall's Attacks",
+    "uk": "Атаки Маршалла"
+   },
+   "subtitle": {
+    "en": "Frank Marshall, 1895–1914",
+    "uk": "Френк Маршалл, 1895–1914"
+   },
+   "picks": [
+    {
+     "key": "2018948:33",
+     "note": {
+      "en": "New York 1910, match game, a Ruy Lopez.",
+      "uk": "Нью-Йорк, 1910, матчева партія, іспанська партія."
+     }
+    },
+    {
+     "key": "1094750:57",
+     "note": {
+      "en": "Prague 1908, a Ruy Lopez.",
+      "uk": "Прага, 1908, іспанська партія."
+     }
+    },
+    {
+     "key": "2878690:72",
+     "note": {
+      "en": "San Francisco 1913, simultaneous display, a Centre Game.",
+      "uk": "Сан-Франциско, 1913, сеанс одночасної гри, центральний дебют."
+     }
+    },
+    {
+     "key": "1036012:30",
+     "note": {
+      "en": "Ostend 1905, a Giuoco Piano.",
+      "uk": "Остенде, 1905, італійська партія."
+     }
+    },
+    {
+     "key": "1094614:62",
+     "note": {
+      "en": "Scheveningen 1905, a Queen's Gambit Declined.",
+      "uk": "Схевенінген, 1905, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1094774:46",
+     "note": {
+      "en": "Berlin 1908, match game, a Queen's Gambit Declined.",
+      "uk": "Берлін, 1908, матчева партія, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1001138:60",
+     "note": {
+      "en": "Havana 1913, a Centre Game. Marshall won the tournament, ahead of Capablanca.",
+      "uk": "Гавана, 1913, центральний дебют. Турнір виграв Маршалл, випередивши Капабланку."
+     }
+    },
+    {
+     "key": "1094409:35",
+     "note": {
+      "en": "Montreal 1895, inter-club match, an Evans Gambit. Marshall, then 17, grew up in Montreal.",
+      "uk": "Монреаль, 1895, міжклубний матч, гамбіт Еванса. Маршалл, якому тоді було 17, виріс у Монреалі."
+     }
+    },
+    {
+     "key": "1000702:36",
+     "note": {
+      "en": "Karlsbad 1911, a Queen's Gambit Declined. Teichmann won this tournament.",
+      "uk": "Карлсбад, 1911, відхилений ферзевий гамбіт. Цей турнір виграв Тайхман."
+     }
+    },
+    {
+     "key": "1094540:60",
+     "note": {
+      "en": "1903 Anglo-American cable match, played by telegraph, a Slav Defence.",
+      "uk": "Англо-американський матч 1903 року по телеграфу, словʼянський захист."
+     }
+    },
+    {
+     "key": "1094647:67",
+     "note": {
+      "en": "Ostend 1906, a Queen's Pawn opening.",
+      "uk": "Остенде, 1906, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1094667:73",
+     "note": {
+      "en": "Nuremberg 1906, a Queen's Gambit Declined. Marshall won this tournament.",
+      "uk": "Нюрнберг, 1906, відхилений ферзевий гамбіт. Цей турнір виграв Маршалл."
+     }
+    },
+    {
+     "key": "1094770:28",
+     "note": {
+      "en": "Düsseldorf 1908, a Queen's Gambit Declined.",
+      "uk": "Дюссельдорф, 1908, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1001118:39",
+     "note": {
+      "en": "Havana 1913, a Queen's Pawn opening.",
+      "uk": "Гавана, 1913, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1094573:14",
+     "note": {
+      "en": "St. Louis 1904, a Queen's Gambit Accepted. Marshall won this congress.",
+      "uk": "Сент-Луїс, 1904, прийнятий ферзевий гамбіт. Цей конгрес виграв Маршалл."
+     }
+    },
+    {
+     "key": "1000923:24",
+     "note": {
+      "en": "Karlsbad 1911, a Queen's Gambit Accepted.",
+      "uk": "Карлсбад, 1911, прийнятий ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1094940:47",
+     "note": {
+      "en": "New York 1913, a Queen's Pawn opening.",
+      "uk": "Нью-Йорк, 1913, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1036870:41",
+     "note": {
+      "en": "Cambridge Springs 1904, a Sicilian Defence. Marshall won this tournament without losing a game.",
+      "uk": "Кембридж-Спрінгс, 1904, сицилійський захист. Маршалл виграв цей турнір без жодної поразки."
+     }
+    },
+    {
+     "key": "1036782:44",
+     "note": {
+      "en": "Cambridge Springs 1904, a 1...d6 defence.",
+      "uk": "Кембридж-Спрінгс, 1904, захист 1...d6."
+     }
+    },
+    {
+     "key": "1075951:56",
+     "note": {
+      "en": "Monte Carlo 1903, a King's Gambit.",
+      "uk": "Монте-Карло, 1903, королівський гамбіт."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Janowski and Chigorin",
+    "uk": "Яновський і Чигорін"
+   },
+   "subtitle": {
+    "en": "Two attacking masters, 1895–1914",
+    "uk": "Двоє майстрів атаки, 1895–1914"
+   },
+   "picks": [
+    {
+     "key": "1064494:65",
+     "note": {
+      "en": "Paris 1895, match game, a Vienna Game.",
+      "uk": "Париж, 1895, матчева партія, віденська партія."
+     }
+    },
+    {
+     "key": "1580676:70",
+     "note": {
+      "en": "New York 1899, match game, a Queen's Gambit Declined.",
+      "uk": "Нью-Йорк, 1899, матчева партія, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1751699:72",
+     "note": {
+      "en": "New York 1899, exhibition game at the Manhattan Chess Club, a French Defence.",
+      "uk": "Нью-Йорк, 1899, показова партія в Манхеттенському шаховому клубі, французький захист."
+     }
+    },
+    {
+     "key": "1064596:47",
+     "note": {
+      "en": "Amsterdam 1901, a Giuoco Piano. The same year Janowski won at Monte Carlo.",
+      "uk": "Амстердам, 1901, італійська партія. Того ж року Яновський переміг у Монте-Карло."
+     }
+    },
+    {
+     "key": "1791957:73",
+     "note": {
+      "en": "New York 1913, a King's Gambit.",
+      "uk": "Нью-Йорк, 1913, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1064758:62",
+     "note": {
+      "en": "Mannheim 1914, a Queen's Pawn opening. The tournament was cut short by the outbreak of the First World War.",
+      "uk": "Мангейм, 1914, дебют ферзевого пішака. Турнір перервав початок Першої світової війни."
+     }
+    },
+    {
+     "key": "1266438:39",
+     "note": {
+      "en": "Paris 1905, exhibition match game, a King's Gambit.",
+      "uk": "Париж, 1905, показовий матч, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1064665:71",
+     "note": {
+      "en": "Ostend 1906, a Vienna Game.",
+      "uk": "Остенде, 1906, віденська партія."
+     }
+    },
+    {
+     "key": "1633342:70",
+     "note": {
+      "en": "New York 1913, a Ruy Lopez.",
+      "uk": "Нью-Йорк, 1913, іспанська партія."
+     }
+    },
+    {
+     "key": "1064664:58",
+     "note": {
+      "en": "Ostend 1906, a Queen's Gambit Declined.",
+      "uk": "Остенде, 1906, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1064520:53",
+     "note": {
+      "en": "Cologne 1898, a Sicilian Defence.",
+      "uk": "Кельн, 1898, сицилійський захист."
+     }
+    },
+    {
+     "key": "1922843:52",
+     "note": {
+      "en": "Ostend 1906, a Queen's Gambit Declined.",
+      "uk": "Остенде, 1906, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1394382:43",
+     "note": {
+      "en": "Scheveningen 1913, a Centre Game.",
+      "uk": "Схевенінген, 1913, центральний дебют."
+     }
+    },
+    {
+     "key": "1064497:33",
+     "note": {
+      "en": "Budapest 1896, a Vienna Game.",
+      "uk": "Будапешт, 1896, віденська партія."
+     }
+    },
+    {
+     "key": "1036163:48",
+     "note": {
+      "en": "Nuremberg 1896, a Giuoco Piano. Lasker won this tournament.",
+      "uk": "Нюрнберг, 1896, італійська партія. Цей турнір виграв Ласкер."
+     }
+    },
+    {
+     "key": "1036631:40",
+     "note": {
+      "en": "Nuremberg 1906, a Centre Game.",
+      "uk": "Нюрнберг, 1906, центральний дебют."
+     },
+     "themes": [
+      "middlegame",
+      "deflection"
+     ]
+    },
+    {
+     "key": "1036402:58",
+     "note": {
+      "en": "Hastings 1895, a French Defence. Chigorin finished second here, behind Pillsbury.",
+      "uk": "Гастінгс, 1895, французький захист. Чигорін посів тут друге місце, після Пільсбері."
+     }
+    },
+    {
+     "key": "1036618:48",
+     "note": {
+      "en": "Łódź 1906, match game, a French Defence.",
+      "uk": "Лодзь, 1906, матчева партія, французький захист."
+     }
+    },
+    {
+     "key": "1064673:76",
+     "note": {
+      "en": "Ostend 1907, a Queen's Pawn opening.",
+      "uk": "Остенде, 1907, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1633335:56",
+     "note": {
+      "en": "New York 1913, a Ruy Lopez.",
+      "uk": "Нью-Йорк, 1913, іспанська партія."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Final Examination",
+    "uk": "Фінальний іспит"
+   },
+   "subtitle": {
+    "en": "No hints, no solutions",
+    "uk": "Без підказок і розвʼязків"
+   },
+   "exam": true,
+   "picks": [
+    {
+     "key": "1001134:62",
+     "note": {
+      "en": "Havana 1913, a Queen's Gambit Declined.",
+      "uk": "Гавана, 1913, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1094931:50",
+     "note": {
+      "en": "New York 1913, a Queen's Gambit Declined.",
+      "uk": "Нью-Йорк, 1913, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1064696:68",
+     "note": {
+      "en": "Suresnes 1908, match game, a Queen's Gambit Declined.",
+      "uk": "Сюрен, 1908, матчева партія, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1094896:57",
+     "note": {
+      "en": "San Sebastian 1912, a Four Knights game.",
+      "uk": "Сан-Себастьян, 1912, дебют чотирьох коней."
+     }
+    },
+    {
+     "key": "2654744:67",
+     "note": {
+      "en": "Brooklyn 1897, match game, a Queen's Gambit Declined.",
+      "uk": "Бруклін, 1897, матчева партія, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1094433:13",
+     "note": {
+      "en": "New York 1897, a Petrov Defence.",
+      "uk": "Нью-Йорк, 1897, захист Петрова."
+     }
+    },
+    {
+     "key": "1094957:40",
+     "note": {
+      "en": "Toronto 1914, simultaneous display, a Centre Game.",
+      "uk": "Торонто, 1914, сеанс одночасної гри, центральний дебют."
+     }
+    },
+    {
+     "key": "1884996:50",
+     "note": {
+      "en": "Hastings 1898, simultaneous display on 29 boards, a Queen's Gambit Declined.",
+      "uk": "Гастінгс, 1898, сеанс одночасної гри на 29 дошках, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1064638:61",
+     "note": {
+      "en": "1904, thematic tournament, a King's Gambit Declined.",
+      "uk": "1904, тематичний турнір, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "2703458:64",
+     "note": {
+      "en": "Brooklyn 1895, simultaneous display on 12 boards, a Queen's Gambit Declined.",
+      "uk": "Бруклін, 1895, сеанс одночасної гри на 12 дошках, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1094461:29",
+     "note": {
+      "en": "London 1899, a Queen's Pawn opening.",
+      "uk": "Лондон, 1899, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "2702305:46",
+     "note": {
+      "en": "Brooklyn 1897, a Queen's Pawn opening.",
+      "uk": "Бруклін, 1897, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1094710:55",
+     "note": {
+      "en": "Łódź 1908, a Queen's Pawn opening.",
+      "uk": "Лодзь, 1908, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1076082:43",
+     "note": {
+      "en": "St. Petersburg 1906, a King's Gambit Declined.",
+      "uk": "Санкт-Петербург, 1906, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1096491:46",
+     "note": {
+      "en": "Monte Carlo 1903, an Albin Counter-Gambit.",
+      "uk": "Монте-Карло, 1903, контргамбіт Альбіна."
+     },
+     "themes": [
+      "endgame",
+      "hangingPiece"
+     ]
+    },
+    {
+     "key": "1922966:66",
+     "note": {
+      "en": "Ostend 1906, a Four Knights game.",
+      "uk": "Остенде, 1906, дебют чотирьох коней."
+     }
+    },
+    {
+     "key": "1036815:44",
+     "note": {
+      "en": "Cambridge Springs 1904, an irregular opening.",
+      "uk": "Кембридж-Спрінгс, 1904, нерегулярний дебют."
+     },
+     "themes": [
+      "middlegame",
+      "fork"
+     ]
+    },
+    {
+     "key": "1003426:65",
+     "note": {
+      "en": "Ostend 1905, a Queen's Gambit Declined.",
+      "uk": "Остенде, 1905, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "2646379:55",
+     "note": {
+      "en": "Hamburg 1908, a Queen's Pawn opening.",
+      "uk": "Гамбург, 1908, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1036038:28",
+     "note": {
+      "en": "Ostend 1907, an Indian Defence.",
+      "uk": "Остенде, 1907, індійський захист."
+     }
+    }
+   ]
+  }
+ ]
+}

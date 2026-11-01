@@ -16,6 +16,7 @@ tools/assets/build-all.sh          # everything below, then the manifest
 | `audio/render-synth.mjs [--master 0.9]` | `sfx/mistake-thud.wav`, `sfx/gate-gongswell.wav` |
 | `assets/build-manifest.mjs` | `manifest.json` (every asset: key, path, size or duration) |
 | `assets/bake-fade.py`, `assets/bake-board.py` | copies of `apps/frontend/scripts/*`, see below |
+| `library/{fetch-games,mine,assemble,verify}.mjs` | Library books `apps/backend/src/library/content/*.json` (Stockfish-verified puzzles from pre-1930 games); see `library/README.md` |
 
 Stages of `build-images.mjs`: `pieces board plates textures icons themes surfaces appicon`.
 Each stage wipes and rewrites its own folder (`appicon` only overwrites its

@@ -1,0 +1,190 @@
+{
+  "greco": {
+    "years": [
+      1600,
+      1640
+    ],
+    "players": [
+      {
+        "pid": 72111,
+        "name": "Gioachino Greco"
+      }
+    ],
+    "winnerOnly": true,
+    "gids": []
+  },
+  "romantic": {
+    "years": [
+      1851,
+      1870
+    ],
+    "players": [
+      {
+        "pid": 10342,
+        "name": "Adolf Anderssen"
+      },
+      {
+        "pid": 16002,
+        "name": "Paul Morphy"
+      },
+      {
+        "pid": 15970,
+        "name": "Lionel Kieseritzky"
+      },
+      {
+        "pid": 15963,
+        "name": "Jean Dufresne"
+      },
+      {
+        "pid": 16011,
+        "name": "Ignatz von Kolisch"
+      },
+      {
+        "pid": 10421,
+        "name": "Wilhelm Steinitz"
+      }
+    ],
+    "winnerOnly": true,
+    "gids": []
+  },
+  "alekhine": {
+    "years": [
+      1908,
+      1929
+    ],
+    "players": [
+      {
+        "pid": 10240,
+        "name": "Alexander Alekhine"
+      }
+    ],
+    "winnerOnly": true,
+    "gids": []
+  },
+  "capablanca": {
+    "years": [
+      1901,
+      1929
+    ],
+    "players": [
+      {
+        "pid": 47544,
+        "name": "Jose Raul Capablanca"
+      }
+    ],
+    "winnerOnly": true,
+    "gids": []
+  },
+  "hypermodern": {
+    "years": [
+      1915,
+      1929
+    ],
+    "players": [
+      {
+        "pid": 10626,
+        "name": "Richard Reti"
+      },
+      {
+        "pid": 10249,
+        "name": "Aron Nimzowitsch"
+      },
+      {
+        "pid": 10247,
+        "name": "Savielly Tartakower"
+      },
+      {
+        "pid": 10614,
+        "name": "Efim Bogoljubov"
+      },
+      {
+        "pid": 11063,
+        "name": "Gyula Breyer"
+      }
+    ],
+    "winnerOnly": true,
+    "gids": []
+  },
+  "rubinstein": {
+    "years": [
+      1903,
+      1929
+    ],
+    "players": [
+      {
+        "pid": 10841,
+        "name": "Akiba Rubinstein"
+      }
+    ],
+    "winnerOnly": true,
+    "gids": []
+  },
+  "attack": {
+    "years": [
+      1895,
+      1914
+    ],
+    "maxMoves": 45,
+    "winnerOnly": true,
+    "gids": [],
+    "players": [
+      {
+        "pid": 10506,
+        "name": "Harry Nelson Pillsbury"
+      },
+      {
+        "pid": 10309,
+        "name": "Frank James Marshall"
+      },
+      {
+        "pid": 19523,
+        "name": "David Janowski"
+      },
+      {
+        "pid": 10016,
+        "name": "Mikhail Chigorin"
+      }
+    ]
+  },
+  "steinitz": {
+    "years": [
+      1873,
+      1894
+    ],
+    "maxMoves": 50,
+    "winnerOnly": true,
+    "gids": [],
+    "players": [
+      {
+        "pid": 10421,
+        "name": "Wilhelm Steinitz"
+      },
+      {
+        "pid": 10016,
+        "name": "Mikhail Chigorin"
+      },
+      {
+        "pid": 10427,
+        "name": "Johannes Zukertort"
+      },
+      {
+        "pid": 10429,
+        "name": "Joseph Henry Blackburne"
+      }
+    ]
+  },
+  "lasker": {
+    "years": [
+      1889,
+      1929
+    ],
+    "winnerOnly": true,
+    "gids": [],
+    "players": [
+      {
+        "pid": 19149,
+        "name": "Emanuel Lasker"
+      }
+    ]
+  }
+}

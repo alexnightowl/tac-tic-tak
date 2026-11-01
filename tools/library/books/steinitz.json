@@ -1,0 +1,471 @@
+{
+ "id": "steinitz",
+ "version": 1,
+ "out": "apps/backend/src/library/content/steinitz.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "The First World Champion",
+    "uk": "Перший чемпіон світу"
+   },
+   "subtitle": {
+    "en": "Wilhelm Steinitz, 1873–1894",
+    "uk": "Вільгельм Стейніц, 1873–1894"
+   },
+   "picks": [
+    {
+     "key": "1075748:38",
+     "note": {
+      "en": "London 1873, casual game, a King's Gambit.",
+      "uk": "Лондон, 1873, товариська партія, королівський гамбіт."
+     }
+    },
+    {
+     "key": "2032480:48",
+     "note": {
+      "en": "London 1873, odds game.",
+      "uk": "Лондон, 1873, партія з форою."
+     }
+    },
+    {
+     "key": "1284062:26",
+     "note": {
+      "en": "London 1874, odds game.",
+      "uk": "Лондон, 1874, партія з форою."
+     }
+    },
+    {
+     "key": "2089867:30",
+     "note": {
+      "en": "Manchester 1874, odds game.",
+      "uk": "Манчестер, 1874, партія з форою."
+     }
+    },
+    {
+     "key": "2246393:34",
+     "note": {
+      "en": "London 1875, casual game, a Vienna Game.",
+      "uk": "Лондон, 1875, товариська партія, віденська партія."
+     }
+    },
+    {
+     "key": "2255503:30",
+     "note": {
+      "en": "New York 1884, odds game at the Manhattan Chess Club.",
+      "uk": "Нью-Йорк, 1884, партія з форою в Манхеттенському шаховому клубі."
+     }
+    },
+    {
+     "key": "2564061:48",
+     "note": {
+      "en": "Wilmington 1885, simultaneous display on 20 boards, a King's Gambit.",
+      "uk": "Вілмінгтон, 1885, сеанс одночасної гри на 20 дошках, королівський гамбіт."
+     }
+    },
+    {
+     "key": "2564136:65",
+     "note": {
+      "en": "Boston 1885, casual game, a Two Knights Defence.",
+      "uk": "Бостон, 1885, товариська партія, захист двох коней."
+     }
+    },
+    {
+     "key": "1036366:63",
+     "note": {
+      "en": "Havana 1892, world championship match, a King's Gambit. Steinitz kept his world title in this match.",
+      "uk": "Гавана, 1892, матч за звання чемпіона світу, королівський гамбіт. У цьому матчі Стейніц зберіг звання чемпіона світу."
+     }
+    },
+    {
+     "key": "2167049:88",
+     "note": {
+      "en": "Montreal 1893, simultaneous display, a Two Knights Defence.",
+      "uk": "Монреаль, 1893, сеанс одночасної гри, захист двох коней."
+     }
+    },
+    {
+     "key": "1337186:44",
+     "note": {
+      "en": "Cardiff 1873, blindfold display on 7 boards, a King's Gambit Declined.",
+      "uk": "Кардіфф, 1873, сеанс наосліп на 7 дошках, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1028959:54",
+     "note": {
+      "en": "London 1876, match game, a Ruy Lopez. Steinitz won this match without losing a game.",
+      "uk": "Лондон, 1876, матчева партія, іспанська партія. Стейніц виграв цей матч без жодної поразки."
+     }
+    },
+    {
+     "key": "1718616:29",
+     "note": {
+      "en": "London 1880, casual game, an Italian Game.",
+      "uk": "Лондон, 1880, товариська партія, італійська партія."
+     }
+    },
+    {
+     "key": "1001719:94",
+     "note": {
+      "en": "Vienna 1882, a King's Gambit. Steinitz and Winawer shared first place.",
+      "uk": "Відень, 1882, королівський гамбіт. Стейніц і Вінавер поділили перше місце."
+     }
+    },
+    {
+     "key": "2255724:38",
+     "note": {
+      "en": "New York 1884, odds game.",
+      "uk": "Нью-Йорк, 1884, партія з форою."
+     }
+    },
+    {
+     "key": "2715063:26",
+     "note": {
+      "en": "Boston 1885, blindfold display, a Bishop's Opening.",
+      "uk": "Бостон, 1885, сеанс наосліп, дебют слона."
+     }
+    },
+    {
+     "key": "1132648:78",
+     "note": {
+      "en": "New Orleans 1886, world championship match, a Ruy Lopez. The first official world title match; Steinitz won it.",
+      "uk": "Новий Орлеан, 1886, матч за звання чемпіона світу, іспанська партія. Перший офіційний матч за світову корону; його виграв Стейніц."
+     }
+    },
+    {
+     "key": "1695803:49",
+     "note": {
+      "en": "Havana 1888, casual game, a Ruy Lopez.",
+      "uk": "Гавана, 1888, товариська партія, іспанська партія."
+     }
+    },
+    {
+     "key": "1132668:55",
+     "note": {
+      "en": "Montreal 1893, casual game, a Vienna Game.",
+      "uk": "Монреаль, 1893, товариська партія, віденська партія."
+     }
+    },
+    {
+     "key": "1104074:63",
+     "note": {
+      "en": "New York 1894, a Giuoco Piano.",
+      "uk": "Нью-Йорк, 1894, італійська партія."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Mikhail Chigorin",
+    "uk": "Михайло Чигорін"
+   },
+   "subtitle": {
+    "en": "Attack from St. Petersburg, 1874–1892",
+    "uk": "Атака з Петербурга, 1874–1892"
+   },
+   "picks": [
+    {
+     "key": "1036230:50",
+     "note": {
+      "en": "St. Petersburg 1874, a King's Gambit.",
+      "uk": "Санкт-Петербург, 1874, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1036240:65",
+     "note": {
+      "en": "St. Petersburg 1878, match game, a Scotch Game.",
+      "uk": "Санкт-Петербург, 1878, матчева партія, шотландська партія."
+     }
+    },
+    {
+     "key": "1036255:48",
+     "note": {
+      "en": "St. Petersburg 1880, match game, a Scotch Game.",
+      "uk": "Санкт-Петербург, 1880, матчева партія, шотландська партія."
+     }
+    },
+    {
+     "key": "1337259:25",
+     "note": {
+      "en": "St. Petersburg 1874, an Italian Game.",
+      "uk": "Санкт-Петербург, 1874, італійська партія."
+     }
+    },
+    {
+     "key": "2010898:73",
+     "note": {
+      "en": "St. Petersburg 1876, an Evans Gambit.",
+      "uk": "Санкт-Петербург, 1876, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1036233:70",
+     "note": {
+      "en": "St. Petersburg 1877, a Two Knights Defence.",
+      "uk": "Санкт-Петербург, 1877, захист двох коней."
+     }
+    },
+    {
+     "key": "1551266:26",
+     "note": {
+      "en": "St. Petersburg 1878, match game, a Sicilian Defence.",
+      "uk": "Санкт-Петербург, 1878, матчева партія, сицилійський захист."
+     }
+    },
+    {
+     "key": "2010906:98",
+     "note": {
+      "en": "St. Petersburg 1877, a King's Gambit Declined.",
+      "uk": "Санкт-Петербург, 1877, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1551263:69",
+     "note": {
+      "en": "St. Petersburg 1878, match game, a King's Gambit.",
+      "uk": "Санкт-Петербург, 1878, матчева партія, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1036246:62",
+     "note": {
+      "en": "St. Petersburg 1879, match game, a Ruy Lopez.",
+      "uk": "Санкт-Петербург, 1879, матчева партія, іспанська партія."
+     }
+    },
+    {
+     "key": "1581106:49",
+     "note": {
+      "en": "St. Petersburg 1879, a Sicilian Defence.",
+      "uk": "Санкт-Петербург, 1879, сицилійський захист."
+     }
+    },
+    {
+     "key": "1581111:50",
+     "note": {
+      "en": "St. Petersburg 1880, match game, a French Defence.",
+      "uk": "Санкт-Петербург, 1880, матчева партія, французький захист."
+     }
+    },
+    {
+     "key": "1036332:69",
+     "note": {
+      "en": "Riga 1892, match game, an Evans Gambit.",
+      "uk": "Рига, 1892, матчева партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1075753:53",
+     "note": {
+      "en": "St. Petersburg 1875, a King's Gambit.",
+      "uk": "Санкт-Петербург, 1875, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1361082:50",
+     "note": {
+      "en": "St. Petersburg 1876, a Centre Game.",
+      "uk": "Санкт-Петербург, 1876, центральний дебют."
+     }
+    },
+    {
+     "key": "1036236:71",
+     "note": {
+      "en": "St. Petersburg 1878, casual game, a Ruy Lopez.",
+      "uk": "Санкт-Петербург, 1878, товариська партія, іспанська партія."
+     }
+    },
+    {
+     "key": "1036241:65",
+     "note": {
+      "en": "St. Petersburg 1878, match game, a Ruy Lopez.",
+      "uk": "Санкт-Петербург, 1878, матчева партія, іспанська партія."
+     }
+    },
+    {
+     "key": "2781745:56",
+     "note": {
+      "en": "St. Petersburg 1881, a Centre Game.",
+      "uk": "Санкт-Петербург, 1881, центральний дебют."
+     }
+    },
+    {
+     "key": "1551255:52",
+     "note": {
+      "en": "St. Petersburg 1878, match game, a King's Gambit Declined.",
+      "uk": "Санкт-Петербург, 1878, матчева партія, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1036320:77",
+     "note": {
+      "en": "Havana 1890, match game, a Ruy Lopez.",
+      "uk": "Гавана, 1890, матчева партія, іспанська партія."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Steinitz's Rivals",
+    "uk": "Суперники Стейніца"
+   },
+   "subtitle": {
+    "en": "Zukertort, Blackburne, Chigorin",
+    "uk": "Цукерторт, Блекберн, Чигорін"
+   },
+   "picks": [
+    {
+     "key": "1028963:63",
+     "note": {
+      "en": "London 1876, a Scotch Game.",
+      "uk": "Лондон, 1876, шотландська партія."
+     }
+    },
+    {
+     "key": "1575356:53",
+     "note": {
+      "en": "London 1876, an Italian Game.",
+      "uk": "Лондон, 1876, італійська партія."
+     }
+    },
+    {
+     "key": "1575360:80",
+     "note": {
+      "en": "London 1876, a Sicilian Defence.",
+      "uk": "Лондон, 1876, сицилійський захист."
+     }
+    },
+    {
+     "key": "2091057:40",
+     "note": {
+      "en": "The Hague 1876, casual game, a Sicilian Defence.",
+      "uk": "Гаага, 1876, товариська партія, сицилійський захист."
+     },
+     "themes": [
+      "middlegame",
+      "pin"
+     ]
+    },
+    {
+     "key": "3059619:70",
+     "note": {
+      "en": "Rotterdam 1876, blindfold display on 12 boards, a Scandinavian Defence.",
+      "uk": "Роттердам, 1876, сеанс наосліп на 12 дошках, скандинавський захист."
+     }
+    },
+    {
+     "key": "1075189:54",
+     "note": {
+      "en": "London 1877, casual game, a King's Gambit.",
+      "uk": "Лондон, 1877, товариська партія, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1152035:37",
+     "note": {
+      "en": "Leipzig 1877, an open game.",
+      "uk": "Лейпциг, 1877, відкритий дебют."
+     }
+    },
+    {
+     "key": "1228251:34",
+     "note": {
+      "en": "Leipzig 1877, a Vienna Game.",
+      "uk": "Лейпциг, 1877, віденська партія."
+     },
+     "themes": [
+      "middlegame",
+      "intermezzo"
+     ]
+    },
+    {
+     "key": "3116897:64",
+     "note": {
+      "en": "London 1877, odds game.",
+      "uk": "Лондон, 1877, партія з форою."
+     }
+    },
+    {
+     "key": "1586918:44",
+     "note": {
+      "en": "London 1879, match game, an Evans Gambit.",
+      "uk": "Лондон, 1879, матчева партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1255758:83",
+     "note": {
+      "en": "London 1880, match game, a Ruy Lopez.",
+      "uk": "Лондон, 1880, матчева партія, іспанська партія."
+     }
+    },
+    {
+     "key": "1255760:73",
+     "note": {
+      "en": "London 1880, match game, a Ruy Lopez.",
+      "uk": "Лондон, 1880, матчева партія, іспанська партія."
+     }
+    },
+    {
+     "key": "1132651:75",
+     "note": {
+      "en": "New York 1886, world championship match, a Ruy Lopez. Zukertort lost this first world championship match to Steinitz.",
+      "uk": "Нью-Йорк, 1886, матч за звання чемпіона світу, іспанська партія. Цей перший матч за звання чемпіона світу Цукерторт програв Стейніцу."
+     }
+    },
+    {
+     "key": "2457948:73",
+     "note": {
+      "en": "London 1886, a Ruy Lopez.",
+      "uk": "Лондон, 1886, іспанська партія."
+     }
+    },
+    {
+     "key": "1590067:45",
+     "note": {
+      "en": "London 1887, a Ruy Lopez.",
+      "uk": "Лондон, 1887, іспанська партія."
+     }
+    },
+    {
+     "key": "1029005:71",
+     "note": {
+      "en": "Manchester 1880, a King's Gambit.",
+      "uk": "Манчестер, 1880, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1029138:66",
+     "note": {
+      "en": "London 1887, match game, a Ruy Lopez.",
+      "uk": "Лондон, 1887, матчева партія, іспанська партія."
+     }
+    },
+    {
+     "key": "2920097:42",
+     "note": {
+      "en": "Hastings 1890, blindfold display on 8 boards, a Sicilian Defence.",
+      "uk": "Гастінгс, 1890, сеанс наосліп на 8 дошках, сицилійський захист."
+     }
+    },
+    {
+     "key": "1029192:70",
+     "note": {
+      "en": "Havana 1891, match game, a Sicilian Defence. Blackburne's attacking play earned him the nickname \"the Black Death\".",
+      "uk": "Гавана, 1891, матчева партія, сицилійський захист. За атакувальний стиль Блекберна прозвали «Чорною смертю»."
+     }
+    },
+    {
+     "key": "1036302:69",
+     "note": {
+      "en": "Havana 1889, world championship match, a Queen's Pawn opening. Steinitz kept his world title in this match.",
+      "uk": "Гавана, 1889, матч за звання чемпіона світу, дебют ферзевого пішака. У цьому матчі Стейніц зберіг звання чемпіона світу."
+     }
+    }
+   ]
+  }
+ ]
+}

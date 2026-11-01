@@ -1,0 +1,359 @@
+{
+ "id": "greco",
+ "version": 2,
+ "out": "apps/backend/src/library/content/greco.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "The King's Gambit",
+    "uk": "Королівський гамбіт"
+   },
+   "subtitle": {
+    "en": "Open lines after an early f4",
+    "uk": "Відкриті лінії після раннього f4"
+   },
+   "picks": [
+    {
+     "key": "1272509:24",
+     "themes": [
+      "middlegame",
+      "sacrifice",
+      "skewer"
+     ],
+     "note": {
+      "en": "King's Gambit with 4.h4: a line later named after Kieseritzky. From Greco's manuscripts, c. 1620.",
+      "uk": "Королівський гамбіт із 4.h4: цю систему пізніше назвали на честь Кізерицького. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1272520:18",
+     "themes": [
+      "opening",
+      "quietMove",
+      "advancedPawn"
+     ],
+     "note": {
+      "en": "King's Gambit. Greco's games reached English readers in a London edition of 1656.",
+      "uk": "Королівський гамбіт. Англійські читачі отримали партії Греко в лондонському виданні 1656 року."
+     }
+    },
+    {
+     "key": "1272506:26",
+     "themes": [
+      "middlegame",
+      "intermezzo",
+      "exposedKing"
+     ],
+     "note": {
+      "en": "King's Gambit Accepted with 3...g5 4.Bc4 g4. From Greco's collection, c. 1620.",
+      "uk": "Прийнятий королівський гамбіт, 3...g5 4.Bc4 g4. Зі збірки Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1251887:12",
+     "themes": [
+      "opening",
+      "attackingF2F7",
+      "exposedKing"
+     ],
+     "note": {
+      "en": "King's Bishop's Gambit. Greco's games are teaching lines, and most were probably composed.",
+      "uk": "Гамбіт слона. Партії Греко — навчальні варіанти, і більшість із них, імовірно, складені."
+     }
+    },
+    {
+     "key": "1272508:15",
+     "themes": [
+      "opening",
+      "hangingPiece"
+     ],
+     "note": {
+      "en": "King's Gambit Accepted. Here Greco has the black pieces. From his manuscripts, c. 1620.",
+      "uk": "Прийнятий королівський гамбіт. Тут Греко грає чорними. З його рукописів, бл. 1620."
+     }
+    },
+    {
+     "key": "1272508:35",
+     "note": {
+      "en": "NN vs Greco, King’s Gambit Accepted, late in the game. Greco has Black.",
+      "uk": "NN проти Греко, прийнятий королівський гамбіт, наприкінці партії. Греко грає чорними."
+     }
+    },
+    {
+     "key": "1272152:36",
+     "note": {
+      "en": "Bishop's Opening with 2...Nf6 3.f4. From Greco's manuscripts, c. 1620.",
+      "uk": "Дебют слона, 2...Nf6 3.f4. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1240657:35",
+     "note": {
+      "en": "King's Gambit met by the counterthrust 2...f5. Greco has Black. Manuscript game, c. 1620.",
+      "uk": "Королівський гамбіт і контрудар 2...f5. Греко грає чорними. Рукописна партія, бл. 1620."
+     }
+    },
+    {
+     "key": "1251889:22",
+     "note": {
+      "en": "King's Gambit Declined with 2...Bc5. From Greco's manuscript collection, c. 1620.",
+      "uk": "Відхилений королівський гамбіт, 2...Bc5. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "2014175:18",
+     "note": {
+      "en": "King's Gambit Declined. Greco came from Calabria, in the south of Italy.",
+      "uk": "Відхилений королівський гамбіт. Греко походив із Калабрії, на півдні Італії."
+     }
+    },
+    {
+     "key": "1272513:34",
+     "note": {
+      "en": "King's Bishop's Gambit: White's king steps to f1 after the queen check. c. 1620.",
+      "uk": "Гамбіт слона: після шаху ферзем білий король іде на f1. Бл. 1620."
+     }
+    },
+    {
+     "key": "1272514:36",
+     "note": {
+      "en": "King's Bishop's Gambit, 3...Qh4+ 4.Kf1 Bc5. From Greco's manuscripts, c. 1620.",
+      "uk": "Гамбіт слона, 3...Qh4+ 4.Kf1 Bc5. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1272515:46",
+     "note": {
+      "en": "King's Bishop's Gambit. Greco visited Paris and London in the early 1620s.",
+      "uk": "Гамбіт слона. На початку 1620-х Греко побував у Парижі та Лондоні."
+     }
+    },
+    {
+     "key": "1272517:38",
+     "note": {
+      "en": "King's Bishop's Gambit. From Greco's manuscript collection, c. 1620.",
+      "uk": "Гамбіт слона. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1251884:18",
+     "note": {
+      "en": "King's Knight's Gambit with 3...h6. From Greco's manuscripts, c. 1620.",
+      "uk": "Гамбіт коня з 3...h6. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1272510:34",
+     "note": {
+      "en": "King's Gambit with 3...Ne7 4.h4. Greco often recorded several endings to one opening.",
+      "uk": "Королівський гамбіт, 3...Ne7 4.h4. Греко часто записував кілька фіналів одного дебюту."
+     }
+    },
+    {
+     "key": "1499332:34",
+     "note": {
+      "en": "King's Gambit with 3...Ne7 4.h4 h5 5.Bc4. From Greco's manuscripts, c. 1620.",
+      "uk": "Королівський гамбіт, 3...Ne7 4.h4 h5 5.Bc4. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1272507:26",
+     "note": {
+      "en": "King's Gambit Accepted with 3...g5. From Greco's manuscript collection, c. 1620.",
+      "uk": "Прийнятий королівський гамбіт, 3...g5. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1272504:30",
+     "note": {
+      "en": "King's Gambit Accepted with 3...g5 4.Bc4 Bg7. From Greco's manuscripts, c. 1620.",
+      "uk": "Прийнятий королівський гамбіт, 3...g5 4.Bc4 Bg7. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1272155:46",
+     "note": {
+      "en": "Bishop's Opening with an early f4. From Greco's manuscript collection, c. 1620.",
+      "uk": "Дебют слона з раннім f4. Зі збірки рукописів Греко, бл. 1620."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "The Italian Game and Others",
+    "uk": "Італійська партія та інші"
+   },
+   "subtitle": {
+    "en": "Bishops aimed at f7",
+    "uk": "Слони, націлені на f7"
+   },
+   "picks": [
+    {
+     "key": "1271130:21",
+     "note": {
+      "en": "Giuoco Piano: Italian for \"quiet game\". Greco has Black. From his manuscripts, c. 1620.",
+      "uk": "Джуоко піано — італійською «тиха гра». Греко грає чорними. З його рукописів, бл. 1620."
+     }
+    },
+    {
+     "key": "1271125:22",
+     "note": {
+      "en": "Giuoco Piano with 4.c3. From Greco's manuscript collection, c. 1620.",
+      "uk": "Джуоко піано з 4.c3. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "2815642:32",
+     "note": {
+      "en": "Giuoco Piano with 4.c3 and 5.d4. Greco's games were printed in London in 1656.",
+      "uk": "Джуоко піано з 4.c3 і 5.d4. Партії Греко надрукували в Лондоні 1656 року."
+     }
+    },
+    {
+     "key": "1481288:21",
+     "note": {
+      "en": "2...f5: the reply known today as the Latvian Gambit. Greco has Black. c. 1620.",
+      "uk": "2...f5: відповідь, яку нині називають латиським гамбітом. Греко грає чорними. Бл. 1620."
+     }
+    },
+    {
+     "key": "1270339:36",
+     "note": {
+      "en": "Giuoco Piano with 4.c3 and 5.d4. From Greco's manuscript collection, c. 1620.",
+      "uk": "Джуоко піано з 4.c3 і 5.d4. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1271142:20",
+     "note": {
+      "en": "Damiano Defence 2...f6, named after a Portuguese author whose book appeared in 1512.",
+      "uk": "Захист Даміано 2...f6, названий на честь португальського автора, чия книга вийшла 1512 року."
+     }
+    },
+    {
+     "key": "1271140:20",
+     "note": {
+      "en": "2...Qf6, an early queen move. From Greco's manuscripts, c. 1620.",
+      "uk": "2...Qf6 — ранній вихід ферзя. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "2014170:6",
+     "note": {
+      "en": "An early queen sortie with 2.Qh5, one of the shortest games in Greco's collection.",
+      "uk": "Ранній вихід ферзя 2.Qh5 — одна з найкоротших партій у збірці Греко."
+     }
+    },
+    {
+     "key": "1243022:14",
+     "note": {
+      "en": "1...b6, now called Owen's Defence after a 19th-century English player. c. 1620.",
+      "uk": "1...b6 — нині захист Оуена, на честь англійського шахіста XIX століття. Бл. 1620."
+     }
+    },
+    {
+     "key": "1271143:22",
+     "note": {
+      "en": "French Defence 1...e6. From Greco's manuscript collection, c. 1620.",
+      "uk": "Французький захист 1...e6. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1271128:26",
+     "note": {
+      "en": "Giuoco Piano with 4.c3 Qe7. From Greco's manuscripts, c. 1620.",
+      "uk": "Джуоко піано, 4.c3 Qe7. З рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1271138:32",
+     "note": {
+      "en": "Two Knights Defence with 4.Ng5 d5. From Greco's manuscript collection, c. 1620.",
+      "uk": "Захист двох коней, 4.Ng5 d5. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1273702:23",
+     "note": {
+      "en": "2...f5, today's Latvian Gambit, once called the Greco Counter-Gambit. Greco has Black.",
+      "uk": "2...f5 — нинішній латиський гамбіт, колись контргамбіт Греко. Греко грає чорними."
+     }
+    },
+    {
+     "key": "1271129:32",
+     "note": {
+      "en": "Giuoco Piano with 4.c3 d6. Greco came from Calabria, in the south of Italy.",
+      "uk": "Джуоко піано, 4.c3 d6. Греко походив із Калабрії, на півдні Італії."
+     }
+    },
+    {
+     "key": "1271137:8",
+     "themes": [
+      "opening",
+      "fork"
+     ],
+     "note": {
+      "en": "Philidor Defence, named after a player born more than a century after Greco.",
+      "uk": "Захист Філідора, названий на честь шахіста, що народився понад століття після Греко."
+     }
+    },
+    {
+     "key": "1272150:13",
+     "note": {
+      "en": "Bishop's Opening with an early Qh5. Greco has Black. From his manuscripts, c. 1620.",
+      "uk": "Дебют слона з раннім Qh5. Греко грає чорними. З його рукописів, бл. 1620."
+     }
+    },
+    {
+     "key": "1273701:17",
+     "themes": [
+      "opening",
+      "sacrifice",
+      "fork"
+     ],
+     "note": {
+      "en": "2...f5, the Latvian Gambit of today. Greco has Black. Manuscript game, c. 1620.",
+      "uk": "2...f5, сьогоднішній латиський гамбіт. Греко грає чорними. Рукописна партія, бл. 1620."
+     }
+    },
+    {
+     "key": "1271127:32",
+     "themes": [
+      "middlegame",
+      "hangingPiece",
+      "exposedKing"
+     ],
+     "note": {
+      "en": "Giuoco Piano with 4.c3. Greco's games are teaching lines; most were probably composed.",
+      "uk": "Джуоко піано з 4.c3. Партії Греко — навчальні варіанти; більшість, імовірно, складені."
+     }
+    },
+    {
+     "key": "1272153:36",
+     "themes": [
+      "middlegame",
+      "hangingPiece",
+      "attackingF2F7"
+     ],
+     "note": {
+      "en": "Bishop's Opening, 2.Bc4 Bc5 3.Qe2. From Greco's manuscript collection, c. 1620.",
+      "uk": "Дебют слона, 2.Bc4 Bc5 3.Qe2. Зі збірки рукописів Греко, бл. 1620."
+     }
+    },
+    {
+     "key": "1271136:26",
+     "themes": [
+      "middlegame",
+      "hangingPiece",
+      "exposedKing"
+     ],
+     "note": {
+      "en": "Philidor Defence with 3.Bc4 Bg4. From Greco's manuscripts, c. 1620.",
+      "uk": "Захист Філідора, 3.Bc4 Bg4. З рукописів Греко, бл. 1620."
+     }
+    }
+   ]
+  }
+ ]
+}

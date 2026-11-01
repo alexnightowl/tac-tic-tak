@@ -1,0 +1,975 @@
+{
+ "id": "romantic",
+ "version": 2,
+ "out": "apps/backend/src/library/content/romantic.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "The Immortal and Friends",
+    "uk": "Безсмертна і друзі"
+   },
+   "subtitle": {
+    "en": "London and Berlin, 1851–1852",
+    "uk": "Лондон і Берлін, 1851–1852"
+   },
+   "picks": [
+    {
+     "key": "2074482:65",
+     "note": {
+      "en": "Casual game, London 1851, the year of the first international tournament.",
+      "uk": "Товариська партія, Лондон, 1851 — рік першого міжнародного турніру."
+     }
+    },
+    {
+     "key": "1018910:44",
+     "note": {
+      "en": "London, 21 June 1851: a casual game later named the Immortal Game.",
+      "uk": "Лондон, 21 червня 1851: товариська партія, яку згодом назвали Безсмертною."
+     }
+    },
+    {
+     "key": "1042928:80",
+     "note": {
+      "en": "Casual game, Berlin 1851. Falkbeer gave his name to a counter-gambit against 2.f4.",
+      "uk": "Товариська партія, Берлін, 1851. Імʼям Фалькбеєра названо контргамбіт проти 2.f4."
+     }
+    },
+    {
+     "key": "1018961:38",
+     "note": {
+      "en": "Berlin 1852: the Evergreen Game, a name later given to it by Steinitz.",
+      "uk": "Берлін, 1852: «Вічнозелена партія» — таку назву їй згодом дав Стейніц."
+     },
+     "themes": [
+      "middlegame",
+      "sacrifice",
+      "exposedKing"
+     ]
+    },
+    {
+     "key": "1258002:49",
+     "note": {
+      "en": "Casual game, Paris, October 1851. Kieseritzky has Black.",
+      "uk": "Товариська партія, Париж, жовтень 1851. Кізерицький грає чорними."
+     }
+    },
+    {
+     "key": "2798196:26",
+     "note": {
+      "en": "Paris, April 1851, from a blindfold display on four boards.",
+      "uk": "Париж, квітень 1851, із сеансу гри наосліп на чотирьох дошках."
+     }
+    },
+    {
+     "key": "1001409:60",
+     "note": {
+      "en": "London 1851 tournament, semi-final. Anderssen went on to win the event.",
+      "uk": "Турнір у Лондоні 1851, півфінал. Андерсен зрештою виграв турнір."
+     },
+     "themes": [
+      "middlegame",
+      "defensiveMove",
+      "exposedKing"
+     ]
+    },
+    {
+     "key": "1018907:24",
+     "note": {
+      "en": "Casual game, Berlin 1851, published in the Schachzeitung that year.",
+      "uk": "Товариська партія, Берлін, 1851; того ж року її надрукувала «Schachzeitung»."
+     },
+     "themes": [
+      "middlegame",
+      "pin",
+      "exposedKing"
+     ]
+    },
+    {
+     "key": "1001387:57",
+     "note": {
+      "en": "London 1851, the first international chess tournament. Anderssen has Black.",
+      "uk": "Лондон, 1851, перший міжнародний шаховий турнір. Андерсен грає чорними."
+     },
+     "themes": [
+      "middlegame",
+      "intermezzo"
+     ]
+    },
+    {
+     "key": "1018926:72",
+     "note": {
+      "en": "London, 21 June 1851: another casual game from the day of the Immortal.",
+      "uk": "Лондон, 21 червня 1851: ще одна товариська партія того дня, коли зіграли Безсмертну."
+     }
+    },
+    {
+     "key": "1575255:71",
+     "note": {
+      "en": "London 1851. Anderssen has Black.",
+      "uk": "Лондон, 1851. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "2150684:73",
+     "note": {
+      "en": "Casual game, London, June 1851. Anderssen has Black.",
+      "uk": "Товариська партія, Лондон, червень 1851. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1018909:51",
+     "note": {
+      "en": "Casual game, London 1851. Anderssen has Black.",
+      "uk": "Товариська партія, Лондон, 1851. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1001411:52",
+     "note": {
+      "en": "London 1851 tournament. Staunton had organised the event.",
+      "uk": "Турнір у Лондоні 1851. Саме Стаунтон організував цей турнір."
+     }
+    },
+    {
+     "key": "1018932:40",
+     "note": {
+      "en": "Casual game, Berlin 1851, printed in the Schachzeitung that March.",
+      "uk": "Товариська партія, Берлін, 1851; у березні її надрукувала «Schachzeitung»."
+     }
+    },
+    {
+     "key": "1001357:36",
+     "note": {
+      "en": "London 1851: a game from the final of the first international tournament.",
+      "uk": "Лондон, 1851: партія з фіналу першого міжнародного турніру."
+     }
+    },
+    {
+     "key": "1018945:46",
+     "note": {
+      "en": "Casual game, London 1851, King's Gambit Accepted.",
+      "uk": "Товариська партія, Лондон, 1851, прийнятий королівський гамбіт."
+     }
+    },
+    {
+     "key": "1018949:65",
+     "note": {
+      "en": "Casual game, London, 14 June 1851: an Evans Gambit.",
+      "uk": "Товариська партія, Лондон, 14 червня 1851: гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1477245:42",
+     "note": {
+      "en": "Casual game, London, June 1851, an Evans Gambit.",
+      "uk": "Товариська партія, Лондон, червень 1851, гамбіт Еванса."
+     },
+     "themes": [
+      "middlegame",
+      "exposedKing",
+      "kingsideAttack"
+     ]
+    },
+    {
+     "key": "1018919:38",
+     "note": {
+      "en": "Casual game, Berlin 1851. A year later the two played the Evergreen Game.",
+      "uk": "Товариська партія, Берлін, 1851. Через рік вони зіграли «Вічнозелену партію»."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Morphy at the Opera",
+    "uk": "Морфі в опері"
+   },
+   "subtitle": {
+    "en": "Paul Morphy, 1857–1859",
+    "uk": "Пол Морфі, 1857–1859"
+   },
+   "picks": [
+    {
+     "key": "1227714:64",
+     "note": {
+      "en": "Casual game, New Orleans, January 1857, an Evans Gambit.",
+      "uk": "Товариська партія, Новий Орлеан, січень 1857, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1233404:32",
+     "note": {
+      "en": "Paris 1858: Morphy against two allies, played in the Duke of Brunswick's box at the opera.",
+      "uk": "Париж, 1858: Морфі проти двох союзників; партію грали в ложі герцога Брауншвейзького в опері."
+     }
+    },
+    {
+     "key": "1227772:44",
+     "note": {
+      "en": "New York 1859. Morphy gave knight odds.",
+      "uk": "Нью-Йорк, 1859. Морфі дав фору коня."
+     }
+    },
+    {
+     "key": "1224566:46",
+     "note": {
+      "en": "Paris, March 1859, a Two Knights Defence.",
+      "uk": "Париж, березень 1859, захист двох коней."
+     }
+    },
+    {
+     "key": "1075098:54",
+     "note": {
+      "en": "New York, November 1857; Morphy played blindfold.",
+      "uk": "Нью-Йорк, листопад 1857; Морфі грав наосліп."
+     }
+    },
+    {
+     "key": "1238181:73",
+     "note": {
+      "en": "London 1858, from a match in which Morphy gave pawn and move. Morphy has Black.",
+      "uk": "Лондон, 1858, з матчу, де Морфі давав фору пішака й ходу. Морфі грає чорними."
+     }
+    },
+    {
+     "key": "1336521:54",
+     "note": {
+      "en": "Casual game, London, June 1858, an Evans Gambit.",
+      "uk": "Товариська партія, Лондон, червень 1858, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1238235:42",
+     "note": {
+      "en": "New Orleans, April 1858. Morphy gave odds of his queen's knight.",
+      "uk": "Новий Орлеан, квітень 1858. Морфі дав фору ферзевого коня."
+     }
+    },
+    {
+     "key": "1281984:56",
+     "note": {
+      "en": "Paris, February 1859, from a blindfold display on two boards.",
+      "uk": "Париж, лютий 1859, із сеансу гри наосліп на двох дошках."
+     }
+    },
+    {
+     "key": "1258273:33",
+     "note": {
+      "en": "Casual game, London 1858. Boden gave his name to Boden's mate. Morphy has Black.",
+      "uk": "Товариська партія, Лондон, 1858. Боден дав імʼя мату Бодена. Морфі грає чорними."
+     },
+     "themes": [
+      "middlegame",
+      "hangingPiece"
+     ]
+    },
+    {
+     "key": "1019049:58",
+     "note": {
+      "en": "Paris, December 1858, from their match, which Morphy won.",
+      "uk": "Париж, грудень 1858, з їхнього матчу, який виграв Морфі."
+     }
+    },
+    {
+     "key": "1238189:34",
+     "note": {
+      "en": "New Orleans 1858. Morphy gave odds of his queen's rook.",
+      "uk": "Новий Орлеан, 1858. Морфі дав фору ферзевої тури."
+     }
+    },
+    {
+     "key": "1019062:58",
+     "note": {
+      "en": "Casual game, Paris, 29 December 1858, a King's Gambit. Morphy has Black.",
+      "uk": "Товариська партія, Париж, 29 грудня 1858, королівський гамбіт. Морфі грає чорними."
+     }
+    },
+    {
+     "key": "1266588:62",
+     "note": {
+      "en": "Casual game, London 1858, a Vienna Game.",
+      "uk": "Товариська партія, Лондон, 1858, віденська партія."
+     }
+    },
+    {
+     "key": "1336514:39",
+     "note": {
+      "en": "Paris, November 1858: Saint-Amant and de Basterot played as a consulting pair. Morphy has Black.",
+      "uk": "Париж, листопад 1858: Сент-Аман і де Бастеро грали удвох, радячись. Морфі грає чорними."
+     },
+     "themes": [
+      "middlegame",
+      "fork"
+     ]
+    },
+    {
+     "key": "1227712:48",
+     "note": {
+      "en": "Casual game, New York, November 1857, an Evans Gambit.",
+      "uk": "Товариська партія, Нью-Йорк, листопад 1857, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1238162:32",
+     "note": {
+      "en": "New York 1857. Morphy gave odds of his queen's knight.",
+      "uk": "Нью-Йорк, 1857. Морфі дав фору ферзевого коня."
+     }
+    },
+    {
+     "key": "1581414:38",
+     "note": {
+      "en": "New York, July 1859. Morphy gave knight odds.",
+      "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня."
+     },
+     "themes": [
+      "middlegame",
+      "fork",
+      "exposedKing"
+     ]
+    },
+    {
+     "key": "1238198:36",
+     "note": {
+      "en": "New York, July 1859. Morphy gave knight odds.",
+      "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня."
+     }
+    },
+    {
+     "key": "1238160:32",
+     "note": {
+      "en": "New York 1857, the year Morphy won the First American Chess Congress. Knight odds.",
+      "uk": "Нью-Йорк, 1857, коли Морфі виграв Перший американський шаховий конгрес. Фора коня."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Kings in the Open",
+    "uk": "Королі без укриття"
+   },
+   "subtitle": {
+    "en": "Anderssen and rivals, 1860–1870",
+    "uk": "Андерсен і суперники, 1860–1870"
+   },
+   "picks": [
+    {
+     "key": "1284232:26",
+     "note": {
+      "en": "Berlin 1864, King's Gambit Declined.",
+      "uk": "Берлін, 1864, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1274802:34",
+     "note": {
+      "en": "Casual game, London 1863. Steinitz had moved to London from Vienna the year before.",
+      "uk": "Товариська партія, Лондон, 1863. Стейніц переїхав до Лондона з Відня роком раніше."
+     }
+    },
+    {
+     "key": "1019322:52",
+     "note": {
+      "en": "Casual game, Breslau 1867. Breslau was Anderssen's home city.",
+      "uk": "Товариська партія, Бреслау, 1867. Бреслау — рідне місто Андерсена."
+     }
+    },
+    {
+     "key": "1337010:76",
+     "note": {
+      "en": "Hamburg 1869, at the second congress of the North German Chess Federation.",
+      "uk": "Гамбург, 1869, другий конгрес Північнонімецького шахового союзу."
+     }
+    },
+    {
+     "key": "1027953:54",
+     "note": {
+      "en": "Casual game, City of London Chess Club, 1870, an Evans Gambit.",
+      "uk": "Товариська партія, шаховий клуб лондонського Сіті, 1870, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1080409:88",
+     "note": {
+      "en": "Paris 1860. Kolisch would later win the great Paris tournament of 1867.",
+      "uk": "Париж, 1860. Згодом Коліш виграв великий паризький турнір 1867 року."
+     }
+    },
+    {
+     "key": "1019107:52",
+     "note": {
+      "en": "London 1861, an Evans Gambit.",
+      "uk": "Лондон, 1861, гамбіт Еванса."
+     },
+     "themes": [
+      "middlegame",
+      "intermezzo",
+      "kingsideAttack"
+     ]
+    },
+    {
+     "key": "1255417:52",
+     "note": {
+      "en": "Baden-Baden 1870, a tournament Anderssen won ahead of Steinitz.",
+      "uk": "Баден-Баден, 1870; цей турнір Андерсен виграв попереду Стейніца."
+     },
+     "themes": [
+      "middlegame",
+      "intermezzo"
+     ]
+    },
+    {
+     "key": "1019273:72",
+     "note": {
+      "en": "Casual game, Berlin 1866, an Evans Gambit.",
+      "uk": "Товариська партія, Берлін, 1866, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1019334:59",
+     "note": {
+      "en": "Berlin, April 1868, from a match between the two. Anderssen has Black.",
+      "uk": "Берлін, квітень 1868, з їхнього матчу. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1019162:41",
+     "note": {
+      "en": "Breslau 1863. Like Anderssen, Rosanes was a mathematician. Anderssen has Black.",
+      "uk": "Бреслау, 1863. Розанес, як і Андерсен, був математиком. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1019250:47",
+     "note": {
+      "en": "Casual game, Berlin 1865, a Ruy Lopez. Anderssen has Black.",
+      "uk": "Товариська партія, Берлін, 1865, іспанська партія. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1336649:43",
+     "note": {
+      "en": "Rotterdam 1861, a Giuoco Piano. Anderssen has Black.",
+      "uk": "Роттердам, 1861, італійська партія. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1581420:40",
+     "note": {
+      "en": "New York, September 1860. Morphy gave knight odds.",
+      "uk": "Нью-Йорк, вересень 1860. Морфі дав фору коня."
+     }
+    },
+    {
+     "key": "1075905:36",
+     "note": {
+      "en": "Casual game, London 1863, a King's Gambit.",
+      "uk": "Товариська партія, Лондон, 1863, королівський гамбіт."
+     },
+     "themes": [
+      "middlegame",
+      "quietMove",
+      "fork"
+     ]
+    },
+    {
+     "key": "1336604:58",
+     "note": {
+      "en": "Amsterdam 1861, a French Defence.",
+      "uk": "Амстердам, 1861, французький захист."
+     }
+    },
+    {
+     "key": "1019123:35",
+     "note": {
+      "en": "Breslau 1862, King's Gambit Declined. Anderssen has Black.",
+      "uk": "Бреслау, 1862, відхилений королівський гамбіт. Андерсен грає чорними."
+     }
+    },
+    {
+     "key": "1019329:74",
+     "note": {
+      "en": "Berlin, April 1868, an Evans Gambit from their match.",
+      "uk": "Берлін, квітень 1868, гамбіт Еванса з їхнього матчу."
+     },
+     "themes": [
+      "middlegame",
+      "skewer"
+     ]
+    },
+    {
+     "key": "1080494:50",
+     "note": {
+      "en": "Frankfurt am Main 1868, a King's Gambit. A year earlier Kolisch had won the Paris tournament.",
+      "uk": "Франкфурт-на-Майні, 1868, королівський гамбіт. Роком раніше Коліш виграв паризький турнір."
+     }
+    },
+    {
+     "key": "1019098:36",
+     "note": {
+      "en": "Breslau 1860, an Evans Gambit.",
+      "uk": "Бреслау, 1860, гамбіт Еванса."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Morphy at Odds",
+    "uk": "Морфі з форою"
+   },
+   "subtitle": {
+    "en": "Odds and blindfold games, 1854–1869",
+    "uk": "Партії з форою і наосліп, 1854–1869"
+   },
+   "picks": [
+    {
+     "key": "1238212:24",
+     "note": {
+      "en": "New York 1857, odds game. Morphy gave odds of his queen's knight.",
+      "uk": "Нью-Йорк, 1857, партія з форою. Морфі дав фору ферзевого коня."
+     }
+    },
+    {
+     "key": "1581411:34",
+     "note": {
+      "en": "New York 1859, odds game.",
+      "uk": "Нью-Йорк, 1859, партія з форою."
+     }
+    },
+    {
+     "key": "1238185:52",
+     "note": {
+      "en": "New Orleans 1858, odds game. Morphy gave odds of his queen's knight.",
+      "uk": "Новий Орлеан, 1858, партія з форою. Морфі дав фору ферзевого коня."
+     }
+    },
+    {
+     "key": "1228222:34",
+     "note": {
+      "en": "New Orleans 1856, odds game. Morphy gave odds of his queen's rook.",
+      "uk": "Новий Орлеан, 1856, партія з форою. Морфі дав фору ферзевої тури."
+     }
+    },
+    {
+     "key": "1238135:42",
+     "note": {
+      "en": "New Orleans 1854, odds game. Morphy gave odds of a rook and a knight.",
+      "uk": "Новий Орлеан, 1854, партія з форою. Морфі дав фору тури й коня."
+     }
+    },
+    {
+     "key": "1075565:36",
+     "note": {
+      "en": "1856, odds game. Morphy gave odds of his queen's rook.",
+      "uk": "1856, партія з форою. Морфі дав фору ферзевої тури."
+     }
+    },
+    {
+     "key": "1242970:10",
+     "note": {
+      "en": "Paris 1858, a King's Pawn game.",
+      "uk": "Париж, 1858, дебют королівського пішака."
+     }
+    },
+    {
+     "key": "1227741:46",
+     "note": {
+      "en": "New Orleans 1858, blindfold display on 6 boards, an Evans Gambit.",
+      "uk": "Новий Орлеан, 1858, сеанс наосліп на 6 дошках, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1238249:42",
+     "note": {
+      "en": "New Orleans 1869, odds game. By then Morphy rarely played in public.",
+      "uk": "Новий Орлеан, 1869, партія з форою. На той час Морфі вже рідко грав на публіці."
+     }
+    },
+    {
+     "key": "1587046:42",
+     "note": {
+      "en": "New Orleans 1869, odds game.",
+      "uk": "Новий Орлеан, 1869, партія з форою."
+     }
+    },
+    {
+     "key": "1238188:50",
+     "note": {
+      "en": "New Orleans 1858, odds game. Morphy gave odds of his queen's rook.",
+      "uk": "Новий Орлеан, 1858, партія з форою. Морфі дав фору ферзевої тури."
+     }
+    },
+    {
+     "key": "1227766:72",
+     "note": {
+      "en": "London 1859, an Evans Gambit.",
+      "uk": "Лондон, 1859, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1227757:30",
+     "note": {
+      "en": "Paris 1859, match game, an Evans Gambit.",
+      "uk": "Париж, 1859, матчева партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1238197:46",
+     "note": {
+      "en": "New York 1859, odds game. Morphy gave knight odds.",
+      "uk": "Нью-Йорк, 1859, партія з форою. Морфі дав фору коня."
+     }
+    },
+    {
+     "key": "1224558:44",
+     "note": {
+      "en": "New Orleans 1858, blindfold display on 6 boards, a Two Knights Defence.",
+      "uk": "Новий Орлеан, 1858, сеанс наосліп на 6 дошках, захист двох коней."
+     }
+    },
+    {
+     "key": "1316493:56",
+     "note": {
+      "en": "Paris 1858, blindfold display on 8 boards, a Philidor Defence. Played at the Café de la Régence.",
+      "uk": "Париж, 1858, сеанс наосліп на 8 дошках, захист Філідора. Сеанс відбувся в кафе «Регентство»."
+     }
+    },
+    {
+     "key": "1227742:64",
+     "note": {
+      "en": "New Orleans 1858, blindfold display on 3 boards, an Evans Gambit.",
+      "uk": "Новий Орлеан, 1858, сеанс наосліп на 3 дошках, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1281985:70",
+     "note": {
+      "en": "Philadelphia 1859, blindfold display on 4 boards, a French Defence.",
+      "uk": "Філадельфія, 1859, сеанс наосліп на 4 дошках, французький захист."
+     }
+    },
+    {
+     "key": "1238216:38",
+     "note": {
+      "en": "New York 1859, odds game. Morphy gave rook odds.",
+      "uk": "Нью-Йорк, 1859, партія з форою. Морфі дав фору тури."
+     }
+    },
+    {
+     "key": "1580816:46",
+     "note": {
+      "en": "Boston 1859, odds game. Morphy gave knight odds.",
+      "uk": "Бостон, 1859, партія з форою. Морфі дав фору коня."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Steinitz and Kolisch",
+    "uk": "Стейніц і Коліш"
+   },
+   "subtitle": {
+    "en": "The new generation, 1860–1870",
+    "uk": "Нове покоління, 1860–1870"
+   },
+   "picks": [
+    {
+     "key": "1227777:48",
+     "note": {
+      "en": "London 1860, casual game, an Evans Gambit.",
+      "uk": "Лондон, 1860, товариська партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "3092556:38",
+     "note": {
+      "en": "London 1860, odds game.",
+      "uk": "Лондон, 1860, партія з форою."
+     }
+    },
+    {
+     "key": "1055958:76",
+     "note": {
+      "en": "1860, a Scotch Game.",
+      "uk": "1860, шотландська партія."
+     }
+    },
+    {
+     "key": "1080397:60",
+     "note": {
+      "en": "London 1860, from a series of games, an Evans Gambit.",
+      "uk": "Лондон, 1860, з серії партій, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "3092555:34",
+     "note": {
+      "en": "Paris 1860, casual game at the Café de la Régence, a French Defence. The Régence was Paris's main chess café.",
+      "uk": "Париж, 1860, товариська партія в кафе «Регентство», французький захист. «Регентство» — головне шахове кафе Парижа."
+     }
+    },
+    {
+     "key": "1080482:56",
+     "note": {
+      "en": "Paris 1864, match game, an Evans Gambit.",
+      "uk": "Париж, 1864, матчева партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1993643:53",
+     "note": {
+      "en": "Paris 1864, match game, a Giuoco Piano.",
+      "uk": "Париж, 1864, матчева партія, італійська партія."
+     }
+    },
+    {
+     "key": "1255299:53",
+     "note": {
+      "en": "Paris 1867, a Ruy Lopez. Kolisch won this tournament.",
+      "uk": "Париж, 1867, іспанська партія. Цей турнір виграв Коліш."
+     }
+    },
+    {
+     "key": "1075616:51",
+     "note": {
+      "en": "Paris 1860, casual game, a King's Gambit Declined.",
+      "uk": "Париж, 1860, товариська партія, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1718592:26",
+     "note": {
+      "en": "London 1863, odds game.",
+      "uk": "Лондон, 1863, партія з форою."
+     }
+    },
+    {
+     "key": "2076184:30",
+     "note": {
+      "en": "London 1863, odds game.",
+      "uk": "Лондон, 1863, партія з форою."
+     }
+    },
+    {
+     "key": "2429212:47",
+     "note": {
+      "en": "London 1869, casual game, an Italian Game.",
+      "uk": "Лондон, 1869, товариська партія, італійська партія."
+     }
+    },
+    {
+     "key": "1132588:36",
+     "note": {
+      "en": "London 1865, casual game, an Evans Gambit.",
+      "uk": "Лондон, 1865, товариська партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1267165:76",
+     "note": {
+      "en": "London 1865, casual game, a Vienna Game.",
+      "uk": "Лондон, 1865, товариська партія, віденська партія."
+     }
+    },
+    {
+     "key": "1416826:32",
+     "note": {
+      "en": "1865, odds game.",
+      "uk": "1865, партія з форою."
+     }
+    },
+    {
+     "key": "1132596:44",
+     "note": {
+      "en": "Dundee 1867, blindfold display on 6 boards, a French Defence. Steinitz had settled in London in 1862.",
+      "uk": "Данді, 1867, сеанс наосліп на 6 дошках, французький захист. Стейніц оселився в Лондоні 1862 року."
+     }
+    },
+    {
+     "key": "2371938:36",
+     "note": {
+      "en": "London 1867, odds game.",
+      "uk": "Лондон, 1867, партія з форою."
+     }
+    },
+    {
+     "key": "1255422:70",
+     "note": {
+      "en": "Baden-Baden 1870, a Vienna Game. Anderssen won the tournament; Steinitz was second.",
+      "uk": "Баден-Баден, 1870, віденська партія. Турнір виграв Андерсен; Стейніц став другим."
+     }
+    },
+    {
+     "key": "1281928:51",
+     "note": {
+      "en": "London 1866, a Bishop's Opening.",
+      "uk": "Лондон, 1866, дебют слона."
+     }
+    },
+    {
+     "key": "2077069:44",
+     "note": {
+      "en": "London 1863, odds game.",
+      "uk": "Лондон, 1863, партія з форою."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Final Examination",
+    "uk": "Фінальний іспит"
+   },
+   "subtitle": {
+    "en": "No hints, no solutions",
+    "uk": "Без підказок і розвʼязків"
+   },
+   "exam": true,
+   "picks": [
+    {
+     "key": "1019110:40",
+     "note": {
+      "en": "Rotterdam 1861, an Evans Gambit.",
+      "uk": "Роттердам, 1861, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "2941386:30",
+     "note": {
+      "en": "London 1862, simultaneous display at knight odds on 8 boards.",
+      "uk": "Лондон, 1862, сеанс на 8 дошках із форою коня."
+     }
+    },
+    {
+     "key": "1019001:85",
+     "note": {
+      "en": "Leipzig 1855, casual game, a King's Gambit Declined.",
+      "uk": "Лейпциг, 1855, товариська партія, відхилений королівський гамбіт."
+     }
+    },
+    {
+     "key": "1018989:41",
+     "note": {
+      "en": "Leipzig 1855, casual game, a King's Gambit.",
+      "uk": "Лейпциг, 1855, товариська партія, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1019166:61",
+     "note": {
+      "en": "Berlin 1864, casual match game, a King's Gambit.",
+      "uk": "Берлін, 1864, партія товариського матчу, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1019267:24",
+     "note": {
+      "en": "Breslau 1865, casual game, a King's Gambit.",
+      "uk": "Бреслау, 1865, товариська партія, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1001468:77",
+     "note": {
+      "en": "London 1862, an Italian Game. Anderssen won this tournament.",
+      "uk": "Лондон, 1862, італійська партія. Цей турнір виграв Андерсен."
+     }
+    },
+    {
+     "key": "1790088:45",
+     "note": {
+      "en": "Amsterdam 1861, a Ruy Lopez.",
+      "uk": "Амстердам, 1861, іспанська партія."
+     }
+    },
+    {
+     "key": "1336676:67",
+     "note": {
+      "en": "Breslau 1865, casual game, a Giuoco Piano.",
+      "uk": "Бреслау, 1865, товариська партія, італійська партія."
+     }
+    },
+    {
+     "key": "1019255:49",
+     "note": {
+      "en": "Berlin 1865, a Ruy Lopez.",
+      "uk": "Берлін, 1865, іспанська партія."
+     }
+    },
+    {
+     "key": "1018951:67",
+     "note": {
+      "en": "Berlin 1851, casual game, an Evans Gambit.",
+      "uk": "Берлін, 1851, товариська партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1224550:62",
+     "note": {
+      "en": "London 1851, casual game, a Two Knights Defence.",
+      "uk": "Лондон, 1851, товариська партія, захист двох коней."
+     }
+    },
+    {
+     "key": "1019142:81",
+     "note": {
+      "en": "London 1862, a King's Gambit.",
+      "uk": "Лондон, 1862, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1019063:67",
+     "note": {
+      "en": "Cologne 1859, a Sicilian Defence.",
+      "uk": "Кельн, 1859, сицилійський захист."
+     }
+    },
+    {
+     "key": "1019323:64",
+     "note": {
+      "en": "Breslau 1867, casual game, an Evans Gambit.",
+      "uk": "Бреслау, 1867, товариська партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1019251:52",
+     "note": {
+      "en": "Berlin 1865, casual game, an Evans Gambit.",
+      "uk": "Берлін, 1865, товариська партія, гамбіт Еванса."
+     }
+    },
+    {
+     "key": "1019296:55",
+     "note": {
+      "en": "Berlin 1866, a Ruy Lopez.",
+      "uk": "Берлін, 1866, іспанська партія."
+     }
+    },
+    {
+     "key": "1457766:79",
+     "note": {
+      "en": "Paris 1864, a Giuoco Piano.",
+      "uk": "Париж, 1864, італійська партія."
+     }
+    },
+    {
+     "key": "1001448:79",
+     "note": {
+      "en": "London 1862, a Ruy Lopez. Anderssen won this tournament.",
+      "uk": "Лондон, 1862, іспанська партія. Цей турнір виграв Андерсен."
+     }
+    },
+    {
+     "key": "1019010:48",
+     "note": {
+      "en": "Berlin 1855, casual game, a King's Gambit.",
+      "uk": "Берлін, 1855, товариська партія, королівський гамбіт."
+     }
+    }
+   ]
+  }
+ ]
+}
