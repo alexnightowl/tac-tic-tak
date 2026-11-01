@@ -88,6 +88,9 @@ export const libraryUk: Dict = {
   'library.solution_note': 'Розв’язок показано — задача піде в Review',
   'library.game_vs': '{white} — {black}',
   'library.game_where': '{place}, {year}',
+  'library.skip': 'Пропустити',
+  'library.skip_a11y': 'Пропустити задачу; вона зарахується як помилка',
+  'library.exam_note': 'Фінальний іспит: без підказок і розв’язків.',
   'library.exit_a11y': 'Назад до книги',
 
   // Chapter complete.

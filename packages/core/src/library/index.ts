@@ -6,10 +6,18 @@ import type { XpAward } from '../api/types';
 
 export type Localized = { en: string; uk: string };
 
-export type LibraryCover = 'parchment' | 'oxblood';
+export type LibraryCover = 'parchment' | 'oxblood' | 'navy' | 'crimson' | 'graphite' | 'olive' | 'teal' | 'plum' | 'umber';
 export type LibraryResult = 'clean' | 'hint' | 'missed';
 
-export type LibraryChapterSummary = { id: string; title: Localized; subtitle: Localized; count: number; puzzleIds: string[] };
+export type LibraryChapterSummary = {
+  id: string;
+  title: Localized;
+  subtitle: Localized;
+  count: number;
+  puzzleIds: string[];
+  /** Final examination: no hint, no solution (a Skip counts as missed). */
+  exam?: boolean;
+};
 
 /** GET /library/books → { books } */
 export type LibraryBookSummary = {

@@ -89,6 +89,9 @@ export const libraryEn: Dict = {
   'library.solution_note': 'Solution shown — this one goes to Review',
   'library.game_vs': '{white} — {black}',
   'library.game_where': '{place}, {year}',
+  'library.skip': 'Skip',
+  'library.skip_a11y': 'Skip this puzzle; it counts as missed',
+  'library.exam_note': 'Final examination: no hints, no solutions.',
   'library.exit_a11y': 'Back to the book',
 
   // Chapter complete.

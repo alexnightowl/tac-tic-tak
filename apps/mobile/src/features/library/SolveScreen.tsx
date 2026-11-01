@@ -103,6 +103,14 @@ class ResultTracker {
     }
   };
 
+  /** Exam Skip: the puzzle on the board is missed. */
+  skip = () => {
+    if (!this.id || this.endedAt) return;
+    this.result = 'missed';
+    this.note = 'missed';
+    this.record();
+  };
+
   private record() {
     if (!this.id) return;
     const now = Date.now();
@@ -303,6 +311,27 @@ function Runner({ book, chapterIndex, cycle }: { book: LibraryBook; chapterIndex
             t={t}
           />
           <PlateButton testID="library-next" label={t('library.next')} size="md" block onPress={() => controller.dispatch({ type: 'skip' })} />
+        </View>
+      ) : chapter.exam ? (
+        <View style={styles.bottom}>
+          <AppText variant="caption" color={eos.ash} style={styles.flex} testID="library-exam-note">
+            {t('library.exam_note')}
+          </AppText>
+          <Tap
+            testID="library-skip"
+            accessibilityRole="button"
+            accessibilityLabel={t('library.skip_a11y')}
+            disabled={s.phase !== 'playerTurn' && s.phase !== 'rewinding'}
+            onPress={() => {
+              tracker.skip();
+              controller.dispatch({ type: 'skip' });
+            }}
+            style={styles.solutionBtn}
+          >
+            <AppText variant="bodyStrong" color={eos.ash}>
+              {t('library.skip')}
+            </AppText>
+          </Tap>
         </View>
       ) : (
         <View style={styles.bottom}>

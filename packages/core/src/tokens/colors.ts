@@ -364,6 +364,14 @@ export const logoGlow = [
 export const cover = {
   oxblood: { face: ['#6e3432', '#3d1f21'], ink: '#e9d9c6' },
   parchment: { face: ['#d9cdb9', '#b7a88f'], ink: '#2a2226' },
+  navy: { face: ['#2a3340', '#171d26'], ink: '#d9dee6' },
+  crimson: { face: ['#7a2e2b', '#401918'], ink: '#f0d9c4' },
+  graphite: { face: ['#34333a', '#1f1e23'], ink: '#e7e0d7' },
+  olive: { face: ['#3a3f30', '#22261c'], ink: '#e3e2cf' },
+  // Not in the original shelf; drawn on the canvas "Library — more books".
+  teal: { face: ['#2c3b3a', '#17201f'], ink: '#d7e3dc' },
+  plum: { face: ['#3d2c40', '#211823'], ink: '#e8dbe9' },
+  umber: { face: ['#4a3a2a', '#271e16'], ink: '#ecdcc5' },
   /** Spine shade and its highlight (inset 4 px / 5 px on the left). */
   spine: 'rgba(0,0,0,0.25)',
   spineLight: 'rgba(255,255,255,0.06)',
