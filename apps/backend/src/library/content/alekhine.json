@@ -1,5 +1,2657 @@
 {
   "id": "alekhine",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "alekhine-1",
+      "title": {
+        "en": "The Young Master",
+        "uk": "Молодий майстер"
+      },
+      "subtitle": {
+        "en": "From Moscow to Scheveningen, 1908–1913",
+        "uk": "Від Москви до Схевенінгена, 1908–1913"
+      },
+      "puzzles": [
+        {
+          "id": "lib-alekhine-1-01",
+          "fen": "r4rk1/pp2ppb1/6p1/5n1p/6K1/3n1P2/PP2N1BP/R1BQ3R w - - 0 19",
+          "moves": "g4h3 d3f2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Peter Petrovich Potemkin",
+            "black": "Alexander Alekhine",
+            "event": "St Petersburg",
+            "site": "St. Petersburg RUS",
+            "year": 1912,
+            "date": "1912.09.26",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011815"
+          },
+          "note": {
+            "en": "St Petersburg, September 1912, a Sicilian Defence.",
+            "uk": "Санкт-Петербург, вересень 1912, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-02",
+          "fen": "Q6r/p1pkb1pp/3p4/4p3/3PP3/3q1P2/PP5P/RNB1K2R w KQ - 1 15",
+          "moves": "a8h8 e7h4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Joseph Rodzynski",
+            "black": "Alexander Alekhine",
+            "event": "Exhibition game",
+            "site": "Paris FRA",
+            "year": 1913,
+            "date": "1913.09.10",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011850"
+          },
+          "note": {
+            "en": "Paris, September 1913, an exhibition game: one of the best-known miniatures of Alekhine's youth.",
+            "uk": "Париж, вересень 1913, показова партія — одна з найвідоміших мініатюр молодого Алехіна."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-03",
+          "fen": "6N1/8/p5B1/5Pb1/1P3kP1/1P1pp3/P7/3K4 w - - 1 47",
+          "moves": "f5f6 e3e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Boris Evgenievich Maliutin",
+            "black": "Alexander Alekhine",
+            "event": "All Russian Amateur",
+            "site": "St Petersburg RUE",
+            "year": 1909,
+            "date": "1909.03.12",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011752"
+          },
+          "note": {
+            "en": "All-Russian Amateur Tournament, St Petersburg, March 1909, round 19.",
+            "uk": "Всеросійський турнір аматорів, Санкт-Петербург, березень 1909, 19-й тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-04",
+          "fen": "6Q1/p5p1/Q7/4qpk1/1P2q3/K7/P7/8 w - - 6 45",
+          "moves": "a6a7 e5c3 g8b3 e4b4",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Edward Lasker",
+            "black": "Alexander Alekhine",
+            "event": "Alekhine - Lasker m",
+            "site": "London ENG",
+            "year": 1913,
+            "date": "1913.09.12",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011846"
+          },
+          "note": {
+            "en": "London, September 1913, game three of the match with Edward Lasker.",
+            "uk": "Лондон, вересень 1913, третя партія матчу з Едвардом Ласкером."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-05",
+          "fen": "r3rnk1/1pqnb3/p3p1B1/3p2P1/7B/2N5/PPP1Q2P/5RRK b - - 0 23",
+          "moves": "f8g6 e2e6 g8h8 e6g6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Wilhelm Kunze",
+            "event": "Duesseldorf",
+            "site": "Duesseldorf GER",
+            "year": 1908,
+            "date": "1908.08.04",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011716"
+          },
+          "note": {
+            "en": "Düsseldorf, August 1908, at the German Chess Federation congress. Alekhine was fifteen.",
+            "uk": "Дюссельдорф, серпень 1908, конгрес Німецького шахового союзу. Алехіну було пʼятнадцять."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-06",
+          "fen": "6k1/2p3pp/pppb2r1/5pq1/2PP1P2/4rR1P/PP1NQ2K/3R4 w - - 0 30",
+          "moves": "f3e3 d6f4 h2h1 f4e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Victor Kahn",
+            "black": "Alexander Alekhine",
+            "event": "Moscow Club Autumn",
+            "site": "Moscow RUE",
+            "year": 1909,
+            "date": "1909.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011735"
+          },
+          "note": {
+            "en": "Moscow Chess Club autumn tournament, 1909, a Ruy Lopez.",
+            "uk": "Осінній турнір Московського шахового клубу, 1909, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-07",
+          "fen": "6k1/p2R1np1/2pr4/5PPp/1P6/8/1B6/3KQ1q1 w - - 3 49",
+          "moves": "d7d6 g1e1 d1e1 f7d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Semion Alapin",
+            "black": "Alexander Alekhine",
+            "event": "Karlsbad",
+            "site": "Karlsbad (Karlovy Vary) AUH",
+            "year": 1911,
+            "date": "1911.08.31",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000697"
+          },
+          "note": {
+            "en": "Karlsbad 1911, round eight. Alapin gave his name to the 2.c3 line against the Sicilian.",
+            "uk": "Карлсбад, 1911, восьмий тур. Імʼя Алапіна носить варіант 2.c3 у сицилійському захисті."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-08",
+          "fen": "5r1k/1b1nNppp/1q2p3/1Nnp4/1R6/4PP2/2Q1B1PP/6K1 b - - 8 26",
+          "moves": "b6d8 c2h7 h8h7 b4h4",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1475,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "attraction",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Paul Saladin Leonhardt",
+            "event": "Hamburg",
+            "site": "Hamburg GER",
+            "year": 1910,
+            "date": "1910.07.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011761"
+          },
+          "note": {
+            "en": "Hamburg, July 1910, round six of the German Chess Federation congress.",
+            "uk": "Гамбург, липень 1910, шостий тур конгресу Німецького шахового союзу."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-09",
+          "fen": "3r1b1k/pp4p1/2p1Qp2/5N2/PP2Pp2/2Pq4/5PpP/5RK1 w - - 0 31",
+          "moves": "g1g2 f4f3 g2g3 d3f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Benjamin Markovich Blumenfeld",
+            "black": "Alexander Alekhine",
+            "event": "Moscow m (02)",
+            "site": "Moscow RUE",
+            "year": 1908,
+            "date": "1908.10.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011726"
+          },
+          "note": {
+            "en": "Moscow, October 1908, game two of a match. Blumenfeld's name lives on in the Blumenfeld Gambit.",
+            "uk": "Москва, жовтень 1908, друга партія матчу. Імʼя Блюменфельда носить гамбіт Блюменфельда."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-10",
+          "fen": "3q1rk1/1b1p1ppp/2r1p3/p2pP3/P4P2/Q2B4/1PP3PP/R4R1K b - - 2 18",
+          "moves": "d8b6 d3h7 g8h7 a3f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Stefan Izbinsky",
+            "event": "All Russian Amateur",
+            "site": "St Petersburg RUE",
+            "year": 1909,
+            "date": "1909.02.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011737"
+          },
+          "note": {
+            "en": "St Petersburg, February 1909, round one of the All-Russian Amateur Tournament, which Alekhine went on to win.",
+            "uk": "Санкт-Петербург, лютий 1909, перший тур Всеросійського турніру аматорів, який Алехін зрештою виграв."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-11",
+          "fen": "2kr3r/pppq1R2/3p4/3Nb1p1/2B1P1nP/2P3P1/PP2Q1K1/R7 b - - 0 20",
+          "moves": "d7f7 d5b6 a7b6 c4f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Krotky",
+            "event": "Tula",
+            "site": "Tula RUE",
+            "year": 1910,
+            "date": "1910.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011781"
+          },
+          "note": {
+            "en": "Tula, 1910, a Vienna Game.",
+            "uk": "Тула, 1910, віденська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-12",
+          "fen": "r1b1kb1r/1p2p2p/p3Pnp1/1Np5/2B2B2/5P2/PqP1Q2P/R3K2R b KQkq - 1 15",
+          "moves": "b2a1 e1f2 a1d4 b5d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Grigory Levenfish",
+            "event": "St Petersburg",
+            "site": "St. Petersburg RUS",
+            "year": 1912,
+            "date": "1912.03.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011813"
+          },
+          "note": {
+            "en": "St Petersburg, March 1912. Levenfish later won the USSR Championship twice.",
+            "uk": "Санкт-Петербург, березень 1912. Левенфіш згодом двічі ставав чемпіоном СРСР."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-13",
+          "fen": "r2q4/pp2r1kp/2n3p1/2Q5/2Bp4/5P1b/PPP2P1P/3RR1K1 w - - 1 22",
+          "moves": "e1e7 d8e7 c5e7 c6e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Edward Lasker",
+            "black": "Alexander Alekhine",
+            "event": "Alekhine - Lasker m",
+            "site": "Paris FRA",
+            "year": 1913,
+            "date": "1913.09.06",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011852"
+          },
+          "note": {
+            "en": "Paris, September 1913, game one of a short match.",
+            "uk": "Париж, вересень 1913, перша партія короткого матчу."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-14",
+          "fen": "6k1/4Bppp/8/p2pP3/B1rP4/2Pb4/1q4PP/R4Q1K w - - 1 34",
+          "moves": "f1e1 d3e4 a4c2 b2c2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rudolf Johannes Loman",
+            "black": "Alexander Alekhine",
+            "event": "Scheveningen",
+            "site": "Scheveningen NED",
+            "year": 1913,
+            "date": "1913.07.31",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011859"
+          },
+          "note": {
+            "en": "Scheveningen, July 1913, round five, a Ruy Lopez.",
+            "uk": "Схевенінген, липень 1913, пʼятий тур, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-15",
+          "fen": "3r2r1/3P1pk1/3Q4/p1P1p3/4P1q1/P3R1n1/8/3R2K1 w - - 2 32",
+          "moves": "d6e5 g7h7 g1f2 g4d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Georg Olland",
+            "black": "Alexander Alekhine",
+            "event": "Scheveningen",
+            "site": "Scheveningen NED",
+            "year": 1913,
+            "date": "1913.07.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011867"
+          },
+          "note": {
+            "en": "Scheveningen, July 1913, round one.",
+            "uk": "Схевенінген, липень 1913, перший тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-16",
+          "fen": "2qrr1n1/3b1kp1/2pBpn1p/1p2PP1Q/p2P4/1BP5/P5PP/4RRK1 b - - 1 22",
+          "moves": "f6h5 f5e6 f7g6 b3c2 g6g5 f1f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "middlegame",
+            "doubleCheck"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "M Prat",
+            "event": "Simul, 16b",
+            "site": "Cafe de la Regence, Paris FRA",
+            "year": 1913,
+            "date": "1913.09.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011854"
+          },
+          "note": {
+            "en": "Café de la Régence, Paris, September 1913, from a simul on 16 boards. The Régence was the city's famous chess café.",
+            "uk": "Кафе «Режанс», Париж, вересень 1913, сеанс на 16 дошках. «Режанс» — славетне шахове кафе Парижа."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-17",
+          "fen": "r1b2rk1/pp4pp/2pb4/3p1pq1/2PP4/1N1BP3/PPQ3PP/4RRK1 w - - 0 17",
+          "moves": "f1f3 d6h2 g1h2 g5h4 f3h3 h4e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Volf Goldfarb",
+            "black": "Alexander Alekhine",
+            "event": "All Russian Amateur",
+            "site": "St Petersburg RUE",
+            "year": 1909,
+            "date": "1909.02.16",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011738"
+          },
+          "note": {
+            "en": "All-Russian Amateur Tournament, St Petersburg 1909, round two. Winning the event brought Alekhine the master title.",
+            "uk": "Всеросійський турнір аматорів, Санкт-Петербург, 1909, другий тур. Перемога в турнірі принесла Алехіну звання майстра."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-18",
+          "fen": "3r3k/pp2qpRp/2p1bN2/4P3/3r4/4Q2P/PP3PP1/5RK1 b - - 0 24",
+          "moves": "h8g7 e3g5 g7h8 g5h5 e7f6 e5f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "David Janowski",
+            "event": "Scheveningen",
+            "site": "Scheveningen",
+            "year": 1913,
+            "date": "1913.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011855"
+          },
+          "note": {
+            "en": "Scheveningen 1913, a Queen's Gambit Declined. Alekhine won the tournament.",
+            "uk": "Схевенінген, 1913, відхилений ферзевий гамбіт. Алехін виграв турнір."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-19",
+          "fen": "5r1k/1p4pp/pNp3q1/2Pp4/3Q1n2/5p1b/PP1B1P1P/6RK w - - 6 29",
+          "moves": "g1g6 h3g2 g6g2 f3g2 h1g1 f4e2 g1g2 e2d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Konstantin Alekseyevich Vygodchikov",
+            "black": "Alexander Alekhine",
+            "event": "Correspondence game",
+            "year": 1910,
+            "date": "1910.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011786"
+          },
+          "note": {
+            "en": "A correspondence game finished in 1910, a Ruy Lopez.",
+            "uk": "Партія за листуванням, завершена 1910 року, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-1-20",
+          "fen": "rn1qkn2/pb3pQ1/1pp1p3/3pP3/3P3R/2N5/PPP2PP1/R1B1K3 b Qq - 0 14",
+          "moves": "d8h4 c1g5 h4h1 e1d2 h1g2 g7f6 g2g5 f6g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2150,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Vasily I Rozanov",
+            "event": "Moscow Chess Club Autumn t",
+            "site": "Moscow RUE",
+            "year": 1908,
+            "date": "1908.11.04",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011721"
+          },
+          "note": {
+            "en": "Moscow Chess Club autumn tournament, November 1908.",
+            "uk": "Осінній турнір Московського шахового клубу, листопад 1908."
+          }
+        }
+      ]
+    },
+    {
+      "id": "alekhine-2",
+      "title": {
+        "en": "War and Revolution",
+        "uk": "Війна і революція"
+      },
+      "subtitle": {
+        "en": "From St Petersburg to Vienna, 1914–1922",
+        "uk": "Від Петербурга до Відня, 1914–1922"
+      },
+      "puzzles": [
+        {
+          "id": "lib-alekhine-2-01",
+          "fen": "r2qr3/pb1nb1pp/1p2Qnk1/2p2p2/2PP1BP1/3B1N2/PP3P1P/R4RK1 b - - 0 17",
+          "moves": "b7e4 f3h4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "M von Feldt",
+            "event": "Blindfold simul, 5b",
+            "site": "Tarnopol AUH",
+            "year": 1916,
+            "date": "1916.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011991"
+          },
+          "note": {
+            "en": "Tarnopol, 1916, blindfold on five boards. Alekhine was then serving with a Red Cross unit at the front.",
+            "uk": "Тернопіль, 1916, гра наосліп на пʼяти дошках. Алехін тоді служив у загоні Червоного Хреста на фронті."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-02",
+          "fen": "r7/8/4N3/4K3/7k/5Pp1/6P1/4R3 b - - 4 51",
+          "moves": "a8h8 e1h1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Efim Bogoljubov",
+            "event": "Hastings",
+            "site": "Hastings ENG",
+            "year": 1922,
+            "date": "1922.09.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012104"
+          },
+          "note": {
+            "en": "Hastings, September 1922, round five. Alekhine won the tournament.",
+            "uk": "Гастінгс, вересень 1922, пʼятий тур. Алехін виграв турнір."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-03",
+          "fen": "1kr5/1b4pp/1p6/4bp2/p4N1P/1Q2PP2/PP1q1P2/1K1R4 w - - 0 29",
+          "moves": "d1d2 a4b3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Sergey Fedorovich Lebedev",
+            "black": "Alexander Alekhine",
+            "event": "All-Russian Masters",
+            "site": "St. Petersburg RUE",
+            "year": 1914,
+            "date": "1914.01.23",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011874"
+          },
+          "note": {
+            "en": "All-Russian Masters Tournament, St Petersburg, January 1914, round 13. Alekhine and Nimzowitsch shared first place.",
+            "uk": "Всеросійський турнір майстрів, Санкт-Петербург, січень 1914, 13-й тур. Алехін і Німцович поділили перше місце."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-04",
+          "fen": "8/5N1p/p5p1/3p3k/5P2/2Q1P1PK/7P/q4r2 b - - 1 36",
+          "moves": "g6g5 g3g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Arthur Kaufmann",
+            "event": "Casual game",
+            "site": "Odessa RUS",
+            "year": 1919,
+            "date": "1919.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012021"
+          },
+          "note": {
+            "en": "Odessa, 1919, a casual game.",
+            "uk": "Одеса, 1919, товариська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-05",
+          "fen": "r5r1/pp5k/2nN1p1p/q3n3/8/Q2R1P2/PPP1N2P/2K3R1 w - - 1 24",
+          "moves": "d3b3 g8g1 e2g1 a5e1",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "backRankMate",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Alexander Alekhine",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg  RUE",
+            "year": 1914,
+            "date": "1914.05.12",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011934"
+          },
+          "note": {
+            "en": "St Petersburg, May 1914, round three. Alekhine finished third behind Lasker and Capablanca.",
+            "uk": "Санкт-Петербург, травень 1914, третій тур. Алехін посів третє місце після Ласкера й Капабланки."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-06",
+          "fen": "2n1r2b/3k4/q1p2p2/1RP3p1/3NPp2/Q1BK4/P5P1/8 b - - 2 33",
+          "moves": "a6a3 b5b7 d7d8 d4c6",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "L Litov",
+            "event": "Simul, 18b",
+            "site": "Serpukhov RUE",
+            "year": 1915,
+            "date": "1915.11.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011978"
+          },
+          "note": {
+            "en": "Serpukhov, November 1915, from a simul on 18 boards.",
+            "uk": "Серпухов, листопад 1915, сеанс на 18 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-07",
+          "fen": "8/1N3R2/2pk1nr1/1p2p2p/1PP1P2P/3P4/1K6/8 b - - 2 39",
+          "moves": "d6e6 b7d8 e6d6 c4c5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Boris Verlinsky",
+            "event": "Odessa",
+            "site": "Odessa",
+            "year": 1918,
+            "date": "1918.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012005"
+          },
+          "note": {
+            "en": "Odessa, 1918. In 1929 Verlinsky became the first player to receive the title of Grandmaster of the USSR.",
+            "uk": "Одеса, 1918. 1929 року Верлінський першим отримав звання гросмейстера СРСР."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-08",
+          "fen": "4r2k/1p4q1/2p5/1p3Brp/3P1N2/P1P2b2/1P3Q1R/4R2K w - - 1 42",
+          "moves": "f4g2 e8e1 f2e1 g5f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Eugene Aleksandrovich Znosko-Borovsky",
+            "black": "Alexander Alekhine",
+            "event": "All-Russian Masters",
+            "site": "St. Petersburg RUE",
+            "year": 1914,
+            "date": "1914.01.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011875"
+          },
+          "note": {
+            "en": "All-Russian Masters Tournament, St Petersburg, January 1914, round 15.",
+            "uk": "Всеросійський турнір майстрів, Санкт-Петербург, січень 1914, 15-й тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-09",
+          "fen": "4r1k1/p1p2rp1/2p2n2/5PB1/4p1P1/4Q3/PPP4q/4R1K1 w - - 0 28",
+          "moves": "g1h2 f6g4 h2g3 g4e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Nikolay Pavlov-Pianov",
+            "black": "Alexander Alekhine",
+            "event": "Moscow Championship 1919/20",
+            "site": "Moscow RUS",
+            "year": 1919,
+            "date": "1919.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2847988"
+          },
+          "note": {
+            "en": "Moscow, winter 1919/20, the city championship.",
+            "uk": "Москва, зима 1919/20, чемпіонат міста."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-10",
+          "fen": "5r1k/pp4pp/2p5/8/4n3/5NPQ/P3B2P/4q2K w - - 0 28",
+          "moves": "f3e1 e4f2 h1g2 f2h3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "V Rozanov / N Tselikov",
+            "black": "Alexander Alekhine",
+            "event": "Consultation game",
+            "site": "Moscow RUE",
+            "year": 1915,
+            "date": "1915.08.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011975"
+          },
+          "note": {
+            "en": "Moscow, August 1915, a consultation game: Rozanov and Tselikov played White together.",
+            "uk": "Москва, серпень 1915, консультаційна партія: Розанов і Целіков разом грали білими."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-11",
+          "fen": "8/p7/1p4p1/2nB3p/4pQ2/P5P1/Kq2k3/8 w - - 0 59",
+          "moves": "a2b2 c5d3 b2b3 d3f4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Przepiorka",
+            "black": "Alexander Alekhine",
+            "event": "Bad Pistyan",
+            "site": "Piestany CSR",
+            "year": 1922,
+            "date": "1922.04.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1006962"
+          },
+          "note": {
+            "en": "Bad Pistyan, April 1922, round 16, deep in a long ending.",
+            "uk": "Пʼєштяни, квітень 1922, 16-й тур, глибокий ендшпіль."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-12",
+          "fen": "3k4/p1rq3p/3R4/2p5/2Q1P1r1/1P3R2/P4PP1/6K1 b - - 0 31",
+          "moves": "d7d6 f3d3 d6d3 c4d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Boris Verlinsky",
+            "event": "Odessa",
+            "site": "Odessa",
+            "year": 1918,
+            "date": "1918.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012013"
+          },
+          "note": {
+            "en": "Odessa, 1918, a Queen's Pawn Opening.",
+            "uk": "Одеса, 1918, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-13",
+          "fen": "3r2k1/p2n2p1/7p/1p6/7P/bNQ2P2/qPb3P1/2KRR3 w - - 0 25",
+          "moves": "c1c2 a3b2 b3c1 b2c3 c1a2 c3e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "discoveredAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Boris Vasilievich Lyubimov",
+            "black": "Alexander Alekhine",
+            "event": "Moscow Championship 1919/20",
+            "site": "Moscow RUS",
+            "year": 1919,
+            "date": "1919.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012018"
+          },
+          "note": {
+            "en": "Moscow Championship 1919/20, which Alekhine won with a perfect score.",
+            "uk": "Чемпіонат Москви 1919/20, який Алехін виграв зі стовідсотковим результатом."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-14",
+          "fen": "3r2k1/1p2qpp1/7p/pP2p3/n7/bQ2P2P/R2N1PP1/B1rR2K1 w - - 2 26",
+          "moves": "b3a4 e7b4 d1c1 b4a4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Geza Maroczy",
+            "black": "Alexander Alekhine",
+            "event": "The Hague",
+            "site": "The Hague NED",
+            "year": 1921,
+            "date": "1921.10.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012073"
+          },
+          "note": {
+            "en": "The Hague, October 1921, round four. Alekhine won the tournament.",
+            "uk": "Гаага, жовтень 1921, четвертий тур. Алехін виграв турнір."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-15",
+          "fen": "2k5/2b5/pp6/4p3/1P3pB1/1KP4P/1P1R2r1/8 b - - 3 34",
+          "moves": "g2g4 h3g4 f4f3 d2d5 e5e4 d5f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Savielly Tartakower",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1922,
+            "date": "1922.11.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012161"
+          },
+          "note": {
+            "en": "Vienna, November 1922, round 11, a French Defence.",
+            "uk": "Відень, листопад 1922, 11-й тур, французький захист."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-16",
+          "fen": "r3rk1Q/ppp3p1/2n1pq2/6N1/5b2/1P2R3/P1PP1PPP/5RK1 b - - 10 21",
+          "moves": "f8e7 e3e6 f6e6 h8g7 e7d6 g5e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Abram Isaakovich Rabinovich",
+            "event": "Moscow Triangular Tournament",
+            "site": "Moscow RUS",
+            "year": 1918,
+            "date": "1918.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012002"
+          },
+          "note": {
+            "en": "Moscow 1918, a three-player tournament, a Petroff Defence.",
+            "uk": "Москва, 1918, турнір трьох шахістів, захист Петрова."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-17",
+          "fen": "r1q2rk1/p3b2p/1p1p2p1/2pPp2n/2P1P1P1/3B1p2/PP2QR1P/R1B2NK1 w - - 0 20",
+          "moves": "f2f3 c8g4 f3g3 f8f1 g1g2 g4e2 d3e2 h5g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1825,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "B Hallegua",
+            "black": "Alexander Alekhine",
+            "event": "Exhibition Game",
+            "site": "Cafe Continental, Paris FRA",
+            "year": 1914,
+            "date": "1914.07.15",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011910"
+          },
+          "note": {
+            "en": "Café Continental, Paris, July 1914, an exhibition game, a few weeks before the outbreak of war.",
+            "uk": "Кафе «Континенталь», Париж, липень 1914, показова партія — за кілька тижнів до початку війни."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-18",
+          "fen": "3rr1k1/1pp1q1pp/p1p5/5R2/2b1P3/3N1Q2/PPP3PP/5RK1 b - - 4 21",
+          "moves": "e7e4 f5f8 e8f8 f3e4 f8f1 g1f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Nikolay Tselikov",
+            "event": "1st Category tournament",
+            "site": "Moscow RUE",
+            "year": 1915,
+            "date": "1915.10.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011970"
+          },
+          "note": {
+            "en": "Moscow, October 1915, round two of a first-category tournament.",
+            "uk": "Москва, жовтень 1915, другий тур турніру першої категорії."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-19",
+          "fen": "6k1/5rpp/5P2/6P1/1Q5P/8/1P4K1/2q5 w - - 0 38",
+          "moves": "b4b8 f7f8 f6f7 g8f7 g5g6 h7g6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Karel Treybal",
+            "black": "Alexander Alekhine",
+            "event": "Bad Pistyan",
+            "site": "Piestany CSR",
+            "year": 1922,
+            "date": "1922.04.15",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1006894"
+          },
+          "note": {
+            "en": "Bad Pistyan, April 1922, round eight, a Ruy Lopez.",
+            "uk": "Пʼєштяни, квітень 1922, восьмий тур, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-2-20",
+          "fen": "r1br2k1/1p2qp1p/2nb2pQ/1B6/Pp6/4PN2/1B3PPP/2R1K2R b K - 1 17",
+          "moves": "c6e5 f3g5 f7f6 b2e5 d6e5 b5c4 g8h8 g5f7 e7f7 c4f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2250,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Max Euwe",
+            "event": "The Hague",
+            "site": "The Hague NED",
+            "year": 1921,
+            "date": "1921.11.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012076"
+          },
+          "note": {
+            "en": "The Hague, November 1921. Euwe would take the world title from Alekhine in 1935.",
+            "uk": "Гаага, листопад 1921. 1935 року Ейве відібрав в Алехіна звання чемпіона світу."
+          }
+        }
+      ]
+    },
+    {
+      "id": "alekhine-3",
+      "title": {
+        "en": "Touring the World",
+        "uk": "Світове турне"
+      },
+      "subtitle": {
+        "en": "Simuls, records, tournaments, 1923–1925",
+        "uk": "Сеанси, рекорди, турніри, 1923–1925"
+      },
+      "puzzles": [
+        {
+          "id": "lib-alekhine-3-01",
+          "fen": "r1bk3r/2p2ppp/ppB1Pq2/b7/3Q4/B1P5/P1P2PPP/R3K2R b KQ - 2 14",
+          "moves": "f6d4 e6e7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Dr. J Forrester",
+            "event": "Simul, 35b",
+            "site": "Glasgow SCO",
+            "year": 1923,
+            "date": "1923.10.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012616"
+          },
+          "note": {
+            "en": "Glasgow, October 1923, from a simul on 35 boards.",
+            "uk": "Глазго, жовтень 1923, сеанс на 35 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-02",
+          "fen": "8/7p/6p1/p2p3k/qp1PpQP1/4P2P/1P4BK/8 b - - 0 47",
+          "moves": "h5h4 f4h6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Echiquier Naval de Brest",
+            "event": "Alekhine Blindfold Simul 28b",
+            "site": "Paris FRA",
+            "year": 1925,
+            "date": "1925.02.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012370"
+          },
+          "note": {
+            "en": "Paris, 1 February 1925, from the 28-board blindfold display; the opponent was a naval chess club from Brest.",
+            "uk": "Париж, 1 лютого 1925, сеанс наосліп на 28 дошках; суперник — військово-морський шаховий клуб із Бреста."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-03",
+          "fen": "5BQ1/p1p4p/4pk2/4bpN1/8/3r3P/r4PK1/2R2R2 b - - 0 28",
+          "moves": "d3g3 g2h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1400,
+          "themes": [
+            "middlegame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Arthur Percival Lacy-Hulbert",
+            "event": "Blindfold simul, 10b",
+            "site": "Birmingham ENG",
+            "year": 1923,
+            "date": "1923.10.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1793324"
+          },
+          "note": {
+            "en": "Birmingham, October 1923, blindfold on ten boards.",
+            "uk": "Бірмінгем, жовтень 1923, гра наосліп на десяти дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-04",
+          "fen": "8/1Q3ppk/p5qp/8/8/PP5r/5PP1/4R1K1 w - - 0 31",
+          "moves": "e1e8 g6b1 e8e1 b1e1",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Florence Gleason",
+            "black": "Alexander Alekhine",
+            "event": "Simul, 36b",
+            "site": "Chicago, IL USA",
+            "year": 1924,
+            "date": "1924.02.09",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012266"
+          },
+          "note": {
+            "en": "Chicago, February 1924, from a simul on 36 boards.",
+            "uk": "Чикаго, лютий 1924, сеанс на 36 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-05",
+          "fen": "6k1/5pb1/p5pp/1p6/2qrPP2/P7/NP2Q1PP/3R2K1 w - - 1 33",
+          "moves": "e2c4 d4d1 g1f2 b5c4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Ernst Gruenfeld",
+            "black": "Alexander Alekhine",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1923,
+            "date": "1923.04.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012180"
+          },
+          "note": {
+            "en": "Karlsbad, April 1923, round two. Alekhine shared first place with Bogoljubov and Maróczy.",
+            "uk": "Карлсбад, квітень 1923, другий тур. Алехін поділив перше місце з Боголюбовим і Мароці."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-06",
+          "fen": "r1b2rk1/pp4pp/3P4/4qp2/2B1nN2/5R2/PP1Q2PP/R5K1 b - - 0 19",
+          "moves": "g8h8 f4g6 h7g6 f3h3",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1500,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "A Stephan",
+            "event": "Simul, 32b",
+            "site": "Most CSR",
+            "year": 1925,
+            "date": "1925.03.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012350"
+          },
+          "note": {
+            "en": "Most, March 1925, from a simul on 32 boards.",
+            "uk": "Мост, березень 1925, сеанс на 32 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-07",
+          "fen": "2r3k1/1nr2ppp/p5B1/1p1qP1B1/8/5R1P/P4QPK/3R4 b - - 0 28",
+          "moves": "d5d1 g6f7 c7f7 f3f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Thomas J Johnston",
+            "event": "Simul, 33b",
+            "site": "Brooklyn CC, New York, NY USA",
+            "year": 1923,
+            "date": "1923.12.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012228"
+          },
+          "note": {
+            "en": "Brooklyn Chess Club, New York, December 1923, from a simul on 33 boards.",
+            "uk": "Бруклінський шаховий клуб, Нью-Йорк, грудень 1923, сеанс на 33 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-08",
+          "fen": "8/pp3p1k/2p4p/3q2p1/8/P5r1/1PR1Rr1K/7Q w - - 0 42",
+          "moves": "e2f2 g3h3 h2h3 d5h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jakob Adolf Seitz",
+            "black": "Alexander Alekhine",
+            "event": "BCF-ch 16th Major Open",
+            "site": "Southsea ENG",
+            "year": 1923,
+            "date": "1923.08.15",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012254"
+          },
+          "note": {
+            "en": "Southsea, August 1923, round three of the British Chess Federation congress.",
+            "uk": "Саутсі, серпень 1923, третій тур конгресу Британської шахової федерації."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-09",
+          "fen": "6k1/6pp/3pnr2/8/2P1QN2/6P1/Pq5P/1R5K b - - 1 32",
+          "moves": "b2a2 f4e6 a2b1 e4b1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Dudley LeDain",
+            "event": "Simul, 37b",
+            "site": "National Athletics Association, Montreal CAN",
+            "year": 1923,
+            "date": "1923.11.22",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2654660"
+          },
+          "note": {
+            "en": "Montreal, November 1923, from a simul on 37 boards.",
+            "uk": "Монреаль, листопад 1923, сеанс на 37 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-10",
+          "fen": "5k2/2pNr3/2p4p/1p2q1p1/1P6/4BP1P/2P1Q1P1/6K1 b - - 1 29",
+          "moves": "e7d7 e3c5 e5c5 b4c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Russell Wingate McRery",
+            "event": "Blindfold simul, 10b",
+            "site": "Hermitage Hotel, Louisville, KY USA",
+            "year": 1924,
+            "date": "1924.02.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012270"
+          },
+          "note": {
+            "en": "Hermitage Hotel, Louisville, February 1924, blindfold on ten boards.",
+            "uk": "Готель «Ермітаж», Луїсвілл, лютий 1924, гра наосліп на десяти дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-11",
+          "fen": "r4r1k/pppq1p1p/3p1N1p/4n2Q/2B1P3/3P3P/PPP3P1/7K b - - 0 21",
+          "moves": "d7e7 h5h6 e7f6 h6f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "R O'Malley",
+            "event": "Simul, 37b",
+            "site": "St. Louis, MO USA",
+            "year": 1924,
+            "date": "1924.02.18",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012316"
+          },
+          "note": {
+            "en": "St. Louis, February 1924, from a simul on 37 boards.",
+            "uk": "Сент-Луїс, лютий 1924, сеанс на 37 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-12",
+          "fen": "8/7p/Pp6/1P6/2K1k3/3n1p2/5B1P/8 b - - 0 52",
+          "moves": "d3f2 a6a7 e4e3 a7a8q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "promotion",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "D Stone",
+            "event": "Simul, 40b",
+            "site": "Boston, MA USA",
+            "year": 1923,
+            "date": "1923.12.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012168"
+          },
+          "note": {
+            "en": "Boston, December 1923, from a simul on 40 boards.",
+            "uk": "Бостон, грудень 1923, сеанс на 40 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-13",
+          "fen": "r2q1rk1/p1p1n1pp/2p1bp2/2N5/3P4/5N2/PP1Q1PPP/2R2RK1 b - - 3 15",
+          "moves": "e6a2 b2b3 a2b3 c5b3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Les Echecs du Palais Royal",
+            "event": "Alekhine Blindfold Simul 28b",
+            "site": "Paris FRA",
+            "year": 1925,
+            "date": "1925.02.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012362"
+          },
+          "note": {
+            "en": "Paris, 1 February 1925: blindfold on 28 boards, a new world record.",
+            "uk": "Париж, 1 лютого 1925: гра наосліп на 28 дошках — новий світовий рекорд."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-14",
+          "fen": "r1b3k1/pp3p1p/1q4p1/8/1P1rPP2/2Q5/1B3PBP/5RK1 b - - 0 21",
+          "moves": "b6b4 c3d4 b4d4 b2d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Antonius Henricus Marie Wap",
+            "event": "Simul, 30b",
+            "site": "Rotterdam NED",
+            "year": 1925,
+            "date": "1925.12.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1824118"
+          },
+          "note": {
+            "en": "Rotterdam, December 1925, from a simul on 30 boards.",
+            "uk": "Роттердам, грудень 1925, сеанс на 30 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-15",
+          "fen": "1n2r3/2pq1k2/pb1pNRp1/3P4/6P1/3Q3P/5P2/6K1 b - - 0 37",
+          "moves": "f7f6 d3c3 b6d4 c3d4 f6f7 d4g7",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1750,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Oscar Prils / Blaut",
+            "event": "Consultation simul, 6b",
+            "site": "Antwerp BEL",
+            "year": 1923,
+            "date": "1923.02.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012163"
+          },
+          "note": {
+            "en": "Antwerp, February 1923, from a consultation simul on six boards.",
+            "uk": "Антверпен, лютий 1923, консультаційний сеанс на шести дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-16",
+          "fen": "7r/ppp3p1/2nb2k1/3pN2p/3P1Br1/2P3P1/PP1K3P/R6R b - - 4 20",
+          "moves": "c6e5 d4e5 d6e7 h2h3 g4g5 f4g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "C Beaubien",
+            "event": "Blindfold simul, 21b",
+            "site": "National Athletics Association, Montreal CAN",
+            "year": 1923,
+            "date": "1923.12.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1826385"
+          },
+          "note": {
+            "en": "Montreal, December 1923, blindfold on 21 boards.",
+            "uk": "Монреаль, грудень 1923, гра наосліп на 21 дошці."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-17",
+          "fen": "r4r1k/1p6/p1pn1q1p/3Bp3/8/2P2N1Q/PP6/6RK w - - 2 32",
+          "moves": "f3e5 c6d5 g1g6 f6f1 h3f1 f8f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Fred Dewhirst Yates",
+            "black": "Alexander Alekhine",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.03.16",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012285"
+          },
+          "note": {
+            "en": "New York, March 1924, round one. Lasker won the tournament ahead of Capablanca and Alekhine.",
+            "uk": "Нью-Йорк, березень 1924, перший тур. Турнір виграв Ласкер, випередивши Капабланку й Алехіна."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-18",
+          "fen": "3q2k1/pr3ppp/1p3Bn1/5NQ1/2p5/8/P4PPP/4R1K1 b - - 0 22",
+          "moves": "g7f6 g5h6 d8f8 e1e8 c4c3 h6g7",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1900,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "quietMove",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Abraham Frieman",
+            "event": "Blindfold simul, 26b",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.04.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012300"
+          },
+          "note": {
+            "en": "New York, April 1924: blindfold on 26 boards, a world record at the time.",
+            "uk": "Нью-Йорк, квітень 1924: гра наосліп на 26 дошках — тодішній світовий рекорд."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-19",
+          "fen": "r5k1/1pq2pp1/5n2/1QN5/6b1/2n1rNP1/3RPP2/2R3KB w - - 1 29",
+          "moves": "b5b7 c7b7 c5b7 c3e2 g1h2 f6e4 c1c4 e4f2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Alexander Alekhine",
+            "event": "Baden-Baden",
+            "site": "Baden-Baden GER",
+            "year": 1925,
+            "date": "1925.04.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012326"
+          },
+          "note": {
+            "en": "Baden-Baden, April 1925, round eight. Alekhine won the tournament ahead of Rubinstein.",
+            "uk": "Баден-Баден, квітень 1925, восьмий тур. Алехін виграв турнір, випередивши Рубінштейна."
+          }
+        },
+        {
+          "id": "lib-alekhine-3-20",
+          "fen": "3r2k1/p2r1ppp/1pQ3B1/3P2q1/P7/6P1/5P1P/2R1R1K1 b - - 0 29",
+          "moves": "h7g6 c6d7 d8d7 e1e8 g8h7 c1c8 g5c1 c8c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Edgar Colle",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1925,
+            "date": "1925.02.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1325132"
+          },
+          "note": {
+            "en": "Paris, February 1925, round six. Colle gave his name to a quiet opening system for White.",
+            "uk": "Париж, лютий 1925, шостий тур. Імʼя Колле носить спокійна дебютна система за білих."
+          }
+        }
+      ]
+    },
+    {
+      "id": "alekhine-4",
+      "title": {
+        "en": "Road to the Crown",
+        "uk": "Шлях до корони"
+      },
+      "subtitle": {
+        "en": "Before and after the title, 1926–1929",
+        "uk": "До і після титулу, 1926–1929"
+      },
+      "puzzles": [
+        {
+          "id": "lib-alekhine-4-01",
+          "fen": "4R2k/2p5/pn1P3p/1p1P1q2/5P2/1P4Q1/Pb4P1/6K1 b - - 3 41",
+          "moves": "h8h7 g3g8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "A H Owen / C B Winterton",
+            "event": "Simul, 12b",
+            "site": "Midland Institute, Birmingham ENG",
+            "year": 1926,
+            "date": "1926.01.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1826395"
+          },
+          "note": {
+            "en": "Birmingham, January 1926, from a 12-board simul; Owen and Winterton consulted on Black.",
+            "uk": "Бірмінгем, січень 1926, сеанс на 12 дошках; чорними радилися Оуен і Вінтертон."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-02",
+          "fen": "1r4n1/p5bk/b2pP2p/q1pPN3/1p2BP2/4B2P/PP6/3NRRK1 b - - 4 31",
+          "moves": "h7h8 e5f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "A Fletcher",
+            "event": "Simul, 6b",
+            "site": "Gambit Chess Rooms, London ENG",
+            "year": 1928,
+            "date": "1928.06.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012556"
+          },
+          "note": {
+            "en": "Gambit Chess Rooms, London, June 1928, from a simul on six boards.",
+            "uk": "Лондон, червень 1928, сеанс на шести дошках у шахових залах «Гамбіт»."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-03",
+          "fen": "3q1rk1/pB3ppp/4p3/2b5/2Pp4/P1B3P1/3NPn1P/3Q1RK1 w - - 0 19",
+          "moves": "g1f2 d4c3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Alexander Alekhine",
+            "event": "Semmering",
+            "site": "Semmering AUT",
+            "year": 1926,
+            "date": "1926.03.17",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007571"
+          },
+          "note": {
+            "en": "Semmering, March 1926, round eight.",
+            "uk": "Земмерінг, березень 1926, восьмий тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-04",
+          "fen": "4r1k1/7p/Rp6/1Pp1N1p1/5p1P/8/1PRn1PPK/3r4 w - - 1 37",
+          "moves": "e5f3 d2f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Efim Bogoljubov",
+            "black": "Alexander Alekhine",
+            "event": "Alekhine - Bogoljubov World Championship",
+            "site": "Amsterdam NED",
+            "year": 1929,
+            "date": "1929.11.03",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012612"
+          },
+          "note": {
+            "en": "Amsterdam, November 1929, game 22 of the world title match. Alekhine kept his crown.",
+            "uk": "Амстердам, листопад 1929, 22-га партія матчу за звання чемпіона світу. Алехін зберіг корону."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-05",
+          "fen": "r2q1bkr/pp1n2p1/6Bp/3p1Q2/3P2nP/4P3/PP3P2/R1B1K2R b KQ - 1 15",
+          "moves": "d8f6 f5d5 f6e6 d5e6",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Robert L Bornholz",
+            "event": "Clock simul, 9b",
+            "site": "Manhattan CC, New York, NY USA",
+            "year": 1929,
+            "date": "1929.03.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012631"
+          },
+          "note": {
+            "en": "Manhattan Chess Club, New York, March 1929, a clock simul on nine boards.",
+            "uk": "Манхеттенський шаховий клуб, Нью-Йорк, березень 1929, сеанс із годинником на девʼяти дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-06",
+          "fen": "6k1/p2R1pp1/8/7p/1P1b1q2/2p5/P3Q1PP/6K1 w - - 1 30",
+          "moves": "g1h1 f4c1 e2d1 c1d1",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Hans Kmoch",
+            "black": "Alexander Alekhine",
+            "event": "Kecskemet",
+            "site": "Kecskemet HUN",
+            "year": 1927,
+            "date": "1927.07.06",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007750"
+          },
+          "note": {
+            "en": "Kecskemét, July 1927, round one. Alekhine won the tournament months before his title match.",
+            "uk": "Кечкемет, липень 1927, перший тур. Алехін виграв турнір за кілька місяців до матчу за титул."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-07",
+          "fen": "3r2k1/Q2rbppp/2p3q1/2p5/2P5/P3BN1P/1n1R1PP1/3R2K1 b - - 0 25",
+          "moves": "d7a7 d2d8 e7f8 e3c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Raul Molina",
+            "event": "Clock simul, 8b",
+            "site": "Buenos Aires ARG",
+            "year": 1926,
+            "date": "1926.09.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012408"
+          },
+          "note": {
+            "en": "Buenos Aires, September 1926, from a clock simul on eight boards.",
+            "uk": "Буенос-Айрес, вересень 1926, сеанс із годинником на восьми дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-08",
+          "fen": "r3rnkq/1p6/2p1Rpn1/p1P1p2Q/P1B1P1NP/6P1/1P3P2/2R4K b - - 0 36",
+          "moves": "h8h5 e6e5 g8g7 e5h5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "discoveredAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "W Stickgold",
+            "event": "Warsaw",
+            "site": "Warsaw POL",
+            "year": 1928,
+            "date": "1928.12.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012569"
+          },
+          "note": {
+            "en": "Warsaw, December 1928, an English Opening.",
+            "uk": "Варшава, грудень 1928, англійський початок."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-09",
+          "fen": "2r2rk1/4ppbp/bp4p1/3p4/1N1P1P2/pPq2N1P/P1BQ1PP1/4R1K1 w - - 7 25",
+          "moves": "d2c3 c8c3 b4a6 c3c2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Walter Michel",
+            "black": "Alexander Alekhine",
+            "event": "Semmering",
+            "site": "Semmering AUT",
+            "year": 1926,
+            "date": "1926.03.20",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007588"
+          },
+          "note": {
+            "en": "Semmering, March 1926, round ten.",
+            "uk": "Земмерінг, березень 1926, десятий тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-10",
+          "fen": "1r4k1/1r2q3/3np3/p2p1p2/b1pPPPpp/2P3P1/PRNQB2P/1R4K1 w - - 1 29",
+          "moves": "b2b7 b8b7 b1b7 e7b7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Hans Kmoch",
+            "black": "Alexander Alekhine",
+            "event": "Semmering",
+            "site": "Semmering AUT",
+            "year": 1926,
+            "date": "1926.03.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007623"
+          },
+          "note": {
+            "en": "Semmering, March 1926, round 14, a Dutch Defence. Spielmann won the tournament, Alekhine was second.",
+            "uk": "Земмерінг, березень 1926, 14-й тур, голландський захист. Турнір виграв Шпільман, Алехін був другим."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-11",
+          "fen": "2Rn4/pp1r3p/3k1Np1/8/3PP3/4K3/P2R2PP/5r2 b - - 4 32",
+          "moves": "f1f6 e4e5 d6e6 e5f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Salo Landau",
+            "event": "Scarborough Premier (A)",
+            "site": "Scarborough ENG",
+            "year": 1926,
+            "date": "1926.05.22",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012473"
+          },
+          "note": {
+            "en": "Scarborough, May 1926, round two, an English Opening.",
+            "uk": "Скарборо, травень 1926, другий тур, англійський початок."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-12",
+          "fen": "1r4k1/Bb3ppp/p2br3/3N4/8/8/PP3PPP/3RR1K1 b - - 0 24",
+          "moves": "b7d5 a7b8 d6b8 e1e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Leon Colman Lerner",
+            "event": "Clock simul, 8b",
+            "site": "Buenos Aires ARG",
+            "year": 1926,
+            "date": "1926.09.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012401"
+          },
+          "note": {
+            "en": "Buenos Aires, September 1926, a clock simul on eight boards, a Caro-Kann.",
+            "uk": "Буенос-Айрес, вересень 1926, сеанс із годинником на восьми дошках, захист Каро-Канн."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-13",
+          "fen": "r2r3k/p3Rp2/1p4R1/7N/8/P1Pp1b2/1P1K1P1P/8 b - - 1 27",
+          "moves": "f3h5 g6h6 h8g7 h6h5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Thorbjohnson",
+            "event": "Simul, 16b",
+            "site": "Chicago, IL USA",
+            "year": 1929,
+            "date": "1929.04.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012590"
+          },
+          "note": {
+            "en": "Chicago, April 1929, from a simul on 16 boards, a French Defence.",
+            "uk": "Чикаго, квітень 1929, сеанс на 16 дошках, французький захист."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-14",
+          "fen": "2r1rbk1/ppq2ppp/2p5/4P1N1/2n1NP2/3Q4/1P1R2PP/3R2K1 b - - 2 27",
+          "moves": "c4d2 e4f6 g7f6 d3h7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1500,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Arancegui",
+            "event": "Simul",
+            "site": "Mexico City MEX",
+            "year": 1929,
+            "date": "1929.05.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1575212"
+          },
+          "note": {
+            "en": "Mexico City, May 1929, from a simul.",
+            "uk": "Мехіко, травень 1929, сеанс одночасної гри."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-15",
+          "fen": "8/1p6/p1b4k/5Npp/P2Kp2P/1P2P3/5P2/8 b - - 1 35",
+          "moves": "h6g6 f5e7 g6f6 e7c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "J M Bringas",
+            "event": "Simul",
+            "site": "Mexico City MEX",
+            "year": 1929,
+            "date": "1929.05.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1575214"
+          },
+          "note": {
+            "en": "Mexico City, May 1929, from a simul, a Bogo-Indian Defence.",
+            "uk": "Мехіко, травень 1929, сеанс одночасної гри, захист Боголюбова."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-16",
+          "fen": "rn1q4/pppk2r1/4b3/8/5N2/8/PPP2PPP/2KRR3 b - - 1 23",
+          "moves": "d7c8 d1d8 c8d8 f4e6 d8d7 e6g7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "R M Folger",
+            "event": "Simul, 43b",
+            "site": "Mechanics' Institute, San Francisco, CA USA",
+            "year": 1929,
+            "date": "1929.05.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012642"
+          },
+          "note": {
+            "en": "San Francisco, May 1929, a 43-board simul at the Mechanics' Institute, the oldest US chess club still running.",
+            "uk": "Сан-Франциско, травень 1929, сеанс на 43 дошках в Інституті механіків — найстарішому чинному шаховому клубі США."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-17",
+          "fen": "5r1k/2RQq1p1/8/8/3P4/8/5P1r/1R5K w - - 0 34",
+          "moves": "h1h2 e7h4 d7h3 f8f2 h2g1 h4h3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "F Valenzuela",
+            "black": "Alexander Alekhine",
+            "event": "Simul, 30b",
+            "site": "Santiago CHI",
+            "year": 1927,
+            "date": "1927.12.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012541"
+          },
+          "note": {
+            "en": "Santiago, December 1927, from a simul on 30 boards, weeks after Alekhine won the world title.",
+            "uk": "Сантьяго, грудень 1927, сеанс на 30 дошках — за кілька тижнів після того, як Алехін став чемпіоном світу."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-18",
+          "fen": "r5rk/3qn3/1b3R1p/2p1B3/p5N1/7P/PP2R1P1/6K1 b - - 0 30",
+          "moves": "c5c4 f6b6 g8g7 b6h6 h8g8 g4f6 g8f7 f6d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1825,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "fork",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Ferran Freixa",
+            "event": "Alekhine simul, 30b Barcelona",
+            "site": "Barcelona ESP",
+            "year": 1928,
+            "date": "1928.01.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012548"
+          },
+          "note": {
+            "en": "Barcelona, January 1928, from a simul on 30 boards, an Italian Game.",
+            "uk": "Барселона, січень 1928, сеанс на 30 дошках, італійська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-19",
+          "fen": "2k1r3/pp1r3p/2n5/3qPpp1/2Np1P2/R2Q4/2P3PP/1R5K b - - 1 24",
+          "moves": "g5f4 a3a7 c6a7 c4b6 c8b8 b6d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Carlos Portela",
+            "event": "Buenos Aires",
+            "site": "Buenos Aires ARG",
+            "year": 1926,
+            "date": "1926.09.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012427"
+          },
+          "note": {
+            "en": "Buenos Aires, September 1926, round five, a Sicilian Defence.",
+            "uk": "Буенос-Айрес, вересень 1926, пʼятий тур, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-alekhine-4-20",
+          "fen": "r4k2/p2q1p2/2pb2rp/2pP4/5p1P/1B1P2N1/PP3Pb1/2Q1RRK1 w - - 0 22",
+          "moves": "g1g2 f4f3 g2f3 d7g4 f3g2 d6g3 c1h6 g6h6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "E F Fardon / A James",
+            "black": "Alexander Alekhine",
+            "event": "Simul, 12b",
+            "site": "Midland Institute, Birmingham ENG",
+            "year": 1926,
+            "date": "1926.01.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012395"
+          },
+          "note": {
+            "en": "Midland Institute, Birmingham, January 1926, from a simul on 12 boards; two allies had White.",
+            "uk": "Мідлендський інститут, Бірмінгем, січень 1926, сеанс на 12 дошках; білими грали двоє союзників."
+          }
+        }
+      ]
+    },
+    {
+      "id": "alekhine-5",
+      "title": {
+        "en": "Final Examination",
+        "uk": "Фінальний іспит"
+      },
+      "subtitle": {
+        "en": "No hints, no solutions",
+        "uk": "Без підказок і розвʼязків"
+      },
+      "exam": true,
+      "puzzles": [
+        {
+          "id": "lib-alekhine-5-01",
+          "fen": "6k1/5R2/1p3pPN/2p4P/3p2P1/3n4/P1r5/5K2 b - - 0 35",
+          "moves": "g8h8 f7h7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Cercle de la Rive Gauche",
+            "event": "Alekhine Blindfold Simul 28b",
+            "site": "Paris FRA",
+            "year": 1925,
+            "date": "1925.02.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012371"
+          },
+          "note": {
+            "en": "Paris, 1 February 1925, from the record blindfold display on 28 boards.",
+            "uk": "Париж, 1 лютого 1925, рекордний сеанс наосліп на 28 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-02",
+          "fen": "3q2k1/5ppp/2p5/8/p1N1P3/P2n1P2/5QPP/1r1R2K1 w - - 11 35",
+          "moves": "d1b1 d3f2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Abraham Speijer",
+            "black": "Alexander Alekhine",
+            "event": "Scheveningen",
+            "site": "Scheveningen NED",
+            "year": 1913,
+            "date": "1913.08.05",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011864"
+          },
+          "note": {
+            "en": "Scheveningen, August 1913, round 11.",
+            "uk": "Схевенінген, серпень 1913, 11-й тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-03",
+          "fen": "R7/6pk/4r2p/1R2p3/8/2P4P/P2nQ1P1/2q3K1 w - - 1 38",
+          "moves": "g1f2 e6f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Ilya Leontievich Rabinovich",
+            "black": "Alexander Alekhine",
+            "event": "USSR Championship",
+            "site": "Moscow RUS",
+            "year": 1920,
+            "date": "1920.10.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012029"
+          },
+          "note": {
+            "en": "Moscow, October 1920, in the event later counted as the first USSR Championship. Alekhine won it.",
+            "uk": "Москва, жовтень 1920, турнір, який згодом зарахували як перший чемпіонат СРСР. Переміг Алехін."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-04",
+          "fen": "6k1/pP4p1/P7/2P4p/6q1/3p2P1/6KP/4R3 b - - 0 43",
+          "moves": "d3d2 b7b8q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "promotion"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Luis Mirlas",
+            "event": "Exhibition game",
+            "site": "Buenos Aires ARG",
+            "year": 1926,
+            "date": "1926.09.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012407"
+          },
+          "note": {
+            "en": "Buenos Aires, September 1926, an exhibition game deep in the ending.",
+            "uk": "Буенос-Айрес, вересень 1926, показова партія, глибокий ендшпіль."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-05",
+          "fen": "3r4/pp6/1n3Q2/8/4k3/1B1r1P1P/PP4PK/2q5 b - - 0 37",
+          "moves": "d3f3 g2f3 e4d3 f6d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Pierre Devreese",
+            "event": "Alekhine Simul, 37b (+29 -4 =4), Brussels",
+            "site": "Brussels BEL",
+            "year": 1923,
+            "date": "1923.02.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2973766"
+          },
+          "note": {
+            "en": "Brussels, February 1923, from a simul on 37 boards.",
+            "uk": "Брюссель, лютий 1923, сеанс на 37 дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-06",
+          "fen": "5kr1/8/p3QP2/2p5/1pP3Np/2n2KPq/P5R1/8 b - - 0 46",
+          "moves": "h3g4 e6g4 g8g4 f3g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Grigory Helbach",
+            "event": "All Russian Amateur",
+            "site": "St Petersburg RUE",
+            "year": 1909,
+            "date": "1909.03.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011749"
+          },
+          "note": {
+            "en": "All-Russian Amateur Tournament, St Petersburg, March 1909, round 16.",
+            "uk": "Всеросійський турнір аматорів, Санкт-Петербург, березень 1909, 16-й тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-07",
+          "fen": "8/ppp2k2/3p1R2/3P1n2/2P4r/2B5/PP3r2/3K2R1 b - - 4 31",
+          "moves": "f7e7 g1e1 f5e3 e1e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Jan Willem te Kolste",
+            "event": "Scheveningen",
+            "site": "Scheveningen NED",
+            "year": 1913,
+            "date": "1913.07.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011856"
+          },
+          "note": {
+            "en": "Scheveningen, July 1913, round two.",
+            "uk": "Схевенінген, липень 1913, другий тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-08",
+          "fen": "r3kb1r/1pp2pq1/p1p3n1/4p1B1/3PP1p1/5N2/PPPN1PP1/R2Q1RK1 w kq - 0 13",
+          "moves": "f3h4 g6h4 g5h4 h8h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Leon Szwarcman",
+            "black": "Alexander Alekhine",
+            "event": "St Petersburg",
+            "site": "St. Petersburg RUS",
+            "year": 1916,
+            "date": "1916.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011989"
+          },
+          "note": {
+            "en": "St Petersburg, 1916, a Ruy Lopez.",
+            "uk": "Санкт-Петербург, 1916, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-09",
+          "fen": "R5k1/1Qn3pp/1B2pr2/1q1nNp2/3P4/1P6/5PPP/6K1 b - - 2 29",
+          "moves": "c7a8 b7c8 b5e8 c8e8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Menzel",
+            "event": "Simul, 40b",
+            "site": "Boston, MA USA",
+            "year": 1923,
+            "date": "1923.12.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012165"
+          },
+          "note": {
+            "en": "Boston, December 1923, from a simul on 40 boards, a Queen's Gambit.",
+            "uk": "Бостон, грудень 1923, сеанс на 40 дошках, ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-10",
+          "fen": "4qbk1/5p2/b2r2pp/p2N4/1nN1P3/2R5/PP4PP/3Q1RK1 b - - 2 25",
+          "moves": "a6c4 c3c4 b4d5 e4d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Fred Dewhirst Yates",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.04.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012293"
+          },
+          "note": {
+            "en": "New York, April 1924, round 15.",
+            "uk": "Нью-Йорк, квітень 1924, 15-й тур."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-11",
+          "fen": "1r5k/2qQ1p1p/4pp2/8/P1r5/4P1P1/5P1P/R2R2K1 b - - 6 32",
+          "moves": "c7d7 d1d7 h8g7 a4a5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Edgar Colle",
+            "event": "Scarborough Premier (play-off)",
+            "site": "Scarborough ENG",
+            "year": 1926,
+            "date": "1926.05.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012471"
+          },
+          "note": {
+            "en": "Scarborough, May 1926, a play-off game.",
+            "uk": "Скарборо, травень 1926, партія додаткового змагання."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-12",
+          "fen": "2rR2r1/1p2kpbp/p1b1p3/5p1N/2p5/PB2P1P1/1P3P1P/3R2K1 w - - 2 28",
+          "moves": "d8c8 g8c8 h5g7 c4b3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "J P Montiel Vidal",
+            "black": "Alexander Alekhine",
+            "event": "Clock simul, 2b",
+            "site": "Montevideo URU",
+            "year": 1926,
+            "date": "1926.11.02",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012455"
+          },
+          "note": {
+            "en": "Montevideo, November 1926, a clock simul on two boards.",
+            "uk": "Монтевідео, листопад 1926, сеанс із годинником на двох дошках."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-13",
+          "fen": "2k1r2r/pp1n1q2/2pb3p/3pRB1Q/5B2/2N5/PPP3PP/5RK1 b - - 0 20",
+          "moves": "f7h5 f5d7 c8d7 e5h5 d6c5 g1h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "middlegame",
+            "queensideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "F Casciato",
+            "event": "Simul, 34b",
+            "site": "Philadelphia, PA USA",
+            "year": 1924,
+            "date": "1924.01.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012310"
+          },
+          "note": {
+            "en": "Philadelphia, January 1924, from a simul on 34 boards, a French Defence.",
+            "uk": "Філадельфія, січень 1924, сеанс на 34 дошках, французький захист."
+          }
+        },
+        {
+          "id": "lib-alekhine-5-14",
+          "fen": "2r1k1r1/pp3R1p/7p/3pP3/3P1Q2/q3n1N1/P5PP/1R4K1 w - - 1 23",
+          "moves": "f7b7 g8f8 f4f8 e8f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Boris Verlinsky",
+            "black": "Alexander Alekhine",
+            "event": "Odessa",
+            "site": "Odessa",
+            "year": 1918,
+            "date": "1918.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012015"
+          },
+          "note": {
+            "en": "Odessa, 1918, a Caro-Kann Defence.",
+            "uk": "Одеса, 1918, захист Каро-Канн."
+          }
+        }
+      ]
+    }
+  ]
 }
