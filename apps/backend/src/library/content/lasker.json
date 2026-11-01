@@ -1,5 +1,1415 @@
 {
   "id": "lasker",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "lasker-1",
+      "title": {
+        "en": "Tournaments and Matches",
+        "uk": "Турніри й матчі"
+      },
+      "subtitle": {
+        "en": "Emanuel Lasker, 1889–1925",
+        "uk": "Емануїл Ласкер, 1889–1925"
+      },
+      "puzzles": [
+        {
+          "id": "lib-lasker-1-01",
+          "fen": "8/2r5/1k5p/1pp4P/8/K1qP4/PR2QB2/8 w - - 6 65",
+          "moves": "b2b3 c7a7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "James Mason",
+            "black": "Emanuel Lasker",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1899,
+            "date": "1899.06.05",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1224615"
+          },
+          "note": {
+            "en": "London 1899, an Italian Game. Lasker won this tournament.",
+            "uk": "Лондон, 1899, італійська партія. Цей турнір виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-lasker-1-02",
+          "fen": "4r3/2p2b1p/pb3kp1/5p2/1Nn5/1PP2P2/PK4PP/2N1RB2 w - - 3 33",
+          "moves": "f1c4 e8e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Joseph Henry Blackburne",
+            "black": "Emanuel Lasker",
+            "event": "Lasker - Blackburne",
+            "site": "London ENG",
+            "year": 1892,
+            "date": "1892.06.07",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1029231"
+          },
+          "note": {
+            "en": "London 1892, match game, a Centre Game.",
+            "uk": "Лондон, 1892, матчева партія, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-lasker-1-03",
+          "fen": "6k1/4q1p1/1P1Rb2p/8/8/5P2/7P/2rQ2K1 w - - 1 54",
+          "moves": "d1c1 e7d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Emanuel Lasker",
+            "event": "Steinitz - Lasker World Championship Match",
+            "site": "Montreal CAN",
+            "year": 1894,
+            "date": "1894.04.05",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1132687"
+          },
+          "note": {
+            "en": "Montreal 1894, world championship match, a French Defence. Lasker took the world title from Steinitz in this match.",
+            "uk": "Монреаль, 1894, матч за звання чемпіона світу, французький захист. У цьому матчі Ласкер відібрав у Стейніца звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-lasker-1-04",
+          "fen": "4r2k/p5p1/2Np3p/1pb5/8/1B4N1/PPP2r1P/3R3K w - - 4 26",
+          "moves": "c6d4 c5d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "deflection"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Siegbert Tarrasch",
+            "black": "Emanuel Lasker",
+            "event": "Lasker - Tarrasch World Championship Match",
+            "site": "Munich GER",
+            "year": 1908,
+            "date": "1908.09.30",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1241488"
+          },
+          "note": {
+            "en": "Munich 1908, world championship match, a Four Knights game. Lasker kept his world title in this match.",
+            "uk": "Мюнхен, 1908, матч за звання чемпіона світу, дебют чотирьох коней. У цьому матчі Ласкер зберіг звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-lasker-1-05",
+          "fen": "8/6pp/4p3/1p1N4/6P1/PN2kP1P/1P4K1/r7 b - - 0 48",
+          "moves": "e6d5 b3a1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Oldrich Duras",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1909,
+            "date": "1909.03.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1039821"
+          },
+          "note": {
+            "en": "St. Petersburg 1909, a Queen's Gambit Accepted. Lasker and Rubinstein shared first place.",
+            "uk": "Санкт-Петербург, 1909, прийнятий ферзевий гамбіт. Ласкер і Рубінштейн поділили перше місце."
+          }
+        },
+        {
+          "id": "lib-lasker-1-06",
+          "fen": "8/8/6K1/p7/Ppn3P1/1Nk5/8/8 w - - 1 85",
+          "moves": "g6f6 c3b3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Emanuel Lasker",
+            "event": "Lasker - Janowski World Championship Match",
+            "site": "Berlin GER",
+            "year": 1910,
+            "date": "1910.11.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064724"
+          },
+          "note": {
+            "en": "Berlin 1910, world championship match, a Queen's Pawn opening. Lasker kept his world title in this match.",
+            "uk": "Берлін, 1910, матч за звання чемпіона світу, дебют ферзевого пішака. У цьому матчі Ласкер зберіг звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-lasker-1-07",
+          "fen": "4r3/5pk1/3q4/1Q3pPR/1P1p1B2/3P4/5PK1/8 b - - 0 46",
+          "moves": "d6f4 b5e8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Geza Maroczy",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.04.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094338"
+          },
+          "note": {
+            "en": "New York 1924, a French Defence. Lasker won this tournament, ahead of Capablanca.",
+            "uk": "Нью-Йорк, 1924, французький захист. Цей турнір виграв Ласкер, випередивши Капабланку."
+          }
+        },
+        {
+          "id": "lib-lasker-1-08",
+          "fen": "8/p7/1pp2k1p/3p1nnp/3P3N/P1P2Pr1/1P2RKN1/8 w - - 3 38",
+          "moves": "h4f5 g3f3 f2g1 f3f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "James Moore Hanham",
+            "black": "Emanuel Lasker",
+            "event": "Match series",
+            "site": "New York, NY USA",
+            "year": 1892,
+            "date": "1892.10.10",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380297"
+          },
+          "note": {
+            "en": "New York 1892, from a series of match games, an irregular opening.",
+            "uk": "Нью-Йорк, 1892, із серії матчевих партій, нерегулярний дебют."
+          }
+        },
+        {
+          "id": "lib-lasker-1-09",
+          "fen": "7k/p5qp/5r2/3p4/1p1Q4/7B/PP5K/5R2 b - - 3 46",
+          "moves": "f6f1 d4g7 h8g7 h3f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Andres Clemente Vazquez",
+            "event": "Match",
+            "site": "Havana c",
+            "year": 1893,
+            "date": "1893.01.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1379977"
+          },
+          "note": {
+            "en": "Havana 1893, match game, a 1.Nf3 opening.",
+            "uk": "Гавана, 1893, матчева партія, дебют 1.Nf3."
+          }
+        },
+        {
+          "id": "lib-lasker-1-10",
+          "fen": "3rrnk1/pp3pbp/6p1/3p4/PP2N3/4RN1P/5PP1/3R2K1 w - - 0 34",
+          "moves": "d1d5 d8d5 e4f6 g7f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Isidor Gunsberg",
+            "black": "Emanuel Lasker",
+            "event": "Amsterdam",
+            "site": "Amsterdam NED",
+            "year": 1889,
+            "date": "1889.08.30",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1054694"
+          },
+          "note": {
+            "en": "Amsterdam 1889, a Ruy Lopez.",
+            "uk": "Амстердам, 1889, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-1-11",
+          "fen": "4r1k1/p4p2/5n1p/2Pp2p1/1P6/P3BPq1/5KP1/R2R3r w - - 0 29",
+          "moves": "f2g3 h1d1 a1d1 e8e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Emanuel Lasker",
+            "event": "Nuremberg",
+            "site": "Nuremberg GER",
+            "year": 1896,
+            "date": "1896.07.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1132746"
+          },
+          "note": {
+            "en": "Nuremberg 1896, a French Defence. Lasker won this tournament.",
+            "uk": "Нюрнберг, 1896, французький захист. Цей турнір виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-lasker-1-12",
+          "fen": "8/6P1/r7/8/8/2k2K2/2pp4/6R1 w - - 0 55",
+          "moves": "g7g8q d2d1q g1d1 c2d1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "promotion",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Emanuel Lasker",
+            "event": "St Petersburg game",
+            "site": "St. Petersburg RUE",
+            "year": 1897,
+            "date": "1897.01.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380331"
+          },
+          "note": {
+            "en": "St. Petersburg 1897, an Evans Gambit.",
+            "uk": "Санкт-Петербург, 1897, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-lasker-1-13",
+          "fen": "4r1k1/2pR2pp/8/2p5/8/1P1r4/3N3K/R3n3 w - - 4 42",
+          "moves": "a1e1 d3d2 d7d2 e8e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Joseph Henry Blackburne",
+            "black": "Emanuel Lasker",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg  RUE",
+            "year": 1914,
+            "date": "1914.04.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1029508"
+          },
+          "note": {
+            "en": "St. Petersburg 1914, a Scotch Game. Lasker won this tournament, ahead of Capablanca.",
+            "uk": "Санкт-Петербург, 1914, шотландська партія. Цей турнір виграв Ласкер, випередивши Капабланку."
+          }
+        },
+        {
+          "id": "lib-lasker-1-14",
+          "fen": "r2r2k1/2p2pp1/6q1/1pp5/5P2/N1PR1Q2/PP4PP/4R1K1 b - - 0 25",
+          "moves": "g6d3 e1e8 d8e8 f3d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Theodor von Scheve",
+            "event": "Berlin",
+            "site": "Berlin GER",
+            "year": 1890,
+            "date": "1890.07.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1713428"
+          },
+          "note": {
+            "en": "Berlin 1890, a Scotch Game. Lasker also earned a doctorate in mathematics.",
+            "uk": "Берлін, 1890, шотландська партія. Ласкер також здобув докторський ступінь з математики."
+          }
+        },
+        {
+          "id": "lib-lasker-1-15",
+          "fen": "4k3/1pr2p2/p1p3pp/4p1q1/4PP2/P3Q1P1/1PPR3P/6K1 b - - 0 29",
+          "moves": "e5f4 e3d4 c7d7 d4d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Mikhail Chigorin",
+            "event": "St. Petersburg Quadrangular 1895/96",
+            "site": "St. Petersburg RUE",
+            "year": 1896,
+            "date": "1896.01.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036450"
+          },
+          "note": {
+            "en": "St. Petersburg 1896, a Ruy Lopez. Lasker won this four-player tournament.",
+            "uk": "Санкт-Петербург, 1896, іспанська партія. Цей турнір чотирьох виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-lasker-1-16",
+          "fen": "8/5Pk1/7p/5K1P/5P2/8/R7/7r b - - 0 53",
+          "moves": "h1h5 f5e6 h5b5 a2g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Thomas Francis Lawrence",
+            "event": "Cambridge Springs",
+            "site": "Cambridge Springs, PA USA",
+            "year": 1904,
+            "date": "1904.05.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036836"
+          },
+          "note": {
+            "en": "Cambridge Springs 1904, a Queen's Gambit Declined. Marshall won; Lasker shared second place.",
+            "uk": "Кембридж-Спрінгс, 1904, відхилений ферзевий гамбіт. Переміг Маршалл; Ласкер поділив друге місце."
+          }
+        },
+        {
+          "id": "lib-lasker-1-17",
+          "fen": "8/6pk/P3Q1n1/1q1p3p/4bP2/8/3B3K/5R2 w - - 0 72",
+          "moves": "f1e1 b5d3 e1e4 d5e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Georg Marco",
+            "black": "Emanuel Lasker",
+            "event": "Graz",
+            "site": "Graz AUH",
+            "year": 1890,
+            "date": "1890.09.02",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1713429"
+          },
+          "note": {
+            "en": "Graz 1890, a Ruy Lopez.",
+            "uk": "Грац, 1890, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-1-18",
+          "fen": "8/2R5/r3qk1p/4p1p1/1Qp1P3/5PP1/7P/7K b - - 7 51",
+          "moves": "a6b6 b4f8 f6g6 g3g4 b6b1 h1g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "John Washington Baird",
+            "event": "Match series",
+            "site": "New York, NY USA",
+            "year": 1892,
+            "date": "1892.10.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1713438"
+          },
+          "note": {
+            "en": "New York 1892, from a series of match games, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1892, із серії матчевих партій, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-1-19",
+          "fen": "8/p5pk/4Qb1p/1p1p4/K2P4/2q5/P2R2PP/3R4 w - - 0 30",
+          "moves": "a4b5 c3c4 b5a5 f6d8 e6b6 a7b6",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1750,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Emanuel Lasker",
+            "event": "St. Petersburg Quadrangular 1895/96",
+            "site": "St. Petersburg RUE",
+            "year": 1896,
+            "date": "1896.01.04",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109097"
+          },
+          "note": {
+            "en": "St. Petersburg 1896, a Queen's Gambit Declined. Lasker won this four-player tournament.",
+            "uk": "Санкт-Петербург, 1896, відхилений ферзевий гамбіт. Цей турнір чотирьох виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-lasker-1-20",
+          "fen": "8/5p2/2pk2p1/rp5p/PPbKB2P/2P5/6P1/8 w - - 0 49",
+          "moves": "b4a5 c6c5 d4e3 b5a4 a5a6 c4a6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Leon Rosen",
+            "black": "Emanuel Lasker",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1900,
+            "date": "1900.05.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000051"
+          },
+          "note": {
+            "en": "Paris 1900, a Ruy Lopez. Lasker won this tournament.",
+            "uk": "Париж, 1900, іспанська партія. Цей турнір виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-lasker-1-21",
+          "fen": "8/pN3ppk/6r1/8/8/4Q2P/P5rK/8 w - - 0 47",
+          "moves": "h2h1 g2g3 e3g3 g6g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Emanuel Lasker",
+            "event": "Moscow",
+            "site": "Moscow URS",
+            "year": 1925,
+            "date": "1925.11.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1095117"
+          },
+          "note": {
+            "en": "Moscow 1925, a Queen's Gambit Declined. Bogoljubov won; Lasker was second.",
+            "uk": "Москва, 1925, відхилений ферзевий гамбіт. Переміг Боголюбов; Ласкер став другим."
+          }
+        },
+        {
+          "id": "lib-lasker-1-22",
+          "fen": "2kB4/1p6/p1p5/8/6n1/1P4P1/P1P1K1bp/3R4 w - - 2 40",
+          "moves": "d8b6 g2d5 c2c4 h2h1q d1h1 d5h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "promotion",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Henry Edward Bird",
+            "black": "Emanuel Lasker",
+            "event": "Lasker - Bird",
+            "site": "Newcastle-upon-Tyne ENG",
+            "year": 1892,
+            "date": "1892.08.30",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1028167"
+          },
+          "note": {
+            "en": "Newcastle 1892, match game, Bird's Opening.",
+            "uk": "Ньюкасл, 1892, матчева партія, дебют Берда."
+          }
+        },
+        {
+          "id": "lib-lasker-1-23",
+          "fen": "6k1/p4pp1/1p6/2b1q3/3B4/5P2/P3r1PP/R2Q2K1 w - - 5 34",
+          "moves": "d4c5 e5c5 g1h1 c5f2 d1g1 e2a2 a1a2 f2a2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1925,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "hangingPiece",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Emanuel Lasker",
+            "event": "Lasker - Marshall World Championship Match",
+            "site": "USA",
+            "year": 1907,
+            "date": "1907.03.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094686"
+          },
+          "note": {
+            "en": "1907, world championship match, a Chigorin Defence. Lasker kept his title without losing a game.",
+            "uk": "1907, матч за звання чемпіона світу, захист Чигоріна. Ласкер зберіг звання, не програвши жодної партії."
+          }
+        },
+        {
+          "id": "lib-lasker-1-24",
+          "fen": "5k2/pp1b3p/4p1p1/2Pp2r1/3bN3/6P1/PPP4P/2KR4 w - - 0 22",
+          "moves": "d1d4 g5g4 c2c3 g4e4 d4e4 d5e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Orla Hermann Krause",
+            "black": "Emanuel Lasker",
+            "event": "Clock game",
+            "site": "Naestved DEN",
+            "year": 1919,
+            "date": "1919.11.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2241310"
+          },
+          "note": {
+            "en": "Næstved 1919, clock game, a Caro-Kann Defence.",
+            "uk": "Нествед, 1919, партія з годинником, захист Каро-Канн."
+          }
+        },
+        {
+          "id": "lib-lasker-1-25",
+          "fen": "4r3/2p2kp1/2P2p2/1p6/6P1/PnP2q2/1P6/1Q1RB1K1 w - - 0 45",
+          "moves": "d1d7 f7g8 b1d1 e8e2 d1d5 f3d5 d7d5 e2e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jacques Mieses",
+            "black": "Emanuel Lasker",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1909,
+            "date": "1909.03.05",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1096553"
+          },
+          "note": {
+            "en": "St. Petersburg 1909, a Scotch Game. Lasker and Rubinstein shared first place.",
+            "uk": "Санкт-Петербург, 1909, шотландська партія. Ласкер і Рубінштейн поділили перше місце."
+          }
+        }
+      ]
+    },
+    {
+      "id": "lasker-2",
+      "title": {
+        "en": "Lasker on Tour",
+        "uk": "Ласкер у мандрах"
+      },
+      "subtitle": {
+        "en": "Simuls and exhibitions, 1892–1928",
+        "uk": "Сеанси й показові партії, 1892–1928"
+      },
+      "puzzles": [
+        {
+          "id": "lib-lasker-2-01",
+          "fen": "1k1r2r1/pp3p1p/5p2/8/8/n5PQ/PP3P1P/KqR4R w - - 4 26",
+          "moves": "c1b1 a3c2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "smotheredMate",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Hugh Higginbottom",
+            "black": "Emanuel Lasker",
+            "event": "Simul, 19b",
+            "site": "Colwyn Bay WLS",
+            "year": 1908,
+            "date": "1908.03.23",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=3017681"
+          },
+          "note": {
+            "en": "Colwyn Bay 1908, simultaneous display on 19 boards, a Bishop's Opening.",
+            "uk": "Колвін-Бей, 1908, сеанс одночасної гри на 19 дошках, дебют слона."
+          }
+        },
+        {
+          "id": "lib-lasker-2-02",
+          "fen": "5r1k/7p/p7/2p4q/P1P5/1P6/5rRK/8 w - - 1 44",
+          "moves": "h2g1 f2f1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Murray Hickey Ley",
+            "black": "Emanuel Lasker",
+            "event": "Simul, 33b",
+            "site": "Davenport, IA USA",
+            "year": 1926,
+            "date": "1926.03.05",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380449"
+          },
+          "note": {
+            "en": "Davenport 1926, simultaneous display on 33 boards, a Ruy Lopez.",
+            "uk": "Девенпорт, 1926, сеанс одночасної гри на 33 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-03",
+          "fen": "r1b1k3/1pp2p2/p4B1r/1B5p/6pP/2N5/PPP3P1/4R1K1 b - - 2 22",
+          "moves": "e8f8 e1e8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "A O Wuensche",
+            "event": "Simul, 23b",
+            "site": "Chicago, IL USA",
+            "year": 1902,
+            "date": "1902.11.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380111"
+          },
+          "note": {
+            "en": "Chicago 1902, simultaneous display on 23 boards, a King's Gambit.",
+            "uk": "Чикаго, 1902, сеанс одночасної гри на 23 дошках, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-lasker-2-04",
+          "fen": "1nr5/1p2nR2/4P2k/2p4P/3bPB2/1P4R1/8/7K b - - 4 39",
+          "moves": "h6h5 f7h7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Leon Pasternak",
+            "event": "Casual game",
+            "site": "Zurich SUI",
+            "year": 1900,
+            "date": "1900.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1270224"
+          },
+          "note": {
+            "en": "Zurich 1900, casual game, an English Opening.",
+            "uk": "Цюрих, 1900, товариська партія, англійський початок."
+          }
+        },
+        {
+          "id": "lib-lasker-2-05",
+          "fen": "r5R1/5P2/8/2pP3k/5BB1/pp5P/n5K1/8 b - - 7 57",
+          "moves": "h5h4 f4g3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Arthur Bainbridge",
+            "event": "Simul, 17b",
+            "site": "Newcastle ENG",
+            "year": 1895,
+            "date": "1895.11.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1967623"
+          },
+          "note": {
+            "en": "Newcastle 1895, simultaneous display on 17 boards, an Evans Gambit.",
+            "uk": "Ньюкасл, 1895, сеанс одночасної гри на 17 дошках, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-lasker-2-06",
+          "fen": "8/8/8/8/5P2/2p3kp/2B3b1/6K1 w - - 0 48",
+          "moves": "f4f5 h3h2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Kaiser",
+            "black": "Emanuel Lasker",
+            "event": "Simul, 31b",
+            "site": "Hamburg GER",
+            "year": 1904,
+            "date": "1904.01.30",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2028012"
+          },
+          "note": {
+            "en": "Hamburg 1904, simultaneous display on 31 boards, a King's Knight opening.",
+            "uk": "Гамбург, 1904, сеанс одночасної гри на 31 дошці, дебют королівського коня."
+          }
+        },
+        {
+          "id": "lib-lasker-2-07",
+          "fen": "4rrk1/8/p1p5/1p6/2n3P1/2b2Q1P/PP3BK1/1B2R3 b - - 0 33",
+          "moves": "f8f3 e1e8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "NN",
+            "event": "Simul",
+            "site": "Neuchâtel SUI",
+            "year": 1919,
+            "date": "1919.05.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2080873"
+          },
+          "note": {
+            "en": "Neuchâtel 1919, simultaneous display, a Ruy Lopez.",
+            "uk": "Невшатель, 1919, сеанс одночасної гри, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-08",
+          "fen": "3r2rk/1ppQ1ppp/p1p2bnN/2B1p3/4P3/3P3P/PPP2PP1/3R1RK1 b - - 0 18",
+          "moves": "d8d7 h6g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "intermezzo"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "G W Wright",
+            "event": "Lasker Simul 25b, Manchester ",
+            "site": "Manchester ENG",
+            "year": 1898,
+            "date": "1898.12.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380052"
+          },
+          "note": {
+            "en": "Manchester 1898, simultaneous display on 25 boards, a Ruy Lopez.",
+            "uk": "Манчестер, 1898, сеанс одночасної гри на 25 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-09",
+          "fen": "r3r2k/b1R1NR2/p7/1p6/1P1p3P/P2p4/6P1/6K1 b - - 1 33",
+          "moves": "d3d2 e7g6 h8g8 f7g7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Robert Colwell",
+            "event": "Lasker Simul 14b",
+            "site": "Brooklyn, NY USA",
+            "year": 1892,
+            "date": "1892.11.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2594060"
+          },
+          "note": {
+            "en": "Brooklyn 1892, simultaneous display on 14 boards, a King's Gambit Declined.",
+            "uk": "Бруклін, 1892, сеанс одночасної гри на 14 дошках, відхилений королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-lasker-2-10",
+          "fen": "8/1bp5/p5pN/1p3k2/1n1r1B1P/8/PPP2PP1/4R1K1 b - - 0 28",
+          "moves": "f5f4 g2g3 f4f3 e1e3",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "G N Carter",
+            "event": "Simul, 25b",
+            "site": "Hereford ENG",
+            "year": 1897,
+            "date": "1897.02.18",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1971671"
+          },
+          "note": {
+            "en": "Hereford 1897, simultaneous display on 25 boards, a Ruy Lopez.",
+            "uk": "Герефорд, 1897, сеанс одночасної гри на 25 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-11",
+          "fen": "6k1/1QR2pp1/p6p/P3KP2/8/3rq3/1R5P/8 w - - 1 44",
+          "moves": "b7e4 f7f6 e5e6 e3e4",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mordecai Morgan / Samuel Leigh Stadelman",
+            "black": "Emanuel Lasker",
+            "event": "Consultation game",
+            "site": "Franklin CC, Philadelphia, PA USA",
+            "year": 1907,
+            "date": "1907.11.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380382"
+          },
+          "note": {
+            "en": "Philadelphia 1907, consultation game, a Giuoco Piano.",
+            "uk": "Філадельфія, 1907, консультаційна партія, італійська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-12",
+          "fen": "8/1p3pk1/7p/2bR4/6Pn/1P2r3/2P1K2P/2R5 w - - 10 38",
+          "moves": "e2d2 h4f3 d2d1 e3e1",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "backRankMate"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "C T Pearce",
+            "black": "Emanuel Lasker",
+            "event": "Simul, 18b",
+            "site": "Stafford ENG",
+            "year": 1908,
+            "date": "1908.03.18",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1994278"
+          },
+          "note": {
+            "en": "Stafford 1908, simultaneous display on 18 boards, a Ruy Lopez.",
+            "uk": "Стаффорд, 1908, сеанс одночасної гри на 18 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-13",
+          "fen": "4k2r/p1R1R1p1/5p2/5N1p/2Pr4/q1P2pP1/5P2/6K1 b k - 0 27",
+          "moves": "a3e7 c7e7 e8d8 c3d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Hermann Keidanski",
+            "event": "Blindfold simul, 4b",
+            "site": "Berlin GER",
+            "year": 1894,
+            "date": "1894.07.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1228396"
+          },
+          "note": {
+            "en": "Berlin 1894, blindfold display on 4 boards, a 1.Nf3 opening.",
+            "uk": "Берлін, 1894, сеанс наосліп на 4 дошках, дебют 1.Nf3."
+          }
+        },
+        {
+          "id": "lib-lasker-2-14",
+          "fen": "r5k1/bp1br1pp/p7/6B1/3P4/1BP1n3/PP1N2PP/R5K1 b - - 1 20",
+          "moves": "g8f8 g5e7 f8e7 a1e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Miguel Angel Gelly",
+            "event": "Simul, 12b",
+            "site": "Buenos Aires ARG",
+            "year": 1910,
+            "date": "1910.07.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380184"
+          },
+          "note": {
+            "en": "Buenos Aires 1910, simultaneous display on 12 boards, a Ruy Lopez.",
+            "uk": "Буенос-Айрес, 1910, сеанс одночасної гри на 12 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-15",
+          "fen": "r4k1r/1p1P1ppp/p1pB4/5b2/8/5N2/PPP3PP/2KnR3 b - - 1 18",
+          "moves": "f8g8 e1e8 a8e8 d7e8r",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1500,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "sacrifice",
+            "promotion",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "J van Roon",
+            "event": "Simul, 25b",
+            "site": "Rotterdam NED",
+            "year": 1908,
+            "date": "1908.05.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1824344"
+          },
+          "note": {
+            "en": "Rotterdam 1908, simultaneous display on 25 boards, a Ruy Lopez.",
+            "uk": "Роттердам, 1908, сеанс одночасної гри на 25 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-16",
+          "fen": "2k3r1/Q2R4/1pqp3p/5pp1/8/1P2PP2/PBP4P/6K1 b - - 0 28",
+          "moves": "c6d7 a7a8 c8c7 a8g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "George W Dolbel",
+            "event": "Lasker Simul 32b, Hanley",
+            "site": "Hanley ENG",
+            "year": 1898,
+            "date": "1898.12.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1995124"
+          },
+          "note": {
+            "en": "Hanley 1898, simultaneous display on 32 boards, a Ruy Lopez.",
+            "uk": "Генлі, 1898, сеанс одночасної гри на 32 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-17",
+          "fen": "2q1R1k1/7p/5P2/p2pN3/2pP4/2P3P1/P5KP/8 b - - 3 37",
+          "moves": "c8e8 f6f7 e8f7 e5f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Hans Bruening",
+            "event": "Simul, 36b",
+            "site": "Milwaukee, WI USA",
+            "year": 1901,
+            "date": "1901.05.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1293667"
+          },
+          "note": {
+            "en": "Milwaukee 1901, simultaneous display on 36 boards, a French Defence.",
+            "uk": "Мілуокі, 1901, сеанс одночасної гри на 36 дошках, французький захист."
+          }
+        },
+        {
+          "id": "lib-lasker-2-18",
+          "fen": "6k1/ppp4p/2n2P2/7Q/2p5/8/PPPp1P1P/4r1K1 w - - 1 30",
+          "moves": "g1g2 d2d1q h5d1 e1d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "promotion"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Walther von Holzhausen",
+            "black": "Emanuel Lasker",
+            "event": "Simul, 26b",
+            "site": "Frankfurt",
+            "year": 1908,
+            "date": "1908.05.16",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1274796"
+          },
+          "note": {
+            "en": "Frankfurt 1908, simultaneous display on 26 boards, a Two Knights Defence.",
+            "uk": "Франкфурт, 1908, сеанс одночасної гри на 26 дошках, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-lasker-2-19",
+          "fen": "8/7Q/6p1/1p3p2/1P2q1kP/P2p2P1/5P2/5K2 w - - 1 47",
+          "moves": "h7g6 g4h3 g6f5 e4f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Albert Hodges",
+            "black": "Emanuel Lasker",
+            "event": "Exhibition Game",
+            "site": "Manhattan CC, New York, NY USA",
+            "year": 1902,
+            "date": "1902.10.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380355"
+          },
+          "note": {
+            "en": "New York 1902, exhibition game, a Dutch Defence.",
+            "uk": "Нью-Йорк, 1902, показова партія, голландський захист."
+          }
+        },
+        {
+          "id": "lib-lasker-2-20",
+          "fen": "5rk1/p2R2pp/4Q3/1p3q2/7P/1P6/1Pr2P2/1K4R1 b - - 0 28",
+          "moves": "f5e6 g1g7 g8h8 g7h7 h8g8 d7g7",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1675,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "T Lupton",
+            "event": "Lasker Simul 22b, Stirling",
+            "site": "Stirling SCO (Station Hotel)",
+            "year": 1899,
+            "date": "1899.01.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2636582"
+          },
+          "note": {
+            "en": "Stirling 1899, simultaneous display on 22 boards, a Scandinavian Defence.",
+            "uk": "Стерлінг, 1899, сеанс одночасної гри на 22 дошках, скандинавський захист."
+          }
+        },
+        {
+          "id": "lib-lasker-2-21",
+          "fen": "3Br3/pp6/2p3p1/4Rk2/2p5/6nP/PPP3P1/4R1K1 b - - 0 30",
+          "moves": "e8e5 e1e5 f5e5 d8c7 e5e4 c7g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Vicente Martinez Carvajal",
+            "event": "Offhand game, Union Club",
+            "site": "Havana CUB",
+            "year": 1906,
+            "date": "1906.02.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=3192030"
+          },
+          "note": {
+            "en": "Havana 1906, offhand game, a Ruy Lopez.",
+            "uk": "Гавана, 1906, товариська партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-22",
+          "fen": "3r4/pp1nkp2/2p1p2p/2q1P3/2B5/2N5/PP3QP1/3R2K1 b - - 0 25",
+          "moves": "c5c4 d1d4 c4d4 f2d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "NN",
+            "event": "Simul, 31b",
+            "site": "Leiden NED",
+            "year": 1923,
+            "date": "1923.02.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1918239"
+          },
+          "note": {
+            "en": "Leiden 1923, simultaneous display on 31 boards, a Scandinavian Defence.",
+            "uk": "Лейден, 1923, сеанс одночасної гри на 31 дошці, скандинавський захист."
+          }
+        },
+        {
+          "id": "lib-lasker-2-23",
+          "fen": "8/4k1P1/6R1/5K2/p4P2/2p4P/8/6r1 b - - 6 48",
+          "moves": "g1g6 f5g6 c3c2 g7g8q c2c1q g8g7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "promotion",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "J Kahn",
+            "event": "Clock simul, 10b",
+            "site": "Rice Progressive CC, New York, New York USA",
+            "year": 1928,
+            "date": "1928.11.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1380266"
+          },
+          "note": {
+            "en": "New York 1928, clock simultaneous on 10 boards, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1928, сеанс із годинником на 10 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-lasker-2-24",
+          "fen": "8/ppp5/6R1/k1q2p1p/1nP4P/1P1PRp2/1B3P2/2K5 w - - 1 34",
+          "moves": "b2c3 c5e3 f2e3 f3f2 c1d1 f2f1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1825,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "promotion",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "A W Bruce",
+            "black": "Emanuel Lasker",
+            "event": "Simul",
+            "site": "Winnipeg CAN",
+            "year": 1907,
+            "date": "1907.06.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2654757"
+          },
+          "note": {
+            "en": "Winnipeg 1907, simultaneous display, a Two Knights Defence.",
+            "uk": "Вінніпег, 1907, сеанс одночасної гри, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-lasker-2-25",
+          "fen": "2nr4/2pP4/2P3k1/4B2p/r3P2K/1R6/3N4/8 b - - 0 40",
+          "moves": "c8e7 e5c7 e7c6 c7d8 c6d8 b3b8 g6f6 b8d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Joseph P Beck",
+            "event": "Simul, 30b",
+            "site": "New York, NY USA",
+            "year": 1926,
+            "date": "1926.02.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1997388"
+          },
+          "note": {
+            "en": "New York 1926, simultaneous display on 30 boards, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1926, сеанс одночасної гри на 30 дошках, іспанська партія."
+          }
+        }
+      ]
+    }
+  ]
 }
