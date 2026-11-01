@@ -150,12 +150,15 @@ function begin(tx: Tx, item: PracticeItem) {
   });
 }
 
+/** Modes whose next puzzle comes from the screen's `advance` hook. */
+const fedByAdvance = (s: PracticeState) => s.mode === 'drill' || s.mode === 'library';
+
 /** A line chess.js rejects: skip it where a queue exists, else show the error. */
 function broken(tx: Tx) {
   const s = tx.s;
   s.error = 'broken';
   if (s.mode === 'mistakes') return popHead(tx);
-  if (s.mode === 'drill' && s.item) return requestAdvance(tx);
+  if (fedByAdvance(s) && s.item) return requestAdvance(tx);
   s.phase = 'done';
 }
 
@@ -309,7 +312,7 @@ function onAdvanceDue(tx: Tx) {
   const s = tx.s;
   if (s.phase !== 'solved') return;
   if (s.mode === 'mistakes') return popHead(tx);
-  if (s.mode === 'drill') requestAdvance(tx);
+  if (fedByAdvance(s)) requestAdvance(tx);
 }
 
 // ─── Hint ───────────────────────────────────────────────────────────────
@@ -338,7 +341,9 @@ const SKIPPABLE = new Set<PracticeState['phase']>(['setupAnimating', 'playerTurn
  */
 function onSkip(tx: Tx) {
   const s = tx.s;
-  if (s.mode === 'viewer' || !s.item || !SKIPPABLE.has(s.phase)) return;
+  // The library moves on from a shown solution with the same event.
+  const fromSolution = s.mode === 'library' && s.phase === 'solution';
+  if (s.mode === 'viewer' || !s.item || (!SKIPPABLE.has(s.phase) && !fromSolution)) return;
   tx.cancelAll();
   tx.clearHint();
   s.anim = null;
@@ -351,7 +356,8 @@ function onSkip(tx: Tx) {
 
 function showSolution(tx: Tx) {
   const s = tx.s;
-  if (s.mode !== 'viewer' || !s.item || s.phase === 'solution') return;
+  if (!s.item || s.phase === 'solution') return;
+  if (s.mode !== 'viewer' && !(s.mode === 'library' && SKIPPABLE.has(s.phase))) return;
   let fens: string[];
   try {
     fens = buildSolutionFens(s.item.puzzle);

@@ -296,6 +296,44 @@ describe('practice: viewer solution stepper', () => {
   });
 });
 
+describe('practice: library', () => {
+  it('shows the solution mid-puzzle, steps it, and moves on with skip', () => {
+    const d = new Driver({ mode: 'library' });
+    d.send({ type: 'start', items: [{ puzzle: LONG }] });
+    d.land();
+    d.send({ type: 'showSolution' });
+    expect(d.s.phase).toBe('solution');
+    expect(d.s.ply).toBe(1);
+    d.send({ type: 'step', delta: 1, source: 'tap' });
+    expect(d.s.ply).toBe(2);
+    d.send({ type: 'skip' });
+    expect(d.s.phase).toBe('advancing');
+    expect(d.last('advance')).toMatchObject({ puzzleId: '00008' });
+  });
+
+  it('solves and advances like a drill; the viewer-only rules stay', () => {
+    const d = new Driver({ mode: 'library' });
+    d.send({ type: 'start', items: [{ puzzle: MATE }] });
+    d.land();
+    d.move('a1a8');
+    expect(d.s.phase).toBe('solved');
+    d.send({ type: 'showSolution' });
+    expect(d.s.phase).toBe('solved');
+    d.timer('advance');
+    expect(d.s.phase).toBe('advancing');
+    d.send({ type: 'loaded', reqId: d.s.advanceReqId!, item: null });
+    expect(d.s.phase).toBe('done');
+  });
+
+  it('a drill still cannot show the solution', () => {
+    const d = new Driver({ mode: 'drill' });
+    d.send({ type: 'start', items: [{ puzzle: LONG }] });
+    d.land();
+    d.send({ type: 'showSolution' });
+    expect(d.s.phase).toBe('playerTurn');
+  });
+});
+
 describe('practice: adapters', () => {
   it('normalizes review-item moves and picks the next puzzle', () => {
     expect(normalizeMoves('e2e4  e7e5 ')).toEqual(['e2e4', 'e7e5']);

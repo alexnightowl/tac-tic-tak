@@ -8,7 +8,8 @@ import type { Orientation, PromotionPiece, Square } from '../../board';
 import type { ServerPuzzle } from '../../puzzle';
 import type { AnimationDoneEvent, FixedColor, LastMove, MoveFeel } from '../types';
 
-export type PracticeMode = 'drill' | 'mistakes' | 'viewer';
+/** library: a drill fed chapter by chapter that can also show the solution and move on. */
+export type PracticeMode = 'drill' | 'mistakes' | 'viewer' | 'library';
 
 /** GET /sessions/:id/review-items reason. */
 export type ReviewReason = 'failed' | 'slow';

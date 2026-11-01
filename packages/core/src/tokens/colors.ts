@@ -224,6 +224,8 @@ export const tone = {
   moss: '#6d7a68', // offline "Mate patterns" pack swatch
   /** Streak flame, rank gold, calibration pills. */
   gold: '#d7b777',
+  goldInk: '#e1cfa5', // text on a gold-tinted card (library cycle target)
+  sealTop: '#a5524b', // light side of the ember seal (library chapter complete)
   copper: '#c98c55', // achievement progress / XP
   copperDeep: '#8a5a3a',
   copperLight: '#d9ad84',
@@ -355,6 +357,19 @@ export const logoGlow = [
   [0.72, 'rgba(96,35,39,0)'],
 ] as const;
 
+/**
+ * Library book covers (canvas "Library" page; canvas values are already
+ * baked). `face` is the 160° cover gradient, top-left to bottom-right.
+ */
+export const cover = {
+  oxblood: { face: ['#6e3432', '#3d1f21'], ink: '#e9d9c6' },
+  parchment: { face: ['#d9cdb9', '#b7a88f'], ink: '#2a2226' },
+  /** Spine shade and its highlight (inset 4 px / 5 px on the left). */
+  spine: 'rgba(0,0,0,0.25)',
+  spineLight: 'rgba(255,255,255,0.06)',
+  shadow: 'rgba(10,8,12,0.55)',
+} as const;
+
 /** System chrome: app.json / expo-system-ui / status bar. */
 export const system = {
   background: eos.ink,
@@ -376,5 +391,6 @@ export const colors = {
   rank,
   ceremony,
   logoGlow,
+  cover,
   system,
 } as const;
