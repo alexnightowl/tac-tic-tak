@@ -222,3 +222,32 @@ the norm in the app (the web keeps the norm until Phase 12).
 - PROVISIONAL knobs: K 16, step 50, guard 2 sessions / 50 points, XP rates and rank thresholds,
   casual range 600–2600. Recalibrate now restarts the settling-in sessions.
 - Calibration placement (D24) still runs for web sessions only.
+
+### D26. Library: books of master games, read in cycles (owner, 2026-11-01)
+Owner spec plus the canvas "Library" page (`LibShelf`, `LibBook`, `LibSolve`, `LibChapterDone`;
+app states in `LibStates`). Mobile-only; the web has no Library. Spec: LIBRARY.md.
+- **Content**: two books, positions from real games before ~1930 (Greco's manuscript, the
+  Romantic era), mined and verified with Stockfish by `tools/library` (every solver move is the
+  engine's best and the only one that works; the setup move is the move actually played). Notes
+  are ours. Content ships with the backend and is versioned per book.
+- **Not rated**: no rating, level or norm. Hint / wrong move / shown solution put the puzzle in
+  Review (library puzzles live in `Puzzle` under every selection floor).
+- **Cycles** span the whole book; each cycle aims 30% under the one before (owner, Q47): cycle 2 =
+  70% of the first average, rounded to 5 s; later = 70% of min(previous target, previous average);
+  floor 5 s.
+- **Offline**: download per book; results queue in MMKV and sync with dedupe on clientId and on
+  (user, puzzle, cycle), first result wins.
+- Owner (Q47): library time earns XP (2/min) and a library day counts for the streak; the shelf
+  is a pushed screen from a Play-tab row with a "‹ Play" back (the canvas shows the tab bar under
+  it); chapters open in any order while Continue follows book order. PROVISIONAL: ~2 min a puzzle
+  for "per cycle" before there is a first pass.
+
+### D27. Owner answers to the open questions (2026-11-01)
+All open OWNER-QUESTIONS answered in one pass; the PROVISIONAL defaults stand except:
+- **Web stays live (Q25/Q26):** Phase 12 no longer trims the web to a landing page or switches
+  it off. The web stays frozen (fixes only); the B18 cleanup of legacy routes is off.
+- **Abandoned sessions are swept (Q10, B7):** approved; a separate `api/` change.
+- **api/ci (Q27):** the agent merges it itself.
+- **Library (Q47):** library play counts for the streak; cycle targets −30% a cycle instead of
+  halving (D26 updated).
+- Apple / Google developer accounts later, near release (Q24); `gh auth login` later (Q28).

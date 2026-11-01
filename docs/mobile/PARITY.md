@@ -79,6 +79,7 @@ DECISIONS.md, or `D#`). When a web fix lands on `main`, add or update the row he
 | Pause / resume, plus auto-pause on background | 2 | done | `02-slice` (20 s in another app not counted) |
 | Exit flow: save vs discard (i18n-ised) | 2, 5 | done | `02-slice-exit`; fix: ExitDialog strings translated |
 | Finish and summary outcome cards | 2 (basic), 5, v2 | done | v2 (D25): rating card with the level, level up / protected / level down / casual / early cards, XP card (new rank in copper). `12-play-v2` |
+| Library: shelf, book, book-mode solving, chapter complete, cycles, offline books (new) | lib | partial | D26, LIBRARY.md. Mobile-only (the web has no Library). Greco's Traps live (40); The Romantic Era pending (content). `13-library` read / cycle2, en + uk |
 | RankCeremony | 5 | partial | Up and down ceremonies (`05-outcomes`). Haptic timeline vs clip hit points needs a real device; reduced-motion timing not measured |
 | Backend session rules (in core, parity-tested; startPuzzleRating fix) | 0, 3 | done | Core rules parity-tested. B8 fixed on main 2be9508: demotion and calibration clamp at a fixed norm floor (450), not startPuzzleRating. Calibration placement replaced (D24, `calibration.ts`) |
 | StyleIcon and style catalogue | 2 | done |  |

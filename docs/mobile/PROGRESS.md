@@ -196,3 +196,28 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   only on the mobile branch (React 18 vs 19 types in one workspace), unchanged frontend code.
 - Fixed on the way: the runner treated casual as rated and could write the casual difficulty
   into the stored rating.
+
+## 2026-11-01 — Library (D26): Greco's Traps live, The Romantic Era in the pipeline
+
+- **Design.** Owner's canvas page "Library" (shelf, book, solving, chapter complete). Added
+  `LibStates` (Play-tab row, download chip states, notes, the shown solution, first-read chapter
+  complete); target numbers on the owner's boards follow the −30% rule.
+- **Content.** `tools/library` (fetch → mine → assemble → verify, Stockfish 19 at depth 22, owner
+  approved the install). Greco's Traps: 40 puzzles in 2 chapters from Greco's manuscript games,
+  `verify.mjs` PASS; notes en/uk written by us, facts kept to well-documented ones. The Romantic
+  Era (1851–1870, 1025 games fetched) is still being mined; it ships later as a content update
+  (book versions refresh downloaded copies, no app update needed).
+- **Backend (main ac233f0):** `LibraryAttempt`, `/library/books`, `/books/:id`, `/progress`,
+  `/sync` (idempotent; hint/missed → Review; XP from total library time; streak via the offline
+  path). Library puzzles live in `Puzzle` under every selection floor.
+- **Mobile:** shelf, book page, book-mode runner (`library` practice mode: clock vs the cycle
+  target, hint, show solution → step → next, historical card), chapter complete with the cycle
+  comparison, downloads and a per-user result queue in MMKV `library`.
+- **Maestro `13-library.sh`** (BOOK=greco): `read` (download, airplane mode, wrong move + hint +
+  shown solution + the rest, chapter complete, back online → 20 results synced, 3 in Review) and
+  `cycle2` (seeded first pass → comparison and target) pass in en and uk, DB-checked.
+  Screenshots: `screens/library/{en,uk}/`. `@tac/core` 236/236.
+- **Owner answered every open question (D27):** library counts for the streak, −30% cycle
+  targets, the web stays live, api/ci merged by the agent (CI green, e9b2c0b), abandoned-session
+  sweep (B7) approved as the next backend task.
+- Simulators are silent now (owner): `feel/sound.ts` skips sound when `!Device.isDevice`.
