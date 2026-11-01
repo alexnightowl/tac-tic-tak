@@ -59,6 +59,7 @@ model User {
   sentFriendRequests     Friendship[] @relation("FriendshipRequester")
   receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
   offlineReceipts        OfflineAttemptReceipt[]
+  libraryAttempts        LibraryAttempt[]
 }
 
 model UserSetting {
@@ -286,11 +287,33 @@ model UserExperience {
 model XpEvent {
   id        String   @id @default(cuid())
   userId    String
-  // "session" | "review" | "offline"
+  // "session" | "review" | "offline" | "library"
   source    String
   amount    Int
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+}
+
+// Library (mobile): one row per puzzle per cycle of a book. The phone
+// writes results offline and syncs them; `clientId` dedupes a re-sent
+// batch and (userId, puzzleId, cycle) keeps the first result when two
+// devices played the same puzzle in the same cycle. Not rated.
+model LibraryAttempt {
+  id        String   @id @default(cuid())
+  clientId  String   @unique
+  userId    String
+  bookId    String
+  puzzleId  String
+  cycle     Int
+  // "clean" | "hint" | "missed" (a wrong move or the solution shown)
+  result    String
+  timeMs    Int
+  solvedAt  DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, puzzleId, cycle])
+  @@index([userId, bookId])
 }

@@ -12,6 +12,7 @@ import { AchievementsModule } from './achievements/achievements.module';
 import { AdminModule } from './admin/admin.module';
 import { OfflineModule } from './offline/offline.module';
 import { ExperienceModule } from './experience/experience.module';
+import { LibraryModule } from './library/library.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ExperienceModule } from './experience/experience.module';
     AdminModule,
     OfflineModule,
     ExperienceModule,
+    LibraryModule,
   ],
 })
 export class AppModule {}

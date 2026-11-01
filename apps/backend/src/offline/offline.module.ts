@@ -11,5 +11,6 @@ import { OfflineController } from './offline.controller';
   imports: [PuzzlesModule, AnalyticsModule, AchievementsModule, SessionsModule, ExperienceModule],
   providers: [OfflineService],
   controllers: [OfflineController],
+  exports: [OfflineService],
 })
 export class OfflineModule {}
