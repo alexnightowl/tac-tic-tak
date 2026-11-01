@@ -1,6 +1,6 @@
 {
   "id": "attack",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "attack-1",
@@ -1387,8 +1387,8 @@
             "source": "https://www.chessgames.com/perl/chessgame?gid=1094573"
           },
           "note": {
-            "en": "St. Louis 1904, a Queen's Gambit Accepted. Marshall won this congress.",
-            "uk": "Сент-Луїс, 1904, прийнятий ферзевий гамбіт. Цей конгрес виграв Маршалл."
+            "en": "St. Louis 1904, a Queen's Gambit Accepted.",
+            "uk": "Сент-Луїс, 1904, прийнятий ферзевий гамбіт."
           }
         },
         {
