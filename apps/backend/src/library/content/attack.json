@@ -1,5 +1,2830 @@
 {
   "id": "attack",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "attack-1",
+      "title": {
+        "en": "Pillsbury at the Board",
+        "uk": "Пільсбері за дошкою"
+      },
+      "subtitle": {
+        "en": "Harry Nelson Pillsbury, 1895–1905",
+        "uk": "Гаррі Нельсон Пільсбері, 1895–1905"
+      },
+      "puzzles": [
+        {
+          "id": "lib-attack-1-01",
+          "fen": "4rkn1/p6Q/2p1p3/q1p1P1p1/2P3P1/5R2/P1P2PKP/8 b - - 3 30",
+          "moves": "g8f6 f3f6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Colonel Moreau",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1903,
+            "date": "1903.02.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1099422"
+          },
+          "note": {
+            "en": "Monte Carlo 1903, a Sicilian Defence.",
+            "uk": "Монте-Карло, 1903, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-attack-1-02",
+          "fen": "r3kbnr/ppp2ppp/8/4q3/3n2b1/3P1N2/PPPN1PPP/R1B1KB1R w KQkq - 0 8",
+          "moves": "f3e5 d4c2",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Casual Game",
+            "site": "Atlantic City, NJ USA",
+            "year": 1904,
+            "date": "1904.09.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2749882"
+          },
+          "note": {
+            "en": "Atlantic City 1904, casual game, a King's Knight opening.",
+            "uk": "Атлантик-Сіті, 1904, товариська партія, дебют королівського коня."
+          }
+        },
+        {
+          "id": "lib-attack-1-03",
+          "fen": "r1b1kb1r/ppppqppp/5n2/4n1B1/8/8/PPP2PPP/RN1QKBNR w KQkq - 2 7",
+          "moves": "g5f6 e5f3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "opening",
+            "doubleCheck"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "NN",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Casual Game",
+            "site": "Atlantic City, NJ USA",
+            "year": 1905,
+            "date": "1905.07.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2749828"
+          },
+          "note": {
+            "en": "Atlantic City 1905, casual game, a Centre Game. One of Pillsbury's last recorded games: he died the next year.",
+            "uk": "Атлантик-Сіті, 1905, товариська партія, центральний дебют. Одна з останніх відомих партій Пільсбері: наступного року він помер."
+          }
+        },
+        {
+          "id": "lib-attack-1-04",
+          "fen": "4r1k1/1pp2pp1/3b3p/5Q2/3q4/2N2PN1/1PPK3P/r2R3R w - - 0 23",
+          "moves": "f5d3 d6f4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "James McConnell",
+            "black": "Harry Nelson Pillsbury",
+            "event": "New Orleans",
+            "site": "New Orleans, LA USA",
+            "year": 1899,
+            "date": "1899.03.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109187"
+          },
+          "note": {
+            "en": "New Orleans 1899, a Vienna Game.",
+            "uk": "Новий Орлеан, 1899, віденська партія."
+          }
+        },
+        {
+          "id": "lib-attack-1-05",
+          "fen": "r5k1/p2b1p2/2p2p1p/3prP2/2q4Q/R5N1/1PP3PP/5R1K w - - 6 29",
+          "moves": "a3f3 c4h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "M Didier",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1900,
+            "date": "1900.05.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000032"
+          },
+          "note": {
+            "en": "Paris 1900, a Ruy Lopez.",
+            "uk": "Париж, 1900, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-1-06",
+          "fen": "b2r1r1k/2q3pp/p1pNp3/1pQnPB2/5P2/4P3/PP4PP/3R1RK1 b - - 0 20",
+          "moves": "e6f5 d1d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "pin"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Herbert William Trenchard",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1898,
+            "date": "1898.06.25",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109153"
+          },
+          "note": {
+            "en": "Vienna 1898, a Queen's Gambit Declined.",
+            "uk": "Відень, 1898, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-1-07",
+          "fen": "4r1k1/5bp1/1p6/1Rp4p/2Pp1QPq/3P1P2/2P3r1/5RK1 w - - 0 31",
+          "moves": "g1g2 e8e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Francis Joseph Lee",
+            "black": "Harry Nelson Pillsbury",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1899,
+            "date": "1899.06.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109168"
+          },
+          "note": {
+            "en": "London 1899, a Vienna Game. Lasker won this tournament.",
+            "uk": "Лондон, 1899, віденська партія. Цей турнір виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-attack-1-08",
+          "fen": "6k1/p1pbR1qp/2p4r/6r1/3P1R1Q/3N2P1/PPP2P2/6K1 b - - 8 28",
+          "moves": "g7e7 h4h6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Richard Teichmann",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1903,
+            "date": "1903.02.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1099430"
+          },
+          "note": {
+            "en": "Monte Carlo 1903, a Petrov Defence.",
+            "uk": "Монте-Карло, 1903, захист Петрова."
+          }
+        },
+        {
+          "id": "lib-attack-1-09",
+          "fen": "r7/1k3bp1/1pB1n1p1/4Bp2/2P1pP2/4K3/2P3PP/R7 b - - 10 33",
+          "moves": "b7c6 a1a8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Louis Charles Karpinski",
+            "event": "Buffalo",
+            "site": "Buffalo, New York USA",
+            "year": 1901,
+            "date": "1901.08.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109219"
+          },
+          "note": {
+            "en": "Buffalo 1901, a Sicilian Defence. Pillsbury held the US title from 1897 until his death.",
+            "uk": "Баффало, 1901, сицилійський захист. Пільсбері був чемпіоном США від 1897 року до своєї смерті."
+          }
+        },
+        {
+          "id": "lib-attack-1-10",
+          "fen": "3qr3/1br4p/pp6/4PRk1/3Pp3/4P2Q/PP4PP/6K1 b - - 0 27",
+          "moves": "g5g6 h3g4 d8g5 g4g5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "John Welsh Young",
+            "event": "New York vs Pennsylvania",
+            "site": "Clayton, NY USA",
+            "year": 1897,
+            "date": "1897.08.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2811778"
+          },
+          "note": {
+            "en": "Clayton 1897, New York v Pennsylvania team match, a Queen's Gambit Declined.",
+            "uk": "Клейтон, 1897, командний матч Нью-Йорк — Пенсильванія, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-1-11",
+          "fen": "5rk1/ppp3pp/3b4/3pn3/5pq1/2PB4/PP2KP1P/R1BQ1N2 w - - 4 23",
+          "moves": "e2d2 g4d1 d2d1 e5d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emanuel Lasker",
+            "black": "Harry Nelson Pillsbury",
+            "event": "St. Petersburg Quadrangular 1895/96",
+            "site": "St. Petersburg RUE",
+            "year": 1895,
+            "date": "1895.12.13",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109091"
+          },
+          "note": {
+            "en": "St. Petersburg 1895, a Petrov Defence. Lasker won this four-player event; Pillsbury finished third.",
+            "uk": "Санкт-Петербург, 1895, захист Петрова. Цей турнір чотирьох виграв Ласкер; Пільсбері посів третє місце."
+          }
+        },
+        {
+          "id": "lib-attack-1-12",
+          "fen": "6k1/6pp/8/NpP5/1n1P4/r5P1/1R5P/6K1 b - - 1 39",
+          "moves": "a3a5 b2b4 g8f7 d4d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Karl August Walbrodt",
+            "event": "Budapest",
+            "site": "Budapest AUH",
+            "year": 1896,
+            "date": "1896.10.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1002559"
+          },
+          "note": {
+            "en": "Budapest 1896, a Queen's Gambit Declined. Chigorin won the tournament after a play-off with Charousek.",
+            "uk": "Будапешт, 1896, відхилений ферзевий гамбіт. Турнір виграв Чигорін після додаткового матчу з Шарушеком."
+          }
+        },
+        {
+          "id": "lib-attack-1-13",
+          "fen": "8/6Rp/5pk1/2r1p3/3N4/4PPK1/8/8 b - - 1 33",
+          "moves": "g6g7 d4e6 g7g6 e6c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Jean Taubenhaus",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1903,
+            "date": "1903.03.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1099481"
+          },
+          "note": {
+            "en": "Monte Carlo 1903, a Slav Defence. Tarrasch won this tournament.",
+            "uk": "Монте-Карло, 1903, словʼянський захист. Цей турнір виграв Тарраш."
+          }
+        },
+        {
+          "id": "lib-attack-1-14",
+          "fen": "3rrb1k/1p1b1p2/2pp1pp1/pq6/1P2P2Q/P4P2/1BP3PP/3RR2K b - - 1 26",
+          "moves": "h8g8 b2f6 f8g7 f6d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Wilhelm Steinitz",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1898,
+            "date": "1898.07.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109151"
+          },
+          "note": {
+            "en": "Vienna 1898, a Ruy Lopez. Pillsbury tied for first with Tarrasch, who won the play-off.",
+            "uk": "Відень, 1898, іспанська партія. Пільсбері поділив перше місце з Таррашем, який виграв додатковий матч."
+          }
+        },
+        {
+          "id": "lib-attack-1-15",
+          "fen": "3r2k1/1p4p1/2p4p/p2pN2q/P7/2P3BK/1P1Q1b1P/R7 w - - 1 28",
+          "moves": "h3g2 f2g3 h2g3 h5e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "capturingDefender"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jackson Whipps Showalter",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1898,
+            "date": "1898.07.11",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109157"
+          },
+          "note": {
+            "en": "Vienna 1898, a Ruy Lopez.",
+            "uk": "Відень, 1898, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-1-16",
+          "fen": "r2q4/5pkR/p1npr3/1pp1p1p1/4P1P1/1PPP1Q2/1P1B1PK1/R7 b - - 1 28",
+          "moves": "g7h7 f3f7 h7h8 a1h1 e6h6 h1h6",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1675,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "attackingF2F7",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Siegbert Tarrasch",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1902,
+            "date": "1902.03.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1099325"
+          },
+          "note": {
+            "en": "Monte Carlo 1902, a Ruy Lopez.",
+            "uk": "Монте-Карло, 1902, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-1-17",
+          "fen": "5rk1/4R3/2p2pP1/p1p1b3/P2p3Q/1P1P4/1B5P/1q2K3 w - - 2 37",
+          "moves": "e1e2 b1b2 e2f3 b2h2 h4h7 h2h7 g6h7 g8h8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1825,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Albin",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1902,
+            "date": "1902.02.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1099307"
+          },
+          "note": {
+            "en": "Monte Carlo 1902, a 1.Nf3 opening. Maróczy won this tournament.",
+            "uk": "Монте-Карло, 1902, дебют 1.Nf3. Цей турнір виграв Мароці."
+          }
+        },
+        {
+          "id": "lib-attack-1-18",
+          "fen": "5rk1/1b1qbp2/r4RB1/p2p2B1/2pP3Q/2p1P3/PP4PP/5RK1 b - - 0 21",
+          "moves": "f7g6 f6f8 e7f8 f1f8 g8f8 h4h8 f8f7 h8h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1925,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Georg Marco",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1900,
+            "date": "1900.06.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000091"
+          },
+          "note": {
+            "en": "Paris 1900, a Queen's Gambit Declined. Lasker won the tournament; Pillsbury was second.",
+            "uk": "Париж, 1900, відхилений ферзевий гамбіт. Турнір виграв Ласкер; Пільсбері став другим."
+          }
+        },
+        {
+          "id": "lib-attack-1-19",
+          "fen": "rn1q1r2/1bp2pp1/pp4k1/3nPR2/3P4/7Q/PP2N1PP/2R3K1 b - - 0 21",
+          "moves": "f8h8 h3g4 g6h7 g4h5 h7g8 h5f7 g8h7 f5h5",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 1950,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Max Judd",
+            "event": "St. Louis",
+            "site": "St. Louis, MO USA",
+            "year": 1898,
+            "date": "1898.12.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109191"
+          },
+          "note": {
+            "en": "St. Louis 1898, a Queen's Gambit Declined.",
+            "uk": "Сент-Луїс, 1898, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-1-20",
+          "fen": "8/pp6/2p1RP2/8/3R2p1/2P2bk1/P1P3r1/6K1 w - - 5 37",
+          "moves": "g1f1 g2h2 f1e1 h2h1 e1d2 h1d1 d2e3 d1e1 e3d3 e1e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2150,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Max Judd",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Exhibition Match Game, St. Louis",
+            "site": "St. Louis, MO USA",
+            "year": 1901,
+            "date": "1901.01.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2028013"
+          },
+          "note": {
+            "en": "St. Louis 1901, exhibition match game, a Ruy Lopez.",
+            "uk": "Сент-Луїс, 1901, показовий матч, іспанська партія."
+          }
+        }
+      ]
+    },
+    {
+      "id": "attack-2",
+      "title": {
+        "en": "Pillsbury Blindfold",
+        "uk": "Пільсбері наосліп"
+      },
+      "subtitle": {
+        "en": "Simultaneous displays, 1895–1904",
+        "uk": "Сеанси одночасної гри, 1895–1904"
+      },
+      "puzzles": [
+        {
+          "id": "lib-attack-2-01",
+          "fen": "rnb4Q/ppp2pR1/5P1k/3P1q2/2p5/2N5/PPP4P/2K5 b - - 1 22",
+          "moves": "f5h7 h8h7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Oliver J Welles",
+            "event": "Blindfold simul, 4b",
+            "site": "Hamilton Club, New York, NY USA",
+            "year": 1895,
+            "date": "1895.11.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1859600"
+          },
+          "note": {
+            "en": "New York 1895, blindfold display on 4 boards. Pillsbury became the leading blindfold player of his time.",
+            "uk": "Нью-Йорк, 1895, сеанс наосліп на 4 дошках. Пільсбері став найсильнішим гравцем наосліп свого часу."
+          }
+        },
+        {
+          "id": "lib-attack-2-02",
+          "fen": "2rqk2r/3n2pp/1p2p1Q1/p7/3P4/B2B4/PP3PPP/R5K1 b k - 1 20",
+          "moves": "h7g6 d3g6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "NN",
+            "event": "Pillsbury Blindfold Simul 12b, Toledo",
+            "site": "Toledo, OH USA",
+            "year": 1900,
+            "date": "1900.01.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109193"
+          },
+          "note": {
+            "en": "Toledo 1900, blindfold display on 12 boards.",
+            "uk": "Толідо, 1900, сеанс наосліп на 12 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-03",
+          "fen": "rrk5/2pbq2p/Q4p2/3P1p2/2P2P2/1R6/6PP/1R4K1 b - - 0 30",
+          "moves": "a8a6 b3b8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "backRankMate",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Hill",
+            "event": "Pillsbury Blindfold Simul 16b, Paris",
+            "site": "Paris FRA (Philidor CC)",
+            "year": 1902,
+            "date": "1902.06.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754102"
+          },
+          "note": {
+            "en": "Paris 1902, blindfold display on 16 boards.",
+            "uk": "Париж, 1902, сеанс наосліп на 16 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-04",
+          "fen": "1n4kr/r4p2/6RQ/pqP4p/1p6/4B2P/PPP3P1/5R1K b - - 0 33",
+          "moves": "f7g6 f1f8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "S Coleman / Levy / W K Poston",
+            "event": "Pillsbury Blindfold Simul 5b, Memphis",
+            "site": "Memphis, TN USA (Memphis CC)",
+            "year": 1904,
+            "date": "1904.02.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2749836"
+          },
+          "note": {
+            "en": "Memphis 1904, blindfold display on 5 boards.",
+            "uk": "Мемфіс, 1904, сеанс наосліп на 5 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-05",
+          "fen": "r2qkbnr/1pp2ppp/p2p4/4N3/2B1P1b1/2N5/PPPP2PP/R1BQK2R b KQkq - 0 7",
+          "moves": "g4d1 c4f7 e8e7 c3d5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "opening",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Fernandez",
+            "event": "Blindfold simul, 12b",
+            "site": "Havana CUB",
+            "year": 1900,
+            "date": "1900.03.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109213"
+          },
+          "note": {
+            "en": "Havana 1900, blindfold display on 12 boards.",
+            "uk": "Гавана, 1900, сеанс наосліп на 12 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-06",
+          "fen": "1r4qk/3R3p/6p1/p4pQ1/2p1p3/8/1r4PP/3R3K b - - 3 43",
+          "moves": "b2b1 g5f6 g8g7 f6g7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Frederick William Womersley",
+            "event": "Pillsbury Blindfold Simul 16b, Hastings",
+            "site": "Hastings ENG",
+            "year": 1902,
+            "date": "1902.05.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754114"
+          },
+          "note": {
+            "en": "Hastings 1902, blindfold display on 16 boards. Pillsbury had won the great Hastings tournament of 1895.",
+            "uk": "Гастінгс, 1902, сеанс наосліп на 16 дошках. У 1895 році Пільсбері виграв великий турнір у Гастінгсі."
+          }
+        },
+        {
+          "id": "lib-attack-2-07",
+          "fen": "7r/pp1kr2p/4Q3/2qP4/8/P3B3/1P3PPP/4K2R b K - 1 27",
+          "moves": "e7e6 d5e6 d7d6 e3c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "NN",
+            "event": "Blindfold simul",
+            "site": "Lexington, KY USA",
+            "year": 1899,
+            "date": "1899.12.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1819062"
+          },
+          "note": {
+            "en": "Lexington 1899, blindfold display.",
+            "uk": "Лексінгтон, 1899, сеанс наосліп."
+          }
+        },
+        {
+          "id": "lib-attack-2-08",
+          "fen": "k5r1/p1Bb4/P3r1q1/1p1pPp1p/3P4/1Q2P1R1/1P4P1/2RK4 b - - 0 32",
+          "moves": "g6g3 b3d5 e6c6 c1c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "queensideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Martin L Joyce",
+            "event": "Blindfold simul, 12b",
+            "site": "Lincoln, NE USA",
+            "year": 1900,
+            "date": "1900.02.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1697503"
+          },
+          "note": {
+            "en": "Lincoln 1900, blindfold display on 12 boards.",
+            "uk": "Лінкольн, 1900, сеанс наосліп на 12 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-09",
+          "fen": "2k1r3/2p2p2/p1p1qB1p/2b3p1/3r2P1/2N2Q1P/PPP5/4RR1K b - - 0 19",
+          "moves": "e6e1 f6d4 c5d4 f1e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "intermezzo"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "K Y Jones",
+            "event": "Blindfold simul, 8b",
+            "site": "Franklin CC, Philadelphia, PA USA",
+            "year": 1898,
+            "date": "1898.11.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1992447"
+          },
+          "note": {
+            "en": "Philadelphia 1898, blindfold display on 8 boards.",
+            "uk": "Філадельфія, 1898, сеанс наосліп на 8 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-10",
+          "fen": "1r3r2/1ppk1p2/p3R1p1/3pPn1p/3P4/B1P3Q1/P1P1B1PP/6K1 b - - 0 24",
+          "moves": "f5g3 e6e7 d7c6 h2g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Max Sonnenschein",
+            "event": "Pillsbury Blindfold Simul 16b, Chicago",
+            "site": "Chicago, IL USA",
+            "year": 1900,
+            "date": "1900.02.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1728408"
+          },
+          "note": {
+            "en": "Chicago 1900, blindfold display on 16 boards.",
+            "uk": "Чикаго, 1900, сеанс наосліп на 16 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-11",
+          "fen": "r3r2k/p3q3/2p5/4pB2/5Qp1/2P5/PP3PbP/R3RNK1 b - - 0 24",
+          "moves": "e5f4 e1e7 e8e7 g1g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Albert Edelheim",
+            "event": "Kaiser-Cafe, Blindfold Simul 21b",
+            "site": "Hanover GER",
+            "year": 1902,
+            "date": "1902.07.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2690293"
+          },
+          "note": {
+            "en": "Hanover 1902, blindfold display on 21 boards. Pillsbury played all 21 games without sight of the boards.",
+            "uk": "Ганновер, 1902, сеанс наосліп на 21 дошці. Пільсбері провів усі 21 партію, не бачачи дошок."
+          }
+        },
+        {
+          "id": "lib-attack-2-12",
+          "fen": "2r2rk1/pp2Nqpp/3p4/b4p2/2Q5/7P/PPP2PP1/3R1RK1 b - - 2 19",
+          "moves": "g8h8 c4f7 f8f7 e7c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "C F Cooper",
+            "event": "Pillsbury Blindfold Simul 16b, Plymouth",
+            "site": "Plymouth ENG",
+            "year": 1903,
+            "date": "1903.01.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2751082"
+          },
+          "note": {
+            "en": "Plymouth 1903, blindfold display on 16 boards.",
+            "uk": "Плімут, 1903, сеанс наосліп на 16 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-13",
+          "fen": "2Q3k1/1p3qr1/n1p4R/1p1pP3/3P3P/P1P5/1P6/7K b - - 3 37",
+          "moves": "f7f8 h6h8 g8h8 c8f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "A B Davis Jr",
+            "event": "Pillsbury Blindfold Simul 16b, Chicago",
+            "site": "Chicago, IL USA",
+            "year": 1900,
+            "date": "1900.02.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1728417"
+          },
+          "note": {
+            "en": "Chicago 1900, blindfold display on 16 boards.",
+            "uk": "Чикаго, 1900, сеанс наосліп на 16 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-14",
+          "fen": "5r1k/p6p/1p4rq/4Q1R1/2PPbp1P/5R2/PP3P2/6K1 b - - 1 38",
+          "moves": "h6g7 e5e4 g6g5 h4g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Sidney Paine Johnston / Saulson",
+            "event": "Pillsbury Consultation Simul 7b, Chicago",
+            "site": "Chicago, IL USA (Chicago CC)",
+            "year": 1903,
+            "date": "1903.12.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1551408"
+          },
+          "note": {
+            "en": "Chicago 1903, simultaneous display against consulting teams on 7 boards.",
+            "uk": "Чикаго, 1903, сеанс на 7 дошках проти команд, що радилися."
+          }
+        },
+        {
+          "id": "lib-attack-2-15",
+          "fen": "1rbqnrk1/2p4p/p1pp1b2/8/3P2pN/1P4B1/P1PQN1PP/3R1RK1 b - - 1 17",
+          "moves": "f6h4 f1f8 g8f8 d2h6 f8g8 g3h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "W E Thomas",
+            "event": "Pillsbury Blindfold Simul 10b, Washington",
+            "site": "Washington, DC USA",
+            "year": 1901,
+            "date": "1901.12.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754721"
+          },
+          "note": {
+            "en": "Washington 1901, blindfold display on 10 boards.",
+            "uk": "Вашингтон, 1901, сеанс наосліп на 10 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-16",
+          "fen": "1r3rk1/2p1bppp/p1pq4/1p2Nb2/3PnB2/5P2/PPP3PP/RN1QR1K1 b - - 0 13",
+          "moves": "e4f6 e5g6 h7g6 f4d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Herbert T Guthrie",
+            "event": "Pillsbury Blindfold Simul 10b, Washington",
+            "site": "Washington, DC USA",
+            "year": 1901,
+            "date": "1901.12.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754720"
+          },
+          "note": {
+            "en": "Washington 1901, blindfold display on 10 boards.",
+            "uk": "Вашингтон, 1901, сеанс наосліп на 10 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-17",
+          "fen": "r4rk1/p3bppp/1np3q1/1p1pP3/3P1N2/2P1Q1P1/P1P2R1P/1RB3K1 b - - 7 18",
+          "moves": "e7g5 f4g6 g5e3 g6e7 g8h8 c1e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "I M Friedberger",
+            "event": "Pillsbury Blindfold Simul 16b, Hastings",
+            "site": "Hastings ENG",
+            "year": 1903,
+            "date": "1903.04.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1109238"
+          },
+          "note": {
+            "en": "Hastings 1903, blindfold display on 16 boards.",
+            "uk": "Гастінгс, 1903, сеанс наосліп на 16 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-18",
+          "fen": "5Bk1/1p3r1p/p1p2qpn/3pRb2/2PP1p2/3Q1P2/PPN3P1/4R1K1 b - - 0 32",
+          "moves": "f5d3 f8h6 f7f8 e5e8 f8e8 e1e8 g8f7 e8f8 f7e7 f8f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Charles Frederick Bliss",
+            "event": "Simul",
+            "site": "Chicago, IL USA",
+            "year": 1898,
+            "date": "1898.12.31",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1609926"
+          },
+          "note": {
+            "en": "Chicago 1898, simultaneous display.",
+            "uk": "Чикаго, 1898, сеанс одночасної гри."
+          }
+        },
+        {
+          "id": "lib-attack-2-19",
+          "fen": "rn1q1rk1/p1pnbp1p/1p2b1N1/3p2BQ/3P4/2NBP3/PP3PPP/R3K2R b KQ - 0 11",
+          "moves": "f7g6 d3g6 f8f7 g6f7 e6f7 g5e7 d8e7 c3d5 f7h5 d5e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2150,
+          "themes": [
+            "opening",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Nouveau / Ungliano",
+            "event": "Pillsbury Blindfold Simul 16b, Paris",
+            "site": "Paris FRA (Philidor CC)",
+            "year": 1902,
+            "date": "1902.06.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754108"
+          },
+          "note": {
+            "en": "Paris 1902, blindfold display on 16 boards.",
+            "uk": "Париж, 1902, сеанс наосліп на 16 дошках."
+          }
+        },
+        {
+          "id": "lib-attack-2-20",
+          "fen": "6k1/p1p3pp/2pNp1q1/2n5/2Q4R/5r2/PPP2PPP/6K1 b - - 0 21",
+          "moves": "c7d6 h4g4 d6d5 c4d4 e6e5 g4g6 e5d4 g6c6 d4d3 c6c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2150,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Harry Groots",
+            "event": "Pillsbury Blindfold Simul 17b, Philadelphia",
+            "site": "Philadelphia, PA USA",
+            "year": 1902,
+            "date": "1902.01.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754134"
+          },
+          "note": {
+            "en": "Philadelphia 1902, blindfold display on 17 boards.",
+            "uk": "Філадельфія, 1902, сеанс наосліп на 17 дошках."
+          }
+        }
+      ]
+    },
+    {
+      "id": "attack-3",
+      "title": {
+        "en": "Marshall's Attacks",
+        "uk": "Атаки Маршалла"
+      },
+      "subtitle": {
+        "en": "Frank Marshall, 1895–1914",
+        "uk": "Френк Маршалл, 1895–1914"
+      },
+      "puzzles": [
+        {
+          "id": "lib-attack-3-01",
+          "fen": "r3k1nr/p6p/3Q2Nb/8/6q1/2B2p2/PPP3PP/4R2K b - - 10 28",
+          "moves": "e8f7 g6h8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Colonel Moreau",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1903,
+            "date": "1903.03.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1075951"
+          },
+          "note": {
+            "en": "Monte Carlo 1903, a King's Gambit.",
+            "uk": "Монте-Карло, 1903, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-3-02",
+          "fen": "r5r1/pppb1pk1/3npRNp/8/3P2P1/2PB4/P1P1Q2P/6K1 b - - 0 22",
+          "moves": "g7f6 e2e5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Harry Nelson Pillsbury",
+            "event": "Cambridge Springs",
+            "site": "Cambridge Springs, PA USA",
+            "year": 1904,
+            "date": "1904.04.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036782"
+          },
+          "note": {
+            "en": "Cambridge Springs 1904, a 1...d6 defence.",
+            "uk": "Кембридж-Спрінгс, 1904, захист 1...d6."
+          }
+        },
+        {
+          "id": "lib-attack-3-03",
+          "fen": "1k6/1p3p1p/rNb2N2/p1P5/8/4P3/PP4rP/3R1K2 b - - 0 36",
+          "moves": "g2h2 d1d8 b8a7 d8a8",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Abelson Epsteen",
+            "event": "Simul",
+            "site": "Mechanics Institute, San Francisco, CA USA",
+            "year": 1913,
+            "date": "1913.07.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2878690"
+          },
+          "note": {
+            "en": "San Francisco 1913, simultaneous display, a Centre Game.",
+            "uk": "Сан-Франциско, 1913, сеанс одночасної гри, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-attack-3-04",
+          "fen": "6k1/2Q2p1p/p4np1/6q1/3p4/1P3RNP/P4PP1/4r1K1 w - - 1 29",
+          "moves": "g1h2 f6g4 h3g4 g5h4",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1500,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rudolf Spielmann",
+            "black": "Frank James Marshall",
+            "event": "Prague",
+            "site": "Prague AUH",
+            "year": 1908,
+            "date": "1908.06.01",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094750"
+          },
+          "note": {
+            "en": "Prague 1908, a Ruy Lopez.",
+            "uk": "Прага, 1908, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-3-05",
+          "fen": "Q7/pp1b4/2k3q1/2npp3/2p2P2/2P3KN/6PP/2R4R w - - 2 34",
+          "moves": "g3f2 c5d3 f2f1 d3c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Amos Burn",
+            "black": "Frank James Marshall",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1906,
+            "date": "1906.06.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094647"
+          },
+          "note": {
+            "en": "Ostend 1906, a Queen's Pawn opening.",
+            "uk": "Остенде, 1906, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-3-06",
+          "fen": "8/1p3pkp/6p1/8/1P1Np3/3nn1QP/4q1PK/8 w - - 0 37",
+          "moves": "d4e2 e3f1 h2g1 f1g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Georg Salwe",
+            "black": "Frank James Marshall",
+            "event": "15th DSB Kongress (Nuremberg)",
+            "site": "Nuremberg GER",
+            "year": 1906,
+            "date": "1906.08.09",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094667"
+          },
+          "note": {
+            "en": "Nuremberg 1906, a Queen's Gambit Declined. Marshall won this tournament.",
+            "uk": "Нюрнберг, 1906, відхилений ферзевий гамбіт. Цей турнір виграв Маршалл."
+          }
+        },
+        {
+          "id": "lib-attack-3-07",
+          "fen": "r1b1r1k1/pp2qppp/8/3Q4/4n3/P2BPN2/1P3PPP/2R1K2R b K - 2 14",
+          "moves": "e4f2 e1f2 e7e3 f2g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Paul F Johner",
+            "event": "16th DSB Kongress, Duesseldorf",
+            "site": "Duesseldorf GER",
+            "year": 1908,
+            "date": "1908.08.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094770"
+          },
+          "note": {
+            "en": "Düsseldorf 1908, a Queen's Gambit Declined.",
+            "uk": "Дюссельдорф, 1908, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-3-08",
+          "fen": "4r1k1/pp3ppp/3q4/3pn3/3Q4/2P1B3/PP2rPPP/1R1R2K1 w - - 7 20",
+          "moves": "d4d5 e2e1 d1e1 d6d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Charles Jaffe",
+            "black": "Frank James Marshall",
+            "event": "Havana",
+            "site": "Havana CUB",
+            "year": 1913,
+            "date": "1913.02.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001118"
+          },
+          "note": {
+            "en": "Havana 1913, a Queen's Pawn opening.",
+            "uk": "Гавана, 1913, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-3-09",
+          "fen": "rn1qkbnr/ppp1p1pp/4bp2/4N2Q/2pPP3/2N5/PP3PPP/R1B1KB1R b KQkq - 2 7",
+          "moves": "g7g6 e5g6 h7g6 h5h8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "opening",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Max Judd",
+            "event": "7th American Chess Congress",
+            "site": "St. Louis, MO USA",
+            "year": 1904,
+            "date": "1904.10.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094573"
+          },
+          "note": {
+            "en": "St. Louis 1904, a Queen's Gambit Accepted. Marshall won this congress.",
+            "uk": "Сент-Луїс, 1904, прийнятий ферзевий гамбіт. Цей конгрес виграв Маршалл."
+          }
+        },
+        {
+          "id": "lib-attack-3-10",
+          "fen": "r3k2r/1pp2ppp/p1bbp3/8/2BP1Pnq/2N1P2P/PP1B2P1/R2Q1RK1 b kq - 0 12",
+          "moves": "h4g3 d1g4 g3g4 h3g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Fyodor Ivanovich Dus Chotimirsky",
+            "event": "Karlsbad",
+            "site": "Karlsbad (Karlovy Vary) AUH",
+            "year": 1911,
+            "date": "1911.09.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000923"
+          },
+          "note": {
+            "en": "Karlsbad 1911, a Queen's Gambit Accepted.",
+            "uk": "Карлсбад, 1911, прийнятий ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-3-11",
+          "fen": "r5r1/pbq2pQ1/4k3/2Ppb1p1/8/2PB3P/PP3PP1/4R2K w - - 2 24",
+          "moves": "e1e5 c7e5 g7e5 e6e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Edward Tennenwurzel",
+            "black": "Frank James Marshall",
+            "event": "American National",
+            "site": "New York, NY USA",
+            "year": 1913,
+            "date": "1913.02.02",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094940"
+          },
+          "note": {
+            "en": "New York 1913, a Queen's Pawn opening.",
+            "uk": "Нью-Йорк, 1913, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-3-12",
+          "fen": "1r1q1rk1/p1p3pp/b7/2P2P2/4pNP1/2bp4/PPP2PNP/1R1QK2R w K - 2 17",
+          "moves": "b2c3 d3d2 d1d2 b8b1 d2c1 b1c1",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1750,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "backRankMate"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Herbert Rosenfeld",
+            "black": "Frank Marshall",
+            "event": "Marshall - Rosenfeld m",
+            "site": "New York, NY USA",
+            "year": 1910,
+            "date": "1910.01.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2018948"
+          },
+          "note": {
+            "en": "New York 1910, match game, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1910, матчева партія, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-3-13",
+          "fen": "5rk1/2q2ppp/3rp3/p5Q1/N1Pb1P2/1P6/P4P1P/3RR1K1 w - - 1 21",
+          "moves": "d1d2 d4f6 d2d6 f6g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Albert Whiting Fox",
+            "black": "Frank James Marshall",
+            "event": "Cambridge Springs",
+            "site": "Cambridge Springs, PA USA",
+            "year": 1904,
+            "date": "1904.05.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036870"
+          },
+          "note": {
+            "en": "Cambridge Springs 1904, a Sicilian Defence. Marshall won this tournament without losing a game.",
+            "uk": "Кембридж-Спрінгс, 1904, сицилійський захист. Маршалл виграв цей турнір без жодної поразки."
+          }
+        },
+        {
+          "id": "lib-attack-3-14",
+          "fen": "r1bq1k1r/ppppbpp1/5nB1/3PN1p1/3Q4/8/PP1N1PPP/4RK1R b - - 1 15",
+          "moves": "f7g6 e5g6 f8f7 e1e7 d8e7 g6e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Amos Burn",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1905,
+            "date": "1905.06.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036012"
+          },
+          "note": {
+            "en": "Ostend 1905, a Giuoco Piano.",
+            "uk": "Остенде, 1905, італійська партія."
+          }
+        },
+        {
+          "id": "lib-attack-3-15",
+          "fen": "8/pp2rkR1/2p2r2/3p1P2/3P4/3qP2R/PP3Q1K/8 b - - 0 31",
+          "moves": "f7g7 f2g3 g7f7 h3h7 f7e8 g3b8 e8d7 b8b7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Oldrich Duras",
+            "event": "Scheveningen",
+            "site": "Scheveningen NED",
+            "year": 1905,
+            "date": "1905.08.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094614"
+          },
+          "note": {
+            "en": "Scheveningen 1905, a Queen's Gambit Declined.",
+            "uk": "Схевенінген, 1905, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-3-16",
+          "fen": "r1bQ4/p1R2pkp/1p1Nq1p1/3p4/1n6/3BP3/PP3PPP/6K1 b - - 7 23",
+          "moves": "c8b7 d6f7 a8d8 f7d8 g7f6 d8e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Jacques Mieses",
+            "event": "Marshall - Mieses",
+            "site": "Berlin GER",
+            "year": 1908,
+            "date": "1908.11.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094774"
+          },
+          "note": {
+            "en": "Berlin 1908, match game, a Queen's Gambit Declined.",
+            "uk": "Берлін, 1908, матчева партія, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-3-17",
+          "fen": "2RR4/p4prk/5p1p/r7/5KPP/4P3/8/8 b - - 0 30",
+          "moves": "h6h5 d8h8 h7g6 g4h5 a5h5 h8h5 g6h5 c8h8 g7h7 h8h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Abraham Kupchik",
+            "event": "Havana",
+            "site": "Havana CUB",
+            "year": 1913,
+            "date": "1913.03.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001138"
+          },
+          "note": {
+            "en": "Havana 1913, a Centre Game. Marshall won the tournament, ahead of Capablanca.",
+            "uk": "Гавана, 1913, центральний дебют. Турнір виграв Маршалл, випередивши Капабланку."
+          }
+        },
+        {
+          "id": "lib-attack-3-18",
+          "fen": "r3R3/ppp2ppk/1b5p/1P1P4/2P3bq/2P1B3/P3QnPP/RN4K1 w - - 4 18",
+          "moves": "e2c2 f2e4 c2e4 f7f5 b1d2 f5e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Robert Short",
+            "black": "Frank James Marshall",
+            "event": "Inter-club Match",
+            "site": "Montreal CAN",
+            "year": 1895,
+            "date": "1895.05.24",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094409"
+          },
+          "note": {
+            "en": "Montreal 1895, inter-club match, an Evans Gambit. Marshall, then 17, grew up in Montreal.",
+            "uk": "Монреаль, 1895, міжклубний матч, гамбіт Еванса. Маршалл, якому тоді було 17, виріс у Монреалі."
+          }
+        },
+        {
+          "id": "lib-attack-3-19",
+          "fen": "3r1rk1/pp3pp1/4b2p/q2N4/8/3Q2P1/Pb2PPBP/1R1R2K1 b - - 3 18",
+          "moves": "a5a2 d3d2 a2a3 d2b2 a3b2 b1b2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Akiba Rubinstein",
+            "event": "Karlsbad",
+            "site": "Karlsbad (Karlovy Vary) AUH",
+            "year": 1911,
+            "date": "1911.08.31",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000702"
+          },
+          "note": {
+            "en": "Karlsbad 1911, a Queen's Gambit Declined. Teichmann won this tournament.",
+            "uk": "Карлсбад, 1911, відхилений ферзевий гамбіт. Цей турнір виграв Тайхман."
+          }
+        },
+        {
+          "id": "lib-attack-3-20",
+          "fen": "2r5/pp5p/b2Qpk2/4B1pP/8/1P2P3/P1q2PP1/6K1 b - - 1 30",
+          "moves": "f6f5 f2f3 c2b1 g1h2 b1h1 h2h1 c8c1 h1h2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "endgame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Henry Ernest Atkins",
+            "event": "8th Anglo-American Cable Match",
+            "site": "London ENG / New York USA",
+            "year": 1903,
+            "date": "1903.04.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094540"
+          },
+          "note": {
+            "en": "1903 Anglo-American cable match, played by telegraph, a Slav Defence.",
+            "uk": "Англо-американський матч 1903 року по телеграфу, словʼянський захист."
+          }
+        }
+      ]
+    },
+    {
+      "id": "attack-4",
+      "title": {
+        "en": "Janowski and Chigorin",
+        "uk": "Яновський і Чигорін"
+      },
+      "subtitle": {
+        "en": "Two attacking masters, 1895–1914",
+        "uk": "Двоє майстрів атаки, 1895–1914"
+      },
+      "puzzles": [
+        {
+          "id": "lib-attack-4-01",
+          "fen": "r3k2r/ppp2pp1/3p4/2b1p3/3nP3/6N1/PPP2PN1/R1BQRK1q w kq - 1 17",
+          "moves": "g3h1 h8h1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Siegbert Tarrasch",
+            "black": "David Janowski",
+            "event": "Budapest",
+            "site": "Budapest AUH",
+            "year": 1896,
+            "date": "1896.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064497"
+          },
+          "note": {
+            "en": "Budapest 1896, a Vienna Game.",
+            "uk": "Будапешт, 1896, віденська партія."
+          }
+        },
+        {
+          "id": "lib-attack-4-02",
+          "fen": "1r4k1/5p1p/2pNq1pP/2P5/1P1Q4/4PP2/2PK4/6R1 b - - 0 38",
+          "moves": "e6h3 d4g7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Frank James Marshall",
+            "event": "Ostend Champions",
+            "site": "Ostend BEL",
+            "year": 1907,
+            "date": "1907.06.04",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064673"
+          },
+          "note": {
+            "en": "Ostend 1907, a Queen's Pawn opening.",
+            "uk": "Остенде, 1907, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-4-03",
+          "fen": "4r1k1/1q1R1p1p/p5p1/1p6/5nQK/1B3P2/PP3P1P/8 b - - 7 35",
+          "moves": "b7b8 b3f7 g8h8 f7e8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "fork",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Hermann Liebenstein",
+            "event": "American National",
+            "site": "New York, NY USA",
+            "year": 1913,
+            "date": "1913.01.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1633342"
+          },
+          "note": {
+            "en": "New York 1913, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1913, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-4-04",
+          "fen": "5rk1/1b4p1/p5qp/1p1PBp2/4Q2P/1B2P3/P5P1/5RK1 b - - 0 29",
+          "moves": "f5e4 d5d6 g8h7 f1f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "discoveredAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Georg Salwe",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1906,
+            "date": "1906.06.25",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064664"
+          },
+          "note": {
+            "en": "Ostend 1906, a Queen's Gambit Declined.",
+            "uk": "Остенде, 1906, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-4-05",
+          "fen": "r5k1/p1pr1pPR/4q1p1/1p1np3/4N1P1/2PP1Q2/PP3P2/R3K3 b Q - 0 24",
+          "moves": "g8h7 e4g5 h7g7 g5e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Rudolf Rezso Charousek",
+            "event": "Nuremberg",
+            "site": "Nuremberg GER",
+            "year": 1896,
+            "date": "1896.07.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036163"
+          },
+          "note": {
+            "en": "Nuremberg 1896, a Giuoco Piano. Lasker won this tournament.",
+            "uk": "Нюрнберг, 1896, італійська партія. Цей турнір виграв Ласкер."
+          }
+        },
+        {
+          "id": "lib-attack-4-06",
+          "fen": "r2qr1k1/1pp1b1p1/p4nQn/3NpP1p/2B4P/8/PPP3P1/2KR3R b - - 0 20",
+          "moves": "g8h8 d5f6 e7f6 d1d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "deflection"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "David Przepiorka",
+            "event": "15th DSB Kongress (Nuremberg)",
+            "site": "Nuremberg GER",
+            "year": 1906,
+            "date": "1906.08.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036631"
+          },
+          "note": {
+            "en": "Nuremberg 1906, a Centre Game.",
+            "uk": "Нюрнберг, 1906, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-attack-4-07",
+          "fen": "1rb2rk1/p7/P1p4p/1PbpQ1p1/8/1R1B1q2/2P1RPKP/2B5 w - - 1 27",
+          "moves": "g2g1 c5f2 e2f2 f3f2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Emil Schallopp",
+            "black": "David Janowski",
+            "event": "Cologne",
+            "site": "02",
+            "year": 1898,
+            "date": "1898.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064520"
+          },
+          "note": {
+            "en": "Cologne 1898, a Sicilian Defence.",
+            "uk": "Кельн, 1898, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-attack-4-08",
+          "fen": "4rnk1/4qp1p/p3p1p1/1prb4/6N1/4QP2/1PB3PP/2RR2K1 b - - 3 26",
+          "moves": "f7f6 g4f6 e7f6 e3c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Paul F Johner",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1906,
+            "date": "1906.06.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1922843"
+          },
+          "note": {
+            "en": "Ostend 1906, a Queen's Gambit Declined.",
+            "uk": "Остенде, 1906, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-4-09",
+          "fen": "2r2r1k/3pq1p1/p1bR3p/2Q1P3/PpN2p2/1P3P2/1P1R2PP/6K1 b - - 0 28",
+          "moves": "c6f3 d6h6 g7h6 c5e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1525,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Abraham Kupchik",
+            "event": "American National",
+            "site": "New York, NY USA",
+            "year": 1913,
+            "date": "1913.01.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1633335"
+          },
+          "note": {
+            "en": "New York 1913, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1913, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-attack-4-10",
+          "fen": "4r1k1/1p3pp1/1p1p3p/nP1Q4/4Pq2/2r2B1P/5PP1/4RRK1 w - - 0 22",
+          "moves": "e1d1 e8e5 d5d6 c3f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Fritz Englund",
+            "black": "David Janowski",
+            "event": "Scheveningen",
+            "site": "Scheveningen NED",
+            "year": 1913,
+            "date": "1913.07.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1394382"
+          },
+          "note": {
+            "en": "Scheveningen 1913, a Centre Game.",
+            "uk": "Схевенінген, 1913, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-attack-4-11",
+          "fen": "5k2/pp3p2/2p3n1/2p2Q2/2B3P1/3P2rq/PPP5/5RK1 w - - 7 33",
+          "moves": "g1f2 g3g2 f2e1 h3e3 e1d1 e3d2",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1750,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jacques Mieses",
+            "black": "David Janowski",
+            "event": "Janowski - Mieses",
+            "site": "Paris FRA",
+            "year": 1895,
+            "date": "1895.02.01",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064494"
+          },
+          "note": {
+            "en": "Paris 1895, match game, a Vienna Game.",
+            "uk": "Париж, 1895, матчева партія, віденська партія."
+          }
+        },
+        {
+          "id": "lib-attack-4-12",
+          "fen": "r5k1/2p2ppp/8/1pP1N3/1n2P3/3P1Q2/rp2nPPP/1K5R w - - 1 24",
+          "moves": "f3e2 a2a1 b1b2 a1a2 b2b3 a2e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Abraham Speijer",
+            "black": "David Janowski",
+            "event": "Amsterdam",
+            "site": "Amsterdam NED",
+            "year": 1901,
+            "date": "1901.10.09",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064596"
+          },
+          "note": {
+            "en": "Amsterdam 1901, a Giuoco Piano. The same year Janowski won at Monte Carlo.",
+            "uk": "Амстердам, 1901, італійська партія. Того ж року Яновський переміг у Монте-Карло."
+          }
+        },
+        {
+          "id": "lib-attack-4-13",
+          "fen": "1rbnn1k1/1q3rpp/2p2p2/1p2NN2/1P2P3/2P1Q1P1/5PBP/R2R2K1 b - - 0 29",
+          "moves": "f6e5 d1d8 c8f5 d8b8 b7b8 e4f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Richard Teichmann",
+            "event": "Hastings",
+            "site": "Hastings ENG",
+            "year": 1895,
+            "date": "1895.08.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036402"
+          },
+          "note": {
+            "en": "Hastings 1895, a French Defence. Chigorin finished second here, behind Pillsbury.",
+            "uk": "Гастінгс, 1895, французький захист. Чигорін посів тут друге місце, після Пільсбері."
+          }
+        },
+        {
+          "id": "lib-attack-4-14",
+          "fen": "8/1Qp2rk1/1p1p2b1/8/4P1n1/8/PP4P1/5NK1 w - - 9 37",
+          "moves": "b7d5 f7f1 g1f1 g4e3 f1e2 e3d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "endgame",
+            "fork",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "William Wallace Young",
+            "black": "David Janowski",
+            "event": "Aero Chess Club of America",
+            "site": "New York, NY USA",
+            "year": 1913,
+            "date": "1913.03.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1791957"
+          },
+          "note": {
+            "en": "New York 1913, a King's Gambit.",
+            "uk": "Нью-Йорк, 1913, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-4-15",
+          "fen": "3q4/p2nb2p/2Q1k1pB/1p1rPp2/8/5N1P/PP3PP1/7K b - - 1 31",
+          "moves": "e7d6 f3g5 d8g5 h6g5 d5d1 h1h2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Alexander Flamberg",
+            "event": "19th DSB Congress, Mannheim",
+            "site": "Mannheim GER",
+            "year": 1914,
+            "date": "1914.07.31",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064758"
+          },
+          "note": {
+            "en": "Mannheim 1914, a Queen's Pawn opening. The tournament was cut short by the outbreak of the First World War.",
+            "uk": "Мангейм, 1914, дебют ферзевого пішака. Турнір перервав початок Першої світової війни."
+          }
+        },
+        {
+          "id": "lib-attack-4-16",
+          "fen": "2k4r/Qppr3p/8/5b2/2B2pp1/2P3n1/PP3KP1/RNB1q3 w - - 0 20",
+          "moves": "f2e1 h8e8 c1e3 e8e3 a7e3 f4e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jean Taubenhaus",
+            "black": "David Janowski",
+            "event": "Janowski - Taubenhaus 1st Exhibition Match",
+            "site": "Paris FRA (Cercle Philidor)",
+            "year": 1905,
+            "date": "1905.05.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1266438"
+          },
+          "note": {
+            "en": "Paris 1905, exhibition match game, a King's Gambit.",
+            "uk": "Париж, 1905, показовий матч, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-4-17",
+          "fen": "8/7R/4p3/p1Pp2Pk/Pp3P2/3B2P1/1q4P1/6K1 b - - 0 35",
+          "moves": "h5g4 g1h2 b2g2 h2g2 b4b3 h7h4",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1900,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Jackson Whipps Showalter",
+            "event": "Janowski - Showalter Match 1",
+            "site": "New York, NY USA",
+            "year": 1899,
+            "date": "1899.01.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1580676"
+          },
+          "note": {
+            "en": "New York 1899, match game, a Queen's Gambit Declined.",
+            "uk": "Нью-Йорк, 1899, матчева партія, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-4-18",
+          "fen": "2b1k2r/p1q2p2/2p1p3/5NQp/2P2p2/8/PP3PPP/3R2K1 b k - 0 24",
+          "moves": "e6f5 g5g7 h8f8 d1e1 c8e6 e1e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Georg Salwe",
+            "event": "Chigorin - Salwe",
+            "site": "Lodz RUE",
+            "year": 1906,
+            "date": "1906.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036618"
+          },
+          "note": {
+            "en": "Łódź 1906, match game, a French Defence.",
+            "uk": "Лодзь, 1906, матчева партія, французький захист."
+          }
+        },
+        {
+          "id": "lib-attack-4-19",
+          "fen": "4b2k/3nq1rR/n3p1p1/pp1pP1N1/2pP1rNQ/2P4R/PPB4P/7K b - - 0 36",
+          "moves": "g7h7 h4h7 e7h7 h3h7 h8g8 g4h6 g8f8 g5e6",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 2025,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Oviedo Mesick Bostwick",
+            "event": "Janowski Exhibition Series, Manhattan CC",
+            "site": "New York, NY USA",
+            "year": 1899,
+            "date": "1899.01.31",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1751699"
+          },
+          "note": {
+            "en": "New York 1899, exhibition game at the Manhattan Chess Club, a French Defence.",
+            "uk": "Нью-Йорк, 1899, показова партія в Манхеттенському шаховому клубі, французький захист."
+          }
+        },
+        {
+          "id": "lib-attack-4-20",
+          "fen": "4r3/p5kp/3P1p2/2q1r1p1/6R1/1Q5P/P5P1/3R3K w - - 2 36",
+          "moves": "d6d7 e5e1 d1e1 e8e1 h1h2 c5g1 h2g3 e1e3 b3e3 g1e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Julius Perlis",
+            "black": "David Janowski",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1906,
+            "date": "1906.06.18",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064665"
+          },
+          "note": {
+            "en": "Ostend 1906, a Vienna Game.",
+            "uk": "Остенде, 1906, віденська партія."
+          }
+        }
+      ]
+    },
+    {
+      "id": "attack-5",
+      "title": {
+        "en": "Final Examination",
+        "uk": "Фінальний іспит"
+      },
+      "subtitle": {
+        "en": "No hints, no solutions",
+        "uk": "Без підказок і розвʼязків"
+      },
+      "exam": true,
+      "puzzles": [
+        {
+          "id": "lib-attack-5-01",
+          "fen": "r3q3/1pp5/p2npQ2/6p1/3P1k2/P4PN1/1P2K3/2R4r b - - 2 32",
+          "moves": "d6f5 f6e5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "John Morphy",
+            "event": "Pillsbury Simul 12b, Brooklyn",
+            "site": "Brooklyn, NY USA (Brooklyn CC)",
+            "year": 1895,
+            "date": "1895.06.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2703458"
+          },
+          "note": {
+            "en": "Brooklyn 1895, simultaneous display on 12 boards, a Queen's Gambit Declined.",
+            "uk": "Бруклін, 1895, сеанс одночасної гри на 12 дошках, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-02",
+          "fen": "rn1q1r1k/ppp3pp/4p3/4P3/3Pp1n1/6Q1/PPPRb1PP/RNB3K1 w - - 0 15",
+          "moves": "c2c3 f8f1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Stephen Francis Smith",
+            "black": "Frank James Marshall",
+            "event": "London Minor Tournament",
+            "site": "London ENG",
+            "year": 1899,
+            "date": "1899.05.30",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094461"
+          },
+          "note": {
+            "en": "London 1899, a Queen's Pawn opening.",
+            "uk": "Лондон, 1899, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-5-03",
+          "fen": "r6r/pp1n3p/1k5n/4Q3/2B1P3/q1P5/P3NPPP/1R4K1 b - - 1 23",
+          "moves": "b6c6 e2d4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Stanley Hathaway Chadwick",
+            "event": "Brooklyn CC Championship 1897/98",
+            "site": "Brooklyn, NY USA (Brooklyn CC)",
+            "year": 1897,
+            "date": "1897.12.25",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2702305"
+          },
+          "note": {
+            "en": "Brooklyn 1897, a Queen's Pawn opening.",
+            "uk": "Бруклін, 1897, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-5-04",
+          "fen": "6k1/p5pp/2P1p3/8/1P3n2/1N3p2/1P4bP/3B2K1 w - - 0 28",
+          "moves": "c6c7 f4h3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Frank James Marshall",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1908,
+            "date": "1908.10.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094710"
+          },
+          "note": {
+            "en": "Łódź 1908, a Queen's Pawn opening.",
+            "uk": "Лодзь, 1908, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-5-05",
+          "fen": "5qk1/p1p3pp/8/1QbPP3/4r1b1/5B2/PPP3PP/R3K2R w - - 4 22",
+          "moves": "e1d1 g4f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Semion Alapin",
+            "black": "Mikhail Chigorin",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1906,
+            "date": "1906.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1076082"
+          },
+          "note": {
+            "en": "St. Petersburg 1906, a King's Gambit Declined.",
+            "uk": "Санкт-Петербург, 1906, відхилений королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-06",
+          "fen": "5r2/1p3pk1/6pp/2BQ4/p7/P5PP/1b1R1PK1/4q3 b - - 5 33",
+          "moves": "b2f6 c5f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Julius Perlis",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1906,
+            "date": "1906.07.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1922966"
+          },
+          "note": {
+            "en": "Ostend 1906, a Four Knights game.",
+            "uk": "Остенде, 1906, дебют чотирьох коней."
+          }
+        },
+        {
+          "id": "lib-attack-5-07",
+          "fen": "2r3k1/1p3ppp/8/5q2/3B2r1/P1P4Q/6bP/R4RK1 w - - 0 28",
+          "moves": "f1f5 g2h3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Krueger",
+            "black": "Frank James Marshall",
+            "event": "Marshall - Krueger",
+            "site": "Hamburg GER",
+            "year": 1908,
+            "date": "1908.12.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2646379"
+          },
+          "note": {
+            "en": "Hamburg 1908, a Queen's Pawn opening.",
+            "uk": "Гамбург, 1908, дебют ферзевого пішака."
+          }
+        },
+        {
+          "id": "lib-attack-5-08",
+          "fen": "7r/2p2kpp/p1b2n2/1p3PP1/2p1p3/5B2/PP3P1P/2KRR3 b - - 0 23",
+          "moves": "e4f3 g5f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Harry Nelson Pillsbury",
+            "black": "Jacques Mieses",
+            "event": "Monte Carlo",
+            "site": "Monte Carlo MNC",
+            "year": 1903,
+            "date": "1903.03.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1096491"
+          },
+          "note": {
+            "en": "Monte Carlo 1903, an Albin Counter-Gambit.",
+            "uk": "Монте-Карло, 1903, контргамбіт Альбіна."
+          }
+        },
+        {
+          "id": "lib-attack-5-09",
+          "fen": "r1q1kr2/p4pb1/1p1N2p1/4n1Np/3pQ2P/8/PPP2PP1/2KR4 b q - 0 22",
+          "moves": "e8d7 d6c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Eugene Delmar",
+            "event": "Cambridge Springs",
+            "site": "Cambridge Springs, PA USA",
+            "year": 1904,
+            "date": "1904.05.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036815"
+          },
+          "note": {
+            "en": "Cambridge Springs 1904, an irregular opening.",
+            "uk": "Кембридж-Спрінгс, 1904, нерегулярний дебют."
+          }
+        },
+        {
+          "id": "lib-attack-5-10",
+          "fen": "r1bqr3/pppn1pbN/3p1k2/4p2p/3P1B1N/4P3/PPP2PP1/R2QK3 b Q - 3 14",
+          "moves": "f6e7 h4f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Amos Burn",
+            "event": "Ostend Champions",
+            "site": "Ostend BEL",
+            "year": 1907,
+            "date": "1907.06.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1036038"
+          },
+          "note": {
+            "en": "Ostend 1907, an Indian Defence.",
+            "uk": "Остенде, 1907, індійський захист."
+          }
+        },
+        {
+          "id": "lib-attack-5-11",
+          "fen": "3qr3/p4pk1/1pb2Bp1/3pQ3/8/6P1/PP3P1P/1BR3K1 b - - 0 25",
+          "moves": "d8f6 e5f6 g7f6 c1c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Frederick William Womersley",
+            "event": "Simul, 29b",
+            "site": "Hastings ENG",
+            "year": 1898,
+            "date": "1898.01.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1884996"
+          },
+          "note": {
+            "en": "Hastings 1898, simultaneous display on 29 boards, a Queen's Gambit Declined.",
+            "uk": "Гастінгс, 1898, сеанс одночасної гри на 29 дошках, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-12",
+          "fen": "6k1/p1R1Rp1p/6p1/5b2/8/5P2/r2rB1PP/4K3 b - - 3 31",
+          "moves": "f5e6 e7e8 g8g7 e8e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Oscar Chajes",
+            "event": "Havana",
+            "site": "Havana CUB",
+            "year": 1913,
+            "date": "1913.02.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001134"
+          },
+          "note": {
+            "en": "Havana 1913, a Queen's Gambit Declined.",
+            "uk": "Гавана, 1913, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-13",
+          "fen": "r3rk2/pp3pp1/2pq1n1p/3b4/3PpN2/1P2P1Q1/P1RN1PPP/4R1K1 b - - 4 25",
+          "moves": "g7g5 f4g6 f8g7 g3d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Abraham Kupchik",
+            "event": "American National",
+            "site": "New York, NY USA",
+            "year": 1913,
+            "date": "1913.01.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094931"
+          },
+          "note": {
+            "en": "New York 1913, a Queen's Gambit Declined.",
+            "uk": "Нью-Йорк, 1913, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-14",
+          "fen": "3r3k/1b2qppp/p3pN2/1p2P3/1Pn2Q2/P6P/5PP1/1BR3K1 b - - 2 34",
+          "moves": "g7f6 f4h4 f6f5 h4e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "David Janowski",
+            "event": "Janowski - Marshall, Match 3",
+            "site": "Suresnes FRA",
+            "year": 1908,
+            "date": "1908.01.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064696"
+          },
+          "note": {
+            "en": "Suresnes 1908, match game, a Queen's Gambit Declined.",
+            "uk": "Сюрен, 1908, матчева партія, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-15",
+          "fen": "6k1/2p2pp1/7p/1N1P4/2q1b2P/2P5/1P3QP1/6K1 w - - 2 29",
+          "moves": "f2d4 c4e2 d4f2 e2b5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Siegbert Tarrasch",
+            "black": "Frank James Marshall",
+            "event": "San Sebastian",
+            "site": "San Sebastian ESP",
+            "year": 1912,
+            "date": "1912.02.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094896"
+          },
+          "note": {
+            "en": "San Sebastian 1912, a Four Knights game.",
+            "uk": "Сан-Себастьян, 1912, дебют чотирьох коней."
+          }
+        },
+        {
+          "id": "lib-attack-5-16",
+          "fen": "2r3k1/p4ppp/1n1B4/3P4/4P2q/5P2/1r4P1/1R3QK1 w - - 0 34",
+          "moves": "b1b2 h4h6 b2b1 h6d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Vladimir Sournin",
+            "black": "Frank James Marshall",
+            "event": "Marshall - Sournin",
+            "site": "Brooklyn, NY USA",
+            "year": 1897,
+            "date": "1897.07.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2654744"
+          },
+          "note": {
+            "en": "Brooklyn 1897, match game, a Queen's Gambit Declined.",
+            "uk": "Бруклін, 1897, матчева партія, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-17",
+          "fen": "1k4r1/pp3p2/P2q1p2/1Pb1pP2/4P2p/3r1Q1P/2R3PK/R4N2 w - - 1 31",
+          "moves": "f3h5 d6d4 f1e3 d4e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Georg Marco",
+            "black": "David Janowski",
+            "event": "Themawettkampf",
+            "site": "Themawettkampf",
+            "year": 1904,
+            "date": "1904.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064638"
+          },
+          "note": {
+            "en": "1904, thematic tournament, a King's Gambit Declined.",
+            "uk": "1904, тематичний турнір, відхилений королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-attack-5-18",
+          "fen": "rnbqk2r/ppp2ppp/8/2bpP3/3Qn3/2N2N2/PPP2PPP/R1B1KB1R w KQkq - 2 7",
+          "moves": "d4d5 c5f2 e1e2 e4c3 b2c3 d8d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "opening",
+            "fork",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "H McMahon",
+            "black": "Frank James Marshall",
+            "event": "Brooklyn CC Championship 1897/98",
+            "site": "New York, NY USA",
+            "year": 1897,
+            "date": "1897.12.04",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094433"
+          },
+          "note": {
+            "en": "New York 1897, a Petrov Defence.",
+            "uk": "Нью-Йорк, 1897, захист Петрова."
+          }
+        },
+        {
+          "id": "lib-attack-5-19",
+          "fen": "r6r/pQnk1ppp/3p1q2/3p2B1/8/P5P1/1P3P1P/R3R1K1 b - - 2 20",
+          "moves": "f6g5 a1c1 g5c1 e1c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Robert John Spencer",
+            "event": "Simul, 19b",
+            "site": "Toronto CC, Toronto CAN",
+            "year": 1914,
+            "date": "1914.11.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094957"
+          },
+          "note": {
+            "en": "Toronto 1914, simultaneous display, a Centre Game.",
+            "uk": "Торонто, 1914, сеанс одночасної гри, центральний дебют."
+          }
+        },
+        {
+          "id": "lib-attack-5-20",
+          "fen": "1r5k/3b2p1/p2P3p/8/r3Pp2/q1PR1B2/2Q3PP/2KR4 w - - 5 33",
+          "moves": "c1d2 b8b2 c2b2 a3b2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Amos Burn",
+            "black": "David Janowski",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1905,
+            "date": "1905.06.20",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1003426"
+          },
+          "note": {
+            "en": "Ostend 1905, a Queen's Gambit Declined.",
+            "uk": "Остенде, 1905, відхилений ферзевий гамбіт."
+          }
+        }
+      ]
+    }
+  ]
 }
