@@ -247,8 +247,8 @@ function Runner({ book, chapterIndex, cycle }: { book: LibraryBook; chapterIndex
           </AppText>
         </Tap>
         <View style={styles.flex} />
-        <View style={[styles.chip, styles.cycleChip]} testID="library-cycle-chip">
-          <AppText variant="captionStrong" color={tone.roseSoft} style={styles.caps}>
+        <View style={[styles.chip, styles.cycleChip]}>
+          <AppText variant="captionStrong" color={tone.roseSoft} style={styles.caps} testID="library-cycle-chip">
             {t('library.cycle_chip', { n: cycle })}
           </AppText>
         </View>

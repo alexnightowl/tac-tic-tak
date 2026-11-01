@@ -18,9 +18,9 @@ appId: online.tactictak.app
 - scrollUntilVisible: { element: { id: play-library }, direction: DOWN, centerElement: true, timeout: 8000 }
 - takeScreenshot: ${SHOTS}/00-play-entry
 - tapOn: { id: play-library }
-- extendedWaitUntil: { visible: { id: library-book-${BOOK} }, timeout: 15000 }
+- extendedWaitUntil: { visible: { id: "library-book-${BOOK}" }, timeout: 15000 }
 - takeScreenshot: ${SHOTS}/01-shelf-${CASE}
-- tapOn: { id: library-book-${BOOK} }
+- tapOn: { id: "library-book-${BOOK}" }
 - extendedWaitUntil: { visible: { id: library-cycles }, timeout: 10000 }
 - takeScreenshot: ${SHOTS}/02-book-${CASE}
 
@@ -34,7 +34,7 @@ appId: online.tactictak.app
       - extendedWaitUntil: { visible: { id: e2e-force-offline }, timeout: 10000 }
       - tapOn: { id: e2e-force-offline }
       - extendedWaitUntil: { visible: { id: offline-note }, timeout: 5000 }
-      - openLink: tactictak://library/${BOOK}
+      - openLink: "tactictak://library/${BOOK}"
       - extendedWaitUntil: { visible: { id: library-cta }, timeout: 10000 }
 
 - tapOn: { id: library-cta }
@@ -97,7 +97,7 @@ appId: online.tactictak.app
       - openLink: tactictak://offline
       - extendedWaitUntil: { visible: { id: e2e-force-offline }, timeout: 10000 }
       - tapOn: { id: e2e-force-offline }
-      - openLink: tactictak://library/${BOOK}
+      - openLink: "tactictak://library/${BOOK}"
       - extendedWaitUntil: { visible: { id: library-cycles }, timeout: 10000 }
       - assertVisible: { id: library-chapter-0-count, text: "${CH1} / ${CH1}" }
       - takeScreenshot: ${SHOTS}/07-book-after

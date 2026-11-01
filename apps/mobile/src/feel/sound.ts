@@ -6,6 +6,7 @@ import {
   variantFor,
   type SoundEvent,
 } from '@tac/core/feel';
+import * as Device from 'expo-device';
 import { AppState, type AppStateStatus } from 'react-native';
 import {
   AudioContext,
@@ -24,6 +25,13 @@ import { getFeelPrefs, subscribeFeelPrefs } from './prefs';
 // AudioBufferSourceNode into a master gain. Sources are cheap and the native
 // graph frees finished ones that JS no longer holds, so plays overlap freely.
 // Port of the web's lib/sound.ts facade: sfx / stopLongClip / preloadSounds.
+
+/**
+ * Simulators and emulators stay silent (owner, 2026-11-01: agents run e2e
+ * flows on them all day). EXPO_PUBLIC_SIM_SOUND=1 turns sound back on
+ * there; a real phone is never affected.
+ */
+const SIM_MUTED = !Device.isDevice && process.env.EXPO_PUBLIC_SIM_SOUND !== '1';
 
 export type SfxOptions = {
   /** Variant id override (Settings previews). */
@@ -207,6 +215,7 @@ function start(e: Engine, key: string, buf: AudioBuffer, long: boolean, delay: n
  * scheduling-latency log; feel.emit passes its own entry time.
  */
 export function sfx(e: SoundEvent, opts: SfxOptions = {}, t0: number = performance.now()): void {
+  if (SIM_MUTED) return;
   const prefs = getFeelPrefs();
   if (!opts.force && !prefs.soundEnabled) return;
   if (prefs.volume <= 0) return;
