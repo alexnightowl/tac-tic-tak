@@ -49,6 +49,7 @@ function summaryOf(b: LibraryBook) {
       subtitle: c.subtitle,
       count: c.puzzles.length,
       puzzleIds: c.puzzles.map((p) => p.id),
+      ...(c.exam ? { exam: true } : {}),
     })),
   };
 }
@@ -136,6 +137,7 @@ export class LibraryService implements OnModuleInit {
         subtitle: c.subtitle,
         count: c.puzzles.length,
         puzzleIds: c.puzzles.map((p) => p.id),
+        ...(c.exam ? { exam: true } : {}),
         puzzles: c.puzzles.map(puzzleOut),
       })),
     };
