@@ -72,23 +72,23 @@ export function clampMinutes(style: TrainingStyle, raw: string): number {
   return Math.max(min, Math.min(max, Math.floor(Number(raw) || 0)));
 }
 
-/** Mixed sessions are capped at norm + 200 (server 400s above it); theme sessions at 3000. */
-export const ratingCap = (p: Progression, mode: 'mixed' | 'theme' = 'mixed') =>
-  mode === 'theme' ? 3000 : p.unlockedStartRating + 200;
+/** Play v2: the casual / theme difficulty range (design PlayV2Casual slider). */
+export const DIFFICULTY_MIN = 600;
+export const DIFFICULTY_MAX = 2600;
+export const DIFFICULTY_STEP = 10;
 
-/**
- * web initialStartRating: during calibration the server picks the rating;
- * otherwise follow the rating up but never below the last picked start.
- */
-export function initialStartRating(p: Progression): number {
-  if (p.calibrationSessionsLeft > 0) return p.currentPuzzleRating;
-  return Math.min(Math.max(p.startPuzzleRating, p.currentPuzzleRating), ratingCap(p));
+export function clampDifficulty(v: number): number {
+  const stepped = Math.round(v / DIFFICULTY_STEP) * DIFFICULTY_STEP;
+  return Math.min(DIFFICULTY_MAX, Math.max(DIFFICULTY_MIN, stepped));
 }
+
+/** mixed = Rated (starts at the server's rating), casual and theme are unrated. */
+export type SetupMode = 'mixed' | 'casual' | 'theme';
 
 export type SessionSetup = {
   style: TrainingStyle;
   durationSec: number;
-  mode: 'mixed' | 'theme';
+  mode: SetupMode;
   theme: string | null;
   startRating: number;
 };
@@ -96,7 +96,7 @@ export type SessionSetup = {
 export function readLastSetup(): SessionSetup | null {
   const s = readJSON<SessionSetup | null>(appKV, LAST_SETUP_KEY, null);
   if (!s || !isTrainingStyle(s.style) || typeof s.durationSec !== 'number') return null;
-  if (s.mode !== 'mixed' && s.mode !== 'theme') return null;
+  if (s.mode !== 'mixed' && s.mode !== 'casual' && s.mode !== 'theme') return null;
   return s;
 }
 
@@ -105,11 +105,11 @@ export function writeLastSetup(s: SessionSetup): void {
 }
 
 /**
- * The rating a repeat of `setup` starts at with today's progression:
- * mixed follows the setup screen's opening value (the rating may have
- * moved since), theme keeps the picked rating (unrated practice).
+ * The rating a repeat of `setup` starts at with today's progression: a
+ * rated session starts at the current rating (the server decides anyway),
+ * casual and theme keep the picked difficulty.
  */
 export function repeatStartRating(setup: SessionSetup, p: Progression): number {
-  if (setup.mode === 'theme') return Math.min(3000, Math.max(400, setup.startRating));
-  return Math.min(initialStartRating(p), ratingCap(p));
+  if (setup.mode === 'mixed') return p.currentPuzzleRating;
+  return clampDifficulty(setup.startRating);
 }

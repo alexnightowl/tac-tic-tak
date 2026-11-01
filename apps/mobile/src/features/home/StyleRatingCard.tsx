@@ -1,4 +1,5 @@
 import type { TrainingStyle } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 import { eos, space } from '@tac/core/tokens';
 import { StyleSheet, View } from 'react-native';
 
@@ -9,7 +10,7 @@ import { AppText, Card } from '@/ui';
 import type { TFn } from '@/ui/lang';
 
 /**
- * web dashboard StyleRatingCard: style, rating, norm. Mobile adds the
+ * web dashboard StyleRatingCard: style, rating, level. Mobile adds the
  * change since Home last showed it: the number counts up from the old
  * value and a +N / −N chip says by how much.
  */
@@ -45,8 +46,8 @@ export function StyleRatingCard({ style, seen, t }: { style: TrainingStyle; seen
           </AppText>
         )}
       </View>
-      <AppText variant="label" color={eos.dust} style={[styles.norm, TABULAR]} numberOfLines={1} testID={`home-norm-${style}`}>
-        {`${t('play.unlocked')} ${prog.unlockedStartRating}`}
+      <AppText variant="label" color={eos.dust} style={[styles.norm, TABULAR]} numberOfLines={1} testID={`home-level-${style}`}>
+        {t('play.level', { level: levelFor(prog) })}
       </AppText>
     </Card>
   );

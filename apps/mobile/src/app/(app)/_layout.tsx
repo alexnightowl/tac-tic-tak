@@ -56,7 +56,7 @@ export default function AppLayout() {
         <Stack.Screen name="play/[id]" options={{ headerShown: false, animation: 'fade' }} />
         <Stack.Screen name="review/[puzzleId]" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="sessions/[id]/review" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
-        <Stack.Screen name="play/norm" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="play/levels" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="offline/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="offline/synced" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen
@@ -75,6 +75,7 @@ export default function AppLayout() {
         <Stack.Screen name="puzzles/[puzzleId]" />
         <Stack.Screen name="profile/[nickname]" />
         <Stack.Screen name="friends/index" />
+        <Stack.Screen name="experience" />
         <Stack.Screen name="settings/profile" />
         <Stack.Screen name="settings/gameplay" />
         <Stack.Screen name="settings/sound" />

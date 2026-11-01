@@ -1,7 +1,6 @@
 import type { Progression } from '@tac/core/api';
 import { normalizePieceSet } from '@tac/core/board';
-import { CALIBRATION_SESSIONS } from '@tac/core/rules';
-import { eligibleForUnlock, turnCardOf, unlockProgressOf } from '@tac/core/runner';
+import { levelFor, turnCardOf } from '@tac/core/runner';
 import { eos, layout, space } from '@tac/core/tokens';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { router, usePreventRemove, type Href } from 'expo-router';
@@ -22,7 +21,7 @@ import { usePlayT } from '../strings';
 import { E2E, E2EStrip, onBoardRenderCount } from './E2EStrip';
 import { ExitSheet, PauseOverlay } from './overlays';
 import { GlassButton, StatPills, TurnCard } from './parts';
-import { CalibrationProgressBar, UnlockProgressBar } from './progress';
+import { CasualBar, LevelProgressBar } from './progress';
 import { Summary } from './Summary';
 
 const HOME = '/' as Href;
@@ -98,7 +97,8 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
         <Summary
           summary={result.summary}
           serverSummary={result.source === 'server'}
-          ceilingBefore={view.ceilingBefore}
+          sessionMode={s.sessionMode}
+          difficulty={s.sessionMode === 'mixed' ? null : s.sessionStartRating}
           styleLabel={runnerStyle ? t(`style.${runnerStyle}.name`) : ''}
           t={t}
           onHome={() => router.dismissTo(HOME)}
@@ -110,8 +110,8 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
   }
 
   const card = turnCardOf(s);
-  const theme = s.sessionMode === 'theme';
-  const rating = theme ? s.sessionStartRating : (storeRating ?? s.rating);
+  const unrated = s.sessionMode !== 'mixed';
+  const rating = unrated ? s.sessionStartRating : (storeRating ?? s.rating);
 
   return (
     <View style={[styles.root, { paddingTop: Math.max(layout.runnerPadding, insets.top), paddingBottom: Math.max(layout.runnerPadding, insets.bottom) }]}>
@@ -168,7 +168,7 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
           solved={s.counters.solved}
           failed={s.counters.failed}
           rating={rating}
-          ratingLabel={theme ? t('play.drill') : t('play.rating')}
+          ratingLabel={s.sessionMode === 'theme' ? t('play.drill') : s.sessionMode === 'casual' ? t('play.puzzles') : t('play.rating')}
           t={t}
         />
         {E2E && <E2EStrip controller={controller} view={view} />}
@@ -206,19 +206,17 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
 }
 
 /**
- * web progress slot under the TurnCard: calibration bar while the style
- * calibrates (rated sessions), else the live level-up bar for a session
- * started inside the peak band, else nothing.
+ * The slot under the TurnCard: the way to the next level in a rated
+ * session, the casual note in a casual one, nothing for a theme drill.
  */
 function ProgressSlot({ s, prog, t }: { s: RunnerScreenState; prog: Progression | null; t: ReturnType<typeof usePlayT> }) {
   if (!prog || !s.style || s.phase === 'booting' || s.sessionMode === 'theme') return null;
-  const calibrating = prog.calibrationSessionsLeft > 0;
-  if (calibrating) {
-    return <CalibrationProgressBar done={CALIBRATION_SESSIONS - prog.calibrationSessionsLeft} total={CALIBRATION_SESSIONS} style={s.style} t={t} />;
+  const rating = prog.currentPuzzleRating;
+  const level = levelFor(prog);
+  if (s.sessionMode === 'casual') {
+    return <CasualBar difficulty={s.sessionStartRating ?? rating} rating={rating} level={level} t={t} />;
   }
-  if (!eligibleForUnlock(s.sessionMode, calibrating, s.sessionStartRating, prog.unlockedStartRating)) return null;
-  const progress = unlockProgressOf(s);
-  return progress ? <UnlockProgressBar progress={progress} unlockedTo={prog.unlockedStartRating} t={t} /> : null;
+  return <LevelProgressBar rating={rating} level={level} t={t} />;
 }
 
 type RunnerScreenState = ReturnType<typeof usePuzzleRunner>['view']['state'];

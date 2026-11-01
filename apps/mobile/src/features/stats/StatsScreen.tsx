@@ -1,4 +1,5 @@
 import { layout, space } from '@tac/core/tokens';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -17,6 +18,14 @@ type Tab = 'stats' | 'achievements';
 export function StatsScreen() {
   const t = useT();
   const [tab, setTab] = useState<Tab>('stats');
+  // /stats?tab=achievements&at=<stamp> (Experience → Achievements): switch
+  // once per request, during render so the first frame shows it.
+  const params = useLocalSearchParams<{ tab?: string; at?: string }>();
+  const [seenAt, setSeenAt] = useState<string | undefined>(undefined);
+  if (params.tab === 'achievements' && params.at !== seenAt) {
+    setSeenAt(params.at);
+    setTab('achievements');
+  }
   return (
     <View style={styles.root} testID="screen-stats">
       <View style={styles.switch}>

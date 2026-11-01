@@ -59,12 +59,6 @@ export type RunnerView = {
   state: RunnerState;
   /** ExitSheet open (confirmExit effect; closed by the sheet). */
   exitOpen: boolean;
-  /**
-   * The style's norm when the finish went out (web ceilingAtFinish): the
-   * summary measures the rank change against it, since the store is
-   * patched from the finish response before the summary renders.
-   */
-  ceilingBefore: number | null;
   /** Booted from a kill-safe snapshot (the pause overlay says so). */
   restored: boolean;
 };
@@ -87,7 +81,7 @@ export class RunnerController {
   private onExit: (() => void) | null = null;
 
   constructor(readonly config: SessionConfig) {
-    this.view = { state: createRunner(config), exitOpen: false, ceilingBefore: null, restored: false };
+    this.view = { state: createRunner(config), exitOpen: false, restored: false };
   }
 
   get state(): RunnerState {
@@ -228,7 +222,6 @@ export class RunnerController {
         feel.emit(fx.event, fx.ctx);
         return;
       case 'api':
-        if (fx.call === 'finish') this.captureCeiling();
         this.callApi(fx);
         return;
       case 'schedule': {
@@ -320,12 +313,6 @@ export class RunnerController {
     }
   }
 
-  private captureCeiling() {
-    const style = this.view.state.style;
-    const ceilingBefore = style ? appStore.getState().progressions[style].unlockedStartRating : null;
-    this.view = { ...this.view, ceilingBefore };
-  }
-
   /**
    * web finish(): daily streak into the store and achievement toasts.
    * fix: the web never patched the progression and relied on the full
@@ -345,13 +332,15 @@ export class RunnerController {
       }
     }
     const style = this.view.state.style;
-    const patch = this.view.state.sessionMode === 'theme' ? null : progressionPatchOf(r);
+    // Casual and theme sessions leave the progression alone.
+    const patch = this.view.state.sessionMode === 'mixed' ? progressionPatchOf(r) : null;
     if (style && patch) store.patchStyleProgression(style, patch);
     toast.achievements(r.achievementsUnlocked, t);
     void queryClient.invalidateQueries({ queryKey: queryKeys.me() });
     void queryClient.invalidateQueries({ queryKey: queryKeys.overview() });
     void queryClient.invalidateQueries({ queryKey: queryKeys.analyticsAll() });
     void queryClient.invalidateQueries({ queryKey: queryKeys.analyticsThemesAll() });
+    void queryClient.invalidateQueries({ queryKey: queryKeys.experience() });
   }
 
   // ─── Dev / E2E hooks ──────────────────────────────────────────────────

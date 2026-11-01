@@ -1,10 +1,11 @@
-import type { Progression } from '@tac/core/api';
-import { CALIBRATION_SESSIONS, STYLE_FORMULAS, UI_STYLE_ORDER, offFormRating, peakFloor, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, STYLE_FORMULAS, UI_STYLE_ORDER, bandFor, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
-import { control, eos, graphite, layout, mixed, radii, rank, semantic, space, surface, tone } from '@tac/core/tokens';
+import { control, eos, layout, mixed, radii, semantic, space, surface, tone } from '@tac/core/tokens';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { ChevronRight, CloudOff } from 'lucide-react-native';
+import { ChevronRight, CloudOff, Coffee, MinusCircle, TrendingUp, type LucideIcon } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -15,32 +16,43 @@ import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
 import { fontFamily } from '@/ui/fonts';
 import { Tap } from '@/ui/Tap';
-import { clampMinutes, initialStartRating, minuteRange, ratingCap, readLastStyle, resolveDurationFor, writeLastDuration, writeLastStyle } from '../setupPrefs';
+import {
+  DIFFICULTY_MAX,
+  DIFFICULTY_MIN,
+  DIFFICULTY_STEP,
+  clampDifficulty,
+  clampMinutes,
+  minuteRange,
+  readLastStyle,
+  resolveDurationFor,
+  writeLastDuration,
+  writeLastStyle,
+  type SetupMode,
+} from '../setupPrefs';
 import { startSession, useThemePick } from '../startSession';
-import { startErrorKey, usePlayT } from '../strings';
+import { startErrorKey, usePlayT, type PlayT } from '../strings';
 import { ThemeIcon } from '../themes/ThemeIcon';
-import { STRONG, STYLE_ICON, StyleIcon } from '../ui';
-import { DifficultySlider, SliderReadout } from './DifficultySlider';
-import { CalibrationPreview, NextUnlockPreview, ThemePracticeNote } from './Previews';
+import { STRONG, STYLE_ICON, TABULAR } from '../ui';
+import { bandIcon } from './bandIcons';
+import { DifficultyReadout, DifficultyTrack } from './DifficultyTrack';
 
-// /play (Play tab): web play/page.tsx PlaySetup at full parity — style
-// with calibration pills, difficulty (slider, zones, off-form, comfort),
-// duration presets + custom minutes, mixed / theme mode (theme picker
-// sheet), the preview card, and a Start dock above the tab bar.
+// /play (Play tab), design "Play — simplified" (PlayV2*): Rated / Casual /
+// Themes. Rated has no slider: it starts at the player's rating and shows
+// the level with the way to the next one. Casual and Themes pick any
+// difficulty and never touch the rating. Then the duration, the theme for
+// Themes, and the Start dock above the tab bar.
 
-type Mode = 'mixed' | 'theme';
-/** A slider pick is tied to the progression it was made against (web ratingTouched). */
-type Pick = { value: number; key: string };
-
-/**
- * By content, not identity: every ['me'] revalidation (app foreground,
- * Home focus) stores fresh objects, and that must not throw the player's
- * pick away. A finished session moves these numbers and resets it.
- */
-const progKey = (p: Progression) =>
-  `${p.currentPuzzleRating}|${p.startPuzzleRating}|${p.unlockedStartRating}|${p.calibrationSessionsLeft}|${p.weakSessionStreak}`;
+/** A difficulty pick is tied to the rating it was made against. */
+type Pick = { value: number; rating: number };
 
 const DOCK_H = layout.plateHeight.lg + space[5] + space[3];
+const PRESET_SPAN = 200;
+
+const TYPES: { mode: SetupMode; key: 'rated' | 'casual' | 'themes'; icon: LucideIcon }[] = [
+  { mode: 'mixed', key: 'rated', icon: TrendingUp },
+  { mode: 'casual', key: 'casual', icon: Coffee },
+  { mode: 'theme', key: 'themes', icon: TrendingUp },
+];
 
 export function PlaySetupScreen() {
   const t = usePlayT();
@@ -52,7 +64,7 @@ export function PlaySetupScreen() {
   // MMKV is synchronous: the stored picks are there on the first frame.
   const [style, setStyle] = useState<TrainingStyle>(readLastStyle);
   const [dur, setDur] = useState(() => resolveDurationFor(readLastStyle()));
-  const [mode, setMode] = useState<Mode>('mixed');
+  const [mode, setMode] = useState<SetupMode>('mixed');
   // /play?mode=theme&at=<stamp> (Stats theme row with nothing to review):
   // open in theme mode, once per request. Adjusted during render, not in
   // an effect, so the first frame already shows theme mode.
@@ -70,29 +82,16 @@ export function PlaySetupScreen() {
   const [focusCustom, setFocusCustom] = useState(false);
 
   const prog = progressions[style];
-  const provisional = prog.calibrationSessionsLeft > 0;
-  const unlocked = prog.unlockedStartRating;
-  const cap = ratingCap(prog, mode);
-  const floor = peakFloor(unlocked);
-  // Until the player moves the slider it follows the progression (which
-  // /users/me and every attempt patch). fix: the value is always clamped
-  // to the current cap, so a theme → mixed switch can't send the server
-  // a rating above norm + 200 (the web's raw 400).
-  const key = progKey(prog);
-  const startRating = Math.min(cap, pick && pick.key === key ? pick.value : initialStartRating(prog));
-  const setStartRating = (v: number) => setPick({ value: v, key });
+  const rating = prog.currentPuzzleRating;
+  const rated = mode === 'mixed';
+  // The difficulty follows the rating until the player picks one.
+  const difficulty = clampDifficulty(pick && pick.rating === rating ? pick.value : rating);
+  const setDifficulty = (v: number) => setPick({ value: clampDifficulty(v), rating });
 
-  const live = useSharedValue(startRating);
+  const live = useSharedValue(difficulty);
   useEffect(() => {
-    live.set(startRating);
-  }, [live, startRating]);
-
-  const rated = mode !== 'theme';
-  const showComfort = rated && !provisional && startRating < floor;
-  const showOffForm = rated && !provisional && prog.weakSessionStreak > 0 && startRating >= floor;
-  const offForm = offFormRating(unlocked);
-  // While calibrating, mixed sessions take the server's rating: no slider.
-  const hideSlider = provisional && mode === 'mixed';
+    live.set(difficulty);
+  }, [live, difficulty]);
 
   const { min: minMinutes, max: maxMinutes } = minuteRange(style);
   const effectiveDuration = dur.custom ? clampMinutes(style, dur.customMinutes) * 60 : dur.duration;
@@ -106,7 +105,7 @@ export function PlaySetupScreen() {
     expert: t('levels.expert'),
   } satisfies Record<BandKey, string>;
 
-  // In the handler, not an effect: style, rating and duration change in one render.
+  // In the handler, not an effect: style, difficulty and duration change in one render.
   const selectStyle = (next: TrainingStyle) => {
     if (next === style) return;
     setStyle(next);
@@ -147,7 +146,7 @@ export function PlaySetupScreen() {
         durationSec: effectiveDuration,
         mode,
         theme: mode === 'theme' ? theme : null,
-        startRating,
+        startRating: rated ? rating : difficulty,
       });
       router.push(`/play/${id}` as Href);
     } catch (e) {
@@ -160,8 +159,7 @@ export function PlaySetupScreen() {
   };
 
   const presets = STYLE_FORMULAS[style].durationPresetsSec;
-  const calDone = CALIBRATION_SESSIONS - prog.calibrationSessionsLeft;
-  const newAccount = UI_STYLE_ORDER.every((s) => progressions[s].calibrationSessionsLeft >= CALIBRATION_SESSIONS);
+  const cta = rated ? t('play.start_rated') : mode === 'casual' ? t('play.start_casual') : t('play.start_drill', { theme: themeLabel(theme, lang) });
 
   return (
     <View style={styles.root} testID="play-setup">
@@ -173,6 +171,13 @@ export function PlaySetupScreen() {
         <AppText variant="title" style={styles.center} accessibilityRole="header">
           {t('play.new_session')}
         </AppText>
+
+        <View style={styles.types} accessibilityRole="radiogroup" accessibilityLabel={t('play.type')} testID="setup-type">
+          {TYPES.map((ty) => (
+            <TypeButton key={ty.key} type={ty} selected={mode === ty.mode} onPress={() => setMode(ty.mode)} t={t} />
+          ))}
+        </View>
+
         <Card style={styles.card}>
           {/* 1. Style */}
           <View style={styles.section}>
@@ -183,128 +188,71 @@ export function PlaySetupScreen() {
               size="tight"
               value={style}
               onChange={selectStyle}
-              options={UI_STYLE_ORDER.map((s) => {
-                const left = progressions[s].calibrationSessionsLeft;
-                const done = CALIBRATION_SESSIONS - left;
-                // MobPlaySetupNew: a brand-new account shows the style glyphs
-                // and one calibration chip in the blurb; later, each style
-                // still calibrating carries its own `?2/5` badge.
-                return {
-                  value: s,
-                  label: t(`style.${s}.name`),
-                  icon: newAccount ? STYLE_ICON[s] : undefined,
-                  badge: !newAccount && left > 0 ? `?${done}/${CALIBRATION_SESSIONS}` : undefined,
-                  accessibilityLabel:
-                    left > 0
-                      ? `${t(`style.${s}.name`)}, ${t('play.calibration_progress_aria', { done, total: CALIBRATION_SESSIONS })}`
-                      : undefined,
-                };
-              })}
+              options={UI_STYLE_ORDER.map((s) => ({ value: s, label: t(`style.${s}.name`), icon: STYLE_ICON[s] }))}
             />
-            <View style={styles.blurb}>
-              <View style={styles.blurbIcon}>
-                <StyleIcon style={style} size={16} color={eos.ash} />
-              </View>
-              <View style={styles.flex}>
-                <AppText variant="caption" color={eos.bone}>
-                  {t(`style.${style}.desc`)}
-                </AppText>
-                {newAccount ? (
-                  <View style={styles.blurbFoot}>
-                    <AppText variant="label" color={eos.dust}>
-                      {`${minMinutes}–${maxMinutes} ${t('play.minutes')}`}
-                    </AppText>
-                    <View style={styles.calChip} testID={`setup-cal-chip-${style}`}>
-                      <AppText variant="captionStrong" color={tone.gold} style={styles.calChipText}>
-                        {`${t('play.calibration_chip')} `}
-                        <AppText variant="captionStrong" color={tone.gold} style={[styles.calChipText, styles.tabular]}>
-                          {`${calDone}/${CALIBRATION_SESSIONS}`}
-                        </AppText>
-                      </AppText>
-                    </View>
-                  </View>
-                ) : (
-                  <AppText variant="label" color={eos.dust} style={styles.blurbRange}>
-                    {`${minMinutes}–${maxMinutes} ${t('play.minutes')}`}
-                  </AppText>
-                )}
-              </View>
-            </View>
           </View>
 
-          {/* 2. Rating */}
-          <View style={styles.section}>
-            <View style={styles.ratingHead}>
-              <View style={styles.ratingLabel}>
-                {/* Two lines when the band name is long (uk "Рейтинг / бліцу"), never an ellipsis. */}
-                <AppText variant="sectionLabel" style={styles.shrink} numberOfLines={2}>
-                  {t(`style.${style}.rating_label`)}
-                </AppText>
-                <Tap
-                  testID="setup-norm-help"
-                  accessibilityRole="button"
-                  accessibilityLabel={t('play.norm_help')}
-                  onPress={() => router.push(`/play/norm?style=${style}` as Href)}
-                  hitSlop={{ top: 11, bottom: 11, left: 11, right: 11 }}
-                  style={styles.help}
-                >
-                  <AppText variant="captionStrong" color={eos.ash} style={styles.helpText}>
-                    {'?'}
-                  </AppText>
-                </Tap>
+          {/* 2. Rated: the rating and the level; Casual / Themes: the difficulty */}
+          {rated ? (
+            <RatedCard style={style} t={t} bandLabels={bandLabels} />
+          ) : (
+            <View style={styles.diff}>
+              <View style={styles.diffHead}>
+                <AppText variant="sectionLabel">{t('play.difficulty')}</AppText>
+                <DifficultyReadout live={live} bandLabels={bandLabels} />
               </View>
-              <SliderReadout live={live} bandLabels={bandLabels} provisional={provisional} />
-            </View>
-            {hideSlider ? (
-              <AppText variant="caption" color={eos.dust} testID="setup-calibrating">
-                {t('play.slider_after_calibration')}
-              </AppText>
-            ) : (
-              <>
-                <DifficultySlider
-                  key={`${style}-${mode}`}
-                  testID="setup-slider"
-                  accessibilityLabel={t('play.start_rating')}
-                  value={startRating}
-                  live={live}
-                  onChange={setStartRating}
-                  cap={cap}
-                  levelUpFrom={rated ? floor : undefined}
-                  norm={rated ? unlocked : undefined}
-                  bandLabels={bandLabels}
-                />
-                {!rated && <AppText variant="caption">{t('play.theme_unrated_hint')}</AppText>}
-                {showOffForm && (
-                  <View style={styles.offForm} testID="setup-off-form">
-                    <AppText variant="body" color={rank.intermediate.color} style={STRONG}>
-                      {t('play.off_form_title')}
-                    </AppText>
-                    <AppText variant="caption" color={eos.bone}>
-                      {t('play.off_form_hint', { floor })}
-                    </AppText>
+              <DifficultyTrack
+                key={`${style}-${mode}`}
+                testID="setup-slider"
+                accessibilityLabel={t('play.difficulty')}
+                value={difficulty}
+                live={live}
+                onChange={setDifficulty}
+                me={rating}
+                min={DIFFICULTY_MIN}
+                max={DIFFICULTY_MAX}
+                step={DIFFICULTY_STEP}
+                youLabel={t('play.you_marker', { rating })}
+                easierLabel={t('play.easier')}
+                harderLabel={t('play.harder')}
+              />
+              <View style={styles.presets}>
+                {(
+                  [
+                    ['warmup', rating - PRESET_SPAN],
+                    ['level', rating],
+                    ['push', rating + PRESET_SPAN],
+                  ] as const
+                ).map(([key, v]) => {
+                  const value = clampDifficulty(v);
+                  const on = value === difficulty;
+                  return (
                     <Tap
-                      testID="setup-off-form-cta"
+                      key={key}
+                      testID={`setup-preset-${key}`}
                       accessibilityRole="button"
-                      accessibilityLabel={t('play.off_form_cta', { rating: offForm })}
-                      onPress={() => setStartRating(offForm)}
+                      accessibilityState={{ selected: on }}
+                      accessibilityLabel={`${t(`play.preset.${key}`)}, ${value}`}
+                      onPress={() => setDifficulty(value)}
                       pressFeel="sliderDetent"
-                      hitSlop={{ top: 6, bottom: 6 }}
-                      style={styles.offFormCta}
+                      hitSlop={{ top: 5, bottom: 5 }}
+                      style={[styles.chip, on ? styles.chipOn : styles.chipOff]}
                     >
-                      <AppText variant="caption" color={rank.intermediate.color} style={STRONG}>
-                        {t('play.off_form_cta', { rating: offForm })}
+                      <AppText variant="chip" color={on ? tone.onEmber : eos.ash}>
+                        {t(`play.preset.${key}`)}
                       </AppText>
                     </Tap>
-                  </View>
-                )}
-                {showComfort && (
-                  <AppText variant="caption" color={rank.intermediate.color} testID="setup-comfort">
-                    {t('play.comfort_notice', { floor })}
-                  </AppText>
-                )}
-              </>
-            )}
-          </View>
+                  );
+                })}
+              </View>
+              <View style={styles.diffNote}>
+                <MinusCircle size={14} color={tone.mist} />
+                <AppText variant="caption" color={tone.mist} style={styles.flex} testID="setup-diff-note">
+                  {`${diffDelta(difficulty - rating, t)} · ${mode === 'theme' ? t('play.diff_themes') : t('play.diff_casual')}`}
+                </AppText>
+              </View>
+            </View>
+          )}
 
           {/* 3. Duration */}
           <View style={styles.section}>
@@ -355,21 +303,10 @@ export function PlaySetupScreen() {
             )}
           </View>
 
-          {/* 4. Mode */}
-          <View style={styles.section}>
-            <AppText variant="sectionLabel">{t('play.mode')}</AppText>
-            <Segmented
-              testID="setup-mode"
-              accessibilityLabel={t('play.mode')}
-              size="tight"
-              value={mode}
-              onChange={setMode}
-              options={[
-                { value: 'mixed', label: t('play.mode.mixed') },
-                { value: 'theme', label: t('play.mode.theme') },
-              ]}
-            />
-            {mode === 'theme' && (
+          {/* 4. Themes: the theme */}
+          {mode === 'theme' && (
+            <View style={styles.section}>
+              <AppText variant="sectionLabel">{t('play.theme')}</AppText>
               <Tap
                 testID="setup-theme"
                 accessibilityRole="button"
@@ -379,28 +316,19 @@ export function PlaySetupScreen() {
                 style={styles.themeRow}
               >
                 <View style={styles.themeTile}>
-                  <ThemeIcon slug={theme} size={18} color={control.segmentedActiveText} />
+                  <ThemeIcon slug={theme} size={20} color={control.segmentedActiveText} />
                 </View>
                 <View style={styles.flex}>
-                  <AppText variant="label">{t('play.theme')}</AppText>
-                  <AppText variant="body" color={eos.bone} style={STRONG} numberOfLines={1} testID="setup-theme-label">
+                  <AppText variant="body" color={eos.bone} style={[STRONG, styles.themeName]} numberOfLines={1} testID="setup-theme-label">
                     {themeLabel(theme, lang)}
+                  </AppText>
+                  <AppText variant="caption" color={eos.ash}>
+                    {t('play.theme_change')}
                   </AppText>
                 </View>
                 <ChevronRight size={18} color={eos.dust} />
               </Tap>
-            )}
-          </View>
-
-          {/* 5. Preview */}
-          {mode === 'mixed' ? (
-            provisional ? (
-              <CalibrationPreview done={calDone} total={CALIBRATION_SESSIONS} t={t} />
-            ) : (
-              <NextUnlockPreview style={style} durationSec={effectiveDuration} unlockedTo={unlocked} t={t} />
-            )
-          ) : (
-            <ThemePracticeNote t={t} />
+            </View>
           )}
 
           {err && (
@@ -428,7 +356,7 @@ export function PlaySetupScreen() {
         <OfflineEntry />
       </ScrollView>
 
-      {/* web MobileStartBar: a full-width CTA docked above the tab bar. */}
+      {/* A full-width CTA docked above the tab bar. */}
       <View style={styles.dock} pointerEvents="box-none">
         <LinearGradient
           pointerEvents="none"
@@ -440,7 +368,7 @@ export function PlaySetupScreen() {
         />
         <PlateButton
           testID="setup-start"
-          label={loading ? t('play.starting') : t('play.start')}
+          label={loading ? t('play.starting') : cta}
           onPress={() => void start()}
           loading={loading}
           disabled={customInvalid}
@@ -452,66 +380,154 @@ export function PlaySetupScreen() {
   );
 }
 
+function diffDelta(delta: number, t: PlayT): string {
+  if (delta === 0) return t('play.diff_same');
+  return delta > 0 ? t('play.diff_above', { n: delta }) : t('play.diff_below', { n: -delta });
+}
+
+function TypeButton({
+  type,
+  selected,
+  onPress,
+  t,
+}: {
+  type: (typeof TYPES)[number];
+  selected: boolean;
+  onPress: () => void;
+  t: PlayT;
+}) {
+  const Icon = type.icon;
+  const name = t(`play.type.${type.key}`);
+  const desc = t(`play.type.${type.key}_desc`);
+  return (
+    <Tap
+      testID={`setup-type-${type.key}`}
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      accessibilityLabel={`${name}. ${desc}`}
+      onPress={onPress}
+      pressFeel="segmented"
+      style={[styles.type, selected && styles.typeOn]}
+    >
+      <View style={styles.typeHead}>
+        {type.key === 'themes' ? (
+          <ThemeIcon slug="fork" size={15} color={selected ? eos.bone : eos.ash} />
+        ) : (
+          <Icon size={15} color={selected ? eos.bone : eos.ash} strokeWidth={2} />
+        )}
+        <AppText variant="bodyStrong" color={selected ? eos.bone : eos.ash} style={styles.typeName} numberOfLines={1}>
+          {name}
+        </AppText>
+      </View>
+      <AppText variant="caption" color={selected ? eos.ash : eos.dust} style={styles.typeDesc} numberOfLines={2}>
+        {desc}
+      </AppText>
+    </Tap>
+  );
+}
+
+/** Rated: the eye, the rating and band, the level and the way to the next one. Opens "How levels work". */
+function RatedCard({ style, t, bandLabels }: { style: TrainingStyle; t: PlayT; bandLabels: Record<BandKey, string> }) {
+  const prog = useAppStore((s) => s.progressions[style]);
+  const rating = prog.currentPuzzleRating;
+  const level = levelFor(prog);
+  const p = levelProgress(rating, level);
+  const settling = prog.calibrationSessionsLeft;
+  const styleName = t(`style.${style}.name`);
+  return (
+    <Tap
+      testID="setup-rated"
+      accessibilityRole="button"
+      accessibilityLabel={`${t('play.your_rating', { style: styleName })} ${rating}, ${t('play.level', { level })}. ${t('play.level_help')}`}
+      onPress={() => router.push(`/play/levels?style=${style}` as Href)}
+      pressFeel="segmented"
+      style={styles.rated}
+    >
+      <View style={styles.eyeBox}>
+        <Image source={bandIcon(rating)} style={styles.eye} contentFit="contain" transition={null} />
+      </View>
+      <View style={styles.flex}>
+        <AppText variant="label">{t('play.your_rating', { style: styleName })}</AppText>
+        <View style={styles.ratingRow}>
+          <AppText variant="value" style={styles.ratingValue} testID="setup-rated-rating">
+            {String(rating)}
+          </AppText>
+          <AppText variant="captionStrong" color={eos.ash} numberOfLines={1} style={styles.shrink}>
+            {bandLabels[bandFor(rating).key]}
+          </AppText>
+        </View>
+        <View style={styles.levelRow}>
+          <AppText variant="label" style={TABULAR} testID="setup-rated-level">
+            {t('play.level', { level })}
+          </AppText>
+          <AppText variant="label" style={TABULAR} testID="setup-rated-next">
+            {t('play.to_next', { n: p.toNext, next: p.next })}
+          </AppText>
+        </View>
+        <View style={styles.levelBar}>
+          <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.levelFill, { width: `${p.ratio * 100}%` }]} />
+        </View>
+        <AppText variant="caption" color={tone.mist} style={styles.ratedHint}>
+          {t('play.rated_hint', { next: p.next })}
+        </AppText>
+        {settling > 0 && (
+          <AppText variant="captionStrong" color={tone.gold} style={styles.ratedHint} testID="setup-settling">
+            {t('play.settling', { n: Math.min(settling, CALIBRATION_SESSIONS) })}
+          </AppText>
+        )}
+      </View>
+    </Tap>
+  );
+}
+
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
-  scroll: { paddingHorizontal: layout.gutter, gap: space[5] },
+  scroll: { paddingHorizontal: layout.gutter, gap: space[4] },
   center: { textAlign: 'center' },
   flex: { flex: 1, minWidth: 0 },
-  card: { padding: layout.cardPadding, gap: space[6] },
-  section: { gap: space[2.5] },
-  ratingHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2] },
   shrink: { flexShrink: 1 },
-  blurb: {
+  card: { padding: layout.cardPadding, gap: 22 },
+  section: { gap: space[2.5] },
+  // Session type: three cards in a carved well (design .typebtn).
+  types: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: space[3],
-    paddingHorizontal: space[3],
-    paddingVertical: space[2.5],
+    gap: space[1],
+    padding: space[1],
+    borderRadius: 14,
+    backgroundColor: eos.well,
+  },
+  type: { flex: 1, minWidth: 0, gap: 3, paddingVertical: space[2.5], paddingHorizontal: space[2.5], borderRadius: 10 },
+  typeOn: { backgroundColor: eos.slate, borderWidth: 1, borderColor: control.dangerBorder, margin: -1 },
+  typeHead: { flexDirection: 'row', alignItems: 'center', gap: space[1.5] },
+  typeName: { fontFamily: fontFamily('en', 'body', 800) },
+  typeDesc: { fontSize: 11, lineHeight: 14 },
+  // Rated card.
+  rated: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    padding: 14,
     borderRadius: radii.xl,
     backgroundColor: surface.noteNeutral,
-  },
-  blurbIcon: {
-    width: space[8],
-    height: space[8],
-    borderRadius: radii.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: control.ghostPressBg,
-  },
-  blurbRange: { marginTop: space[1] },
-  blurbFoot: { marginTop: space[1.5], flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2] },
-  // MobPlaySetupNew: gold pill, 11 / 700, 0.6 px tracking.
-  calChip: { paddingHorizontal: space[2], paddingVertical: space[0.5], borderRadius: radii.full, backgroundColor: control.goldTint16 },
-  calChipText: { fontSize: 11, lineHeight: 15, letterSpacing: 0.6, textTransform: 'uppercase' },
-  tabular: { fontVariant: ['tabular-nums'] },
-  ratingLabel: { flexDirection: 'row', alignItems: 'center', gap: space[2], flexShrink: 1 },
-  // The "?" disc: 22 pt, a 1.5 pt graphite ring (box-shadow inset), ash 12 / 800.
-  help: {
-    width: 22,
-    height: 22,
-    borderRadius: radii.full,
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1.5, color: graphite[600], inset: true }],
-  },
-  helpText: { fontFamily: fontFamily('en', 'body', 800), lineHeight: 14 },
-  offForm: {
-    padding: space[3],
-    gap: space[1],
-    borderRadius: radii.xl,
     borderWidth: 1,
-    borderColor: rank.intermediate.glow,
-    backgroundColor: rank.intermediate.glow,
+    borderColor: semantic.borderSoft,
   },
-  offFormCta: {
-    alignSelf: 'flex-start',
-    marginTop: space[1],
-    height: space[8],
-    paddingHorizontal: space[3],
-    borderRadius: radii.lg,
-    justifyContent: 'center',
-    backgroundColor: rank.intermediate.glow,
-  },
+  eyeBox: { width: 56, height: 56, alignItems: 'center', justifyContent: 'center' },
+  eye: { width: 52, height: 52 },
+  ratingRow: { flexDirection: 'row', alignItems: 'baseline', gap: space[2] },
+  ratingValue: { fontSize: 30, lineHeight: 36 },
+  levelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: space[2.5] },
+  levelBar: { marginTop: space[1.5], height: 6, borderRadius: radii.full, backgroundColor: eos.well, overflow: 'hidden' },
+  levelFill: { height: 6, borderRadius: radii.full },
+  ratedHint: { marginTop: space[2] },
+  // Casual / Themes difficulty.
+  diff: { gap: space[3] },
+  diffHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2] },
+  presets: { flexDirection: 'row', gap: space[2] },
+  chip: { flex: 1, height: 34, borderRadius: radii.full, alignItems: 'center', justifyContent: 'center' },
+  chipOn: { backgroundColor: eos.ember },
+  chipOff: { backgroundColor: control.chipBg, borderWidth: 1, borderColor: semantic.borderSoft },
+  diffNote: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   offlineLink: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   customRow: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
   customInput: { width: space[20] + space[6] },
@@ -533,13 +549,14 @@ const styles = StyleSheet.create({
     borderColor: control.dangerBorder,
   },
   themeTile: {
-    width: layout.themeTile,
-    height: layout.themeTile,
+    width: 40,
+    height: 40,
     borderRadius: radii.md,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: eos.ember,
   },
+  themeName: { fontSize: 15 },
   dock: {
     position: 'absolute',
     left: 0,
@@ -550,4 +567,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: layout.gutter,
   },
 });
-

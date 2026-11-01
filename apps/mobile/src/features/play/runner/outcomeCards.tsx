@@ -1,7 +1,7 @@
-import { UNLOCK_REWARD, type CriterionId } from '@tac/core/rules';
-import { formatCriterion, type DemoteOutcome as Demote, type FinishResponse } from '@tac/core/runner';
+import { LEVEL_GUARD_GAP } from '@tac/core/rules';
+import type { FinishResponse } from '@tac/core/runner';
 import { alpha, countTo, easing, eos, keyframes, keyframeStops, radii, rank, space, tone, transitions } from '@tac/core/tokens';
-import { Check, Snowflake, Sparkles, TrendingDown, X } from 'lucide-react-native';
+import { Coffee, ShieldAlert, Snowflake, Sparkles, TrendingDown } from 'lucide-react-native';
 import { useEffect, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -19,13 +19,11 @@ import { feel } from '@/feel';
 import { AppText } from '@/ui';
 import type { PlayT } from '../strings';
 import { FlameGlyph, NoteCard, STRONG, TABULAR, TONE } from '../ui';
-import { FillCount } from './CountTo';
 
-// Summary outcome cards (web EarlyExitNote, LevelUpExplainer,
-// ComfortSessionNote, UnlockOutcome + CriterionRow, DemoteOutcome) and the
-// streak outcome chip (mobile-only micro-celebration). The rise / drop
-// keyframes (globals.css norm-*) run on the UI thread and are skipped
-// under reduced motion, as on the web.
+// Summary outcome cards for Play v2 (design PlayV2Sum*): level up, level
+// protected, level down, casual, early exit; and the streak outcome chip.
+// The rise / drop keyframes run on the UI thread and are skipped under
+// reduced motion.
 
 /** Streak chip pop: under-damped on purpose (a small celebration). */
 const CHIP_SPRING = { damping: 9, stiffness: 220 };
@@ -43,44 +41,19 @@ function Title({ children, color = eos.bone, testID }: { children: string; color
 export function EarlyExitNote({ t }: { t: PlayT }) {
   return (
     <NoteCard testID="summary-early">
-      <Title>{t('play.early_exit_title')}</Title>
-      <AppText variant="caption">{t('play.early_exit_hint')}</AppText>
+      <Title>{t('level.early_title')}</Title>
+      <AppText variant="caption">{t('level.early_body')}</AppText>
     </NoteCard>
   );
 }
 
-export function ComfortSessionNote({ floor, t }: { floor: number; t: PlayT }) {
+export function CasualNote({ difficulty, t }: { difficulty: number; t: PlayT }) {
   return (
-    <NoteCard testID="summary-comfort">
-      <Title>{t('play.comfort_summary_title')}</Title>
-      <AppText variant="caption">{t('play.comfort_summary_hint', { floor })}</AppText>
-    </NoteCard>
-  );
-}
-
-export function LevelUpExplainer({ ceiling, floor, t }: { ceiling: number; floor: number; t: PlayT }) {
-  return (
-    <NoteCard tone="accent" testID="summary-levelup-explainer">
-      <View style={styles.row}>
-        <Sparkles size={18} color={TONE.accent.ink} />
-        <Title color={TONE.accent.ink}>{t('calibration.complete_title')}</Title>
-      </View>
-      <AppText variant="body" color={eos.bone}>
-        {t('calibration.complete_summary', { ceiling })}
-      </AppText>
-      <View style={styles.bullets}>
-        <AppText variant="caption" color={eos.ash}>
-          <AppText variant="caption" color={eos.sage} style={STRONG}>
-            {`+${UNLOCK_REWARD} `}
-          </AppText>
-          {t('calibration.intro_unlock', { floor })}
-        </AppText>
-        <AppText variant="caption" color={eos.ash}>
-          <AppText variant="caption" color={eos.rose} style={STRONG}>
-            {'−25 '}
-          </AppText>
-          {t('calibration.intro_demote')}
-        </AppText>
+    <NoteCard style={styles.rowCard} testID="summary-casual">
+      <Coffee size={22} color={eos.ash} />
+      <View style={styles.flex}>
+        <Title>{t('casual.done_title')}</Title>
+        <AppText variant="caption">{t('casual.done_body', { rating: difficulty })}</AppText>
       </View>
     </NoteCard>
   );
@@ -109,7 +82,7 @@ function Rise({ children, icon }: { children: ReactNode; icon: ReactNode }) {
   }));
   return (
     <Animated.View style={card}>
-      <NoteCard tone="accent" style={[styles.rowCard, styles.unlockGlow]} testID="summary-unlocked">
+      <NoteCard tone="accent" style={[styles.rowCard, styles.unlockGlow]} testID="summary-level-up-card">
         <Animated.View style={ic}>{icon}</Animated.View>
         <View style={styles.flex}>{children}</View>
       </NoteCard>
@@ -140,7 +113,7 @@ function Drop({ children, icon }: { children: ReactNode; icon: ReactNode }) {
   const ic = useAnimatedStyle(() => ({ transform: [{ translateY: iy.get() }] }));
   return (
     <Animated.View style={card}>
-      <NoteCard tone="rose" style={styles.rowCard} testID="summary-demoted">
+      <NoteCard tone="rose" style={styles.rowCard} testID="summary-level-down-card">
         <Animated.View style={ic}>{icon}</Animated.View>
         <View style={styles.flex}>{children}</View>
       </NoteCard>
@@ -148,85 +121,46 @@ function Drop({ children, icon }: { children: ReactNode; icon: ReactNode }) {
   );
 }
 
-export function UnlockOutcome({
-  unlocked,
-  criteria,
-  t,
-}: {
-  unlocked: boolean;
-  criteria: NonNullable<FinishResponse['unlockCheck']>['criteria'];
-  t: PlayT;
-}) {
-  if (unlocked) {
-    return (
-      <Rise icon={<Sparkles size={24} color={TONE.accent.ink} />}>
-        <Title color={TONE.accent.ink}>{t('unlock.summary_success')}</Title>
-        <FillCount text={t('unlock.summary_success_hint')} token="{reward}" from={0} to={UNLOCK_REWARD} color={eos.ash} testID="summary-reward" />
-      </Rise>
-    );
-  }
+/** A level gained: the rise, the gold halo and the normRise feel. */
+export function LevelUpCard({ level, styleName, t }: { level: number; styleName: string; t: PlayT }) {
   return (
-    <NoteCard testID="summary-near">
-      <Title>{t('unlock.summary_near')}</Title>
-      <AppText variant="caption">{t('unlock.summary_near_hint')}</AppText>
-      <View style={styles.criteria}>
-        {criteria.map((c) => (
-          <CriterionRow key={c.id} c={c} t={t} />
-        ))}
-      </View>
-    </NoteCard>
+    <Rise icon={<Sparkles size={24} color={eos.ember} />}>
+      <Title color={eos.ember} testID="summary-level-up">
+        {t('level.up_title', { level })}
+      </Title>
+      <AppText variant="caption" color={eos.ash}>
+        {t('level.up_body', { level, style: styleName })}
+      </AppText>
+    </Rise>
   );
 }
 
-function CriterionRow({ c, t }: { c: { id: CriterionId | string; met: boolean; current: number; target: number }; t: PlayT }) {
-  const f = formatCriterion(c);
-  const label = t(`unlock.req_${c.id}`);
+/** First session under the guard line: the level held, one more drops it. */
+export function LevelGuardCard({ level, under, t }: { level: number; under: number; t: PlayT }) {
   return (
-    <View
-      style={styles.criterion}
-      testID={`summary-criterion-${c.id}`}
-      accessible
-      accessibilityLabel={`${label}: ${f.current} / ${f.target}`}
-    >
-      {c.met ? <Check size={14} color={eos.sage} /> : <X size={14} color={eos.rose} />}
-      <AppText variant="caption" color={eos.ash} style={styles.flex}>
-        {label}
-      </AppText>
-      <AppText variant="caption" color={c.met ? eos.sage : eos.ash} style={TABULAR}>
-        {f.current}
-        <AppText variant="caption" color={eos.dust}>{` / ${f.target}`}</AppText>
-      </AppText>
-    </View>
-  );
-}
-
-export function DemoteOutcomeCard({ demote, t }: { demote: Demote; t: PlayT }) {
-  if (demote.kind === 'demoted') {
-    return (
-      <Drop icon={<TrendingDown size={22} color={eos.rose} />}>
-        <Title color={eos.rose}>{t('demote.summary_demoted', { penalty: demote.penalty })}</Title>
-        <FillCount
-          text={t('demote.summary_demoted_hint')}
-          token="{ceiling}"
-          from={demote.ceilingFrom}
-          to={demote.ceilingTo}
-          color={eos.ash}
-          testID="summary-new-norm"
-        />
-      </Drop>
-    );
-  }
-  // At peak, weak, the streak not yet over the threshold: guidance, not punishment.
-  return (
-    <NoteCard tone="amber" style={styles.rowCard} testID="summary-weak">
-      <TrendingDown size={20} color={rank.intermediate.color} />
+    <NoteCard tone="amber" style={styles.rowCard} testID="summary-level-guard">
+      <ShieldAlert size={22} color={rank.intermediate.color} />
       <View style={styles.flex}>
-        <Title color={rank.intermediate.color}>{t('demote.summary_weak')}</Title>
+        <Title color={rank.intermediate.color}>{t('level.guard_title', { level })}</Title>
         <AppText variant="caption" color={eos.ash}>
-          {t('demote.summary_weak_hint', { remaining: demote.remaining })}
+          {t('level.guard_body', { n: under, line: level - LEVEL_GUARD_GAP })}
         </AppText>
       </View>
     </NoteCard>
+  );
+}
+
+/** The second session under the line: the level drops to the rating. */
+export function LevelDownCard({ level, line, t }: { level: number; line: number; t: PlayT }) {
+  return (
+    <Drop icon={<TrendingDown size={22} color={eos.rose} />}>
+      <Title color={eos.rose} testID="summary-level-down">
+        {t('level.down_title', { level })}
+      </Title>
+      <AppText variant="caption" color={eos.ash}>
+        {t('level.down_body', { line })}
+      </AppText>
+    </Drop>
   );
 }
 
@@ -283,14 +217,10 @@ export function StreakOutcomeChip({ streak, t }: { streak: StreakOutcome; t: Pla
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   rowCard: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
   // Design: the level-up card keeps a gold halo (0 0 22px 2px gold/25).
   unlockGlow: { boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 22, spreadDistance: 2, color: alpha(tone.gold, 0.25) }] },
   flex: { flex: 1, minWidth: 0, gap: space[0.5] },
-  bullets: { gap: space[1], paddingTop: space[1] },
-  criteria: { gap: space[1.5], marginTop: space[2] },
-  criterion: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   chipWrap: { alignSelf: 'center' },
   chip: {
     flexDirection: 'row',

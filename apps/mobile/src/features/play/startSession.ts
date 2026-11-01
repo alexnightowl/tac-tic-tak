@@ -21,6 +21,8 @@ export async function startSession(setup: SessionSetup): Promise<string> {
     mode: setup.mode,
     style: setup.style,
     ...(setup.mode === 'theme' && setup.theme ? { theme: setup.theme } : null),
+    // Play v2: levels instead of the norm; rated sessions start at the server's rating.
+    ruleset: 'v2',
   });
   writeLastDuration(setup.style, setup.durationSec);
   writeLastSetup(setup);

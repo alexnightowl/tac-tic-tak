@@ -4,6 +4,7 @@ import type { ServerPuzzle } from '@tac/core/puzzle';
 import type { ReviewListItem, ReviewThemeRow, SessionReviewItem } from '@tac/core/runner';
 
 import { apiClient } from '@/platform/api';
+import { queryClient } from '@/platform/query';
 
 // Review / puzzle / session-history routes of today's API (apps/backend
 // review, puzzles, sessions, analytics controllers). They are not in
@@ -24,8 +25,15 @@ export const reviewApi = {
   list: (theme?: string) => apiClient.get<ReviewListItem[]>('/review', { query: { theme } }),
   /** 404 when the puzzle has no ReviewItem for this user. */
   puzzle: (id: string) => apiClient.get<ServerPuzzle>(`/review/${enc(id)}`),
-  /** 500s on a missing item (Prisma update); callers swallow errors as the web did. */
-  resolve: (id: string) => apiClient.post<{ ok: true }>(`/review/${enc(id)}/resolve`),
+  /**
+   * 500s on a missing item (Prisma update); callers swallow errors as the
+   * web did. A first resolve earns XP: the experience card refetches.
+   */
+  resolve: async (id: string) => {
+    const r = await apiClient.post<{ ok: true }>(`/review/${enc(id)}/resolve`);
+    void queryClient.invalidateQueries({ queryKey: queryKeys.experience() });
+    return r;
+  },
 };
 
 export const puzzleApi = {

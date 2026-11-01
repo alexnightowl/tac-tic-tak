@@ -19,7 +19,7 @@ import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { feel, stopLongClip } from '@/feel';
 import { AppText, PlateButton } from '@/ui';
-import { BAND_ICONS } from '../setup/DifficultySlider';
+import { BAND_ICONS } from '../setup/bandIcons';
 import type { PlayT } from '../strings';
 import { TABULAR } from '../ui';
 import { CountTo } from './CountTo';

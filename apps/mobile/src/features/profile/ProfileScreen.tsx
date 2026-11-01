@@ -1,4 +1,5 @@
 import { bucketByLocalDay, selectRadarThemes, RADAR_MIN_THEMES, type RadarDatum } from '@tac/core/charts';
+import { levelFor } from '@tac/core/runner';
 import { localeFor, streakState } from '@tac/core/format';
 import { eos, fontSize, graphite, layout, radii, space, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -36,6 +37,7 @@ import { stackHeader } from '@/ui/NavHeader';
 import { PlateButton } from '@/ui/PlateButton';
 import { Card, HeroCard } from '@/ui/Surfaces';
 import { Tap } from '@/ui/Tap';
+import { XpProfileCard } from '@/features/experience/XpCard';
 import { Avatar, VerifiedBadge } from './Avatar';
 import { chooseAvatar, useAvatarUpload } from './avatarUpload';
 import { ProfileEditorSheet } from './ProfileEditorSheet';
@@ -172,6 +174,7 @@ export function ProfileScreen({ nickname }: { nickname: string }) {
       >
         <Hero data={data} isSelf={isSelf} y={y} onEdit={() => setEditing(true)} />
         <Ratings data={data} />
+        {isSelf && <XpProfileCard t={t} />}
 
         {heat.length > 0 ? (
           <Card style={styles.card}>
@@ -365,7 +368,7 @@ function Ratings({ data }: { data: PublicProfile }) {
               </View>
               <AppText variant="value">{p ? String(p.currentPuzzleRating) : DASH}</AppText>
               <AppText variant="caption" color={eos.dust}>
-                {`${t('play.unlocked')} ${p ? p.unlockedStartRating : DASH}`}
+                {p ? t('play.level', { level: levelFor(p) }) : DASH}
               </AppText>
             </Card>
           );

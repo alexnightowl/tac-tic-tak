@@ -1,0 +1,131 @@
+# Play v2 (design "Play — simplified"): Rated / Casual / Themes, levels from
+# the rating. One CASE per run, against a bullet progression that
+# 12-play-v2.sh seeds with psql first (local DB only):
+#   levelup  rated, strong session       → level bar, "Level up!" card
+#   guard    rated, weak session         → "Level protected" card
+#   down     rated, weak again (guard 1) → "Level down" card
+#   casual   casual, Push preset, early  → casual bar, casual note
+#   early    rated, Exit → Save          → rating card + early note
+# Bullet 1 min, so a time-up case takes ~70 s.
+appId: online.tactictak.app
+---
+- runFlow:
+    file: 09-login.yaml
+- runFlow:
+    when: { visible: { id: screen-onboarding } }
+    commands:
+      - tapOn: { id: onboarding-skip, optional: true }
+- tapOn: { id: tab-play }
+- extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
+- swipe: { start: "50%, 30%", end: "50%, 85%", duration: 300 }
+- tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+
+- runFlow:
+    when: { true: "${CASE != 'casual'}" }
+    commands:
+      - tapOn: { id: setup-type-rated, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - assertVisible: { id: setup-rated }
+      - assertVisible: { id: setup-rated-level, text: ".*${LEVEL}.*" }
+      - takeScreenshot: ${SHOTS}/setup-rated
+- runFlow:
+    when: { true: "${CASE == 'levelup'}" }
+    commands:
+      # "How levels work" from the rated card, then back.
+      - tapOn: { id: setup-rated }
+      - extendedWaitUntil: { visible: { id: level-sheet }, timeout: 5000 }
+      - assertVisible: { id: level-sheet-level, text: "${LEVEL}" }
+      - takeScreenshot: ${SHOTS}/level-sheet
+      - scrollUntilVisible: { element: { id: level-sheet-got-it }, direction: DOWN, timeout: 5000 }
+      - tapOn: { id: level-sheet-got-it }
+      - extendedWaitUntil: { visible: { id: play-setup }, timeout: 5000 }
+- runFlow:
+    when: { true: "${CASE == 'casual'}" }
+    commands:
+      - tapOn: { id: setup-type-casual, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - assertVisible: { id: setup-slider }
+      - tapOn: { id: setup-preset-push, retryTapIfNoChange: false }
+      - assertVisible: { id: setup-rating, text: "${PUSH}" }
+      - assertVisible: { id: setup-diff-note, text: "\\+200.*" }
+      - takeScreenshot: ${SHOTS}/setup-casual
+
+- scrollUntilVisible: { element: { id: setup-duration-60 }, direction: DOWN, centerElement: true, timeout: 5000 }
+- tapOn: { id: setup-duration-60, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- tapOn: { id: setup-start, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+
+- runFlow:
+    when: { true: "${CASE == 'casual'}" }
+    commands:
+      - assertVisible: { id: runner-casual-bar }
+      - takeScreenshot: ${SHOTS}/runner-casual
+- runFlow:
+    when: { true: "${CASE != 'casual'}" }
+    commands:
+      - assertVisible: { id: runner-level-bar }
+      - takeScreenshot: ${SHOTS}/runner-${CASE}
+
+# What happens in the session.
+- runFlow:
+    when: { true: "${CASE == 'levelup' || CASE == 'guard' || CASE == 'down'}" }
+    commands:
+      - copyTextFrom: { id: session-id }
+      - runScript:
+          file: 12-inject-attempts.js
+          env:
+            API: ${API}
+            E2E_USER: ${E2E_USER}
+            E2E_PASSWORD: ${E2E_PASSWORD}
+            SESSION: ${maestro.copiedText}
+            PUZZLES: ${PUZZLES}
+            CORRECT: ${CORRECT}
+      - assertTrue: { condition: "${output.injected > 0}", label: "attempts recorded" }
+- runFlow:
+    when: { true: "${CASE == 'casual' || CASE == 'early'}" }
+    commands:
+      - tapOn: { id: e2e-solve, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - extendedWaitUntil: { visible: { id: runner-solved, text: "1" }, timeout: 15000 }
+      - tapOn: { id: runner-exit, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+      - extendedWaitUntil: { visible: { id: exit-sheet }, timeout: 5000 }
+      - tapOn: { id: exit-save, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
+
+# Time up. A level crossing a band opens the ceremony first.
+- extendedWaitUntil: { visible: { id: "(summary-screen|rank-ceremony)" }, timeout: 100000 }
+- runFlow:
+    when: { visible: { id: rank-ceremony } }
+    commands:
+      - waitForAnimationToEnd: { timeout: 5000 }
+      - extendedWaitUntil: { visible: { id: ceremony-continue }, timeout: 15000 }
+      - takeScreenshot: ${SHOTS}/ceremony-${CASE}
+      - tapOn: { id: ceremony-continue }
+- extendedWaitUntil: { visible: { id: summary-screen }, timeout: 15000 }
+- runFlow:
+    when: { true: "${CASE != 'casual'}" }
+    commands:
+      - assertVisible: { id: summary-rating }
+- runFlow:
+    when: { true: "${CASE == 'levelup'}" }
+    commands:
+      - assertVisible: { id: summary-level-up }
+- runFlow:
+    when: { true: "${CASE == 'guard'}" }
+    commands:
+      - assertVisible: { id: summary-level-guard }
+- runFlow:
+    when: { true: "${CASE == 'down'}" }
+    commands:
+      - assertVisible: { id: summary-level-down }
+- runFlow:
+    when: { true: "${CASE == 'casual'}" }
+    commands:
+      - assertVisible: { id: summary-casual }
+      - assertNotVisible: { id: summary-rating }
+# Every saved session earns experience (the early cases may round to 0 XP).
+- runFlow:
+    when: { true: "${CASE == 'levelup' || CASE == 'guard' || CASE == 'down'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: summary-xp }, direction: DOWN, timeout: 5000 }
+- runFlow:
+    when: { true: "${CASE == 'early'}" }
+    commands:
+      - assertVisible: { id: summary-early }
+- takeScreenshot: ${SHOTS}/summary-${CASE}

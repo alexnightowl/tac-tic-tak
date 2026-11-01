@@ -1,7 +1,10 @@
 import { queryKeys } from '@tac/core/api';
 import { fmtResponseTime } from '@tac/core/format';
-import { rankChangeOf, summaryOutcome, type FinishResponse } from '@tac/core/runner';
-import { eos, layout, radii, semantic, space } from '@tac/core/tokens';
+import { LEVEL_GUARD_GAP } from '@tac/core/rules';
+import { levelOutcomeOf, levelRankChangeOf, type FinishResponse, type LevelOutcome } from '@tac/core/runner';
+import { control, eos, layout, radii, semantic, space, tone } from '@tac/core/tokens';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
@@ -10,25 +13,21 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { feel, stopLongClip } from '@/feel';
+import { XpSummaryCard } from '@/features/experience/XpCard';
 import { apiClient } from '@/platform/api';
 import { AppText, Card, PlateButton } from '@/ui';
 import { Tap } from '@/ui/Tap';
 import type { PlayT } from '../strings';
-import { STRONG } from '../ui';
-import {
-  ComfortSessionNote,
-  DemoteOutcomeCard,
-  EarlyExitNote,
-  LevelUpExplainer,
-  StreakOutcomeChip,
-  UnlockOutcome,
-} from './outcomeCards';
+import { bandIcon } from '../setup/bandIcons';
+import { STRONG, TABULAR } from '../ui';
+import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, StreakOutcomeChip } from './outcomeCards';
 import { RankCeremony } from './RankCeremony';
 
-// web SessionSummary at parity: rank change (ceremony on a band crossing,
-// else the gate / rank-down sound with the card), the outcome area, the
-// stats grid, ReviewThisSession, then Play again / Home. Rendered by the
-// runner route in place of the board (PLAN §2.3).
+// Session summary (design PlayV2Sum*): the rank ceremony when the level
+// crosses a band, else the gate / level-down sound with the card; the
+// rating card with the level, the outcome card, the stats grid,
+// ReviewThisSession, then Play again / Home. Rendered by the runner route
+// in place of the board (PLAN §2.3).
 
 type ReviewItems = { items: { reason: 'failed' | 'slow' }[] };
 
@@ -46,7 +45,8 @@ function Stat({ id, label, value }: { id: string; label: string; value: string }
 export function Summary({
   summary,
   serverSummary,
-  ceilingBefore,
+  sessionMode,
+  difficulty,
   styleLabel,
   onHome,
   onPlayAgain,
@@ -56,14 +56,16 @@ export function Summary({
   summary: FinishResponse;
   /** False for the client-counter fallback (network down at finish). */
   serverSummary: boolean;
-  ceilingBefore: number | null;
+  sessionMode: 'mixed' | 'casual' | 'theme';
+  /** The picked difficulty of a casual / theme session. */
+  difficulty: number | null;
   styleLabel: string;
   onHome: () => void;
   onPlayAgain: () => void;
   playAgainLoading: boolean;
   t: PlayT;
 }) {
-  const rankChange = rankChangeOf(summary, ceilingBefore);
+  const rankChange = levelRankChangeOf(summary);
   const [ceremony, setCeremony] = useState(() => !!rankChange?.crossed);
   if (ceremony && rankChange) {
     return (
@@ -83,7 +85,9 @@ export function Summary({
     <SummaryBody
       summary={summary}
       serverSummary={serverSummary}
-      ceilingBefore={ceilingBefore}
+      sessionMode={sessionMode}
+      difficulty={difficulty}
+      styleLabel={styleLabel}
       gate={rankChange && !rankChange.crossed ? (rankChange.up ? 'up' : 'down') : null}
       onHome={onHome}
       onPlayAgain={onPlayAgain}
@@ -96,7 +100,9 @@ export function Summary({
 function SummaryBody({
   summary,
   serverSummary,
-  ceilingBefore,
+  sessionMode,
+  difficulty,
+  styleLabel,
   gate,
   onHome,
   onPlayAgain,
@@ -105,7 +111,9 @@ function SummaryBody({
 }: {
   summary: FinishResponse;
   serverSummary: boolean;
-  ceilingBefore: number | null;
+  sessionMode: 'mixed' | 'casual' | 'theme';
+  difficulty: number | null;
+  styleLabel: string;
   gate: 'up' | 'down' | null;
   onHome: () => void;
   onPlayAgain: () => void;
@@ -113,7 +121,7 @@ function SummaryBody({
   t: PlayT;
 }) {
   const insets = useSafeAreaInsets();
-  const outcome = summaryOutcome(summary, ceilingBefore);
+  const outcome = levelOutcomeOf(summary);
 
   // A norm move inside one band: the gate (up) or rank-down (down) clip
   // with the outcome card; a long clip fades when the summary goes.
@@ -133,16 +141,13 @@ function SummaryBody({
 
       {summary.streak && <StreakOutcomeChip streak={summary.streak} t={t} />}
 
-      {outcome.early && <EarlyExitNote t={t} />}
-      {outcome.calibrationComplete && (
-        <LevelUpExplainer ceiling={outcome.calibrationComplete.ceiling} floor={outcome.calibrationComplete.floor} t={t} />
-      )}
-      {outcome.comfort && <ComfortSessionNote floor={outcome.comfort.floor} t={t} />}
-      {/* Design: one outcome card per session — a demote / weak-at-peak card replaces "So close". */}
-      {outcome.unlock && (outcome.unlock.unlocked || !outcome.demote) && (
-        <UnlockOutcome unlocked={outcome.unlock.unlocked} criteria={outcome.unlock.criteria} t={t} />
-      )}
-      {outcome.demote && <DemoteOutcomeCard demote={outcome.demote} t={t} />}
+      {outcome && <RatingCard o={outcome} styleLabel={styleLabel} t={t} />}
+      {outcome?.early && <EarlyExitNote t={t} />}
+      {outcome?.up && <LevelUpCard level={outcome.level} styleName={styleLabel.toLowerCase()} t={t} />}
+      {outcome?.guarded && <LevelGuardCard level={outcome.level} under={outcome.level - outcome.ratingAfter} t={t} />}
+      {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
+      {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
+      {summary.xp && <XpSummaryCard gained={summary.xp.gained} before={summary.xp.before} after={summary.xp.after} t={t} />}
 
       <View style={styles.grid}>
         <Stat id="solved" label={t('play.solved')} value={String(summary.solved)} />
@@ -166,6 +171,51 @@ function SummaryBody({
         <PlateButton testID="summary-home" label={t('home')} onPress={onHome} variant="slate" block />
       </View>
     </ScrollView>
+  );
+}
+
+/** The rating move and the level, with the way to the next mark (design PlayV2Sum* hero). */
+function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: PlayT }) {
+  const up = o.delta >= 0;
+  const guarded = o.guarded;
+  return (
+    <Card style={styles.hero} testID="summary-rating">
+      <View style={styles.heroHead}>
+        <Image source={bandIcon(o.ratingAfter)} style={styles.heroEye} contentFit="contain" transition={null} />
+        <View style={styles.flex}>
+          <AppText variant="label">{t('play.your_rating', { style: styleLabel.toLowerCase() })}</AppText>
+          <View style={styles.heroRow}>
+            <AppText variant="value" style={styles.heroValue} testID="summary-rating-after">
+              {String(o.ratingAfter)}
+            </AppText>
+            <View style={[styles.delta, { backgroundColor: up ? control.sageTint16 : control.emberTint16 }]}>
+              <AppText variant="captionStrong" color={up ? eos.sage : eos.rose} style={TABULAR} testID="summary-rating-delta">
+                {`${up ? '+' : '−'}${Math.abs(o.delta)}`}
+              </AppText>
+            </View>
+            <AppText variant="caption" color={eos.dust} style={TABULAR}>
+              {t('summary.rating_from', { rating: o.ratingBefore })}
+            </AppText>
+          </View>
+        </View>
+      </View>
+      <View style={styles.heroLevel}>
+        <AppText variant="label" style={TABULAR} testID="summary-level">
+          {t('summary.level', { level: o.level })}
+        </AppText>
+        <AppText variant="label" color={guarded ? tone.gold : eos.ash} style={TABULAR} testID="summary-level-next">
+          {guarded ? t('summary.protected', { n: 1, total: 2 }) : t('play.to_next', { n: o.toNext, next: o.next })}
+        </AppText>
+      </View>
+      <View style={styles.heroBar}>
+        <LinearGradient
+          colors={guarded ? [tone.gold, tone.gold] : control.rankProgress}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={[styles.heroFill, { width: `${(guarded ? 0 : o.ratio) * 100}%` }]}
+        />
+      </View>
+    </Card>
   );
 }
 
@@ -212,6 +262,15 @@ const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0, gap: space[0.5] },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space[2] },
   stat: { flexBasis: '48%', flexGrow: 1, padding: space[3], gap: space[1] },
+  hero: { padding: space[4], gap: space[2.5] },
+  heroHead: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
+  heroEye: { width: 44, height: 44 },
+  heroRow: { flexDirection: 'row', alignItems: 'baseline', gap: space[2], flexWrap: 'wrap' },
+  heroValue: { fontSize: 30, lineHeight: 36 },
+  delta: { paddingHorizontal: space[2], paddingVertical: 2, borderRadius: radii.full },
+  heroLevel: { flexDirection: 'row', justifyContent: 'space-between' },
+  heroBar: { height: 6, borderRadius: radii.full, backgroundColor: eos.well, overflow: 'hidden' },
+  heroFill: { height: 6, borderRadius: radii.full },
   review: {
     flexDirection: 'row',
     alignItems: 'center',
