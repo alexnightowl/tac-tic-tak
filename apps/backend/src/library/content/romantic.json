@@ -1,5 +1,1712 @@
 {
   "id": "romantic",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "romantic-1",
+      "title": {
+        "en": "The Immortal and Friends",
+        "uk": "Безсмертна і друзі"
+      },
+      "subtitle": {
+        "en": "London and Berlin, 1851–1852",
+        "uk": "Лондон і Берлін, 1851–1852"
+      },
+      "puzzles": [
+        {
+          "id": "lib-romantic-1-01",
+          "fen": "3R1r1k/1p4pp/p7/8/1P2p1n1/P6P/2r3p1/B2RKqQ1 w - - 6 33",
+          "moves": "g1f1 g2f1q",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "promotion"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "George Perigal",
+            "black": "Adolf Anderssen",
+            "event": "Casual Game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2074482"
+          },
+          "note": {
+            "en": "Casual game, London 1851, the year of the first international tournament.",
+            "uk": "Товариська партія, Лондон, 1851 — рік першого міжнародного турніру."
+          }
+        },
+        {
+          "id": "lib-romantic-1-02",
+          "fen": "r1bk2nr/p2p1pNp/n2B1Q2/1p1NP2P/6P1/3P4/P1P1K3/q5b1 b - - 2 22",
+          "moves": "g8f6 d6e7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Lionel Kieseritzky",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018910"
+          },
+          "note": {
+            "en": "London, 21 June 1851: a casual game later named the Immortal Game.",
+            "uk": "Лондон, 21 червня 1851: товариська партія, яку згодом назвали Безсмертною."
+          }
+        },
+        {
+          "id": "lib-romantic-1-03",
+          "fen": "8/2p3N1/6p1/5PB1/pp3n2/4R2k/P1p2K1P/3r4 b - - 10 40",
+          "moves": "h3g4 e3g3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Ernst Falkbeer",
+            "event": "Casual Game",
+            "site": "Berlin GER (Kingdom of Prussia)",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1042928"
+          },
+          "note": {
+            "en": "Casual game, Berlin 1851. Falkbeer gave his name to a counter-gambit against 2.f4.",
+            "uk": "Товариська партія, Берлін, 1851. Імʼям Фалькбеєра названо контргамбіт проти 2.f4."
+          }
+        },
+        {
+          "id": "lib-romantic-1-04",
+          "fen": "1r2k1r1/pbppnp1p/1bn2P2/7q/Q7/B1PB1N2/P4PPP/3RR1K1 b - - 2 19",
+          "moves": "h5f3 e1e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Jean Dufresne",
+            "event": "Casual Game",
+            "site": "Berlin GER (Kingdom of Prussia)",
+            "year": 1852,
+            "date": "1852.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018961"
+          },
+          "note": {
+            "en": "Berlin 1852: the Evergreen Game, a name later given to it by Steinitz.",
+            "uk": "Берлін, 1852: «Вічнозелена партія» — таку назву їй згодом дав Стейніц."
+          }
+        },
+        {
+          "id": "lib-romantic-1-05",
+          "fen": "r6k/5Qpp/pp6/2b2p2/5P2/3p1b2/PPP1N2P/3R2K1 w - - 0 25",
+          "moves": "g1f1 d3e2 f1e1 e2d1q",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "fork",
+            "promotion",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "John William Schulten",
+            "black": "Lionel Kieseritzky",
+            "event": "Casual Game",
+            "site": "Paris FRA",
+            "year": 1851,
+            "date": "1851.10.31",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1258002"
+          },
+          "note": {
+            "en": "Casual game, Paris, October 1851. Kieseritzky has Black.",
+            "uk": "Товариська партія, Париж, жовтень 1851. Кізерицький грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-1-06",
+          "fen": "r2qkb1r/pp1b2pp/3p3n/n1pB2P1/4P3/2N5/PPQ3PP/R1B2RK1 b kq - 0 13",
+          "moves": "h6g4 d5f7 e8e7 c3d5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Lionel Kieseritzky",
+            "black": "Henry Witcomb",
+            "event": "Kieseritzky Blindfold Simul 4b, Paris",
+            "site": "Paris FRA",
+            "year": 1851,
+            "date": "1851.04.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2798196"
+          },
+          "note": {
+            "en": "Paris, April 1851, from a blindfold display on four boards.",
+            "uk": "Париж, квітень 1851, із сеансу гри наосліп на чотирьох дошках."
+          }
+        },
+        {
+          "id": "lib-romantic-1-07",
+          "fen": "5r1k/b4pnP/p3pQpB/1pp1PP2/8/1q1P1R1R/1P5P/7K b - - 2 30",
+          "moves": "b3d1 h1g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1400,
+          "themes": [
+            "middlegame",
+            "defensiveMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Howard Staunton",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001409"
+          },
+          "note": {
+            "en": "London 1851 tournament, semi-final. Anderssen went on to win the event.",
+            "uk": "Турнір у Лондоні 1851, півфінал. Андерсен зрештою виграв турнір."
+          }
+        },
+        {
+          "id": "lib-romantic-1-08",
+          "fen": "r1bqk2r/ppp2ppp/2N5/1B1pP3/4n3/B7/P4PPP/bN1Q1RK1 b kq - 0 12",
+          "moves": "b7c6 b5c6 c8d7 d1d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "pin",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Karl Mayet",
+            "event": "Casual Game",
+            "site": "Berlin GER (Kingdom of Prussia)",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018907"
+          },
+          "note": {
+            "en": "Casual game, Berlin 1851, published in the Schachzeitung that year.",
+            "uk": "Товариська партія, Берлін, 1851; того ж року її надрукувала «Schachzeitung»."
+          }
+        },
+        {
+          "id": "lib-romantic-1-09",
+          "fen": "5rk1/1b1p2pp/p3p3/2p1q1P1/P1B5/2PK4/1P1N1n2/R2QR3 w - - 6 29",
+          "moves": "d3c2 e5f5 c2b3 f2d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "intermezzo"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jozsef Szen",
+            "black": "Adolf Anderssen",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001387"
+          },
+          "note": {
+            "en": "London 1851, the first international chess tournament. Anderssen has Black.",
+            "uk": "Лондон, 1851, перший міжнародний шаховий турнір. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-1-10",
+          "fen": "5r2/pQ4R1/6kp/3p1qp1/8/4p2P/P5P1/6K1 b - - 1 36",
+          "moves": "g6h5 g2g4 f5g4 h3g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Lionel Kieseritzky",
+            "event": "Casual Game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018926"
+          },
+          "note": {
+            "en": "London, 21 June 1851: another casual game from the day of the Immortal.",
+            "uk": "Лондон, 21 червня 1851: ще одна товариська партія того дня, коли зіграли Безсмертну."
+          }
+        },
+        {
+          "id": "lib-romantic-1-11",
+          "fen": "4q1k1/6pp/3pp3/5p2/N2PnP2/4P2P/R3Q1PK/7r w - - 3 36",
+          "moves": "h2h1 e4g3 h1h2 g3e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frederic Deacon",
+            "black": "Adolf Anderssen",
+            "event": "London Chess Club Invitational",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1575255"
+          },
+          "note": {
+            "en": "London 1851. Anderssen has Black.",
+            "uk": "Лондон, 1851. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-1-12",
+          "fen": "8/p7/6p1/4kp2/7P/2p1K1r1/P5R1/8 w - - 0 37",
+          "moves": "g2g3 f5f4 e3d3 f4g3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "George Webb Medley",
+            "black": "Adolf Anderssen",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2150684"
+          },
+          "note": {
+            "en": "Casual game, London, June 1851. Anderssen has Black.",
+            "uk": "Товариська партія, Лондон, червень 1851. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-1-13",
+          "fen": "r3k3/p1p1n3/2p2K1p/3pQ3/3Pb1pq/2P1B3/PP5P/4R2R w q - 2 26",
+          "moves": "e3g5 h4g5 e5g5 h6g5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1575,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johann Jacob Loewenthal",
+            "black": "Adolf Anderssen",
+            "event": "Casual Game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018909"
+          },
+          "note": {
+            "en": "Casual game, London 1851. Anderssen has Black.",
+            "uk": "Товариська партія, Лондон, 1851. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-1-14",
+          "fen": "5rk1/pp3ppR/2p3n1/8/3r2qR/P1Q3P1/BP3PK1/8 b - - 1 26",
+          "moves": "g6h4 h7h4 g4h4 g3h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Howard Staunton",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001411"
+          },
+          "note": {
+            "en": "London 1851 tournament. Staunton had organised the event.",
+            "uk": "Турнір у Лондоні 1851. Саме Стаунтон організував цей турнір."
+          }
+        },
+        {
+          "id": "lib-romantic-1-15",
+          "fen": "3rr1k1/ppp2ppp/3b1n2/2P1P2q/8/P4NP1/1P2Q1KP/R1BR4 b - - 0 20",
+          "moves": "e8e5 e2e5 h5e5 f3e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Ernst Falkbeer",
+            "event": "Casual Game",
+            "site": "Berlin GER (Kingdom of Prussia)",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018932"
+          },
+          "note": {
+            "en": "Casual game, Berlin 1851, printed in the Schachzeitung that March.",
+            "uk": "Товариська партія, Берлін, 1851; у березні її надрукувала «Schachzeitung»."
+          }
+        },
+        {
+          "id": "lib-romantic-1-16",
+          "fen": "r2q1rk1/1p2np1p/p4B2/2pp1p1Q/P7/1B1P4/1PP3PP/R6K b - - 1 18",
+          "moves": "d8d6 h5h6 d6f6 h6f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Marmaduke Wyvill",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.07.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001357"
+          },
+          "note": {
+            "en": "London 1851: a game from the final of the first international tournament.",
+            "uk": "Лондон, 1851: партія з фіналу першого міжнародного турніру."
+          }
+        },
+        {
+          "id": "lib-romantic-1-17",
+          "fen": "2kr2n1/Qpp5/3p4/4p2p/4P1b1/2NN3q/PPP5/4KR2 b - - 0 23",
+          "moves": "b7b6 c3d5 h3f1 e1f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Arthur Simons",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018945"
+          },
+          "note": {
+            "en": "Casual game, London 1851, King's Gambit Accepted.",
+            "uk": "Товариська партія, Лондон, 1851, прийнятий королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-romantic-1-18",
+          "fen": "4r3/ppp4p/5R2/3p2P1/6k1/8/P6P/4rQ1K w - - 0 33",
+          "moves": "f6f4 g4h5 f1e1 e8e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Lionel Kieseritzky",
+            "event": "Casual Game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.14",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018949"
+          },
+          "note": {
+            "en": "Casual game, London, 14 June 1851: an Evans Gambit.",
+            "uk": "Товариська партія, Лондон, 14 червня 1851: гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-1-19",
+          "fen": "r2q1r2/ppp2pk1/1b1pNp1p/5P1Q/2n5/7P/P4PP1/2R2RK1 b - - 1 21",
+          "moves": "f7e6 h5g6 g7h8 g6h6 h8g8 h6g6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "exposedKing",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "George Webb Medley",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1851,
+            "date": "1851.06.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1477245"
+          },
+          "note": {
+            "en": "Casual game, London, June 1851, an Evans Gambit.",
+            "uk": "Товариська партія, Лондон, червень 1851, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-1-20",
+          "fen": "1k1r3r/pp3b1p/2p2qpb/3B1p2/3N4/1QN5/PPP2PPP/3RR1K1 b - - 0 19",
+          "moves": "c6d5 e1e7 f6e7 d4c6 b8a8 c6e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Jean Dufresne",
+            "event": "Casual Game",
+            "site": "Berlin GER (Kingdom of Prussia)",
+            "year": 1851,
+            "date": "1851.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1018919"
+          },
+          "note": {
+            "en": "Casual game, Berlin 1851. A year later the two played the Evergreen Game.",
+            "uk": "Товариська партія, Берлін, 1851. Через рік вони зіграли «Вічнозелену партію»."
+          }
+        }
+      ]
+    },
+    {
+      "id": "romantic-2",
+      "title": {
+        "en": "Morphy at the Opera",
+        "uk": "Морфі в опері"
+      },
+      "subtitle": {
+        "en": "Paul Morphy, 1857–1859",
+        "uk": "Пол Морфі, 1857–1859"
+      },
+      "puzzles": [
+        {
+          "id": "lib-romantic-2-01",
+          "fen": "2qQ3k/2P3pp/p7/1p2pp2/8/7P/P4PP1/6K1 b - - 2 32",
+          "moves": "c8d8 c7d8q",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "promotion",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Alexander Beaufort Meek",
+            "event": "Casual game",
+            "site": "New Orleans, LA USA",
+            "year": 1857,
+            "date": "1857.01.30",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1227714"
+          },
+          "note": {
+            "en": "Casual game, New Orleans, January 1857, an Evans Gambit.",
+            "uk": "Товариська партія, Новий Орлеан, січень 1857, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-2-02",
+          "fen": "1Q2kb1r/p2n1ppp/4q3/4p1B1/4P3/8/PPP2PPP/2KR4 b k - 1 16",
+          "moves": "d7b8 d1d8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "backRankMate"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Duke Karl / Count Isouard",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1858,
+            "date": "1858.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1233404"
+          },
+          "note": {
+            "en": "Paris 1858: Morphy against two allies, played in the Duke of Brunswick's box at the opera.",
+            "uk": "Париж, 1858: Морфі проти двох союзників; партію грали в ложі герцога Брауншвейзького в опері."
+          }
+        },
+        {
+          "id": "lib-romantic-2-03",
+          "fen": "r4Qkr/p1p2ppp/1b2b1N1/4P3/6qP/2P5/P4PP1/R4RK1 b - - 8 22",
+          "moves": "a8f8 g6e7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "smotheredMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Thomas Jefferson Bryan",
+            "event": "Knight Odds game",
+            "site": "New York, NY USA",
+            "year": 1859,
+            "date": "1859.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1227772"
+          },
+          "note": {
+            "en": "New York 1859. Morphy gave knight odds.",
+            "uk": "Нью-Йорк, 1859. Морфі дав фору коня."
+          }
+        },
+        {
+          "id": "lib-romantic-2-04",
+          "fen": "rkQ4r/ppp1bq1p/1Nn5/6B1/3p4/8/PPP2PPP/R5K1 b - - 11 23",
+          "moves": "h8c8 b6d7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "smotheredMate"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Schrufer",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1859,
+            "date": "1859.03.31",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1224566"
+          },
+          "note": {
+            "en": "Paris, March 1859, a Two Knights Defence.",
+            "uk": "Париж, березень 1859, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-romantic-2-05",
+          "fen": "r2r4/pQ4pp/2p5/k7/2N5/8/PP1q3p/R6K b - - 1 27",
+          "moves": "a5a4 b2b3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Theodore Lichtenhein",
+            "event": "Blindfold game",
+            "site": "New York, NY USA",
+            "year": 1857,
+            "date": "1857.11.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1075098"
+          },
+          "note": {
+            "en": "New York, November 1857; Morphy played blindfold.",
+            "uk": "Нью-Йорк, листопад 1857; Морфі грав наосліп."
+          }
+        },
+        {
+          "id": "lib-romantic-2-06",
+          "fen": "7k/pp4r1/8/8/8/2Q2R1P/P4P2/3q3K w - - 1 37",
+          "moves": "h1h2 d1g1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "John Owen",
+            "black": "Paul Morphy",
+            "event": "Pawn and Move Odds match",
+            "site": "London ENG",
+            "year": 1858,
+            "date": "1858.08.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1238181"
+          },
+          "note": {
+            "en": "London 1858, from a match in which Morphy gave pawn and move. Morphy has Black.",
+            "uk": "Лондон, 1858, з матчу, де Морфі давав фору пішака й ходу. Морфі грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-2-07",
+          "fen": "r1b2rk1/pppq1p1p/3p1Q2/P7/2B1P3/6P1/1B4P1/4R2K b - - 0 27",
+          "moves": "d7g4 f6h8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Frederic Hyman Lewis",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1858,
+            "date": "1858.06.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1336521"
+          },
+          "note": {
+            "en": "Casual game, London, June 1858, an Evans Gambit.",
+            "uk": "Товариська партія, Лондон, червень 1858, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-2-08",
+          "fen": "r1b1r3/ppp2Q1p/1b1k1B2/3PP3/8/1B6/P4qPP/R6K b - - 0 21",
+          "moves": "e8e5 f7f8 d6d7 f8d8",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "James McConnell",
+            "event": "Odds Game (Nb1)",
+            "site": "New Orleans, LA USA",
+            "year": 1858,
+            "date": "1858.04.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1238235"
+          },
+          "note": {
+            "en": "New Orleans, April 1858. Morphy gave odds of his queen's knight.",
+            "uk": "Новий Орлеан, квітень 1858. Морфі дав фору ферзевого коня."
+          }
+        },
+        {
+          "id": "lib-romantic-2-09",
+          "fen": "r4b1r/3kn1p1/p1p1n2p/1p6/3P1BB1/1Q1N2Pq/PP3P1P/2R3K1 b - - 1 28",
+          "moves": "h3g4 d3e5 d7e8 e5g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "A Bousserolles",
+            "event": "Blindfold simul, 2b",
+            "site": "Paris FRA",
+            "year": 1859,
+            "date": "1859.02.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1281984"
+          },
+          "note": {
+            "en": "Paris, February 1859, from a blindfold display on two boards.",
+            "uk": "Париж, лютий 1859, із сеансу гри наосліп на двох дошках."
+          }
+        },
+        {
+          "id": "lib-romantic-2-10",
+          "fen": "r1b2rk1/pppq1pp1/1b1P2np/5n2/2BPN2B/5N2/PP1Q1PPP/R3R1K1 w - - 1 17",
+          "moves": "f3e5 g6e5 d4e5 f5h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Samuel Standidge Boden",
+            "black": "Paul Morphy",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1858,
+            "date": "1858.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1258273"
+          },
+          "note": {
+            "en": "Casual game, London 1858. Boden gave his name to Boden's mate. Morphy has Black.",
+            "uk": "Товариська партія, Лондон, 1858. Боден дав імʼя мату Бодена. Морфі грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-2-11",
+          "fen": "5q1k/1p4rp/4pB1Q/1p1pP3/3P4/8/PP3KPP/8 b - - 1 29",
+          "moves": "h8g8 h6g7 f8g7 f6g7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1575,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Adolf Anderssen",
+            "event": "Anderssen - Morphy",
+            "site": "Paris FRA",
+            "year": 1858,
+            "date": "1858.12.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019049"
+          },
+          "note": {
+            "en": "Paris, December 1858, from their match, which Morphy won.",
+            "uk": "Париж, грудень 1858, з їхнього матчу, який виграв Морфі."
+          }
+        },
+        {
+          "id": "lib-romantic-2-12",
+          "fen": "Q1b4r/p1k2ppp/2nNq3/1P2P3/5p2/8/PP4PP/2B2K1R b - - 0 17",
+          "moves": "e6d5 a8c6 d5c6 b5c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1575,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Charles Maurian",
+            "event": "Odds Game (Ra1)",
+            "site": "New Orleans, LA USA",
+            "year": 1858,
+            "date": "1858.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1238189"
+          },
+          "note": {
+            "en": "New Orleans 1858. Morphy gave odds of his queen's rook.",
+            "uk": "Новий Орлеан, 1858. Морфі дав фору ферзевої тури."
+          }
+        },
+        {
+          "id": "lib-romantic-2-13",
+          "fen": "4R3/p4p1p/3N1k2/3p2Bb/7P/5n2/r3B3/5K2 b - - 1 29",
+          "moves": "f3g5 h4g5 f6g5 e8e5 g5f6 e5h5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Paul Morphy",
+            "event": "Casual game",
+            "site": "Paris FRA",
+            "year": 1858,
+            "date": "1858.12.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019062"
+          },
+          "note": {
+            "en": "Casual game, Paris, 29 December 1858, a King's Gambit. Morphy has Black.",
+            "uk": "Товариська партія, Париж, 29 грудня 1858, королівський гамбіт. Морфі грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-2-14",
+          "fen": "5r2/p1p1kRbp/1p1q4/1P5Q/4p3/1BP5/P1P3PP/6K1 b - - 3 31",
+          "moves": "f8f7 h5f7 e7d8 f7g7 d6d1 g1f2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "endgame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Thomas Wilson Barnes",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1858,
+            "date": "1858.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1266588"
+          },
+          "note": {
+            "en": "Casual game, London 1858, a Vienna Game.",
+            "uk": "Товариська партія, Лондон, 1858, віденська партія."
+          }
+        },
+        {
+          "id": "lib-romantic-2-15",
+          "fen": "5rk1/ppp2ppp/7q/8/2B2n2/2Qr3P/PP1N1P1K/3R1R2 w - - 1 20",
+          "moves": "c3d3 f4d3 c4d3 h6d6 f2f4 d6d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Saint Amant / Marie Florimond de Basterot",
+            "black": "Paul Morphy",
+            "event": "Consultation game",
+            "site": "Paris FRA",
+            "year": 1858,
+            "date": "1858.11.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1336514"
+          },
+          "note": {
+            "en": "Paris, November 1858: Saint-Amant and de Basterot played as a consulting pair. Morphy has Black.",
+            "uk": "Париж, листопад 1858: Сент-Аман і де Бастеро грали удвох, радячись. Морфі грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-2-16",
+          "fen": "r4k1r/p2qB1pp/2pp4/1p1n4/8/3B1Q1P/P4PP1/4R1K1 b - - 2 24",
+          "moves": "f8g8 d3f5 d7f5 f3f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "John William Schulten",
+            "event": "Casual game",
+            "site": "New York, NY USA",
+            "year": 1857,
+            "date": "1857.11.30",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1227712"
+          },
+          "note": {
+            "en": "Casual game, New York, November 1857, an Evans Gambit.",
+            "uk": "Товариська партія, Нью-Йорк, листопад 1857, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-2-17",
+          "fen": "r1b2k1r/pp1pn2p/5qp1/nP2N2Q/4PR2/B1Pp4/P5PP/1K1R4 b - - 0 16",
+          "moves": "f6f4 e5g6 h7g6 h5h8 f8f7 h8h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Denis Julien",
+            "event": "Odds Game (Nb1) ",
+            "site": "New York, NY USA",
+            "year": 1857,
+            "date": "1857.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1238162"
+          },
+          "note": {
+            "en": "New York 1857. Morphy gave odds of his queen's knight.",
+            "uk": "Нью-Йорк, 1857. Морфі дав фору ферзевого коня."
+          }
+        },
+        {
+          "id": "lib-romantic-2-18",
+          "fen": "r3kbr1/p2n1q1p/1pQ5/8/4PB1P/2P2P2/PP6/2KR3R b - - 0 19",
+          "moves": "f7f4 c1b1 a8d8 c6e6 f8e7 e6g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "fork",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Colonel Charles Dillingham Mead",
+            "event": "Knight Odds game",
+            "site": "New York, NY USA",
+            "year": 1859,
+            "date": "1859.07.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1581414"
+          },
+          "note": {
+            "en": "New York, July 1859. Morphy gave knight odds.",
+            "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня."
+          }
+        },
+        {
+          "id": "lib-romantic-2-19",
+          "fen": "r5nr/p1pRk1pp/1bp2p2/4N1q1/Q3P3/2P5/P4PPP/6K1 b - - 1 18",
+          "moves": "e7e8 a4c6 g5e5 d7c7 e8f8 c6a8 e5e8 c7c8 e8c8 a8c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Theodore Lichtenhein",
+            "event": "Knight Odds game",
+            "site": "New York, NY USA",
+            "year": 1859,
+            "date": "1859.07.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1238198"
+          },
+          "note": {
+            "en": "New York, July 1859. Morphy gave knight odds.",
+            "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня."
+          }
+        },
+        {
+          "id": "lib-romantic-2-20",
+          "fen": "4k1nr/p2nqpb1/2Qp3p/4P1p1/P2P1p2/2PB1R2/1r1B2PP/4R1K1 b k - 0 16",
+          "moves": "b2d2 c6c8 e7d8 e5d6 g7e5 e1e5 d7e5 d3b5 e5d7 b5d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "Denis Julien",
+            "event": "Odds Game (Nb1)",
+            "site": "New York, NY USA",
+            "year": 1857,
+            "date": "1857.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1238160"
+          },
+          "note": {
+            "en": "New York 1857, the year Morphy won the First American Chess Congress. Knight odds.",
+            "uk": "Нью-Йорк, 1857, коли Морфі виграв Перший американський шаховий конгрес. Фора коня."
+          }
+        }
+      ]
+    },
+    {
+      "id": "romantic-3",
+      "title": {
+        "en": "Kings in the Open",
+        "uk": "Королі без укриття"
+      },
+      "subtitle": {
+        "en": "Anderssen and rivals, 1860–1870",
+        "uk": "Андерсен і суперники, 1860–1870"
+      },
+      "puzzles": [
+        {
+          "id": "lib-romantic-3-01",
+          "fen": "r1bqk2r/pppn1pp1/5n1p/2B5/2B1Q3/2N5/PPP3PP/R4RK1 b kq - 0 13",
+          "moves": "f6e4 c4f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Emil Schallopp",
+            "event": "Berlin",
+            "site": "Berlin GER",
+            "year": 1864,
+            "date": "1864.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1284232"
+          },
+          "note": {
+            "en": "Berlin 1864, King's Gambit Declined.",
+            "uk": "Берлін, 1864, відхилений королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-romantic-3-02",
+          "fen": "r2q3r/ppp2Ppp/1b3n2/k3N3/1BBp4/1nP5/P4PPP/1N2R1K1 b - - 8 17",
+          "moves": "a5a4 a2b3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Rock",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1863,
+            "date": "1863.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1274802"
+          },
+          "note": {
+            "en": "Casual game, London 1863. Steinitz had moved to London from Vienna the year before.",
+            "uk": "Товариська партія, Лондон, 1863. Стейніц переїхав до Лондона з Відня роком раніше."
+          }
+        },
+        {
+          "id": "lib-romantic-3-03",
+          "fen": "5rk1/1p3Rpp/8/pP3Q2/P2p1P2/1B6/2P2PKP/4q3 b - - 2 26",
+          "moves": "f8e8 f7f8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "backRankMate",
+            "doubleCheck",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Samuel Mieses",
+            "event": "Casuals Anderssen-S Mieses",
+            "site": "Breslau",
+            "year": 1867,
+            "date": "1867.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019322"
+          },
+          "note": {
+            "en": "Casual game, Breslau 1867. Breslau was Anderssen's home city.",
+            "uk": "Товариська партія, Бреслау, 1867. Бреслау — рідне місто Андерсена."
+          }
+        },
+        {
+          "id": "lib-romantic-3-04",
+          "fen": "4R1k1/1b3n1p/p4Qp1/2qN4/P1PN4/3P3P/1r4P1/6K1 b - - 9 38",
+          "moves": "c5f8 d5e7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Emil Schallopp",
+            "event": "2nd NSB Congress, Hamburg",
+            "site": "Hamburg, Prussia GER",
+            "year": 1869,
+            "date": "1869.07.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1337010"
+          },
+          "note": {
+            "en": "Hamburg 1869, at the second congress of the North German Chess Federation.",
+            "uk": "Гамбург, 1869, другий конгрес Північнонімецького шахового союзу."
+          }
+        },
+        {
+          "id": "lib-romantic-3-05",
+          "fen": "7r/pp2n1p1/1b1pp2p/n1pPP2k/5P2/6R1/P3B1PP/5RK1 b - - 3 27",
+          "moves": "h5h4 g3h3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Henry Edward Bird",
+            "event": "Casual game",
+            "site": "City of London CC, London ENG",
+            "year": 1870,
+            "date": "1870.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1027953"
+          },
+          "note": {
+            "en": "Casual game, City of London Chess Club, 1870, an Evans Gambit.",
+            "uk": "Товариська партія, шаховий клуб лондонського Сіті, 1870, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-3-06",
+          "fen": "8/pp6/1b1q3p/3p4/2r5/3R4/3k2PP/1Q5K b - - 7 44",
+          "moves": "d2e2 b1d1 e2f2 d3f3",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Ignatz Kolisch",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1860,
+            "date": "1860.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1080409"
+          },
+          "note": {
+            "en": "Paris 1860. Kolisch would later win the great Paris tournament of 1867.",
+            "uk": "Париж, 1860. Згодом Коліш виграв великий паризький турнір 1867 року."
+          }
+        },
+        {
+          "id": "lib-romantic-3-07",
+          "fen": "r2qr1k1/3n1ppp/p2p1n2/bp1P1N2/2p1PP2/6RP/PB4P1/1B1QR1K1 b - - 4 26",
+          "moves": "a5e1 g3g7 g8h8 d1e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "intermezzo",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Ignatz Kolisch",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1861,
+            "date": "1861.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019107"
+          },
+          "note": {
+            "en": "London 1861, an Evans Gambit.",
+            "uk": "Лондон, 1861, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-3-08",
+          "fen": "2b1r1k1/5pp1/p1p5/2N4p/1Pq3n1/R6P/3Q2P1/5RK1 b - - 0 26",
+          "moves": "e8e2 d2d8 g8h7 h3g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "intermezzo"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Joseph Henry Blackburne",
+            "event": "Baden-Baden",
+            "site": "Baden-Baden GER",
+            "year": 1870,
+            "date": "1870.07.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1255417"
+          },
+          "note": {
+            "en": "Baden-Baden 1870, a tournament Anderssen won ahead of Steinitz.",
+            "uk": "Баден-Баден, 1870; цей турнір Андерсен виграв попереду Стейніца."
+          }
+        },
+        {
+          "id": "lib-romantic-3-09",
+          "fen": "1rrnb1k1/4q2p/3pNp1Q/3P1Pp1/np1BP3/2p4R/P5PP/2R4K b - - 1 36",
+          "moves": "d8e6 d4f6 e7f6 h6f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Gustav Richard Neumann",
+            "event": "Casuals Anderssen-Neumann",
+            "site": "Berlin GER",
+            "year": 1866,
+            "date": "1866.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019273"
+          },
+          "note": {
+            "en": "Casual game, Berlin 1866, an Evans Gambit.",
+            "uk": "Товариська партія, Берлін, 1866, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-romantic-3-10",
+          "fen": "4r1k1/p6p/b1Q5/2Ppq3/8/5PN1/PP4PP/2R1n2K w - - 1 30",
+          "moves": "c6a6 e5b2 c1e1 e8e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Johannes Zukertort",
+            "black": "Adolf Anderssen",
+            "event": "Anderssen - Zukertort",
+            "site": "Berlin GER",
+            "year": 1868,
+            "date": "1868.04.11",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019334"
+          },
+          "note": {
+            "en": "Berlin, April 1868, from a match between the two. Anderssen has Black.",
+            "uk": "Берлін, квітень 1868, з їхнього матчу. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-3-11",
+          "fen": "4r3/p4pkp/8/3Bbb2/P2P1ppP/2N3n1/1PP2KPR/R1BQ1q2 w - - 1 21",
+          "moves": "d1f1 e5d4 c1e3 e8e3 f2g1 e3e1",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1675,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "backRankMate",
+            "discoveredAttack",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jakob Rosanes",
+            "black": "Adolf Anderssen",
+            "event": "Breslau",
+            "site": "Breslau POL (Prussian Empire)",
+            "year": 1863,
+            "date": "1863.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019162"
+          },
+          "note": {
+            "en": "Breslau 1863. Like Anderssen, Rosanes was a mathematician. Anderssen has Black.",
+            "uk": "Бреслау, 1863. Розанес, як і Андерсен, був математиком. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-3-12",
+          "fen": "5rk1/p1p4p/3p2p1/2pb2N1/2P2n2/6Q1/PP3PPP/3qR1K1 w - - 0 24",
+          "moves": "e1d1 f4e2 g1h1 e2g3 h2g3 d5c4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Gustav Richard Neumann",
+            "black": "Adolf Anderssen",
+            "event": "Casuals Neumann-Anderssen",
+            "site": "Berlin GER",
+            "year": 1865,
+            "date": "1865.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019250"
+          },
+          "note": {
+            "en": "Casual game, Berlin 1865, a Ruy Lopez. Anderssen has Black.",
+            "uk": "Товариська партія, Берлін, 1865, іспанська партія. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-3-13",
+          "fen": "r1b5/p5pk/2pp3p/4p1qn/Np4Pn/1B1PP2P/PPP2R1Q/3R2K1 w - - 3 22",
+          "moves": "d1f1 g5e3 g4h5 h4f3 g1g2 f3h2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Hermanus Kloos",
+            "black": "Adolf Anderssen",
+            "event": "Rotterdam",
+            "site": "Rotterdam NED",
+            "year": 1861,
+            "date": "1861.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1336649"
+          },
+          "note": {
+            "en": "Rotterdam 1861, a Giuoco Piano. Anderssen has Black.",
+            "uk": "Роттердам, 1861, італійська партія. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-3-14",
+          "fen": "r1b1k2r/bppn2pp/P1n5/1B1R1p2/4p3/B1P2N2/5PPP/4R1K1 b kq - 1 20",
+          "moves": "c6e7 a6b7 c8b7 d5d7 a7f2 g1f2 a8a3 d7c7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "discoveredAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul Morphy",
+            "black": "James Thompson",
+            "event": "Knight Odds game",
+            "site": "New York, NY USA",
+            "year": 1860,
+            "date": "1860.09.22",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1581420"
+          },
+          "note": {
+            "en": "New York, September 1860. Morphy gave knight odds.",
+            "uk": "Нью-Йорк, вересень 1860. Морфі дав фору коня."
+          }
+        },
+        {
+          "id": "lib-romantic-3-15",
+          "fen": "r5k1/pppbq2p/2np1n2/8/3PPNpP/3Q2P1/PPP5/R4RK1 b - - 1 18",
+          "moves": "e7e4 f4h5 e4d4 d3d4 c6d4 h5f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "quietMove",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm Steinitz",
+            "black": "Philipp Hirschfeld",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1863,
+            "date": "1863.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1075905"
+          },
+          "note": {
+            "en": "Casual game, London 1863, a King's Gambit.",
+            "uk": "Товариська партія, Лондон, 1863, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-romantic-3-16",
+          "fen": "4r3/1p5p/p2kPP2/8/2p3p1/8/PPP4P/4R1K1 b - - 0 29",
+          "moves": "e8e6 e1d1 d6e5 f6f7 e6f6 d1f1 f6f7 f1f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Maarten van 't Kruijs",
+            "event": "Amsterdam",
+            "site": "Amsterdam NED",
+            "year": 1861,
+            "date": "1861.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1336604"
+          },
+          "note": {
+            "en": "Amsterdam 1861, a French Defence.",
+            "uk": "Амстердам, 1861, французький захист."
+          }
+        },
+        {
+          "id": "lib-romantic-3-17",
+          "fen": "1r1r2k1/p4ppp/2p5/4Pb2/3b1P2/1qP2N2/P2BQ1PP/2KR3R w - - 0 18",
+          "moves": "a2b3 b8b3 e2d3 f5d3 d2e3 d4e3 f3d2 b3b1",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 1950,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "backRankMate"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jakob Rosanes",
+            "black": "Adolf Anderssen",
+            "event": "Breslau",
+            "site": "Breslau POL (Prussian Empire)",
+            "year": 1862,
+            "date": "1862.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019123"
+          },
+          "note": {
+            "en": "Breslau 1862, King's Gambit Declined. Anderssen has Black.",
+            "uk": "Бреслау, 1862, відхилений королівський гамбіт. Андерсен грає чорними."
+          }
+        },
+        {
+          "id": "lib-romantic-3-18",
+          "fen": "1r3k2/p5pR/3q1rB1/3Pp1Q1/3n4/8/1p4PP/3R3K b - - 3 37",
+          "moves": "f6g6 h7h8 f8f7 d1f1 g6f6 f1f6 d6f6 g5f6 g7f6 h8b8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "skewer"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Johannes Zukertort",
+            "event": "Anderssen - Zukertort",
+            "site": "Berlin GER",
+            "year": 1868,
+            "date": "1868.04.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019329"
+          },
+          "note": {
+            "en": "Berlin, April 1868, an Evans Gambit from their match.",
+            "uk": "Берлін, квітень 1868, гамбіт Еванса з їхнього матчу."
+          }
+        },
+        {
+          "id": "lib-romantic-3-19",
+          "fen": "rnk3q1/pp1b4/2pP4/6NN/3P3n/5P2/PPPBQ1p1/2K1R3 b - - 0 25",
+          "moves": "g8a2 e2e8 d7e8 e1e8 c8d7 h5f6 d7d6 d2f4",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 2100,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Ignatz Kolisch",
+            "black": "Schwarizschild",
+            "event": "Frankfurt am Main",
+            "site": "Frankfurt am Main",
+            "year": 1868,
+            "date": "1868.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1080494"
+          },
+          "note": {
+            "en": "Frankfurt am Main 1868, a King's Gambit. A year earlier Kolisch had won the Paris tournament.",
+            "uk": "Франкфурт-на-Майні, 1868, королівський гамбіт. Роком раніше Коліш виграв паризький турнір."
+          }
+        },
+        {
+          "id": "lib-romantic-3-20",
+          "fen": "2rq1rk1/pp3ppp/1b1p1n2/3p2Q1/2n1P3/3B1P2/PB2NP1P/R5RK b - - 3 18",
+          "moves": "f6e8 g5g7 e8g7 g1g7 g8h8 g7g8 h8g8 a1g1 d8g5 g1g5",
+          "goal": "mate",
+          "mateIn": 5,
+          "rating": 2175,
+          "themes": [
+            "mateIn5",
+            "middlegame",
+            "doubleCheck",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolf Anderssen",
+            "black": "Berthold Suhle",
+            "event": "Breslau",
+            "site": "Breslau GER (Prussia)",
+            "year": 1860,
+            "date": "1860.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1019098"
+          },
+          "note": {
+            "en": "Breslau 1860, an Evans Gambit.",
+            "uk": "Бреслау, 1860, гамбіт Еванса."
+          }
+        }
+      ]
+    }
+  ]
 }
