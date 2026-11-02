@@ -34,7 +34,7 @@ export const coursesUk: Dict = {
   'courses.chapter_a11y': 'Розділ {n}, {title}, розв’язано {done} з {total}',
   'courses.chapter_next_a11y': 'Розділ {n}, {title}, розв’язано {done} з {total}, наступний',
   'courses.exam': 'Іспит',
-  'courses.exam_locked.one': 'Відкриється, коли пройдеш {n} розділ',
+  'courses.exam_locked.one': 'Відкриється, коли пройдеш розділ',
   'courses.exam_locked.few': 'Відкриється, коли пройдеш усі {n} розділи',
   'courses.exam_locked.many': 'Відкриється, коли пройдеш усі {n} розділів',
   'courses.exam_locked.other': 'Відкриється, коли пройдеш усі {n} розділу',
