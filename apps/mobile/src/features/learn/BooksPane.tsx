@@ -18,7 +18,7 @@ import { Footnote, FilterChips, GRID_GAP, StatusIcon, TileMeta, type LearnFilter
 // covers with the download state and progress, and the footnote. A cover
 // tap opens the book with the open-book transition (OpenBook.tsx).
 
-export type OpenBook = (book: LibraryBookSummary, from: HostInstance | null) => void;
+export type OpenBook = (book: LibraryBookSummary, from: HostInstance | null, chapterIndex: number) => void;
 
 export function BooksPane({ width, onOpen }: { width: number; onOpen: OpenBook }) {
   const t = useT();
@@ -129,7 +129,7 @@ function ContinueBook({ book, progress, onOpen }: { book: LibraryBookSummary; pr
           testID="library-continue-cta"
           label={progress.cycleComplete ? t('library.start_cycle', { n: nextCycle }) : t('library.continue_cycle', { n: progress.cycle })}
           size="sm"
-          onPress={() => onOpen(book, ref.current)}
+          onPress={() => onOpen(book, ref.current, ch)}
           style={styles.cta}
         />
       </View>
@@ -157,7 +157,7 @@ function ShelfBook({ book, width, progress, onOpen }: { book: LibraryBookSummary
       testID={`library-book-${book.id}`}
       accessibilityRole="button"
       accessibilityLabel={t('library.book_a11y', { title, count: sub, state: t(`library.state.${state}`) })}
-      onPress={() => onOpen(book, ref.current)}
+      onPress={() => onOpen(book, ref.current, progress.next?.chapterIndex ?? 0)}
       style={[styles.book, { width }]}
     >
       <View ref={ref} collapsable={false}>

@@ -39,4 +39,7 @@ export const learnUk: Dict = {
   'learn.status.passed': 'Складено · іспит {score}/{total}',
   'learn.status.cycle': 'Цикл {n} · {done} з {total} · ціль {s} с',
   'learn.status.cycle_free': 'Цикл {n} · {done} з {total}',
+
+  // Open-book transition: the first page.
+  'learn.open.chapter': 'Розділ',
 };

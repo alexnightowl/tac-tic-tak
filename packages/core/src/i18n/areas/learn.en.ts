@@ -37,4 +37,7 @@ export const learnEn: Dict = {
   'learn.status.passed': 'Passed · exam {score}/{total}',
   'learn.status.cycle': 'Cycle {n} · {done} of {total} · target {s} s',
   'learn.status.cycle_free': 'Cycle {n} · {done} of {total}',
+
+  // Open-book transition: the first page.
+  'learn.open.chapter': 'Chapter',
 };

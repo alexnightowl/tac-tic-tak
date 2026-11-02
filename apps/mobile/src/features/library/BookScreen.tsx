@@ -1,7 +1,7 @@
 import { cycleTargetSec, localized, type BookProgress, type LibraryBookSummary } from '@tac/core/library';
 import { alpha, eos, graphite, layout, radii, space, tone } from '@tac/core/tokens';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, type Href } from 'expo-router';
+import { router, Stack, useLocalSearchParams, type Href } from 'expo-router';
 import { Check, ChevronLeft, Download, Trash2 } from 'lucide-react-native';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
@@ -45,6 +45,10 @@ export function BookScreen({ bookId }: { bookId: string }) {
   useShelf();
   const book = useBookSummary(bookId);
   const progress = useBookProgress(book);
+  // Opened from a Learn cover: the page fades in under the open-book
+  // transition (and fades out on back) instead of sliding.
+  const { via } = useLocalSearchParams<{ via?: string }>();
+  const fade = via === 'cover' ? <Stack.Screen options={{ animation: 'fade' }} /> : null;
 
   const back = () => {
     if (router.canGoBack()) router.back();
@@ -54,6 +58,7 @@ export function BookScreen({ bookId }: { bookId: string }) {
   if (!book || !progress) {
     return (
       <View style={[styles.root, styles.center]} testID="library-book">
+        {fade}
         <ActivityIndicator color={eos.ash} />
       </View>
     );
@@ -75,6 +80,7 @@ export function BookScreen({ bookId }: { bookId: string }) {
 
   return (
     <View style={styles.root} testID="library-book">
+      {fade}
       <View style={[styles.header, { marginTop: insets.top }]}>
         <Tap testID="library-book-back" accessibilityRole="button" accessibilityLabel={t('learn.tab')} onPress={back} style={styles.back}>
           <ChevronLeft size={18} color={eos.ash} strokeWidth={1.8} />

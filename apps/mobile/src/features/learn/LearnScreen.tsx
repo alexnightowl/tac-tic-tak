@@ -1,14 +1,16 @@
 import type { LibraryBookSummary } from '@tac/core/library';
 import { eos, layout, space, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
-import { useState } from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, useWindowDimensions, View, type HostInstance } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText, Segmented } from '@/ui';
 import { useT } from '@/ui/lang';
 import { BooksPane } from './BooksPane';
 import { CoursesPane } from './CoursesPane';
+import { OpenBookOverlay, type OpenBookRun } from './OpenBook';
 import { useLearnSegment, type LearnSegment } from './segment';
 
 // Learn tab (canvas LearnHome / LearnBooks): "Learn", the calm-study line,
@@ -22,7 +24,36 @@ export function LearnScreen() {
   const [segment, setSegment] = useLearnSegment();
   const [width, setWidth] = useState(screenW - layout.gutter * 2);
 
-  const openBook = (book: LibraryBookSummary) => router.push(`/library/${book.id}` as Href);
+  const reduced = useReducedMotion();
+  const [run, setRun] = useState<OpenBookRun | null>(null);
+  const busy = useRef(false);
+
+  // A cover tap opens the book with the open-book transition (OpenBook.tsx);
+  // reduced motion (or no frame to start from) just fades the page in.
+  const openBook = (book: LibraryBookSummary, from: HostInstance | null, chapterIndex: number) => {
+    if (busy.current) return;
+    const href = `/library/${book.id}?via=cover` as Href;
+    if (reduced || !from) {
+      router.push(href);
+      return;
+    }
+    busy.current = true;
+    from.measureInWindow((x, y, w, h) => {
+      if (!(w > 0 && h > 0)) {
+        busy.current = false;
+        router.push(href);
+        return;
+      }
+      setRun({ book, rect: { x, y, w, h }, chapterIndex });
+    });
+  };
+  const onPush = useCallback(() => {
+    if (run) router.push(`/library/${run.book.id}?via=cover` as Href);
+  }, [run]);
+  const onDone = useCallback(() => {
+    busy.current = false;
+    setRun(null);
+  }, []);
 
   return (
     <View style={styles.root} testID="screen-learn">
@@ -49,6 +80,7 @@ export function LearnScreen() {
         />
         {segment === 'courses' ? <CoursesPane width={width} /> : <BooksPane width={width} onOpen={openBook} />}
       </ScrollView>
+      {run ? <OpenBookOverlay run={run} onPush={onPush} onDone={onDone} /> : null}
     </View>
   );
 }
