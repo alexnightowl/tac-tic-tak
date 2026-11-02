@@ -11,7 +11,6 @@ import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { LibraryEntry } from '@/features/library/LibraryEntry';
 import { OfflineEntry } from '@/features/offline/OfflineEntry';
 import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
@@ -36,6 +35,7 @@ import { ThemeIcon } from '../themes/ThemeIcon';
 import { STRONG, STYLE_ICON, TABULAR } from '../ui';
 import { bandIcon } from './bandIcons';
 import { DifficultyReadout, DifficultyTrack } from './DifficultyTrack';
+import { ReviewEntry } from './ReviewEntry';
 
 // /play (Play tab), design "Play — simplified" (PlayV2*): Rated / Casual /
 // Themes. Rated has no slider: it starts at the player's rating and shows
@@ -354,7 +354,7 @@ export function PlaySetupScreen() {
           )}
         </Card>
 
-        <LibraryEntry />
+        <ReviewEntry />
         <OfflineEntry />
       </ScrollView>
 
