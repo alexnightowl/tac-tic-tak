@@ -1,6 +1,10 @@
 import { uuidV4 } from '@tac/core/offline';
 import {
   mergeAttempts,
+  type Course,
+  type CourseExamRecord,
+  type CoursePendingExam,
+  type CourseSummary,
   type LibraryAttemptRecord,
   type LibraryBook,
   type LibraryBookSummary,
@@ -16,7 +20,9 @@ import { authStore } from '@/stores/authStore';
 // queued in MMKV first, synchronously, and leaves the queue only after
 // POST /library/sync answered 2xx, so a kill or a dead network never
 // loses one; the server dedupes a re-send. Downloaded books are shared by
-// the accounts on the phone; results are per user.
+// the accounts on the phone; results are per user. Courses (Learn tab)
+// share all of it: their results are attempts with bookId = the course id,
+// and exam tries have a queue of their own.
 
 export type DownloadState = 'loading' | 'error' | 'offline';
 export type SyncStatus = 'idle' | 'syncing' | 'failed';
@@ -26,6 +32,10 @@ type Persisted = {
   books: Record<string, LibraryBook>;
   server: LibraryAttemptRecord[];
   queue: LibraryPendingAttempt[];
+  courseList: CourseSummary[] | null;
+  courses: Record<string, Course>;
+  serverExams: CourseExamRecord[];
+  examQueue: CoursePendingExam[];
 };
 
 type LibraryState = Persisted & {
@@ -43,6 +53,13 @@ type LibraryState = Persisted & {
   settle: (sent: readonly LibraryPendingAttempt[]) => void;
   setDownload: (id: string, d: DownloadState | null) => void;
   setSync: (s: SyncStatus) => void;
+
+  setCourseList: (courses: CourseSummary[]) => void;
+  saveCourse: (course: Course) => void;
+  removeCourse: (id: string) => void;
+  setServerExams: (exams: CourseExamRecord[]) => void;
+  enqueueExam: (e: Omit<CoursePendingExam, 'clientId'>) => CoursePendingExam;
+  settleExams: (sent: readonly CoursePendingExam[]) => void;
 };
 
 const KEY = {
@@ -51,6 +68,11 @@ const KEY = {
   bookIds: 'books',
   server: (uid: string) => `${uid}.server`,
   queue: (uid: string) => `${uid}.queue`,
+  courseList: 'courses',
+  course: (id: string) => `course.${id}`,
+  courseIds: 'courseIds',
+  serverExams: (uid: string) => `${uid}.exams`,
+  examQueue: (uid: string) => `${uid}.examQueue`,
 };
 
 function readBooks(): Record<string, LibraryBook> {
@@ -63,11 +85,23 @@ function readBooks(): Record<string, LibraryBook> {
   return out;
 }
 
-function readUser(uid: string | null): Pick<Persisted, 'server' | 'queue'> {
-  if (!uid) return { server: [], queue: [] };
+function readCourses(): Record<string, Course> {
+  const ids = readJSON<string[]>(libraryKV, KEY.courseIds, []);
+  const out: Record<string, Course> = {};
+  for (const id of ids) {
+    const c = readJSON<Course | null>(libraryKV, KEY.course(id), null);
+    if (c) out[id] = c;
+  }
+  return out;
+}
+
+function readUser(uid: string | null): Pick<Persisted, 'server' | 'queue' | 'serverExams' | 'examQueue'> {
+  if (!uid) return { server: [], queue: [], serverExams: [], examQueue: [] };
   return {
     server: readJSON<LibraryAttemptRecord[]>(libraryKV, KEY.server(uid), []),
     queue: readJSON<LibraryPendingAttempt[]>(libraryKV, KEY.queue(uid), []),
+    serverExams: readJSON<CourseExamRecord[]>(libraryKV, KEY.serverExams(uid), []),
+    examQueue: readJSON<CoursePendingExam[]>(libraryKV, KEY.examQueue(uid), []),
   };
 }
 
@@ -86,6 +120,8 @@ export const useLibraryStore = create<LibraryState>((set, get) => {
   return {
     shelf: readJSON<LibraryBookSummary[] | null>(libraryKV, KEY.shelf, null),
     books: readBooks(),
+    courseList: readJSON<CourseSummary[] | null>(libraryKV, KEY.courseList, null),
+    courses: readCourses(),
     ...readUser(uid),
     uid,
     downloads: {},
@@ -146,6 +182,49 @@ export const useLibraryStore = create<LibraryState>((set, get) => {
       set({ downloads });
     },
     setSync: (sync) => set({ sync }),
+
+    setCourseList: (courseList) => {
+      writeJSON(libraryKV, KEY.courseList, courseList);
+      set({ courseList });
+    },
+    saveCourse: (course) => {
+      writeJSON(libraryKV, KEY.course(course.id), course);
+      const courses = { ...get().courses, [course.id]: course };
+      writeJSON(libraryKV, KEY.courseIds, Object.keys(courses));
+      set({ courses });
+    },
+    removeCourse: (id) => {
+      libraryKV.remove(KEY.course(id));
+      const courses = { ...get().courses };
+      delete courses[id];
+      writeJSON(libraryKV, KEY.courseIds, Object.keys(courses));
+      set({ courses });
+    },
+    setServerExams: (serverExams) => {
+      const id = get().uid;
+      if (!id) return;
+      writeJSON(libraryKV, KEY.serverExams(id), serverExams);
+      set({ serverExams });
+    },
+    enqueueExam: (e) => {
+      const item: CoursePendingExam = { ...e, clientId: uuidV4(randomBytes) };
+      const id = get().uid;
+      if (!id) return item;
+      const examQueue = [...get().examQueue, item];
+      writeJSON(libraryKV, KEY.examQueue(id), examQueue);
+      set({ examQueue });
+      return item;
+    },
+    settleExams: (sent) => {
+      const id = get().uid;
+      if (!id || sent.length === 0) return;
+      const ids = new Set(sent.map((e) => e.clientId));
+      const serverExams = [...get().serverExams, ...sent.map(({ clientId: _c, ...e }) => e)];
+      const examQueue = get().examQueue.filter((e) => !ids.has(e.clientId));
+      writeJSON(libraryKV, KEY.serverExams(id), serverExams);
+      writeJSON(libraryKV, KEY.examQueue(id), examQueue);
+      set({ serverExams, examQueue });
+    },
   };
 });
 
@@ -160,6 +239,19 @@ authStore.subscribe((s) => {
 /** Every result of the player: synced and queued, first per puzzle and cycle. */
 export function attemptsOf(s: Pick<LibraryState, 'server' | 'queue'>): LibraryAttemptRecord[] {
   return mergeAttempts(s.server, s.queue);
+}
+
+/** Every exam try of the player: synced, then queued (a queued one is not on the server yet). */
+export function examsOf(s: Pick<LibraryState, 'serverExams' | 'examQueue'>): CourseExamRecord[] {
+  const seen = new Set(s.serverExams.map((e) => `${e.courseId}|${e.takenAt}`));
+  return [...s.serverExams, ...s.examQueue.filter((e) => !seen.has(`${e.courseId}|${e.takenAt}`)).map(({ clientId: _c, ...e }) => e)];
+}
+
+/** examsOf for a component. */
+export function useExams(): CourseExamRecord[] {
+  const serverExams = useLibraryStore((s) => s.serverExams);
+  const examQueue = useLibraryStore((s) => s.examQueue);
+  return useMemo(() => examsOf({ serverExams, examQueue }), [serverExams, examQueue]);
 }
 
 /** Bytes a stored book takes (its JSON). */

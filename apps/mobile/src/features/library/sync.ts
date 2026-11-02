@@ -41,14 +41,20 @@ async function run(reason: LibrarySyncReason): Promise<void> {
 
   const flushed = await flush(uid);
   if (flushed < 0 || libraryStore.getState().uid !== uid) return;
-  const due = flushed > 0 || reason === 'manual' || reason === 'start' || Date.now() - lastPull > PULL_MS;
-  if (!due || libraryStore.getState().queue.length > 0) return;
+  const exams = await flushExams(uid);
+  if (exams < 0 || libraryStore.getState().uid !== uid) return;
+  const due = flushed > 0 || exams > 0 || reason === 'manual' || reason === 'start' || Date.now() - lastPull > PULL_MS;
+  if (!due || libraryStore.getState().queue.length > 0 || libraryStore.getState().examQueue.length > 0) return;
   try {
     const res = await libraryApi.progress();
     const s = libraryStore.getState();
     // A result queued while the pull was in flight is still in the queue;
     // the merged view keeps showing it.
-    if (s.uid === uid) s.setServer(res.attempts);
+    if (s.uid === uid) {
+      s.setServer(res.attempts);
+      // A server without courses sends no exams: keep what the phone has.
+      if (res.exams) s.setServerExams(res.exams);
+    }
     lastPull = Date.now();
   } catch {
     // Keep what the phone has.
@@ -89,6 +95,21 @@ async function flush(uid: string): Promise<number> {
     void queryClient.invalidateQueries({ queryKey: ['review-list'] });
   }
   return moved;
+}
+
+/** Posts the queued exam tries (one small request). Returns how many left the queue, or -1. */
+async function flushExams(uid: string): Promise<number> {
+  const queue = libraryStore.getState().examQueue;
+  if (queue.length === 0) return 0;
+  try {
+    await libraryApi.sync({ tzOffsetMin: tzOffsetMinutes(new Date()), attempts: [], exams: queue });
+  } catch {
+    libraryStore.getState().setSync('failed');
+    return -1;
+  }
+  if (libraryStore.getState().uid !== uid) return 0;
+  libraryStore.getState().settleExams(queue);
+  return queue.length;
 }
 
 // ─── Shelf and downloads ─────────────────────────────────────────────────
@@ -140,3 +161,48 @@ export async function downloadBook(id: string): Promise<DownloadResult> {
 export function cancelBookDownload(id: string): void {
   controllers.get(id)?.abort();
 }
+
+// ─── Courses ─────────────────────────────────────────────────────────────
+
+/** GET /library/courses into the stored list; a downloaded course with a newer version is fetched again. */
+export async function refreshCourses(): Promise<void> {
+  const res = await libraryApi.courses();
+  const s = libraryStore.getState();
+  s.setCourseList(res.courses);
+  queryClient.setQueryData(libraryKeys.courses(), res);
+  for (const c of res.courses) {
+    const have = s.courses[c.id];
+    if (have && have.version < c.version) void downloadCourse(c.id);
+  }
+}
+
+/** Course ids and book ids never collide, so both share the download states. */
+export async function downloadCourse(id: string): Promise<DownloadResult> {
+  const s = libraryStore.getState();
+  if (s.downloads[id] === 'loading') return 'busy';
+  if (!(await readNetwork()).online) {
+    s.setDownload(id, 'offline');
+    return 'offline';
+  }
+  const ctrl = new AbortController();
+  controllers.set(id, ctrl);
+  s.setDownload(id, 'loading');
+  try {
+    const course = await libraryApi.course(id, ctrl.signal);
+    libraryStore.getState().saveCourse(course);
+    queryClient.setQueryData(libraryKeys.course(id), course);
+    libraryStore.getState().setDownload(id, null);
+    return 'ok';
+  } catch (e) {
+    if (isAborted(e)) {
+      libraryStore.getState().setDownload(id, null);
+      return 'cancelled';
+    }
+    libraryStore.getState().setDownload(id, 'error');
+    return 'error';
+  } finally {
+    if (controllers.get(id) === ctrl) controllers.delete(id);
+  }
+}
+
+export const cancelCourseDownload = cancelBookDownload;
