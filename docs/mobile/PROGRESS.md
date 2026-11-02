@@ -221,3 +221,21 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   targets, the web stays live, api/ci merged by the agent (CI green, e9b2c0b), abandoned-session
   sweep (B7) approved as the next backend task.
 - Simulators are silent now (owner): `feel/sound.ts` skips sound when `!Device.isDevice`.
+
+## 2026-11-02 — Library filled: nine books, 664 puzzles
+
+- **Owner:** "fill the library with every possible book". The canvas shelf's six books plus three
+  more eras (covers drawn on the canvas page "Library — more books").
+- **Live on prod** (each `verify.mjs` PASS at depth 22, independently re-run by me before deploy):
+  Greco's Traps 40 (v2 notes), The Romantic Era 120 (6 chapters incl. a final examination),
+  Masters of Attack 100 (5 incl. exam), The Age of Steinitz 60, Lasker's Endings 50,
+  Alekhine's Fire 94 (5 incl. exam), Fundamentals (Capablanca) 80, Rubinstein's Precision 60,
+  The Hypermoderns 60. Ids of already-shipped chapters never changed (progress safe).
+- My verify rejected 5 Alekhine puzzles on the first pass (non-unique second move, a defence that
+  was not the best, a gain that evaporated); they were replaced and the book re-verified.
+- Notes fact-checked; one unverifiable claim (Marshall winning St. Louis 1904) was removed.
+  Ukrainian names unified (Пільсбері), exam chapters titled «Фінальний іспит».
+- **App:** cover palettes for every book, `exam` chapters (no hint/solution, Skip = missed).
+  Android prod APK built for the owner (arm64 and universal); iOS prod build reinstalled.
+- Mining ran ~10 h on 6 Stockfish processes at most (owner: don't overheat the Mac); no thermal
+  or CPU-limit warning was recorded.
