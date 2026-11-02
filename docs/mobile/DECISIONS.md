@@ -270,8 +270,9 @@ Owner spec plus the canvas "Learn" page (`LearnHome`, `LearnBooks`, `LearnCourse
 - Course puzzles are real Lichess rows: the backend inserts missing ones with their real stats
   and never rewrites an existing row (book puzzles keep popularity −100; course puzzles must stay
   in the Play pool as they are).
-- PROVISIONAL: the exam unlocks per cycle once that cycle's chapters are done; the emblem stays
-  "completed" once any exam is passed, its ring shows the current cycle after a restart; ~1 min a
+- PROVISIONAL: the exam unlocks per cycle once that cycle's chapters are done; the emblem is
+  "completed" once an exam is passed and goes back to "in progress" with the new cycle's ring
+  when a later cycle is started (as LearnCourseUA and LearnStates draw it; "Passed" stays); ~1 min a
   course puzzle for "per cycle"; the suggestion picks, among suggestable courses whose range holds
   the rating, the one whose middle is nearest (Endgames is not suggested); course colours are hex
   strings from the API with alpha-suffix tints (data, not literals in screens); books without a

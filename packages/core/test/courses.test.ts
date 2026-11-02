@@ -55,10 +55,11 @@ describe('courseProgress', () => {
     expect(passed.passedExam?.score).toBe(2);
   });
 
-  it('stays passed in cycle 2 while the ring shows the new cycle', () => {
+  it('shows the new cycle after a restart and keeps the pass', () => {
     const atts = [...['f1', 'f2', 'p1', 'p2', 'e1', 'e2'].map((id) => rec(id)), rec('f1', 2)];
     const p = courseProgress(course, atts, [exam(1, 2, true)]);
-    expect(p).toMatchObject({ emblem: 'passed', cycle: 2, examOpen: false });
+    expect(p).toMatchObject({ emblem: 'progress', cycle: 2, examOpen: false });
+    expect(p.passedExam?.score).toBe(2);
     expect(p.ring).toBeCloseTo(1 / 6);
   });
 });

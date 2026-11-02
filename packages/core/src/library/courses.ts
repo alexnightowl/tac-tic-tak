@@ -4,8 +4,8 @@
 // opens once every chapter of the cycle is done. Results ride the Library's
 // attempts (bookId = the course id); exam tries are kept apart, since a
 // retake replays puzzles that already have a result in the cycle.
-import type { BookProgress, BookShape, LibraryAttemptRecord, LibraryResult, Localized } from './index';
-import { bookProgress } from './index';
+import type { BookProgress, BookShape, LibraryAttemptRecord, LibraryResult, Localized } from './library';
+import { bookProgress } from './library';
 
 export type CoursePiece = 'pawn' | 'knight' | 'bishop' | 'rook' | 'queen' | 'king';
 
@@ -112,10 +112,11 @@ export type CourseProgress = BookProgress & {
   examOpen: boolean;
   /** Tries in the current cycle, oldest first. */
   examTries: CourseExamRecord[];
-  /** The best passing try in any cycle (the certificate), else null. */
+  /** The best passing try in any cycle (the certificate, "Passed"), else null. */
   passedExam: CourseExamRecord | null;
+  /** 'passed' until a new cycle is started; then 'progress' again (passedExam stays). */
   emblem: CourseEmblemState;
-  /** Ring fill, 0..1: done / total in the current cycle (1 once passed and not restarted). */
+  /** Ring fill, 0..1: done / total in the current cycle (1 while 'passed'). */
   ring: number;
 };
 
@@ -133,9 +134,10 @@ export function courseProgress(
   const lessons = base.chapters.slice(0, -1);
   const examOpen = cycle === base.cycle && lessons.every((ch) => ch.complete);
   const examTries = mine.filter((e) => e.cycle === cycle).sort((a, b) => a.takenAt.localeCompare(b.takenAt));
-  const emblem: CourseEmblemState = passedExam ? 'passed' : base.started || mine.length > 0 ? 'progress' : 'new';
+  // A passed course started again shows the new cycle's progress (canvas LearnCourseUA, LearnStates).
   const restarted = !!passedExam && cycle > passedExam.cycle && base.done > 0;
-  const ring = passedExam && !restarted ? 1 : base.total > 0 ? base.done / base.total : 0;
+  const emblem: CourseEmblemState = passedExam && !restarted ? 'passed' : base.started || mine.length > 0 ? 'progress' : 'new';
+  const ring = emblem === 'passed' ? 1 : base.total > 0 ? base.done / base.total : 0;
   return { ...base, examOpen, examTries, passedExam, emblem, ring };
 }
 
