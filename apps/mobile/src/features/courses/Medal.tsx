@@ -26,7 +26,6 @@ export function Medal({
   const outer = size + halo * 2;
   return (
     <View style={[{ width: outer, height: outer, borderRadius: outer / 2 }, styles.center, ring === 'medal' && styles.drop, style]}>
-      {ring === 'medal' ? <View style={[styles.abs, { width: outer, height: outer, borderRadius: outer / 2, backgroundColor: ink.medalHalo }]} /> : null}
       {ring === 'seal' ? <View style={[styles.abs, { width: outer, height: outer, borderRadius: outer / 2, backgroundColor: ink.sealRing }]} /> : null}
       {ring === 'medal' ? <View style={[styles.abs, { width: size + 4, height: size + 4, borderRadius: (size + 4) / 2, backgroundColor: tone.sand }]} /> : null}
       <View style={[styles.disc, { width: size, height: size, borderRadius: size / 2 }]}>
@@ -57,6 +56,7 @@ export function Medal({
 const styles = StyleSheet.create({
   center: { alignItems: 'center', justifyContent: 'center' },
   abs: { position: 'absolute' },
-  drop: { boxShadow: [{ offsetX: 0, offsetY: 12, blurRadius: 26, spreadDistance: 0, color: ink.medalDrop }] },
+  // The halo ring is the shadowed view's own (solid) ground: iOS computes the shadow from it.
+  drop: { backgroundColor: ink.medalHalo, boxShadow: [{ offsetX: 0, offsetY: 12, blurRadius: 26, spreadDistance: 0, color: ink.medalDrop }] },
   disc: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
 });

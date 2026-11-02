@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
   },
   certShadow: {
     position: 'absolute',
+    backgroundColor: ink.certFace[1],
     top: 0,
     bottom: 0,
     borderRadius: radii.board,
