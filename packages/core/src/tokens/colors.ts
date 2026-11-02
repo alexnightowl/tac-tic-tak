@@ -405,6 +405,33 @@ export const learn = {
   pageRule: '#a9874e',
 } as const;
 
+/**
+ * Course screens (canvas LearnIntro, LearnCourseDone). Canvas values,
+ * already baked; the course colour's own tints are data (courses/tones.ts).
+ */
+export const course = {
+  /** Intro diagram: the move to find (solid) and what it then hits (dashed). */
+  arrowMove: 'rgba(47,95,158,0.9)',
+  arrowThreat: 'rgba(216,132,124,0.9)',
+  /** The certificate: parchment face (170°), frame, rules and inks. */
+  certFace: ['#e4d8c3', '#cdbfa6'] as const,
+  certEdge: 'rgba(255,255,255,0.4)',
+  certFrame: 'rgba(122,54,52,0.55)',
+  certFrameInner: 'rgba(122,54,52,0.25)',
+  certRule: 'rgba(122,54,52,0.5)',
+  certBrand: '#7a3634',
+  certCaption: '#5a4a46',
+  certTitle: '#3d1f21',
+  certMeta: '#6b5c55',
+  certBody: '#4a3d3a',
+  certName: '#2a2226',
+  /** Wax seal: the ring around it and its top light. */
+  sealRing: 'rgba(122,54,52,0.35)',
+  sealLight: 'rgba(255,236,220,0.25)',
+  /** Medal on chapter complete: the dark ring outside the sand one. */
+  medalHalo: 'rgba(17,15,17,0.7)',
+} as const;
+
 /** System chrome: app.json / expo-system-ui / status bar. */
 export const system = {
   background: eos.ink,

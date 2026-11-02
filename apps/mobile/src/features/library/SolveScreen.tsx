@@ -35,13 +35,14 @@ import { requestLibrarySync } from './sync';
 // missed (a wrong move or the solution shown). Time counts from the
 // player's first turn. Not rated; hint / missed go to Review on sync.
 
-type Note = 'missed' | 'hint' | 'solution' | null;
+export type Note = 'missed' | 'hint' | 'solution' | null;
 
-const toItem = (p: LibraryPuzzle): PracticeItem => ({
+/** The runner item for a book or course puzzle (shared with features/courses). */
+export const toItem = (p: Pick<LibraryPuzzle, 'id' | 'fen' | 'moves' | 'rating' | 'themes'>): PracticeItem => ({
   puzzle: { id: p.id, fen: p.fen, moves: p.moves, rating: p.rating, themes: p.themes, gameUrl: null },
 });
 
-type TrackerSnap = { id: string | null; startedAt: number; endedAt: number; note: Note };
+export type TrackerSnap = { id: string | null; startedAt: number; endedAt: number; note: Note };
 
 /**
  * Watches the runner and queues each puzzle's result once. Plain class: it
@@ -49,7 +50,7 @@ type TrackerSnap = { id: string | null; startedAt: number; endedAt: number; note
  * immutable `snap` (useSyncExternalStore), never its fields: the React
  * Compiler would cache a method call on a stable object.
  */
-class ResultTracker {
+export class ResultTracker {
   id: string | null = null;
   startedAt = 0;
   endedAt = 0;
@@ -61,6 +62,8 @@ class ResultTracker {
   constructor(
     private readonly bookId: string,
     private readonly cycle: number,
+    /** Each result as it is queued (the course exam keeps its own tally). */
+    private readonly onRecord?: (puzzleId: string, result: LibraryResult) => void,
   ) {}
 
   subscribe = (fn: () => void) => {
@@ -124,6 +127,7 @@ class ResultTracker {
       solvedAt: new Date(now).toISOString(),
       localDay: formatLocalDate(new Date(now)),
     });
+    this.onRecord?.(this.id, this.result);
     this.emit();
     void requestLibrarySync('runner');
   }
@@ -389,10 +393,10 @@ function GameCard({ puzzle, lang }: { puzzle: LibraryPuzzle; lang: 'en' | 'uk' }
   );
 }
 
-const fmt = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+export const fmt = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 
 /** "0:14 / 0:25": this puzzle's time against the cycle target. Re-renders only itself, at 1 Hz. */
-function PuzzleClock({ tracker, target }: { tracker: ResultTracker; target: number | null }) {
+export function PuzzleClock({ tracker, target }: { tracker: ResultTracker; target: number | null }) {
   const t = useT();
   const { startedAt, endedAt } = useSyncExternalStore(tracker.subscribe, tracker.getSnap);
   const [now, setNow] = useState(() => Date.now());
