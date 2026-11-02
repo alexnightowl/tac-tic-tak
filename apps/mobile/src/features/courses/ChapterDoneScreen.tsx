@@ -14,7 +14,7 @@ import { ThemeIcon } from '@/features/review/ThemeIcon';
 import { AppText, PlateButton, ProgressBar, Tap, useLang } from '@/ui';
 import { useT, useTn } from '@/ui/lang';
 import { Medal } from './Medal';
-import { clock, courseHref, lessonsOf, openChapter, passedInCycle, resultsIn, type CourseLike } from './model';
+import { clock, courseHref, fitPlate, lessonsOf, openChapter, passedInCycle, resultsIn, type CourseLike } from './model';
 import { useGlowStyle, useSettleStyle } from './motion';
 import { Glow } from './parts';
 import { courseTones, type CourseTones } from './tones';
@@ -90,7 +90,7 @@ function Done({ course, chapter, cycle, fresh }: { course: CourseLike; chapter: 
   if (nextIndex != null) {
     cta = {
       id: 'course-done-next',
-      label: t('courses.done.next', { title: localized(course.chapters[nextIndex].title, lang) }),
+      label: fitPlate(t('courses.done.next', { title: localized(course.chapters[nextIndex].title, lang) }), t('courses.done.next_short', { ch: nextIndex + 1 })),
       run: () => openChapter(course, progress, nextIndex, true),
     };
   } else if (progress.examOpen && !passedInCycle(progress)) {

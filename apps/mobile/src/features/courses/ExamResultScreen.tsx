@@ -12,7 +12,7 @@ import { ThemeIcon } from '@/features/review/ThemeIcon';
 import { AppText, PlateButton, ProgressBar, Tap, useLang } from '@/ui';
 import { useT } from '@/ui/lang';
 import { Medal } from './Medal';
-import { courseHref, lastTry, themeTitle, type CourseLike } from './model';
+import { courseHref, fitPlate, lastTry, themeTitle, type CourseLike } from './model';
 import { useSettleStyle } from './motion';
 import { courseTones } from './tones';
 
@@ -119,7 +119,7 @@ function Result({ course, record, cycle }: { course: CourseLike; record: CourseE
         {practice >= 0 ? (
           <PlateButton
             testID="course-result-practice"
-            label={t('courses.fail.practice', { title: localized(course.chapters[practice].title, lang) })}
+            label={fitPlate(t('courses.fail.practice', { title: localized(course.chapters[practice].title, lang) }), t('courses.fail.practice_short', { ch: practice + 1 }))}
             variant="slate"
             size="md"
             block

@@ -44,7 +44,8 @@ export const coursesUk: Dict = {
   'courses.exam_a11y_locked': 'Іспит, закрито. {line}',
   'courses.exam_a11y': 'Іспит. {line}',
   'courses.cta_start': 'Почати курс',
-  'courses.cta_continue': 'Далі · {title}, {n} з {total}',
+  'courses.cta_continue': 'Продовжити · {title}, {n} з {total}',
+  'courses.cta_continue_short': 'Продовжити · розділ {ch}',
   'courses.cta_exam': 'Почати іспит',
   'courses.cta_retake': 'Перескласти іспит',
   'courses.cta_cycle': 'Почати цикл {n}',
@@ -96,6 +97,7 @@ export const coursesUk: Dict = {
   'courses.done.target': 'Ціль циклу {n}',
   'courses.done.course_progress': 'Прогрес курсу',
   'courses.done.next': 'Наступний розділ · {title}',
+  'courses.done.next_short': 'Далі · розділ {ch}',
   'courses.done.back': 'Назад до курсу',
   'courses.done.chart_a11y': 'Секунд на задачу: {list}',
 
@@ -108,6 +110,7 @@ export const coursesUk: Dict = {
   'courses.fail.lede': 'Пройдені розділи лишаються. Ще раз пройди слабкі теми — і спробуй знову.',
   'courses.fail.by_theme': 'За темами',
   'courses.fail.practice': 'Потренувати: {title}',
+  'courses.fail.practice_short': 'Потренувати розділ {ch}',
   'courses.fail.retake': 'Перескласти іспит',
 
   // Course complete.

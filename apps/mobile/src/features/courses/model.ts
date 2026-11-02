@@ -67,6 +67,9 @@ export function openChapter(course: CourseLike, p: CourseProgress, index: number
   else router.push(href);
 }
 
+/** A large plate holds about 26 capitals: a long theme name gives way to the chapter number (LearnCourseUA). */
+export const fitPlate = (full: string, short: string) => (full.length <= 26 ? full : short);
+
 export type CourseCta = { kind: 'start' | 'continue' | 'exam' | 'retake' | 'cycle'; label: string; run: () => void };
 
 export function courseCta(course: CourseLike, p: CourseProgress, t: TFn, lang: string): CourseCta {
@@ -84,11 +87,9 @@ export function courseCta(course: CourseLike, p: CourseProgress, t: TFn, lang: s
   }
   const ch = p.chapters[index];
   const title = localized(course.chapters[index].title, lang);
-  return {
-    kind: 'continue',
-    label: t('courses.cta_continue', { title, n: Math.min(ch.total, ch.done + 1), total: ch.total }),
-    run: () => openChapter(course, p, index),
-  };
+  const full = t('courses.cta_continue', { title, n: Math.min(ch.total, ch.done + 1), total: ch.total });
+  const label = fitPlate(full, t('courses.cta_continue_short', { ch: index + 1 }));
+  return { kind: 'continue', label, run: () => openChapter(course, p, index) };
 }
 
 /** m:ss */

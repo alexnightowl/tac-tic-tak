@@ -76,7 +76,15 @@ export function CourseScreen({ courseId }: { courseId: string }) {
       <ScrollView contentContainerStyle={[styles.scroll, { paddingBottom: DOCK_H + insets.bottom }]}>
         <Glow color={tones.tint(0.26)} size={380} style={styles.glow} />
         <View style={styles.hero}>
-          <CourseEmblem color={course.color} piece={course.piece} state={progress.emblem} ring={progress.ring} size={96} testID="course-emblem" />
+          {/* A passed course restarted in a new cycle shows that cycle's ring (LearnCourseUA). */}
+          <CourseEmblem
+            color={course.color}
+            piece={course.piece}
+            state={progress.emblem === 'passed' && progress.ring < 1 ? 'progress' : progress.emblem}
+            ring={progress.ring}
+            size={96}
+            testID="course-emblem"
+          />
           <View style={styles.flex}>
             <AppText variant="label" color={tones.ink}>
               {t('courses.kicker', { min: course.ratingMin, max: course.ratingMax })}

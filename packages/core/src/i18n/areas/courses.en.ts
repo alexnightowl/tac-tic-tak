@@ -45,6 +45,7 @@ export const coursesEn: Dict = {
   'courses.exam_a11y': 'Final exam. {line}',
   'courses.cta_start': 'Start the course',
   'courses.cta_continue': 'Continue · {title}, {n} of {total}',
+  'courses.cta_continue_short': 'Continue · Chapter {ch}',
   'courses.cta_exam': 'Start the exam',
   'courses.cta_retake': 'Retake exam',
   'courses.cta_cycle': 'Start cycle {n}',
@@ -96,6 +97,7 @@ export const coursesEn: Dict = {
   'courses.done.target': 'Cycle {n} target',
   'courses.done.course_progress': 'Course progress',
   'courses.done.next': 'Next chapter · {title}',
+  'courses.done.next_short': 'Next · Chapter {ch}',
   'courses.done.back': 'Back to the course',
   'courses.done.chart_a11y': 'Seconds per puzzle: {list}',
 
@@ -108,6 +110,7 @@ export const coursesEn: Dict = {
   'courses.fail.lede': 'Your chapters stay done. One more pass on the weak themes, then try again.',
   'courses.fail.by_theme': 'By theme',
   'courses.fail.practice': 'Practice {title}',
+  'courses.fail.practice_short': 'Practice chapter {ch}',
   'courses.fail.retake': 'Retake exam',
 
   // Course complete.
