@@ -1,7 +1,6 @@
 import { localized, type LibraryBookSummary } from '@tac/core/library';
 import { alpha, black, cover, eos, learn, tone } from '@tac/core/tokens';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
 import { Modal, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -134,7 +133,7 @@ function OpenBookLayer({ run, onPush, onDone }: { run: OpenBookRun; onPush: () =
         </Animated.View>
         <FirstPage book={run.book} chapterIndex={run.chapterIndex} k={k} />
         <Animated.View style={[StyleSheet.absoluteFill, styles.hinge, back]}>
-          <LinearGradient colors={[palette.face[1], palette.face[0]]} start={{ x: 0.3, y: 0.3 }} end={{ x: 1, y: 1 }} style={[StyleSheet.absoluteFill, styles.face]} />
+          <View style={[StyleSheet.absoluteFill, styles.face, { backgroundImage: `radial-gradient(circle at 30% 30%, ${palette.face[0]}, ${palette.face[1]})` }]} />
           <View style={[StyleSheet.absoluteFill, styles.face, styles.endShade]} />
           <View style={[styles.endRule, { borderColor: alpha(tone.gold, 0.35) }]} />
         </Animated.View>
@@ -156,12 +155,12 @@ function FirstPage({ book, chapterIndex, k }: { book: LibraryBookSummary; chapte
   const meta = ch ? `${localized(ch.subtitle, lang)} · ${plural(tn, 'library.puzzles', ch.count)}` : '';
   return (
     <View style={styles.page}>
-      <LinearGradient
-        colors={learn.page}
-        locations={[0, 0.09, 0.6, 1]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
-        style={[StyleSheet.absoluteFill, styles.pageRadius]}
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          styles.pageRadius,
+          { backgroundImage: `linear-gradient(90deg, ${learn.page[0]} 0%, ${learn.page[1]} 9%, ${learn.page[2]} 60%, ${learn.page[3]} 100%)` },
+        ]}
       />
       <AppText variant="label" color={eos.ember} style={{ fontSize: 7 * k, letterSpacing: 2 * k, lineHeight: 10 * k }}>
         {t('learn.open.chapter')}

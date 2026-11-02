@@ -1,7 +1,6 @@
 import { localized, type LibraryBookSummary } from '@tac/core/library';
 import { alpha, black, cover, learn, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { PIECE_IMAGES, type PieceCode } from '@/board/assets';
@@ -12,7 +11,9 @@ import { AppText, textStyle, useLang } from '@/ui';
 // the cloth — the title in the display face and a diamond ornament on top,
 // the author's oval portrait in the middle (two authors: two ovals that
 // overlap), the author line in small caps and the years at the foot; a
-// 160° cloth gradient, the spine shade, two gold rules. `small` (the
+// 160° cloth gradient (a CSS background on the root: a separate gradient
+// view came back from Fabric's recycling with a stale clip and covered the
+// rules), the spine shade, two gold rules. `small` (the
 // Continue card) keeps only the title, the ornament and the portraits.
 // Measures scale from the shelf size (173 × 232); the content insets
 // follow the canvas at 92 / 132 / 173 (a + b·w).
@@ -39,6 +40,12 @@ export function BookCover({ book, width, small = false, testID }: Props) {
   const ovalW = (two ? 55.7 : 66.8) * k;
   const ovalH = ovalW * 1.25;
   const title = textStyle('title', lang);
+  const name = localized(book.title, lang);
+  // Titles wrap, never break inside a word: a long word (Cinzel's capitals
+  // are wide) shrinks the size until it fits the line (~0.68 em a letter).
+  const lineW = width - (10.09 + 0.0284 * width) - (14.09 + 0.0284 * width);
+  const longest = Math.max(1, ...name.split(/\s+/).map((w) => w.length));
+  const titleSize = Math.min(19 * k, lineW / (longest * 0.68));
   const ornament = alpha(rule, parchment ? 0.9 : 0.85);
   const ring = Math.max(1, 1.5 * k);
   const oval = {
@@ -56,11 +63,10 @@ export function BookCover({ book, width, small = false, testID }: Props) {
   return (
     <View
       testID={testID}
-      style={[styles.root, { width, height: Math.round(width * COVER_RATIO) }]}
+      style={[styles.root, { width, height: Math.round(width * COVER_RATIO), backgroundImage: `linear-gradient(160deg, ${palette.face[0]} 0%, ${palette.face[1]} 100%)` }]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <LinearGradient colors={palette.face} start={{ x: 0.33, y: 0 }} end={{ x: 0.67, y: 1 }} style={StyleSheet.absoluteFill} />
       <View style={styles.spine} />
       <View style={[styles.rule, { borderColor: alpha(rule, parchment ? 0.6 : 0.55) }]} />
       <View style={[styles.ruleInner, { borderColor: alpha(rule, parchment ? 0.3 : 0.25) }]} />
@@ -70,9 +76,7 @@ export function BookCover({ book, width, small = false, testID }: Props) {
           { top: 9.89 + 0.0642 * width, right: 10.09 + 0.0284 * width, bottom: 9.96 + 0.0407 * width, left: 14.09 + 0.0284 * width },
         ]}
       >
-        <AppText style={[title, styles.center, { color: ink, fontSize: 19 * k, lineHeight: 19 * k * 1.12, letterSpacing: 0.2 }]}>
-          {localized(book.title, lang)}
-        </AppText>
+        <AppText style={[title, styles.center, { color: ink, fontSize: titleSize, lineHeight: titleSize * 1.12, letterSpacing: 0.2 }]}>{name}</AppText>
         <View style={[styles.ornament, { marginTop: 6 * k, gap: 4 * k }]}>
           <View style={{ width: 14 * k, height: 1, backgroundColor: ornament }} />
           <View style={{ width: 4 * k, height: 4 * k, transform: [{ rotate: '45deg' }], backgroundColor: ornament }} />
