@@ -1,0 +1,112 @@
+# Courses (docs/mobile/COURSES.md, canvas page "Learn"). One CASE per run;
+# 15-courses.sh registers a local user, seeds it with psql and checks the DB.
+#   intro  course page from a deep link (exam row locked) → chapter 1 →
+#          its intro → start → one puzzle solved (e2e-solve) → back: the
+#          chapter row reads 1/15 and the CTA continues it.
+#   gate   fresh course: the exam row is locked and the exam deep link
+#          shows the closed note instead of a board.
+#   exam   every chapter seeded: the exam row is open → the exam → Skip
+#          (a miss, score 0/1) → leave (asks first) → back on the course.
+appId: online.tactictak.app
+---
+- runFlow:
+    file: 09-login.yaml
+- runFlow:
+    when: { visible: { id: screen-onboarding } }
+    commands:
+      - tapOn: { id: onboarding-skip, optional: true }
+- openLink: "tactictak://course/${COURSE}"
+- extendedWaitUntil: { visible: { id: course-cta }, timeout: 20000 }
+- takeScreenshot: ${SHOTS}/01-course-${CASE}
+
+- runFlow:
+    when: { true: "${CASE == 'intro' || CASE == 'gate'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: course-exam-locked }, direction: DOWN, timeout: 8000 }
+      - assertNotVisible: { id: course-exam-open }
+
+- runFlow:
+    when: { true: "${CASE == 'intro'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: course-chapter-0 }, direction: UP, timeout: 8000 }
+      - assertVisible: { id: course-chapter-0-state, text: "15" }
+      - waitForAnimationToEnd: { timeout: 3000 }
+      - repeat:
+          times: 3
+          while:
+            notVisible: { id: course-intro-start }
+          commands:
+            - tapOn: { id: course-chapter-0 }
+            - waitForAnimationToEnd: { timeout: 3000 }
+      - extendedWaitUntil: { visible: { id: course-intro-start }, timeout: 15000 }
+      - assertVisible: { id: course-intro-board }
+      - takeScreenshot: ${SHOTS}/02-intro
+      - waitForAnimationToEnd: { timeout: 3000 }
+      - repeat:
+          times: 3
+          while:
+            visible: { id: course-intro-start }
+          commands:
+            - tapOn: { id: course-intro-start }
+            - waitForAnimationToEnd: { timeout: 3000 }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      - assertVisible: { id: course-cycle-chip, text: ".*1.*" }
+      - assertVisible: { id: course-theme-card }
+      - takeScreenshot: ${SHOTS}/03-solve
+      - tapOn: { id: e2e-solve }
+      # The next puzzle of the chapter is up.
+      - extendedWaitUntil: { visible: { id: course-position, text: ".* 2 .*" }, timeout: 15000 }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      - waitForAnimationToEnd: { timeout: 3000 }
+      - repeat:
+          times: 3
+          while:
+            visible: { id: course-solve-exit }
+          commands:
+            - tapOn: { id: course-solve-exit }
+            - waitForAnimationToEnd: { timeout: 3000 }
+      - scrollUntilVisible: { element: { id: course-chapter-0-state }, direction: UP, timeout: 8000 }
+      - assertVisible: { id: course-chapter-0-state, text: "1/15" }
+      - assertVisible: { id: course-cta, text: "(?i).*2 of 15.*|.*chapter 1.*" }
+      - takeScreenshot: ${SHOTS}/04-course-after
+
+- runFlow:
+    when: { true: "${CASE == 'gate'}" }
+    commands:
+      - openLink: "tactictak://course/exam?course=${COURSE}"
+      - extendedWaitUntil: { visible: { id: course-exam-closed }, timeout: 15000 }
+      - assertNotVisible: { id: course-exam-skip }
+      - takeScreenshot: ${SHOTS}/02-exam-closed
+      - tapOn: { id: course-exam-back }
+      - extendedWaitUntil: { visible: { id: course-cta }, timeout: 10000 }
+
+- runFlow:
+    when: { true: "${CASE == 'exam'}" }
+    commands:
+      - scrollUntilVisible: { element: { id: course-exam-open }, direction: DOWN, timeout: 8000 }
+      # A tap during the scroll's momentum only stops it: tap until the exam is up.
+      - waitForAnimationToEnd: { timeout: 3000 }
+      - repeat:
+          times: 3
+          while:
+            visible: { id: course-cta }
+          commands:
+            - tapOn: { id: course-cta }
+            - waitForAnimationToEnd: { timeout: 3000 }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      - assertVisible: { id: course-exam-chip }
+      - assertNotVisible: { id: course-hint }
+      - takeScreenshot: ${SHOTS}/02-exam
+      - tapOn: { id: course-exam-skip }
+      - extendedWaitUntil: { visible: { id: course-exam-score, text: "(0/1|.*0\\D+1\\D*)" }, timeout: 10000 }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      - tapOn: { id: e2e-solve }
+      - extendedWaitUntil: { visible: { id: course-exam-score, text: "(1/2|.*1\\D+2\\D*)" }, timeout: 15000 }
+      - tapOn: { id: course-exam-exit }
+      # Leaving asks first; the try is dropped.
+      - tapOn: { text: "(Stay|Лишитися)" }
+      - assertVisible: { id: course-exam-skip }
+      - tapOn: { id: course-exam-exit }
+      - tapOn: { text: "(Leave|Вийти)" }
+      - extendedWaitUntil: { visible: { id: course-cta }, timeout: 10000 }
+      - assertVisible: { id: course-cta, text: "(?i)start the exam|почати іспит" }

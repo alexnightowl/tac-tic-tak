@@ -1,40 +1,27 @@
-import type { Course, CourseExamRecord, CourseSummary, LibraryAttemptRecord } from '@tac/core/library';
+import type { Course, CourseExamRecord, LibraryAttemptRecord } from '@tac/core/library';
 import { eos, fontFamilies } from '@tac/core/tokens';
 import { router, Stack, useLocalSearchParams, type Href } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 
+import { libraryApi } from '@/features/library/api';
 import { useLibraryStore } from '@/features/library/store';
 
-// DEV ONLY: a real-puzzle "basic" course (Lichess puzzles from the local
-// DB, version 0 so the server's copy replaces it once the backend serves
-// courses) stored as downloaded, plus seeded results for every course
-// page state. Seeds write the phone's copy of the server list only; a
-// later pull from a server without these results drops them again.
+// DEV ONLY: seeded results for every course page state on the server's
+// "basic" course, for screenshots. Seeds write the phone's copy of the
+// server list only and stay pinned for the session (put back after each
+// pull); nothing is sent to the server.
 //   tactictak://dev/course-fixture?seed=new|progress|examopen|failed|passed|cycle2[&open=1]
 
-const fixture = (): Course => require('../../dev/courseFixture.json') as Course;
+const COURSE_ID = 'basic';
 
 const SEEDS = ['new', 'progress', 'examopen', 'failed', 'passed', 'cycle2'] as const;
 type Seed = (typeof SEEDS)[number];
 
-function summaryOf(c: Course): CourseSummary {
-  return {
-    ...c,
-    chapters: c.chapters.map(({ intro: _i, puzzles: _p, ...ch }) => ch),
-    exam: { id: c.exam.id, count: c.exam.count, passMark: c.exam.passMark, puzzleIds: c.exam.puzzleIds },
-  };
-}
-
 const DAY = 24 * 3600 * 1000;
 
-function seed(kind: Seed) {
-  const c = fixture();
-  const s = useLibraryStore.getState();
-  s.saveCourse(c);
-  const list = (s.courseList ?? []).filter((x) => x.id !== c.id);
-  s.setCourseList([summaryOf(c), ...list]);
-
+async function seed(kind: Seed) {
+  const c: Course = await libraryApi.course(COURSE_ID);
   const out: LibraryAttemptRecord[] = [];
   const exams: CourseExamRecord[] = [];
   const at = (daysAgo: number, i: number) => new Date(Date.now() - daysAgo * DAY + i * 60_000).toISOString();
@@ -106,8 +93,9 @@ export default function CourseFixtureLab() {
   useEffect(() => {
     const k = SEEDS.find((x) => x === p.seed);
     if (!k) return;
-    seed(k);
-    if (p.open) router.replace(`/course/${fixture().id}` as Href);
+    void seed(k).then(() => {
+      if (p.open) router.replace(`/course/${COURSE_ID}` as Href);
+    });
   }, [p.seed, p.open]);
   return (
     <ScrollView contentContainerStyle={styles.list} testID="dev-course-fixture">
@@ -118,10 +106,7 @@ export default function CourseFixtureLab() {
           key={k}
           style={styles.row}
           testID={`dev-course-seed-${k}`}
-          onPress={() => {
-            seed(k);
-            router.push(`/course/${fixture().id}` as Href);
-          }}
+          onPress={() => void seed(k).then(() => router.push(`/course/${COURSE_ID}` as Href))}
         >
           <Text style={styles.title}>{k}</Text>
         </Pressable>
