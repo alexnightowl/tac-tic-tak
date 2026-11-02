@@ -41,7 +41,7 @@ function pendingIn(courseId: string, puzzles: readonly CoursePuzzle[], cycle: nu
   return puzzles.filter((p) => !done.has(p.id));
 }
 
-export function CourseSolveScreen({ courseId, chapter, cycle }: { courseId: string; chapter: number; cycle: number }) {
+export function CourseSolveScreen({ courseId, chapter, cycle, replay = false }: { courseId: string; chapter: number; cycle: number; replay?: boolean }) {
   const t = useT();
   const insets = useSafeAreaInsets();
   const { course, loading } = useCourseContent(courseId);
@@ -61,25 +61,31 @@ export function CourseSolveScreen({ courseId, chapter, cycle }: { courseId: stri
       </View>
     );
   }
-  return <Runner course={course} chapterIndex={chapter} cycle={cycle} />;
+  return <Runner course={course} chapterIndex={chapter} cycle={cycle} replay={replay} />;
 }
 
-function Runner({ course, chapterIndex, cycle }: { course: Course; chapterIndex: number; cycle: number }) {
+function Runner({ course, chapterIndex, cycle, replay }: { course: Course; chapterIndex: number; cycle: number; replay: boolean }) {
   const t = useT();
   const tn = useTn();
   const { lang } = useLang();
   const insets = useSafeAreaInsets();
   const chapter = course.chapters[chapterIndex];
   const tones = courseTones(course.color);
-  const [tracker] = useState(() => new ResultTracker(course.id, cycle));
+  // A replay walks the whole chapter and shows this run's own results.
+  const [played, setPlayed] = useState<ReadonlySet<string>>(() => new Set());
+  const [tracker] = useState(() => new ResultTracker(course.id, cycle, replay ? (id) => setPlayed((s) => new Set(s).add(id)) : undefined));
   const hooks = useMemo<PracticeHooks>(
     () => ({
       advance: async (puzzleId) => {
+        if (replay) {
+          const next = chapter.puzzles[chapter.puzzles.findIndex((p) => p.id === puzzleId) + 1];
+          return next ? toItem(next) : null;
+        }
         const left = pendingIn(course.id, chapter.puzzles, cycle).filter((p) => p.id !== puzzleId);
         return left[0] ? toItem(left[0]) : null;
       },
     }),
-    [course.id, chapter, cycle],
+    [course.id, chapter, cycle, replay],
   );
   const { controller, state: s, onMove, boardRef } = usePractice('library', hooks);
   const { note } = useSyncExternalStore(tracker.subscribe, tracker.getSnap);
@@ -88,10 +94,14 @@ function Runner({ course, chapterIndex, cycle }: { course: Course; chapterIndex:
   const [intro, setIntro] = useState(false);
 
   const doneHref = courseHref.done(course.id, chapterIndex, cycle, true);
+  const close = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace(courseHref.page(course.id));
+  };
 
   useEffect(() => {
     const off = controller.subscribe(() => tracker.onState(controller.getState()));
-    const first = pendingIn(course.id, chapter.puzzles, cycle)[0];
+    const first = replay ? chapter.puzzles[0] : pendingIn(course.id, chapter.puzzles, cycle)[0];
     if (first) controller.dispatch({ type: 'start', items: [toItem(first)] });
     else router.replace(doneHref);
     return off;
@@ -100,7 +110,8 @@ function Runner({ course, chapterIndex, cycle }: { course: Course; chapterIndex:
   useEffect(() => {
     if (s.phase === 'done' && !finished.current) {
       finished.current = true;
-      router.replace(doneHref);
+      if (replay) close();
+      else router.replace(doneHref);
     }
   }, [s.phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -109,21 +120,17 @@ function Runner({ course, chapterIndex, cycle }: { course: Course; chapterIndex:
 
   const progress = useMemo(() => bookProgress(courseShape(course), attempts), [course, attempts]);
   const target = cycleTargetSec(progress.cycles, cycle);
-  const done = useMemo(() => {
+  const stored = useMemo(() => {
     const m = new Set<string>();
     for (const a of attempts) if (a.bookId === course.id && a.cycle === cycle) m.add(a.puzzleId);
     return m;
   }, [attempts, course.id, cycle]);
+  const done = replay ? played : stored;
 
   const puzzleId = s.item?.puzzle.id ?? null;
   const pIndex = chapter.puzzles.findIndex((p) => p.id === puzzleId);
   const puzzle = pIndex >= 0 ? chapter.puzzles[pIndex] : null;
   const title = localized(chapter.title, lang);
-
-  const close = () => {
-    if (router.canGoBack()) router.back();
-    else router.replace(courseHref.page(course.id));
-  };
 
   const side = s.playerColor;
   const solved = s.phase === 'solved' || s.phase === 'advancing';

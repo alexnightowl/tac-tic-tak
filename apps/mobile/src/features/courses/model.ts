@@ -23,6 +23,8 @@ export const courseHref = {
   page: (id: string) => `/course/${id}` as Href,
   intro: (id: string, chapter: number, reread = false) => `/course/intro?course=${id}&chapter=${chapter}${reread ? '&reread=1' : ''}` as Href,
   solve: (id: string, chapter: number, cycle: number) => `/course/solve?course=${id}&chapter=${chapter}&cycle=${cycle}` as Href,
+  /** The chapter's puzzles again from the top (practice after a failed exam); results in the cycle stay first-wins. */
+  replay: (id: string, chapter: number, cycle: number) => `/course/solve?course=${id}&chapter=${chapter}&cycle=${cycle}&replay=1` as Href,
   exam: (id: string) => `/course/exam?course=${id}` as Href,
   done: (id: string, chapter: number, cycle: number, fresh = false) =>
     `/course/done?course=${id}&chapter=${chapter}&cycle=${cycle}${fresh ? '&fresh=1' : ''}` as Href,
