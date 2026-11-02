@@ -87,7 +87,7 @@ function Runner({ course, chapterIndex, cycle }: { course: Course; chapterIndex:
   const finished = useRef(false);
   const [intro, setIntro] = useState(false);
 
-  const doneHref = courseHref.done(course.id, chapterIndex, cycle);
+  const doneHref = courseHref.done(course.id, chapterIndex, cycle, true);
 
   useEffect(() => {
     const off = controller.subscribe(() => tracker.onState(controller.getState()));

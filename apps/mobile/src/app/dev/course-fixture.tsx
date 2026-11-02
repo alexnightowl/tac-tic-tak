@@ -74,10 +74,30 @@ function seed(kind: Seed) {
     chapter(6, 2, 4, 26, 0.2);
   }
 
-  const keep = s.server.filter((a) => a.bookId !== c.id);
-  s.setServer([...keep, ...out]);
-  s.setServerExams([...s.serverExams.filter((e) => e.courseId !== c.id), ...exams]);
+  pinned = { courseId: c.id, attempts: out, exams };
+  apply();
 }
+
+// A pull from a server without these results replaces the phone's copy:
+// the seed stays pinned (this session) and is put back after each pull.
+let pinned: { courseId: string; attempts: LibraryAttemptRecord[]; exams: CourseExamRecord[] } | null = null;
+let applying = false;
+
+function apply() {
+  if (!pinned || applying) return;
+  applying = true;
+  const s = useLibraryStore.getState();
+  const { courseId, attempts, exams } = pinned;
+  s.setServer([...s.server.filter((a) => a.bookId !== courseId), ...attempts]);
+  s.setServerExams([...s.serverExams.filter((e) => e.courseId !== courseId), ...exams]);
+  applying = false;
+}
+
+useLibraryStore.subscribe((s, prev) => {
+  if (!pinned || applying) return;
+  if (s.server !== prev.server && pinned.attempts.length > 0 && !s.server.some((a) => a.bookId === pinned?.courseId)) apply();
+  else if (s.serverExams !== prev.serverExams && pinned.exams.length > 0 && !s.serverExams.some((e) => e.courseId === pinned?.courseId)) apply();
+});
 
 export default function CourseFixtureLab() {
   const p = useLocalSearchParams<{ seed?: string; open?: string }>();

@@ -428,8 +428,10 @@ export const course = {
   /** Wax seal: the ring around it and its top light. */
   sealRing: 'rgba(122,54,52,0.35)',
   sealLight: 'rgba(255,236,220,0.25)',
-  /** Medal on chapter complete: the dark ring outside the sand one. */
+  /** Medal on chapter complete: the dark ring outside the sand one, the inner shade, the drop shadow. */
   medalHalo: 'rgba(17,15,17,0.7)',
+  medalShade: 'rgba(17,10,12,0.55)',
+  medalDrop: 'rgba(17,15,17,0.6)',
 } as const;
 
 /** System chrome: app.json / expo-system-ui / status bar. */
