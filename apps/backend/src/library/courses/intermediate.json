@@ -1,0 +1,4094 @@
+{
+  "id": "intermediate",
+  "version": 1,
+  "chapters": [
+    {
+      "id": "intermediate-attraction",
+      "theme": "attraction",
+      "title": {
+        "en": "Attraction",
+        "uk": "Заманювання"
+      },
+      "tip": {
+        "en": "Give something to pull a piece onto the wrong square.",
+        "uk": "Пожертвуй, щоб заманити фігуру на погане поле."
+      },
+      "intro": {
+        "text": {
+          "en": "Attraction is a sacrifice that forces an enemy piece — often the king — onto a square where a fork, a pin or a mate is waiting. The opponent has to take, and that is exactly the point. Ask which square you would like their piece to stand on.",
+          "uk": "Заманювання — це жертва, яка змушує фігуру суперника, часто короля, стати на поле, де на неї чекає вилка, зв’язка чи мат. Суперник мусить брати — у цьому й задум. Подумай, на якому полі тобі хотілося б бачити його фігуру."
+        },
+        "fen": "3q2k1/5p1p/6p1/3N4/8/8/1B3PPP/4R1K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "e1",
+            "to": "e8",
+            "kind": "move"
+          },
+          {
+            "from": "d5",
+            "to": "f6",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Re8+ drags the queen to e8, where a knight fork from f6 is waiting.",
+          "uk": "Re8+ заманює ферзя на e8 — а там на нього чекає вилка конем з f6."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "jjJje",
+          "fen": "4rrk1/p3n1p1/1p2P1QN/3p1R2/3b4/4q3/P5PP/5R1K b - - 0 24",
+          "moves": "e3h6 f5f8 e8f8 f1f8 g8f8 g6f7",
+          "rating": 1140,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2053,
+          "themes": [
+            "attraction",
+            "long",
+            "master",
+            "masterVsMaster",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/zJ3ZETQF/black#48",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "zVFBj",
+          "fen": "6n1/4k2p/4p3/4p3/8/2q1PQ2/5PPP/r1N2RK1 w - - 8 27",
+          "moves": "c1e2 a1f1 g1f1 c3a1 e2c1 a1c1",
+          "rating": 1200,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1598,
+          "themes": [
+            "advantage",
+            "attraction",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/e1fr23By#53",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "7403u",
+          "fen": "1r1q1k1r/Q1p1nppp/2B1p1b1/4P1B1/3P4/P4N2/2n1KPPP/1N5R b - - 0 16",
+          "moves": "b8b2 g5e7 f8e7 a7c5 d8d6 e5d6",
+          "rating": 1247,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2094,
+          "themes": [
+            "attraction",
+            "crushing",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/pbopCpwv/black#32",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "eou1x",
+          "fen": "r4rk1/1b2qp2/5Rp1/3pPQp1/3B3b/1pPB4/1P5P/1K4R1 w - - 0 30",
+          "moves": "f6g6 f7g6 f5g6 e7g7 e5e6 g7g6",
+          "rating": 1305,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1178,
+          "themes": [
+            "advantage",
+            "attraction",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/S0CYVtez#59",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "9MsdZ",
+          "fen": "r4bnr/2pk2pp/2nppq2/1N6/4P3/8/PPP2PPP/R1BQ1RK1 b - - 0 12",
+          "moves": "e6e5 d1g4 f6e6 g4e6 d7e6 b5c7",
+          "rating": 1350,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2248,
+          "themes": [
+            "advantage",
+            "attraction",
+            "long",
+            "opening"
+          ],
+          "gameUrl": "https://lichess.org/8A8nZgyh/black#24",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "MYgu4",
+          "fen": "3r1b2/p2r2kp/2R5/3Npp2/1P2P1p1/P4PP1/7P/2R3K1 w - - 0 26",
+          "moves": "g1g2 g4f3 g2f3 f5e4 f3e4 d7d5",
+          "rating": 1393,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 833,
+          "themes": [
+            "advantage",
+            "attraction",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/bqHsYj85#51",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "06a9D",
+          "fen": "4k3/4q3/7Q/1P1pp1pK/4p1B1/4P1P1/P4n1P/8 w - - 1 43",
+          "moves": "h6g5 e7h7 g5h6 h7h6 h5h6 f2g4",
+          "rating": 1449,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 3977,
+          "themes": [
+            "advantage",
+            "attraction",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/vydL3xX6#85",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "1HXGs",
+          "fen": "5r1k/4Np2/1Q6/7R/P4B2/1b4P1/2q2PK1/b2q4 b - - 0 42",
+          "moves": "c2h7 h5h7 h8h7 b6h6",
+          "rating": 1496,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 3524,
+          "themes": [
+            "attraction",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/TlKSQ0ET/black#84",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "2ociz",
+          "fen": "7k/6p1/3QP2p/1p6/3P3b/4n1NP/1P4P1/r5K1 w - - 1 32",
+          "moves": "g1h2 h4g3 h2g3 e3f5",
+          "rating": 1553,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2792,
+          "themes": [
+            "attraction",
+            "crushing",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/98Ity3dd#63",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "8Awo7",
+          "fen": "8/q4pk1/p4Rp1/1p2P1Np/1P6/1P1n3P/5rPK/3Q4 b - - 1 36",
+          "moves": "f2f6 e5f6 g7f6 g5e4 f6g7 d1d3",
+          "rating": 1592,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1623,
+          "themes": [
+            "advantage",
+            "attraction",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/8w2jDQKd/black#72",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "erBom",
+          "fen": "5rk1/4bppp/p7/3RP3/3B2Q1/8/2q2PPP/1r3RK1 w - - 2 25",
+          "moves": "g2g3 b1f1 g1f1 c2c4",
+          "rating": 1657,
+          "ratingDeviation": 78,
+          "popularity": 100,
+          "nbPlays": 1988,
+          "themes": [
+            "advantage",
+            "attraction",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/jPQ8uNLb#49",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "mZBQi",
+          "fen": "8/p4ppp/2pk4/2Rnr3/8/P5NP/3r1PP1/2R3K1 b - - 3 24",
+          "moves": "d5e7 c5e5 d6e5 c1e1",
+          "rating": 1700,
+          "ratingDeviation": 77,
+          "popularity": 99,
+          "nbPlays": 2073,
+          "themes": [
+            "advantage",
+            "attraction",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/Sf9gRxOW/black#48",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "lWK9o",
+          "fen": "4Rrk1/5p1p/pq1P2p1/1p2Q3/2pn4/7P/PP3PP1/6K1 b - - 5 27",
+          "moves": "d4f5 e8f8 g8f8 e5h8",
+          "rating": 1754,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1302,
+          "themes": [
+            "attraction",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/8OMZIshd/black#54",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "cEEfz",
+          "fen": "5Q2/6pk/3Npn1p/8/8/1P1p4/4qPPP/r1B2RK1 w - - 0 27",
+          "moves": "d6c4 e2f1 g1f1 a1c1",
+          "rating": 1806,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1004,
+          "themes": [
+            "attraction",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/BAQdzdXw#53",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "4EU9y",
+          "fen": "r5rk/6Rp/5P2/7Q/6P1/3q4/6PK/8 b - - 2 37",
+          "moves": "a8a3 g7g8 h8g8 h5e8",
+          "rating": 1856,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1201,
+          "themes": [
+            "attraction",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/0zNfZZF2/black#74",
+          "goal": "mate",
+          "mateIn": 2
+        }
+      ]
+    },
+    {
+      "id": "intermediate-deflection",
+      "theme": "deflection",
+      "title": {
+        "en": "Deflection",
+        "uk": "Відволікання"
+      },
+      "tip": {
+        "en": "Find the defender, then give it a reason to leave.",
+        "uk": "Знайди захисника — і дай йому привід піти."
+      },
+      "intro": {
+        "text": {
+          "en": "Deflection drives a defender away from the square or piece it must guard. Offer it a capture or hit it with a threat; once it leaves, whatever it was holding collapses. Typical targets: the piece that guards the back rank or a key square near the king.",
+          "uk": "Відволікання змушує захисника покинути поле чи фігуру, яку він мусить охороняти. Запропонуй йому взяття або нападай на нього — щойно він піде, захист розвалиться. Типові цілі: фігура, що тримає останню горизонталь, або важливе поле біля короля."
+        },
+        "fen": "3q1rk1/ppp2ppp/5n2/6N1/4P3/7Q/PPP2PPP/4R1K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "e4",
+            "to": "e5",
+            "kind": "move"
+          },
+          {
+            "from": "e5",
+            "to": "f6",
+            "kind": "threat"
+          },
+          {
+            "from": "h3",
+            "to": "h7",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "e5 hits the knight that guards h7: once it moves, the queen mates on h7.",
+          "uk": "e5 нападає на коня, що захищає h7: щойно він піде, ферзь поставить мат на h7."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "eBUiM",
+          "fen": "3r2k1/5p2/p2P1qpb/7p/1P6/P2Q3P/5PP1/4R1K1 b - - 0 40",
+          "moves": "f6d6 e1e8 d8e8 d3d6",
+          "rating": 1140,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 6091,
+          "themes": [
+            "advantage",
+            "deflection",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/6cIcGPG5/black#80",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "FfuiR",
+          "fen": "7k/1R4p1/2p1r1qp/8/8/P1P4P/1P2Q1P1/7K w - - 0 34",
+          "moves": "e2f3 e6e1 h1h2 g6d6 f3g3 e1h1 h2h1 d6g3",
+          "rating": 1191,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 4016,
+          "themes": [
+            "advantage",
+            "deflection",
+            "endgame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/Q290qNfU#67",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "t7smb",
+          "fen": "8/ppkn2r1/2pR4/P1P3r1/1P2Pp2/1KP2P2/3R2P1/8 b - - 0 32",
+          "moves": "g5g2 d6d7 g7d7 d2g2",
+          "rating": 1254,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2976,
+          "themes": [
+            "advantage",
+            "deflection",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/H0dGfr3I/black#64",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "XJWVI",
+          "fen": "5rk1/b4pp1/5nQ1/p1p5/P1Bp3P/1P6/1BP2PPq/R4K2 w - - 0 29",
+          "moves": "a1e1 h2h1 f1e2 f8e8 e2f3 h1e1",
+          "rating": 1302,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 3640,
+          "themes": [
+            "crushing",
+            "deflection",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/exLduSOK#57",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "d1Ul5",
+          "fen": "7r/pQB1nk1p/3p1ppb/8/8/3P1P2/qPP3P1/3KRB2 w - - 0 23",
+          "moves": "c7d6 a2b1 d1e2 b1c2",
+          "rating": 1338,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 5528,
+          "themes": [
+            "deflection",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ZpdYSfyU#45",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "Jcv7e",
+          "fen": "2r4k/2qR2p1/p3Qp1p/1pp5/4P3/5P1P/1P4P1/6K1 b - - 4 32",
+          "moves": "c7c6 d7d8 c8d8 e6c6",
+          "rating": 1386,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 6696,
+          "themes": [
+            "advantage",
+            "deflection",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/xpJfWTdu/black#64",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "ciOK6",
+          "fen": "8/4bppp/4p3/nk2P3/p2PN3/P2K2P1/1B5P/8 b - - 0 34",
+          "moves": "a5c4 e4c3 b5c6 d3c4",
+          "rating": 1455,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 4443,
+          "themes": [
+            "crushing",
+            "deflection",
+            "endgame",
+            "master",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/SoVb8u7N/black#68",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "vMjyA",
+          "fen": "5r1k/6p1/p4r1p/2q5/2Np2Q1/1P6/PBP3PP/3R3K w - - 8 29",
+          "moves": "h2h3 f6f1 d1f1 f8f1 h1h2 c5c7 g4g3 f1h1 h2h1 c7g3",
+          "rating": 1489,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 4252,
+          "themes": [
+            "advantage",
+            "deflection",
+            "middlegame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/u0rBCiGd#57",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "5ABUy",
+          "fen": "2kr4/2p1n3/3p3p/PQ1Pp3/4qp2/2P2N2/3R2rP/1R5K w - - 0 31",
+          "moves": "h1g2 d8g8 g2f2 e4e3 f2f1 e3f3",
+          "rating": 1546,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 4141,
+          "themes": [
+            "advantage",
+            "deflection",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/TRuEBp5A#61",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "M9Iy9",
+          "fen": "q4r1Q/1b3pk1/3p4/2nn4/2B1p1P1/rp3P2/1P1Q4/1KNR2NR b - - 0 23",
+          "moves": "f8h8 d2g5 g7f8 h1h8",
+          "rating": 1591,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2205,
+          "themes": [
+            "deflection",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/2kdYAPIN/black#46",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "6nUw2",
+          "fen": "6k1/5ppp/1qNb3r/1P1p1p2/6P1/3P1B2/3Q2P1/2R3K1 w - - 3 35",
+          "moves": "d2f2 h6h1 g1h1 b6f2",
+          "rating": 1654,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2607,
+          "themes": [
+            "advantage",
+            "deflection",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/Fd91mCKV#69",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "NdLvD",
+          "fen": "r3k2r/1p2R3/3nP3/3P3p/5BpP/1B6/P2K2b1/2R5 b - - 0 34",
+          "moves": "e8e7 c1c7 e7f6 f4d6",
+          "rating": 1708,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1603,
+          "themes": [
+            "advantage",
+            "deflection",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ADFhkh61/black#68",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "z3Hpo",
+          "fen": "8/4p1k1/3p1pP1/3P4/b7/P1P5/KNqnB3/5Q2 w - - 8 47",
+          "moves": "f1h1 c2b3 a2a1 b3a3",
+          "rating": 1763,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1254,
+          "themes": [
+            "deflection",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/rDUIi70Z#93",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "OITAh",
+          "fen": "r3r3/pp3k2/2pRb1p1/5pP1/1P6/P4B2/2P5/2K1R3 b - - 0 29",
+          "moves": "a8d8 e1e6 e8e6 d6d8",
+          "rating": 1815,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1694,
+          "themes": [
+            "advantage",
+            "deflection",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/wkXU28h5/black#58",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "fI38s",
+          "fen": "8/8/p7/8/P1p3p1/K1Pk4/3b2P1/4B3 w - - 16 53",
+          "moves": "e1d2 d3d2 a3b4 d2d3 g2g3 a6a5 b4b5 d3c3",
+          "rating": 1870,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1156,
+          "themes": [
+            "crushing",
+            "deflection",
+            "endgame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/r1PIDxPt#105",
+          "goal": "win",
+          "mateIn": null
+        }
+      ]
+    },
+    {
+      "id": "intermediate-doublecheck",
+      "theme": "doubleCheck",
+      "title": {
+        "en": "Double check",
+        "uk": "Подвійний шах"
+      },
+      "tip": {
+        "en": "Two checks at once: only the king can move.",
+        "uk": "Два шахи разом — рятуватися може лише король."
+      },
+      "intro": {
+        "text": {
+          "en": "A double check is a discovered check in which the moving piece gives check too. No block or capture can answer two checks at once, so the king must move — and if it has no square, it is mate. The checking pieces may even stand where they can be taken.",
+          "uk": "Подвійний шах — це відкритий шах, коли фігура, що ходить, теж шахує. Закритися чи побити від двох шахів одночасно не можна, тож король мусить піти, а якщо нікуди — це мат. Фігури, що дають шах, можуть навіть стояти під боєм."
+        },
+        "fen": "3qkb2/p2p1ppp/8/8/4N3/8/5PPP/4R1K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "e4",
+            "to": "d6",
+            "kind": "move"
+          },
+          {
+            "from": "d6",
+            "to": "e8",
+            "kind": "threat"
+          },
+          {
+            "from": "e1",
+            "to": "e8",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Nd6#: knight and rook both give check; the king cannot move, and no one can capture two checkers.",
+          "uk": "Nd6#: шахують і кінь, і тура; королю нікуди піти, а побити обидві фігури, що шахують, неможливо."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "V9ZeH",
+          "fen": "2r1r3/1bp3pk/p5Np/1p3Q2/4p3/1P1Pq3/2P2RP1/1R4K1 b - - 7 32",
+          "moves": "e3g5 g6f8 h7h8 f5h7",
+          "rating": 1143,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1942,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/wbd5EGau/black#64",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "Yq8p1",
+          "fen": "2b4R/8/prq1p1k1/1pNn1p2/3P2p1/1Q2P1P1/1P2BPK1/8 w - - 8 37",
+          "moves": "e2d3 d5e3 g2h2 c6g2",
+          "rating": 1188,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1545,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/nkuYgHdf#73",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "1NTph",
+          "fen": "7r/p1k5/P1R2p2/5Pp1/3R4/3P2qp/1PP3B1/7K b - - 4 38",
+          "moves": "c7b8 d4b4 b8a8 c6c8",
+          "rating": 1257,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2177,
+          "themes": [
+            "doubleCheck",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/s6hjSrgH/black#76",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "YCaY0",
+          "fen": "r1b1kb1r/ppp1qppp/3p1n2/3Pn3/2P5/2N2N2/PP3PPP/R1BQKB1R w KQkq - 3 8",
+          "moves": "c1f4 e5f3",
+          "rating": 1294,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1209,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn1",
+            "oneMove",
+            "opening"
+          ],
+          "gameUrl": "https://lichess.org/JnPf2fhN#15",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "LBeKg",
+          "fen": "8/pp3ppk/7p/3r4/3qN3/1P1n4/P1Q2PPP/4R1K1 b - - 7 24",
+          "moves": "d3e1 e4f6 h7h8 c2h7",
+          "rating": 1351,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2018,
+          "themes": [
+            "doubleCheck",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/3ClHQBLw/black#48",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "my3aw",
+          "fen": "8/1p2Q3/p4pr1/8/6pk/2P2R1P/PP3PK1/3q4 w - - 0 37",
+          "moves": "f3f6 g4h3 g2h2 d1g1",
+          "rating": 1386,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1424,
+          "themes": [
+            "doubleCheck",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/BTuS1Zne#73",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "ccaPU",
+          "fen": "5rk1/p5pp/1p2p3/3pPn2/1P1P4/P3P3/3Q1KPP/5r2 w - - 2 24",
+          "moves": "f2f1 f5g3 f1e1 f8f1",
+          "rating": 1457,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2822,
+          "themes": [
+            "doubleCheck",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/bw9cWAfW#47",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "n4SVQ",
+          "fen": "4r3/1p4k1/pPq3p1/2P4p/P2R1p1P/2Q3P1/4pP1K/8 b - - 1 40",
+          "moves": "e2e1q d4d7 g7g8 c3g7",
+          "rating": 1495,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 822,
+          "themes": [
+            "doubleCheck",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/c5wzIhIz/black#80",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "SScQh",
+          "fen": "4r3/Bpk2ppp/8/2br1b2/1P2n3/5N2/P3KPPP/2R2B1R w - - 1 17",
+          "moves": "a7c5 e4c3",
+          "rating": 1547,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1923,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn1",
+            "middlegame",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/CkBGq9oY#33",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "HKRdK",
+          "fen": "1r5k/4q2p/6p1/Pp3p2/1QpR1P1P/2B3P1/4r3/5K2 b - - 4 44",
+          "moves": "e7b4 d4d8",
+          "rating": 1599,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2764,
+          "themes": [
+            "doubleCheck",
+            "endgame",
+            "mate",
+            "mateIn1",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/6O9inAnI/black#88",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "EQ25q",
+          "fen": "5k2/ppqb3p/2p3p1/3pn2n/2PNP1P1/PPN4P/4Q1BK/8 w - - 0 27",
+          "moves": "g4h5 e5f3 h2h1 c7h2",
+          "rating": 1665,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1994,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/HdKJIaJO#53",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "tmFV3",
+          "fen": "r1b1kbnr/pppp1ppp/8/6B1/3NBP2/8/PnP3PP/RN2R1K1 b kq - 1 12",
+          "moves": "f7f6 e4g6 e8d8 e1e8",
+          "rating": 1702,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1169,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn2",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/mQybIrMv/black#24",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "aF5wT",
+          "fen": "1r3bk1/p6p/2p1b1B1/4p1Q1/8/2N5/PqP3PP/5R1K b - - 0 24",
+          "moves": "b2c3 g6f7 g8h8 g5g8",
+          "rating": 1758,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1978,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/yEtw49Gk/black#48",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "ZkmMs",
+          "fen": "8/1p3pk1/p5pp/2P1q3/1P1Nnn2/P3Q2P/5PP1/3R1K2 w - - 2 44",
+          "moves": "d4f3 e4g3 f1g1 f4e2 g1h2 g3f1",
+          "rating": 1833,
+          "ratingDeviation": 75,
+          "popularity": 97,
+          "nbPlays": 1344,
+          "themes": [
+            "advantage",
+            "doubleCheck",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/DEpmcBNA#87",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "xr83M",
+          "fen": "rn1kr3/ppp1bppp/5n2/3p2B1/6b1/3P1Q2/PPP2PPP/RN2KB1R w KQ - 4 10",
+          "moves": "f3g4 e7b4 e1d1 e8e1",
+          "rating": 1849,
+          "ratingDeviation": 78,
+          "popularity": 100,
+          "nbPlays": 1453,
+          "themes": [
+            "doubleCheck",
+            "mate",
+            "mateIn2",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/e0y1YK9S#19",
+          "goal": "mate",
+          "mateIn": 2
+        }
+      ]
+    },
+    {
+      "id": "intermediate-intermezzo",
+      "theme": "intermezzo",
+      "title": {
+        "en": "In-between move",
+        "uk": "Проміжний хід"
+      },
+      "tip": {
+        "en": "Before the obvious recapture, look for a stronger move.",
+        "uk": "Перш ніж брати назад, пошукай сильніший хід."
+      },
+      "intro": {
+        "text": {
+          "en": "An in-between move is played instead of the move everyone expects, usually a recapture. A check or a bigger threat comes first; the recapture can wait, because it is not going anywhere. Before taking back, always ask: is there a check first?",
+          "uk": "Проміжний хід робиться замість очевидного, найчастіше замість взяття у відповідь. Спершу шах або сильніша загроза, а відбити фігуру можна й потім — вона нікуди не дінеться. Перш ніж брати назад, спитай себе: а чи немає спершу шаху?"
+        },
+        "fen": "3r2k1/5pp1/7p/8/8/8/4qPPP/3RR1K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "d1",
+            "to": "d8",
+            "kind": "move"
+          },
+          {
+            "from": "e1",
+            "to": "e2",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Rxd8+ first: after the king steps away, the rook on e1 takes the queen and White is a rook up.",
+          "uk": "Спершу Rxd8+: король відходить, тура з e1 забирає ферзя — і в білих зайва тура."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "koTq9",
+          "fen": "r2q1rk1/4Bppp/pn1p4/2pb4/8/1Q3N2/PP2BPPP/R4RK1 b - - 0 15",
+          "moves": "d5b3 e7d8 f8d8 a2b3",
+          "rating": 1146,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1491,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/cn7oym4G/black#30",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "wiuV6",
+          "fen": "1n1rqbk1/1pp3pp/p3p1b1/4P3/1PPN4/P3B3/4B1PP/2QR2K1 w - - 0 24",
+          "moves": "d4e6 d8d1 c1d1 e8e6",
+          "rating": 1198,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1212,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/VntJi3cv#47",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "V4d4P",
+          "fen": "4Rr1k/pp5p/5p2/2pr4/1q1n1Q2/8/P5PP/4R2K b - - 3 28",
+          "moves": "f8e8 f4f6 h8g8 e1e8",
+          "rating": 1232,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2623,
+          "themes": [
+            "endgame",
+            "intermezzo",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/zsbZjW0K/black#56",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "QXDI1",
+          "fen": "4kb1r/p2n1pp1/np1qp3/3p2Pp/2rQ3P/P3PPB1/1PP5/2KR2NR w k - 0 17",
+          "moves": "g3d6 c4d4 d1d4 f8d6",
+          "rating": 1306,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 12452,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/B7bYtPEs#33",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "e6jxh",
+          "fen": "r2qk2r/1ppbnpbp/p2p2pB/3N4/P3P3/1B3P2/1PPQ2PP/1R3RK1 b kq - 8 16",
+          "moves": "g7h6 d5f6 e8f8 d2h6",
+          "rating": 1337,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 4519,
+          "themes": [
+            "intermezzo",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/GUrwREyO/black#32",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "2UtN1",
+          "fen": "5k2/p5pp/2p2r2/2N2b2/2Pr4/8/1P4PP/2K1RR2 w - - 0 25",
+          "moves": "f1f5 d4c4 c1d2 f6f5",
+          "rating": 1409,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1763,
+          "themes": [
+            "advantage",
+            "endgame",
+            "intermezzo",
+            "master",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/xLYNHvir#49",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "GCeAn",
+          "fen": "r4rk1/p1p2p2/1p2b1pp/n4q2/4QP2/2NB4/PP4PP/R4RK1 w - - 1 19",
+          "moves": "e4a8 f5c5 g1h1 f8a8",
+          "rating": 1442,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2578,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/dS3NZkrK#37",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "wAOCn",
+          "fen": "1br2r2/5pk1/2p1bN1p/1p2P3/p3B1PR/P4N1P/1P3P2/6K1 b - - 0 29",
+          "moves": "b8e5 f6h5 g7g8 f3e5",
+          "rating": 1497,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1802,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/OxHdmHUd/black#58",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "veZXf",
+          "fen": "r2q1rk1/pp1nbppp/6N1/3Pp3/4n1P1/2N4P/PP2B3/R1BQK2R b KQ - 0 14",
+          "moves": "e4c3 g6e7 d8e7 b2c3",
+          "rating": 1540,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2265,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/rgswPdFK/black#28",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "Gqgjj",
+          "fen": "r3k2r/p4ppp/1qp1pb2/3p4/N2n4/4BQ1P/PPP2PP1/1R3RK1 w kq - 0 15",
+          "moves": "a4b6 d4f3 g2f3 a7b6",
+          "rating": 1604,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1949,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/5DYmNSlx#29",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "ibDER",
+          "fen": "2r4k/p3qp1P/3n3Q/1p6/1Pr3P1/P4P2/1P6/1K1R3R w - - 0 29",
+          "moves": "h6d6 c4c1 b1a2 e7d6 d1d6 c1h1",
+          "rating": 1650,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2947,
+          "themes": [
+            "advantage",
+            "endgame",
+            "intermezzo",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/vz8AIJz2#57",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "rQID2",
+          "fen": "3r3k/1Qp2pp1/1p1P3p/8/3R4/P4P2/1Pq2PK1/8 b - - 0 31",
+          "moves": "d8d6 b7c8 h8h7 d4d6",
+          "rating": 1710,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 993,
+          "themes": [
+            "advantage",
+            "endgame",
+            "intermezzo",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/9TfhiPF1/black#62",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "0jPsU",
+          "fen": "rn1Q1knr/2N1bpp1/2p4p/p3P3/8/4BNPb/qPP1BP1P/2KR3R b - - 3 19",
+          "moves": "e7d8 e3c5 g8e7 d1d8",
+          "rating": 1762,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1433,
+          "themes": [
+            "intermezzo",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ggs1shDS/black#38",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "jXC6C",
+          "fen": "r2qk2r/pp3ppp/3b1n2/3pn3/8/2N1BB1P/PPPQ1PP1/R3K2R w KQkq - 0 12",
+          "moves": "c3d5 e5f3 g2f3 f6d5 e1c1 d5e3",
+          "rating": 1812,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 841,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/oQzvc7tp#23",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "pEvX2",
+          "fen": "1r3bk1/2p2pp1/p1pp1n1p/4rR2/4P3/1PNP3P/P1PB2P1/5RK1 w - - 2 18",
+          "moves": "d2h6 e5f5 f1f5 g7h6 f5f6 f8g7",
+          "rating": 1862,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1085,
+          "themes": [
+            "advantage",
+            "intermezzo",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/k98ms8B7#35",
+          "goal": "win",
+          "mateIn": null
+        }
+      ]
+    },
+    {
+      "id": "intermediate-clearance",
+      "theme": "clearance",
+      "title": {
+        "en": "Clearance",
+        "uk": "Звільнення лінії"
+      },
+      "tip": {
+        "en": "Your own piece is in the way? Move it with a threat.",
+        "uk": "Власна фігура заважає? Прибери її із загрозою."
+      },
+      "intro": {
+        "text": {
+          "en": "Sometimes your own piece blocks the line or square another piece needs. Clearance moves it out of the way, ideally with a check or a threat, so the opponent has no time to react. The square it leaves is often more important than the one it goes to.",
+          "uk": "Буває, що власна фігура перекриває лінію чи поле, потрібне іншій. Звільнення лінії прибирає її з дороги, найкраще з шахом або загрозою, щоб суперник не встиг відреагувати. Поле, яке вона звільняє, часто важливіше за те, куди вона йде."
+        },
+        "fen": "6k1/pp3ppp/8/3N4/8/8/P4PPP/3Q2K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "d5",
+            "to": "e7",
+            "kind": "move"
+          },
+          {
+            "from": "e7",
+            "to": "g8",
+            "kind": "threat"
+          },
+          {
+            "from": "d1",
+            "to": "d8",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Ne7+ clears the d-file with check — next the queen mates on d8.",
+          "uk": "Ne7+ звільняє вертикаль d із шахом — далі ферзь ставить мат на d8."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "ZBIke",
+          "fen": "5r2/pp6/5bQP/2pkr3/8/6P1/PPB3P1/7K w - - 0 36",
+          "moves": "g3g4 e5e1 h1h2 f6e5 g2g3 f8f2 h2h3 e1h1",
+          "rating": 1133,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2300,
+          "themes": [
+            "clearance",
+            "endgame",
+            "mate",
+            "mateIn4",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/SA2nGtq3#71",
+          "goal": "mate",
+          "mateIn": 4
+        },
+        {
+          "id": "jrO3j",
+          "fen": "6k1/1p1q2p1/p3p2p/3p4/1P1P2P1/5Q1P/5RK1/2r5 b - - 1 32",
+          "moves": "c1c4 f3f8 g8h7 f2f7 d7f7 f8f7",
+          "rating": 1195,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1048,
+          "themes": [
+            "advantage",
+            "clearance",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/Zw6G0TK5/black#64",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "BIIwa",
+          "fen": "4r1k1/5pp1/p6p/3Nr3/2P5/P2QRB1P/6P1/q6K w - - 1 30",
+          "moves": "h1h2 e5e3 d5e3 a1e5 h2h1 e5e3",
+          "rating": 1249,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1005,
+          "themes": [
+            "advantage",
+            "clearance",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/aVqqh7G6#59",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "BbiPj",
+          "fen": "3r1bk1/ppq4p/4RQp1/6P1/6B1/6PK/P7/8 b - - 15 47",
+          "moves": "d8d6 e6d6 c7d6 g4e6 d6e6 f6e6",
+          "rating": 1302,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1344,
+          "themes": [
+            "clearance",
+            "crushing",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/d98DiPkV/black#94",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "lfD4m",
+          "fen": "rnbqr1k1/pp3pb1/2pp3p/8/3PP2n/2PBBN1P/PP1Q2P1/RN2K2R w KQ - 2 13",
+          "moves": "e3h6 h4f3 g2f3 d8h4",
+          "rating": 1343,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2228,
+          "themes": [
+            "advantage",
+            "clearance",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/p0FxiUeX#25",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "yZp3L",
+          "fen": "3r2k1/5ppp/pp2pn2/8/q2r4/2N5/1P2QPPP/3R1RK1 b - - 1 24",
+          "moves": "a4d7 d1d4 d7d4 f1d1 d4d1 c3d1",
+          "rating": 1409,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 3051,
+          "themes": [
+            "advantage",
+            "clearance",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/8nXhSkFv/black#48",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "9fpuI",
+          "fen": "1q1r4/p5pk/6pp/2p5/1p4P1/1P1r3P/PB2R1Q1/4R2K w - - 4 42",
+          "moves": "e2e3 d3e3 e1e3 d8d1",
+          "rating": 1448,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1805,
+          "themes": [
+            "clearance",
+            "crushing",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/5DvILVUD#83",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "ymW4R",
+          "fen": "6k1/p4ppp/4p3/3p4/2r5/2PQ1P1P/Pr3qP1/1R4RK b - - 5 26",
+          "moves": "a7a5 b1b2 f2b2 g1b1 b2b1 d3b1",
+          "rating": 1507,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1540,
+          "themes": [
+            "advantage",
+            "clearance",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/bK1VITJk/black#52",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "vK97Z",
+          "fen": "r1b3k1/ppp2rp1/3p3p/3Bn3/8/P1P5/1PP3PP/2KR1R2 b - - 1 16",
+          "moves": "g8f8 f1f7 e5f7 d1f1",
+          "rating": 1554,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2090,
+          "themes": [
+            "advantage",
+            "clearance",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/IUTcWBJ0/black#32",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "da3PH",
+          "fen": "2r2rk1/p4q1p/2p4P/1pP1P1p1/3BQ3/P1P2p2/7K/3R1R2 w - - 4 40",
+          "moves": "f1f2 f7h5 h2g3 f8f4 e4f4 g5f4",
+          "rating": 1591,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2370,
+          "themes": [
+            "advantage",
+            "clearance",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/n5luyGGZ#79",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "2nLT0",
+          "fen": "8/5pk1/p1r3p1/3Q3p/P3q2P/4P1P1/5P2/3R2K1 b - - 0 39",
+          "moves": "e4a4 d5e5 c6f6 d1d6",
+          "rating": 1651,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 977,
+          "themes": [
+            "clearance",
+            "crushing",
+            "endgame",
+            "master",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/sTKByajs/black#78",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "01Ja1",
+          "fen": "4r1k1/p6p/1p1rNb1P/5K2/1P3p2/PR3P2/6P1/7R w - - 6 39",
+          "moves": "e6f4 e8e5 f5g4 e5g5 g4h3 f6e5 g2g4 e5f4",
+          "rating": 1706,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 964,
+          "themes": [
+            "advantage",
+            "clearance",
+            "endgame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/cxk7MJLA#77",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "HXIKS",
+          "fen": "r1b1k1nr/pp3ppp/3bp3/2pp4/3q1P2/3P4/PPP1B1PP/RNBQRK2 b kq - 2 10",
+          "moves": "d6f4 c2c3 d4f6 d1a4 c8d7 a4f4",
+          "rating": 1759,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1206,
+          "themes": [
+            "advantage",
+            "clearance",
+            "long",
+            "opening"
+          ],
+          "gameUrl": "https://lichess.org/TTkaiJ2S/black#20",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "3q3Xg",
+          "fen": "6k1/2pq1rp1/7p/1PBp4/R7/2P1P1Pb/3QBr2/4R1K1 w - - 1 30",
+          "moves": "a4h4 f2g2 g1h1 f7f2",
+          "rating": 1801,
+          "ratingDeviation": 76,
+          "popularity": 97,
+          "nbPlays": 3540,
+          "themes": [
+            "clearance",
+            "crushing",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/gzmFsrS4#59",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "TLKxf",
+          "fen": "r5k1/1bq4p/1p3Qp1/2pP4/2P5/8/6PP/5RK1 b - - 0 28",
+          "moves": "b6b5 f6e6 g8h8 f1f7 c7f7 e6f7",
+          "rating": 1869,
+          "ratingDeviation": 76,
+          "popularity": 99,
+          "nbPlays": 1329,
+          "themes": [
+            "clearance",
+            "crushing",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/vOXvKhHf/black#56",
+          "goal": "win",
+          "mateIn": null
+        }
+      ]
+    },
+    {
+      "id": "intermediate-interference",
+      "theme": "interference",
+      "title": {
+        "en": "Interference",
+        "uk": "Перекриття"
+      },
+      "tip": {
+        "en": "Drop a piece between a defender and what it guards.",
+        "uk": "Постав фігуру між захисником і тим, що він охороняє."
+      },
+      "intro": {
+        "text": {
+          "en": "Interference cuts a line of defence. You place a piece on the path between an enemy defender and the square it protects; even if it can be captured, taking it costs the defence. Look for the lines that hold the opponent’s position together.",
+          "uk": "Перекриття розриває лінію захисту. Ти ставиш фігуру на шляху між захисником суперника й полем, яке він охороняє; навіть якщо її можна побити, взяття руйнує захист. Шукай лінії, на яких тримається позиція суперника."
+        },
+        "fen": "r7/4P1kp/6p1/8/8/8/5PPP/3R2K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "d1",
+            "to": "d8",
+            "kind": "move"
+          },
+          {
+            "from": "e7",
+            "to": "e8",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Rd8 cuts the rook on a8 off from e8 — the pawn queens whatever Black does.",
+          "uk": "Rd8 перекриває турі a8 шлях до e8 — пішак у будь-якому разі стане ферзем."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "dhaqm",
+          "fen": "r1q1r1k1/pp2bRp1/8/2pPP1p1/2P3n1/2N3B1/PP4bP/R2Q2K1 b - - 0 19",
+          "moves": "g8f7 e5e6 f7g8 d1g4",
+          "rating": 1148,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1051,
+          "themes": [
+            "advantage",
+            "interference",
+            "master",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/giVwGHno/black#38",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "I3scy",
+          "fen": "5rk1/p1p2p1p/3r1p2/2N1qb2/1PP5/P2P1Q1P/3K1PP1/R4B1R w - - 1 19",
+          "moves": "f1e2 e5b2 d2d1 b2a1",
+          "rating": 1200,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 867,
+          "themes": [
+            "advantage",
+            "interference",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/9RTGdDO5#37",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "0Ejy9",
+          "fen": "2kr1br1/1bp2p1p/pp1q1n2/2npN3/1BPN1P2/Q7/PP4PP/2KR1B1R w - - 4 21",
+          "moves": "e5f7 d6f4 b4d2 f4d4",
+          "rating": 1249,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1577,
+          "themes": [
+            "advantage",
+            "interference",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/DDSpALnH#41",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "yAEEZ",
+          "fen": "r1bqk2r/1p2p2p/p5pn/5p2/3b4/3B4/PP1PN1PP/R1BQ1R1K b kq - 1 14",
+          "moves": "h6g4 d1a4 c8d7 a4d4",
+          "rating": 1298,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1813,
+          "themes": [
+            "advantage",
+            "interference",
+            "master",
+            "masterVsMaster",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/DdqB5sHW/black#28",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "p8f0j",
+          "fen": "3r4/1p4kR/p1p5/3q1p1R/6p1/8/1P5P/1KQr4 b - - 4 34",
+          "moves": "g7f6 h5h6 f6e5 h7e7 e5d4 c1d1",
+          "rating": 1339,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1601,
+          "themes": [
+            "crushing",
+            "endgame",
+            "interference",
+            "long",
+            "master"
+          ],
+          "gameUrl": "https://lichess.org/N1BKA5HM/black#68",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "S8jvC",
+          "fen": "2k5/8/8/8/4b1p1/B1b3P1/P1pR1P1P/5K2 w - - 6 38",
+          "moves": "d2d6 c3b4 a3c1 b4d6",
+          "rating": 1409,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1173,
+          "themes": [
+            "advantage",
+            "endgame",
+            "interference",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/PPG4aGKx#75",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "T2wjC",
+          "fen": "5rk1/1p3ppp/p4n2/4B3/3P4/3B1q1P/PPP5/4R1KR b - - 3 21",
+          "moves": "f6d5 d3e4 f3h5 e4d5",
+          "rating": 1457,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2041,
+          "themes": [
+            "advantage",
+            "interference",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/3jngFSOq/black#42",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "YeCEL",
+          "fen": "3q1knr/p1pn1ppp/1rQ5/2b5/4B3/8/PPP2PPP/RNB2RK1 w - - 7 13",
+          "moves": "c6a4 b6b4 a4a5 b4e4",
+          "rating": 1515,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1469,
+          "themes": [
+            "advantage",
+            "interference",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/uK2Rumnj#25",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "APY41",
+          "fen": "6k1/pp1b3p/3p1qp1/1P1P4/PQ1pPP2/2r5/6BP/3R2K1 b - - 2 26",
+          "moves": "d4d3 e4e5 d6e5 b4c3",
+          "rating": 1542,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1690,
+          "themes": [
+            "advantage",
+            "endgame",
+            "interference",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/0PQdXEXu/black#52",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "WiH2m",
+          "fen": "3r2k1/p3q1pp/1p2b1p1/1Q6/4N3/P3P3/1PP2PPP/5RK1 w - - 2 22",
+          "moves": "e4g5 d8d5 b5c6 d5g5",
+          "rating": 1603,
+          "ratingDeviation": 75,
+          "popularity": 99,
+          "nbPlays": 2856,
+          "themes": [
+            "advantage",
+            "endgame",
+            "interference",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/fcp6aJhd#43",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "hz6MN",
+          "fen": "5rk1/7p/b2qp3/3p1r2/1p1P1Pp1/4R1P1/PPR4P/2Q3K1 b - - 1 29",
+          "moves": "f8f7 c2c6 d6d7 c6a6",
+          "rating": 1649,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1638,
+          "themes": [
+            "advantage",
+            "interference",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/VxEUzb5s/black#58",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "VBk3q",
+          "fen": "3R4/rr2qpk1/p1Q1p1pp/1p6/8/2P5/PP3PPP/3R2K1 w - - 10 25",
+          "moves": "d8e8 b7d7 d1f1 e7e8",
+          "rating": 1710,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1237,
+          "themes": [
+            "crushing",
+            "endgame",
+            "interference",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/EUyIYEqf#49",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "4RD1W",
+          "fen": "r3kb1r/pp1n1ppp/1qn1p3/1B1Q4/3P4/4P3/PP3PPP/RNB1K2R w KQkq - 0 11",
+          "moves": "d5b3 f8b4 c1d2 b6b5",
+          "rating": 1765,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 898,
+          "themes": [
+            "advantage",
+            "interference",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/6shQ3BnH#21",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "EuCRs",
+          "fen": "6k1/1p2q1pp/2pp4/1p1n1P2/6Pr/P2P2Q1/1P1B1RK1/8 b - - 2 33",
+          "moves": "h7h5 f5f6 d5f6 g3h4",
+          "rating": 1820,
+          "ratingDeviation": 76,
+          "popularity": 97,
+          "nbPlays": 1965,
+          "themes": [
+            "advantage",
+            "endgame",
+            "interference",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/6KlQwfQt/black#66",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "EJBVI",
+          "fen": "r3k2r/pp3Np1/2p1p1pn/3n2N1/3PQ1P1/2q3bP/P1P2PK1/R6R w kq - 0 19",
+          "moves": "f7h8 d5f4 g2f1 c3a1",
+          "rating": 1868,
+          "ratingDeviation": 78,
+          "popularity": 96,
+          "nbPlays": 20173,
+          "themes": [
+            "crushing",
+            "interference",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/26tzX1Wa#37",
+          "goal": "win",
+          "mateIn": null
+        }
+      ]
+    },
+    {
+      "id": "intermediate-f7",
+      "theme": "attackingF2F7",
+      "title": {
+        "en": "Attacking f2 and f7",
+        "uk": "Удар на f2 і f7"
+      },
+      "tip": {
+        "en": "Early in the game, f7 and f2 are guarded only by the king.",
+        "uk": "На початку партії f7 і f2 захищає лише король."
+      },
+      "intro": {
+        "text": {
+          "en": "In the opening, f7 (and f2 for White) is the weakest square: only the king defends it. A bishop on c4 and a queen or knight joining in can strike there, often with check. Keep an eye on it from both sides of the board.",
+          "uk": "У дебюті f7 (а для білих f2) — найслабше поле: його захищає лише король. Слон із c4 разом із ферзем чи конем можуть ударити туди, часто з шахом. Стеж за цим полем з обох боків дошки."
+        },
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w - - 0 4",
+        "arrows": [
+          {
+            "from": "h5",
+            "to": "f7",
+            "kind": "move"
+          },
+          {
+            "from": "c4",
+            "to": "f7",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Qxf7#: f7 was guarded only by the king, and the bishop backs up the queen.",
+          "uk": "Qxf7#: поле f7 захищав лише король, а слон підтримує ферзя."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "Oikr6",
+          "fen": "r2qkbnr/ppp2p1p/2n5/6p1/2BPPpb1/1Q3N2/PP4PP/RNB2RK1 b kq - 2 8",
+          "moves": "g4f3 c4f7 e8d7 b3e6",
+          "rating": 1137,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2520,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ZBk2jSJp/black#16",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "2u3QJ",
+          "fen": "rnb2rk1/p1pp2Np/1p2p3/7p/7q/2NBP3/PPPP1PP1/R1BQK3 w Q - 1 11",
+          "moves": "g7h5 h4f2",
+          "rating": 1181,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 980,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn1",
+            "oneMove",
+            "opening"
+          ],
+          "gameUrl": "https://lichess.org/9U1TfKaY#21",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "64UAj",
+          "fen": "r2qk1r1/1bpn1p2/pp1p4/3Pp1BQ/1PP1P2p/P1NB3P/6P1/R4RK1 b q - 0 18",
+          "moves": "g8g5 h5f7",
+          "rating": 1256,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2393,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn1",
+            "middlegame",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/3lnF4wSm/black#36",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "5M4Ne",
+          "fen": "rnb1k2r/pp2bppp/1q1p4/4P3/4PBn1/2N2N2/PP3PPP/R2QKB1R w KQkq - 5 9",
+          "moves": "c3d5 b6f2",
+          "rating": 1288,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2419,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn1",
+            "oneMove",
+            "opening"
+          ],
+          "gameUrl": "https://lichess.org/tmUoTxew#17",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "R8I0H",
+          "fen": "r3k1nr/pb1p1p1p/2pP4/1p4p1/3P1p1q/1BP1BQ2/PP3P1P/R3K2R b KQkq - 3 16",
+          "moves": "f4e3 f3f7 e8d8 f7f8",
+          "rating": 1353,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 4270,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ILZ4xes4/black#32",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "Pob9O",
+          "fen": "rnb1k2r/pp1p1ppp/1q3n2/2b1p1B1/4P3/5N2/PPP2PPP/RN1QKB1R w KQkq - 2 6",
+          "moves": "g5f6 c5f2 e1d2 b6e3",
+          "rating": 1396,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2644,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/MEh0Bf5Q#11",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "JR9dn",
+          "fen": "r2qkbnr/ppp2pp1/3p3p/4N3/2B1P1b1/2N5/PB3PPP/R2QR1K1 b kq - 0 10",
+          "moves": "g4d1 c4f7 e8e7 c3d5",
+          "rating": 1457,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2462,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/75rn9Wbt/black#20",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "0BNak",
+          "fen": "r1b1k1nr/bpp2ppp/3p1q2/p2Pn3/2P5/P1N2N1P/1P3PP1/R1BQKB1R w KQkq - 1 10",
+          "moves": "f3e5 f6f2",
+          "rating": 1489,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2135,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn1",
+            "oneMove",
+            "opening"
+          ],
+          "gameUrl": "https://lichess.org/e6yNs4ga#19",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "w69Pz",
+          "fen": "r2qkbnr/ppp2pp1/2np3p/4N3/2B1Ppb1/2N5/PPPP2PP/R1BQ1RK1 b kq - 3 7",
+          "moves": "g4d1 c4f7 e8e7 c3d5",
+          "rating": 1549,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2645,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "opening",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/Yj6zoacP/black#14",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "fxv0Q",
+          "fen": "r1b1k2r/p2p1pbp/1NnBp1p1/2P1P3/6n1/2P2N2/Pq3PPP/R2QKB1R w KQkq - 0 12",
+          "moves": "b6a8 b2f2",
+          "rating": 1596,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 1917,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn1",
+            "middlegame",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/htnnWTW1#23",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "GWYBi",
+          "fen": "r2qkb1r/2p2ppp/3p4/p3N3/Pp2P1b1/1B1P4/1PP2P2/R1BQR1K1 b kq - 0 15",
+          "moves": "g4d1 b3f7 e8e7 c1g5",
+          "rating": 1659,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1290,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/aaZBw7HB/black#30",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "9hpYa",
+          "fen": "N2k3r/1p2bppp/p7/4p3/2Bn4/2P2P1b/PP4qP/R1BQKR2 w Q - 1 14",
+          "moves": "c3d4 e7h4 f1f2 g2f2",
+          "rating": 1693,
+          "ratingDeviation": 74,
+          "popularity": 98,
+          "nbPlays": 2035,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/cxl7bNg4#27",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "3lNm9",
+          "fen": "2b1kbnr/Q4ppp/4p3/1r1pN3/2pP4/2P1P3/Pq3PPP/RN2KB1R b KQk - 0 11",
+          "moves": "b2a1 a7f7 e8d8 e5c6",
+          "rating": 1768,
+          "ratingDeviation": 77,
+          "popularity": 98,
+          "nbPlays": 2630,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/IoRRkK2k/black#22",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "cfDEg",
+          "fen": "3r4/1kp2ppp/pb4q1/4N2n/P3P3/B1P3PP/2Qr1PB1/R3K2R w KQ - 1 21",
+          "moves": "e5g6 b6f2 e1f1 h5g3",
+          "rating": 1813,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1237,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/G1IjQcSS#41",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "EgpFN",
+          "fen": "3r3B/nk3p2/1p2b2p/2b5/P3n1p1/5N2/1Q3PPP/1R2KB1R w K - 0 30",
+          "moves": "b2e5 c5f2 e1e2 e6c4",
+          "rating": 1855,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1251,
+          "themes": [
+            "attackingF2F7",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/nnM3H0FX#59",
+          "goal": "mate",
+          "mateIn": 2
+        }
+      ]
+    },
+    {
+      "id": "intermediate-promotion",
+      "theme": "promotion",
+      "title": {
+        "en": "Promotion",
+        "uk": "Перетворення пішака"
+      },
+      "tip": {
+        "en": "One step from queening? Find the move that clears the way.",
+        "uk": "Пішакові лишився крок? Знайди хід, що розчистить йому шлях."
+      },
+      "intro": {
+        "text": {
+          "en": "A pawn on the seventh rank is worth almost a queen, and the opponent knows it. The tactics here clear the promotion square: deflect the blocker, cut off the defender or promote with check. Count what happens once the new queen appears.",
+          "uk": "Пішак на сьомій горизонталі вартий майже ферзя, і суперник це знає. Тактика тут розчищає поле перетворення: відволічи фігуру, що заступає дорогу, відріж захисника або перетвори пішака з шахом. Порахуй, що буде, коли з’явиться новий ферзь."
+        },
+        "fen": "2r5/2P2pk1/1P5p/8/8/8/6PP/3R2K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "d1",
+            "to": "d8",
+            "kind": "move"
+          },
+          {
+            "from": "d8",
+            "to": "c8",
+            "kind": "threat"
+          },
+          {
+            "from": "c7",
+            "to": "d8",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Rd8 attacks the rook in the pawn’s way: if it takes, the pawn recaptures on d8 and becomes a queen.",
+          "uk": "Rd8 нападає на туру, що стоїть на шляху пішака: якщо вона візьме, пішак б’є на d8 і стає ферзем."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "7CgP1",
+          "fen": "8/3PQpkp/1p3rp1/8/8/1P5P/6PK/3r4 b - - 0 36",
+          "moves": "f6e6 d7d8q d1d8 e7d8",
+          "rating": 1141,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2387,
+          "themes": [
+            "advancedPawn",
+            "advantage",
+            "endgame",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/2tY39vEx/black#72",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "r5XsV",
+          "fen": "r6k/pp2qBp1/1bb2p1p/7Q/8/6R1/PP1p2PP/3R3K w - - 4 27",
+          "moves": "g3g7 e7e1 d1e1 d2e1q",
+          "rating": 1182,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2618,
+          "themes": [
+            "advancedPawn",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/yRvtfrpW#53",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "n0hp2",
+          "fen": "8/2P4p/3K3k/p7/P7/6R1/1P4p1/2r5 b - - 1 43",
+          "moves": "g2g1q g3g1 c1g1 c7c8q",
+          "rating": 1245,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2282,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/YQxVy7ur/black#86",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "u5rDZ",
+          "fen": "8/5ppk/3q3p/3P4/2R4P/2P2QP1/1pr2PK1/8 w - - 0 50",
+          "moves": "c4b4 d6b4 c3b4 b2b1q",
+          "rating": 1285,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2303,
+          "themes": [
+            "advancedPawn",
+            "advantage",
+            "endgame",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/KNpqpAyp#99",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "6jXP6",
+          "fen": "5r2/7k/7p/5q2/8/6PP/4Rp1K/5Q2 w - - 14 54",
+          "moves": "h2g2 f5f3 g2h2 f3e2 f1e2 f2f1q",
+          "rating": 1350,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 4025,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "long",
+            "promotion"
+          ],
+          "gameUrl": "https://lichess.org/GqdXtJ6I#107",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "9Twb3",
+          "fen": "2r4k/q3PPp1/7p/1pb5/2nr4/7P/5QP1/2BR1RK1 b - - 0 34",
+          "moves": "d4d1 f7f8q c8f8 e7f8q c5f8 f2a7 d1f1 g1f1",
+          "rating": 1387,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 4327,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "middlegame",
+            "promotion",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/IOvcKi6j/black#68",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "D7BwN",
+          "fen": "7k/1pN4p/5p2/1p1p1Pp1/1P3qP1/Q6P/2P1p1PK/3R4 w - - 1 40",
+          "moves": "g2g3 f4f2 h2h1 e2d1q",
+          "rating": 1453,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2507,
+          "themes": [
+            "advancedPawn",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/isTri4v3#79",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "ZOqiT",
+          "fen": "8/4P3/3R4/1p3p2/p3kP2/P2b4/6r1/2K5 b - - 0 44",
+          "moves": "g2c2 c1d1 c2c8 d6d8 c8d8 e7d8q",
+          "rating": 1496,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 3141,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "long",
+            "promotion"
+          ],
+          "gameUrl": "https://lichess.org/SkpbWhsf/black#88",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "PpJDf",
+          "fen": "8/3k4/3b2R1/p5pP/P5P1/1p1P1P2/2r2RK1/8 w - - 0 41",
+          "moves": "g6g5 c2f2 g2f2 b3b2 h5h6 b2b1q",
+          "rating": 1548,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2241,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "long",
+            "master",
+            "promotion"
+          ],
+          "gameUrl": "https://lichess.org/YOKfRQFT#81",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "ctbRV",
+          "fen": "4r1k1/1pq2bPp/p2p1Qp1/2pN4/4P3/7P/1PP5/2K2R2 b - - 6 26",
+          "moves": "f7d5 f6f8 e8f8 g7f8q",
+          "rating": 1613,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2616,
+          "themes": [
+            "advancedPawn",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/3vjo1GnI/black#52",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "chDVo",
+          "fen": "8/8/8/4p2R/2B5/pnP1KP2/1r4kP/8 w - - 14 50",
+          "moves": "h5e5 a3a2 c4b3 a2a1q",
+          "rating": 1659,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1444,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "master",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/OucSiNTu#99",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "C6gi6",
+          "fen": "2Rr1rk1/bP3p2/3p1qp1/3Pp3/1P2P1pP/6P1/1BQ3BK/8 b - - 1 42",
+          "moves": "f6f2 c2f2 a7f2 b7b8q d8c8 b8d6",
+          "rating": 1717,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1305,
+          "themes": [
+            "advancedPawn",
+            "advantage",
+            "long",
+            "middlegame",
+            "promotion"
+          ],
+          "gameUrl": "https://lichess.org/oAPoCiup/black#84",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "LvX7M",
+          "fen": "8/Rk3p1p/1P1p2p1/4n3/3B4/7r/2K5/8 b - - 2 36",
+          "moves": "b7c6 a7c7 c6b5 b6b7 e5c6 c7c6 b5c6 b7b8q",
+          "rating": 1757,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2511,
+          "themes": [
+            "advancedPawn",
+            "advantage",
+            "endgame",
+            "promotion",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/LnrzWQbJ/black#72",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "dsap6",
+          "fen": "4r3/1bB2k1p/1p6/2p3p1/P1Pp4/1P1p1P2/6PP/4R1K1 w - - 1 26",
+          "moves": "e1e8 d3d2 g1f2 d2d1q",
+          "rating": 1798,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1699,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "master",
+            "promotion",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/gZZ4UqHo#51",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "Sba6b",
+          "fen": "8/8/8/8/1kb3P1/2pBK3/8/8 w - - 3 63",
+          "moves": "d3c4 b4c4 g4g5 c4b3 g5g6 c3c2 e3d2 b3b2 g6g7 c2c1q",
+          "rating": 1872,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1020,
+          "themes": [
+            "advancedPawn",
+            "crushing",
+            "endgame",
+            "master",
+            "promotion",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/1BgFFhsX#125",
+          "goal": "win",
+          "mateIn": null
+        }
+      ]
+    },
+    {
+      "id": "intermediate-defence",
+      "theme": "defensiveMove",
+      "title": {
+        "en": "Defence",
+        "uk": "Захист"
+      },
+      "tip": {
+        "en": "First ask what your opponent is threatening.",
+        "uk": "Спершу спитай себе, чим загрожує суперник."
+      },
+      "intro": {
+        "text": {
+          "en": "Not every puzzle is an attack. Here your opponent has a threat, and you must find the move that holds — often the only one that does not lose. Before looking for your own ideas, ask what the opponent wants to do next.",
+          "uk": "Не кожна задача — атака. Тут у суперника є загроза, і треба знайти хід, що втримає позицію, — часто єдиний, що не програє. Перш ніж шукати власні ідеї, спитай себе, що суперник хоче зробити далі."
+        },
+        "fen": "3r2k1/1R3ppp/8/8/P7/1p6/5PPP/6K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "h2",
+            "to": "h3",
+            "kind": "move"
+          }
+        ],
+        "caption": {
+          "en": "h3 gives the king a square: a rook check on the back rank is no longer mate.",
+          "uk": "h3 дає королю вільне поле: шах турою по першій горизонталі вже не мат."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "SmoJ1",
+          "fen": "8/3r2k1/6pp/1B3p2/p2q4/6PP/2Q1K3/8 b - - 1 45",
+          "moves": "d4e4 c2e4 f5e4 b5d7 a4a3 d7e6",
+          "rating": 1150,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 3114,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/xMNvIrBF/black#90",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "JEq7c",
+          "fen": "5r1k/2b2P2/1p5p/p1pB4/P1P4n/1Q1P1pqP/3B1RP1/6K1 w - - 0 33",
+          "moves": "b3c3 c7e5 c3e5 g3e5",
+          "rating": 1189,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1995,
+          "themes": [
+            "advantage",
+            "defensiveMove",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/2xblxGWf#65",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "NnQDc",
+          "fen": "8/5k1p/8/5p2/3P4/2pKP2P/1rR5/8 b - - 3 40",
+          "moves": "b2c2 d3c2 f7e6 c2c3 e6d5 c3d3",
+          "rating": 1237,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2125,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/HEaXZ2MS/black#80",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "uZhv8",
+          "fen": "2r5/1p6/p4p1p/1k2b3/1PNp4/P2K2P1/2P4P/R7 w - - 1 28",
+          "moves": "a1e1 c8c4 a3a4 b5b4 e1b1 b4c5",
+          "rating": 1300,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2374,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/oaqSDkYa#55",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "k4X64",
+          "fen": "5rk1/8/pq5p/1p1p1Np1/3Pn1Q1/8/PP4PP/5RK1 b - - 0 37",
+          "moves": "f8f5 g4f5 b6d4 g1h1",
+          "rating": 1346,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2156,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/q6Urgcw5/black#74",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "prRCq",
+          "fen": "4r3/1KP5/3k3p/5pp1/1N4P1/7P/8/8 w - - 0 56",
+          "moves": "c7c8q e8c8 b7c8 f5f4",
+          "rating": 1408,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2259,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/s1OKcQDF#111",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "9vkG2",
+          "fen": "3k4/pp3pp1/2p3p1/4n1P1/4Pn2/P1N2P2/1P3K1P/5B2 b - - 1 25",
+          "moves": "e5d3 f2e3 d3b2 e3f4",
+          "rating": 1453,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 3238,
+          "themes": [
+            "advantage",
+            "defensiveMove",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/RYr1TLFs/black#50",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "xghd5",
+          "fen": "8/8/4k1p1/1p2npK1/8/2PN1P2/8/8 w - - 4 45",
+          "moves": "d3e5 e6e5 g5g6 e5f4 g6f6 f4f3 f6f5 f3e3",
+          "rating": 1491,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2521,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/M4FOs4H2#89",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "hslTA",
+          "fen": "8/8/8/4Qpk1/3P1q1p/7P/6P1/6K1 b - - 3 38",
+          "moves": "f4e5 d4e5 g5g6 g1f2",
+          "rating": 1555,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2582,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/aEecn41v/black#76",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "GFZCY",
+          "fen": "8/4k1p1/5pBn/7P/6PK/8/8/8 w - - 9 53",
+          "moves": "g6f5 h6f5 g4f5 e7d6",
+          "rating": 1602,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1914,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "master",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/t6AT04Jb#105",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "bGpbQ",
+          "fen": "5rk1/pp1b1ppp/8/3P4/4P3/4B1Q1/Pqr3PP/3R2KR b - - 3 20",
+          "moves": "f8e8 e3d4 b2d4 d1d4 c2c1 g1f2",
+          "rating": 1643,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1560,
+          "themes": [
+            "advantage",
+            "defensiveMove",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/oODkOjjx/black#40",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "yULcn",
+          "fen": "4R3/8/4r2p/3k1p2/5P2/7P/6K1/8 w - - 1 42",
+          "moves": "e8e6 d5e6 g2g3 e6d5",
+          "rating": 1712,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1131,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/KKtDeISg#83",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "YaOUc",
+          "fen": "6k1/1p3p1p/1q1p4/3P4/r3P3/3Q3P/1p3PP1/1R4K1 w - - 0 35",
+          "moves": "d3e2 a4a1 e2g4 g8f8 g4c8 f8e7",
+          "rating": 1745,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1533,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "long"
+          ],
+          "gameUrl": "https://lichess.org/4wsvokVq#69",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "z3ETa",
+          "fen": "3r1q2/pp5p/4k1p1/2p2bQ1/2P3P1/1P6/PB1PnK1P/5R2 b - - 2 25",
+          "moves": "f5d3 f2e1 f8f1 e1f1 e2f4 f1e1",
+          "rating": 1798,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1214,
+          "themes": [
+            "advantage",
+            "defensiveMove",
+            "long",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/iiCCTz1g/black#50",
+          "goal": "win",
+          "mateIn": null
+        },
+        {
+          "id": "AQdIx",
+          "fen": "8/ppp2pQ1/5P2/8/2P1b2P/KPkr4/P7/8 w - - 9 36",
+          "moves": "g7f7 d3d6 f7e8 d6a6 e8a4 a6a4 b3a4 e4g6",
+          "rating": 1869,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 1628,
+          "themes": [
+            "crushing",
+            "defensiveMove",
+            "endgame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/FbdaW5d2#71",
+          "goal": "win",
+          "mateIn": null
+        }
+      ]
+    },
+    {
+      "id": "intermediate-patterns",
+      "theme": "smotheredMate",
+      "title": {
+        "en": "Mating patterns",
+        "uk": "Матові візерунки"
+      },
+      "tip": {
+        "en": "Learn the picture: the same mating net turns up again and again.",
+        "uk": "Запам’ятай малюнок: ця матова сітка повторюється знову й знову."
+      },
+      "intro": {
+        "text": {
+          "en": "Some mates have names because they keep coming back: the smothered mate, Anastasia’s, the Arabian, Boden’s and more. Each is a picture — a few pieces in a fixed arrangement around the king. Once you know the picture, you will spot it in your own games.",
+          "uk": "Деякі мати мають назви, бо трапляються знову й знову: спертий мат, мат Анастасії, арабський, мат Бодена та інші. Кожен із них — це малюнок: кілька фігур у певному розташуванні навколо короля. Знаючи малюнок, ти помітиш його й у своїх партіях."
+        },
+        "fen": "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "g5",
+            "to": "f7",
+            "kind": "move"
+          },
+          {
+            "from": "f7",
+            "to": "h8",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Nf7#: the king is walled in by its own pieces — a smothered mate.",
+          "uk": "Nf7#: король замурований власними фігурами — спертий мат."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "d2rYg",
+          "fen": "1r3Q1k/pp2n1pp/3N4/4p3/4P3/3P4/PPP1q1PP/5R1K b - - 2 23",
+          "moves": "b8f8 f1f8 e7g8 d6f7",
+          "rating": 1048,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1954,
+          "themes": [
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short",
+            "smotheredMate"
+          ],
+          "gameUrl": "https://lichess.org/HdJ4tkK2/black#46",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "tKkhV",
+          "fen": "3rk2r/1Q4p1/p7/5p2/4pP2/5nP1/PP1B1R1q/R6K w k - 0 26",
+          "moves": "f2h2 h8h2",
+          "rating": 1110,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 1615,
+          "themes": [
+            "arabianMate",
+            "mate",
+            "mateIn1",
+            "middlegame",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/FoFuGv4I#51",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "LL7oq",
+          "fen": "4k2r/4b3/p2BR3/6p1/PQ1P3p/1P3P2/5P1P/2q3K1 w k - 1 27",
+          "moves": "g1g2 h4h3 g2g3 c1g1",
+          "rating": 1169,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 3691,
+          "themes": [
+            "endgame",
+            "epauletteMate",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/q7GlpaAM#53",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "Of2GK",
+          "fen": "1k6/1p4pp/1N6/2P1K3/1P6/8/2rr3P/R7 b - - 4 34",
+          "moves": "d2h2 a1a8 b8c7 a8c8",
+          "rating": 1226,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 2069,
+          "themes": [
+            "endgame",
+            "hookMate",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/LnHrHN2D/black#68",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "GxbZF",
+          "fen": "r4r1k/2p3p1/1p6/4p3/4Q1q1/1BPP4/PP2nPP1/R4RK1 w - - 3 26",
+          "moves": "g1h2 g4h5 e4h4 h5h4",
+          "rating": 1269,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1796,
+          "themes": [
+            "anastasiaMate",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/kXs2h9Ui#51",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "lL6mB",
+          "fen": "4Q3/pp1R1rkp/2p3p1/2B5/1P4P1/2b2P2/q6P/6K1 b - - 1 24",
+          "moves": "f7d7 e8f8",
+          "rating": 1324,
+          "ratingDeviation": 76,
+          "popularity": 99,
+          "nbPlays": 3756,
+          "themes": [
+            "dovetailMate",
+            "endgame",
+            "mate",
+            "mateIn1",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/8qTvDS5d/black#48",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "0AgtT",
+          "fen": "2r4r/1p1k1ppp/1b1N4/4n3/6b1/4P3/PP3PPP/R3KB1R w KQ - 2 17",
+          "moves": "d6c8 b6a5 b2b4 a5b4",
+          "rating": 1392,
+          "ratingDeviation": 79,
+          "popularity": 100,
+          "nbPlays": 1706,
+          "themes": [
+            "bodenMate",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/TzPm32p5#33",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "5up6Q",
+          "fen": "r1bqk2r/pp1pbp1p/2n1p1pB/3nP3/4Q3/2PB1N2/PP3PPP/RN2K2R b KQkq - 1 9",
+          "moves": "f7f6 e4g6 h7g6 d3g6",
+          "rating": 1444,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2259,
+          "themes": [
+            "doubleBishopMate",
+            "mate",
+            "mateIn2",
+            "opening",
+            "sacrifice",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/XTM3oG5I/black#18",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "dFOkU",
+          "fen": "r7/1R2n3/p1p1kp2/3p3p/P2P3P/3N4/5PP1/6K1 b - - 7 28",
+          "moves": "e7f5 d3c5 e6d6 b7d7",
+          "rating": 1507,
+          "ratingDeviation": 79,
+          "popularity": 100,
+          "nbPlays": 2927,
+          "themes": [
+            "endgame",
+            "hookMate",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/iceQLJT9/black#56",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "PK3MW",
+          "fen": "k3r3/5p2/pq6/8/8/5PB1/PPR1K1P1/3R4 w - - 7 33",
+          "moves": "e2d2 b6e3",
+          "rating": 1570,
+          "ratingDeviation": 78,
+          "popularity": 100,
+          "nbPlays": 1768,
+          "themes": [
+            "dovetailMate",
+            "endgame",
+            "mate",
+            "mateIn1",
+            "oneMove"
+          ],
+          "gameUrl": "https://lichess.org/ajbIz8oR#65",
+          "goal": "mate",
+          "mateIn": 1
+        },
+        {
+          "id": "ps2Sp",
+          "fen": "8/7k/6R1/4KP2/4N3/4q3/8/8 b - - 6 65",
+          "moves": "e3c1 e4f6 h7h8 g6g8",
+          "rating": 1630,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2097,
+          "themes": [
+            "arabianMate",
+            "endgame",
+            "master",
+            "masterVsMaster",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ZFBNqX9J/black#130",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "HY0Vd",
+          "fen": "2b5/kp5r/1R2p3/3pPp2/1Q1P2p1/4P3/3n4/1R3KNr w - - 6 47",
+          "moves": "f1f2 h7h2 f2g3 d2e4 g3f4 h2f2 g1f3 f2f3",
+          "rating": 1689,
+          "ratingDeviation": 76,
+          "popularity": 97,
+          "nbPlays": 2841,
+          "themes": [
+            "epauletteMate",
+            "mate",
+            "mateIn4",
+            "middlegame",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/1yCKohhG#93",
+          "goal": "mate",
+          "mateIn": 4
+        },
+        {
+          "id": "yL1MY",
+          "fen": "5Rk1/p7/3RN1p1/8/2p5/2P1r3/nr5P/7K b - - 1 27",
+          "moves": "g8h7 d6d7 h7h6 f8h8",
+          "rating": 1737,
+          "ratingDeviation": 77,
+          "popularity": 98,
+          "nbPlays": 5381,
+          "themes": [
+            "anastasiaMate",
+            "endgame",
+            "mate",
+            "mateIn2",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/ONiaczbI/black#54",
+          "goal": "mate",
+          "mateIn": 2
+        },
+        {
+          "id": "cAqzu",
+          "fen": "5k1r/p3q1pp/1bQ2p2/8/5nb1/2PP1N2/PP1N1PPP/R1B2K1R w - - 6 17",
+          "moves": "d3d4 e7e2 f1g1 e2d1 f3e1 d1e1 d2f1 f4e2",
+          "rating": 1796,
+          "ratingDeviation": 79,
+          "popularity": 94,
+          "nbPlays": 31165,
+          "themes": [
+            "mate",
+            "mateIn4",
+            "middlegame",
+            "smotheredMate",
+            "veryLong"
+          ],
+          "gameUrl": "https://lichess.org/YPjdKh49#33",
+          "goal": "mate",
+          "mateIn": 4
+        },
+        {
+          "id": "PNW2a",
+          "fen": "r1bqrk2/p2pp1bp/2p3p1/3n2B1/2B5/2NQ4/PPP2PPP/R4RK1 b - - 9 14",
+          "moves": "d5c3 d3f3 g7f6 g5h6",
+          "rating": 1829,
+          "ratingDeviation": 78,
+          "popularity": 98,
+          "nbPlays": 5071,
+          "themes": [
+            "bodenMate",
+            "mate",
+            "mateIn2",
+            "middlegame",
+            "short"
+          ],
+          "gameUrl": "https://lichess.org/MTOm47Rj/black#28",
+          "goal": "mate",
+          "mateIn": 2
+        }
+      ]
+    },
+    {
+      "id": "intermediate-mate3",
+      "theme": "mateIn3",
+      "title": {
+        "en": "Mate in 3",
+        "uk": "Мат у 3 ходи"
+      },
+      "tip": {
+        "en": "Forcing moves first: checks, captures, threats.",
+        "uk": "Спершу форсовані ходи: шахи, взяття, загрози."
+      },
+      "intro": {
+        "text": {
+          "en": "Mate in three asks you to see a little further: three of your moves, with the opponent’s replies in between. Start with the most forcing moves — checks and sacrifices — because they leave the fewest replies to calculate.",
+          "uk": "Мат у 3 ходи вимагає бачити трохи далі: три твої ходи й відповіді суперника між ними. Починай із найбільш форсованих — шахів і жертв, — бо після них найменше відповідей треба прорахувати."
+        },
+        "fen": "5rk1/pp3ppp/8/3N3Q/8/4R3/5PPP/6K1 w - - 0 1",
+        "arrows": [
+          {
+            "from": "d5",
+            "to": "e7",
+            "kind": "move"
+          },
+          {
+            "from": "e7",
+            "to": "g8",
+            "kind": "threat"
+          },
+          {
+            "from": "h5",
+            "to": "h7",
+            "kind": "threat"
+          }
+        ],
+        "caption": {
+          "en": "Ne7+ drives the king to h8; then a queen sacrifice on h7, and the rook mates on the h-file.",
+          "uk": "Ne7+ заганяє короля на h8; далі жертва ферзя на h7 — і тура ставить мат по вертикалі h."
+        }
+      },
+      "puzzles": [
+        {
+          "id": "oAnir",
+          "fen": "1b1r2k1/pQ3p2/Pp2p1p1/2P3p1/1P3nP1/5K2/3p1P2/3R4 w - - 0 36",
+          "moves": "c5b6 d8d3 f3e4 f7f5 g4f5 g6f5",
+          "rating": 1047,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2793,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/yrZ38hNo#71",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "bwHet",
+          "fen": "2r2b1k/1pq2QBp/p3R1P1/1n1p4/8/1NP5/PP5P/6K1 b - - 0 32",
+          "moves": "f8g7 e6e8 c8e8 f7e8 g7f8 e8f8",
+          "rating": 1107,
+          "ratingDeviation": 78,
+          "popularity": 100,
+          "nbPlays": 1829,
+          "themes": [
+            "long",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/beWsMKrw/black#64",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "riKur",
+          "fen": "rnb1qb1r/k1B3p1/p2N1n1p/1p3p2/4p3/1Q6/PP3PPP/RN2KB1R b KQ - 0 17",
+          "moves": "f8d6 b3e3 d6c5 e3c5 a7b7 c5b6",
+          "rating": 1172,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 17408,
+          "themes": [
+            "long",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/aodBCWmS/black#34",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "wWc0k",
+          "fen": "5rk1/pp6/3qp3/3p1rN1/3b2pP/3Q4/PP2RPK1/5R2 w - - 6 25",
+          "moves": "e2e6 f5f2 f1f2 f8f2 g2h1 d6h2",
+          "rating": 1212,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2058,
+          "themes": [
+            "long",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/Qe06RFNJ#49",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "UPxPK",
+          "fen": "5Q2/1p5k/p6p/3p1Np1/2q3K1/8/P1P3PP/8 w - - 2 33",
+          "moves": "g4h5 c4e2 g2g4 e2h2 f5h4 h2h4",
+          "rating": 1283,
+          "ratingDeviation": 74,
+          "popularity": 100,
+          "nbPlays": 4376,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/DfdqxxMr#65",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "ZqOx9",
+          "fen": "5r2/1ppk2pp/4p3/8/Q1nP4/2Pq1P2/KR4PP/8 b - - 8 41",
+          "moves": "c7c6 b2b7 d7d6 a4b4 c6c5 b4c5",
+          "rating": 1341,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2794,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/FFrYpK75/black#82",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "QtPMd",
+          "fen": "r4r2/pb4pp/1p1R4/2p1p1P1/5B2/2N2k1P/PPP5/2K1R3 b - - 0 22",
+          "moves": "e5f4 d6d3 f3g2 e1e2 g2f1 d3d1",
+          "rating": 1389,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 5635,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/TCNH6Wk4/black#44",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "vs21w",
+          "fen": "2rk4/pp3Q2/8/4p3/3nN1P1/3P3P/PqP1K3/R1R5 w - - 2 29",
+          "moves": "e2d2 c8c2 c1c2 b2c2 d2e3 c2e2",
+          "rating": 1460,
+          "ratingDeviation": 76,
+          "popularity": 100,
+          "nbPlays": 2899,
+          "themes": [
+            "long",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/Nm6p0d8t#57",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "4iKjr",
+          "fen": "r4rk1/ppp1Qp1p/6p1/8/6N1/1q6/5PPP/5RK1 b - - 3 22",
+          "moves": "f7f5 g4h6 g8h8 e7e5 f8f6 e5f6",
+          "rating": 1517,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 3431,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/uAxaxDr3/black#44",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "iSkZe",
+          "fen": "2kr4/pp3Q1p/8/q1p4P/5p1R/1P6/P1P2P2/2K5 w - - 3 32",
+          "moves": "f7f4 a5a3 c1b1 d8d1 f4c1 d1c1",
+          "rating": 1568,
+          "ratingDeviation": 77,
+          "popularity": 100,
+          "nbPlays": 2284,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/nz6glxeh#63",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "ip7E3",
+          "fen": "7k/5Qpn/7p/1pp5/3qr2B/PP6/6PP/5R1K b - - 2 38",
+          "moves": "e4h4 f7e8 h7f8 f1f8 h8h7 f8h8",
+          "rating": 1610,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 2756,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/gonGPcjm/black#76",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "PMxtJ",
+          "fen": "6k1/p5pp/bp1pP2r/8/4B3/2P2Pq1/P1Q2RP1/4RK2 w - - 1 26",
+          "moves": "e4d3 h6h1 f1e2 g3e5 e2d2 e5e1",
+          "rating": 1672,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1590,
+          "themes": [
+            "long",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/kfiHeHSH#51",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "uvIFQ",
+          "fen": "r4r2/qb4pp/p2bQnk1/1p2n1N1/N3P3/6B1/PP3PPP/R3R1K1 b - - 8 19",
+          "moves": "g6g5 e6f5 g5h6 g3f4 g7g5 f5g5",
+          "rating": 1748,
+          "ratingDeviation": 75,
+          "popularity": 100,
+          "nbPlays": 1730,
+          "themes": [
+            "long",
+            "mate",
+            "mateIn3",
+            "middlegame"
+          ],
+          "gameUrl": "https://lichess.org/FCwT9Lvs/black#38",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "KiLdL",
+          "fen": "8/8/3P3k/8/2q1Pn2/7P/5P2/4Q1K1 w - - 7 48",
+          "moves": "e1d2 c4g8 g1f1 g8g2 f1e1 g2h1",
+          "rating": 1794,
+          "ratingDeviation": 75,
+          "popularity": 99,
+          "nbPlays": 1413,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/4Epcn5jJ#95",
+          "goal": "mate",
+          "mateIn": 3
+        },
+        {
+          "id": "DP2Dq",
+          "fen": "6k1/4q1p1/6B1/p3P2Q/6Pp/bpP4P/8/4K3 b - - 2 40",
+          "moves": "e7c5 h5h7 g8f8 h7h8 f8e7 h8e8",
+          "rating": 1855,
+          "ratingDeviation": 78,
+          "popularity": 100,
+          "nbPlays": 3711,
+          "themes": [
+            "endgame",
+            "long",
+            "mate",
+            "mateIn3"
+          ],
+          "gameUrl": "https://lichess.org/t4ebriG1/black#80",
+          "goal": "mate",
+          "mateIn": 3
+        }
+      ]
+    }
+  ],
+  "exam": {
+    "id": "intermediate-exam",
+    "passMark": 24,
+    "puzzles": [
+      {
+        "id": "x10gW",
+        "fen": "r5k1/1R3pp1/r3p2p/4N3/3P1P2/p1n1P3/Q5PP/6K1 w - - 1 28",
+        "moves": "a2b3 a3a2 b3c3 a2a1q c3a1 a6a1",
+        "rating": 1420,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 5039,
+        "themes": [
+          "advancedPawn",
+          "advantage",
+          "endgame",
+          "long",
+          "promotion"
+        ],
+        "gameUrl": "https://lichess.org/fuHHHOE9#55",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "promotion"
+      },
+      {
+        "id": "l1t9r",
+        "fen": "r1b1N2r/1p1pQpkp/2n1p1pn/p3PP1P/P5P1/6q1/6B1/3R1RK1 b - - 2 26",
+        "moves": "h8e8 f5f6 g7h8 e7e8",
+        "rating": 1421,
+        "ratingDeviation": 74,
+        "popularity": 100,
+        "nbPlays": 2508,
+        "themes": [
+          "crushing",
+          "intermezzo",
+          "master",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/7T3sZiRv/black#52",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "intermezzo"
+      },
+      {
+        "id": "uSKeU",
+        "fen": "3rk2r/ppp2ppp/4bn2/8/1nP5/2N2N2/PP3PPP/R1B1KB1R w KQk - 2 10",
+        "moves": "a1b1 b4c2 e1e2 e6c4",
+        "rating": 1426,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 1473,
+        "themes": [
+          "interference",
+          "mate",
+          "mateIn2",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/xC2vcmFa#19",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "interference"
+      },
+      {
+        "id": "iblIR",
+        "fen": "6k1/p4pp1/Q3np1p/8/4q3/BP5P/P1r2PP1/R5K1 w - - 0 22",
+        "moves": "a6a7 e6f4 a7b8 g8h7 b8f4 e4f4",
+        "rating": 1428,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 2961,
+        "themes": [
+          "crushing",
+          "defensiveMove",
+          "endgame",
+          "long"
+        ],
+        "gameUrl": "https://lichess.org/CVgfyLeN#43",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "defensiveMove"
+      },
+      {
+        "id": "AonzT",
+        "fen": "5r1k/p1q3pp/4Q3/2pp4/8/3PN1nP/PPP3Pb/R1B4K w - - 2 21",
+        "moves": "h1h2 g3f1 h2g1 c7h2",
+        "rating": 1429,
+        "ratingDeviation": 78,
+        "popularity": 100,
+        "nbPlays": 2185,
+        "themes": [
+          "doubleCheck",
+          "mate",
+          "mateIn2",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/25T5MQZC#41",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "doubleCheck"
+      },
+      {
+        "id": "dnzDB",
+        "fen": "Q7/2p3pk/7B/4p3/4P3/2P3KP/1r6/R2bn3 w - - 1 39",
+        "moves": "a1d1 b2g2 g3h4 e1f3 h4h5 g7g6",
+        "rating": 1433,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 5585,
+        "themes": [
+          "endgame",
+          "long",
+          "mate",
+          "mateIn3"
+        ],
+        "gameUrl": "https://lichess.org/jbFOeahG#77",
+        "goal": "mate",
+        "mateIn": 3,
+        "theme": "mateIn3"
+      },
+      {
+        "id": "QbdSh",
+        "fen": "3r2rk/p4pRp/2p2P1Q/1p3q1P/2bP4/8/PP3P2/2K3R1 b - - 8 28",
+        "moves": "c4a2 g7g8 d8g8 g1g8 h8g8 h6g7",
+        "rating": 1462,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 2896,
+        "themes": [
+          "attraction",
+          "long",
+          "mate",
+          "mateIn3",
+          "middlegame"
+        ],
+        "gameUrl": "https://lichess.org/UzscI1T8/black#56",
+        "goal": "mate",
+        "mateIn": 3,
+        "theme": "attraction"
+      },
+      {
+        "id": "SqLTu",
+        "fen": "r3kb1r/1pq2p1p/p3bp2/3p4/8/5N2/PPP1PPPP/R2QKB1R w KQkq - 2 10",
+        "moves": "f3d4 f8b4 c2c3 b4c3 b2c3 c7c3 d1d2 c3a1",
+        "rating": 1463,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 6753,
+        "themes": [
+          "advantage",
+          "deflection",
+          "middlegame",
+          "veryLong"
+        ],
+        "gameUrl": "https://lichess.org/EzlgqJlF#19",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "deflection"
+      },
+      {
+        "id": "Gs5Ds",
+        "fen": "r1b2qkr/ppNnp1bp/5np1/4N3/5P2/8/PPPP2PP/R1BQK2R w KQ - 7 14",
+        "moves": "c7a8 d7e5 f4e5 c8g4",
+        "rating": 1470,
+        "ratingDeviation": 77,
+        "popularity": 100,
+        "nbPlays": 2564,
+        "themes": [
+          "advantage",
+          "clearance",
+          "master",
+          "opening",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/tp1qlgWx#27",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "clearance"
+      },
+      {
+        "id": "9iejV",
+        "fen": "r1b2rk1/pp4pp/7q/3Ppp2/1PPbN3/1Q1B3P/3N1nP1/3RK2R w K - 0 20",
+        "moves": "e4f2 h6e3 d3e2 e3f2",
+        "rating": 1471,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 3066,
+        "themes": [
+          "attackingF2F7",
+          "mate",
+          "mateIn2",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/tzo6uQPl#39",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "attackingF2F7"
+      },
+      {
+        "id": "cexc3",
+        "fen": "r1r5/1q1k1Q2/p3p3/1p5p/nBpP4/4P2P/5PP1/1R3K2 b - - 0 39",
+        "moves": "d7c6 f7e6 c6c7 e6d6",
+        "rating": 1490,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 4161,
+        "themes": [
+          "dovetailMate",
+          "mate",
+          "mateIn2",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/FllGRDYd/black#78",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "smotheredMate"
+      },
+      {
+        "id": "y5CFL",
+        "fen": "3rr1k1/pp3ppp/2n2n2/8/1b4b1/2N1B1P1/PPP1NPBP/R2R2K1 b - - 7 13",
+        "moves": "b4c3 d1d8 e8d8 e2c3",
+        "rating": 1607,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 2990,
+        "themes": [
+          "advantage",
+          "intermezzo",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/ZSNik3en/black#26",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "intermezzo"
+      },
+      {
+        "id": "6tiFO",
+        "fen": "1k1r3r/pp3p2/3q1n2/3p2p1/Q2N2pP/6P1/PP3P2/3R1RK1 b - - 1 24",
+        "moves": "g5h4 d4b5 d6b6 a4f4 b8a8 b5c7",
+        "rating": 1615,
+        "ratingDeviation": 77,
+        "popularity": 100,
+        "nbPlays": 1082,
+        "themes": [
+          "advantage",
+          "clearance",
+          "long",
+          "middlegame"
+        ],
+        "gameUrl": "https://lichess.org/J5UP2brs/black#48",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "clearance"
+      },
+      {
+        "id": "F7Xq5",
+        "fen": "8/8/1bp2n2/3k4/1P3Kp1/4P3/5P2/2R5 b - - 1 38",
+        "moves": "f6e4 c1d1 d5c4 f4e4",
+        "rating": 1619,
+        "ratingDeviation": 74,
+        "popularity": 100,
+        "nbPlays": 3098,
+        "themes": [
+          "crushing",
+          "deflection",
+          "endgame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/07g0LHWe/black#76",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "deflection"
+      },
+      {
+        "id": "dmqAj",
+        "fen": "r1r5/4bppk/p1P1q3/1p1nPR2/4Q3/6P1/3N3P/2R3K1 b - - 0 28",
+        "moves": "d5c3 f5h5 h7g8 e4h7 g8f8 h7h8",
+        "rating": 1621,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 1899,
+        "themes": [
+          "doubleCheck",
+          "long",
+          "mate",
+          "mateIn3",
+          "middlegame"
+        ],
+        "gameUrl": "https://lichess.org/Wae2QASW/black#56",
+        "goal": "mate",
+        "mateIn": 3,
+        "theme": "doubleCheck"
+      },
+      {
+        "id": "Ewbjt",
+        "fen": "2r5/k4p1p/1q2b3/p2p1p2/1b1P4/1pNQPBPP/1P3P2/1KR5 w - - 4 38",
+        "moves": "c3d5 c8c1 b1c1 b6c6 d5c3 c6f3",
+        "rating": 1623,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 2047,
+        "themes": [
+          "attraction",
+          "crushing",
+          "long",
+          "middlegame"
+        ],
+        "gameUrl": "https://lichess.org/6fGognoZ#75",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "attraction"
+      },
+      {
+        "id": "btcdY",
+        "fen": "3r2k1/P1Q1bppp/8/2p1p3/2Pp1B2/8/q4PPP/5RK1 b - - 1 27",
+        "moves": "d8a8 c7b8 a8b8 a7b8q",
+        "rating": 1624,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 2634,
+        "themes": [
+          "advancedPawn",
+          "advantage",
+          "endgame",
+          "master",
+          "promotion",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/DnLVsnNe/black#54",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "promotion"
+      },
+      {
+        "id": "vKVW4",
+        "fen": "3R4/5pkp/2q1p1p1/P1b1P3/2Q5/8/5PPP/6K1 w - - 2 37",
+        "moves": "c4h4 c5e7 h4f4 e7d8",
+        "rating": 1632,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 1438,
+        "themes": [
+          "advantage",
+          "endgame",
+          "interference",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/wSy0F8Zk#73",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "interference"
+      },
+      {
+        "id": "3HOge",
+        "fen": "r2qkb1r/ppp2ppp/2n2nb1/4p1N1/2B3P1/1QN1PP2/PP1P3P/R1B1K2R b KQkq - 2 9",
+        "moves": "c6a5 c4f7 g6f7 b3f7",
+        "rating": 1673,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 1536,
+        "themes": [
+          "attackingF2F7",
+          "mate",
+          "mateIn2",
+          "opening",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/0UjtkYzv/black#18",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "attackingF2F7"
+      },
+      {
+        "id": "rXLIr",
+        "fen": "r3r3/1p1b2pp/2p1n3/4R1P1/2B1Rk2/P6P/8/6K1 b - - 1 26",
+        "moves": "f4f3 c4e2 f3g3 e4g4 g3h3 e5e3",
+        "rating": 1762,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 2015,
+        "themes": [
+          "long",
+          "mate",
+          "mateIn3",
+          "middlegame"
+        ],
+        "gameUrl": "https://lichess.org/G9gXEeGq/black#52",
+        "goal": "mate",
+        "mateIn": 3,
+        "theme": "mateIn3"
+      },
+      {
+        "id": "YUHB0",
+        "fen": "r2qk2r/ppp2ppp/8/3np3/1b1n2b1/2NP2P1/PPPBNP1P/R2QKBR1 w Qkq - 9 11",
+        "moves": "c3d5 d4f3",
+        "rating": 1811,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 2642,
+        "themes": [
+          "mate",
+          "mateIn1",
+          "oneMove",
+          "opening",
+          "smotheredMate"
+        ],
+        "gameUrl": "https://lichess.org/hX57e2fd#21",
+        "goal": "mate",
+        "mateIn": 1,
+        "theme": "smotheredMate"
+      },
+      {
+        "id": "Mm9SV",
+        "fen": "4r2k/3R1R1P/8/3B4/2Pb4/1Ppp2BP/2b1p2K/8 w - - 4 36",
+        "moves": "d7e7 e8e7 f7e7 d3d2 e7e2 d2d1q",
+        "rating": 1823,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 1128,
+        "themes": [
+          "advancedPawn",
+          "crushing",
+          "long",
+          "middlegame",
+          "promotion"
+        ],
+        "gameUrl": "https://lichess.org/z3db4tZ8#71",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "promotion"
+      },
+      {
+        "id": "appbi",
+        "fen": "3QR3/1p3pr1/p5pk/7p/7P/8/q1P3P1/7K b - - 0 39",
+        "moves": "a2c4 e8h8 g7h7 d8f8",
+        "rating": 1824,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 1246,
+        "themes": [
+          "clearance",
+          "endgame",
+          "mate",
+          "mateIn2",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/PDRJLQtq/black#78",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "clearance"
+      },
+      {
+        "id": "8TdRL",
+        "fen": "5Q2/8/4B1pk/3P3p/p1n5/P6P/2q5/K7 b - - 4 37",
+        "moves": "h6g5 h3h4 g5h4 f8f4",
+        "rating": 1840,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 1508,
+        "themes": [
+          "attraction",
+          "endgame",
+          "mate",
+          "mateIn2",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/PFBz7Vdz/black#74",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "attraction"
+      },
+      {
+        "id": "Roq5R",
+        "fen": "1q4rk/p4p2/4pp2/3pN2p/3P4/1P4rP/P1R1Q2K/3R4 b - - 3 26",
+        "moves": "f6e5 e2h5 h8g7 h2g3",
+        "rating": 1842,
+        "ratingDeviation": 74,
+        "popularity": 100,
+        "nbPlays": 855,
+        "themes": [
+          "advantage",
+          "endgame",
+          "interference",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/9qui9QGY/black#52",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "interference"
+      },
+      {
+        "id": "U8MhV",
+        "fen": "3r1rk1/pbq2pbp/1p1Rp1p1/2p1n3/2P2P2/4BN2/PPQ1B1PP/5RK1 w - - 0 17",
+        "moves": "d6d8 e5f3 e2f3 f8d8 f3b7 c7b7",
+        "rating": 1866,
+        "ratingDeviation": 77,
+        "popularity": 100,
+        "nbPlays": 1026,
+        "themes": [
+          "advantage",
+          "intermezzo",
+          "long",
+          "middlegame"
+        ],
+        "gameUrl": "https://lichess.org/iNy4VL1X#33",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "intermezzo"
+      },
+      {
+        "id": "CN4Y9",
+        "fen": "r2qk1nr/ppp1bpp1/3p3p/4N3/2B1P1b1/3P2B1/PPP3PP/RN1Q1RK1 b kq - 0 9",
+        "moves": "g4d1 c4f7 e8f8 e5g6",
+        "rating": 1880,
+        "ratingDeviation": 74,
+        "popularity": 100,
+        "nbPlays": 1295,
+        "themes": [
+          "attackingF2F7",
+          "mate",
+          "mateIn2",
+          "opening",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/RpHciosr/black#18",
+        "goal": "mate",
+        "mateIn": 2,
+        "theme": "attackingF2F7"
+      },
+      {
+        "id": "n6gzv",
+        "fen": "6R1/3k1pp1/7p/1p6/4P3/3PQ2P/6PK/q1r5 w - - 2 35",
+        "moves": "e3f3 a1e5 f3g3 c1h1 h2h1 e5g3",
+        "rating": 1883,
+        "ratingDeviation": 77,
+        "popularity": 100,
+        "nbPlays": 1437,
+        "themes": [
+          "crushing",
+          "deflection",
+          "endgame",
+          "long"
+        ],
+        "gameUrl": "https://lichess.org/x5IiaHbJ#69",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "deflection"
+      },
+      {
+        "id": "oz0Yh",
+        "fen": "2kr1b1r/p2b2p1/4p3/2pp1qPp/P4B1P/1QP5/1P2N3/R4RK1 b - - 3 22",
+        "moves": "f5g4 e2g3 g4f4 f1f4",
+        "rating": 1890,
+        "ratingDeviation": 76,
+        "popularity": 100,
+        "nbPlays": 1456,
+        "themes": [
+          "advantage",
+          "defensiveMove",
+          "middlegame",
+          "short"
+        ],
+        "gameUrl": "https://lichess.org/vc2HpFbV/black#44",
+        "goal": "win",
+        "mateIn": null,
+        "theme": "defensiveMove"
+      },
+      {
+        "id": "6Untw",
+        "fen": "5nk1/pp3ppp/1qp2n2/8/2P5/4r1P1/PP2Q1BP/R2R2K1 w - - 0 22",
+        "moves": "e2c2 e3e1",
+        "rating": 1900,
+        "ratingDeviation": 75,
+        "popularity": 100,
+        "nbPlays": 1833,
+        "themes": [
+          "doubleCheck",
+          "mate",
+          "mateIn1",
+          "middlegame",
+          "oneMove"
+        ],
+        "gameUrl": "https://lichess.org/WHOqHG1h#43",
+        "goal": "mate",
+        "mateIn": 1,
+        "theme": "doubleCheck"
+      }
+    ]
+  }
+}
