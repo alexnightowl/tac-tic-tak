@@ -60,6 +60,7 @@ model User {
   receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
   offlineReceipts        OfflineAttemptReceipt[]
   libraryAttempts        LibraryAttempt[]
+  courseExams            CourseExam[]
 }
 
 model UserSetting {
@@ -316,4 +317,25 @@ model LibraryAttempt {
 
   @@unique([userId, puzzleId, cycle])
   @@index([userId, bookId])
+}
+
+/// One finished exam try of a Learn course (mobile). Kept apart from
+/// LibraryAttempt: a retake replays puzzles that already have a result in
+/// the cycle.
+model CourseExam {
+  id        String   @id @default(cuid())
+  clientId  String   @unique
+  userId    String
+  courseId  String
+  cycle     Int
+  score     Int
+  total     Int
+  passed    Boolean
+  /// theme slug → [right, asked]
+  byTheme   Json
+  takenAt   DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, courseId])
 }

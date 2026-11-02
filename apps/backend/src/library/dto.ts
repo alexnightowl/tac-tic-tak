@@ -2,10 +2,12 @@ import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsIn,
   IsInt,
   IsOptional,
   IsISO8601,
+  IsObject,
   IsString,
   Max,
   Matches,
@@ -49,6 +51,37 @@ export class LibraryAttemptDto {
   localDay?: string;
 }
 
+/** One finished course exam try (mobile Learn tab). */
+export class CourseExamDto {
+  @IsString() @MaxLength(64)
+  clientId!: string;
+
+  @IsString() @MaxLength(32)
+  courseId!: string;
+
+  @IsInt() @Min(1) @Max(MAX_LIBRARY_CYCLE)
+  cycle!: number;
+
+  @IsInt() @Min(0) @Max(200)
+  score!: number;
+
+  @IsInt() @Min(1) @Max(200)
+  total!: number;
+
+  /** The phone's verdict; the server recomputes it from the course's pass mark. */
+  @IsOptional() @IsBoolean()
+  passed?: boolean;
+
+  /** theme slug → [right, asked]; unknown themes and malformed rows are dropped. */
+  @IsObject()
+  byTheme!: Record<string, unknown>;
+
+  @IsISO8601()
+  takenAt!: string;
+}
+
+export const MAX_EXAM_SYNC = 100;
+
 export class LibrarySyncDto {
   /** `Date#getTimezoneOffset()` at sync time; with `localDay`, the streak's "today". */
   @IsOptional() @IsInt() @Min(-840) @Max(840)
@@ -57,4 +90,8 @@ export class LibrarySyncDto {
   @IsArray() @ArrayMaxSize(MAX_LIBRARY_SYNC)
   @ValidateNested({ each: true }) @Type(() => LibraryAttemptDto)
   attempts!: LibraryAttemptDto[];
+
+  @IsOptional() @IsArray() @ArrayMaxSize(MAX_EXAM_SYNC)
+  @ValidateNested({ each: true }) @Type(() => CourseExamDto)
+  exams?: CourseExamDto[];
 }
