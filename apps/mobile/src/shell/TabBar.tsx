@@ -13,7 +13,7 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Circle, Path, Rect } from 'react-native-svg';
+import Svg, { Path, Rect } from 'react-native-svg';
 
 import { feel } from '@/feel';
 import { fontFamily } from '@/ui/fonts';
@@ -24,18 +24,17 @@ import { SHELL_TABS, type ShellTabId } from './tabs';
 
 const HOME = require('../../assets/icons/nav-home.webp');
 const PLAY = require('../../assets/icons/nav-play.webp');
-const REVIEW = require('../../assets/icons/nav-review-book.webp');
 
 const BAR_H = layout.tabBarHeight;
-const SHURIKEN =
-  'M9.30 9.30 Q9.60 4.60 15.20 1.90 Q13.40 6.20 14.70 9.30 Q19.40 9.60 22.10 15.20 Q17.80 13.40 14.70 14.70 Q14.40 19.40 8.80 22.10 Q10.60 17.80 9.30 14.70 Q4.60 14.40 1.90 8.80 Q6.20 10.60 9.30 9.30Z';
+/** The Learn tab's open book (canvas LearnHome nav). */
+const LEARN = 'M2.5 5.5c3-1.3 6.2-1.3 9.5.8 3.3-2.1 6.5-2.1 9.5-.8v13c-3-1.3-6.2-1.3-9.5.8-3.3-2.1-6.5-2.1-9.5-.8zM12 6.3v13';
 /** The ember rule spans the middle 44% of the tab (left/right 28%). */
 const RULE = layout.tabRule.span;
 
 /**
  * The app's tab bar (design v2 tab artboards; custom JS bar over
  * NativeTabs, whose iOS 26 Liquid Glass ignores the ground): shade ground,
- * 1 px seam top rule, six 64 pt tabs with a 28 × 24 icon box and a 10/14
+ * 1 px seam top rule, five 64 pt tabs (canvas LearnHome nav) with a 28 × 24 icon box and a 10/14
  * bold label (gap 4), bone active / dust idle (Home's painted icon dims to
  * 0.5 instead), line icons 1.8 → 2 pt when active, and a 2 pt ember rule
  * over the middle 44 % of the active tab. The rule slides and icon/label
@@ -127,8 +126,12 @@ function TabIcon({ id, pos, i }: { id: ShellTabId; pos: SharedValue<number>; i: 
     switch (id) {
       case 'play':
         return <Image source={PLAY} style={styles.i24} tintColor={color} />;
-      case 'review':
-        return <Image source={REVIEW} style={styles.book} tintColor={color} />;
+      case 'learn':
+        return (
+          <Svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+            <Path d={LEARN} />
+          </Svg>
+        );
       case 'rivals':
         return (
           <Svg width={21} height={21} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
@@ -136,18 +139,10 @@ function TabIcon({ id, pos, i }: { id: ShellTabId; pos: SharedValue<number>; i: 
             <Path d="M3.5 9.2h17M3.5 14.8h17M9.2 3.5v17M14.8 3.5v17" />
           </Svg>
         );
-      case 'stats':
+      default:
         return (
           <Svg width={21} height={21} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
             <Path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
-          </Svg>
-        );
-      default:
-        // Web ShurikenIcon.
-        return (
-          <Svg width={23} height={23} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-            <Path d={SHURIKEN} />
-            <Circle cx={12} cy={12} r={1.9} />
           </Svg>
         );
     }
@@ -195,5 +190,4 @@ const styles = StyleSheet.create({
   icon: { width: 28, height: 24, alignItems: 'center', justifyContent: 'center' },
   layer: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   i24: { width: 24, height: 24 },
-  book: { width: 28, height: 24 },
 });

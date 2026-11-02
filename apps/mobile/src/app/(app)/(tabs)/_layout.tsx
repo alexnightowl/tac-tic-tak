@@ -8,7 +8,7 @@ import { TabSceneInsets } from '@/shell/TabSceneInsets';
 
 export const ErrorBoundary = ShellErrorBoundary;
 
-// The six tabs (design canvas, DECISIONS D22): JS tabs with the custom
+// The five tabs (canvas Learn page; was six, DECISIONS D22): JS tabs with the custom
 // ember-on-stone bar and the shell header (logo + avatar menu) on every
 // tab. Tab screens render content only; each stream owns one tab file.
 export default function TabsLayout() {
@@ -27,10 +27,9 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="play" />
-      <Tabs.Screen name="review" />
+      <Tabs.Screen name="learn" />
       <Tabs.Screen name="rivals" />
       <Tabs.Screen name="stats" />
-      <Tabs.Screen name="settings" />
     </Tabs>
   );
 }

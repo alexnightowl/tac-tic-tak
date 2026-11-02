@@ -1,7 +1,7 @@
 import type { Language } from '@tac/core/i18n';
 import { control, eos, fontSize, layout, radii, space } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
-import { ChevronRight, LogOut, Terminal, User, Users, type LucideIcon } from 'lucide-react-native';
+import { ChevronRight, LogOut, Settings, Terminal, User, Users, type LucideIcon } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -23,8 +23,10 @@ const PAD_BOTTOM = 34;
 
 /**
  * The account sheet behind the header avatar: profile, friends (with the
- * incoming-request count), language, log out. Settings is a tab (D22). A
- * native formSheet sized to its content; rows dismiss it and push their route.
+ * incoming-request count), settings, language, log out. Settings left the
+ * tab bar with the Learn tab (canvas LearnStates "Tab bar"): its row here is
+ * the way in. A native formSheet sized to its content; rows dismiss it and
+ * push their route.
  */
 export function AccountMenu() {
   const t = useT();
@@ -68,6 +70,7 @@ export function AccountMenu() {
       <View style={styles.group}>
         <Row icon={User} label={t('shell.menu.profile')} testID="menu-profile" onPress={() => go(`/profile/${encodeURIComponent(nickname)}`)} />
         <Row icon={Users} label={t('nav.friends')} testID="menu-friends" count={incoming} onPress={() => go('/friends')} />
+        <Row icon={Settings} label={t('settings')} testID="menu-settings" onPress={() => go('/settings')} />
       </View>
 
       <View style={styles.langRow}>
