@@ -378,6 +378,33 @@ export const cover = {
   shadow: 'rgba(10,8,12,0.55)',
 } as const;
 
+/**
+ * Learn tab (canvas "Learn" page: LearnHome, LearnBooks, LearnStates,
+ * LearnOpenBook). Course colours themselves are data (hex from the API).
+ */
+export const learn = {
+  /** Course emblem disc, radial at 34% 28% (0 → 55% → 100%). */
+  discStone: ['#36343a', '#28262b', '#1e1c21'] as const,
+  discLit: ['#45424a', '#2c2a30', '#1e1c21'] as const,
+  discLo: '#1e1c21',
+  ringTrack: '#3a383e',
+  /** Emblem piece tint: not started / in progress / completed. */
+  pieceIdle: '#68656d',
+  pieceLit: '#ece2d3',
+  piecePassed: '#f6ecdc',
+  /** Course card ground, radial at 50% 38% (0 → 62% → 100%). */
+  card: ['#34323a', '#242227', '#1c1a1f'] as const,
+  /** Title-page cover: the oval's ground, and the rules/ornament on the parchment cover. */
+  ovalGround: '#2a221e',
+  parchmentRule: '#8c6a34',
+  /** Open-book transition: the first page (90° gradient stops), its edges and ink. */
+  page: ['#cdbd9f', '#efe3cc', '#f3e9d6', '#e6d7bb'] as const,
+  pageEdge: ['#d9c9ab', '#c9b893', '#d9c9ab', '#b9a77f'] as const,
+  pageInk: '#3a2b25',
+  pageMeta: '#7a6a5c',
+  pageRule: '#a9874e',
+} as const;
+
 /** System chrome: app.json / expo-system-ui / status bar. */
 export const system = {
   background: eos.ink,
@@ -400,5 +427,6 @@ export const colors = {
   ceremony,
   logoGlow,
   cover,
+  learn,
   system,
 } as const;
