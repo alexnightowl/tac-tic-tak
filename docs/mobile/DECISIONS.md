@@ -279,3 +279,10 @@ Owner spec plus the canvas "Learn" page (`LearnHome`, `LearnBooks`, `LearnCourse
   download progress shows no percentage (the API client has no byte progress).
 - Stale canvas note: LearnStates says "courses and books share one scroll"; the owner's newer
   text and LearnHome/LearnBooks use two segments. Segments win.
+- Course colour tints: alpha suffixes via `features/learn/courseColor.ts`; the light inks the
+  canvas draws on dark (label, glyph, chip) and the seal / bar gradients come from
+  `features/courses/tones.ts`: the ember course gets the canvas tokens exactly, any other colour
+  the same HSL lift of its own hue. PROVISIONAL: a passed course restarted in a new cycle shows
+  the "in progress" emblem with that cycle's ring on its page (LearnCourseUA); "Practice <theme>"
+  after a failed exam replays the whole chapter outside the cycle count (first result per cycle
+  still wins); a long chapter name in a CTA falls back to the chapter number.
