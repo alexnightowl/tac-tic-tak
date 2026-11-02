@@ -19,6 +19,16 @@ export class LibraryController {
     return this.library.book(id);
   }
 
+  @Get('courses')
+  courses() {
+    return this.library.courses();
+  }
+
+  @Get('courses/:id')
+  course(@Param('id') id: string) {
+    return this.library.course(id);
+  }
+
   @Get('progress')
   progress(@CurrentUser() u: AuthedUser) {
     return this.library.progress(u.id);
