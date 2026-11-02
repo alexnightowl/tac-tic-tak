@@ -251,3 +251,31 @@ All open OWNER-QUESTIONS answered in one pass; the PROVISIONAL defaults stand ex
 - **Library (Q47):** library play counts for the streak; cycle targets −30% a cycle instead of
   halving (D26 updated).
 - Apple / Google developer accounts later, near release (Q24); `gh auth login` later (Q28).
+
+### D28. Learn tab: courses + books (owner, 2026-11-02)
+Owner spec plus the canvas "Learn" page (`LearnHome`, `LearnBooks`, `LearnCourse(UA)`,
+`LearnIntro`, `LearnSolve`, `LearnExam`, `LearnChapterDone`, `LearnCourseDone`, `LearnStates`,
+`LearnOpenBook`). Spec: COURSES.md. Mobile-only.
+- **Tab bar** becomes Home · Play · Learn · Rivals · Stats. Review is a stack screen at `/review`
+  reached from a button on Play; Settings is a stack screen at `/settings` reached from the avatar
+  menu. The Library card leaves Play.
+- **Courses** are data-driven (backend catalog + `tools/courses` content), independent (no order,
+  no overall program). Chapters are Lichess themes with 15 Lichess puzzles by their own ids; the
+  exam is 30 fresh puzzles of the course's themes (owner's table counts 150 chapter puzzles, the
+  canvas course page shows 180 with the exam). Not rated; misses go to Review.
+- **Results** are Library attempts with `bookId = course id` (same queue, sync, dedupe, XP and
+  streak). **Exam tries** live in a new `CourseExam` table (a retake replays puzzles that already
+  have a result in the cycle, so a try cannot be an attempt); the server recomputes the pass from
+  the pass mark (24/30).
+- Course puzzles are real Lichess rows: the backend inserts missing ones with their real stats
+  and never rewrites an existing row (book puzzles keep popularity −100; course puzzles must stay
+  in the Play pool as they are).
+- PROVISIONAL: the exam unlocks per cycle once that cycle's chapters are done; the emblem stays
+  "completed" once any exam is passed, its ring shows the current cycle after a restart; ~1 min a
+  course puzzle for "per cycle"; the suggestion picks, among suggestable courses whose range holds
+  the rating, the one whose middle is nearest (Endgames is not suggested); course colours are hex
+  strings from the API with alpha-suffix tints (data, not literals in screens); books without a
+  portrait yet (Steinitz, Hypermoderns, Rubinstein) show their piece silhouette in the oval;
+  download progress shows no percentage (the API client has no byte progress).
+- Stale canvas note: LearnStates says "courses and books share one scroll"; the owner's newer
+  text and LearnHome/LearnBooks use two segments. Segments win.
