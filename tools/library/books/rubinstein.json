@@ -1,0 +1,465 @@
+{
+ "id": "rubinstein",
+ "version": 1,
+ "out": "apps/backend/src/library/content/rubinstein.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "The Rise from Łódź",
+    "uk": "Злет із Лодзі"
+   },
+   "subtitle": {
+    "en": "Łódź to St Petersburg, 1903–1909",
+    "uk": "Від Лодзі до Петербурга, 1903–1909"
+   },
+   "picks": [
+    {
+     "key": "1667283:27",
+     "note": {
+      "en": "Łódź, March 1903. Rubinstein and Salwe met many times, in tournaments and matches.",
+      "uk": "Лодзь, березень 1903. Рубінштейн і Сальве багато разів зустрічалися в турнірах і матчах."
+     }
+    },
+    {
+     "key": "1479021:42",
+     "note": {
+      "en": "Łódź, 1903, a handicap tournament in which Rubinstein gave odds.",
+      "uk": "Лодзь, 1903, турнір із форою, у якому Рубінштейн давав фору."
+     }
+    },
+    {
+     "key": "1479024:47",
+     "note": {
+      "en": "Kyiv, September 1903, the third All-Russian Masters Tournament.",
+      "uk": "Київ, вересень 1903, третій Всеросійський турнір майстрів."
+     },
+     "white": "Wilhelm von Stamm",
+     "black": "Akiba Rubinstein"
+    },
+    {
+     "key": "1479034:60",
+     "note": {
+      "en": "Łódź, 1904, game three of a second match with Salwe.",
+      "uk": "Лодзь, 1904, третя партія другого матчу із Сальве."
+     }
+    },
+    {
+     "key": "1003246:107",
+     "note": {
+      "en": "Barmen, August 1905, round one of the Hauptturnier A.",
+      "uk": "Бармен, серпень 1905, перший тур турніру «Гаупттурнір А»."
+     }
+    },
+    {
+     "key": "1479804:48",
+     "note": {
+      "en": "Łódź, December 1905, a handicap tournament.",
+      "uk": "Лодзь, грудень 1905, турнір із форою."
+     }
+    },
+    {
+     "key": "1094653:51",
+     "note": {
+      "en": "Ostend, June 1906, round 17.",
+      "uk": "Остенде, червень 1906, 17-й тур."
+     }
+    },
+    {
+     "key": "1228505:34",
+     "note": {
+      "en": "Łódź, 1906, a Vienna Gambit.",
+      "uk": "Лодзь, 1906, віденський гамбіт."
+     }
+    },
+    {
+     "key": "1003711:85",
+     "note": {
+      "en": "Karlsbad, September 1907, round 15, a Tarrasch Defence.",
+      "uk": "Карлсбад, вересень 1907, 15-й тур, захист Тарраша."
+     }
+    },
+    {
+     "key": "1003746:135",
+     "note": {
+      "en": "Karlsbad, September 1907, round 19. Rubinstein won the tournament.",
+      "uk": "Карлсбад, вересень 1907, 19-й тур. Рубінштейн виграв турнір."
+     }
+    },
+    {
+     "key": "1119677:71",
+     "note": {
+      "en": "Łódź, October 1907, from a match with Salwe, an Italian Game.",
+      "uk": "Лодзь, жовтень 1907, матч із Сальве, італійська партія."
+     }
+    },
+    {
+     "key": "1119679:45",
+     "note": {
+      "en": "Łódź, December 1907: the game later called Rubinstein's Immortal.",
+      "uk": "Лодзь, грудень 1907: партія, яку згодом назвали «Безсмертною» Рубінштейна."
+     }
+    },
+    {
+     "key": "1119680:82",
+     "note": {
+      "en": "Łódź, 1907, a Tarrasch Defence.",
+      "uk": "Лодзь, 1907, захист Тарраша."
+     }
+    },
+    {
+     "key": "1479817:87",
+     "note": {
+      "en": "Łódź, 1907, a club tournament.",
+      "uk": "Лодзь, 1907, клубний турнір."
+     }
+    },
+    {
+     "key": "1404369:155",
+     "note": {
+      "en": "Vienna, March 1908, round three, at the end of a very long game.",
+      "uk": "Відень, березень 1908, третій тур, фінал дуже довгої партії."
+     }
+    },
+    {
+     "key": "1480564:45",
+     "note": {
+      "en": "Vienna, April 1908, round 15.",
+      "uk": "Відень, квітень 1908, 15-й тур."
+     }
+    },
+    {
+     "key": "1094709:83",
+     "note": {
+      "en": "Łódź, October 1908, round five.",
+      "uk": "Лодзь, жовтень 1908, пʼятий тур."
+     }
+    },
+    {
+     "key": "1480572:36",
+     "note": {
+      "en": "Łódź, 1908, a King's Gambit.",
+      "uk": "Лодзь, 1908, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1119721:77",
+     "note": {
+      "en": "St Petersburg, March 1909, round 14. Rubinstein shared first place with Lasker.",
+      "uk": "Санкт-Петербург, березень 1909, 14-й тур. Рубінштейн поділив перше місце з Ласкером."
+     }
+    },
+    {
+     "key": "1119716:45",
+     "note": {
+      "en": "Hannover, May 1909, game seven of a match with Mieses, a Vienna Gambit.",
+      "uk": "Ганновер, травень 1909, сьома партія матчу з Мізесом, віденський гамбіт."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Triumphs and War",
+    "uk": "Тріумфи й війна"
+   },
+   "subtitle": {
+    "en": "San Sebastián to The Hague, 1911–1921",
+    "uk": "Від Сан-Себастьяна до Гааги, 1911–1921"
+   },
+   "picks": [
+    {
+     "key": "1064743:48",
+     "note": {
+      "en": "San Sebastián, March 1911, round seven. Capablanca won the tournament ahead of Rubinstein and Vidmar.",
+      "uk": "Сан-Себастьян, березень 1911, сьомий тур. Турнір виграв Капабланка, випередивши Рубінштейна й Відмара."
+     }
+    },
+    {
+     "key": "1000849:90",
+     "note": {
+      "en": "Karlsbad, September 1911, round 19, a Queen's Gambit Declined.",
+      "uk": "Карлсбад, вересень 1911, 19-й тур, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1039865:44",
+     "note": {
+      "en": "San Sebastián, March 1912, the first of five tournaments Rubinstein won that year.",
+      "uk": "Сан-Себастьян, березень 1912, перший із пʼяти турнірів, які Рубінштейн виграв того року."
+     }
+    },
+    {
+     "key": "1102356:78",
+     "note": {
+      "en": "San Sebastián, March 1912, round 22.",
+      "uk": "Сан-Себастьян, березень 1912, 22-й тур."
+     }
+    },
+    {
+     "key": "1000971:32",
+     "note": {
+      "en": "Bad Pistyan, May 1912, round five. Rubinstein won here too, in his great year.",
+      "uk": "Пʼєштяни, травень 1912, пʼятий тур. Рубінштейн переміг і тут — у свій великий рік."
+     }
+    },
+    {
+     "key": "1001028:43",
+     "note": {
+      "en": "Bad Pistyan, June 1912, round 11, a French Defence.",
+      "uk": "Пʼєштяни, червень 1912, 11-й тур, французький захист."
+     }
+    },
+    {
+     "key": "1492873:46",
+     "note": {
+      "en": "Warsaw, November 1914, a Four Knights Game.",
+      "uk": "Варшава, листопад 1914, дебют чотирьох коней."
+     }
+    },
+    {
+     "key": "1119768:115",
+     "note": {
+      "en": "Łódź, 1916, a Ruy Lopez, deep in the ending.",
+      "uk": "Лодзь, 1916, іспанська партія, глибокий ендшпіль."
+     }
+    },
+    {
+     "key": "1119771:31",
+     "note": {
+      "en": "Warsaw, March 1917, a Four Knights Game.",
+      "uk": "Варшава, березень 1917, дебют чотирьох коней."
+     }
+    },
+    {
+     "key": "1119769:99",
+     "note": {
+      "en": "Łódź, 1917, a Queen's Gambit Declined.",
+      "uk": "Лодзь, 1917, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1119781:44",
+     "note": {
+      "en": "Berlin, January 1918, game four of a match with Schlechter, who had drawn a title match with Lasker in 1910.",
+      "uk": "Берлін, січень 1918, четверта партія матчу зі Шлехтером, який 1910 року зіграв унічию матч за титул із Ласкером."
+     }
+    },
+    {
+     "key": "1119784:27",
+     "note": {
+      "en": "Berlin, January 1918, game five of the match with Schlechter.",
+      "uk": "Берлін, січень 1918, пʼята партія матчу зі Шлехтером."
+     }
+    },
+    {
+     "key": "1480948:78",
+     "note": {
+      "en": "Stockholm, 1919, a handicap tournament.",
+      "uk": "Стокгольм, 1919, турнір із форою."
+     }
+    },
+    {
+     "key": "1030652:42",
+     "note": {
+      "en": "Stockholm, January 1920, game eight of a match with Bogoljubov.",
+      "uk": "Стокгольм, січень 1920, восьма партія матчу з Боголюбовим."
+     }
+    },
+    {
+     "key": "1030655:83",
+     "note": {
+      "en": "Stockholm, January 1920, game 11 of the match with Bogoljubov, a Ruy Lopez.",
+      "uk": "Стокгольм, січень 1920, 11-та партія матчу з Боголюбовим, іспанська партія."
+     }
+    },
+    {
+     "key": "1667152:72",
+     "note": {
+      "en": "Gothenburg, January 1921, round nine of a winter tournament.",
+      "uk": "Гетеборг, січень 1921, девʼятий тур зимового турніру."
+     }
+    },
+    {
+     "key": "1667153:51",
+     "note": {
+      "en": "Gothenburg, 1921, the winter tournament, an Open Ruy Lopez.",
+      "uk": "Гетеборг, 1921, зимовий турнір, відкритий варіант іспанської партії."
+     }
+    },
+    {
+     "key": "1096575:103",
+     "note": {
+      "en": "The Hague, October 1921, round three. Alekhine won the tournament.",
+      "uk": "Гаага, жовтень 1921, третій тур. Турнір виграв Алехін."
+     }
+    },
+    {
+     "key": "1042012:61",
+     "note": {
+      "en": "The Hague, October 1921, round five, a Sicilian Defence.",
+      "uk": "Гаага, жовтень 1921, пʼятий тур, сицилійський захист."
+     }
+    },
+    {
+     "key": "1030678:32",
+     "note": {
+      "en": "Triberg, December 1921, round four, a Semi-Slav.",
+      "uk": "Трайберг, грудень 1921, четвертий тур, напівсловʼянський захист."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Late Masterpieces",
+    "uk": "Пізні шедеври"
+   },
+   "subtitle": {
+    "en": "Years of mastery, 1922–1929",
+    "uk": "Роки майстерності, 1922–1929"
+   },
+   "picks": [
+    {
+     "key": "1042063:70",
+     "note": {
+      "en": "London, August 1922, round 11. Capablanca won the tournament.",
+      "uk": "Лондон, серпень 1922, 11-й тур. Турнір виграв Капабланка."
+     }
+    },
+    {
+     "key": "1003847:56",
+     "note": {
+      "en": "Teplitz-Schönau, October 1922, round seven, a Nimzo-Indian.",
+      "uk": "Тепліц-Шенау, жовтень 1922, сьомий тур, захист Німцовича."
+     }
+    },
+    {
+     "key": "1119802:14",
+     "note": {
+      "en": "Vienna, November 1922, round one. Rubinstein won the tournament.",
+      "uk": "Відень, листопад 1922, перший тур. Рубінштейн виграв турнір."
+     }
+    },
+    {
+     "key": "1007062:86",
+     "note": {
+      "en": "Karlsbad, May 1923, round nine: a Tarrasch Defence against Tarrasch himself.",
+      "uk": "Карлсбад, травень 1923, девʼятий тур: захист Тарраша проти самого Тарраша."
+     }
+    },
+    {
+     "key": "1667294:30",
+     "note": {
+      "en": "Dresden, July 1924, from a simul, a King's Gambit.",
+      "uk": "Дрезден, липень 1924, сеанс одночасної гри, королівський гамбіт."
+     }
+    },
+    {
+     "key": "1007166:65",
+     "note": {
+      "en": "Baden-Baden, April 1925, round four. Rubinstein finished second behind Alekhine.",
+      "uk": "Баден-Баден, квітень 1925, четвертий тур. Рубінштейн посів друге місце після Алехіна."
+     }
+    },
+    {
+     "key": "1007363:89",
+     "note": {
+      "en": "Marienbad, May 1925, round three. Rubinstein and Nimzowitsch shared first place.",
+      "uk": "Марієнбад, травень 1925, третій тур. Рубінштейн і Німцович поділили перше місце."
+     }
+    },
+    {
+     "key": "1007434:46",
+     "note": {
+      "en": "Marienbad, June 1925, round 12.",
+      "uk": "Марієнбад, червень 1925, 12-й тур."
+     }
+    },
+    {
+     "key": "1007446:68",
+     "note": {
+      "en": "Marienbad, June 1925, round 14, a Queen's Gambit Declined.",
+      "uk": "Марієнбад, червень 1925, 14-й тур, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1279813:38",
+     "note": {
+      "en": "Breslau, July 1925, round three, a Nimzo-Indian.",
+      "uk": "Бреслау, липень 1925, третій тур, захист Німцовича."
+     }
+    },
+    {
+     "key": "1100031:87",
+     "note": {
+      "en": "Moscow, November 1925, round seven. Bogoljubov won the tournament.",
+      "uk": "Москва, листопад 1925, сьомий тур. Турнір виграв Боголюбов."
+     }
+    },
+    {
+     "key": "1100099:80",
+     "note": {
+      "en": "Moscow, December 1925, round 17.",
+      "uk": "Москва, грудень 1925, 17-й тур."
+     }
+    },
+    {
+     "key": "1007641:79",
+     "note": {
+      "en": "Semmering, March 1926, round 16.",
+      "uk": "Земмерінг, березень 1926, 16-й тур."
+     }
+    },
+    {
+     "key": "1007494:67",
+     "note": {
+      "en": "Dresden, April 1926, round eight. Nimzowitsch won the tournament.",
+      "uk": "Дрезден, квітень 1926, восьмий тур. Турнір виграв Німцович."
+     }
+    },
+    {
+     "key": "1119834:38",
+     "note": {
+      "en": "Hannover, August 1926, round one, a Nimzo-Indian.",
+      "uk": "Ганновер, серпень 1926, перший тур, захист Німцовича."
+     }
+    },
+    {
+     "key": "1279877:85",
+     "note": {
+      "en": "Berlin, November 1926, round five.",
+      "uk": "Берлін, листопад 1926, пʼятий тур."
+     }
+    },
+    {
+     "key": "1667242:70",
+     "note": {
+      "en": "New York, April 1928, an exhibition game, a Vienna Game.",
+      "uk": "Нью-Йорк, квітень 1928, показова партія, віденська партія."
+     }
+    },
+    {
+     "key": "1053135:132",
+     "note": {
+      "en": "Karlsbad, August 1929, round five, deep in an ending. Nimzowitsch won the tournament.",
+      "uk": "Карлсбад, серпень 1929, пʼятий тур, глибокий ендшпіль. Турнір виграв Німцович."
+     }
+    },
+    {
+     "key": "1066896:100",
+     "note": {
+      "en": "Karlsbad, August 1929, round 11, a Queen's Gambit Declined.",
+      "uk": "Карлсбад, серпень 1929, 11-й тур, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1667192:90",
+     "note": {
+      "en": "Rogaška Slatina, September 1929, round five. Rubinstein won the tournament.",
+      "uk": "Рогашка-Слатина, вересень 1929, пʼятий тур. Рубінштейн виграв турнір."
+     }
+    }
+   ]
+  }
+ ]
+}

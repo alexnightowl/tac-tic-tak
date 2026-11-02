@@ -1,0 +1,730 @@
+{
+ "id": "alekhine",
+ "version": 1,
+ "out": "apps/backend/src/library/content/alekhine.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "The Young Master",
+    "uk": "Молодий майстер"
+   },
+   "subtitle": {
+    "en": "From Moscow to Scheveningen, 1908–1913",
+    "uk": "Від Москви до Схевенінгена, 1908–1913"
+   },
+   "picks": [
+    {
+     "key": "1011716:46",
+     "note": {
+      "en": "Düsseldorf, August 1908, at the German Chess Federation congress. Alekhine was fifteen.",
+      "uk": "Дюссельдорф, серпень 1908, конгрес Німецького шахового союзу. Алехіну було пʼятнадцять."
+     }
+    },
+    {
+     "key": "1011721:28",
+     "note": {
+      "en": "Moscow Chess Club autumn tournament, November 1908.",
+      "uk": "Осінній турнір Московського шахового клубу, листопад 1908."
+     }
+    },
+    {
+     "key": "1011726:61",
+     "note": {
+      "en": "Moscow, October 1908, game two of a match. Blumenfeld's name lives on in the Blumenfeld Gambit.",
+      "uk": "Москва, жовтень 1908, друга партія матчу. Імʼя Блюменфельда носить гамбіт Блюменфельда."
+     }
+    },
+    {
+     "key": "1011735:59",
+     "note": {
+      "en": "Moscow Chess Club autumn tournament, 1909, a Ruy Lopez.",
+      "uk": "Осінній турнір Московського шахового клубу, 1909, іспанська партія."
+     }
+    },
+    {
+     "key": "1011737:36",
+     "note": {
+      "en": "St Petersburg, February 1909, round one of the All-Russian Amateur Tournament, which Alekhine went on to win.",
+      "uk": "Санкт-Петербург, лютий 1909, перший тур Всеросійського турніру аматорів, який Алехін зрештою виграв."
+     }
+    },
+    {
+     "key": "1011738:33",
+     "note": {
+      "en": "All-Russian Amateur Tournament, St Petersburg 1909, round two. Winning the event brought Alekhine the master title.",
+      "uk": "Всеросійський турнір аматорів, Санкт-Петербург, 1909, другий тур. Перемога в турнірі принесла Алехіну звання майстра."
+     }
+    },
+    {
+     "key": "1011761:52",
+     "note": {
+      "en": "Hamburg, July 1910, round six of the German Chess Federation congress.",
+      "uk": "Гамбург, липень 1910, шостий тур конгресу Німецького шахового союзу."
+     }
+    },
+    {
+     "key": "1011781:40",
+     "note": {
+      "en": "Tula, 1910, a Vienna Game.",
+      "uk": "Тула, 1910, віденська партія."
+     }
+    },
+    {
+     "key": "1011786:57",
+     "note": {
+      "en": "A correspondence game finished in 1910, a Ruy Lopez.",
+      "uk": "Партія за листуванням, завершена 1910 року, іспанська партія."
+     },
+     "event": "Correspondence game",
+     "site": ""
+    },
+    {
+     "key": "1011813:30",
+     "note": {
+      "en": "St Petersburg, March 1912. Levenfish later won the USSR Championship twice.",
+      "uk": "Санкт-Петербург, березень 1912. Левенфіш згодом двічі ставав чемпіоном СРСР."
+     }
+    },
+    {
+     "key": "1011815:37",
+     "note": {
+      "en": "St Petersburg, September 1912, a Sicilian Defence.",
+      "uk": "Санкт-Петербург, вересень 1912, сицилійський захист."
+     }
+    },
+    {
+     "key": "1011752:93",
+     "note": {
+      "en": "All-Russian Amateur Tournament, St Petersburg, March 1909, round 19.",
+      "uk": "Всеросійський турнір аматорів, Санкт-Петербург, березень 1909, 19-й тур."
+     }
+    },
+    {
+     "key": "1000697:97",
+     "note": {
+      "en": "Karlsbad 1911, round eight. Alapin gave his name to the 2.c3 line against the Sicilian.",
+      "uk": "Карлсбад, 1911, восьмий тур. Імʼя Алапіна носить варіант 2.c3 у сицилійському захисті."
+     }
+    },
+    {
+     "key": "1011852:43",
+     "note": {
+      "en": "Paris, September 1913, game one of a short match.",
+      "uk": "Париж, вересень 1913, перша партія короткого матчу."
+     }
+    },
+    {
+     "key": "1011846:89",
+     "note": {
+      "en": "London, September 1913, game three of the match with Edward Lasker.",
+      "uk": "Лондон, вересень 1913, третя партія матчу з Едвардом Ласкером."
+     }
+    },
+    {
+     "key": "1011850:29",
+     "note": {
+      "en": "Paris, September 1913, an exhibition game: one of the best-known miniatures of Alekhine's youth.",
+      "uk": "Париж, вересень 1913, показова партія — одна з найвідоміших мініатюр молодого Алехіна."
+     }
+    },
+    {
+     "key": "1011854:44",
+     "note": {
+      "en": "Café de la Régence, Paris, September 1913, from a simul on 16 boards. The Régence was the city's famous chess café.",
+      "uk": "Кафе «Режанс», Париж, вересень 1913, сеанс на 16 дошках. «Режанс» — славетне шахове кафе Парижа."
+     }
+    },
+    {
+     "key": "1011855:48",
+     "note": {
+      "en": "Scheveningen 1913, a Queen's Gambit Declined. Alekhine won the tournament.",
+      "uk": "Схевенінген, 1913, відхилений ферзевий гамбіт. Алехін виграв турнір."
+     }
+    },
+    {
+     "key": "1011859:67",
+     "note": {
+      "en": "Scheveningen, July 1913, round five, a Ruy Lopez.",
+      "uk": "Схевенінген, липень 1913, пʼятий тур, іспанська партія."
+     }
+    },
+    {
+     "key": "1011867:63",
+     "note": {
+      "en": "Scheveningen, July 1913, round one.",
+      "uk": "Схевенінген, липень 1913, перший тур."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "War and Revolution",
+    "uk": "Війна і революція"
+   },
+   "subtitle": {
+    "en": "From St Petersburg to Vienna, 1914–1922",
+    "uk": "Від Петербурга до Відня, 1914–1922"
+   },
+   "picks": [
+    {
+     "key": "1011875:83",
+     "note": {
+      "en": "All-Russian Masters Tournament, St Petersburg, January 1914, round 15.",
+      "uk": "Всеросійський турнір майстрів, Санкт-Петербург, січень 1914, 15-й тур."
+     }
+    },
+    {
+     "key": "1011874:57",
+     "note": {
+      "en": "All-Russian Masters Tournament, St Petersburg, January 1914, round 13. Alekhine and Nimzowitsch shared first place.",
+      "uk": "Всеросійський турнір майстрів, Санкт-Петербург, січень 1914, 13-й тур. Алехін і Німцович поділили перше місце."
+     }
+    },
+    {
+     "key": "1011934:47",
+     "note": {
+      "en": "St Petersburg, May 1914, round three. Alekhine finished third behind Lasker and Capablanca.",
+      "uk": "Санкт-Петербург, травень 1914, третій тур. Алехін посів третє місце після Ласкера й Капабланки."
+     }
+    },
+    {
+     "key": "1011910:39",
+     "note": {
+      "en": "Café Continental, Paris, July 1914, an exhibition game, a few weeks before the outbreak of war.",
+      "uk": "Кафе «Континенталь», Париж, липень 1914, показова партія — за кілька тижнів до початку війни."
+     }
+    },
+    {
+     "key": "1011975:55",
+     "note": {
+      "en": "Moscow, August 1915, a consultation game: Rozanov and Tselikov played White together.",
+      "uk": "Москва, серпень 1915, консультаційна партія: Розанов і Целіков разом грали білими."
+     }
+    },
+    {
+     "key": "1011970:42",
+     "note": {
+      "en": "Moscow, October 1915, round two of a first-category tournament.",
+      "uk": "Москва, жовтень 1915, другий тур турніру першої категорії."
+     }
+    },
+    {
+     "key": "1011978:66",
+     "note": {
+      "en": "Serpukhov, November 1915, from a simul on 18 boards.",
+      "uk": "Серпухов, листопад 1915, сеанс на 18 дошках."
+     }
+    },
+    {
+     "key": "1011991:34",
+     "note": {
+      "en": "Tarnopol, 1916, blindfold on five boards. Alekhine was then serving with a Red Cross unit at the front.",
+      "uk": "Тернопіль, 1916, гра наосліп на пʼяти дошках. Алехін тоді служив у загоні Червоного Хреста на фронті."
+     }
+    },
+    {
+     "key": "1012002:42",
+     "note": {
+      "en": "Moscow 1918, a three-player tournament, a Petroff Defence.",
+      "uk": "Москва, 1918, турнір трьох шахістів, захист Петрова."
+     }
+    },
+    {
+     "key": "1012005:78",
+     "note": {
+      "en": "Odessa, 1918. In 1929 Verlinsky became the first player to receive the title of Grandmaster of the USSR.",
+      "uk": "Одеса, 1918. 1929 року Верлінський першим отримав звання гросмейстера СРСР."
+     }
+    },
+    {
+     "key": "1012013:62",
+     "note": {
+      "en": "Odessa, 1918, a Queen's Pawn Opening.",
+      "uk": "Одеса, 1918, дебют ферзевого пішака."
+     }
+    },
+    {
+     "key": "1012018:49",
+     "note": {
+      "en": "Moscow Championship 1919/20, which Alekhine won with a perfect score.",
+      "uk": "Чемпіонат Москви 1919/20, який Алехін виграв зі стовідсотковим результатом."
+     }
+    },
+    {
+     "key": "2847988:55",
+     "note": {
+      "en": "Moscow, winter 1919/20, the city championship.",
+      "uk": "Москва, зима 1919/20, чемпіонат міста."
+     },
+     "white": "Nikolay Pavlov-Pianov",
+     "black": "Alexander Alekhine"
+    },
+    {
+     "key": "1012073:51",
+     "note": {
+      "en": "The Hague, October 1921, round four. Alekhine won the tournament.",
+      "uk": "Гаага, жовтень 1921, четвертий тур. Алехін виграв турнір."
+     }
+    },
+    {
+     "key": "1012076:34",
+     "note": {
+      "en": "The Hague, November 1921. Euwe would take the world title from Alekhine in 1935.",
+      "uk": "Гаага, листопад 1921. 1935 року Ейве відібрав в Алехіна звання чемпіона світу."
+     }
+    },
+    {
+     "key": "1006894:75",
+     "note": {
+      "en": "Bad Pistyan, April 1922, round eight, a Ruy Lopez.",
+      "uk": "Пʼєштяни, квітень 1922, восьмий тур, іспанська партія."
+     }
+    },
+    {
+     "key": "1006962:117",
+     "note": {
+      "en": "Bad Pistyan, April 1922, round 16, deep in a long ending.",
+      "uk": "Пʼєштяни, квітень 1922, 16-й тур, глибокий ендшпіль."
+     }
+    },
+    {
+     "key": "1012021:72",
+     "note": {
+      "en": "Odessa, 1919, a casual game.",
+      "uk": "Одеса, 1919, товариська партія."
+     }
+    },
+    {
+     "key": "1012104:102",
+     "note": {
+      "en": "Hastings, September 1922, round five. Alekhine won the tournament.",
+      "uk": "Гастінгс, вересень 1922, пʼятий тур. Алехін виграв турнір."
+     }
+    },
+    {
+     "key": "1012161:68",
+     "note": {
+      "en": "Vienna, November 1922, round 11, a French Defence.",
+      "uk": "Відень, листопад 1922, 11-й тур, французький захист."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Touring the World",
+    "uk": "Світове турне"
+   },
+   "subtitle": {
+    "en": "Simuls, records, tournaments, 1923–1925",
+    "uk": "Сеанси, рекорди, турніри, 1923–1925"
+   },
+   "picks": [
+    {
+     "key": "1012163:74",
+     "note": {
+      "en": "Antwerp, February 1923, from a consultation simul on six boards.",
+      "uk": "Антверпен, лютий 1923, консультаційний сеанс на шести дошках."
+     }
+    },
+    {
+     "key": "1012180:65",
+     "note": {
+      "en": "Karlsbad, April 1923, round two. Alekhine shared first place with Bogoljubov and Maróczy.",
+      "uk": "Карлсбад, квітень 1923, другий тур. Алехін поділив перше місце з Боголюбовим і Мароці."
+     }
+    },
+    {
+     "key": "1012254:83",
+     "note": {
+      "en": "Southsea, August 1923, round three of the British Chess Federation congress.",
+      "uk": "Саутсі, серпень 1923, третій тур конгресу Британської шахової федерації."
+     }
+    },
+    {
+     "key": "1012616:28",
+     "note": {
+      "en": "Glasgow, October 1923, from a simul on 35 boards.",
+      "uk": "Глазго, жовтень 1923, сеанс на 35 дошках."
+     }
+    },
+    {
+     "key": "1793324:56",
+     "note": {
+      "en": "Birmingham, October 1923, blindfold on ten boards.",
+      "uk": "Бірмінгем, жовтень 1923, гра наосліп на десяти дошках."
+     }
+    },
+    {
+     "key": "2654660:64",
+     "note": {
+      "en": "Montreal, November 1923, from a simul on 37 boards.",
+      "uk": "Монреаль, листопад 1923, сеанс на 37 дошках."
+     }
+    },
+    {
+     "key": "1826385:40",
+     "note": {
+      "en": "Montreal, December 1923, blindfold on 21 boards.",
+      "uk": "Монреаль, грудень 1923, гра наосліп на 21 дошці."
+     }
+    },
+    {
+     "key": "1012228:56",
+     "note": {
+      "en": "Brooklyn Chess Club, New York, December 1923, from a simul on 33 boards.",
+      "uk": "Бруклінський шаховий клуб, Нью-Йорк, грудень 1923, сеанс на 33 дошках."
+     }
+    },
+    {
+     "key": "1012168:104",
+     "note": {
+      "en": "Boston, December 1923, from a simul on 40 boards.",
+      "uk": "Бостон, грудень 1923, сеанс на 40 дошках."
+     }
+    },
+    {
+     "key": "1012266:61",
+     "note": {
+      "en": "Chicago, February 1924, from a simul on 36 boards.",
+      "uk": "Чикаго, лютий 1924, сеанс на 36 дошках."
+     }
+    },
+    {
+     "key": "1012270:58",
+     "note": {
+      "en": "Hermitage Hotel, Louisville, February 1924, blindfold on ten boards.",
+      "uk": "Готель «Ермітаж», Луїсвілл, лютий 1924, гра наосліп на десяти дошках."
+     }
+    },
+    {
+     "key": "1012316:42",
+     "note": {
+      "en": "St. Louis, February 1924, from a simul on 37 boards.",
+      "uk": "Сент-Луїс, лютий 1924, сеанс на 37 дошках."
+     }
+    },
+    {
+     "key": "1012285:63",
+     "note": {
+      "en": "New York, March 1924, round one. Lasker won the tournament ahead of Capablanca and Alekhine.",
+      "uk": "Нью-Йорк, березень 1924, перший тур. Турнір виграв Ласкер, випередивши Капабланку й Алехіна."
+     }
+    },
+    {
+     "key": "1012300:44",
+     "note": {
+      "en": "New York, April 1924: blindfold on 26 boards, a world record at the time.",
+      "uk": "Нью-Йорк, квітень 1924: гра наосліп на 26 дошках — тодішній світовий рекорд."
+     }
+    },
+    {
+     "key": "1012362:30",
+     "note": {
+      "en": "Paris, 1 February 1925: blindfold on 28 boards, a new world record.",
+      "uk": "Париж, 1 лютого 1925: гра наосліп на 28 дошках — новий світовий рекорд."
+     }
+    },
+    {
+     "key": "1012370:94",
+     "note": {
+      "en": "Paris, 1 February 1925, from the 28-board blindfold display; the opponent was a naval chess club from Brest.",
+      "uk": "Париж, 1 лютого 1925, сеанс наосліп на 28 дошках; суперник — військово-морський шаховий клуб із Бреста."
+     }
+    },
+    {
+     "key": "1325132:58",
+     "note": {
+      "en": "Paris, February 1925, round six. Colle gave his name to a quiet opening system for White.",
+      "uk": "Париж, лютий 1925, шостий тур. Імʼя Колле носить спокійна дебютна система за білих."
+     }
+    },
+    {
+     "key": "1012350:38",
+     "note": {
+      "en": "Most, March 1925, from a simul on 32 boards.",
+      "uk": "Мост, березень 1925, сеанс на 32 дошках."
+     }
+    },
+    {
+     "key": "1012326:57",
+     "note": {
+      "en": "Baden-Baden, April 1925, round eight. Alekhine won the tournament ahead of Rubinstein.",
+      "uk": "Баден-Баден, квітень 1925, восьмий тур. Алехін виграв турнір, випередивши Рубінштейна."
+     }
+    },
+    {
+     "key": "1824118:42",
+     "note": {
+      "en": "Rotterdam, December 1925, from a simul on 30 boards.",
+      "uk": "Роттердам, грудень 1925, сеанс на 30 дошках."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Road to the Crown",
+    "uk": "Шлях до корони"
+   },
+   "subtitle": {
+    "en": "Before and after the title, 1926–1929",
+    "uk": "До і після титулу, 1926–1929"
+   },
+   "picks": [
+    {
+     "key": "1012395:43",
+     "note": {
+      "en": "Midland Institute, Birmingham, January 1926, from a simul on 12 boards; two allies had White.",
+      "uk": "Мідлендський інститут, Бірмінгем, січень 1926, сеанс на 12 дошках; білими грали двоє союзників."
+     }
+    },
+    {
+     "key": "1826395:82",
+     "note": {
+      "en": "Birmingham, January 1926, from a 12-board simul; Owen and Winterton consulted on Black.",
+      "uk": "Бірмінгем, січень 1926, сеанс на 12 дошках; чорними радилися Оуен і Вінтертон."
+     }
+    },
+    {
+     "key": "1007588:49",
+     "note": {
+      "en": "Semmering, March 1926, round ten.",
+      "uk": "Земмерінг, березень 1926, десятий тур."
+     }
+    },
+    {
+     "key": "1007623:57",
+     "note": {
+      "en": "Semmering, March 1926, round 14, a Dutch Defence. Spielmann won the tournament, Alekhine was second.",
+      "uk": "Земмерінг, березень 1926, 14-й тур, голландський захист. Турнір виграв Шпільман, Алехін був другим."
+     }
+    },
+    {
+     "key": "1012473:64",
+     "note": {
+      "en": "Scarborough, May 1926, round two, an English Opening.",
+      "uk": "Скарборо, травень 1926, другий тур, англійський початок."
+     }
+    },
+    {
+     "key": "1012401:48",
+     "note": {
+      "en": "Buenos Aires, September 1926, a clock simul on eight boards, a Caro-Kann.",
+      "uk": "Буенос-Айрес, вересень 1926, сеанс із годинником на восьми дошках, захист Каро-Канн."
+     }
+    },
+    {
+     "key": "1012408:50",
+     "note": {
+      "en": "Buenos Aires, September 1926, from a clock simul on eight boards.",
+      "uk": "Буенос-Айрес, вересень 1926, сеанс із годинником на восьми дошках."
+     }
+    },
+    {
+     "key": "1007571:37",
+     "note": {
+      "en": "Semmering, March 1926, round eight.",
+      "uk": "Земмерінг, березень 1926, восьмий тур."
+     }
+    },
+    {
+     "key": "1012427:48",
+     "note": {
+      "en": "Buenos Aires, September 1926, round five, a Sicilian Defence.",
+      "uk": "Буенос-Айрес, вересень 1926, пʼятий тур, сицилійський захист."
+     }
+    },
+    {
+     "key": "1007750:59",
+     "note": {
+      "en": "Kecskemét, July 1927, round one. Alekhine won the tournament months before his title match.",
+      "uk": "Кечкемет, липень 1927, перший тур. Алехін виграв турнір за кілька місяців до матчу за титул."
+     }
+    },
+    {
+     "key": "1012541:67",
+     "note": {
+      "en": "Santiago, December 1927, from a simul on 30 boards, weeks after Alekhine won the world title.",
+      "uk": "Сантьяго, грудень 1927, сеанс на 30 дошках — за кілька тижнів після того, як Алехін став чемпіоном світу."
+     }
+    },
+    {
+     "key": "1012548:60",
+     "note": {
+      "en": "Barcelona, January 1928, from a simul on 30 boards, an Italian Game.",
+      "uk": "Барселона, січень 1928, сеанс на 30 дошках, італійська партія."
+     }
+    },
+    {
+     "key": "1012556:62",
+     "note": {
+      "en": "Gambit Chess Rooms, London, June 1928, from a simul on six boards.",
+      "uk": "Лондон, червень 1928, сеанс на шести дошках у шахових залах «Гамбіт»."
+     }
+    },
+    {
+     "key": "1012569:72",
+     "note": {
+      "en": "Warsaw, December 1928, an English Opening.",
+      "uk": "Варшава, грудень 1928, англійський початок."
+     }
+    },
+    {
+     "key": "1012631:30",
+     "note": {
+      "en": "Manhattan Chess Club, New York, March 1929, a clock simul on nine boards.",
+      "uk": "Манхеттенський шаховий клуб, Нью-Йорк, березень 1929, сеанс із годинником на девʼяти дошках."
+     }
+    },
+    {
+     "key": "1012590:54",
+     "note": {
+      "en": "Chicago, April 1929, from a simul on 16 boards, a French Defence.",
+      "uk": "Чикаго, квітень 1929, сеанс на 16 дошках, французький захист."
+     }
+    },
+    {
+     "key": "1012642:46",
+     "note": {
+      "en": "San Francisco, May 1929, a 43-board simul at the Mechanics' Institute, the oldest US chess club still running.",
+      "uk": "Сан-Франциско, травень 1929, сеанс на 43 дошках в Інституті механіків — найстарішому чинному шаховому клубі США."
+     }
+    },
+    {
+     "key": "1575212:54",
+     "note": {
+      "en": "Mexico City, May 1929, from a simul.",
+      "uk": "Мехіко, травень 1929, сеанс одночасної гри."
+     }
+    },
+    {
+     "key": "1575214:70",
+     "note": {
+      "en": "Mexico City, May 1929, from a simul, a Bogo-Indian Defence.",
+      "uk": "Мехіко, травень 1929, сеанс одночасної гри, захист Боголюбова."
+     }
+    },
+    {
+     "key": "1012612:73",
+     "note": {
+      "en": "Amsterdam, November 1929, game 22 of the world title match. Alekhine kept his crown.",
+      "uk": "Амстердам, листопад 1929, 22-га партія матчу за звання чемпіона світу. Алехін зберіг корону."
+     }
+    }
+   ]
+  },
+  {
+   "exam": true,
+   "title": {
+    "en": "Final Examination",
+    "uk": "Фінальний іспит"
+   },
+   "subtitle": {
+    "en": "No hints, no solutions",
+    "uk": "Без підказок і розвʼязків"
+   },
+   "picks": [
+    {
+     "key": "1011749:92",
+     "note": {
+      "en": "All-Russian Amateur Tournament, St Petersburg, March 1909, round 16.",
+      "uk": "Всеросійський турнір аматорів, Санкт-Петербург, березень 1909, 16-й тур."
+     }
+    },
+    {
+     "key": "1011856:62",
+     "note": {
+      "en": "Scheveningen, July 1913, round two.",
+      "uk": "Схевенінген, липень 1913, другий тур."
+     }
+    },
+    {
+     "key": "1011864:69",
+     "note": {
+      "en": "Scheveningen, August 1913, round 11.",
+      "uk": "Схевенінген, серпень 1913, 11-й тур."
+     }
+    },
+    {
+     "key": "1011989:25",
+     "note": {
+      "en": "St Petersburg, 1916, a Ruy Lopez.",
+      "uk": "Санкт-Петербург, 1916, іспанська партія."
+     }
+    },
+    {
+     "key": "1012015:45",
+     "note": {
+      "en": "Odessa, 1918, a Caro-Kann Defence.",
+      "uk": "Одеса, 1918, захист Каро-Канн."
+     }
+    },
+    {
+     "key": "1012029:75",
+     "note": {
+      "en": "Moscow, October 1920, in the event later counted as the first USSR Championship. Alekhine won it.",
+      "uk": "Москва, жовтень 1920, турнір, який згодом зарахували як перший чемпіонат СРСР. Переміг Алехін."
+     }
+    },
+    {
+     "key": "2973766:74",
+     "note": {
+      "en": "Brussels, February 1923, from a simul on 37 boards.",
+      "uk": "Брюссель, лютий 1923, сеанс на 37 дошках."
+     }
+    },
+    {
+     "key": "1012165:58",
+     "note": {
+      "en": "Boston, December 1923, from a simul on 40 boards, a Queen's Gambit.",
+      "uk": "Бостон, грудень 1923, сеанс на 40 дошках, ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1012310:40",
+     "note": {
+      "en": "Philadelphia, January 1924, from a simul on 34 boards, a French Defence.",
+      "uk": "Філадельфія, січень 1924, сеанс на 34 дошках, французький захист."
+     }
+    },
+    {
+     "key": "1012293:50",
+     "note": {
+      "en": "New York, April 1924, round 15.",
+      "uk": "Нью-Йорк, квітень 1924, 15-й тур."
+     }
+    },
+    {
+     "key": "1012371:70",
+     "note": {
+      "en": "Paris, 1 February 1925, from the record blindfold display on 28 boards.",
+      "uk": "Париж, 1 лютого 1925, рекордний сеанс наосліп на 28 дошках."
+     }
+    },
+    {
+     "key": "1012471:64",
+     "note": {
+      "en": "Scarborough, May 1926, a play-off game.",
+      "uk": "Скарборо, травень 1926, партія додаткового змагання."
+     }
+    },
+    {
+     "key": "1012407:86",
+     "note": {
+      "en": "Buenos Aires, September 1926, an exhibition game deep in the ending.",
+      "uk": "Буенос-Айрес, вересень 1926, показова партія, глибокий ендшпіль."
+     }
+    },
+    {
+     "key": "1012455:55",
+     "note": {
+      "en": "Montevideo, November 1926, a clock simul on two boards.",
+      "uk": "Монтевідео, листопад 1926, сеанс із годинником на двох дошках."
+     }
+    }
+   ]
+  }
+ ]
+}

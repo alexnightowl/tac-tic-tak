@@ -1,0 +1,465 @@
+{
+ "id": "hypermodern",
+ "version": 1,
+ "out": "apps/backend/src/library/content/hypermodern.json",
+ "chapters": [
+  {
+   "title": {
+    "en": "Réti's New Ideas",
+    "uk": "Нові ідеї Реті"
+   },
+   "subtitle": {
+    "en": "Richard Réti, 1919–1928",
+    "uk": "Ріхард Реті, 1919–1928"
+   },
+   "picks": [
+    {
+     "key": "1224652:52",
+     "note": {
+      "en": "Haarlem, August 1919, a blindfold display on 24 boards.",
+      "uk": "Гарлем, серпень 1919, сеанс наосліп на 24 дошках."
+     }
+    },
+    {
+     "key": "1758312:44",
+     "note": {
+      "en": "Amsterdam, September 1919, blindfold on ten boards, a French Defence.",
+      "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, французький захист."
+     }
+    },
+    {
+     "key": "1759774:64",
+     "note": {
+      "en": "Amsterdam, September 1919, blindfold on ten boards, a Caro-Kann.",
+      "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, захист Каро-Канн."
+     }
+    },
+    {
+     "key": "1130815:64",
+     "note": {
+      "en": "Stockholm, November 1919, round six of the Schultz Memorial, a Petroff Defence.",
+      "uk": "Стокгольм, листопад 1919, шостий тур Меморіалу Шульца, захист Петрова."
+     }
+    },
+    {
+     "key": "1041899:35",
+     "note": {
+      "en": "Amsterdam, May 1920, game one of a match with the young Euwe, a Two Knights Defence.",
+      "uk": "Амстердам, травень 1920, перша партія матчу з молодим Ейве, захист двох коней."
+     }
+    },
+    {
+     "key": "1400704:63",
+     "note": {
+      "en": "Bratislava, June 1920, game one of a match with Breyer, a fellow pioneer of the new ideas.",
+      "uk": "Братислава, червень 1920, перша партія матчу з Брейєром — ще одним піонером нових ідей."
+     }
+    },
+    {
+     "key": "1027457:52",
+     "note": {
+      "en": "Berlin, December 1920, round six, a French Defence.",
+      "uk": "Берлін, грудень 1920, шостий тур, французький захист."
+     }
+    },
+    {
+     "key": "1006889:39",
+     "note": {
+      "en": "Bad Pistyan, April 1922, round eight. Bogoljubov won the tournament.",
+      "uk": "Пʼєштяни, квітень 1922, восьмий тур. Турнір виграв Боголюбов."
+     }
+    },
+    {
+     "key": "1006946:50",
+     "note": {
+      "en": "Bad Pistyan, April 1922, round 14; Tarrasch defends with his own defence.",
+      "uk": "Пʼєштяни, квітень 1922, 14-й тур; Тарраш захищається власним захистом."
+     }
+    },
+    {
+     "key": "1093070:60",
+     "note": {
+      "en": "London, August 1922, round 12. Capablanca won the tournament.",
+      "uk": "Лондон, серпень 1922, 12-й тур. Турнір виграв Капабланка."
+     }
+    },
+    {
+     "key": "1148893:79",
+     "note": {
+      "en": "Vienna, November 1922, round 12, deep in the ending.",
+      "uk": "Відень, листопад 1922, 12-й тур, глибокий ендшпіль."
+     }
+    },
+    {
+     "key": "1440454:92",
+     "note": {
+      "en": "Hastings, New Year 1923, round six, a King's Indian.",
+      "uk": "Гастінгс, Новий 1923 рік, шостий тур, староіндійський захист."
+     }
+    },
+    {
+     "key": "1007003:82",
+     "note": {
+      "en": "Karlsbad, April 1923, round two, a Réti Opening.",
+      "uk": "Карлсбад, квітень 1923, другий тур, дебют Реті."
+     }
+    },
+    {
+     "key": "1102105:92",
+     "note": {
+      "en": "New York, March 1924, round seven. At this tournament Réti handed Capablanca his first loss in eight years.",
+      "uk": "Нью-Йорк, березень 1924, сьомий тур. На цьому турнірі Реті завдав Капабланці першої за вісім років поразки."
+     }
+    },
+    {
+     "key": "1784877:55",
+     "note": {
+      "en": "Buenos Aires, October 1924, game one of a match with Damián Reca.",
+      "uk": "Буенос-Айрес, жовтень 1924, перша партія матчу з Даміаном Рекою."
+     }
+    },
+    {
+     "key": "1007418:38",
+     "note": {
+      "en": "Marienbad, June 1925, round ten, an English Opening.",
+      "uk": "Марієнбад, червень 1925, десятий тур, англійський початок."
+     }
+    },
+    {
+     "key": "1030824:86",
+     "note": {
+      "en": "Moscow, November 1925, round eight. Bogoljubov won the tournament.",
+      "uk": "Москва, листопад 1925, восьмий тур. Турнір виграв Боголюбов."
+     }
+    },
+    {
+     "key": "1440600:42",
+     "note": {
+      "en": "Hastings, January 1927, round six, an English Opening.",
+      "uk": "Гастінгс, січень 1927, шостий тур, англійський початок."
+     }
+    },
+    {
+     "key": "1440604:65",
+     "note": {
+      "en": "Hastings, January 1927, round seven.",
+      "uk": "Гастінгс, січень 1927, сьомий тур."
+     }
+    },
+    {
+     "key": "1280405:27",
+     "note": {
+      "en": "Dortmund, July 1928, round two, a Vienna Game.",
+      "uk": "Дортмунд, липень 1928, другий тур, віденська партія."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "My System",
+    "uk": "Моя система"
+   },
+   "subtitle": {
+    "en": "Aron Nimzowitsch, 1915–1929",
+    "uk": "Арон Німцович, 1915–1929"
+   },
+   "picks": [
+    {
+     "key": "1265578:65",
+     "note": {
+      "en": "Riga, December 1915, an offhand game in Nimzowitsch's home city.",
+      "uk": "Рига, грудень 1915, товариська партія в рідному місті Німцовича."
+     }
+    },
+    {
+     "key": "1990327:45",
+     "note": {
+      "en": "Stockholm, October 1920, round one of a jubilee tournament.",
+      "uk": "Стокгольм, жовтень 1920, перший тур ювілейного турніру."
+     }
+    },
+    {
+     "key": "1102389:85",
+     "note": {
+      "en": "Kristiania (Oslo), 1921, a consultation game against a team of allies.",
+      "uk": "Християнія (Осло), 1921, консультаційна партія проти команди союзників."
+     }
+    },
+    {
+     "key": "1990436:30",
+     "note": {
+      "en": "Bergen, January 1922, from a blindfold display.",
+      "uk": "Берген, січень 1922, сеанс наосліп."
+     }
+    },
+    {
+     "key": "1990412:63",
+     "note": {
+      "en": "Næstved, May 1922, deep in the ending.",
+      "uk": "Нествед, травень 1922, глибокий ендшпіль."
+     }
+    },
+    {
+     "key": "1990414:51",
+     "note": {
+      "en": "Copenhagen, December 1922, round two. Nimzowitsch had settled in Denmark.",
+      "uk": "Копенгаген, грудень 1922, другий тур. Німцович тоді вже оселився в Данії."
+     }
+    },
+    {
+     "key": "1991696:88",
+     "note": {
+      "en": "Kolding, January 1923, game two of a match with Brinckmann.",
+      "uk": "Колдінг, січень 1923, друга партія матчу з Брінкманом."
+     }
+    },
+    {
+     "key": "1007036:94",
+     "note": {
+      "en": "Karlsbad, May 1923, round six: two hypermoderns face to face.",
+      "uk": "Карлсбад, травень 1923, шостий тур: зустріч двох гіпермодерністів."
+     }
+    },
+    {
+     "key": "1991618:40",
+     "note": {
+      "en": "Copenhagen, March 1924, from a simul.",
+      "uk": "Копенгаген, березень 1924, сеанс одночасної гри."
+     }
+    },
+    {
+     "key": "1991690:93",
+     "note": {
+      "en": "Copenhagen, August 1924, round four of the Nordic Congress.",
+      "uk": "Копенгаген, серпень 1924, четвертий тур Північного конгресу."
+     }
+    },
+    {
+     "key": "1102408:67",
+     "note": {
+      "en": "Marienbad, June 1925, round 12. Nimzowitsch and Rubinstein shared first place.",
+      "uk": "Марієнбад, червень 1925, 12-й тур. Німцович і Рубінштейн поділили перше місце."
+     }
+    },
+    {
+     "key": "1007507:74",
+     "note": {
+      "en": "Semmering, March 1926, round one: an Alekhine Defence against Alekhine himself.",
+      "uk": "Земмерінг, березень 1926, перший тур: захист Алехіна проти самого Алехіна."
+     }
+    },
+    {
+     "key": "1007459:73",
+     "note": {
+      "en": "Dresden, April 1926, round one, a year after My System appeared. Nimzowitsch won the tournament.",
+      "uk": "Дрезден, квітень 1926, перший тур, через рік після виходу «Моєї системи». Німцович виграв турнір."
+     }
+    },
+    {
+     "key": "1007477:97",
+     "note": {
+      "en": "Dresden, April 1926, round four, a Réti Opening.",
+      "uk": "Дрезден, квітень 1926, четвертий тур, дебют Реті."
+     }
+    },
+    {
+     "key": "1007481:70",
+     "note": {
+      "en": "Dresden, April 1926, round five, an English Opening.",
+      "uk": "Дрезден, квітень 1926, пʼятий тур, англійський початок."
+     }
+    },
+    {
+     "key": "1007486:39",
+     "note": {
+      "en": "Dresden, April 1926, round six, a Sicilian Defence.",
+      "uk": "Дрезден, квітень 1926, шостий тур, сицилійський захист."
+     }
+    },
+    {
+     "key": "2042866:53",
+     "note": {
+      "en": "Leipzig, 1926, from a simul; two allies had White.",
+      "uk": "Лейпциг, 1926, сеанс; білими грали двоє союзників."
+     }
+    },
+    {
+     "key": "1093097:75",
+     "note": {
+      "en": "London, October 1927, round three. Nimzowitsch and Tartakower shared first place.",
+      "uk": "Лондон, жовтень 1927, третій тур. Німцович і Тартаковер поділили перше місце."
+     }
+    },
+    {
+     "key": "1102422:70",
+     "note": {
+      "en": "London, November 1927, a casual game.",
+      "uk": "Лондон, листопад 1927, товариська партія."
+     }
+    },
+    {
+     "key": "1042316:48",
+     "note": {
+      "en": "Karlsbad, August 1929, round eight. Nimzowitsch won the tournament ahead of Capablanca.",
+      "uk": "Карлсбад, серпень 1929, восьмий тур. Німцович виграв турнір, випередивши Капабланку."
+     }
+    }
+   ]
+  },
+  {
+   "title": {
+    "en": "Tartakower and Company",
+    "uk": "Тартаковер і компанія"
+   },
+   "subtitle": {
+    "en": "Tartakower, Bogoljubov, Breyer",
+    "uk": "Тартаковер, Боголюбов, Брейєр"
+   },
+   "picks": [
+    {
+     "key": "1030618:32",
+     "note": {
+      "en": "Triberg, 1916. Bogoljubov and other Russian players were interned here during the war.",
+      "uk": "Трайберг, 1916. Боголюбова та інших російських шахістів інтернували тут під час війни."
+     }
+    },
+    {
+     "key": "1271593:78",
+     "note": {
+      "en": "Budapest, July 1917. Breyer's name lives on in a main line of the Ruy Lopez.",
+      "uk": "Будапешт, липень 1917. Імʼя Брейєра носить один із головних варіантів іспанської партії."
+     }
+    },
+    {
+     "key": "1027473:52",
+     "note": {
+      "en": "Berlin, December 1920, round nine, a Sicilian Defence.",
+      "uk": "Берлін, грудень 1920, девʼятий тур, сицилійський захист."
+     }
+    },
+    {
+     "key": "1529600:42",
+     "note": {
+      "en": "Košice, January 1921: blindfold on 25 boards, a world record at the time.",
+      "uk": "Кошице, січень 1921: гра наосліп на 25 дошках — тодішній світовий рекорд."
+     }
+    },
+    {
+     "key": "1130827:60",
+     "note": {
+      "en": "Vienna, April 1921, from a match with Spielmann.",
+      "uk": "Відень, квітень 1921, матч зі Шпільманом."
+     }
+    },
+    {
+     "key": "1279445:39",
+     "note": {
+      "en": "Triberg, July 1921, round two. Bogoljubov made his home in this town after the war.",
+      "uk": "Трайберг, липень 1921, другий тур. Після війни Боголюбов залишився жити в цьому містечку."
+     }
+    },
+    {
+     "key": "1030664:57",
+     "note": {
+      "en": "Budapest, September 1921, round seven, a closed Ruy Lopez.",
+      "uk": "Будапешт, вересень 1921, сьомий тур, закрита іспанська партія."
+     }
+    },
+    {
+     "key": "1006850:61",
+     "note": {
+      "en": "Bad Pistyan, April 1922, round four.",
+      "uk": "Пʼєштяни, квітень 1922, четвертий тур."
+     }
+    },
+    {
+     "key": "1739333:58",
+     "note": {
+      "en": "Copenhagen, January 1923, a Queen's Gambit Declined.",
+      "uk": "Копенгаген, січень 1923, відхилений ферзевий гамбіт."
+     }
+    },
+    {
+     "key": "1789685:67",
+     "note": {
+      "en": "Margate, April 1923, round seven.",
+      "uk": "Маргейт, квітень 1923, сьомий тур."
+     }
+    },
+    {
+     "key": "1007065:82",
+     "note": {
+      "en": "Karlsbad, May 1923, round nine.",
+      "uk": "Карлсбад, травень 1923, девʼятий тур."
+     }
+    },
+    {
+     "key": "1003919:91",
+     "note": {
+      "en": "Vienna, November 1923, round one of the Schlechter Memorial.",
+      "uk": "Відень, листопад 1923, перший тур Меморіалу Шлехтера."
+     }
+    },
+    {
+     "key": "1030764:74",
+     "note": {
+      "en": "Moscow, September 1924, round 13 of the USSR Championship, which Bogoljubov won.",
+      "uk": "Москва, вересень 1924, 13-й тур чемпіонату СРСР, який виграв Боголюбов."
+     }
+    },
+    {
+     "key": "1007583:60",
+     "note": {
+      "en": "Semmering, March 1926, round nine.",
+      "uk": "Земмерінг, березень 1926, девʼятий тур."
+     }
+    },
+    {
+     "key": "1481304:75",
+     "note": {
+      "en": "Ghent, October 1926, round one.",
+      "uk": "Гент, жовтень 1926, перший тур."
+     }
+    },
+    {
+     "key": "1440581:46",
+     "note": {
+      "en": "Hastings, December 1926, round one of the Christmas congress.",
+      "uk": "Гастінгс, грудень 1926, перший тур різдвяного конгресу."
+     }
+    },
+    {
+     "key": "1004171:37",
+     "note": {
+      "en": "Scarborough, May 1929, round three.",
+      "uk": "Скарборо, травень 1929, третій тур."
+     }
+    },
+    {
+     "key": "1258247:59",
+     "note": {
+      "en": "Paris, June 1929, round five. Menchik had become the first women's world champion in 1927.",
+      "uk": "Париж, червень 1929, пʼятий тур. 1927 року Менчик стала першою чемпіонкою світу серед жінок."
+     }
+    },
+    {
+     "key": "2644858:47",
+     "note": {
+      "en": "Barcelona, October 1929, round seven, a Dutch Defence.",
+      "uk": "Барселона, жовтень 1929, сьомий тур, голландський захист."
+     },
+     "white": "Jose Vilardebo Picurena",
+     "black": "Savielly Tartakower"
+    },
+    {
+     "key": "1012573:61",
+     "note": {
+      "en": "Berlin, October 1929, game 13 of Bogoljubov's first world title match against Alekhine.",
+      "uk": "Берлін, жовтень 1929, 13-та партія першого матчу Боголюбова з Алехіним за звання чемпіона світу."
+     }
+    }
+   ]
+  }
+ ]
+}
