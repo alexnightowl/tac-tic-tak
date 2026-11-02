@@ -1,38 +1,65 @@
-# Courses (draft, 2026-11-02)
+# Learn tab: courses and books
 
-Owner request: themed puzzle courses next to the Library books, all under a new top-level
-**Learn** tab (books + courses), moved out of Play. **Design first**: the owner draws the Learn tab
-and the course screens in the canvas; nothing is built until then.
+Owner spec (2026-11-02) plus the canvas page "Learn" (`LearnHome`, `LearnBooks`, `LearnCourse`,
+`LearnCourseUA`, `LearnIntro`, `LearnSolve`, `LearnExam`, `LearnChapterDone`, `LearnCourseDone`,
+`LearnStates`, `LearnOpenBook`). Decisions: D28. Books: LIBRARY.md. Mobile-only.
 
-## Shape
+## Navigation
 
-- Four courses: **Basic**, **Intermediate**, **Advanced**, **Endgames**.
-- A course reuses the book machinery: chapters, cycles with the −30% target, offline download,
-  sync, missed or hinted puzzles go to Review, not rated.
-- One chapter per motif, ~15 puzzles sorted by rating, so a chapter ramps up and finishes with a
-  clear "done". The last chapter of every course is a mixed exam (motif not named, no hint,
-  no solution), because a motif title gives the answer away.
-- Each chapter opens with 2–3 sentences on the motif (en + uk, written by us).
+- Tab bar: **Home · Play · Learn · Rivals · Stats**. Review is a stack screen at `/review`
+  (a row on Play shows how many puzzles wait); Settings is a stack screen at `/settings` (avatar
+  menu). The Library card left Play; `/library` redirects to Learn → Books.
+- Learn: "Calm study. Nothing here touches your rating." Two segments, **Courses** and **Books**
+  (remembered per user). Each: Continue card, filters All / In progress / Downloaded / Finished,
+  a 2-column grid. Courses add "At {rating} we suggest {course}" (`suggestedCourse`).
+- Routes: `/course/[courseId]`, `/course/intro`, `/course/solve`, `/course/exam`,
+  `/course/done`, `/course/result`, `/course/certificate`.
 
-## Content source
+## Courses
 
-Lichess puzzles already in the `Puzzle` table, by their own ids (not `lib-*`), so the Play pool
-and Review keep working. Quality floor: popularity ≥ 92, nbPlays ≥ 800, ratingDeviation ≤ 80.
-"Clean" examples: the course motif plus as few other tactical tags as possible (structural tags
-like `mate`, `mateInN`, `short`, `middlegame`, `crushing` do not count). No duplicates across
-courses; colour and opening variety within a chapter.
+| Course | Level | Chapters | Puzzles (with exam) | Colour | Piece |
+|---|---|---|---|---|---|
+| Basic / Базовий | 400–1400 | 10 + exam | 180 | `#8e4542` | pawn |
+| Intermediate / Середній | 1100–1900 | 11 + exam | 195 | `#c98c55` | knight |
+| Advanced / Просунутий | 1800–2600 | 7 + exam | 135 | `#cbbfae` | queen |
+| Endgames / Ендшпіль | 800–2300 | 7 + exam | 135 | `#94a58e` | king |
 
-Backend note for later: course puzzles must not be upserted with library popularity (−100);
-that would pull real Lichess puzzles out of Play. Insert-if-missing with their real stats.
+- A chapter is one Lichess theme (its icon is the app's theme glyph), 15 puzzles easy → hard,
+  with an intro (2–3 sentences, a composed diagram with move/threat arrows, a caption) shown before
+  the first pass and skippable later. Hint and Show solution are available; misses go to Review.
+- All chapters are open; the next one in order is highlighted.
+- The exam: 30 fresh puzzles (in no chapter) mixed across the course's themes, theme hidden,
+  no hint, no solution, only Skip. Opens when every chapter of the current cycle is done. Pass
+  mark 24/30. A failed try keeps all progress and names the weakest themes ("Practice Pin",
+  "Retake exam"). A pass shows the certificate (Share, "Start cycle 2").
+- Cycles: same positions, each cycle's target 30% under the last (`cycleTargetSec`).
+- Emblem: not started (grey) → in progress (ring = solved / total this cycle) → completed (exam
+  passed: full ring, tinted disc, check). A passed course started again shows the new cycle's
+  ring; "Passed" stays on the card.
 
-## Curriculum and supply (local DB, quality floor above)
+## Content
 
-| Course | Band | Chapters (Lichess theme) |
-|---|---|---|
-| Basic | 400–1400 | hanging piece (11k), mate in 1 (44k), fork (74k), pin (31k), skewer (12k), discovered attack (31k), back-rank mate (9k), trapped piece (4k), removing the defender (4k), mate in 2 (86k), exam |
-| Intermediate | 1100–1900 | attraction (57k), deflection (51k), double check (7k), intermezzo (15k), clearance (13k), interference (5k), f2/f7 attack (5k), promotion (27k), defence (40k), smothered and other named mates, mate in 3 (42k), exam |
-| Advanced | 1800–2600 | quiet move (19k), x-ray (1.2k), zugzwang (7k), sacrifice on the king (33k), long combinations (46k), defence (25k), intermezzo (4k), deflection (14k), mate in 4+ (5.6k), exam |
-| Endgames | 800–2300 | pawn (42k), rook (63k), knight (10k), bishop (17k), queen (14k), queen + rook (7k), promotion (34k), zugzwang (12k), exam |
+`tools/courses` (README there): `defs.mjs` (chapters, intros, tips in en + uk), `build.mjs`
+(deterministic selection from the local puzzle DB: popularity ≥ 92, plays ≥ 800, deviation ≤ 80;
+clean examples; spread over the band; no game or puzzle reused anywhere; balanced side to move),
+`check.mjs` (the gate). Output: `apps/backend/src/library/courses/<id>.json`; course meta
+(titles, descriptions, colours, pieces, ranges) is in `apps/backend/src/library/courses.ts`.
 
-Every chapter has thousands of candidates except x-ray (1.2k) and underpromotion (126, dropped).
-Rough size: ~15 puzzles × ~40 chapters + exams ≈ 650 puzzles.
+## API
+
+- `GET /library/courses` → `{ courses: CourseSummary[] }`; `GET /library/courses/:id` → `Course`.
+- Results: library attempts with `bookId = course id` (`POST /library/sync`, first result per
+  puzzle and cycle wins; XP and streak as for books).
+- Exam tries: `exams[]` on `POST /library/sync` (deduped on `clientId`; the server recomputes
+  `passed` from the pass mark), returned by `GET /library/progress` → `{ attempts, exams }`.
+  Table `CourseExam`.
+- Course puzzles are real Lichess rows: the backend inserts missing ones with their real stats at
+  boot and never rewrites an existing row, so they stay in the Play pool unchanged.
+
+## Phone
+
+`features/library/{store,sync,model,api}.ts` hold courses next to books (MMKV `libraryKV`:
+`courses`, `course.<id>`, `<uid>.exams`, `<uid>.examQueue`). Screens: `features/learn`
+(tab, panes, covers, CourseEmblem, open-book transition) and `features/courses` (course page,
+intro, solving, exam, chapter complete, exam result, certificate). Maestro: `14-learn`,
+`15-courses`.

@@ -239,3 +239,28 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   Android prod APK built for the owner (arm64 and universal); iOS prod build reinstalled.
 - Mining ran ~10 h on 6 Stockfish processes at most (owner: don't overheat the Mac); no thermal
   or CPU-limit warning was recorded.
+
+## 2026-11-02 — Learn tab: courses + books (D28)
+
+- **Owner request:** themed puzzle courses (Basic / Intermediate / Advanced / Endgames) next to
+  the books, in a new Learn tab moved out of Play; designed by the owner on the canvas "Learn" page.
+- **Backend (main, f64c52a, deployed; CI + deploy green, `/api/library/courses` answers 401
+  unauthenticated on prod):** course catalog + content (645 Lichess puzzles, 35 chapters, four
+  30-puzzle exams), `GET /library/courses[/:id]`, `CourseExam` table, exams on sync/progress.
+  Local smoke: lists, content, attempt sync into Review, exam dedupe on clientId, pass recomputed.
+- **Content:** `tools/courses` (build + check gate; strict quality floor, no relaxations needed).
+  35 intros with composed diagrams, en + uk.
+- **Mobile:** 5-tab bar (Learn third), Review row on Play, Settings in the avatar menu; Learn tab
+  with both segments, course cards and CourseEmblem, title-page covers with portraits (6 books;
+  Steinitz, Hypermoderns, Rubinstein provisional), open-book transition; course page, intro,
+  solving, exam, chapter complete, exam result, certificate. Core: `courseProgress`,
+  `examOutcome`, `suggestedCourse` (tests 243 green); library module split to end a require cycle.
+- **Verified:** `pnpm -r typecheck` areas clean; Maestro `14-learn`, `15-courses` (3 cases),
+  `13-library`, `04-shell`, `06-review`, `06-history`, `09-settings`, `09-account`,
+  `09-onboarding` pass on iOS sims. `10-walkthrough` fails at sign-up (iOS strong-password sheet
+  clears the field) and `09-reminder` fails after 23:00 local (asserts a 23:00 reminder today):
+  both environmental, not Learn regressions. Screenshots: `screens/learn/`.
+- **Phone:** prod-API Release build with Learn installed on the owner's iPhone.
+- **Open:** portraits for the three books without one; uk theme names to unify ("Заманювання" vs
+  "Завлікання", skewer "Лінійний удар" vs "Рентген"); canvas app-only items (Review row on Play,
+  Settings menu row, exam open row, exam result screen, Learn load/error/empty states).
