@@ -1,5 +1,1689 @@
 {
   "id": "rubinstein",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "rubinstein-1",
+      "title": {
+        "en": "The Rise from Łódź",
+        "uk": "Злет із Лодзі"
+      },
+      "subtitle": {
+        "en": "Łódź to St Petersburg, 1903–1909",
+        "uk": "Від Лодзі до Петербурга, 1903–1909"
+      },
+      "puzzles": [
+        {
+          "id": "lib-rubinstein-1-01",
+          "fen": "8/8/8/8/8/5k2/7K/5r2 w - - 0 78",
+          "moves": "h2h3 f1h1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Semion Alapin",
+            "black": "Akiba Rubinstein",
+            "event": "Vienna",
+            "site": "Vienna AUH",
+            "year": 1908,
+            "date": "1908.03.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1404369"
+          },
+          "note": {
+            "en": "Vienna, March 1908, round three, at the end of a very long game.",
+            "uk": "Відень, березень 1908, третій тур, фінал дуже довгої партії."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-02",
+          "fen": "r1bq2kr/pp1p1p1p/3P3B/8/2B5/P1P2P1P/5P1K/4R3 b - - 2 21",
+          "moves": "d8f8 e1g1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "NN",
+            "event": "Handicap tournament ?",
+            "site": "Lodz RUE",
+            "year": 1903,
+            "date": "1903.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1479021"
+          },
+          "note": {
+            "en": "Łódź, 1903, a handicap tournament in which Rubinstein gave odds.",
+            "uk": "Лодзь, 1903, турнір із форою, у якому Рубінштейн давав фору."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-03",
+          "fen": "6k1/1p3ppp/pqr2n2/1N6/4r3/PQ6/1P3PPP/2R2RK1 w - - 0 24",
+          "moves": "b5d4 b6d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Wilhelm von Stamm",
+            "black": "Akiba Rubinstein",
+            "event": "3rd All-Russian Masters, Kiev",
+            "site": "Kiev, UKR (Russian Empire)",
+            "year": 1903,
+            "date": "1903.09.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1479024"
+          },
+          "note": {
+            "en": "Kyiv, September 1903, the third All-Russian Masters Tournament.",
+            "uk": "Київ, вересень 1903, третій Всеросійський турнір майстрів."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-04",
+          "fen": "1R6/p4pp1/4k3/8/6P1/r1N4P/1pb2P1K/8 w - - 8 43",
+          "moves": "b8b2 a3c3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Akiba Rubinstein",
+            "event": "Karlsbad",
+            "site": "Karlsbad (Karlovy Vary) AUH",
+            "year": 1907,
+            "date": "1907.09.09",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1003711"
+          },
+          "note": {
+            "en": "Karlsbad, September 1907, round 15, a Tarrasch Defence.",
+            "uk": "Карлсбад, вересень 1907, 15-й тур, захист Тарраша."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-05",
+          "fen": "8/4P3/1p6/p5k1/P3K2p/1P5n/5p2/8 w - - 0 68",
+          "moves": "e7e8q f2f1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "promotion",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Mikhail Chigorin",
+            "black": "Akiba Rubinstein",
+            "event": "Karlsbad",
+            "site": "Karlsbad (Karlovy Vary) AUH",
+            "year": 1907,
+            "date": "1907.09.14",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1003746"
+          },
+          "note": {
+            "en": "Karlsbad, September 1907, round 19. Rubinstein won the tournament.",
+            "uk": "Карлсбад, вересень 1907, 19-й тур. Рубінштейн виграв турнір."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-06",
+          "fen": "2r4k/pp2Q1pp/5r2/P2P4/3Pb1P1/4Pp2/1P1R3N/3Rq2K w - - 1 36",
+          "moves": "d1e1 f3f2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Georg Salwe",
+            "black": "Akiba Rubinstein",
+            "event": "Match",
+            "site": "Lodz RUE",
+            "year": 1907,
+            "date": "1907.10.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119677"
+          },
+          "note": {
+            "en": "Łódź, October 1907, from a match with Salwe, an Italian Game.",
+            "uk": "Лодзь, жовтень 1907, матч із Сальве, італійська партія."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-07",
+          "fen": "8/1p4k1/p2b2p1/3p2Q1/3P1p2/P4N2/1P1N1P1K/3q1n2 w - - 9 39",
+          "moves": "d2f1 d1f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Leo Fleischmann Forgacs",
+            "black": "Akiba Rubinstein",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg RUE",
+            "year": 1909,
+            "date": "1909.03.05",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119721"
+          },
+          "note": {
+            "en": "St Petersburg, March 1909, round 14. Rubinstein shared first place with Lasker.",
+            "uk": "Санкт-Петербург, березень 1909, 14-й тур. Рубінштейн поділив перше місце з Ласкером."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-08",
+          "fen": "3r2k1/1b3ppp/pb2p3/1p2P3/1P2BPnq/P1r3P1/1B2Q2P/R4R1K w - - 0 23",
+          "moves": "g3h4 d8d2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1400,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Georg Rotlewi",
+            "black": "Akiba Rubinstein",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1907,
+            "date": "1907.12.26",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119679"
+          },
+          "note": {
+            "en": "Łódź, December 1907: the game later called Rubinstein's Immortal.",
+            "uk": "Лодзь, грудень 1907: партія, яку згодом назвали «Безсмертною» Рубінштейна."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-09",
+          "fen": "2Q5/4b1kp/4p3/4P1p1/p1pP2P1/2P1n1P1/PP1R4/1q4KR w - - 1 42",
+          "moves": "g1f2 e3g4 f2g2 b1e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Akiba Rubinstein",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1908,
+            "date": "1908.10.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094709"
+          },
+          "note": {
+            "en": "Łódź, October 1908, round five.",
+            "uk": "Лодзь, жовтень 1908, пʼятий тур."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-10",
+          "fen": "r1bq1rk1/pp2b1n1/2p3QB/3pP3/8/2N5/PPP3PP/R4RK1 b - - 2 17",
+          "moves": "f8f1 a1f1 e7c5 g1h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "August Mundt",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1906,
+            "date": "1906.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1228505"
+          },
+          "note": {
+            "en": "Łódź, 1906, a Vienna Gambit.",
+            "uk": "Лодзь, 1906, віденський гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-11",
+          "fen": "3r1k1r/1b2bp2/pp2n3/8/PP1N4/2N1P1R1/5PPP/3R2K1 w - - 1 26",
+          "moves": "d4e6 f7e6 d1d8 e7d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Akiba Rubinstein",
+            "event": "Ostend",
+            "site": "Ostend BEL",
+            "year": 1906,
+            "date": "1906.06.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094653"
+          },
+          "note": {
+            "en": "Ostend, June 1906, round 17.",
+            "uk": "Остенде, червень 1906, 17-й тур."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-12",
+          "fen": "8/5b2/1p1k2p1/4N2p/1P1K3P/p7/6P1/8 w - - 0 44",
+          "moves": "e5f7 d6e7 d4c3 e7f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Kuczynski",
+            "black": "Akiba Rubinstein",
+            "event": "Club tournament",
+            "site": "Lodz RUE",
+            "year": 1907,
+            "date": "1907.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1479817"
+          },
+          "note": {
+            "en": "Łódź, 1907, a club tournament.",
+            "uk": "Лодзь, 1907, клубний турнір."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-13",
+          "fen": "3rr1k1/pp1q1ppp/8/2p3R1/6Q1/3Pn3/PPP3PP/R5K1 w - - 0 23",
+          "moves": "g5g7 g8h8 g7h7 h8h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jacques Mieses",
+            "black": "Akiba Rubinstein",
+            "event": "Rubinstein - Mieses",
+            "site": "Hannover GER",
+            "year": 1909,
+            "date": "1909.05.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119716"
+          },
+          "note": {
+            "en": "Hannover, May 1909, game seven of a match with Mieses, a Vienna Gambit.",
+            "uk": "Ганновер, травень 1909, сьома партія матчу з Мізесом, віденський гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-14",
+          "fen": "r3k2r/ppp2pp1/3p1n2/4p2p/2BbP3/P2P1P1q/1PP1NP1P/1R1Q1R1K w kq - 1 14",
+          "moves": "e2d4 f6g4 f3g4 h5g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Georg Salwe",
+            "black": "Akiba Rubinstein",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1903,
+            "date": "1903.03.26",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1667283"
+          },
+          "note": {
+            "en": "Łódź, March 1903. Rubinstein and Salwe met many times, in tournaments and matches.",
+            "uk": "Лодзь, березень 1903. Рубінштейн і Сальве багато разів зустрічалися в турнірах і матчах."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-15",
+          "fen": "r2rn1k1/1p4pp/p3b3/3qNp2/5P2/1B1Q2R1/P5PP/1K1R4 b - - 1 30",
+          "moves": "d5d3 g3d3 e6b3 d3d8 b3d1 d8a8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Georg Salwe",
+            "event": "Second Match",
+            "site": "Lodz RUE",
+            "year": 1904,
+            "date": "1904.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1479034"
+          },
+          "note": {
+            "en": "Łódź, 1904, game three of a second match with Salwe.",
+            "uk": "Лодзь, 1904, третя партія другого матчу із Сальве."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-16",
+          "fen": "1R2rQ2/4P1pk/2q4p/7P/8/1p4P1/5P1K/8 b - - 4 41",
+          "moves": "e8b8 f8b8 b3b2 b8b2 c6e4 b2a3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Georg Salwe",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1907,
+            "date": "1907.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119680"
+          },
+          "note": {
+            "en": "Łódź, 1907, a Tarrasch Defence.",
+            "uk": "Лодзь, 1907, захист Тарраша."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-17",
+          "fen": "r6k/ppp3pp/2n2n2/q4b2/1BB2P2/P4Q2/6PP/R2R2K1 b - - 2 18",
+          "moves": "c6b4 f3b7 a5c5 g1h1 a8e8 b7b4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Georg Rotlewi",
+            "event": "Lodz",
+            "site": "Lodz RUE",
+            "year": 1908,
+            "date": "1908.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1480572"
+          },
+          "note": {
+            "en": "Łódź, 1908, a King's Gambit.",
+            "uk": "Лодзь, 1908, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-18",
+          "fen": "8/5rkp/B1PQ4/3p1P1n/8/5PKP/3r4/8 w - - 1 54",
+          "moves": "g3h4 d2d4 f3f4 d4f4 d6f4 h5f4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Fritz Englund",
+            "black": "Akiba Rubinstein",
+            "event": "Barmen Hauptturnier-A",
+            "site": "Barmen GER",
+            "year": 1905,
+            "date": "1905.08.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1003246"
+          },
+          "note": {
+            "en": "Barmen, August 1905, round one of the Hauptturnier A.",
+            "uk": "Бармен, серпень 1905, перший тур турніру «Гаупттурнір А»."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-19",
+          "fen": "rn2k2r/ppp2nQp/1b4p1/3q2B1/3PpR2/2P5/PPb3PP/5R1K b kq - 5 24",
+          "moves": "h8f8 f4f7 f8f7 g7g8 e8d7 f1f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Granas",
+            "event": "Handicap Tournament ?",
+            "site": "Lodz RUE",
+            "year": 1905,
+            "date": "1905.12.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1479804"
+          },
+          "note": {
+            "en": "Łódź, December 1905, a handicap tournament.",
+            "uk": "Лодзь, грудень 1905, турнір із форою."
+          }
+        },
+        {
+          "id": "lib-rubinstein-1-20",
+          "fen": "1q2r3/p1b1r1kp/2p2pp1/Bp1n1p2/2NPn3/P2QPNP1/1P3PKP/2R1R3 w - - 0 23",
+          "moves": "a5c7 b5c4 d3e4 f5e4 c7b8 e4f3 g2f3 e8b8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Rudolf Swiderski",
+            "black": "Akiba Rubinstein",
+            "event": "Vienna",
+            "site": "Vienna AUH",
+            "year": 1908,
+            "date": "1908.04.11",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1480564"
+          },
+          "note": {
+            "en": "Vienna, April 1908, round 15.",
+            "uk": "Відень, квітень 1908, 15-й тур."
+          }
+        }
+      ]
+    },
+    {
+      "id": "rubinstein-2",
+      "title": {
+        "en": "Triumphs and War",
+        "uk": "Тріумфи й війна"
+      },
+      "subtitle": {
+        "en": "San Sebastián to The Hague, 1911–1921",
+        "uk": "Від Сан-Себастьяна до Гааги, 1911–1921"
+      },
+      "puzzles": [
+        {
+          "id": "lib-rubinstein-2-01",
+          "fen": "1r1b1rk1/1Bn2p1p/ppNRb1p1/2p5/2P5/2N1P3/PP3PPP/5RK1 b - - 8 24",
+          "moves": "b8b7 c6d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "David Janowski",
+            "event": "San Sebastian",
+            "site": "San Sebastian ESP",
+            "year": 1911,
+            "date": "1911.03.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064743"
+          },
+          "note": {
+            "en": "San Sebastián, March 1911, round seven. Capablanca won the tournament ahead of Rubinstein and Vidmar.",
+            "uk": "Сан-Себастьян, березень 1911, сьомий тур. Турнір виграв Капабланка, випередивши Рубінштейна й Відмара."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-02",
+          "fen": "4r2k/pp1R2pp/2p1Q3/5p1q/2P2N2/1P4P1/P5K1/8 b - - 7 39",
+          "moves": "e8e6 f4h5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Aron Nimzowitsch",
+            "event": "San Sebastian",
+            "site": "San Sebastian ESP",
+            "year": 1912,
+            "date": "1912.03.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1102356"
+          },
+          "note": {
+            "en": "San Sebastián, March 1912, round 22, an Old Indian Defence.",
+            "uk": "Сан-Себастьян, березень 1912, 22-й тур, староіндійський захист."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-03",
+          "fen": "r1b2rk1/p1q2ppp/1p1bp3/6B1/1nP1B1N1/8/PP2QPPP/3R1RK1 b - - 4 16",
+          "moves": "f7f5 e4a8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Karoly Sterk",
+            "event": "Bad Pistyan",
+            "site": "Pistyan (Piestany) AUH",
+            "year": 1912,
+            "date": "1912.05.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000971"
+          },
+          "note": {
+            "en": "Bad Pistyan, May 1912, round five. Rubinstein won here too, in his great year.",
+            "uk": "Пʼєштяни, травень 1912, пʼятий тур. Рубінштейн переміг і тут — у свій великий рік."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-04",
+          "fen": "r2R2k1/pp4pp/2p1pn2/2q3P1/8/2N2Q1P/PP3P2/R5K1 b - - 0 22",
+          "moves": "a8d8 g5f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Carl Schlechter",
+            "event": "Rubinstein - Schlechter",
+            "site": "Berlin GER",
+            "year": 1918,
+            "date": "1918.01.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119781"
+          },
+          "note": {
+            "en": "Berlin, January 1918, game four of a match with Schlechter, who had drawn a title match with Lasker in 1910.",
+            "uk": "Берлін, січень 1918, четверта партія матчу зі Шлехтером, який 1910 року зіграв унічию матч за титул із Ласкером."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-05",
+          "fen": "8/3k4/1pp5/p1p4p/P1Pn3P/2K1B3/8/8 w - - 4 58",
+          "moves": "e3d4 c5d4 c3d4 d7d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Samuel D Factor",
+            "black": "Akiba Rubinstein",
+            "event": "Lodz",
+            "site": "Lodz",
+            "year": 1916,
+            "date": "1916.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119768"
+          },
+          "note": {
+            "en": "Łódź, 1916, a Ruy Lopez, deep in the ending.",
+            "uk": "Лодзь, 1916, іспанська партія, глибокий ендшпіль."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-06",
+          "fen": "8/6pk/4q2p/3R1Q2/p7/P4P2/KP2r1PP/8 b - - 0 45",
+          "moves": "e6f5 d5f5 e2g2 h2h4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Oscar Chajes",
+            "event": "Karlsbad",
+            "site": "Karlsbad (Karlovy Vary) AUH",
+            "year": 1911,
+            "date": "1911.09.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1000849"
+          },
+          "note": {
+            "en": "Karlsbad, September 1911, round 19, a Queen's Gambit Declined.",
+            "uk": "Карлсбад, вересень 1911, 19-й тур, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-07",
+          "fen": "1q2Rrk1/5ppp/p5b1/1p1B2N1/7P/3n2Q1/PP3PP1/4R1K1 b - - 0 22",
+          "moves": "b8g3 f2g3 d3e1 e8e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Oldrich Duras",
+            "event": "San Sebastian",
+            "site": "San Sebastian ESP",
+            "year": 1912,
+            "date": "1912.03.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1039865"
+          },
+          "note": {
+            "en": "San Sebastián, March 1912, the first of five tournaments Rubinstein won that year.",
+            "uk": "Сан-Себастьян, березень 1912, перший із пʼяти турнірів, які Рубінштейн виграв того року."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-08",
+          "fen": "8/7p/4b3/2ppk3/4p3/4K2P/2B2N2/8 w - - 2 50",
+          "moves": "c2e4 d5e4 f2e4 c5c4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Josek Gottesdiener",
+            "black": "Akiba Rubinstein",
+            "event": "Lodz",
+            "site": "Lodz",
+            "year": 1917,
+            "date": "1917.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119769"
+          },
+          "note": {
+            "en": "Łódź, 1917, a Queen's Gambit Declined.",
+            "uk": "Лодзь, 1917, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-09",
+          "fen": "7r/2k4p/7R/2pp2P1/pP5P/P5K1/2P5/8 b - - 0 36",
+          "moves": "c5b4 a3b4 h8a8 h6h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Alexey Sergeevich Selezniev",
+            "event": "Winter Tournament",
+            "site": "Gothenburg SWE",
+            "year": 1921,
+            "date": "1921.01.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1667152"
+          },
+          "note": {
+            "en": "Gothenburg, January 1921, round nine of a winter tournament.",
+            "uk": "Гетеборг, січень 1921, девʼятий тур зимового турніру."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-10",
+          "fen": "2r3k1/6pp/pb6/1p2Pp2/1P1p1P2/P2Q4/qBr2RPP/3R2K1 w - - 7 26",
+          "moves": "f2c2 c8c2 d3f3 d4d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "discoveredAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Algot Ahlberg",
+            "black": "Akiba Rubinstein",
+            "event": "Winter Tournament",
+            "site": "Gothenburg SWE",
+            "year": 1921,
+            "date": "1921.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1667153"
+          },
+          "note": {
+            "en": "Gothenburg, 1921, the winter tournament, an Open Ruy Lopez.",
+            "uk": "Гетеборг, 1921, зимовий турнір, відкритий варіант іспанської партії."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-11",
+          "fen": "8/4Rp2/2PK1k2/6pp/B6P/1P1r4/8/8 w - - 1 52",
+          "moves": "d6c5 f6e7 c6c7 d3c3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jacques Mieses",
+            "black": "Akiba Rubinstein",
+            "event": "The Hague",
+            "site": "The Hague NED",
+            "year": 1921,
+            "date": "1921.10.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1096575"
+          },
+          "note": {
+            "en": "The Hague, October 1921, round three. Alekhine won the tournament.",
+            "uk": "Гаага, жовтень 1921, третій тур. Турнір виграв Алехін."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-12",
+          "fen": "r4rk1/pb4pp/1p6/2P3qP/1P2pp1R/4n2Q/P2N4/R3KBB1 w - - 4 31",
+          "moves": "g1e3 f4e3 f1c4 g8h8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Max Euwe",
+            "black": "Akiba Rubinstein",
+            "event": "The Hague",
+            "site": "The Hague NED",
+            "year": 1921,
+            "date": "1921.10.31",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1042012"
+          },
+          "note": {
+            "en": "The Hague, October 1921, round five, a Sicilian Defence.",
+            "uk": "Гаага, жовтень 1921, пʼятий тур, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-13",
+          "fen": "r1bqr1k1/p2n1p1p/1pP1p1pb/8/2P5/3Q1N2/PPB2PPP/3R1RK1 b - - 0 16",
+          "moves": "d8f6 c6d7 c8d7 d3d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Efim Bogoljubov",
+            "event": "Triberg",
+            "site": "Triberg GER",
+            "year": 1921,
+            "date": "1921.12.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030678"
+          },
+          "note": {
+            "en": "Triberg, December 1921, round four, a Semi-Slav.",
+            "uk": "Трайберг, грудень 1921, четвертий тур, напівсловʼянський захист."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-14",
+          "fen": "5bk1/6p1/4q3/R1p1Pp2/5r1p/2P4P/4QBPK/8 w - - 0 42",
+          "moves": "a5a6 f4f2 e2f2 e6a6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Efim Bogoljubov",
+            "black": "Akiba Rubinstein",
+            "event": "Bogoljubov - Rubinstein",
+            "site": "Stockholm SWE",
+            "year": 1920,
+            "date": "1920.01.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030655"
+          },
+          "note": {
+            "en": "Stockholm, January 1920, game 11 of the match with Bogoljubov, a Ruy Lopez.",
+            "uk": "Стокгольм, січень 1920, 11-та партія матчу з Боголюбовим, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-15",
+          "fen": "1n1r4/5kp1/1p1qR1p1/p2p2Pr/P2P1P2/2PQ2K1/1P6/4R3 b - - 0 39",
+          "moves": "h5g5 g3f3 g5f5 e6d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Folke Rosengren",
+            "event": "Handicap tournament",
+            "site": "Stockholm SWE",
+            "year": 1919,
+            "date": "1919.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1480948"
+          },
+          "note": {
+            "en": "Stockholm, 1919, a handicap tournament.",
+            "uk": "Стокгольм, 1919, турнір із форою."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-16",
+          "fen": "r1bk3r/p2pR1pp/1pp2p2/q1B2Q2/8/8/2P2PPP/3R2K1 b - - 5 23",
+          "moves": "d7d6 d1d6 d8e7 d6d7 e7e8 f5e6",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1775,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "doubleCheck",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Kupczinski",
+            "event": "Warsaw",
+            "site": "Warsaw RUE",
+            "year": 1914,
+            "date": "1914.11.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1492873"
+          },
+          "note": {
+            "en": "Warsaw, November 1914, a Four Knights Game.",
+            "uk": "Варшава, листопад 1914, дебют чотирьох коней."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-17",
+          "fen": "r3k2r/pbp2pp1/3b1n2/1p6/3P3p/1B2N1Pq/PP1P1P1P/R1BQNRK1 w kq - 0 16",
+          "moves": "d1e2 h3h2 g1h2 h4g3 h2g1 h8h1",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1825,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "backRankMate",
+            "doubleCheck",
+            "attraction"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Zdzislaw Belsitzmann",
+            "black": "Akiba Rubinstein",
+            "event": "Warsaw",
+            "site": "Warsaw",
+            "year": 1917,
+            "date": "1917.03.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119771"
+          },
+          "note": {
+            "en": "Warsaw, March 1917, a Four Knights Game.",
+            "uk": "Варшава, березень 1917, дебют чотирьох коней."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-18",
+          "fen": "5rk1/pbqn1ppp/3rp3/1Bp5/2P5/6B1/PP2QPPP/5RK1 w - - 0 22",
+          "moves": "g3d6 c7d6 f1d1 d6e5 e2e5 d7e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Teichmann",
+            "black": "Akiba Rubinstein",
+            "event": "Bad Pistyan",
+            "site": "Pistyan (Piestany) AUH",
+            "year": 1912,
+            "date": "1912.06.03",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001028"
+          },
+          "note": {
+            "en": "Bad Pistyan, June 1912, round 11, a French Defence.",
+            "uk": "Пʼєштяни, червень 1912, 11-й тур, французький захист."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-19",
+          "fen": "2kr3r/1ppb2pp/p2b1pn1/2pN4/4P3/4B3/PPP1NPPP/3R1RK1 w - - 4 14",
+          "moves": "d5b6 c7b6 d1d6 d7b5 d6d8 h8d8 e2c3 b5f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Carl Schlechter",
+            "black": "Akiba Rubinstein",
+            "event": "Rubinstein - Schlechter",
+            "site": "Berlin GER",
+            "year": 1918,
+            "date": "1918.01.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119784"
+          },
+          "note": {
+            "en": "Berlin, January 1918, game five of the match with Schlechter.",
+            "uk": "Берлін, січень 1918, пʼята партія матчу зі Шлехтером."
+          }
+        },
+        {
+          "id": "lib-rubinstein-2-20",
+          "fen": "r2r2k1/pp3np1/qn1p2Qp/2p1p3/2b1B3/2P1BNP1/P3PP1P/R2R2K1 b - - 3 21",
+          "moves": "b6d7 e3h6 f7h6 d1d6 d7f8 d6a6 f8g6 a6g6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Efim Bogoljubov",
+            "event": "Bogoljubov - Rubinstein",
+            "site": "Stockholm SWE",
+            "year": 1920,
+            "date": "1920.01.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030652"
+          },
+          "note": {
+            "en": "Stockholm, January 1920, game eight of a match with Bogoljubov.",
+            "uk": "Стокгольм, січень 1920, восьма партія матчу з Боголюбовим."
+          }
+        }
+      ]
+    },
+    {
+      "id": "rubinstein-3",
+      "title": {
+        "en": "Late Masterpieces",
+        "uk": "Пізні шедеври"
+      },
+      "subtitle": {
+        "en": "Years of mastery, 1922–1929",
+        "uk": "Роки майстерності, 1922–1929"
+      },
+      "puzzles": [
+        {
+          "id": "lib-rubinstein-3-01",
+          "fen": "r7/8/4R1R1/1p3k1p/1p4p1/P5P1/4P1K1/8 b - - 2 40",
+          "moves": "a8e8 e2e4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Fyodor Ivanovich Dus Chotimirsky",
+            "event": "Moscow",
+            "site": "Moscow URS",
+            "year": 1925,
+            "date": "1925.12.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1100099"
+          },
+          "note": {
+            "en": "Moscow, December 1925, round 17.",
+            "uk": "Москва, грудень 1925, 17-й тур."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-02",
+          "fen": "8/2Q2pk1/3Pp1p1/1b5p/1p3PqP/1P2P1K1/6RP/8 w - - 11 40",
+          "moves": "g3f2 g4e2 f2g3 e2e3",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Walter Michel",
+            "black": "Akiba Rubinstein",
+            "event": "Semmering",
+            "site": "Semmering AUT",
+            "year": 1926,
+            "date": "1926.03.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007641"
+          },
+          "note": {
+            "en": "Semmering, March 1926, round 16.",
+            "uk": "Земмерінг, березень 1926, 16-й тур."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-03",
+          "fen": "r1b4r/ppR1q1kp/4ppp1/4Q3/4P3/5N2/PP3PPP/5RK1 b - - 1 19",
+          "moves": "f6e5 c7e7 g7f6 e7c7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Bruno Moritz",
+            "event": "Breslau",
+            "site": "Breslau GER",
+            "year": 1925,
+            "date": "1925.07.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1279813"
+          },
+          "note": {
+            "en": "Breslau, July 1925, round three, a Nimzo-Indian.",
+            "uk": "Бреслау, липень 1925, третій тур, захист Німцовича."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-04",
+          "fen": "1r6/2p4p/2Pp1kp1/pR3p2/2P1p3/4P2P/P4PPK/8 b - - 1 35",
+          "moves": "b8b5 c4b5 f6e6 a2a4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Max Euwe",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1922,
+            "date": "1922.08.14",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1042063"
+          },
+          "note": {
+            "en": "London, August 1922, round 11. Capablanca won the tournament.",
+            "uk": "Лондон, серпень 1922, 11-й тур. Турнір виграв Капабланка."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-05",
+          "fen": "r1k2b2/1ppb1p2/3p1B2/4N2q/8/3Q4/P2P2rp/2R1R2K w - - 0 33",
+          "moves": "h1g2 d6e5 e1e5 h5g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rudolf Spielmann",
+            "black": "Akiba Rubinstein",
+            "event": "Baden-Baden",
+            "site": "Baden-Baden GER",
+            "year": 1925,
+            "date": "1925.04.20",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007166"
+          },
+          "note": {
+            "en": "Baden-Baden, April 1925, round four. Rubinstein finished second behind Alekhine.",
+            "uk": "Баден-Баден, квітень 1925, четвертий тур. Рубінштейн посів друге місце після Алехіна."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-06",
+          "fen": "b4k2/2q2p2/r4R1p/1p1p4/2pP4/2P4P/4Q1P1/1B2R2K b - - 0 34",
+          "moves": "a6f6 e2e8 f8g7 e8a8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "George Alan Thomas",
+            "event": "Marienbad",
+            "site": "Marianske Lazne CSR",
+            "year": 1925,
+            "date": "1925.06.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007446"
+          },
+          "note": {
+            "en": "Marienbad, June 1925, round 14, a Queen's Gambit Declined.",
+            "uk": "Марієнбад, червень 1925, 14-й тур, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-07",
+          "fen": "2r2rk1/p1n2ppp/4pn2/1Pp5/2R5/P3PN2/1B3PPP/1R4K1 b - - 0 19",
+          "moves": "c7b5 b2f6 b5a3 c4g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Oscar Antze",
+            "event": "Hannover",
+            "site": "Hannover GER",
+            "year": 1926,
+            "date": "1926.08.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119834"
+          },
+          "note": {
+            "en": "Hannover, August 1926, round one, a Nimzo-Indian.",
+            "uk": "Ганновер, серпень 1926, перший тур, захист Німцовича."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-08",
+          "fen": "4k3/2q2B1p/8/p2p2P1/3P3P/P4QP1/6K1/2r5 b - - 8 50",
+          "moves": "c7f7 f3e3 f7e7 e3c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Rudolf Spielmann",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1929,
+            "date": "1929.08.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1066896"
+          },
+          "note": {
+            "en": "Karlsbad, August 1929, round 11, a Queen's Gambit Declined.",
+            "uk": "Карлсбад, серпень 1929, 11-й тур, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-09",
+          "fen": "8/p4p2/1p3P2/3pknPP/4rN2/P4K2/1P6/4R3 b - - 0 45",
+          "moves": "e4e1 f4d3 e5d6 d3e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "David Przepiorka",
+            "event": "Rogaska Slatina",
+            "site": "Rogaska Slatina YUG",
+            "year": 1929,
+            "date": "1929.09.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1667192"
+          },
+          "note": {
+            "en": "Rogaška Slatina, September 1929, round five. Rubinstein won the tournament.",
+            "uk": "Рогашка-Слатина, вересень 1929, пʼятий тур. Рубінштейн виграв турнір."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-10",
+          "fen": "rn1q1rk1/pp4bp/4Q3/2p1N3/2BP3P/8/PPP3P1/R1B1K2n b Q - 0 15",
+          "moves": "g8h8 e6g8 f8g8 e5f7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1550,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "smotheredMate",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "NN",
+            "event": "Simul",
+            "site": "Dresden GER",
+            "year": 1924,
+            "date": "1924.07.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1667294"
+          },
+          "note": {
+            "en": "Dresden, July 1924, from a simul, a King's Gambit.",
+            "uk": "Дрезден, липень 1924, сеанс одночасної гри, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-11",
+          "fen": "3r2k1/1pQ1qpp1/p3bn1p/2Np4/3N4/1PR1P2P/P4PP1/2R3K1 b - - 0 28",
+          "moves": "e7c7 c5e6 c7c3 c1c3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Richard Teichmann",
+            "event": "Teplitz-Schoenau",
+            "site": "Teplice-Sanov CSR",
+            "year": 1922,
+            "date": "1922.10.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1003847"
+          },
+          "note": {
+            "en": "Teplitz-Schönau, October 1922, round seven, a Nimzo-Indian.",
+            "uk": "Тепліц-Шенау, жовтень 1922, сьомий тур, захист Німцовича."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-12",
+          "fen": "3r1k2/3P1pp1/pp3nq1/2p2r2/P3R1B1/1P4Q1/8/4R1K1 w - - 2 43",
+          "moves": "e4e8 f6e8 d7e8q d8e8 e1e8 f8e8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul F Johner",
+            "black": "Akiba Rubinstein",
+            "event": "Berlin",
+            "site": "Berlin GER",
+            "year": 1926,
+            "date": "1926.11.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1279877"
+          },
+          "note": {
+            "en": "Berlin, November 1926, round five.",
+            "uk": "Берлін, листопад 1926, пʼятий тур."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-13",
+          "fen": "7k/2q3p1/2n4p/4pB2/2Q5/4P1PK/7P/8 b - - 6 43",
+          "moves": "c7d6 c4f7 d6d8 f7g6 d8g8 g6c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Siegbert Tarrasch",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1923,
+            "date": "1923.05.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007062"
+          },
+          "note": {
+            "en": "Karlsbad, May 1923, round nine: a Tarrasch Defence against Tarrasch himself.",
+            "uk": "Карлсбад, травень 1923, девʼятий тур: захист Тарраша проти самого Тарраша."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-14",
+          "fen": "8/1b2r1k1/p5pp/1pp2pq1/8/2PB1N2/PP3bPN/5R1K w - - 0 45",
+          "moves": "f3g5 f2g3 g5f3 c5c4 d3f5 g6f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Reginald Pryce Michell",
+            "black": "Akiba Rubinstein",
+            "event": "Marienbad",
+            "site": "Marianske Lazne CSR",
+            "year": 1925,
+            "date": "1925.05.24",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007363"
+          },
+          "note": {
+            "en": "Marienbad, May 1925, round three. Rubinstein and Nimzowitsch shared first place.",
+            "uk": "Марієнбад, травень 1925, третій тур. Рубінштейн і Німцович поділили перше місце."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-15",
+          "fen": "Rr1r4/5pkp/4q1p1/1pp1P1P1/4Q1P1/2PP4/6K1/R7 w - - 1 44",
+          "moves": "a1a6 e6b3 e5e6 b8a8 e4e5 g7g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Peter Arsenievich Romanovsky",
+            "black": "Akiba Rubinstein",
+            "event": "Moscow",
+            "site": "Moscow URS",
+            "year": 1925,
+            "date": "1925.11.18",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1100031"
+          },
+          "note": {
+            "en": "Moscow, November 1925, round seven. Bogoljubov won the tournament.",
+            "uk": "Москва, листопад 1925, сьомий тур. Турнір виграв Боголюбов."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-16",
+          "fen": "r5k1/5p2/4p3/p1R1Br1p/4b2P/3R4/6P1/6K1 w - - 8 34",
+          "moves": "c5a5 f5f1 g1h2 a8a5 d3d8 g8h7 d8h8 h7g6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Paul F Johner",
+            "black": "Akiba Rubinstein",
+            "event": "Dresden",
+            "site": "Dresden GER",
+            "year": 1926,
+            "date": "1926.04.12",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007494"
+          },
+          "note": {
+            "en": "Dresden, April 1926, round eight. Nimzowitsch won the tournament.",
+            "uk": "Дрезден, квітень 1926, восьмий тур. Турнір виграв Німцович."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-17",
+          "fen": "8/2B4k/P6p/5Rp1/8/7K/6rP/4n3 b - - 0 35",
+          "moves": "h7g6 a6a7 g5g4 h3h4 e1f3 f5f3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Oscar Tenner",
+            "event": "Exhibition",
+            "site": "New York, NY USA",
+            "year": 1928,
+            "date": "1928.04.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1667242"
+          },
+          "note": {
+            "en": "New York, April 1928, an exhibition game, a Vienna Game.",
+            "uk": "Нью-Йорк, квітень 1928, показова партія, віденська партія."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-18",
+          "fen": "8/1K6/P7/4p1k1/4P3/2pBb3/8/8 b - - 4 66",
+          "moves": "g5f4 d3b1 e3d4 a6a7 d4a7 b7a7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Ernst Gruenfeld",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1929,
+            "date": "1929.08.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1053135"
+          },
+          "note": {
+            "en": "Karlsbad, August 1929, round five, deep in an ending. Nimzowitsch won the tournament.",
+            "uk": "Карлсбад, серпень 1929, пʼятий тур, глибокий ендшпіль. Турнір виграв Німцович."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-19",
+          "fen": "rn1qk2r/pbp2ppp/1p1ppn2/8/QbPPP3/2NB4/PP3PPP/R1B1K1NR b KQkq - 1 7",
+          "moves": "b8c6 d4d5 b4c3 b2c3 f6d7 d5c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "opening",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "Sandor Takacs",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1922,
+            "date": "1922.11.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1119802"
+          },
+          "note": {
+            "en": "Vienna, November 1922, round one. Rubinstein won the tournament.",
+            "uk": "Відень, листопад 1922, перший тур. Рубінштейн виграв турнір."
+          }
+        },
+        {
+          "id": "lib-rubinstein-3-20",
+          "fen": "r2q1r1k/p6B/bn1p2Q1/2pP2p1/1bP2P2/7R/P5PP/R5K1 b - - 3 23",
+          "moves": "d8d7 h7g8 d7h3 g2h3 f8f7 g8f7 g5g4 g6h6",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 2050,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "discoveredAttack",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Akiba Rubinstein",
+            "black": "David Janowski",
+            "event": "Marienbad",
+            "site": "Marianske Lazne CSR",
+            "year": 1925,
+            "date": "1925.06.04",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007434"
+          },
+          "note": {
+            "en": "Marienbad, June 1925, round 12.",
+            "uk": "Марієнбад, червень 1925, 12-й тур."
+          }
+        }
+      ]
+    }
+  ]
 }
