@@ -1,5 +1,1690 @@
 {
   "id": "hypermodern",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "hypermodern-1",
+      "title": {
+        "en": "Réti's New Ideas",
+        "uk": "Нові ідеї Реті"
+      },
+      "subtitle": {
+        "en": "Richard Réti, 1919–1928",
+        "uk": "Ріхард Реті, 1919–1928"
+      },
+      "puzzles": [
+        {
+          "id": "lib-hypermodern-1-01",
+          "fen": "r1qn1Nrk/1p1R2p1/p4pQp/b1B1p3/4P3/1P5P/1PP2PP1/3R2K1 b - - 5 26",
+          "moves": "g8f8 g6g7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "NN",
+            "event": "Blind simul, 24b",
+            "site": "Haarlem NED",
+            "year": 1919,
+            "date": "1919.08.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1224652"
+          },
+          "note": {
+            "en": "Haarlem, August 1919, a blindfold display on 24 boards.",
+            "uk": "Гарлем, серпень 1919, сеанс наосліп на 24 дошках."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-02",
+          "fen": "Q7/2pk1P2/1p2b1np/p2pP1q1/3P1N2/2PB4/6PP/R4RK1 b - - 0 22",
+          "moves": "g6f4 a8e8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "M Bottenheim",
+            "event": "Blind simul, 10b",
+            "site": "Amsterdam NED",
+            "year": 1919,
+            "date": "1919.09.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1758312"
+          },
+          "note": {
+            "en": "Amsterdam, September 1919, blindfold on ten boards, a French Defence.",
+            "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, французький захист."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-03",
+          "fen": "2bRr1k1/p4q1p/1pr5/2pN1pP1/2P1p2P/1P6/P5P1/3RQ1K1 b - - 5 32",
+          "moves": "e8d8 d5f6 g8g7 d1d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Rudolf Spielmann",
+            "event": "Schultz Memorial, Stockholm",
+            "site": "Stockholm SWE",
+            "year": 1919,
+            "date": "1919.11.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1130815"
+          },
+          "note": {
+            "en": "Stockholm, November 1919, round six of the Schultz Memorial, a Petroff Defence.",
+            "uk": "Стокгольм, листопад 1919, шостий тур Меморіалу Шульца, захист Петрова."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-04",
+          "fen": "r4rk1/p3bppb/3p3p/3Pp3/1p3nP1/5QNP/PPqK1PB1/R1BN3R w - - 5 20",
+          "moves": "d2e1 f4d3 e1f1 d3c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Ernst Gruenfeld",
+            "black": "Richard Reti",
+            "event": "Bad Pistyan",
+            "site": "Piestany CSR",
+            "year": 1922,
+            "date": "1922.04.15",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1006889"
+          },
+          "note": {
+            "en": "Bad Pistyan, April 1922, round eight. Bogoljubov won the tournament.",
+            "uk": "Пʼєштяни, квітень 1922, восьмий тур. Турнір виграв Боголюбов."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-05",
+          "fen": "3r1rk1/p4ppp/8/1P1b4/3R4/6P1/1P2PPBP/R5K1 b - - 0 25",
+          "moves": "d5g2 d4d8 f8d8 g1g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Siegbert Tarrasch",
+            "event": "Bad Pistyan",
+            "site": "Piestany CSR",
+            "year": 1922,
+            "date": "1922.04.22",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1006946"
+          },
+          "note": {
+            "en": "Bad Pistyan, April 1922, round 14; Tarrasch defends with his own defence.",
+            "uk": "Пʼєштяни, квітень 1922, 14-й тур; Тарраш захищається власним захистом."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-06",
+          "fen": "3q2k1/1p6/pnr2rR1/3pB2Q/3P4/8/P4PP1/4R1K1 b - - 0 30",
+          "moves": "f6g6 h5h8 g8f7 h8d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Eugene Aleksandrovich Znosko-Borovsky",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1922,
+            "date": "1922.08.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1093070"
+          },
+          "note": {
+            "en": "London, August 1922, round 12. Capablanca won the tournament.",
+            "uk": "Лондон, серпень 1922, 12-й тур. Турнір виграв Капабланка."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-07",
+          "fen": "4Q1B1/2p3rk/3q3p/2R2b1P/P7/1P3P2/K7/8 b - - 4 46",
+          "moves": "g7g8 e8f7 h7h8 f7f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Fred Dewhirst Yates",
+            "event": "Hastings 1922/23",
+            "site": "Hastings ENG",
+            "year": 1923,
+            "date": "1923.01.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1440454"
+          },
+          "note": {
+            "en": "Hastings, New Year 1923, round six, a King's Indian.",
+            "uk": "Гастінгс, Новий 1923 рік, шостий тур, староіндійський захист."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-08",
+          "fen": "7k/4Q3/3p2p1/2p2p1p/p1P1R1q1/5RP1/Pr3PK1/8 b - - 0 41",
+          "moves": "g4e4 e7f6 h8h7 f6b2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Jacob Bernstein",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1923,
+            "date": "1923.04.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007003"
+          },
+          "note": {
+            "en": "Karlsbad, April 1923, round two, a Réti Opening.",
+            "uk": "Карлсбад, квітень 1923, другий тур, дебют Реті."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-09",
+          "fen": "5rk1/pQ4pp/1b2pn2/1R1Pq3/1p6/4N1P1/1P2PPKP/2rR4 w - - 0 28",
+          "moves": "d1c1 e5e4 g2h3 b6e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Damian Reca",
+            "black": "Richard Reti",
+            "event": "Match",
+            "site": "Buenos Aires ARG",
+            "year": 1924,
+            "date": "1924.10.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1784877"
+          },
+          "note": {
+            "en": "Buenos Aires, October 1924, game one of a match with Damián Reca.",
+            "uk": "Буенос-Айрес, жовтень 1924, перша партія матчу з Даміаном Рекою."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-10",
+          "fen": "3r3k/7p/5p1b/8/p3q3/4PQR1/R5P1/6K1 b - - 1 43",
+          "moves": "h6e3 f3e3 e4e3 g3e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Efim Bogoljubov",
+            "event": "Moscow",
+            "site": "Moscow URS",
+            "year": 1925,
+            "date": "1925.11.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030824"
+          },
+          "note": {
+            "en": "Moscow, November 1925, round eight. Bogoljubov won the tournament.",
+            "uk": "Москва, листопад 1925, восьмий тур. Турнір виграв Боголюбов."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-11",
+          "fen": "2r3k1/p2pq1pp/1pn1p3/1N3r2/2Pb1P2/1P4PP/PB2Q1K1/3R1R2 b - - 4 21",
+          "moves": "d4b2 b5d6 c8f8 d6f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "fork",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Edgar Colle",
+            "event": "Hastings 1926/27",
+            "site": "Hastings ENG",
+            "year": 1927,
+            "date": "1927.01.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1440600"
+          },
+          "note": {
+            "en": "Hastings, January 1927, round six, an English Opening.",
+            "uk": "Гастінгс, січень 1927, шостий тур, англійський початок."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-12",
+          "fen": "8/1p3r2/2p2b2/5k1p/3B4/2P4P/PPK5/6R1 b - - 1 32",
+          "moves": "f6d4 g1f1 f5g6 f1f7 g6f7 c3d4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "attackingF2F7",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Jacob Gerard Baay",
+            "event": "Blind simul, 10b",
+            "site": "Amsterdam NED",
+            "year": 1919,
+            "date": "1919.09.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1759774"
+          },
+          "note": {
+            "en": "Amsterdam, September 1919, blindfold on ten boards, a Caro-Kann.",
+            "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, захист Каро-Канн."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-13",
+          "fen": "r6Q/ppp2kpp/3b4/8/4RP1q/7b/PPP3PP/3R2K1 w - - 1 18",
+          "moves": "h8a8 d6c5 d1d4 c5d4 g1h1 h3g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Max Euwe",
+            "black": "Richard Reti",
+            "event": "Reti - Euwe",
+            "site": "Amsterdam NED",
+            "year": 1920,
+            "date": "1920.05.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1041899"
+          },
+          "note": {
+            "en": "Amsterdam, May 1920, game one of a match with the young Euwe, a Two Knights Defence.",
+            "uk": "Амстердам, травень 1920, перша партія матчу з молодим Ейве, захист двох коней."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-14",
+          "fen": "3r2k1/1q3ppp/p7/4PQ1P/1pp2P2/2Pr4/PP6/1K4RR w - - 0 32",
+          "moves": "h5h6 b4c3 f5h7 g8h7 h6g7 b7h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gyula Breyer",
+            "black": "Richard Reti",
+            "event": "Match to 4 wins",
+            "site": "Bratislava CSR",
+            "year": 1920,
+            "date": "1920.06.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1400704"
+          },
+          "note": {
+            "en": "Bratislava, June 1920, game one of a match with Breyer, a fellow pioneer of the new ideas.",
+            "uk": "Братислава, червень 1920, перша партія матчу з Брейєром — ще одним піонером нових ідей."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-15",
+          "fen": "8/5pk1/R6R/6p1/4p1K1/4P1P1/5r1P/2r5 w - - 0 40",
+          "moves": "g4g5 f7f6 h6f6 c1c5 g5h4 f2f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Imre Koenig",
+            "black": "Richard Reti",
+            "event": "Vienna",
+            "site": "Vienna AUT",
+            "year": 1922,
+            "date": "1922.11.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1148893"
+          },
+          "note": {
+            "en": "Vienna, November 1922, round 12, deep in the ending.",
+            "uk": "Відень, листопад 1922, 12-й тур, глибокий ендшпіль."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-16",
+          "fen": "r3rbk1/1p1bqppp/2p2n2/p1n1P3/2P3P1/1PN4P/PBQ1N1B1/3R1RK1 b - - 0 19",
+          "moves": "e7e5 c3e4 e5e4 g2e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Rudolf Spielmann",
+            "event": "Marienbad",
+            "site": "Marianske Lazne CSR",
+            "year": 1925,
+            "date": "1925.06.01",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007418"
+          },
+          "note": {
+            "en": "Marienbad, June 1925, round ten, an English Opening.",
+            "uk": "Марієнбад, червень 1925, десятий тур, англійський початок."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-17",
+          "fen": "r1b2rk1/ppp2ppp/2q5/4p3/1P1n1P2/P1NPB3/2P3PP/R2Q1RK1 w - - 1 14",
+          "moves": "d1d2 c6c3 d2c3 d4e2 g1h1 e2c3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rudolf Spielmann",
+            "black": "Richard Reti",
+            "event": "Dortmund",
+            "site": "Dortmund GER",
+            "year": 1928,
+            "date": "1928.07.28",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1280405"
+          },
+          "note": {
+            "en": "Dortmund, July 1928, round two, a Vienna Game.",
+            "uk": "Дортмунд, липень 1928, другий тур, віденська партія."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-18",
+          "fen": "3r2k1/pp1r3p/q2N2p1/2p1R3/8/PbPRQP2/1P4P1/2K5 b - - 5 26",
+          "moves": "a6d3 e5e8 g8g7 e3d3 d7d6 e8d8 d6d3 d8d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Savielly Tartakower",
+            "event": "Berlin",
+            "site": "Berlin GER",
+            "year": 1920,
+            "date": "1920.12.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1027457"
+          },
+          "note": {
+            "en": "Berlin, December 1920, round six, a French Defence.",
+            "uk": "Берлін, грудень 1920, шостий тур, французький захист."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-19",
+          "fen": "6k1/7p/ppn3p1/3r1r2/2QPN2q/2N1P2b/PP3P2/4R1K1 w - - 2 33",
+          "moves": "c3d5 f5g5 e4g3 g5g3 f2g3 h4g3 g1h1 g3g2",
+          "goal": "mate",
+          "mateIn": 4,
+          "rating": 2050,
+          "themes": [
+            "mateIn4",
+            "middlegame",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Reginald Pryce Michell",
+            "black": "Richard Reti",
+            "event": "Hastings 1926/27",
+            "site": "Hastings ENG",
+            "year": 1927,
+            "date": "1927.01.04",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1440604"
+          },
+          "note": {
+            "en": "Hastings, January 1927, round seven.",
+            "uk": "Гастінгс, січень 1927, сьомий тур."
+          }
+        },
+        {
+          "id": "lib-hypermodern-1-20",
+          "fen": "8/pp3k1p/n2Bp3/PP1pPpQK/3P1P2/8/7P/4q3 b - - 8 46",
+          "moves": "e1e2 h5h6 e2h2 g5h5 h2h5 h6h5 a6b4 d6b4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2200,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Edward Lasker",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.03.25",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1102105"
+          },
+          "note": {
+            "en": "New York, March 1924, round seven. At this tournament Réti handed Capablanca his first loss in eight years.",
+            "uk": "Нью-Йорк, березень 1924, сьомий тур. На цьому турнірі Реті завдав Капабланці першої за вісім років поразки."
+          }
+        }
+      ]
+    },
+    {
+      "id": "hypermodern-2",
+      "title": {
+        "en": "My System",
+        "uk": "Моя система"
+      },
+      "subtitle": {
+        "en": "Aron Nimzowitsch, 1915–1929",
+        "uk": "Арон Німцович, 1915–1929"
+      },
+      "puzzles": [
+        {
+          "id": "lib-hypermodern-2-01",
+          "fen": "8/5R1p/2R5/6p1/6k1/pB3PP1/P5K1/4q3 b - - 0 47",
+          "moves": "g4h5 f7h7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Savielly Tartakower",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1923,
+            "date": "1923.05.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007036"
+          },
+          "note": {
+            "en": "Karlsbad, May 1923, round six: two hypermoderns face to face.",
+            "uk": "Карлсбад, травень 1923, шостий тур: зустріч двох гіпермодерністів."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-02",
+          "fen": "5k2/p1p2p2/8/4b1pp/2P1P2P/5pNK/P1PR1PP1/7r w - - 2 33",
+          "moves": "g3h1 g5g4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Nils Elisons",
+            "black": "Aron Nimzowitsch",
+            "event": "Offhand game",
+            "site": "Riga RUE",
+            "year": 1915,
+            "date": "1915.12.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1265578"
+          },
+          "note": {
+            "en": "Riga, December 1915, an offhand game in Nimzowitsch's home city.",
+            "uk": "Рига, грудень 1915, товариська партія в рідному місті Німцовича."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-03",
+          "fen": "1q2r3/3kPpp1/1p1P1b1p/1b1Q1P2/1p6/P6P/1P4P1/1KR2R2 b - - 2 35",
+          "moves": "b5f1 d5c6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Massimiliano Romi",
+            "event": "Casual game",
+            "site": "London ENG",
+            "year": 1927,
+            "date": "1927.11.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1102422"
+          },
+          "note": {
+            "en": "London, November 1927, a casual game.",
+            "uk": "Лондон, листопад 1927, товариська партія."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-04",
+          "fen": "r7/pp3rk1/1q3pP1/3bb3/2B1N1Q1/1Pn4R/P6P/4R2K b - - 0 37",
+          "moves": "c3e4 g6f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Alexander Alekhine",
+            "event": "Semmering",
+            "site": "Semmering AUT",
+            "year": 1926,
+            "date": "1926.03.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007507"
+          },
+          "note": {
+            "en": "Semmering, March 1926, round one: an Alekhine Defence against Alekhine himself.",
+            "uk": "Земмерінг, березень 1926, перший тур: захист Алехіна проти самого Алехіна."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-05",
+          "fen": "3r4/Q3nk2/2R2p1p/1p2p1pP/3pP1P1/qr1P1P2/6N1/2R3K1 w - - 6 49",
+          "moves": "a7b6 e7c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "Aron Nimzowitsch",
+            "event": "Dresden",
+            "site": "Dresden GER",
+            "year": 1926,
+            "date": "1926.04.07",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007477"
+          },
+          "note": {
+            "en": "Dresden, April 1926, round four, a Réti Opening.",
+            "uk": "Дрезден, квітень 1926, четвертий тур, дебют Реті."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-06",
+          "fen": "7k/1p4Qp/pbb3p1/1P3pN1/3p1P2/3P4/P2B2PP/6K1 b - - 0 35",
+          "moves": "h8g7 b5c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Akiba Rubinstein",
+            "event": "Dresden",
+            "site": "Dresden GER",
+            "year": 1926,
+            "date": "1926.04.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007481"
+          },
+          "note": {
+            "en": "Dresden, April 1926, round five, an English Opening.",
+            "uk": "Дрезден, квітень 1926, пʼятий тур, англійський початок."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-07",
+          "fen": "6bR/R7/2rk1p2/4p3/p3P3/P5P1/1rp2P1P/5BK1 w - - 4 38",
+          "moves": "h8g8 c2c1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "promotion"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "William Albert Fairhurst",
+            "black": "Aron Nimzowitsch",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1927,
+            "date": "1927.10.12",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1093097"
+          },
+          "note": {
+            "en": "London, October 1927, round three. Nimzowitsch and Tartakower shared first place.",
+            "uk": "Лондон, жовтень 1927, третій тур. Німцович і Тартаковер поділили перше місце."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-08",
+          "fen": "r3kb1r/1p3ppp/1pn5/6q1/2Bp4/1QN2P2/PP3P1P/1K1R3R b kq - 3 15",
+          "moves": "d4c3 c4f7 e8e7 b3e6",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Gerog Jokstad",
+            "event": "Blind simul",
+            "site": "Bergen NOR",
+            "year": 1922,
+            "date": "1922.01.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1990436"
+          },
+          "note": {
+            "en": "Bergen, January 1922, from a blindfold display.",
+            "uk": "Берген, січень 1922, сеанс наосліп."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-09",
+          "fen": "r1b2r1k/1p2bppB/p7/2PN3Q/1P3P2/P7/1q4PP/R6K b - - 2 20",
+          "moves": "b2a1 h7b1 h8g8 d5e7",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "discoveredAttack",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Paulsen",
+            "event": "Simul",
+            "site": "Copenhagen DEN",
+            "year": 1924,
+            "date": "1924.03.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1991618"
+          },
+          "note": {
+            "en": "Copenhagen, March 1924, from a simul.",
+            "uk": "Копенгаген, березень 1924, сеанс одночасної гри."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-10",
+          "fen": "5nkR/p1q3r1/PpP1ppp1/1P1p4/3P1P2/Q4NP1/6K1/8 b - - 7 44",
+          "moves": "g8h8 a3f8 g7g8 f8f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Alfred Brinckmann",
+            "event": "Match Nimzowitsch - Brinckmann",
+            "site": "Kolding DEN",
+            "year": 1923,
+            "date": "1923.01.04",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1991696"
+          },
+          "note": {
+            "en": "Kolding, January 1923, game two of a match with Brinckmann.",
+            "uk": "Колдінг, січень 1923, друга партія матчу з Брінкманом."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-11",
+          "fen": "1k1r3r/ppp1q1p1/5p2/7p/1PP3b1/5Nn1/P1QRB1P1/3R2K1 w - - 0 23",
+          "moves": "d2d8 h8d8 d1d8 e7d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Ernst Jacobson",
+            "black": "Aron Nimzowitsch",
+            "event": "2nd Stockholm Jubilee",
+            "site": "Stockholm SWE",
+            "year": 1920,
+            "date": "1920.10.11",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1990327"
+          },
+          "note": {
+            "en": "Stockholm, October 1920, round one of a jubilee tournament.",
+            "uk": "Стокгольм, жовтень 1920, перший тур ювілейного турніру."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-12",
+          "fen": "k7/8/4p3/1qr2P2/1p1p4/2b1N2P/6P1/1R1Q3K w - - 0 47",
+          "moves": "f5f6 d4e3 d1d8 b5b8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Alfred Brinckmann",
+            "black": "Aron Nimzowitsch",
+            "event": "Nordic Congress, Copenhagen",
+            "site": "Copenhagen DEN",
+            "year": 1924,
+            "date": "1924.08.14",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1991690"
+          },
+          "note": {
+            "en": "Copenhagen, August 1924, round four of the Nordic Congress.",
+            "uk": "Копенгаген, серпень 1924, четвертий тур Північного конгресу."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-13",
+          "fen": "1k6/pb1p4/3P4/1pp5/8/1PP1Q3/P1PK2r1/R5r1 w - - 3 34",
+          "moves": "d2d3 g1a1 e3e8 b7c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Reginald Pryce Michell",
+            "black": "Aron Nimzowitsch",
+            "event": "Marienbad",
+            "site": "Marianske Lazne CSR",
+            "year": 1925,
+            "date": "1925.06.04",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1102408"
+          },
+          "note": {
+            "en": "Marienbad, June 1925, round 12. Nimzowitsch and Rubinstein shared first place.",
+            "uk": "Марієнбад, червень 1925, 12-й тур. Німцович і Рубінштейн поділили перше місце."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-14",
+          "fen": "r2nk1r1/pp6/3pq1p1/2pQp3/2P2p1P/4B2P/PPP2P2/3R1RK1 w q - 0 20",
+          "moves": "e3f4 e6d5 d1d5 e5f4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Lajos Steiner",
+            "black": "Aron Nimzowitsch",
+            "event": "Dresden",
+            "site": "Dresden GER",
+            "year": 1926,
+            "date": "1926.04.10",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007486"
+          },
+          "note": {
+            "en": "Dresden, April 1926, round six, a Sicilian Defence.",
+            "uk": "Дрезден, квітень 1926, шостий тур, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-15",
+          "fen": "5r2/pQ3nkp/6p1/3p4/3P3q/1Pr1pR1P/P1P3PK/5R2 b - - 1 24",
+          "moves": "e3e2 f3f7 f8f7 b7f7 g7h6 f7f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Aron Nimzowitsch",
+            "black": "Max Euwe",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1929,
+            "date": "1929.08.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1042316"
+          },
+          "note": {
+            "en": "Karlsbad, August 1929, round eight. Nimzowitsch won the tournament ahead of Capablanca.",
+            "uk": "Карлсбад, серпень 1929, восьмий тур. Німцович виграв турнір, випередивши Капабланку."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-16",
+          "fen": "2krr3/ppp3p1/5q2/3p4/5n1p/2P2P2/PP1Q1BPP/R4RK1 w - - 4 26",
+          "moves": "f2e3 e8e3 d2e3 f6g5 e3f4 g5f4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Egil Jacobsen",
+            "black": "Aron Nimzowitsch",
+            "event": "Copenhagen",
+            "site": "Copenhagen DEN",
+            "year": 1922,
+            "date": "1922.12.03",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1990414"
+          },
+          "note": {
+            "en": "Copenhagen, December 1922, round two. Nimzowitsch had settled in Denmark.",
+            "uk": "Копенгаген, грудень 1922, другий тур. Німцович тоді вже оселився в Данії."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-17",
+          "fen": "8/p4K2/5p2/4kP2/1P1p1r2/P7/5R1P/8 w - - 3 43",
+          "moves": "f2f4 e5f4 f7f6 d4d3 f6e6 d3d2 f5f6 d2d1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "promotion",
+            "hangingPiece",
+            "exposedKing"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Allies",
+            "black": "Aron Nimzowitsch",
+            "event": "Kristiania (Oslo) Consultation",
+            "site": "Oslo NOR",
+            "year": 1921,
+            "date": "1921.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1102389"
+          },
+          "note": {
+            "en": "Kristiania (Oslo), 1921, a consultation game against a team of allies.",
+            "uk": "Християнія (Осло), 1921, консультаційна партія проти команди союзників."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-18",
+          "fen": "3r2k1/p4pp1/1p5p/4b3/2n1PB2/2P3P1/P3K1BP/3r1R2 w - - 0 37",
+          "moves": "f1d1 d8d1 e2d1 e5f4 g3f4 c4e3 d1e2 e3g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Max Bluemich",
+            "black": "Aron Nimzowitsch",
+            "event": "Dresden",
+            "site": "Dresden GER",
+            "year": 1926,
+            "date": "1926.04.04",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007459"
+          },
+          "note": {
+            "en": "Dresden, April 1926, round one, a year after My System appeared. Nimzowitsch won the tournament.",
+            "uk": "Дрезден, квітень 1926, перший тур, через рік після виходу «Моєї системи». Німцович виграв турнір."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-19",
+          "fen": "2r1n1k1/5ppp/4p3/2qpP3/1p3P2/pP4P1/P1Q3BP/1NB3K1 w - - 0 27",
+          "moves": "c2c5 c8c5 c1d2 c5c2 d2b4 c2c1 g2f1 c1b1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Schurig / Laue",
+            "black": "Aron Nimzowitsch",
+            "event": "Simul",
+            "site": "Leipzig GER",
+            "year": 1926,
+            "date": "1926.??.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2042866"
+          },
+          "note": {
+            "en": "Leipzig, 1926, from a simul; two allies had White.",
+            "uk": "Лейпциг, 1926, сеанс; білими грали двоє союзників."
+          }
+        },
+        {
+          "id": "lib-hypermodern-2-20",
+          "fen": "1k1r4/1p4P1/3N4/4p3/2B2n1p/5P2/PPP5/3K2b1 w - - 0 32",
+          "moves": "g7g8q d8g8 c4g8 h4h3 d6e4 f4h5 g8f7 h3h2 f7h5 h2h1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "promotion"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Orla Hermann Krause",
+            "black": "Aron Nimzowitsch",
+            "event": "Naestved",
+            "site": "Naestved DEN",
+            "year": 1922,
+            "date": "1922.05.04",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1990412"
+          },
+          "note": {
+            "en": "Næstved, May 1922, deep in the ending.",
+            "uk": "Нествед, травень 1922, глибокий ендшпіль."
+          }
+        }
+      ]
+    },
+    {
+      "id": "hypermodern-3",
+      "title": {
+        "en": "Tartakower and Company",
+        "uk": "Тартаковер і компанія"
+      },
+      "subtitle": {
+        "en": "Tartakower, Bogoljubov, Breyer",
+        "uk": "Тартаковер, Боголюбов, Брейєр"
+      },
+      "puzzles": [
+        {
+          "id": "lib-hypermodern-3-01",
+          "fen": "5k2/3Q2p1/p2nNr1r/1p3P1p/8/6P1/PpP3P1/1K6 b - - 2 30",
+          "moves": "f8g8 d7g7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "Rudolf Spielmann",
+            "event": "Tartakower - Spielmann",
+            "site": "Vienna AUT",
+            "year": 1921,
+            "date": "1921.04.00",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1130827"
+          },
+          "note": {
+            "en": "Vienna, April 1921, from a match with Spielmann.",
+            "uk": "Відень, квітень 1921, матч зі Шпільманом."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-02",
+          "fen": "2k1r3/1pp1n1b1/p2rRp2/3P1B1p/2PB2p1/8/PP3PPP/R5K1 b - - 0 21",
+          "moves": "c8d8 e6d6 c7d6 d4b6",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1325,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gyula Breyer",
+            "black": "F Namer",
+            "event": "Blindfold simul, 25b",
+            "site": "Kosice CSR",
+            "year": 1921,
+            "date": "1921.01.30",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1529600"
+          },
+          "note": {
+            "en": "Košice, January 1921: blindfold on 25 boards, a world record at the time.",
+            "uk": "Кошице, січень 1921: гра наосліп на 25 дошках — тодішній світовий рекорд."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-03",
+          "fen": "1rrR2k1/p4pP1/5Qp1/2B1p2p/6q1/P7/1pP2P2/1K1R4 b - - 1 26",
+          "moves": "c8d8 d1d8 b8d8 f6d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "Gyula Breyer",
+            "event": "Berlin",
+            "site": "Berlin GER",
+            "year": 1920,
+            "date": "1920.12.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1027473"
+          },
+          "note": {
+            "en": "Berlin, December 1920, round nine, a Sicilian Defence.",
+            "uk": "Берлін, грудень 1920, девʼятий тур, сицилійський захист."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-04",
+          "fen": "4r3/pQ6/2p3Rp/2kp4/7q/2P1P3/P4P2/2K5 b - - 0 29",
+          "moves": "h4a4 g6c6 a4c6 b7b4",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1425,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "A Holte",
+            "event": "Copenhagen",
+            "site": "Copenhagen DEN",
+            "year": 1923,
+            "date": "1923.01.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1739333"
+          },
+          "note": {
+            "en": "Copenhagen, January 1923, a Queen's Gambit Declined.",
+            "uk": "Копенгаген, січень 1923, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-05",
+          "fen": "4r1k1/4r2p/pq3ppB/1pp5/2P1b2Q/2b3NP/P4PP1/R3R1K1 w - - 0 29",
+          "moves": "g3e4 c3a1 e1a1 e7e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Endre Steiner",
+            "black": "Efim Bogoljubov",
+            "event": "Budapest",
+            "site": "Budapest HUN",
+            "year": 1921,
+            "date": "1921.09.13",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030664"
+          },
+          "note": {
+            "en": "Budapest, September 1921, round seven, a closed Ruy Lopez.",
+            "uk": "Будапешт, вересень 1921, сьомий тур, закрита іспанська партія."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-06",
+          "fen": "r2q4/pp3kpp/3p3n/2pP1Rp1/2P5/8/PB2Q2P/4R1K1 b - - 0 30",
+          "moves": "h6f5 e2e6 f7f8 e6f5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "Siegbert Tarrasch",
+            "event": "Semmering",
+            "site": "Semmering AUT",
+            "year": 1926,
+            "date": "1926.03.18",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007583"
+          },
+          "note": {
+            "en": "Semmering, March 1926, round nine.",
+            "uk": "Земмерінг, березень 1926, девʼятий тур."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-07",
+          "fen": "6k1/pb3pp1/1p5B/n6p/2p5/2Q2qPP/P4K2/R2r4 w - - 0 30",
+          "moves": "c3f3 b7f3 a1d1 f3d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Vera Menchik",
+            "black": "Savielly Tartakower",
+            "event": "Paris",
+            "site": "Paris FRA",
+            "year": 1929,
+            "date": "1929.06.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1258247"
+          },
+          "note": {
+            "en": "Paris, June 1929, round five. Menchik had become the first women's world champion in 1927.",
+            "uk": "Париж, червень 1929, пʼятий тур. 1927 року Менчик стала першою чемпіонкою світу серед жінок."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-08",
+          "fen": "r1b5/p5k1/n1p1q3/1p5R/2pP1Q2/2P5/P2K2P1/8 b - - 3 39",
+          "moves": "e6f6 h5h7 g7h7 f4f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Gyula Breyer",
+            "black": "Johannes Esser",
+            "event": "Budapest",
+            "site": "Budapest AUH",
+            "year": 1917,
+            "date": "1917.07.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1271593"
+          },
+          "note": {
+            "en": "Budapest, July 1917. Breyer's name lives on in a main line of the Ruy Lopez.",
+            "uk": "Будапешт, липень 1917. Імʼя Брейєра носить один із головних варіантів іспанської партії."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-09",
+          "fen": "5nk1/pp3p2/2pb1q1p/3p1Pp1/3P2b1/3Br1N1/PPQN1KPP/5R2 w - - 0 20",
+          "moves": "f2e3 d6f4 f1f4 g5f4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alfred Brinckmann",
+            "black": "Efim Bogoljubov",
+            "event": "Triberg",
+            "site": "Triberg GER",
+            "year": 1921,
+            "date": "1921.07.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1279445"
+          },
+          "note": {
+            "en": "Triberg, July 1921, round two. Bogoljubov made his home in this town after the war.",
+            "uk": "Трайберг, липень 1921, другий тур. Після війни Боголюбов залишився жити в цьому містечку."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-10",
+          "fen": "1r2r1k1/p4pp1/3qbn1p/2pp4/N1P5/1P1B3P/P2QRPP1/4R1K1 b - - 0 23",
+          "moves": "d5c4 d3h7 g8h7 d2d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "Edward G Sergeant",
+            "event": "Hastings 1926/27",
+            "site": "Hastings ENG",
+            "year": 1926,
+            "date": "1926.12.28",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1440581"
+          },
+          "note": {
+            "en": "Hastings, December 1926, round one of the Christmas congress.",
+            "uk": "Гастінгс, грудень 1926, перший тур різдвяного конгресу."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-11",
+          "fen": "2N4r/pp2Pk2/6p1/2p5/8/5K2/8/3R4 b - - 8 41",
+          "moves": "h8c8 d1d8 f7e7 d8c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "George Alan Thomas",
+            "event": "Karlsbad",
+            "site": "Karlsbad CSR",
+            "year": 1923,
+            "date": "1923.05.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1007065"
+          },
+          "note": {
+            "en": "Karlsbad, May 1923, round nine.",
+            "uk": "Карлсбад, травень 1923, девʼятий тур."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-12",
+          "fen": "2r2bk1/1p3pp1/7p/1P1Pp3/p7/P2q4/Q4PPP/3BR1K1 w - - 0 31",
+          "moves": "d1a4 d3e4 a2d2 e4a4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Efim Bogoljubov",
+            "event": "Alekhine - Bogoljubov World Championship",
+            "site": "Berlin GER",
+            "year": 1929,
+            "date": "1929.10.13",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012573"
+          },
+          "note": {
+            "en": "Berlin, October 1929, game 13 of Bogoljubov's first world title match against Alekhine.",
+            "uk": "Берлін, жовтень 1929, 13-та партія першого матчу Боголюбова з Алехіним за звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-13",
+          "fen": "6rk/6pp/1Qb3r1/P4p2/2p3q1/8/5PPP/R3RBK1 w - - 1 31",
+          "moves": "h2h3 g4f3 b6c6 f3c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Savielly Tartakower",
+            "event": "Bad Pistyan",
+            "site": "Piestany CSR",
+            "year": 1922,
+            "date": "1922.04.11",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1006850"
+          },
+          "note": {
+            "en": "Bad Pistyan, April 1922, round four.",
+            "uk": "Пʼєштяни, квітень 1922, четвертий тур."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-14",
+          "fen": "5rk1/ppp2ppp/5q2/2P5/3r4/P7/RP2BPbP/2Q2RK1 w - - 0 19",
+          "moves": "g1g2 f6g6 g2h1 g6e4 f2f3 e4e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Henry Ashwell Cadman",
+            "black": "Savielly Tartakower",
+            "event": "Scarborough",
+            "site": "Scarborough ENG",
+            "year": 1929,
+            "date": "1929.05.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1004171"
+          },
+          "note": {
+            "en": "Scarborough, May 1929, round three.",
+            "uk": "Скарборо, травень 1929, третій тур."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-15",
+          "fen": "rnb1rnk1/pp2qpp1/3p1b1p/PNBPp3/2Q1P3/5N2/BPP2PPP/R2R2K1 b - - 0 16",
+          "moves": "d6c5 d5d6 e7d7 b5c7 f8e6 c7a8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "fork",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Efim Bogoljubov",
+            "black": "Alexey Sergeevich Selezniev",
+            "event": "Triberg",
+            "site": "Triberg GER",
+            "year": 1916,
+            "date": "1916.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030618"
+          },
+          "note": {
+            "en": "Triberg, 1916. Bogoljubov and other Russian players were interned here during the war.",
+            "uk": "Трайберг, 1916. Боголюбова та інших російських шахістів інтернували тут під час війни."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-16",
+          "fen": "8/1b6/pP1k3p/P4p2/1N2p3/5P2/7P/6K1 w - - 0 46",
+          "moves": "f3e4 f5e4 g1f2 d6c5 b4a2 c5b5 f2e3 b5a5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Karel Opocensky",
+            "black": "Savielly Tartakower",
+            "event": "Schlechter Memorial, Vienna",
+            "site": "Vienna AUT",
+            "year": 1923,
+            "date": "1923.11.16",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1003919"
+          },
+          "note": {
+            "en": "Vienna, November 1923, round one of the Schlechter Memorial.",
+            "uk": "Відень, листопад 1923, перший тур Меморіалу Шлехтера."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-17",
+          "fen": "5B2/1p1b2p1/p4pk1/r2p4/6P1/2P2P1P/1P3K2/4R3 b - - 2 37",
+          "moves": "g6f7 f8b4 a5a2 e1e7 f7g8 e7d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Efim Bogoljubov",
+            "black": "Peter Arsenievich Romanovsky",
+            "event": "USSR Championship",
+            "site": "Moscow URS",
+            "year": 1924,
+            "date": "1924.09.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030764"
+          },
+          "note": {
+            "en": "Moscow, September 1924, round 13 of the USSR Championship, which Bogoljubov won.",
+            "uk": "Москва, вересень 1924, 13-й тур чемпіонату СРСР, який виграв Боголюбов."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-18",
+          "fen": "4r1k1/pbp3pp/npq5/5P2/2P5/2P3PB/P2r1N1P/RQ3RK1 w - - 11 24",
+          "moves": "b1b5 d2f2 b5c6 f2f1 a1f1 b7c6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Vilardebo Picurena",
+            "black": "Savielly Tartakower",
+            "event": "Barcelona",
+            "site": "Barcelona ESP",
+            "year": 1929,
+            "date": "1929.10.02",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2644858"
+          },
+          "note": {
+            "en": "Barcelona, October 1929, round seven, a Dutch Defence.",
+            "uk": "Барселона, жовтень 1929, сьомий тур, голландський захист."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-19",
+          "fen": "3k4/p6R/2p1b2p/3pP1p1/3P4/Pr1B4/6PP/5K2 w - - 1 38",
+          "moves": "f1e2 e6g4 e2d2 b3d3 d2d3 g4f5 d3c3 f5h7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "endgame",
+            "fork",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Fred Dewhirst Yates",
+            "black": "Savielly Tartakower",
+            "event": "Ghent",
+            "site": "Ghent BEL",
+            "year": 1926,
+            "date": "1926.10.24",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1481304"
+          },
+          "note": {
+            "en": "Ghent, October 1926, round one.",
+            "uk": "Гент, жовтень 1926, перший тур."
+          }
+        },
+        {
+          "id": "lib-hypermodern-3-20",
+          "fen": "5b2/3k4/4R2p/2pP1pp1/2p5/3KBPP1/r2N2bP/8 w - - 0 34",
+          "moves": "d3c4 f5f4 g3f4 g5f4 e3f4 a2a4 c4d3 a4f4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "endgame",
+            "quietMove",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Oscar Conrad Mueller",
+            "black": "Efim Bogoljubov",
+            "event": "Margate",
+            "site": "Margate ENG",
+            "year": 1923,
+            "date": "1923.04.07",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1789685"
+          },
+          "note": {
+            "en": "Margate, April 1923, round seven.",
+            "uk": "Маргейт, квітень 1923, сьомий тур."
+          }
+        }
+      ]
+    }
+  ]
 }
