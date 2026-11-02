@@ -1,7 +1,7 @@
 import { course as ink, tone } from '@tac/core/tokens';
 import { useId, type ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, RadialGradient, Stop } from 'react-native-svg';
 
 // The round medal of the chapter-complete screen and the certificate's
 // wax seal: a radial disc (highlight at 34% 28% → colour → shadow) with a
@@ -37,8 +37,16 @@ export function Medal({
               <Stop offset="48%" stopColor={stops[1]} />
               <Stop offset="100%" stopColor={stops[2]} />
             </RadialGradient>
+            {/* The canvas's inset rim light (top) and inner shade (bottom). */}
+            <LinearGradient id={`${id}v`} x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor={ink.sealLight} stopOpacity={1} />
+              <Stop offset="0.06" stopColor={ink.sealLight} stopOpacity={0} />
+              <Stop offset="0.78" stopColor={ink.medalShade} stopOpacity={0} />
+              <Stop offset="1" stopColor={ink.medalShade} stopOpacity={1} />
+            </LinearGradient>
           </Defs>
           <Circle cx={size / 2} cy={size / 2} r={size / 2} fill={`url(#${id})`} />
+          <Circle cx={size / 2} cy={size / 2} r={size / 2} fill={`url(#${id}v)`} />
         </Svg>
         {children}
       </View>
@@ -50,13 +58,5 @@ const styles = StyleSheet.create({
   center: { alignItems: 'center', justifyContent: 'center' },
   abs: { position: 'absolute' },
   drop: { boxShadow: [{ offsetX: 0, offsetY: 12, blurRadius: 26, spreadDistance: 0, color: ink.medalDrop }] },
-  disc: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    boxShadow: [
-      { offsetX: 0, offsetY: 2, blurRadius: 1, spreadDistance: 0, color: ink.sealLight, inset: true },
-      { offsetX: 0, offsetY: -6, blurRadius: 12, spreadDistance: 0, color: ink.medalShade, inset: true },
-    ],
-  },
+  disc: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
 });

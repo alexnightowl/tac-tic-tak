@@ -101,8 +101,10 @@ function Certificate({ course, record, fresh, nextCycle }: { course: CourseLike;
         </AppText>
 
         <Animated.View style={[styles.certWrap, settle]}>
+          {/* The drop shadow lives on its own layer: on the card itself iOS draws it over the overflowing seal. */}
+          <View pointerEvents="none" style={[styles.certShadow, styles.tilt, { width: certW }]} />
           <View
-            style={[styles.cert, { width: certW }]}
+            style={[styles.cert, styles.tilt, { width: certW }]}
             accessible
             accessibilityRole="image"
             accessibilityLabel={t('courses.cert.a11y', { course: title, name, score: record.score, total: record.total, date })}
@@ -204,13 +206,20 @@ const styles = StyleSheet.create({
     backgroundColor: tone.spark,
     boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 6, spreadDistance: 0, color: tone.spark }],
   },
-  certWrap: { marginTop: space[4], transform: [{ rotate: '-1.5deg' }] },
+  certWrap: { marginTop: space[4] },
+  tilt: { transform: [{ rotate: '-1.5deg' }] },
   cert: {
     paddingTop: 26,
     paddingHorizontal: 22,
     paddingBottom: 30,
     borderRadius: radii.board,
     alignItems: 'center',
+  },
+  certShadow: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    borderRadius: radii.board,
     boxShadow: [{ offsetX: 0, offsetY: 18, blurRadius: 40, spreadDistance: 0, color: ink.medalDrop }],
   },
   face: { borderRadius: radii.board, borderWidth: 1, borderColor: ink.certEdge },
