@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, type Href } from 'expo-router';
 import { Check, ChevronLeft, Download, Trash2 } from 'lucide-react-native';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toast } from '@/shell/toast/store';
@@ -14,7 +15,8 @@ import { roman, useBookProgress, useBookSummary, useDownloadView, useShelf } fro
 import { bookBytes, useLibraryStore } from './store';
 import { downloadBook } from './sync';
 
-// /library/[bookId] (canvas LibBook): cover, description, numbers, the
+// /library/[bookId] (canvas LibBook; LearnOpenBook's end state: the
+// title-page cover under an ember glow): cover, description, numbers, the
 // cycles strip, chapters with progress, and the docked Continue CTA. The
 // header chip is the download state (Download / Downloading / Offline).
 
@@ -46,7 +48,7 @@ export function BookScreen({ bookId }: { bookId: string }) {
 
   const back = () => {
     if (router.canGoBack()) router.back();
-    else router.replace('/library' as Href);
+    else router.replace('/learn' as Href);
   };
 
   if (!book || !progress) {
@@ -74,10 +76,10 @@ export function BookScreen({ bookId }: { bookId: string }) {
   return (
     <View style={styles.root} testID="library-book">
       <View style={[styles.header, { marginTop: insets.top }]}>
-        <Tap testID="library-book-back" accessibilityRole="button" accessibilityLabel={t('library.back')} onPress={back} style={styles.back}>
+        <Tap testID="library-book-back" accessibilityRole="button" accessibilityLabel={t('learn.tab')} onPress={back} style={styles.back}>
           <ChevronLeft size={18} color={eos.ash} strokeWidth={1.8} />
           <AppText variant="bodyStrong" color={eos.ash}>
-            {t('library.back')}
+            {t('learn.tab')}
           </AppText>
         </Tap>
         <View style={styles.flex} />
@@ -86,6 +88,17 @@ export function BookScreen({ bookId }: { bookId: string }) {
 
       <ScrollView contentContainerStyle={[styles.scroll, { paddingBottom: DOCK_H + insets.bottom }]}>
         <View style={styles.hero}>
+          <View pointerEvents="none" style={styles.glow}>
+            <Svg width={380} height={380}>
+              <Defs>
+                <RadialGradient id="bookGlow" cx="50%" cy="50%" r="50%">
+                  <Stop offset="0%" stopColor={eos.ember} stopOpacity={0.3} />
+                  <Stop offset="65%" stopColor={eos.ink} stopOpacity={0} />
+                </RadialGradient>
+              </Defs>
+              <Circle cx={190} cy={190} r={190} fill="url(#bookGlow)" />
+            </Svg>
+          </View>
           <BookCover book={book} width={132} testID="library-book-cover" />
           <View style={styles.heroText}>
             <AppText variant="label" color={tone.rose}>
@@ -325,6 +338,7 @@ const styles = StyleSheet.create({
   back: { height: layout.headerButton, paddingHorizontal: space[3], flexDirection: 'row', alignItems: 'center', gap: space[1.5] },
   scroll: { paddingHorizontal: layout.gutter, paddingTop: space[1] },
   hero: { flexDirection: 'row', alignItems: 'flex-end', gap: 18 },
+  glow: { position: 'absolute', left: '50%', top: -44, marginLeft: -190 },
   heroText: { flex: 1, minWidth: 0, paddingBottom: space[1] },
   title: { marginTop: space[1], fontSize: 24, lineHeight: 29 },
   players: { marginTop: space[1], fontSize: 13 },

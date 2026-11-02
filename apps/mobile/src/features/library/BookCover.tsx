@@ -1,33 +1,58 @@
 import { localized, type LibraryBookSummary } from '@tac/core/library';
-import { alpha, cover, tone } from '@tac/core/tokens';
+import { alpha, black, cover, learn, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { PIECE_IMAGES, type PieceCode } from '@/board/assets';
+import { bookPortraits } from '@/features/learn/portraits';
 import { AppText, textStyle, useLang } from '@/ui';
 
-// The "vintage book" cover (canvas Library page): a 160° cloth gradient, a
-// spine shade on the left, two gold rules, the title in the display face,
-// the authors in small caps, a white piece and the era at the foot. Every
-// measure scales from the shelf size (173 × 232).
+// The title-page cover (canvas LearnBooks): an old book's title page on
+// the cloth — the title in the display face and a diamond ornament on top,
+// the author's oval portrait in the middle (two authors: two ovals that
+// overlap), the author line in small caps and the years at the foot; a
+// 160° cloth gradient, the spine shade, two gold rules. `small` (the
+// Continue card) keeps only the title, the ornament and the portraits.
+// Measures scale from the shelf size (173 × 232); the content insets
+// follow the canvas at 92 / 132 / 173 (a + b·w).
 
 const BASE_W = 173;
 export const COVER_RATIO = 232 / 173;
 
 type Props = {
-  book: Pick<LibraryBookSummary, 'title' | 'authors' | 'era' | 'cover' | 'coverPiece'>;
+  book: Pick<LibraryBookSummary, 'id' | 'title' | 'authors' | 'era' | 'cover' | 'coverPiece'>;
   width: number;
+  small?: boolean;
   testID?: string;
 };
 
-export function BookCover({ book, width, testID }: Props) {
+export function BookCover({ book, width, small = false, testID }: Props) {
   const { lang } = useLang();
   const k = width / BASE_W;
   const palette = cover[book.cover] ?? cover.oxblood;
   const ink = palette.ink;
-  const piece = PIECE_IMAGES.classic[(book.coverPiece as PieceCode) in PIECE_IMAGES.classic ? (book.coverPiece as PieceCode) : 'wQ'];
+  const parchment = book.cover === 'parchment';
+  const rule = parchment ? learn.parchmentRule : tone.gold;
+  const portraits = bookPortraits(book.id);
+  const two = portraits.length > 1;
+  const ovalW = (two ? 55.7 : 66.8) * k;
+  const ovalH = ovalW * 1.25;
   const title = textStyle('title', lang);
+  const ornament = alpha(rule, parchment ? 0.9 : 0.85);
+  const ring = Math.max(1, 1.5 * k);
+  const oval = {
+    width: ovalW,
+    height: ovalH,
+    borderRadius: ovalW / 2,
+    boxShadow: [
+      { offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: ring, color: ornament },
+      { offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 4 * k, color: alpha(black, 0.28) },
+      { offsetX: 0, offsetY: 5 * k, blurRadius: 10 * k, spreadDistance: 0, color: alpha(black, 0.4) },
+    ],
+  };
+  const piece = PIECE_IMAGES.classic[`w${book.coverPiece.slice(-1).toUpperCase()}` as PieceCode] ?? PIECE_IMAGES.classic.wQ;
+
   return (
     <View
       testID={testID}
@@ -37,39 +62,52 @@ export function BookCover({ book, width, testID }: Props) {
     >
       <LinearGradient colors={palette.face} start={{ x: 0.33, y: 0 }} end={{ x: 0.67, y: 1 }} style={StyleSheet.absoluteFill} />
       <View style={styles.spine} />
-      <View style={[styles.rule, { borderColor: alpha(tone.gold, 0.55) }]} />
-      <View style={[styles.ruleInner, { borderColor: alpha(tone.gold, 0.25) }]} />
-      <View style={[styles.head, { top: Math.round(30 * k) }]}>
-        <AppText
-          style={[title, { color: ink, fontSize: Math.round(21 * k), lineHeight: Math.round(21 * k * 1.12), letterSpacing: 0.3, textAlign: 'center' }]}
-          numberOfLines={3}
-          adjustsFontSizeToFit
-        >
+      <View style={[styles.rule, { borderColor: alpha(rule, parchment ? 0.6 : 0.55) }]} />
+      <View style={[styles.ruleInner, { borderColor: alpha(rule, parchment ? 0.3 : 0.25) }]} />
+      <View
+        style={[
+          styles.content,
+          { top: 9.89 + 0.0642 * width, right: 10.09 + 0.0284 * width, bottom: 9.96 + 0.0407 * width, left: 14.09 + 0.0284 * width },
+        ]}
+      >
+        <AppText style={[title, styles.center, { color: ink, fontSize: 19 * k, lineHeight: 19 * k * 1.12, letterSpacing: 0.2 }]}>
           {localized(book.title, lang)}
         </AppText>
-        <View style={[styles.mark, { marginVertical: Math.max(4, Math.round(7 * k)) }]} />
-        <AppText
-          variant="captionStrong"
-          numberOfLines={2}
-          style={{ color: ink, opacity: 0.8, fontSize: Math.max(8, Math.round(11 * k)), lineHeight: Math.max(10, Math.round(14 * k)), letterSpacing: 0.8, textAlign: 'center', textTransform: 'uppercase' }}
-        >
-          {localized(book.authors, lang)}
-        </AppText>
+        <View style={[styles.ornament, { marginTop: 6 * k, gap: 4 * k }]}>
+          <View style={{ width: 14 * k, height: 1, backgroundColor: ornament }} />
+          <View style={{ width: 4 * k, height: 4 * k, transform: [{ rotate: '45deg' }], backgroundColor: ornament }} />
+          <View style={{ width: 14 * k, height: 1, backgroundColor: ornament }} />
+        </View>
+        <View style={styles.middle}>
+          {portraits.length > 0 ? (
+            portraits.map((src, i) => (
+              <View key={i} style={[styles.oval, oval, i > 0 && { marginLeft: -0.16 * ovalW }, { zIndex: i + 1 }]}>
+                <Image source={src} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ top: '30%', left: '50%' }} />
+              </View>
+            ))
+          ) : (
+            <View style={[styles.oval, oval, styles.center]}>
+              <Image source={piece} style={{ width: ovalW * 0.7, height: ovalW * 0.7, opacity: 0.85 }} tintColor={learn.pieceLit} contentFit="contain" />
+            </View>
+          )}
+        </View>
+        {small ? null : (
+          <>
+            <AppText
+              variant="captionStrong"
+              style={[styles.center, { color: ink, opacity: 0.85, fontSize: 8.5 * k, lineHeight: 8.5 * k * 1.25, letterSpacing: 1 * k, fontWeight: '800', textTransform: 'uppercase' }]}
+            >
+              {localized(book.authors, lang)}
+            </AppText>
+            <AppText
+              variant="captionStrong"
+              style={[styles.center, { marginTop: 3 * k, color: ink, opacity: 0.55, fontSize: 7.5 * k, lineHeight: 7.5 * k * 1.3, letterSpacing: 1.4 * k }]}
+            >
+              {localized(book.era, lang)}
+            </AppText>
+          </>
+        )}
       </View>
-      <Image
-        source={piece}
-        contentFit="contain"
-        style={[
-          styles.piece,
-          { width: Math.round(62 * k), height: Math.round(62 * k), bottom: Math.round(39 * k), marginLeft: -Math.round(31 * k) },
-        ]}
-      />
-      <AppText
-        variant="captionStrong"
-        style={[styles.era, { color: ink, bottom: Math.round(14 * k), fontSize: Math.max(7, Math.round(10 * k)), lineHeight: Math.max(9, Math.round(13 * k)) }]}
-      >
-        {localized(book.era, lang)}
-      </AppText>
     </View>
   );
 }
@@ -95,8 +133,9 @@ const styles = StyleSheet.create({
   },
   rule: { position: 'absolute', left: 11, top: 7, right: 7, bottom: 7, borderWidth: 1, borderRadius: 2 },
   ruleInner: { position: 'absolute', left: 14, top: 10, right: 10, bottom: 10, borderWidth: 1, borderRadius: 1 },
-  head: { position: 'absolute', left: 16, right: 12, alignItems: 'center' },
-  mark: { width: 22, height: 1, backgroundColor: alpha(tone.gold, 0.7) },
-  piece: { position: 'absolute', left: '50%', opacity: 0.85 },
-  era: { position: 'absolute', left: 0, right: 0, textAlign: 'center', letterSpacing: 1.5, opacity: 0.65, fontWeight: '800' },
+  content: { position: 'absolute', alignItems: 'center' },
+  center: { textAlign: 'center', alignItems: 'center', justifyContent: 'center' },
+  ornament: { flexDirection: 'row', alignItems: 'center' },
+  middle: { flex: 1, minHeight: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  oval: { backgroundColor: learn.ovalGround, overflow: 'hidden' },
 });

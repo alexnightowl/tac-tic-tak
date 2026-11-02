@@ -1,4 +1,10 @@
-import { ShelfScreen } from '@/features/library/ShelfScreen';
+import { Redirect } from 'expo-router';
 
-// /library: the bookshelf (Play tab row). Own header ("‹ Play").
-export default ShelfScreen;
+import { setLearnSegment } from '@/features/learn/segment';
+
+// /library: the old bookshelf moved to Learn → Books (canvas LearnBooks).
+// Old links and the book page's fallback land there.
+export default function LibraryRoute() {
+  setLearnSegment('books');
+  return <Redirect href="/learn" />;
+}
