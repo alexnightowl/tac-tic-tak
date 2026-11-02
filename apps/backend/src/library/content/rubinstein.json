@@ -1,6 +1,6 @@
 {
   "id": "rubinstein",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "rubinstein-1",
@@ -621,8 +621,8 @@
             "source": "https://www.chessgames.com/perl/chessgame?gid=1102356"
           },
           "note": {
-            "en": "San Sebastián, March 1912, round 22, an Old Indian Defence.",
-            "uk": "Сан-Себастьян, березень 1912, 22-й тур, староіндійський захист."
+            "en": "San Sebastián, March 1912, round 22.",
+            "uk": "Сан-Себастьян, березень 1912, 22-й тур."
           }
         },
         {
