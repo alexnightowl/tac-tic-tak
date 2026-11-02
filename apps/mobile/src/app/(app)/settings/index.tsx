@@ -9,7 +9,7 @@ export default function SettingsRoute() {
   const t = useT();
   return (
     <>
-      <Stack.Screen options={{ title: t('settings') }} />
+      <Stack.Screen options={{ title: t('settings.title') }} />
       <SettingsIndexScreen />
     </>
   );

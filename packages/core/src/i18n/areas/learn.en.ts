@@ -9,6 +9,8 @@ export const learnEn: Dict = {
   'learn.review_entry.empty': 'Nothing waiting. Misses land here.',
   'learn.review_entry.waiting.one': '{n} puzzle waiting',
   'learn.review_entry.waiting.other': '{n} puzzles waiting',
+  'learn.review_entry.waiting.few': '{n} puzzles waiting',
+  'learn.review_entry.waiting.many': '{n} puzzles waiting',
   // Learn screen (canvas LearnHome / LearnBooks).
   'learn.title': 'Learn',
   'learn.subtitle': 'Calm study. Nothing here touches your rating.',

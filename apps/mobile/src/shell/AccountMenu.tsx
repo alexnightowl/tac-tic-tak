@@ -70,7 +70,7 @@ export function AccountMenu() {
       <View style={styles.group}>
         <Row icon={User} label={t('shell.menu.profile')} testID="menu-profile" onPress={() => go(`/profile/${encodeURIComponent(nickname)}`)} />
         <Row icon={Users} label={t('nav.friends')} testID="menu-friends" count={incoming} onPress={() => go('/friends')} />
-        <Row icon={Settings} label={t('settings')} testID="menu-settings" onPress={() => go('/settings')} />
+        <Row icon={Settings} label={t('settings.title')} testID="menu-settings" onPress={() => go('/settings')} />
       </View>
 
       <View style={styles.langRow}>
