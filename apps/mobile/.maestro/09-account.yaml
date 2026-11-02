@@ -51,8 +51,9 @@ appId: online.tactictak.app
 - extendedWaitUntil: { visible: { id: account-password-ok }, timeout: 10000 }
 - tapOn: { id: BackButton }
 - extendedWaitUntil: { visible: { id: screen-settings }, timeout: 10000 }
-- tapOn: { id: tab-home }
-- extendedWaitUntil: { visible: { id: home-screen }, timeout: 5000 }
+# Settings is a push now (avatar menu): back to the tabs.
+- runFlow: common/shell-back.yaml
+- runFlow: { file: common/tap-tab.yaml, env: { TAB: home, SCREEN: home-screen } }
 - evalScript: >-
     ${output.oldStatus = http.post('http://localhost:4000/api/auth/login', {headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nickname: E2E_USER, password: E2E_PASSWORD})}).status}
 - assertTrue:

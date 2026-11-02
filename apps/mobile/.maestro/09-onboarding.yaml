@@ -57,7 +57,7 @@ appId: online.tactictak.app
 
 # Replay from Settings, walk to the last step and take "Skip — start at
 # 1200": the steps close onto Home and the flag is saved again.
-- tapOn: { id: tab-settings }
+- runFlow: 09-open-settings.yaml
 - scrollUntilVisible: { element: { id: settings-replay-onboarding }, direction: DOWN }
 - tapOn: { id: settings-replay-onboarding }
 - extendedWaitUntil: { visible: { id: screen-onboarding }, timeout: 8000 }

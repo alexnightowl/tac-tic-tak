@@ -45,8 +45,8 @@ appId: online.tactictak.app
     visible: { id: home-screen }
     timeout: 20000
 
-# Review tab: the seeded theme card.
-- tapOn: { id: tab-review }
+# Review (Play → Review row): the seeded theme card.
+- runFlow: common/open-review.yaml
 - extendedWaitUntil:
     visible: { id: review-theme-fork }
     timeout: 10000

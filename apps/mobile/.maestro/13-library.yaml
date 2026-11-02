@@ -13,12 +13,11 @@ appId: online.tactictak.app
     when: { visible: { id: screen-onboarding } }
     commands:
       - tapOn: { id: onboarding-skip, optional: true }
-- tapOn: { id: tab-play }
-- extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
-- scrollUntilVisible: { element: { id: play-library }, direction: DOWN, centerElement: true, timeout: 8000 }
-- takeScreenshot: ${SHOTS}/00-play-entry
-- tapOn: { id: play-library }
-- extendedWaitUntil: { visible: { id: "library-book-${BOOK}" }, timeout: 15000 }
+# The shelf is Learn → Books (the Library card left Play).
+- runFlow: { file: common/tap-tab.yaml, env: { TAB: learn, SCREEN: screen-learn } }
+- tapOn: { id: learn-segment-books }
+- takeScreenshot: ${SHOTS}/00-learn-books
+- scrollUntilVisible: { element: { id: "library-book-${BOOK}" }, direction: DOWN, centerElement: true, timeout: 15000 }
 - takeScreenshot: ${SHOTS}/01-shelf-${CASE}
 - tapOn: { id: "library-book-${BOOK}" }
 - extendedWaitUntil: { visible: { id: library-cycles }, timeout: 10000 }

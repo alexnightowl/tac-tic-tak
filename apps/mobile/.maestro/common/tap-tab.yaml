@@ -1,0 +1,13 @@
+# Switch tabs and wait for the screen, retrying the tap: right after login,
+# a sheet closing or a bundle reload, the first tap can be eaten.
+# Env: TAB (tab id: home | play | learn | rivals | stats), SCREEN (root testID).
+appId: online.tactictak.app
+---
+- repeat:
+    times: 4
+    while:
+      notVisible: { id: "${SCREEN}" }
+    commands:
+      - tapOn: { id: "tab-${TAB}", retryTapIfNoChange: false }
+      - extendedWaitUntil: { visible: { id: "${SCREEN}" }, timeout: 3000, optional: true }
+- extendedWaitUntil: { visible: { id: "${SCREEN}" }, timeout: 10000 }

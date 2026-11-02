@@ -3,11 +3,9 @@ import { useMemo } from 'react';
 
 import { useCourses, type DownloadView, type ShelfLoad } from '@/features/library/model';
 import { useAttempts, useExams, useLibraryStore } from '@/features/library/store';
-import { FIXTURE_ATTEMPTS, FIXTURE_COURSES, FIXTURE_EXAMS } from './fixture';
 
 // The Learn tab's course data: the Library store's course list, results
-// and exam tries. In __DEV__ only, while the API has no course list yet,
-// the fixture stands in (fixture.ts).
+// and exam tries.
 
 export type LearnCourses = {
   courses: CourseSummary[] | null;
@@ -15,21 +13,13 @@ export type LearnCourses = {
   retry: () => void;
   attempts: readonly LibraryAttemptRecord[];
   exams: readonly CourseExamRecord[];
-  fixture: boolean;
 };
 
 export function useLearnCourses(): LearnCourses {
   const { courses, load, retry } = useCourses();
   const attempts = useAttempts();
   const exams = useExams();
-  const fixture = __DEV__ && (!courses || courses.length === 0) && load !== 'loading';
-  return useMemo(
-    () =>
-      fixture
-        ? { courses: FIXTURE_COURSES, load, retry, attempts: [...attempts, ...FIXTURE_ATTEMPTS], exams: [...exams, ...FIXTURE_EXAMS], fixture }
-        : { courses, load, retry, attempts, exams, fixture },
-    [fixture, courses, load, retry, attempts, exams],
-  );
+  return useMemo(() => ({ courses, load, retry, attempts, exams }), [courses, load, retry, attempts, exams]);
 }
 
 export function useCourseProgressMap(data: LearnCourses): Map<string, CourseProgress> {

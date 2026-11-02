@@ -1,0 +1,8 @@
+# Open Review (a push since the Learn tab took its place in the tab bar):
+# Play tab → the Review row → /review.
+appId: online.tactictak.app
+---
+- runFlow: { file: tap-tab.yaml, env: { TAB: play, SCREEN: play-setup } }
+- scrollUntilVisible: { element: { id: play-review }, direction: DOWN, centerElement: true, timeout: 8000 }
+- tapOn: { id: play-review }
+- extendedWaitUntil: { visible: { id: screen-review }, timeout: 10000 }

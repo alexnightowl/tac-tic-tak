@@ -1,0 +1,48 @@
+# Learn tab (canvas page "Learn"): the five-tab bar with Learn third,
+# Courses ↔ Books, a book opened from its cover (the open-book transition)
+# and back, the last segment kept, and the old /library link landing on
+# Learn → Books.
+# Local backend. Run with:
+#   maestro --device <UDID> test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/14-learn.yaml
+appId: online.tactictak.app
+---
+- runFlow: 09-login.yaml
+- runFlow:
+    when: { visible: { id: screen-onboarding } }
+    commands:
+      - tapOn: { id: onboarding-skip, optional: true }
+- extendedWaitUntil: { visible: { id: tab-learn }, timeout: 15000 }
+- assertNotVisible: { id: tab-review }
+- assertNotVisible: { id: tab-settings }
+
+# Learn → Courses.
+- runFlow: { file: common/tap-tab.yaml, env: { TAB: learn, SCREEN: screen-learn } }
+- assertVisible: { id: learn-title }
+- tapOn: { id: learn-segment-courses }
+- extendedWaitUntil: { visible: { id: "learn-course(s|s-loading)" }, timeout: 10000 }
+- takeScreenshot: 14-learn-courses
+
+# Books: the title-page covers; open one from its cover.
+- tapOn: { id: learn-segment-books }
+- extendedWaitUntil: { visible: { id: learn-books }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: "library-book-[a-z]+" }, timeout: 15000 }
+- takeScreenshot: 14-learn-books
+- tapOn: { id: "library-book-[a-z]+", index: 0 }
+- extendedWaitUntil: { visible: { id: library-cycles }, timeout: 10000 }
+- assertNotVisible: { id: learn-open-book }
+- takeScreenshot: 14-learn-book-page
+
+# Back to Learn: Books is still the segment, also after another tab.
+- tapOn: { id: library-book-back }
+- extendedWaitUntil: { visible: { id: learn-books }, timeout: 8000 }
+- runFlow: { file: common/tap-tab.yaml, env: { TAB: home, SCREEN: home-screen } }
+- runFlow: { file: common/tap-tab.yaml, env: { TAB: learn, SCREEN: screen-learn } }
+- assertVisible: { id: learn-books }
+
+# The old shelf link lands on Learn → Books.
+- tapOn: { id: learn-segment-courses }
+- openLink: tactictak://library
+- tapOn:
+    text: Open
+    optional: true
+- extendedWaitUntil: { visible: { id: learn-books }, timeout: 8000 }

@@ -51,20 +51,31 @@ appId: online.tactictak.app
 - extendedWaitUntil:
     notVisible: { id: account-menu }
     timeout: 5000
+- waitForAnimationToEnd: { timeout: 3000 }
 
-# The five tabs.
-- tapOn: { id: tab-play }
+# The five tabs (Learn third); Review is a push from Play, Settings from
+# the avatar menu. The first tab tap after the sheet closes can be eaten
+# (the same retry as 09-open-settings).
+- repeat:
+    times: 4
+    while:
+      notVisible: { id: play-setup }
+    commands:
+      - tapOn: { id: tab-play, retryTapIfNoChange: false }
+      - extendedWaitUntil: { visible: { id: play-setup }, timeout: 3000, optional: true }
 - extendedWaitUntil:
     visible: { id: play-setup }
     timeout: 5000
-- tapOn: { id: tab-review }
-- assertVisible: { id: screen-review }
+- tapOn: { id: tab-learn }
+- assertVisible: { id: screen-learn }
 - tapOn: { id: tab-stats }
 - assertVisible: { id: screen-stats }
 - tapOn: { id: tab-rivals }
 - assertVisible: { id: screen-rivals }
-- tapOn: { id: tab-settings }
-- assertVisible: { id: screen-settings }
+- runFlow: common/open-review.yaml
+- runFlow: common/shell-back.yaml
+- runFlow: 09-open-settings.yaml
+- runFlow: common/shell-back.yaml
 - tapOn: { id: tab-home }
 - assertVisible: { id: home-screen }
 # Home's Play plate switches to the Play tab.

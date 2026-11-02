@@ -98,7 +98,7 @@ appId: online.tactictak.app
 - takeScreenshot: wt-07-home
 
 # Review: the missed puzzle's theme → drill.
-- tapOn: { id: tab-review }
+- runFlow: common/open-review.yaml
 - extendedWaitUntil: { visible: { id: review-list }, timeout: 15000 }
 - takeScreenshot: wt-08-review
 - tapOn: { id: "review-theme-[A-Za-z0-9]+" }
@@ -122,7 +122,7 @@ appId: online.tactictak.app
 - tapOn: { id: viewer-solution }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: wt-12b-viewer-solution
-# Native back through viewer → session → history → Review tab.
+# Native back through viewer → session → history → Review → Play.
 - repeat:
     times: 4
     while:
@@ -169,13 +169,13 @@ appId: online.tactictak.app
 - runFlow: common/shell-back.yaml
 
 # Settings: language en → uk → en.
-- tapOn: { id: tab-settings }
-- extendedWaitUntil: { visible: { id: screen-settings }, timeout: 8000 }
+- runFlow: 09-open-settings.yaml
 - takeScreenshot: wt-19-settings-en
 - scrollUntilVisible: { element: { id: settings-lang-uk }, direction: DOWN, timeout: 5000 }
 - tapOn: { id: settings-lang-uk }
 - extendedWaitUntil: { visible: { id: settings-replay-onboarding }, timeout: 5000 }
 - takeScreenshot: wt-20-settings-uk
+- runFlow: common/shell-back.yaml
 - tapOn: { id: tab-home }
 - extendedWaitUntil: { visible: { id: tab-label-home, text: Головна }, timeout: 5000 }
 - takeScreenshot: wt-21-home-uk

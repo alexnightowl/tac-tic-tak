@@ -49,8 +49,8 @@ appId: online.tactictak.app
     visible: { id: home-screen }
     timeout: 20000
 
-# Review tab → Session history.
-- tapOn: { id: tab-review }
+# Review (Play → Review row) → Session history.
+- runFlow: common/open-review.yaml
 - extendedWaitUntil:
     visible: { id: review-history }
     timeout: 10000

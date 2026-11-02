@@ -42,9 +42,10 @@ appId: online.tactictak.app
 
 # Finish a session (bullet, 1 minute, one solve, then time runs out).
 - tapOn: { id: BackButton }
-- extendedWaitUntil: { visible: { id: tab-bar }, timeout: 5000 }
-- tapOn: { id: tab-play }
-- extendedWaitUntil: { visible: { id: play-setup }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: screen-settings }, timeout: 5000 }
+# Settings is a push now (avatar menu): back to the tabs.
+- runFlow: common/shell-back.yaml
+- runFlow: { file: common/tap-tab.yaml, env: { TAB: play, SCREEN: play-setup } }
 - tapOn: { id: setup-style-bullet, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
 # A calibrated style shows the slider, which pushes the presets down.
 - scrollUntilVisible: { element: { id: setup-duration-60 }, direction: DOWN, centerElement: true, timeout: 5000 }
