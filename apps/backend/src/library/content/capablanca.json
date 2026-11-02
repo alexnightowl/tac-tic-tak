@@ -1,5 +1,2252 @@
 {
   "id": "capablanca",
-  "version": 0,
-  "chapters": []
+  "version": 1,
+  "chapters": [
+    {
+      "id": "capablanca-1",
+      "title": {
+        "en": "The Prodigy",
+        "uk": "Вундеркінд"
+      },
+      "subtitle": {
+        "en": "Havana and New York, 1901–1910",
+        "uk": "Гавана і Нью-Йорк, 1901–1910"
+      },
+      "puzzles": [
+        {
+          "id": "lib-capablanca-1-01",
+          "fen": "kr2r3/R1p3pp/Q1P5/R7/Pp1q4/3pp2P/6P1/6K1 b - - 0 34",
+          "moves": "d4a7 a6a7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Rudolf Raubitschek",
+            "event": "New York",
+            "site": "New York",
+            "year": 1906,
+            "date": "1906.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=3042800"
+          },
+          "note": {
+            "en": "New York, 1906, a Ruy Lopez.",
+            "uk": "Нью-Йорк, 1906, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-02",
+          "fen": "2k3r1/ppp1qp2/5Q2/8/2bP4/N1P5/PP3Rr1/R1B2K2 w - - 2 26",
+          "moves": "a3c4 g2g1",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Robert Raubitschek",
+            "black": "Jose Raul Capablanca",
+            "event": "Casual game",
+            "site": "New York, NY USA",
+            "year": 1906,
+            "date": "1906.09.24",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1076078"
+          },
+          "note": {
+            "en": "New York, September 1906, a casual game. Capablanca was then a student at Columbia University.",
+            "uk": "Нью-Йорк, вересень 1906, товариська партія. Капабланка тоді навчався в Колумбійському університеті."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-03",
+          "fen": "r1b2r2/3p1p2/2p2N2/1p2PPk1/pb1p4/1B1P3R/PPP3PP/5RK1 b - - 3 29",
+          "moves": "a4b3 h3h5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Edward Friederich Schrader",
+            "event": "Casual game",
+            "site": "St. Louis, MO USA",
+            "year": 1909,
+            "date": "1909.02.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1801781"
+          },
+          "note": {
+            "en": "St. Louis, February 1909, a casual game, a Four Knights.",
+            "uk": "Сент-Луїс, лютий 1909, товариська партія, дебют чотирьох коней."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-04",
+          "fen": "8/6R1/1p4Rk/2b5/4KP1p/6P1/P4r1P/8 b - - 1 42",
+          "moves": "h6h5 g3g4",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Frank James Marshall",
+            "event": "NYSCA ch",
+            "site": "New York, NY USA",
+            "year": 1910,
+            "date": "1910.02.22",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094834"
+          },
+          "note": {
+            "en": "New York State Chess Association championship, February 1910, round two.",
+            "uk": "Чемпіонат шахової асоціації штату Нью-Йорк, лютий 1910, другий тур."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-05",
+          "fen": "r3kbnr/pppb1ppp/2nq4/1B2N3/3Pp3/2P5/PP3PPP/RNBQK2R w KQkq - 1 7",
+          "moves": "e1g1 c6e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "opening"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Leon Paredes",
+            "black": "Jose Raul Capablanca",
+            "event": "Match-series",
+            "site": "Havana CUB",
+            "year": 1901,
+            "date": "1901.09.20",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1862691"
+          },
+          "note": {
+            "en": "Havana, September 1901, when Capablanca was twelve.",
+            "uk": "Гавана, вересень 1901: Капабланці було дванадцять."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-06",
+          "fen": "r2q1rk1/pppn1ppp/5n2/2b1N3/Q2PP1b1/2P5/PP4PP/RNB1KB1R w KQ - 1 9",
+          "moves": "c1g5 d7e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "opening"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Albert Pulvermacher",
+            "black": "Jose Raul Capablanca",
+            "event": "Casual Game",
+            "site": "Manhattan CC, New York, NY USA",
+            "year": 1907,
+            "date": "1907.12.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1250650"
+          },
+          "note": {
+            "en": "Manhattan Chess Club, New York, December 1907, a King's Gambit.",
+            "uk": "Манхеттенський шаховий клуб, Нью-Йорк, грудень 1907, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-07",
+          "fen": "r4r1k/pp1bb1pp/8/2p2P1Q/P1Bp2P1/3P4/1P1BqP1P/4RRK1 b - - 4 19",
+          "moves": "e2d2 e1e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Frank James Marshall",
+            "event": "Capablanca - Marshall",
+            "site": "New York, NY USA",
+            "year": 1909,
+            "date": "1909.04.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094811"
+          },
+          "note": {
+            "en": "New York, April 1909, game two of the match with Marshall, which Capablanca won with eight wins and one loss.",
+            "uk": "Нью-Йорк, квітень 1909, друга партія матчу з Маршаллом, який Капабланка виграв із вісьмома перемогами при одній поразці."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-08",
+          "fen": "6k1/5p1p/4b1p1/8/8/2P1P1P1/1p1R1PKP/2rB4 w - - 0 35",
+          "moves": "d2b2 c1d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Jose Raul Capablanca",
+            "event": "Capablanca - Marshall",
+            "site": "New York, NY USA",
+            "year": 1909,
+            "date": "1909.06.23",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094832"
+          },
+          "note": {
+            "en": "New York, June 1909, game 23, the last game of the match with Marshall.",
+            "uk": "Нью-Йорк, червень 1909, 23-тя, остання партія матчу з Маршаллом."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-09",
+          "fen": "r1b3r1/pp1k3q/2n2pN1/3Q1N2/3P4/8/5PPP/5RK1 b - - 0 27",
+          "moves": "d7c7 d5d6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Einar Michelsen",
+            "event": "Simul, 28b",
+            "site": "Manhattan CC, New York, NY USA",
+            "year": 1910,
+            "date": "1910.11.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1800209"
+          },
+          "note": {
+            "en": "Manhattan Chess Club, November 1910, from a simul on 28 boards.",
+            "uk": "Манхеттенський шаховий клуб, листопад 1910, сеанс на 28 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-10",
+          "fen": "2r4k/1p3N2/p3pP1p/3p4/bP1P1P2/3B4/3K3P/1R4r1 b - - 0 28",
+          "moves": "h8g8 f7h6 g8f8 b1g1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Leon Paredes",
+            "event": "Match-series",
+            "site": "Havana CUB",
+            "year": 1901,
+            "date": "1901.10.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1862698"
+          },
+          "note": {
+            "en": "Havana, October 1901, a French Defence. Later that year Capablanca beat the Cuban champion Corzo in a match.",
+            "uk": "Гавана, жовтень 1901, французький захист. Того ж року Капабланка виграв матч у чемпіона Куби Корсо."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-11",
+          "fen": "3R4/ppk1rp2/3P1p2/7P/5P2/6P1/Pr6/3R2K1 b - - 0 32",
+          "moves": "c7d8 d6e7 d8e7 h5h6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "doubleCheck"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Schiffman",
+            "event": "Simul, 15b",
+            "site": "Detroit, MI USA",
+            "year": 1909,
+            "date": "1909.01.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1801780"
+          },
+          "note": {
+            "en": "Detroit, January 1909, from a simul on 15 boards.",
+            "uk": "Детройт, січень 1909, сеанс на 15 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-12",
+          "fen": "r5k1/1ppq3p/3pp1p1/8/p3P3/1B4QP/PB3KP1/8 w - - 0 26",
+          "moves": "g3c3 a8f8 f2g1 a4b3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Ben R Foster",
+            "black": "Jose Raul Capablanca",
+            "event": "Casual game",
+            "site": "St. Louis, MO USA",
+            "year": 1909,
+            "date": "1909.02.08",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2079097"
+          },
+          "note": {
+            "en": "St. Louis, February 1909, a casual game, an Evans Gambit.",
+            "uk": "Сент-Луїс, лютий 1909, товариська партія, гамбіт Еванса."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-13",
+          "fen": "r6r/pkp4p/1p2q3/5p2/1b1npB2/2N4Q/P5PP/2R1R2K w - - 0 25",
+          "moves": "c3e4 f5e4 c1c7 b7a6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rafael Blanco Estera",
+            "black": "Jose Raul Capablanca",
+            "event": "Casual game",
+            "site": "Havana CUB",
+            "year": 1909,
+            "date": "1909.07.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1224619"
+          },
+          "note": {
+            "en": "Havana, July 1909, a casual game at home after the match with Marshall.",
+            "uk": "Гавана, липень 1909, товариська партія вдома після матчу з Маршаллом."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-14",
+          "fen": "3k2r1/ppp2p1p/4bQ2/2q5/2P1R3/5N1P/P1P2PP1/2K5 b - - 0 22",
+          "moves": "d8c8 e4e6 c5a3 c1b1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Walter Penn Shipley",
+            "event": "Manhattan CC - Franklin CC m",
+            "site": "New York, NY USA",
+            "year": 1910,
+            "date": "1910.05.30",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1815538"
+          },
+          "note": {
+            "en": "New York, May 1910, a club match between the Manhattan and Franklin chess clubs.",
+            "uk": "Нью-Йорк, травень 1910, матч Манхеттенського шахового клубу проти клубу Франкліна."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-15",
+          "fen": "r1q2r2/2p2p1p/p1n2nkB/1pb1p1P1/4P3/2P2Q1P/PPB2P2/R3R1K1 b - - 0 20",
+          "moves": "f6h5 f3f5 c8f5 e4f5",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1550,
+          "themes": [
+            "mateIn2",
+            "middlegame",
+            "sacrifice",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Jacob Carl Rosenthal",
+            "event": "Rapid-transit match",
+            "site": "New York, NY USA",
+            "year": 1909,
+            "date": "1909.03.31",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1647504"
+          },
+          "note": {
+            "en": "New York, March 1909, from a rapid-transit match, an early form of fast chess.",
+            "uk": "Нью-Йорк, березень 1909, матч у «рапід-транзит» — ранній різновид швидких шахів."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-16",
+          "fen": "2rq2k1/pp4bp/4p1p1/3n1rN1/2QP4/5B2/PP3P1P/RNB1K2R w KQ - 1 15",
+          "moves": "f3d5 e6d5 c4c8 d8c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "George J Beihoff",
+            "black": "Jose Raul Capablanca",
+            "event": "Handicap match",
+            "site": "New York, NY USA",
+            "year": 1910,
+            "date": "1910.04.??",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1671044"
+          },
+          "note": {
+            "en": "New York, April 1910, from a match in which Capablanca gave odds.",
+            "uk": "Нью-Йорк, квітень 1910, з матчу, у якому Капабланка давав фору."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-17",
+          "fen": "1k2r2r/1bp1P3/2Bp1q2/5p1p/6p1/2P1Q3/2P2PPP/1R4K1 b - - 3 26",
+          "moves": "e8e7 b1b7 b8c8 b7a7 g4g3 a7a8",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1675,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "backRankMate",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Albert Pulvermacher",
+            "event": "Casual game",
+            "site": "New York, NY USA",
+            "year": 1907,
+            "date": "1907.12.10",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2075323"
+          },
+          "note": {
+            "en": "New York, December 1907, a casual game, a Ruy Lopez.",
+            "uk": "Нью-Йорк, грудень 1907, товариська гра, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-18",
+          "fen": "r4rk1/pp1q1pp1/2pb2P1/8/2BPQ1b1/2P5/P7/R1B2RK1 b - - 0 20",
+          "moves": "g4e6 c4e6 d7e6 g6f7 e6f7 f1f7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "George E Northrup",
+            "event": "Manhattan CC h-c t",
+            "site": "New York, NY USA",
+            "year": 1909,
+            "date": "1909.03.19",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1819063"
+          },
+          "note": {
+            "en": "Manhattan Chess Club, March 1909, a handicap tournament.",
+            "uk": "Манхеттенський шаховий клуб, березень 1909, турнір із форою."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-19",
+          "fen": "kr2r3/pRp3pp/Q1P5/5R2/Pp1qp3/3p3P/6PK/8 b - - 3 31",
+          "moves": "e4e3 b7a7 d4a7 f5a5 a7a6 a5a6",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1825,
+          "themes": [
+            "mateIn3",
+            "endgame",
+            "sacrifice",
+            "queensideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Robert Raubitschek",
+            "event": "Casual Game",
+            "site": "New York, NY USA",
+            "year": 1906,
+            "date": "1906.09.25",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1458859"
+          },
+          "note": {
+            "en": "New York, September 1906, a casual game in the Berlin Defence.",
+            "uk": "Нью-Йорк, вересень 1906, товариська партія, берлінський захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-1-20",
+          "fen": "5r1k/p1q2p2/2p1rb1P/1p2pN2/4P1Q1/2PP4/PPB5/2K4R b - - 2 27",
+          "moves": "f8g8 g4g7 g8g7 h6g7 h8g8 h1h8",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1900,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "backRankMate",
+            "doubleCheck",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "T A Carter",
+            "event": "Simul, 22b",
+            "site": "St. Louis, MO USA",
+            "year": 1909,
+            "date": "1909.12.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1076113"
+          },
+          "note": {
+            "en": "St. Louis, December 1909, from a simul on 22 boards, a King's Gambit.",
+            "uk": "Сент-Луїс, грудень 1909, сеанс на 22 дошках, королівський гамбіт."
+          }
+        }
+      ]
+    },
+    {
+      "id": "capablanca-2",
+      "title": {
+        "en": "The Rising Star",
+        "uk": "Висхідна зірка"
+      },
+      "subtitle": {
+        "en": "Tours and tournaments, 1911–1913",
+        "uk": "Турне й турніри, 1911–1913"
+      },
+      "puzzles": [
+        {
+          "id": "lib-capablanca-2-01",
+          "fen": "Q4b1r/3Q1kpp/4pp2/3p4/3P2P1/2qbP2P/P2N1P1B/4K2R b K - 0 23",
+          "moves": "f7g8 d7e6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Otto Tipal",
+            "event": "Simul, 28b",
+            "site": "City of London CC, London ENG",
+            "year": 1911,
+            "date": "1911.11.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1803178"
+          },
+          "note": {
+            "en": "City of London Chess Club, November 1911, from a simul on 28 boards.",
+            "uk": "Шаховий клуб лондонського Сіті, листопад 1911, сеанс на 28 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-02",
+          "fen": "8/pbQ3rp/3pPk2/1Pp1n1p1/8/5qP1/P6P/4RBKR w - - 1 36",
+          "moves": "c7d6 f3h1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Juan Corzo",
+            "black": "Jose Raul Capablanca",
+            "event": "Havana",
+            "site": "Havana CUB",
+            "year": 1913,
+            "date": "1913.02.15",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1001105"
+          },
+          "note": {
+            "en": "Havana, February 1913, round one. Corzo was the Cuban champion Capablanca had beaten as a boy.",
+            "uk": "Гавана, лютий 1913, перший тур. Корсо — чемпіон Куби, якого Капабланка переміг ще хлопчиком."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-03",
+          "fen": "3n2n1/3bqQ2/1k2p1p1/1p1pP1B1/pP1P2P1/P1PB4/8/1K3R2 b - - 0 47",
+          "moves": "d8f7 g5e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Leon Labatt / Percy Moise",
+            "event": "Consultation game",
+            "site": "New Orleans, LA USA",
+            "year": 1911,
+            "date": "1911.01.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1912477"
+          },
+          "note": {
+            "en": "New Orleans, January 1911, a consultation game against two local players.",
+            "uk": "Новий Орлеан, січень 1911, консультаційна партія проти двох місцевих шахістів."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-04",
+          "fen": "1r5k/p2n1p1p/5np1/3q4/3p4/2B3N1/PP2NPPP/1K1R1B1R b - - 7 21",
+          "moves": "d4c3 d1d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Rolando Illa",
+            "event": "Simul, 40b",
+            "site": "Buenos Aires ARG",
+            "year": 1911,
+            "date": "1911.06.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1808308"
+          },
+          "note": {
+            "en": "Buenos Aires, June 1911, from a simul on 40 boards.",
+            "uk": "Буенос-Айрес, червень 1911, сеанс на 40 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-05",
+          "fen": "r4r2/pp2k2p/6p1/5p2/2P5/B3P2P/P4PP1/2KR4 b - - 1 24",
+          "moves": "e7e8 a3f8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Hubert Ernest Price",
+            "event": "Simul, 28b",
+            "site": "Birmingham ENG",
+            "year": 1911,
+            "date": "1911.11.24",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1586851"
+          },
+          "note": {
+            "en": "Birmingham, November 1911, from a simul on 28 boards.",
+            "uk": "Бірмінгем, листопад 1911, сеанс на 28 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-06",
+          "fen": "4N1k1/p5p1/1pb3p1/2n2p2/1P2p2P/8/P4PP1/2R3K1 b - - 0 29",
+          "moves": "c6e8 b4c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Arthur Hermann Privonitz",
+            "event": "Simul, 28b",
+            "site": "City of London CC, London ENG",
+            "year": 1913,
+            "date": "1913.10.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1801772"
+          },
+          "note": {
+            "en": "City of London Chess Club, October 1913, a 28-board simul, a Queen's Gambit Declined.",
+            "uk": "Шаховий клуб лондонського Сіті, жовтень 1913, сеанс на 28 дошках, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-07",
+          "fen": "r4rk1/1q1nbppp/p2p4/N1nP3b/8/4Bp1P/4BPP1/2RQ1K1R w - - 0 23",
+          "moves": "a5b7 f3e2 d1e2 h5e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Louis Bernard Zapoleon",
+            "black": "Jose Raul Capablanca",
+            "event": "American National",
+            "site": "New York, NY USA",
+            "year": 1913,
+            "date": "1913.01.31",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1479183"
+          },
+          "note": {
+            "en": "New York, January 1913, round nine of the American National tournament.",
+            "uk": "Нью-Йорк, січень 1913, девʼятий тур Американського національного турніру."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-08",
+          "fen": "2k5/p4p1p/r2np3/1p3p2/rRpP1P2/R1P3P1/2PNK2P/8 w - - 0 33",
+          "moves": "a3a4 a6a4 b4a4 b5a4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rolando Illa",
+            "black": "Jose Raul Capablanca",
+            "event": "Exhibition Game",
+            "site": "Buenos Aires ARG",
+            "year": 1911,
+            "date": "1911.06.12",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1485992"
+          },
+          "note": {
+            "en": "Buenos Aires, June 1911, an exhibition game, a French Defence.",
+            "uk": "Буенос-Айрес, червень 1911, показова партія, французький захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-09",
+          "fen": "r2qk2r/pp3ppp/3b4/2ppn3/8/1P2PN2/PBP1BP2/R2Q1RK1 b kq - 0 14",
+          "moves": "e5f3 e2f3 d8h4 f1e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Gerard Oskam",
+            "event": "Simul, 25b",
+            "site": "Middelburg NED",
+            "year": 1911,
+            "date": "1911.09.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2754744"
+          },
+          "note": {
+            "en": "Middelburg, September 1911, from a simul on 25 boards.",
+            "uk": "Мідделбург, вересень 1911, сеанс на 25 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-10",
+          "fen": "8/5qpk/2p1NpQp/3p1P2/3P4/4K3/2P5/8 b - - 2 61",
+          "moves": "f7g6 e6f8 h7g8 f8g6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Dare D Barkuloo",
+            "event": "Simul, 15b",
+            "site": "Minneapolis, MN USA",
+            "year": 1912,
+            "date": "1912.05.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2047700"
+          },
+          "note": {
+            "en": "Minneapolis, May 1912, from a simul on 15 boards, deep in an ending.",
+            "uk": "Міннеаполіс, травень 1912, сеанс на 15 дошках, глибокий ендшпіль."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-11",
+          "fen": "5r1k/7p/2p1r3/ppRpPPq1/3P1Q2/5R2/PP3K2/8 b - - 2 48",
+          "moves": "f8f5 f4f5 g5d2 f2f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Allies",
+            "event": "Consultation game",
+            "site": "Lodz POL",
+            "year": 1913,
+            "date": "1913.11.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1316947"
+          },
+          "note": {
+            "en": "Łódź, November 1913, a consultation game against a team of local players.",
+            "uk": "Лодзь, листопад 1913, консультаційна партія проти команди місцевих шахістів."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-12",
+          "fen": "4r1k1/1RQ2ppp/5n2/4P3/3q4/3B3P/6P1/7K b - - 1 39",
+          "moves": "d4a1 d3b1 e8f8 e5f6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Albert Hodges",
+            "event": "New York Masters",
+            "site": "New York, NY USA",
+            "year": 1911,
+            "date": "1911.01.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1381870"
+          },
+          "note": {
+            "en": "New York, January 1911, round six of a masters' tournament. Hodges was a former US champion.",
+            "uk": "Нью-Йорк, січень 1911, шостий тур турніру майстрів. Ходжес колись був чемпіоном США."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-13",
+          "fen": "r2q1r1k/ppp1n1p1/3pQ2p/5p2/3P1Bbb/2PB4/PP3P1N/RN2R1K1 b - - 7 18",
+          "moves": "f8f6 e6e7 d8e7 e1e7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Arnold van Foreest",
+            "event": "Simul, 25b",
+            "site": "Amsterdam NED",
+            "year": 1911,
+            "date": "1911.09.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1756546"
+          },
+          "note": {
+            "en": "Amsterdam, September 1911, from a simul on 25 boards. Arnold van Foreest had been Dutch champion.",
+            "uk": "Амстердам, вересень 1911, сеанс на 25 дошках. Арнольд ван Форест був чемпіоном Нідерландів."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-14",
+          "fen": "8/1p6/2p4p/5k2/Pp2p3/1P1RK2r/1P5P/6R1 w - - 2 38",
+          "moves": "g1g3 h3g3 h2g3 e4d3 e3d3 f5g4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1675,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Rene Portela",
+            "black": "Jose Raul Capablanca",
+            "event": "Clock simul, 3b",
+            "site": "Havana CUB",
+            "year": 1913,
+            "date": "1913.09.08",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1265573"
+          },
+          "note": {
+            "en": "Havana, September 1913, from a clock simul on three boards.",
+            "uk": "Гавана, вересень 1913, сеанс із годинником на трьох дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-15",
+          "fen": "2r3k1/1p1nb1pp/pqb1pr2/5pB1/8/P1p4R/QP2BPPP/5RK1 w - - 0 26",
+          "moves": "g5f6 c6d5 a2d5 e6d5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Fyodor Ivanovich Dus Chotimirsky",
+            "black": "Jose Raul Capablanca",
+            "event": "Savorin Cup",
+            "site": "St. Petersburg RUE",
+            "year": 1913,
+            "date": "1913.12.16",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1294503"
+          },
+          "note": {
+            "en": "St Petersburg, December 1913, game one of a short match.",
+            "uk": "Санкт-Петербург, грудень 1913, перша партія короткого матчу."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-16",
+          "fen": "5Rnk/pp1q4/7p/3p2QN/3Pp3/2P5/PP5P/6K1 b - - 0 31",
+          "moves": "h6g5 f8g8 h8g8 h5f6 g8g7 f6d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1775,
+          "themes": [
+            "endgame",
+            "fork",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Randolph",
+            "event": "Simul, 26b",
+            "site": "New York, NY USA",
+            "year": 1911,
+            "date": "1911.12.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1609923"
+          },
+          "note": {
+            "en": "New York, December 1911, from a simul on 26 boards.",
+            "uk": "Нью-Йорк, грудень 1911, сеанс на 26 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-17",
+          "fen": "2r3k1/2pnQp2/p5qp/1p1P2p1/2p1N3/P6P/1P2RP2/6K1 b - - 3 31",
+          "moves": "g6f5 e7d7 f5d7 e4f6 g8g7 f6d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "A Dolci",
+            "event": "Simul, 28b",
+            "site": "City of London CC, London ENG",
+            "year": 1913,
+            "date": "1913.10.13",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1803188"
+          },
+          "note": {
+            "en": "City of London Chess Club, October 1913, from a simul on 28 boards, a French Defence.",
+            "uk": "Шаховий клуб лондонського Сіті, жовтень 1913, сеанс на 28 дошках, французький захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-18",
+          "fen": "4r1k1/p1p2ppp/2p5/7P/1P2QqP1/P4N2/2P2K2/4R2R b - - 0 27",
+          "moves": "e8e4 e1e4 f4e4 h1e1 e4c2 e1e2 c2e2 f2e2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Beun",
+            "event": "Simul, 25b",
+            "site": "Leiden NED",
+            "year": 1911,
+            "date": "1911.09.05",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2518446"
+          },
+          "note": {
+            "en": "Leiden, September 1911, from a simul on 25 boards, a King's Gambit.",
+            "uk": "Лейден, вересень 1911, сеанс на 25 дошках, королівський гамбіт."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-19",
+          "fen": "r4rk1/2pqbppp/p1np4/1p1BP3/4n1b1/2P1BN2/PP3PPP/RN1QR1K1 b - - 0 12",
+          "moves": "e4g5 e3g5 e7g5 h2h3 g4f3 d1f3 c6e5 e1e5 d6e5 d5a8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Edward Lasker",
+            "event": "Simul, 7b",
+            "site": "London ENG",
+            "year": 1913,
+            "date": "1913.10.17",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1801771"
+          },
+          "note": {
+            "en": "London, October 1913, from a simul on seven boards; Edward Lasker was a strong master himself.",
+            "uk": "Лондон, жовтень 1913, сеанс на семи дошках; Едвард Ласкер і сам був сильним майстром."
+          }
+        },
+        {
+          "id": "lib-capablanca-2-20",
+          "fen": "6k1/p1r2pp1/2P3P1/7p/4Np1P/P3bP2/8/3R3K b - - 0 35",
+          "moves": "f7g6 e4g5 c7c8 c6c7 e3b6 g5e6 b6c7 d1c1 c8e8 e6c7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2150,
+          "themes": [
+            "endgame",
+            "quietMove"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Rene Portela",
+            "event": "Clock simul, 3b",
+            "site": "Havana CUB",
+            "year": 1913,
+            "date": "1913.09.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1265574"
+          },
+          "note": {
+            "en": "Havana, September 1913, a clock simul on three boards, a Scandinavian Defence.",
+            "uk": "Гавана, вересень 1913, сеанс із годинником на трьох дошках, скандинавський захист."
+          }
+        }
+      ]
+    },
+    {
+      "id": "capablanca-3",
+      "title": {
+        "en": "The Contender",
+        "uk": "Претендент"
+      },
+      "subtitle": {
+        "en": "St Petersburg to Hastings, 1914–1919",
+        "uk": "Від Петербурга до Гастінгса, 1914–1919"
+      },
+      "puzzles": [
+        {
+          "id": "lib-capablanca-3-01",
+          "fen": "r4br1/2p4p/p7/n2R4/1p3R1k/2B5/PPP2PPP/6K1 b - - 9 24",
+          "moves": "g8g4 c3f6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Percy H Moise",
+            "event": "Simul, 19b",
+            "site": "New Orleans, LA USA",
+            "year": 1915,
+            "date": "1915.04.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1912487"
+          },
+          "note": {
+            "en": "New Orleans, April 1915, a 19-board simul, a Ruy Lopez.",
+            "uk": "Новий Орлеан, квітень 1915, сеанс на 19 дошках, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-02",
+          "fen": "6r1/1p6/1p2b3/pPkpB2p/P3R3/1BP2N1P/6PK/3R4 b - - 0 32",
+          "moves": "d5e4 e5d6",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "A H Hobson",
+            "event": "Simul, 40b",
+            "site": "Sheffield ENG",
+            "year": 1919,
+            "date": "1919.10.08",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1808336"
+          },
+          "note": {
+            "en": "Sheffield, October 1919, from a simul on 40 boards.",
+            "uk": "Шеффілд, жовтень 1919, сеанс на 40 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-03",
+          "fen": "6r1/R3bk2/4p3/3pPp2/1PpP1Prp/6B1/1P3KRP/8 w - - 0 39",
+          "moves": "g3h4 g4g2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1175,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "David Janowski",
+            "black": "Jose Raul Capablanca",
+            "event": "Rice Memorial",
+            "site": "New York, NY USA",
+            "year": 1916,
+            "date": "1916.02.08",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064780"
+          },
+          "note": {
+            "en": "New York, February 1916, round three of the Rice Memorial, which Capablanca won.",
+            "uk": "Нью-Йорк, лютий 1916, третій тур Меморіалу Райса, який виграв Капабланка."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-04",
+          "fen": "2rqnrk1/pb2Bp1p/1pp1p1p1/4N2Q/3P4/3BP3/PP3PPP/R2R2K1 b - - 0 16",
+          "moves": "g6h5 e7d8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Richard Barnett",
+            "event": "Simul, 38b",
+            "site": "House of Commons, London ENG",
+            "year": 1919,
+            "date": "1919.12.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1465039"
+          },
+          "note": {
+            "en": "House of Commons, London, December 1919, from a simul on 38 boards.",
+            "uk": "Палата громад, Лондон, грудень 1919, сеанс на 38 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-05",
+          "fen": "4r1k1/Q4ppp/3p4/2p5/8/2P1r2q/PP1RKP1P/4R3 w - - 0 27",
+          "moves": "f2e3 h3e3 e2d1 e3e1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1425,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Alexander Alekhine",
+            "black": "Jose Raul Capablanca",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg  RUE",
+            "year": 1914,
+            "date": "1914.04.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1011923"
+          },
+          "note": {
+            "en": "St Petersburg, April 1914, round six. Thirteen years later Alekhine took the world title from Capablanca.",
+            "uk": "Санкт-Петербург, квітень 1914, шостий тур. Через тринадцять років Алехін відібрав у Капабланки звання чемпіона світу."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-06",
+          "fen": "8/ppp3k1/3p3p/1P2p3/2P1n3/P1NQPbq1/3K4/3B4 w - - 0 36",
+          "moves": "c3e4 g3g2 d2c3 f3e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Adolphe Silbert",
+            "black": "Jose Raul Capablanca",
+            "event": "Clock simul",
+            "site": "Paris FRA",
+            "year": 1914,
+            "date": "1914.03.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1774991"
+          },
+          "note": {
+            "en": "Paris, March 1914, from a clock simul.",
+            "uk": "Париж, березень 1914, сеанс із годинником."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-07",
+          "fen": "7r/1kpr2pp/1p1q1p2/pPPP4/3P4/2Q5/2R3PP/3R2K1 b - - 0 26",
+          "moves": "d6d5 c5c6 b7b8 c6d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "David Janowski",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg  RUE",
+            "year": 1914,
+            "date": "1914.05.03",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064762"
+          },
+          "note": {
+            "en": "St Petersburg, May 1914, round nine. Lasker won the tournament, Capablanca was second.",
+            "uk": "Санкт-Петербург, травень 1914, девʼятий тур. Турнір виграв Ласкер, Капабланка був другим."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-08",
+          "fen": "8/3Pk3/p3N1pp/P7/1P3p2/3b3P/6P1/6K1 b - - 2 37",
+          "moves": "e7d7 e6c5 d7c6 c5d3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Julio A Lynch",
+            "event": "Buenos Aires exh",
+            "site": "Buenos Aires ARG",
+            "year": 1914,
+            "date": "1914.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=2503515"
+          },
+          "note": {
+            "en": "Buenos Aires, 1914, an exhibition game, a French Defence.",
+            "uk": "Буенос-Айрес, 1914, показова партія, французький захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-09",
+          "fen": "6r1/2r1k3/4R3/p4pPp/1pPK1P2/1P3B1P/P7/8 b - - 0 35",
+          "moves": "e7e6 f3d5 e6d6 d5g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Einar Michelsen",
+            "event": "Simul, 65b",
+            "site": "New York, NY USA",
+            "year": 1915,
+            "date": "1915.02.12",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1671049"
+          },
+          "note": {
+            "en": "New York, February 1915, from a simul on 65 boards.",
+            "uk": "Нью-Йорк, лютий 1915, сеанс на 65 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-10",
+          "fen": "r1b2rk1/2p2ppp/p2b4/1p6/3P3q/1BP2Q1P/PP2RnP1/RNB3K1 b - - 1 16",
+          "moves": "c8g4 h3g4 d6h2 g1f1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1500,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Frank James Marshall",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1918,
+            "date": "1918.10.23",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1095025"
+          },
+          "note": {
+            "en": "New York, October 1918, round one: the debut of the Marshall Attack.",
+            "uk": "Нью-Йорк, жовтень 1918, перший тур: дебют атаки Маршалла."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-11",
+          "fen": "3r2k1/1b1r3p/1p2p1p1/p1p5/2P1N3/1P5P/P3R1P1/2q2QK1 w - - 0 32",
+          "moves": "f1c1 d7d1 c1d1 d8d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "endgame",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Victor Leonard Wahltuch",
+            "black": "Jose Raul Capablanca",
+            "event": "Hastings",
+            "site": "Hastings ENG",
+            "year": 1919,
+            "date": "1919.08.22",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1056026"
+          },
+          "note": {
+            "en": "Hastings, August 1919, round 11. Capablanca won the tournament.",
+            "uk": "Гастінгс, серпень 1919, 11-й тур. Капабланка виграв турнір."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-12",
+          "fen": "1k1r4/1p5p/5p2/4n1p1/3q4/8/5rPP/R1QB1RK1 w - - 0 32",
+          "moves": "f1f2 e5d3 c1d2 d4a1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1650,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Walter Penn Shipley",
+            "black": "Jose Raul Capablanca",
+            "event": "Exhibition game",
+            "site": "Philadelphia, PA USA",
+            "year": 1915,
+            "date": "1915.11.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1760559"
+          },
+          "note": {
+            "en": "Philadelphia, November 1915, an exhibition game, a French Defence.",
+            "uk": "Філадельфія, листопад 1915, показова партія, французький захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-13",
+          "fen": "8/p4kpp/2p5/2n1R3/2P2p2/N2r1P2/P1R3PP/3r1K2 w - - 4 31",
+          "moves": "f1e2 c5e6 e5e6 f7e6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Savielly Tartakower",
+            "black": "Jose Raul Capablanca",
+            "event": "Vienna exhibition mt",
+            "site": "Vienna AUH",
+            "year": 1914,
+            "date": "1914.03.13",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1455284"
+          },
+          "note": {
+            "en": "Vienna, March 1914, an exhibition match game, a Scotch.",
+            "uk": "Відень, березень 1914, партія показового матчу, шотландська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-14",
+          "fen": "r4rk1/pppqNppp/3p1B2/2b1p3/2BnP3/3P1b2/PPPQ1PPP/R4RK1 b - - 1 11",
+          "moves": "g8h8 f6g7 h8g7 d2g5 g7h8 g5f6",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1775,
+          "themes": [
+            "mateIn3",
+            "opening",
+            "attraction",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "NN",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1918,
+            "date": "1918.??.??",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1242914"
+          },
+          "note": {
+            "en": "New York, 1918, an Italian Game.",
+            "uk": "Нью-Йорк, 1918, італійська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-15",
+          "fen": "r4rk1/pb2q2p/1p2P2B/3pQ3/8/3R4/PP3PPP/6K1 b - - 4 25",
+          "moves": "e7f6 d3g3 g8h8 h6g7 f6g7 e5g7",
+          "goal": "mate",
+          "mateIn": 3,
+          "rating": 1850,
+          "themes": [
+            "mateIn3",
+            "middlegame",
+            "sacrifice",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "NN",
+            "event": "Simul, 33b",
+            "site": "New York, NY USA",
+            "year": 1916,
+            "date": "1916.01.11",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1470122"
+          },
+          "note": {
+            "en": "New York, January 1916, from a simul on 33 boards, a Queen's Gambit Declined.",
+            "uk": "Нью-Йорк, січень 1916, сеанс на 33 дошках, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-16",
+          "fen": "5k2/5pp1/pP1p3p/8/r3b3/4BP2/6PP/2R3K1 b - - 0 32",
+          "moves": "e4d5 c1c8 f8e7 b6b7 d5b7 c8c7 e7e6 c7b7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Richard Reti",
+            "event": "Exhibition Game",
+            "site": "Vienna AUH",
+            "year": 1914,
+            "date": "1914.03.15",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1465514"
+          },
+          "note": {
+            "en": "Vienna, March 1914, an exhibition game against the young Réti, a Berlin Defence.",
+            "uk": "Відень, березень 1914, показова партія проти молодого Реті, берлінський захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-17",
+          "fen": "5rk1/ppq2ppp/2p4N/4b3/4P3/6Q1/PPP2PPP/3R2K1 b - - 1 20",
+          "moves": "g8h8 g3e5 c7e5 h6f7 h8g8 f7e5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1900,
+          "themes": [
+            "endgame",
+            "fork",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Marc Fonaroff",
+            "event": "Casual Game",
+            "site": "New York, NY USA",
+            "year": 1918,
+            "date": "1918.06.18",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1265585"
+          },
+          "note": {
+            "en": "New York, June 1918, a casual game, a Ruy Lopez.",
+            "uk": "Нью-Йорк, червень 1918, товариська гра, іспанська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-18",
+          "fen": "8/8/1k1pN3/3B2p1/1p6/p4K1P/3n4/8 w - - 2 54",
+          "moves": "f3e2 b4b3 e2d2 a3a2 d5b3 a2a1q",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "endgame",
+            "sacrifice",
+            "promotion",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Frank James Marshall",
+            "black": "Jose Raul Capablanca",
+            "event": "St. Petersburg",
+            "site": "St. Petersburg  RUE",
+            "year": 1914,
+            "date": "1914.05.21",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094968"
+          },
+          "note": {
+            "en": "St Petersburg, May 1914, the final stage, a French Defence.",
+            "uk": "Санкт-Петербург, травень 1914, фінальний етап, французький захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-19",
+          "fen": "2r2r2/b2q2kp/p4pn1/1p1N1b1Q/3PpP2/1P2P3/PBR4P/2R2BK1 b - - 0 25",
+          "moves": "c8c2 c1c2 d7d5 c2c7 f8f7 c7f7 g7f7 h5h7 f7e8 h7a7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "hangingPiece",
+            "attackingF2F7"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Leon L Labatt",
+            "event": "Simul, 19b",
+            "site": "New Orleans, LA USA",
+            "year": 1915,
+            "date": "1915.04.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1595508"
+          },
+          "note": {
+            "en": "New Orleans, April 1915, from a simul on 19 boards.",
+            "uk": "Новий Орлеан, квітень 1915, сеанс на 19 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-3-20",
+          "fen": "5b1k/p2q2p1/2n1Q3/7p/3r1B2/1P3P2/P5PP/4RN1K b - - 1 31",
+          "moves": "d7e6 e1e6 d4d1 h1g1 f8c5 f4e3 c5e3 e6e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2000,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Borislav Kostic",
+            "event": "Capablanca - Kostic",
+            "site": "Havana CUB",
+            "year": 1919,
+            "date": "1919.03.29",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1316953"
+          },
+          "note": {
+            "en": "Havana, March 1919, game three of a match Capablanca won five games to nil.",
+            "uk": "Гавана, березень 1919, третя партія матчу, який Капабланка виграв із рахунком 5:0."
+          }
+        }
+      ]
+    },
+    {
+      "id": "capablanca-4",
+      "title": {
+        "en": "The Champion",
+        "uk": "Чемпіон"
+      },
+      "subtitle": {
+        "en": "Years at the top, 1920–1929",
+        "uk": "Роки на вершині, 1920–1929"
+      },
+      "puzzles": [
+        {
+          "id": "lib-capablanca-4-01",
+          "fen": "4Q3/6k1/p7/3K1p1p/3B1P2/6P1/2r1p1P1/7R b - - 3 47",
+          "moves": "g7h6 h1h5",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 925,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "NN",
+            "event": "Simul, 36b",
+            "site": "Rotherham ENG",
+            "year": 1922,
+            "date": "1922.10.26",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1811448"
+          },
+          "note": {
+            "en": "Rotherham, October 1922, from a simul on 36 boards.",
+            "uk": "Ротергем, жовтень 1922, сеанс на 36 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-02",
+          "fen": "r3rbQk/ppqn2p1/2p2n1N/8/3P1P2/2PB4/PP1B2PP/4RRK1 b - - 2 19",
+          "moves": "f6g8 h6f7",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "attackingF2F7",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "M Coll",
+            "event": "Simul, 32b",
+            "site": "Barcelona ESP",
+            "year": 1920,
+            "date": "1920.02.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1809868"
+          },
+          "note": {
+            "en": "Barcelona, February 1920, from a simul on 32 boards.",
+            "uk": "Барселона, лютий 1920, сеанс на 32 дошках."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-03",
+          "fen": "2r1k2r/1p1b3p/3b1p1q/5p2/4p3/3P2K1/PPn3PP/3QNB1R w k - 4 25",
+          "moves": "g3f2 h6e3",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Charles Seymour Whitman",
+            "black": "Jose Raul Capablanca",
+            "event": "Casual game",
+            "site": "New York, NY USA",
+            "year": 1927,
+            "date": "1927.03.25",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1808315"
+          },
+          "note": {
+            "en": "New York, March 1927, a casual game, a Dutch Defence.",
+            "uk": "Нью-Йорк, березень 1927, товариська партія, голландський захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-04",
+          "fen": "5k2/1p5R/p1p2PP1/2P5/3PK3/P7/1P6/4b3 b - - 0 53",
+          "moves": "e1g3 h7h8",
+          "goal": "mate",
+          "mateIn": 1,
+          "rating": 1000,
+          "themes": [
+            "mateIn1",
+            "endgame",
+            "backRankMate",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "George Alan Thomas",
+            "event": "Living chess exhibition",
+            "site": "Ramsgate ENG",
+            "year": 1929,
+            "date": "1929.03.30",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1603371"
+          },
+          "note": {
+            "en": "Ramsgate, March 1929, a living chess exhibition with people as the pieces.",
+            "uk": "Рамсгейт, березень 1929, показ живих шахів, де фігурами були люди."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-05",
+          "fen": "2r3k1/q4ppp/p3p3/p1Np4/2rn4/2P2P2/4R1PP/2R1Q1K1 w - - 0 32",
+          "moves": "c3d4 c8c5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Efim Bogoljubov",
+            "black": "Jose Raul Capablanca",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.03.27",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1030787"
+          },
+          "note": {
+            "en": "New York, March 1924, round nine. Lasker won the tournament, Capablanca was second.",
+            "uk": "Нью-Йорк, березень 1924, девʼятий тур. Турнір виграв Ласкер, Капабланка був другим."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-06",
+          "fen": "1b2r1qk/np2n1p1/5Q1p/2PBp2P/1P1p1pPN/3P4/3B1P2/R3R1K1 b - - 0 39",
+          "moves": "g7f6 d5g8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "David Janowski",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.04.06",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1064812"
+          },
+          "note": {
+            "en": "New York, April 1924, round 15.",
+            "uk": "Нью-Йорк, квітень 1924, 15-й тур."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-07",
+          "fen": "2r1k2r/p2q1ppp/1pR2n2/1N1p4/Qb3B2/6P1/P3PPKP/RN6 b k - 0 15",
+          "moves": "c8c6 a4b4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1250,
+          "themes": [
+            "middlegame",
+            "hangingPiece"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Alexander Alekhine",
+            "event": "Capablanca - Alekhine World Championship",
+            "site": "Buenos Aires ARG",
+            "year": 1927,
+            "date": "1927.09.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1012490"
+          },
+          "note": {
+            "en": "Buenos Aires, September 1927, game three of the world title match. Alekhine won the match and the title.",
+            "uk": "Буенос-Айрес, вересень 1927, третя партія матчу за звання чемпіона світу. Матч і титул виграв Алехін."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-08",
+          "fen": "3r4/p3NqkR/1np3p1/3pP1P1/1Q6/8/PPP2P2/2K5 b - - 0 26",
+          "moves": "g7h7 b4h4 h7g7 h4h6",
+          "goal": "mate",
+          "mateIn": 2,
+          "rating": 1400,
+          "themes": [
+            "mateIn2",
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Alcides Prestes",
+            "event": "Simul, 10b",
+            "site": "Sao Paulo BRA",
+            "year": 1927,
+            "date": "1927.08.27",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1567181"
+          },
+          "note": {
+            "en": "São Paulo, August 1927, from a simul on ten boards, a French Defence.",
+            "uk": "Сан-Паулу, серпень 1927, сеанс на десяти дошках, французький захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-09",
+          "fen": "2kr3B/2pqb2p/p2p1p2/4n3/p7/2P2b2/PP3PPP/RN1Q1RK1 w - - 3 18",
+          "moves": "g2f3 d7h3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1400,
+          "themes": [
+            "middlegame",
+            "quietMove"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Richard Reti",
+            "black": "Jose Raul Capablanca",
+            "event": "Berlin",
+            "site": "Berlin GER",
+            "year": 1928,
+            "date": "1928.10.29",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1257931"
+          },
+          "note": {
+            "en": "Berlin, October 1928, round 14. Capablanca won the tournament.",
+            "uk": "Берлін, жовтень 1928, 14-й тур. Капабланка виграв турнір."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-10",
+          "fen": "3r2k1/4n1p1/7p/1p2ppq1/2p1Pn2/2P1rPNP/1PQ3PK/R3R3 w - - 0 35",
+          "moves": "e1e3 f4g2 c2g2 g5e3",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1600,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Geza Maroczy",
+            "black": "Jose Raul Capablanca",
+            "event": "New York",
+            "site": "New York, NY USA",
+            "year": 1924,
+            "date": "1924.04.03",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1094347"
+          },
+          "note": {
+            "en": "New York, April 1924, round 13, a closed Ruy Lopez.",
+            "uk": "Нью-Йорк, квітень 1924, 13-й тур, закрита іспанська партія."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-11",
+          "fen": "2r1rk2/1p2Nppp/p7/2b5/P2q1Pn1/1P6/1P1Q2PP/2RR3K w - - 2 26",
+          "moves": "d2d4 c5d4 e7c8 g4f2 h1g1 f2d1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "discoveredAttack",
+            "fork",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Fedor Parfenovich Bohatirchuk",
+            "black": "Jose Raul Capablanca",
+            "event": "Moscow",
+            "site": "Moscow URS",
+            "year": 1925,
+            "date": "1925.11.19",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1100039"
+          },
+          "note": {
+            "en": "Moscow, November 1925, round eight. Capablanca appeared in the film Chess Fever, shot during this tournament.",
+            "uk": "Москва, листопад 1925, восьмий тур. Під час цього турніру зняли фільм «Шахова гарячка», де знявся Капабланка."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-12",
+          "fen": "4r3/3q3p/p2P1pp1/4bk2/P3Q3/6PP/5P2/4R1K1 b - - 8 39",
+          "moves": "f5e6 e4c4 e6d6 e1d1 d6e7 d1d7",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "exposedKing"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Nikolay Zubarev",
+            "event": "Moscow",
+            "site": "Moscow URS",
+            "year": 1925,
+            "date": "1925.12.02",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1100093"
+          },
+          "note": {
+            "en": "Moscow, December 1925, round 17. Bogoljubov won the tournament ahead of Lasker and Capablanca.",
+            "uk": "Москва, грудень 1925, 17-й тур. Турнір виграв Боголюбов, випередивши Ласкера й Капабланку."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-13",
+          "fen": "3r3k/pb1pqrp1/1pn2pp1/3Np1B1/2B1P3/3R4/PPP2PPP/3R2K1 b - - 3 19",
+          "moves": "e7c5 d3h3 h8g8 d5f6 g8f8 h3h8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Souza Campos",
+            "event": "Simul, 23b",
+            "site": "Sao Paulo BRA",
+            "year": 1927,
+            "date": "1927.08.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1387584"
+          },
+          "note": {
+            "en": "São Paulo, August 1927, from a simul on 23 boards, weeks before the title match with Alekhine.",
+            "uk": "Сан-Паулу, серпень 1927, сеанс на 23 дошках — за кілька тижнів до матчу за титул з Алехіним."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-14",
+          "fen": "1q2rbk1/2r2p1p/p2Rb1p1/1pPN4/5P2/1P3B2/P2Q2PP/2R3K1 b - - 3 26",
+          "moves": "c7c5 d5f6 g8h8 f6e8 c5c1 d2c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "middlegame",
+            "fork"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Fred Dewhirst Yates",
+            "event": "Bad Kissingen",
+            "site": "Bad Kissingen GER",
+            "year": 1928,
+            "date": "1928.08.20",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1004137"
+          },
+          "note": {
+            "en": "Bad Kissingen, August 1928, round eight. Bogoljubov won, Capablanca was second.",
+            "uk": "Бад-Кіссінген, серпень 1928, восьмий тур. Переміг Боголюбов, Капабланка був другим."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-15",
+          "fen": "8/7r/3p4/p1pPp3/P1P1P1P1/2Pk1Bq1/6P1/2Q4K w - - 27 69",
+          "moves": "h1g1 g3h2 g1f2 h2h4 g2g3 h4h2",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1750,
+          "themes": [
+            "endgame",
+            "kingsideAttack"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Vilardebo Picurena",
+            "black": "Jose Raul Capablanca",
+            "event": "Barcelona",
+            "site": "Barcelona ESP",
+            "year": 1929,
+            "date": "1929.10.07",
+            "result": "0-1",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1330539"
+          },
+          "note": {
+            "en": "Barcelona, October 1929, round 12. Capablanca won the tournament.",
+            "uk": "Барселона, жовтень 1929, 12-й тур. Капабланка виграв турнір."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-16",
+          "fen": "2r2rk1/pQ1N1pp1/1p2pn1p/3p4/P2P4/4P2P/1qB2PP1/2R2RK1 b - - 2 21",
+          "moves": "f6d7 c2h7 g8h7 c1c8 f8c8 b7c8",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "attraction",
+            "sacrifice"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Milan Vidmar",
+            "event": "London",
+            "site": "London ENG",
+            "year": 1922,
+            "date": "1922.08.16",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1093071"
+          },
+          "note": {
+            "en": "London, August 1922, round 13: Capablanca's first tournament as world champion, and he won it.",
+            "uk": "Лондон, серпень 1922, 13-й тур — перший турнір Капабланки в статусі чемпіона світу, і він його виграв."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-17",
+          "fen": "4b3/2R1k2p/1q2p3/p2pNp2/1p3P2/1P4P1/K6P/2R5 b - - 3 41",
+          "moves": "e7f6 c7f7 e8f7 e5d7 f6e7 d7b6",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "endgame",
+            "fork",
+            "sacrifice",
+            "attackingF2F7"
+          ],
+          "deviates": false,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Jacobs",
+            "event": "Simul, 33b",
+            "site": "London ENG",
+            "year": 1922,
+            "date": "1922.10.22",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1880045"
+          },
+          "note": {
+            "en": "London, October 1922, from a simul on 33 boards, a Dutch Defence.",
+            "uk": "Лондон, жовтень 1922, сеанс на 33 дошках, голландський захист."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-18",
+          "fen": "r1bR1brk/1pR5/1B3n2/1p2nN1p/4PN2/8/PP3PPP/6K1 b - - 1 22",
+          "moves": "a8a2 d8c8 a2a1 c7c1 a1c1 c8c1",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 1850,
+          "themes": [
+            "middlegame",
+            "sacrifice",
+            "hangingPiece"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Kornel Havasi",
+            "event": "Budapest",
+            "site": "Budapest HUN",
+            "year": 1928,
+            "date": "1928.09.21",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1004087"
+          },
+          "note": {
+            "en": "Budapest, September 1928, round one, a Queen's Gambit Accepted.",
+            "uk": "Будапешт, вересень 1928, перший тур, прийнятий ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-19",
+          "fen": "1n1q1rk1/1Qr2ppp/pp3B2/2bp4/6N1/4P3/PP1N1PPP/2R2RK1 b - - 0 18",
+          "moves": "g7f6 b7d5 d8d5 g4f6 g8g7 f6d5 c7d7 e3e4",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2050,
+          "themes": [
+            "middlegame",
+            "fork",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "A W Gaye",
+            "event": "Simul, 40b",
+            "site": "Bristol ENG",
+            "year": 1920,
+            "date": "1920.10.09",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1789619"
+          },
+          "note": {
+            "en": "Bristol, October 1920, from a simul on 40 boards, a Queen's Gambit Declined.",
+            "uk": "Бристоль, жовтень 1920, сеанс на 40 дошках, відхилений ферзевий гамбіт."
+          }
+        },
+        {
+          "id": "lib-capablanca-4-20",
+          "fen": "r3q1k1/pppbrpp1/3p1n1p/4P3/3N1P2/2N3Q1/PPP3PP/3RR1K1 b - - 0 19",
+          "moves": "d6e5 f4e5 f6h5 g3h4 e7e5 d4f3 e5e1 d1e1 e8f8 h4h5",
+          "goal": "win",
+          "mateIn": null,
+          "rating": 2100,
+          "themes": [
+            "middlegame",
+            "sacrifice"
+          ],
+          "deviates": true,
+          "game": {
+            "white": "Jose Raul Capablanca",
+            "black": "Erling Tholfsen",
+            "event": "Simul, 33b",
+            "site": "Brooklyn CC, New York, NY USA",
+            "year": 1924,
+            "date": "1924.03.07",
+            "result": "1-0",
+            "source": "https://www.chessgames.com/perl/chessgame?gid=1412077"
+          },
+          "note": {
+            "en": "Brooklyn Chess Club, March 1924, from a simul on 33 boards, a Ruy Lopez.",
+            "uk": "Бруклінський шаховий клуб, березень 1924, сеанс на 33 дошках, іспанська партія."
+          }
+        }
+      ]
+    }
+  ]
 }
