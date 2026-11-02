@@ -34,6 +34,10 @@ import { offlineEn } from './offline.en';
 import { offlineUk } from './offline.uk';
 import { libraryEn } from './library.en';
 import { libraryUk } from './library.uk';
+import { learnEn } from './learn.en';
+import { learnUk } from './learn.uk';
+import { coursesEn } from './courses.en';
+import { coursesUk } from './courses.uk';
 
 export const AREAS = [
   'common',
@@ -51,6 +55,8 @@ export const AREAS = [
   'shell',
   'offline',
   'library',
+  'learn',
+  'courses',
 ] as const;
 
 export type Area = (typeof AREAS)[number];
@@ -71,6 +77,8 @@ export const AREA_DICTS: Record<Area, Record<Language, Dict>> = {
   shell: { en: shellEn, uk: shellUk },
   offline: { en: offlineEn, uk: offlineUk },
   library: { en: libraryEn, uk: libraryUk },
+  learn: { en: learnEn, uk: learnUk },
+  courses: { en: coursesEn, uk: coursesUk },
 };
 
 /** All areas of one language merged into a flat dict (the web shape). */
