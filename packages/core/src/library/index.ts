@@ -3,6 +3,7 @@
 // /library/*, and the pure progress, cycle and target arithmetic the
 // mobile store and screens run on. Nothing here is rated.
 import type { XpAward } from '../api/types';
+import type { CourseExamRecord, CoursePendingExam } from './courses';
 
 export type Localized = { en: string; uk: string };
 
@@ -84,7 +85,15 @@ export type LibraryPendingAttempt = LibraryAttemptRecord & {
   localDay?: string;
 };
 
-export type LibrarySyncBody = { tzOffsetMin: number; attempts: LibraryPendingAttempt[] };
+export type LibrarySyncBody = {
+  tzOffsetMin: number;
+  attempts: LibraryPendingAttempt[];
+  /** Finished course exam tries (courses.ts). */
+  exams?: CoursePendingExam[];
+};
+
+/** GET /library/progress */
+export type LibraryProgressResponse = { attempts: LibraryAttemptRecord[]; exams?: CourseExamRecord[] };
 export type LibrarySyncResponse = {
   accepted: number;
   duplicates: number;
@@ -93,6 +102,8 @@ export type LibrarySyncResponse = {
   xp: XpAward | null;
   /** The streak after the days played (null when no day was sent). */
   streak: { days: number; outcome: string } | null;
+  /** Exam tries stored (new or already there); absent on a server without courses. */
+  exams?: number;
 };
 
 export const LIBRARY_SYNC_BATCH = 500;
@@ -267,3 +278,5 @@ export function cycleTargetSec(cycles: readonly Pick<CycleStats, 'cycle' | 'avgS
   }
   return target;
 }
+
+export * from './courses';
