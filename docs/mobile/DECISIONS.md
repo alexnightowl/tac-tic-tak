@@ -276,7 +276,8 @@ Owner spec plus the canvas "Learn" page (`LearnHome`, `LearnBooks`, `LearnCourse
   course puzzle for "per cycle"; the suggestion picks, among suggestable courses whose range holds
   the rating, the one whose middle is nearest (Endgames is not suggested); course colours are hex
   strings from the API with alpha-suffix tints (data, not literals in screens); books without a
-  portrait yet (Steinitz, Hypermoderns, Rubinstein) show their piece silhouette in the oval;
+  portrait show their piece silhouette in the oval (none since 2026-11-03: the owner sent
+  Steinitz, Chigorin, Réti, Nimzowitsch and Rubinstein);
   download progress shows no percentage (the API client has no byte progress).
 - Stale canvas note: LearnStates says "courses and books share one scroll"; the owner's newer
   text and LearnHome/LearnBooks use two segments. Segments win.

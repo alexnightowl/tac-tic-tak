@@ -42,9 +42,12 @@ export function BookCover({ book, width, small = false, testID }: Props) {
   const title = textStyle('title', lang);
   const name = localized(book.title, lang);
   // Titles wrap, never break inside a word: a long word (Cinzel's capitals
-  // are wide) shrinks the size until it fits the line (~0.68 em a letter).
+  // are wide) shrinks the size until it fits the line (~0.68 em a letter),
+  // and the text may take at most a line per word, so a word that still
+  // splits ("HYPERMODERNS" on the grid cover) shrinks it further.
   const lineW = width - (10.09 + 0.0284 * width) - (14.09 + 0.0284 * width);
-  const longest = Math.max(1, ...name.split(/\s+/).map((w) => w.length));
+  const words = name.split(/\s+/).filter(Boolean);
+  const longest = Math.max(1, ...words.map((w) => w.length));
   const titleSize = Math.min(19 * k, lineW / (longest * 0.68));
   const ornament = alpha(rule, parchment ? 0.9 : 0.85);
   const ring = Math.max(1, 1.5 * k);
@@ -76,7 +79,14 @@ export function BookCover({ book, width, small = false, testID }: Props) {
           { top: 9.89 + 0.0642 * width, right: 10.09 + 0.0284 * width, bottom: 9.96 + 0.0407 * width, left: 14.09 + 0.0284 * width },
         ]}
       >
-        <AppText style={[title, styles.center, { color: ink, fontSize: titleSize, lineHeight: titleSize * 1.12, letterSpacing: 0.2 }]}>{name}</AppText>
+        <AppText
+          numberOfLines={Math.max(1, words.length)}
+          adjustsFontSizeToFit
+          minimumFontScale={0.6}
+          style={[title, styles.center, { color: ink, fontSize: titleSize, lineHeight: titleSize * 1.12, letterSpacing: 0.2 }]}
+        >
+          {name}
+        </AppText>
         <View style={[styles.ornament, { marginTop: 6 * k, gap: 4 * k }]}>
           <View style={{ width: 14 * k, height: 1, backgroundColor: ornament }} />
           <View style={{ width: 4 * k, height: 4 * k, transform: [{ rotate: '45deg' }], backgroundColor: ornament }} />

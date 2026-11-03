@@ -1,7 +1,7 @@
 // Author portraits on the title-page covers (owner's list, canvas
-// LearnBooks). Keyed by book id; a book with no portrait yet draws its
-// coverPiece silhouette in the oval instead (PROVISIONAL, DECISIONS D28:
-// steinitz, hypermodern, rubinstein).
+// LearnBooks; Steinitz, Chigorin, Réti, Nimzowitsch and Rubinstein sent by
+// the owner on 2026-11-03). Keyed by book id; a book with no portrait draws
+// its coverPiece silhouette in the oval instead.
 
 const P = {
   greco: require('../../../assets/learn/portraits/greco.jpg'),
@@ -12,6 +12,11 @@ const P = {
   alekhine: require('../../../assets/learn/portraits/alekhine.jpg'),
   capablanca: require('../../../assets/learn/portraits/capablanca.jpg'),
   lasker: require('../../../assets/learn/portraits/lasker.jpg'),
+  steinitz: require('../../../assets/learn/portraits/steinitz.jpg'),
+  chigorin: require('../../../assets/learn/portraits/chigorin.jpg'),
+  reti: require('../../../assets/learn/portraits/reti.jpg'),
+  nimzowitsch: require('../../../assets/learn/portraits/nimzowitsch.jpg'),
+  rubinstein: require('../../../assets/learn/portraits/rubinstein.jpg'),
 } as const;
 
 export const BOOK_PORTRAITS: Readonly<Record<string, readonly number[]>> = {
@@ -21,6 +26,9 @@ export const BOOK_PORTRAITS: Readonly<Record<string, readonly number[]>> = {
   alekhine: [P.alekhine],
   capablanca: [P.capablanca],
   lasker: [P.lasker],
+  steinitz: [P.steinitz, P.chigorin],
+  hypermodern: [P.reti, P.nimzowitsch],
+  rubinstein: [P.rubinstein],
 };
 
 export function bookPortraits(id: string): readonly number[] {
