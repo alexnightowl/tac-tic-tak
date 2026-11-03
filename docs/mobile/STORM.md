@@ -32,7 +32,9 @@ Decisions: D29. Mobile-only.
 - **Score** is the number of puzzles solved. The runs feed **accuracy** (solved / (solved +
   mistakes)), **best combo**, and **hardest solved** (the highest-rated puzzle solved).
 - **Pure logic** lives in `@tac/core/storm`: `stormInit`, `stormReduce`, `stormClock`,
-  `stormLadder`, `raceVerdict` and the wire types.
+  `stormLadder`, `raceVerdict` and the wire types. The runner uses the practice mode `storm`
+  (`@tac/core/runner`): a wrong move holds ~260 ms, the right move slides in for 400 ms, then the
+  next puzzle; a solve moves on after 200 ms.
 
 ## Streams
 

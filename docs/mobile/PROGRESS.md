@@ -264,3 +264,26 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
 - **Open:** portraits for the three books without one; uk theme names to unify ("Заманювання" vs
   "Завлікання", skewer "Лінійний удар" vs "Рентген"); canvas app-only items (Review row on Play,
   Settings menu row, exam open row, exam result screen, Learn load/error/empty states).
+
+## 2026-11-03 — Puzzle Storm + friend challenges, stage A (D29)
+
+- **Owner request:** build the canvas sections Puzzle Storm and Challenge a friend; owner chose two
+  stages (A: solo Storm + async Race; B: live Race + Together) and no chat for now.
+- **Backend (main, 57d9b7a, deployed; CI green, `/api/storm/summary` answers 401 unauthenticated
+  on prod):** `StormStream` / `StormRun` / `Challenge` tables; streams of 100 rising puzzles from a
+  per-bucket pool; validated, idempotent runs (Review, XP, streak); summary with friends this
+  week; challenges (friends only, 30/day, 24 h, conditional status moves); presence for
+  `GET /friends` `online`. Local API smoke (`scratchpad/smoke/storm.mjs`, 33 checks) green after
+  a `/code-review` pass fixed retry races, status races, run-length and replay abuse.
+- **Core:** `@tac/core/storm` engine (clock, combo bonuses, lives, ladder, verdict) and a `storm`
+  practice mode (reveal the right move after a mistake, then move on). Tests 256 green.
+- **Mobile:** `/storm` start, `/storm/run` (wall clock, background/kill safe, run queue),
+  `/storm/result` (chart, dare), `/storm/friends`; `/challenge/new`, `/challenge/[id]` (incoming,
+  waiting, result, draft, declined/expired); Play rows (Storm, Challenge with count); Rivals
+  "Challenges" section; Challenge on a friend's profile.
+- **Verified:** `pnpm --filter mobile typecheck`, backend tsc, core tests; Maestro `16-storm`,
+  `17-challenge` (en + uk) on iOS sims. Screenshots: `screens/storm/`.
+- **Canvas:** `StormAppStates`, `ChallengeAppStates` boards added on "New: modes & social".
+- **Open:** OWNER-QUESTIONS 48 (provisional rules); stage B needs a realtime channel (websocket
+  or SSE through nginx) and push needs the Apple Developer account.
+
