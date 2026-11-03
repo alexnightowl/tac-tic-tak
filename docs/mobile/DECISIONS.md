@@ -287,3 +287,31 @@ Owner spec plus the canvas "Learn" page (`LearnHome`, `LearnBooks`, `LearnCourse
   the "in progress" emblem with that cycle's ring on its page (LearnCourseUA); "Practice <theme>"
   after a failed exam replays the whole chapter outside the cycle count (first result per cycle
   still wins); a long chapter name in a CTA falls back to the chapter number.
+
+### D29. Puzzle Storm + async friend challenges (owner, 2026-11-03)
+Canvas page "New: modes & social" (`StormStart`, `StormRun`, `StormResult`, `ChallengeCreate`,
+`ChallengeIncoming`, `ChallengeResult`; `ChallengeRace` / `ChallengeTogether` later). Spec:
+STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
+- **Owner:** two stages. Stage A is solo Storm plus the async Race (the friend plays the same
+  stream within 24 h). Stage B is the live Race and Together, which need a realtime channel. No
+  chat for now: the result has Rematch only, and Together has no message box.
+- **One engine** for Storm and Race (`@tac/core/storm`). The canvas rules hold: 3:00, 3 lives, a
+  mistake costs 10 s and the combo, +3 s at combo 5 and +5 s at combo 10 (repeating every 10).
+  Race formats are 3 min / 5 min / Survival (no clock, 3 lives). A tie on solved goes to the
+  earlier last solve.
+- PROVISIONAL:
+  - **Ladder:** solo Storm uses a fixed ladder from 1000 for everyone (friends' scores compare),
+    rising ~1000 → 1800 by puzzle 35 → 2380 at 100. A Race starts 600 under the two players'
+    average rating, clamped to 600–1800.
+  - **Mistakes and credit:** a run's mistakes go to Review. Its time earns XP (2 per minute, like
+    everywhere) and its day counts for the streak. It never touches the rating.
+  - **Solo runs:** one run per stream; the solo board counts only 3-minute solo runs. "This week"
+    starts on local Monday.
+  - **Challenges:** friends only, 30 a day, 24 h to answer. The challenger plays first, and the
+    friend sees the invite with the challenger's score. A dare from the Storm result sends that
+    run at once.
+  - **Presence:** "online" means any request in the last 2 minutes.
+  - **Without push** (Phase 10), the app fetches challenges on focus.
+  - **Create** adds an optional one-line note (the Incoming card shows one, but no artboard says
+    where it is written), and Together is shown disabled with "Soon".
+
