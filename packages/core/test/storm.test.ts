@@ -12,6 +12,17 @@ import {
   type StormEvent,
   type StormState,
 } from '../src/storm';
+import type { ServerPuzzle } from '../src/puzzle';
+import {
+  STORM_REVEAL_MS,
+  STORM_SOLVED_PAUSE_MS,
+  STORM_WRONG_HOLD_MS,
+  createPractice,
+  practiceReducer,
+  type PracticeEffect,
+  type PracticeEvent,
+  type PracticeState,
+} from '../src/runner';
 
 const run = (s: StormState, events: StormEvent[]) => events.reduce(stormReduce, s);
 const T0 = 1_000_000;
@@ -92,5 +103,62 @@ describe('storm helpers', () => {
   it('hardest solved skips mistakes', () => {
     expect(hardestSolved([{ i: 0, ok: true, ms: 1 }, { i: 2, ok: false, ms: 1 }, { i: 1, ok: true, ms: 1 }], [1000, 1100, 1900])).toBe(1100);
     expect(hardestSolved([], [1000])).toBeNull();
+  });
+});
+
+// ─── The storm practice mode (runner/modes) ──────────────────────────────
+
+// Real Lichess 00008: setup f2g3, then e6e7 (player) b2b1 (reply) b3c1 b1c1 h6c1.
+const LONG: ServerPuzzle = {
+  id: '00008', fen: 'r6k/pp2r2p/4Rp1Q/3p4/8/1N1P2R1/PqP2bPP/7K b - - 0 24',
+  moves: ['f2g3', 'e6e7', 'b2b1', 'b3c1', 'b1c1', 'h6c1'], rating: 1913, themes: ['crushing', 'fork'], gameUrl: null,
+};
+
+function stormDriver() {
+  let s: PracticeState = createPractice({ mode: 'storm', animMs: 100, fixedColor: 'auto' });
+  let fx: PracticeEffect[] = [];
+  const send = (e: PracticeEvent) => {
+    const r = practiceReducer(s, e);
+    s = r.state;
+    fx = r.effects;
+    return fx;
+  };
+  return {
+    get s() { return s; },
+    get fx() { return fx; },
+    send,
+    move: (uci: string) => send({ type: 'move', from: uci.slice(0, 2) as 'a1', to: uci.slice(2, 4) as 'a1' }),
+  };
+}
+
+describe('practice: storm mode', () => {
+  it('a wrong move holds, reveals the right move from the position before it, then asks for the next puzzle', () => {
+    const d = stormDriver();
+    d.send({ type: 'start', items: [{ puzzle: LONG }] });
+    d.send({ type: 'animationDone', id: d.s.anim!.id });
+    const before = d.s.fen;
+    d.move('e6e5');
+    expect(d.s.phase).toBe('rewinding');
+    expect(d.s.fen).toBe(before);
+    expect(d.fx).toContainEqual({ type: 'schedule', id: 'rewind', ms: STORM_WRONG_HOLD_MS });
+    expect(d.fx).toContainEqual({ type: 'feel', event: 'mistake' });
+    d.send({ type: 'timer', id: 'rewind' });
+    expect(d.s.phase).toBe('revealing');
+    expect(d.s.lastMove).toEqual({ from: 'e6', to: 'e7' });
+    expect(d.fx).toContainEqual(expect.objectContaining({ type: 'setPosition', lastMove: { from: 'e6', to: 'e7' } }));
+    expect(d.fx).toContainEqual({ type: 'schedule', id: 'advance', ms: 100 + STORM_REVEAL_MS });
+    d.send({ type: 'timer', id: 'advance' });
+    expect(d.s.phase).toBe('advancing');
+    expect(d.fx).toContainEqual(expect.objectContaining({ type: 'advance', puzzleId: '00008' }));
+  });
+
+  it('a solve moves on after the short storm pause', () => {
+    const d = stormDriver();
+    const MATE: ServerPuzzle = { id: 'm', fen: '6k1/2p2ppp/8/8/8/8/1R6/R5K1 b - - 0 1', moves: ['c7c6', 'a1a8'], rating: 1300, themes: [], gameUrl: null };
+    d.send({ type: 'start', items: [{ puzzle: MATE }] });
+    d.send({ type: 'animationDone', id: d.s.anim!.id });
+    d.move('b2b8'); // the other mate counts
+    expect(d.s.phase).toBe('solved');
+    expect(d.fx).toContainEqual({ type: 'schedule', id: 'advance', ms: STORM_SOLVED_PAUSE_MS });
   });
 });

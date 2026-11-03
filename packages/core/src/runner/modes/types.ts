@@ -8,8 +8,12 @@ import type { Orientation, PromotionPiece, Square } from '../../board';
 import type { ServerPuzzle } from '../../puzzle';
 import type { AnimationDoneEvent, FixedColor, LastMove, MoveFeel } from '../types';
 
-/** library: a drill fed chapter by chapter that can also show the solution and move on. */
-export type PracticeMode = 'drill' | 'mistakes' | 'viewer' | 'library';
+/**
+ * library: a drill fed chapter by chapter that can also show the solution and move on.
+ * storm: Puzzle Storm / Race (docs/mobile/STORM.md): fed by `advance`, a wrong move
+ * shows the right one for a moment and moves on (no rewind, no hint, no solution).
+ */
+export type PracticeMode = 'drill' | 'mistakes' | 'viewer' | 'library' | 'storm';
 
 /** GET /sessions/:id/review-items reason. */
 export type ReviewReason = 'failed' | 'slow';
@@ -32,8 +36,10 @@ export type PracticePhase =
   | 'setupAnimating'
   | 'playerTurn'
   | 'opponentReplying'
-  /** A wrong move is on the board; the rewind to the start is due. */
+  /** A wrong move is on the board; the rewind to the start is due (storm: the reveal). */
   | 'rewinding'
+  /** Storm: the right move is on the board after a mistake; the next puzzle is due. */
+  | 'revealing'
   /** Solved: the badge pops and holds (drill / mistakes advance after it). */
   | 'solved'
   /** Drill: POST resolve + the next puzzle are in flight. */

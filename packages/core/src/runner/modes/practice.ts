@@ -18,6 +18,12 @@ export const REWIND_DELAY_MS = 520;
 export const PRACTICE_REPLY_MIN_MS = 80;
 /** Long-press auto-repeat steps slide this fast so the next step never queues behind. */
 export const REPEAT_SLIDE_MS = 120;
+/** Storm: the wrong move stays on the board this long before the right one is shown. */
+export const STORM_WRONG_HOLD_MS = 260;
+/** Storm: the right move stays on the board this long after a mistake (STORM.md "~400 ms"). */
+export const STORM_REVEAL_MS = 400;
+/** Storm: the pause after a solve before the next puzzle (the clock is running). */
+export const STORM_SOLVED_PAUSE_MS = 200;
 
 export function createPractice(config: PracticeConfig): PracticeState {
   return {
@@ -151,7 +157,7 @@ function begin(tx: Tx, item: PracticeItem) {
 }
 
 /** Modes whose next puzzle comes from the screen's `advance` hook. */
-const fedByAdvance = (s: PracticeState) => s.mode === 'drill' || s.mode === 'library';
+const fedByAdvance = (s: PracticeState) => s.mode === 'drill' || s.mode === 'library' || s.mode === 'storm';
 
 /** A line chess.js rejects: skip it where a queue exists, else show the error. */
 function broken(tx: Tx) {
@@ -207,6 +213,8 @@ function onMove(tx: Tx, from: Square, to: Square, promotion?: string) {
     tx.emit({ type: 'rejectMove' });
     return;
   }
+  // Storm keeps the position before a wrong move: the right move is revealed from it.
+  if (candidate !== expected && !r.mate && s.mode === 'storm') return wrong(tx, to);
   s.fen = r.fen;
   s.lastMove = { from, to };
   if (candidate !== expected) {
@@ -234,7 +242,23 @@ function wrong(tx: Tx, square: Square) {
   tx.emit({ type: 'feel', event: 'mistake' });
   tx.emit({ type: 'flash', square, ok: false });
   tx.emit({ type: 'shake', square });
-  tx.schedule('rewind', REWIND_DELAY_MS);
+  tx.schedule('rewind', s.mode === 'storm' ? STORM_WRONG_HOLD_MS : REWIND_DELAY_MS);
+}
+
+/** Storm: slide the right move in from the position before the mistake, then move on. */
+function reveal(tx: Tx) {
+  const s = tx.s;
+  const expected = s.remaining[0];
+  const r = s.fen && expected ? play(s.fen, expected) : null;
+  s.phase = 'revealing';
+  if (r && expected) {
+    const lm = lastMoveOfUci(expected);
+    s.fen = r.fen;
+    s.lastMove = lm;
+    tx.emit({ type: 'setPosition', fen: r.fen, lastMove: lm, ms: s.animMs });
+    tx.emit({ type: 'flash', square: lm.to, ok: true });
+  }
+  tx.schedule('advance', s.animMs + STORM_REVEAL_MS);
 }
 
 /**
@@ -270,7 +294,7 @@ function solve(tx: Tx, square: Square) {
   } else {
     s.drilled += 1;
   }
-  tx.schedule('advance', SOLVED_PAUSE_MS);
+  tx.schedule('advance', s.mode === 'storm' ? STORM_SOLVED_PAUSE_MS : SOLVED_PAUSE_MS);
 }
 
 function onReplyDue(tx: Tx) {
@@ -310,6 +334,7 @@ function popHead(tx: Tx) {
 
 function onAdvanceDue(tx: Tx) {
   const s = tx.s;
+  if (s.phase === 'revealing') return requestAdvance(tx);
   if (s.phase !== 'solved') return;
   if (s.mode === 'mistakes') return popHead(tx);
   if (fedByAdvance(s)) requestAdvance(tx);
@@ -413,7 +438,10 @@ function onTimer(tx: Tx, id: PracticeTimer) {
     case 'reply':
       return onReplyDue(tx);
     case 'rewind':
-      if (tx.s.phase === 'rewinding') rewind(tx);
+      if (tx.s.phase === 'rewinding') {
+        if (tx.s.mode === 'storm') reveal(tx);
+        else rewind(tx);
+      }
       return;
     case 'advance':
       return onAdvanceDue(tx);
