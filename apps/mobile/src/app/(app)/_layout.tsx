@@ -66,6 +66,8 @@ export default function AppLayout() {
         <Stack.Screen name="course/done" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen name="course/result" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen name="course/certificate" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
+        <Stack.Screen name="storm/run" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
+        <Stack.Screen name="storm/result" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen
           name="onboarding"
           options={{
@@ -81,6 +83,10 @@ export default function AppLayout() {
         <Stack.Screen name="library/[bookId]" options={{ headerShown: false }} />
         <Stack.Screen name="course/[courseId]" options={{ headerShown: false }} />
         <Stack.Screen name="course/intro" options={{ headerShown: false }} />
+        <Stack.Screen name="storm/index" options={{ headerShown: false }} />
+        <Stack.Screen name="storm/friends" options={{ headerShown: false }} />
+        <Stack.Screen name="challenge/new" options={{ headerShown: false }} />
+        <Stack.Screen name="challenge/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="sessions/index" />
         <Stack.Screen name="sessions/[id]/index" />
         <Stack.Screen name="puzzles/[puzzleId]" />
