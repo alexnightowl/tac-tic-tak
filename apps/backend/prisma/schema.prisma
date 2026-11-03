@@ -61,6 +61,10 @@ model User {
   offlineReceipts        OfflineAttemptReceipt[]
   libraryAttempts        LibraryAttempt[]
   courseExams            CourseExam[]
+  stormStreams           StormStream[]
+  stormRuns              StormRun[]
+  challengesSent         Challenge[] @relation("ChallengeChallenger")
+  challengesReceived     Challenge[] @relation("ChallengeOpponent")
 }
 
 model UserSetting {
@@ -288,7 +292,7 @@ model UserExperience {
 model XpEvent {
   id        String   @id @default(cuid())
   userId    String
-  // "session" | "review" | "offline" | "library"
+  // "session" | "review" | "offline" | "library" | "storm"
   source    String
   amount    Int
   createdAt DateTime @default(now())
@@ -338,4 +342,74 @@ model CourseExam {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, courseId])
+}
+
+/// Puzzle Storm (mobile, docs/mobile/STORM.md): a stream of rising puzzles
+/// kept so a friend can replay it in a Race.
+model StormStream {
+  id        String     @id @default(cuid())
+  userId    String
+  base      Int
+  puzzleIds String[]
+  createdAt DateTime   @default(now())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs      StormRun[]
+
+  @@index([userId, createdAt])
+}
+
+/// One finished Storm or Race run. Not rated.
+model StormRun {
+  id              String      @id @default(cuid())
+  clientId        String      @unique
+  userId          String
+  streamId        String
+  // "time3" | "time5" | "survival"
+  format          String
+  // Null: a solo Storm run.
+  challengeId     String?
+  score           Int
+  mistakes        Int
+  bestCombo       Int
+  durationMs      Int
+  lastSolveMs     Int
+  hardest         Int?
+  // [{ i, ok, ms }] per answered puzzle.
+  results         Json
+  createdAt       DateTime    @default(now())
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stream          StormStream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  asChallengerRun Challenge[] @relation("ChallengeChallengerRun")
+  asOpponentRun   Challenge[] @relation("ChallengeOpponentRun")
+
+  @@unique([challengeId, userId])
+  @@index([userId, challengeId, createdAt])
+}
+
+/// An async Race between two friends on one stream.
+model Challenge {
+  id              String    @id @default(cuid())
+  challengerId    String
+  opponentId      String
+  format          String
+  streamId        String
+  avgRating       Int
+  note            String?
+  // "draft" (the challenger has not played yet) | "pending" | "declined" | "finished";
+  // a pending one past expiresAt reads as "expired".
+  status          String    @default("draft")
+  // The runs (a dare's challenger run is a solo Storm run).
+  challengerRunId String?
+  opponentRunId   String?
+  sentAt          DateTime?
+  expiresAt       DateTime?
+  finishedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  challenger      User      @relation("ChallengeChallenger", fields: [challengerId], references: [id], onDelete: Cascade)
+  opponent        User      @relation("ChallengeOpponent", fields: [opponentId], references: [id], onDelete: Cascade)
+  challengerRun   StormRun? @relation("ChallengeChallengerRun", fields: [challengerRunId], references: [id], onDelete: SetNull)
+  opponentRun     StormRun? @relation("ChallengeOpponentRun", fields: [opponentRunId], references: [id], onDelete: SetNull)
+
+  @@index([challengerId, createdAt])
+  @@index([opponentId, status])
 }

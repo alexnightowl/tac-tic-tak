@@ -13,6 +13,7 @@ import { AdminModule } from './admin/admin.module';
 import { OfflineModule } from './offline/offline.module';
 import { ExperienceModule } from './experience/experience.module';
 import { LibraryModule } from './library/library.module';
+import { StormModule } from './storm/storm.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { LibraryModule } from './library/library.module';
     OfflineModule,
     ExperienceModule,
     LibraryModule,
+    StormModule,
   ],
 })
 export class AppModule {}

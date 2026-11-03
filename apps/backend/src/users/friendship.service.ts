@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AchievementsService } from '../achievements/achievements.service';
+import { RedisService } from '../redis/redis.service';
 
 export type FriendshipView = 'none' | 'self' | 'outgoing' | 'incoming' | 'friends';
 
@@ -14,6 +15,7 @@ export class FriendshipService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly achievements: AchievementsService,
+    private readonly redis: RedisService,
   ) {}
 
   /** List accepted friends (as lightweight user cards). */
@@ -29,10 +31,14 @@ export class FriendshipService {
       },
       orderBy: { acceptedAt: 'desc' },
     });
-    return rows.map((r) => ({
+    const users = rows.map((r) => (r.requesterId === userId ? r.addressee : r.requester));
+    // Presence (mobile): any authenticated request in the last 2 minutes.
+    const online = await this.redis.online(users.map((u) => u.id));
+    return rows.map((r, i) => ({
       friendshipId: r.id,
       since: r.acceptedAt,
-      user: r.requesterId === userId ? r.addressee : r.requester,
+      user: users[i],
+      online: online[i],
     }));
   }
 
