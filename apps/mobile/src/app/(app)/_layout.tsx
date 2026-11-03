@@ -6,6 +6,7 @@ import { Stack } from 'expo-router';
 import '@/features/achievements/icons';
 import { OfflineSyncHost } from '@/features/offline/OfflineSyncHost';
 import { SettingsEffects } from '@/features/settings/SettingsEffects';
+import { StormSyncHost } from '@/features/storm/sync';
 import { ShellErrorBoundary } from '@/shell/ErrorScreen';
 import { useT } from '@/ui/lang';
 import { stackHeader } from '@/ui/NavHeader';
@@ -41,6 +42,8 @@ export default function AppLayout() {
       <SettingsEffects />
       {/* Offline results sync (start, foreground, network back) + the summary. */}
       <OfflineSyncHost />
+      {/* Storm runs: post the queue on start / foreground, finish a killed run. */}
+      <StormSyncHost />
       <Stack
         screenOptions={{
           headerShown: true,

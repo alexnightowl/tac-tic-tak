@@ -11,7 +11,9 @@ import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { ChallengeEntry } from '@/features/challenge/ChallengeEntry';
 import { OfflineEntry } from '@/features/offline/OfflineEntry';
+import { StormEntry } from '@/features/storm/StormEntry';
 import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
 import { fontFamily } from '@/ui/fonts';
@@ -354,6 +356,8 @@ export function PlaySetupScreen() {
           )}
         </Card>
 
+        <StormEntry />
+        <ChallengeEntry />
         <ReviewEntry />
         <OfflineEntry />
       </ScrollView>

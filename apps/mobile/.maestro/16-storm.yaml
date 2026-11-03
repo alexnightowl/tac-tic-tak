@@ -1,0 +1,71 @@
+# Puzzle Storm, solo (docs/mobile/STORM.md "Solo Storm").
+#   Play → the Puzzle Storm row → Start (rules, best, today, the week) →
+#   "All" (the friends list) → back → Start storm → solve 3 puzzles
+#   (e2e-solve) and miss one (e2e-wrong: a life goes, the combo resets) →
+#   ✕ asks first → End run → the result (score, stats, the chart).
+# Runs as the e2e user as is; 16-storm.sh seeds a throwaway user with
+# friends and passes SHOTS / LANG for the screenshots.
+# Env: E2E_USER/E2E_PASSWORD, SHOTS (screenshot dir), LANG (en | uk; the
+# screenshot suffix).
+appId: online.tactictak.app
+---
+- runFlow:
+    file: 09-login.yaml
+- runFlow:
+    when: { visible: { id: screen-onboarding } }
+    commands:
+      - tapOn: { id: onboarding-skip, optional: true }
+
+# Play → the Storm row.
+- runFlow:
+    file: common/tap-tab.yaml
+    env: { TAB: play, SCREEN: play-setup }
+# Scroll the row clear of the docked Start button.
+- scrollUntilVisible: { element: { id: play-offline }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: play-storm }
+- extendedWaitUntil: { visible: { id: storm-start }, timeout: 15000 }
+- assertVisible: { id: storm-rules }
+- assertVisible: { id: storm-best }
+- assertVisible: { id: storm-start-run }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/start-${LANG}
+
+# The full week list.
+- tapOn: { id: storm-week-all }
+- extendedWaitUntil: { visible: { id: storm-friends-list }, timeout: 15000 }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/friends-${LANG}
+- tapOn: { id: storm-friends-back }
+- extendedWaitUntil: { visible: { id: storm-start-run }, timeout: 10000 }
+
+# The run.
+- tapOn: { id: storm-start-run }
+- extendedWaitUntil: { visible: { id: storm-run }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 20000 }
+- assertVisible: { id: storm-run-timer }
+- assertVisible: { id: storm-run-score, text: "0" }
+- repeat:
+    times: 3
+    commands:
+      - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+      - tapOn: { id: e2e-solve }
+      - extendedWaitUntil: { visible: { id: runner-phase, text: "(solved|swapping|setupAnimating|opponentReplying)" }, timeout: 5000, optional: true }
+- extendedWaitUntil: { visible: { id: storm-run-score, text: "3" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+- tapOn: { id: e2e-wrong }
+# The miss: a life gone (2 of 3), then the next puzzle.
+- extendedWaitUntil: { visible: { id: storm-run-lives, text: ".*2.*3.*" }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+- waitForAnimationToEnd: { timeout: 2000 }
+- takeScreenshot: ${SHOTS}/run-${LANG}
+
+# ✕ confirms, then the result.
+- tapOn: { id: storm-run-exit }
+- tapOn: { text: "(End run|Завершити)" }
+- extendedWaitUntil: { visible: { id: storm-result }, timeout: 15000 }
+- assertVisible: { id: storm-result-score, text: "3" }
+- assertVisible: { id: storm-result-chart }
+- assertVisible: { id: storm-result-again }
+- extendedWaitUntil: { visible: { id: storm-result-dare }, timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/result-${LANG}

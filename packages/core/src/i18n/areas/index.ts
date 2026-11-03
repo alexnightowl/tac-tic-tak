@@ -40,6 +40,8 @@ import { coursesEn } from './courses.en';
 import { coursesUk } from './courses.uk';
 import { challengeEn } from './challenge.en';
 import { challengeUk } from './challenge.uk';
+import { stormEn } from './storm.en';
+import { stormUk } from './storm.uk';
 
 export const AREAS = [
   'common',
@@ -60,6 +62,7 @@ export const AREAS = [
   'learn',
   'courses',
   'challenge',
+  'storm',
 ] as const;
 
 export type Area = (typeof AREAS)[number];
@@ -83,6 +86,7 @@ export const AREA_DICTS: Record<Area, Record<Language, Dict>> = {
   learn: { en: learnEn, uk: learnUk },
   courses: { en: coursesEn, uk: coursesUk },
   challenge: { en: challengeEn, uk: challengeUk },
+  storm: { en: stormEn, uk: stormUk },
 };
 
 /** All areas of one language merged into a flat dict (the web shape). */
