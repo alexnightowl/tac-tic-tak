@@ -1,13 +1,14 @@
 import { StyleSheet, View } from 'react-native';
 
 import '@/features/achievements/icons';
+import { RivalsChallenges } from '@/features/challenge/RivalsChallenges';
 import { LeaderboardView } from './LeaderboardView';
 
-/** Rivals tab: the leaderboard. Friends are reached from the profile (web /friends). */
+/** Rivals tab: the challenges section (app-only), then the leaderboard. Friends are reached from the profile (web /friends). */
 export function RivalsScreen() {
   return (
     <View style={styles.root} testID="screen-rivals">
-      <LeaderboardView />
+      <LeaderboardView top={<RivalsChallenges />} />
     </View>
   );
 }

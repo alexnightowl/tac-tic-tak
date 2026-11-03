@@ -1,0 +1,79 @@
+# Challenge a friend, the async Race (docs/mobile/STORM.md). Seeded by
+# 17-challenge.sh (17-challenge-seed.mjs): a local throwaway ME with a
+# friend who already played an incoming challenge, plus a finished Race
+# (ME wins) and a sent one (waiting).
+#   Rivals → the Challenges section lists the incoming one → Incoming
+#   (the friend's score, the note, the expiry) → Decline (confirm) → back
+#   on Rivals, the row reads Declined → Create from the section: pick the friend,
+#   pick Survival (its hint), Difficulty → back → Result and Waiting by
+#   deep link.
+# Env: E2E_USER/E2E_PASSWORD (ME), FRIEND (nickname), INCOMING, RESULT,
+# WAITING (challenge ids), SHOTS (screenshot dir), LANG (en | uk).
+appId: online.tactictak.app
+---
+- runFlow:
+    file: 09-login.yaml
+- runFlow:
+    when: { visible: { id: screen-onboarding } }
+    commands:
+      - tapOn: { id: onboarding-skip, optional: true }
+
+# Rivals: the section, incoming first.
+- runFlow:
+    file: common/tap-tab.yaml
+    env: { TAB: rivals, SCREEN: screen-rivals }
+- extendedWaitUntil: { visible: { id: rivals-challenges }, timeout: 15000 }
+- extendedWaitUntil: { visible: { id: "rivals-challenge-${INCOMING}" }, timeout: 10000 }
+- assertVisible: { id: "rivals-challenge-${RESULT}" }
+- assertVisible: { id: "rivals-challenge-${WAITING}" }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/rivals-challenges-${LANG}
+
+# Incoming.
+- tapOn: { id: "rivals-challenge-${INCOMING}" }
+- extendedWaitUntil: { visible: { id: challenge-incoming }, timeout: 15000 }
+- assertVisible: { id: challenge-already, text: ".*14.*" }
+- assertVisible: { id: challenge-note-card }
+- assertVisible: { id: challenge-expiry }
+- assertVisible: { id: challenge-accept }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/challenge-incoming-${LANG}
+
+# Decline the incoming one (asks first).
+- tapOn: { id: challenge-decline }
+- extendedWaitUntil: { visible: { text: "(Decline the challenge\\?|Відхилити виклик\\?)" }, timeout: 5000 }
+- tapOn: { text: "(Decline|Відхилити)", index: 0 }
+- extendedWaitUntil: { visible: { id: screen-rivals }, timeout: 15000 }
+# It moves down to the closed ones: "Declined".
+- extendedWaitUntil: { visible: { text: ".*(Declined|Відхилено).*" }, timeout: 10000 }
+
+# Create from the section: friend, Survival, Difficulty "~avg".
+- tapOn: { id: rivals-challenge-new }
+- extendedWaitUntil: { visible: { id: challenge-create }, timeout: 15000 }
+- extendedWaitUntil: { visible: { id: "challenge-friend-${FRIEND}" }, timeout: 10000 }
+- assertVisible: { id: challenge-send, enabled: false }
+- tapOn: { id: "challenge-friend-${FRIEND}" }
+- tapOn: { id: challenge-format-survival }
+- assertVisible: { id: challenge-format-hint, text: "(No clock|Без годинника).*" }
+- extendedWaitUntil: { visible: { id: challenge-difficulty, text: ".*~\\d+" }, timeout: 10000 }
+- assertVisible: { id: challenge-send, enabled: true }
+- assertVisible: { id: challenge-mode-together }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/challenge-create-${LANG}
+- tapOn: { id: challenge-back }
+- extendedWaitUntil: { visible: { id: screen-rivals }, timeout: 10000 }
+
+# Result (ME 15 – 13) and Waiting, by deep link.
+- openLink: "tactictak://challenge/${RESULT}"
+- extendedWaitUntil: { visible: { id: challenge-result }, timeout: 15000 }
+- assertVisible: { id: challenge-verdict-win }
+- assertVisible: { id: challenge-table }
+- assertVisible: { id: challenge-rematch }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/challenge-result-${LANG}
+- openLink: "tactictak://challenge/${WAITING}"
+- extendedWaitUntil: { visible: { id: challenge-waiting }, timeout: 15000 }
+- assertVisible: { id: challenge-waiting-title }
+- assertVisible: { id: challenge-expiry }
+- waitForAnimationToEnd: { timeout: 3000 }
+- takeScreenshot: ${SHOTS}/challenge-waiting-${LANG}

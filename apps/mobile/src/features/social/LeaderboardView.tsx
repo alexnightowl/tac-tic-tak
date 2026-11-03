@@ -4,7 +4,7 @@ import { eos, graphite, layout, radii, rank, semantic, shadows, space } from '@t
 import { FlashList, type FlashListRef, type ViewToken } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { Medal } from 'lucide-react-native';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 
 import { feel } from '@/feel';
@@ -33,8 +33,9 @@ const SELF_RING = semantic.accent;
  * Leaderboard (web /leaderboard): style + scope switches (remembered on the
  * device), a top-3 podium, then a virtualised list. Your own row is ringed;
  * when it is scrolled away it docks at the bottom, tap to jump back.
+ * `top` scrolls above the switches (Rivals' Challenges section).
  */
-export function LeaderboardView() {
+export function LeaderboardView({ top }: { top?: ReactNode } = {}) {
   const t = useT();
   const [style, setStyle] = useState<TrainingStyle>(readBoardStyle);
   const [scope, setScope] = useState<LeaderboardScope>(readBoardScope);
@@ -64,6 +65,7 @@ export function LeaderboardView() {
 
   const header = (
     <View style={styles.header}>
+      {top}
       <Segmented
         options={STYLE_ORDER.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
         value={style}

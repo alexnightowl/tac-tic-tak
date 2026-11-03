@@ -136,6 +136,8 @@ export const challengeEn: Dict = {
   'challenge.chip.d': 'D',
   'challenge.left_h': '{n} h',
   'challenge.left_m': '{n} min',
+  'challenge.more': '{n} more',
+  'challenge.profile_action': 'Challenge',
   'challenge.cta': 'Challenge a friend',
   'challenge.cta_hint': 'Race a friend on the same puzzles',
 };

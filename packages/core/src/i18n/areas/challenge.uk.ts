@@ -136,6 +136,8 @@ export const challengeUk: Dict = {
   'challenge.chip.d': 'Н',
   'challenge.left_h': '{n} год',
   'challenge.left_m': '{n} хв',
+  'challenge.more': 'Ще {n}',
+  'challenge.profile_action': 'Викликати',
   'challenge.cta': 'Виклик другу',
   'challenge.cta_hint': 'Перегони з другом на тих самих задачах',
 };

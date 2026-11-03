@@ -1,5 +1,6 @@
 import { space } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
+import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -75,15 +76,25 @@ export function FriendActionButton({ user }: { user: UserCard }) {
       );
     case 'friends':
       return (
-        <PlateButton
-          testID="profile-unfriend"
-          label={t('profile.unfriend')}
-          accessibilityLabel={`${t('profile.friends')}. ${t('profile.unfriend')}`}
-          variant="slate"
-          size="sm"
-          disabled={off}
-          onPress={() => confirmUnfriend(user)}
-        />
+        <View style={styles.pair}>
+          {/* Challenge a friend (app-only entry; STORM.md). */}
+          <PlateButton
+            testID="profile-challenge"
+            label={t('challenge.profile_action')}
+            size="sm"
+            disabled={off}
+            onPress={() => router.push(`/challenge/new?friend=${encodeURIComponent(user.id)}` as Href)}
+          />
+          <PlateButton
+            testID="profile-unfriend"
+            label={t('profile.unfriend')}
+            accessibilityLabel={`${t('profile.friends')}. ${t('profile.unfriend')}`}
+            variant="slate"
+            size="sm"
+            disabled={off}
+            onPress={() => confirmUnfriend(user)}
+          />
+        </View>
       );
     default:
       return null;
