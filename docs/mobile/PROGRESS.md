@@ -296,3 +296,11 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   puzzles solved in the drill are kept out locally. The drill waits for the server only when the
   cached list runs dry, to confirm the theme is cleared.
 - **Verified:** mobile typecheck, lint; Maestro `06-review` on an iOS sim (theme cleared, row gone).
+
+## 2026-11-04 — Review: take back only the wrong move; ‹ › to browse moves (D30)
+
+- Core `practiceReducer`: a `line` of positions per puzzle; a wrong move goes back to its tail
+  instead of the start; a `browse` event + `browseOf` selector. Tests 257 green.
+- Mobile: `BrowseRow` (practice-back / practice-forward) on the drill and the mistakes runner.
+- **Verified:** mobile typecheck, lint; Maestro `06-review` (with a back/forward step) and
+  `06-mistakes` on an iOS sim.

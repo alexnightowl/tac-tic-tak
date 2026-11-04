@@ -26,7 +26,7 @@ import { reviewApi, reviewKeys } from './api';
 import { E2E, PracticeE2EStrip } from './practice/E2EStrip';
 import type { PracticeHooks } from './practice/PracticeController';
 import { PracticeBoard } from './practice/PracticeBoard';
-import { DoneView, HintButton, PracticeTurnCard, RoundButton, SolvedBadge, ThemesLine } from './practice/parts';
+import { BrowseRow, DoneView, HintButton, PracticeTurnCard, RoundButton, SolvedBadge, ThemesLine } from './practice/parts';
 import { usePractice } from './practice/usePractice';
 import { StateView } from './states';
 
@@ -207,10 +207,14 @@ export function DrillScreen({ puzzleId, theme }: { puzzleId: string; theme?: str
                 {t('review.retry_load')}
               </AppText>
             </RoundButton>
-          ) : solvedLike ? (
-            <SolvedBadge t={t} />
           ) : (
-            <HintButton level={s.hintLevel} disabled={!canHint(s)} onPress={() => controller.dispatch({ type: 'hint' })} t={t} />
+            <BrowseRow state={s} onBrowse={(delta) => controller.dispatch({ type: 'browse', delta })} t={t}>
+              {solvedLike ? (
+                <SolvedBadge t={t} />
+              ) : (
+                <HintButton level={s.hintLevel} disabled={!canHint(s)} onPress={() => controller.dispatch({ type: 'hint' })} t={t} />
+              )}
+            </BrowseRow>
           )}
         </View>
         {E2E && <PracticeE2EStrip controller={controller} state={s} />}

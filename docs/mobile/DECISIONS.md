@@ -316,3 +316,14 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   - **Create** adds an optional one-line note (the Incoming card shows one, but no artboard says
     where it is written), and Together is shown disabled with "Soon".
 
+
+### D30. Practice runner: take back only the wrong move; browse the line (owner, 2026-11-04)
+
+- **A wrong move** is taken back to the position just before it; the moves already found stay on
+  the board. This replaces the rewind to the puzzle's start (web, and this app until now) in every
+  practice mode that rewinds: review drill, session mistakes, offline packs, Library, courses.
+  Storm keeps its reveal-and-move-on.
+- **Back / forward buttons** (‹ ›, around the hint button) on the review drill and the session
+  mistakes runner browse the positions of the puzzle so far, from the one before the setup move.
+  Live only on the player's turn; away from the live position the board is read-only and the hint
+  is off. Forward to the end hands the turn back.

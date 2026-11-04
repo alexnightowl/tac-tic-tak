@@ -69,6 +69,13 @@ appId: online.tactictak.app
     timeout: 3000
 - assertVisible: { id: viewer-fen, text: "${output.startFen}" }
 
+# Back to the position before the setup move, then forward to the live turn.
+- tapOn: { id: practice-back }
+- takeScreenshot: 06-drill-browse-back
+- tapOn: { id: practice-forward }
+- assertVisible: { id: runner-phase, text: playerTurn }
+- assertVisible: { id: viewer-fen, text: "${output.startFen}" }
+
 # Hints: level 1, level 2, then the button disables.
 - tapOn: { id: practice-hint }
 - assertVisible: { id: practice-hint-1 }

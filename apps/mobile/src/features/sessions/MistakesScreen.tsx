@@ -15,7 +15,7 @@ import { progressTiming } from '@/features/review/motion';
 import { E2E, PracticeE2EStrip } from '@/features/review/practice/E2EStrip';
 import { PracticeBoard } from '@/features/review/practice/PracticeBoard';
 import type { PracticeHooks } from '@/features/review/practice/PracticeController';
-import { DoneView, HintButton, PracticeTurnCard, RoundButton, SolvedBadge, ThemesLine } from '@/features/review/practice/parts';
+import { BrowseRow, DoneView, HintButton, PracticeTurnCard, RoundButton, SolvedBadge, ThemesLine } from '@/features/review/practice/parts';
 import { usePractice } from '@/features/review/practice/usePractice';
 import { StateView } from '@/features/review/states';
 import { queryClient } from '@/platform/query';
@@ -179,11 +179,13 @@ export function MistakesScreen({ sessionId }: { sessionId: string }) {
           </AppText>
         </View>
         <View style={styles.cta}>
-          {practiceTitleOf(s) === 'solved' ? (
-            <SolvedBadge t={t} />
-          ) : (
-            <HintButton level={s.hintLevel} disabled={!canHint(s)} onPress={() => controller.dispatch({ type: 'hint' })} t={t} />
-          )}
+          <BrowseRow state={s} onBrowse={(delta) => controller.dispatch({ type: 'browse', delta })} t={t}>
+            {practiceTitleOf(s) === 'solved' ? (
+              <SolvedBadge t={t} />
+            ) : (
+              <HintButton level={s.hintLevel} disabled={!canHint(s)} onPress={() => controller.dispatch({ type: 'hint' })} t={t} />
+            )}
+          </BrowseRow>
         </View>
         {E2E && <PracticeE2EStrip controller={controller} state={s} />}
       </View>

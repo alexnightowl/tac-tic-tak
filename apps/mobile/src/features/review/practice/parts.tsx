@@ -1,9 +1,9 @@
 import type { AppPieceSet } from '@tac/core/board';
-import type { PracticeTitle } from '@tac/core/runner';
+import { browseOf, type PracticeState, type PracticeTitle } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { board, control, eos, layout, radii, semantic, space, surface } from '@tac/core/tokens';
 import { Image } from 'expo-image';
-import { Check, Lightbulb } from 'lucide-react-native';
+import { Check, ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react-native';
 import { useEffect, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -133,6 +133,35 @@ export function HintButton({ level, disabled, onPress, t }: { level: number; dis
   );
 }
 
+/**
+ * Back / forward through the moves played so far, around the centre
+ * control (hint or the Solved badge). Live only on the player's turn.
+ */
+export function BrowseRow({
+  state,
+  onBrowse,
+  t,
+  children,
+}: {
+  state: PracticeState;
+  onBrowse: (delta: -1 | 1) => void;
+  t: TFn;
+  children: ReactNode;
+}) {
+  const b = browseOf(state);
+  return (
+    <View style={styles.browseRow}>
+      <RoundButton testID="practice-back" label={t('puzzle.prev')} disabled={!b.back} onPress={() => onBrowse(-1)}>
+        <ChevronLeft size={22} color={eos.bone} />
+      </RoundButton>
+      {children}
+      <RoundButton testID="practice-forward" label={t('puzzle.next')} disabled={!b.forward} onPress={() => onBrowse(1)}>
+        <ChevronRight size={22} color={eos.bone} />
+      </RoundButton>
+    </View>
+  );
+}
+
 /** The hint button morphs into this (web .review-solved-pop). `fit`: no 120 pt min width (viewer). */
 export function SolvedBadge({ t, fit = false }: { t: TFn; fit?: boolean }) {
   const reduced = useReducedMotion();
@@ -202,6 +231,7 @@ const styles = StyleSheet.create({
     borderColor: semantic.borderSoft,
   },
   disabled: { opacity: 0.5 },
+  browseRow: { flexDirection: 'row', alignItems: 'center', gap: space[4] },
   turnCard: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -36,7 +36,7 @@ export type PracticePhase =
   | 'setupAnimating'
   | 'playerTurn'
   | 'opponentReplying'
-  /** A wrong move is on the board; the rewind to the start is due (storm: the reveal). */
+  /** A wrong move is on the board; taking it back is due (storm: the reveal). */
   | 'rewinding'
   /** Storm: the right move is on the board after a mistake; the next puzzle is due. */
   | 'revealing'
@@ -50,6 +50,8 @@ export type PracticePhase =
   | 'done';
 
 export type PracticeTimer = 'reply' | 'rewind' | 'advance';
+
+export type LinePosition = { fen: string; lastMove: LastMove | null };
 
 export type PracticeAnim = {
   id: number;
@@ -68,8 +70,14 @@ export type PracticeState = {
   item: PracticeItem | null;
   /** Waiting behind the fade-out. */
   incoming: PracticeItem | null;
-  /** Position after the setup move: the rewind target. */
-  start: { fen: string; lastMove: LastMove | null; remaining: string[] } | null;
+  /**
+   * The puzzle's positions so far: the one before the setup move, then one
+   * per move landed. The tail is the live position (a wrong move is taken
+   * back to it); the back / forward buttons browse the rest.
+   */
+  line: LinePosition[];
+  /** Browsing an earlier `line` index (input off); null = the live position. */
+  view: number | null;
   fen: string | null;
   lastMove: LastMove | null;
   orientation: Orientation;
@@ -123,6 +131,8 @@ export type PracticeEvent =
   | { type: 'showSolution' }
   | { type: 'tryAgain' }
   | { type: 'step'; delta: number; source: StepSource }
+  /** On the player's turn: show the previous / next position of the line so far. */
+  | { type: 'browse'; delta: -1 | 1 }
   | { type: 'seek'; ply: number }
   | { type: 'configure'; animMs?: number; fixedColor?: FixedColor };
 

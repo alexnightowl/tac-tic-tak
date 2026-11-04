@@ -77,7 +77,13 @@ export function practiceTitleOf(s: PracticeState): PracticeTitle {
   return 'opponent';
 }
 
-export const canHint = (s: PracticeState) => s.phase === 'playerTurn' && s.hintLevel < 2 && s.remaining.length > 0;
+export const canHint = (s: PracticeState) => s.phase === 'playerTurn' && s.view === null && s.hintLevel < 2 && s.remaining.length > 0;
+
+/** Back / forward buttons on the player's turn (see `browse`). */
+export function browseOf(s: PracticeState): { back: boolean; forward: boolean } {
+  const on = s.phase === 'playerTurn';
+  return { back: on && (s.view ?? s.line.length - 1) > 0, forward: on && s.view !== null };
+}
 
 /** Viewer stepper: 'Move n of total' counts the player's line (the setup move is ply 1). */
 export function solutionStepOf(s: PracticeState): { n: number; total: number; ply: number; maxPly: number } | null {

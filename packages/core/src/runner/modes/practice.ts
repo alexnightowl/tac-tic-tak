@@ -12,7 +12,7 @@ import type {
   PracticeTransition, StepSource,
 } from './types';
 
-/** Wrong move stays on the board this long, then the puzzle rewinds (web 520 ms). */
+/** Wrong move stays on the board this long, then it is taken back (web 520 ms). */
 export const REWIND_DELAY_MS = 520;
 /** Opponent reply waits for the player's slide (web max(animMs, 80)). */
 export const PRACTICE_REPLY_MIN_MS = 80;
@@ -33,7 +33,8 @@ export function createPractice(config: PracticeConfig): PracticeState {
     phase: 'idle',
     item: null,
     incoming: null,
-    start: null,
+    line: [],
+    view: null,
     fen: null,
     lastMove: null,
     orientation: 'white',
@@ -120,6 +121,7 @@ function begin(tx: Tx, item: PracticeItem) {
   s.anim = null;
   s.fens = null;
   s.ply = 0;
+  s.view = null;
   s.hintLevel = 0;
   s.error = null;
   tx.interactive(false);
@@ -134,7 +136,7 @@ function begin(tx: Tx, item: PracticeItem) {
     s.fixedColor === 'white' ? 'white' : s.fixedColor === 'black' ? 'black' : init.playerColor === 'w' ? 'white' : 'black';
   s.remaining = init.remaining;
   const setup = init.setupMove ? uciFromMove(init.setupMove) : null;
-  s.start = { fen: init.postFen, lastMove: setup ? lastMoveOfUci(setup) : null, remaining: init.remaining };
+  s.line = [{ fen: setup ? init.preFen : init.postFen, lastMove: null }];
   if (!setup) {
     s.fen = init.postFen;
     s.lastMove = null;
@@ -190,6 +192,7 @@ function land(tx: Tx) {
   s.anim = null;
   s.fen = a.fenAfter;
   s.lastMove = a.lastMove;
+  s.line = [...s.line, { fen: a.fenAfter, lastMove: a.lastMove }];
   tx.emit({ type: 'feel', event: 'opponentLanding', ctx: { move: a.move } });
   if (a.kind === 'setup') return startTurn(tx);
   s.remaining = s.remaining.slice(1);
@@ -203,7 +206,7 @@ function land(tx: Tx) {
 function onMove(tx: Tx, from: Square, to: Square, promotion?: string) {
   const s = tx.s;
   const expected = s.remaining[0];
-  if (s.phase !== 'playerTurn' || !s.fen || !expected) {
+  if (s.phase !== 'playerTurn' || s.view !== null || !s.fen || !expected) {
     tx.emit({ type: 'rejectMove' });
     return;
   }
@@ -223,6 +226,7 @@ function onMove(tx: Tx, from: Square, to: Square, promotion?: string) {
     return wrong(tx, to);
   }
   s.remaining = s.remaining.slice(1);
+  s.line = [...s.line, { fen: r.fen, lastMove: { from, to } }];
   tx.clearHint();
   if (s.remaining.length === 0) return solve(tx, to);
   // The board runs with moveFeel='caller': the click is ours to play.
@@ -262,19 +266,39 @@ function reveal(tx: Tx) {
 }
 
 /**
- * fix: the web restarted the whole puzzle (setup slide again) and the
- * mistakes runner's comment promised a rotation it never did. Every mode
- * now slides the board back to the puzzle's start position, in place.
+ * fix: the web restarted the whole puzzle (setup slide again). Owner
+ * (2026-11-04): replaying moves already found is pointless, so only the
+ * wrong move is taken back and the player tries again from the same spot.
  */
 function rewind(tx: Tx) {
   const s = tx.s;
-  if (!s.start) return;
+  const back = s.line[s.line.length - 1];
+  if (!back) return;
   s.rewinds += 1;
-  s.fen = s.start.fen;
-  s.lastMove = s.start.lastMove;
-  s.remaining = s.start.remaining;
-  tx.emit({ type: 'setPosition', fen: s.start.fen, lastMove: s.start.lastMove, ms: s.animMs });
+  s.fen = back.fen;
+  s.lastMove = back.lastMove;
+  tx.emit({ type: 'setPosition', fen: back.fen, lastMove: back.lastMove, ms: s.animMs });
   startTurn(tx);
+}
+
+/**
+ * Back / forward through the line so far on the player's turn. Away from
+ * the live position the board is read-only; stepping back to it hands the
+ * turn back.
+ */
+function browse(tx: Tx, delta: -1 | 1) {
+  const s = tx.s;
+  if (s.phase !== 'playerTurn' || s.line.length < 2) return;
+  const live = s.line.length - 1;
+  const from = s.view ?? live;
+  const to = Math.max(0, Math.min(live, from + delta));
+  if (to === from) return;
+  tx.clearHint();
+  s.view = to === live ? null : to;
+  const p = s.line[to];
+  tx.emit({ type: 'feel', event: 'sliderTick' });
+  tx.emit({ type: 'setPosition', fen: p.fen, lastMove: p.lastMove, ms: s.animMs });
+  tx.interactive(s.view === null);
 }
 
 function solve(tx: Tx, square: Square) {
@@ -345,7 +369,7 @@ function onAdvanceDue(tx: Tx) {
 function onHint(tx: Tx) {
   const s = tx.s;
   const expected = s.remaining[0];
-  if (s.phase !== 'playerTurn' || !expected || s.hintLevel >= 2) return;
+  if (s.phase !== 'playerTurn' || s.view !== null || !expected || s.hintLevel >= 2) return;
   const level = (s.hintLevel + 1) as 1 | 2;
   s.hintLevel = level;
   const m = parseUci(expected);
@@ -503,6 +527,8 @@ function stepEvent(tx: Tx, e: PracticeEvent) {
       return;
     case 'step':
       return step(tx, s.ply + e.delta, e.source);
+    case 'browse':
+      return browse(tx, e.delta);
     case 'seek':
       return step(tx, e.ply, 'seek');
     case 'configure':

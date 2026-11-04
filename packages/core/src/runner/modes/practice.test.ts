@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { ServerPuzzle } from '../../puzzle';
 import { SOLVED_PAUSE_MS } from '../../puzzle';
 import {
-  REPEAT_SLIDE_MS, REWIND_DELAY_MS, canHint, createPractice, drillCounterOf, e2eWrongMove, nextReviewPuzzleId,
+  REPEAT_SLIDE_MS, REWIND_DELAY_MS, browseOf, canHint, createPractice, drillCounterOf, e2eWrongMove, nextReviewPuzzleId,
   normalizeMoves, practiceReducer, practiceTitleOf, sessionItemToPractice, solutionStepOf, tacticalThemes,
   type PracticeConfig, type PracticeEffect, type PracticeEvent, type PracticeState,
 } from './index';
@@ -101,7 +101,7 @@ describe('practice: moves', () => {
     expect(d.s.remaining).toEqual(['b3c1', 'b1c1', 'h6c1']);
   });
 
-  it('a wrong move flashes, shakes, then rewinds with a slide to the start after 520 ms', () => {
+  it('a wrong move flashes, shakes, then only that move is taken back after 520 ms', () => {
     const d = new Driver({ mode: 'mistakes' });
     d.send({ type: 'start', items: [{ puzzle: LONG, reason: 'failed' }] });
     d.land();
@@ -113,11 +113,50 @@ describe('practice: moves', () => {
     expect(d.types()).toEqual(['interactive', 'feel:mistake', 'flash', 'shake', 'schedule']);
     expect(d.last('schedule')).toMatchObject({ id: 'rewind', ms: REWIND_DELAY_MS });
     expect(d.s.failedTries).toBe(1);
+    const live = d.s.line[d.s.line.length - 1];
     d.timer('rewind');
-    expect(d.last('setPosition')).toMatchObject({ lastMove: { from: 'f2', to: 'g3' }, ms: 280 });
+    // Owner 2026-11-04: back to the position before the mistake, not the start.
+    expect(d.last('setPosition')).toMatchObject({ fen: live.fen, lastMove: { from: 'b2', to: 'b1' }, ms: 280 });
+    expect(d.s.fen).toBe(live.fen);
     expect(d.s.phase).toBe('playerTurn');
-    expect(d.s.remaining).toEqual(LONG.moves.slice(1));
+    expect(d.s.remaining).toEqual(['b3c1', 'b1c1', 'h6c1']);
     expect(d.s.rewinds).toBe(1);
+    d.move('b3c1');
+    expect(d.s.phase).toBe('opponentReplying');
+  });
+
+  it('back / forward browse the line so far; the board is read-only away from the live position', () => {
+    const d = new Driver({ mode: 'drill' });
+    d.send({ type: 'start', items: [{ puzzle: LONG }] });
+    expect(browseOf(d.s)).toEqual({ back: false, forward: false });
+    d.land();
+    d.move('e6e7');
+    d.timer('reply');
+    d.land();
+    // Pre-setup, after the setup, after e6e7, after the reply b2b1.
+    expect(d.s.line).toHaveLength(4);
+    expect(browseOf(d.s)).toEqual({ back: true, forward: false });
+    d.send({ type: 'hint' });
+    d.send({ type: 'browse', delta: -1 });
+    expect(d.s.view).toBe(2);
+    expect(d.last('setPosition')).toMatchObject({ fen: d.s.line[2].fen, lastMove: { from: 'e6', to: 'e7' } });
+    expect(d.last('interactive')).toEqual({ type: 'interactive', on: false });
+    expect(d.last('hint')).toMatchObject({ level: 0 });
+    expect(canHint(d.s)).toBe(false);
+    d.move('b3c1');
+    expect(d.types()).toEqual(['rejectMove']);
+    d.send({ type: 'browse', delta: -1 });
+    d.send({ type: 'browse', delta: -1 });
+    expect(d.s.view).toBe(0);
+    expect(d.last('setPosition')).toMatchObject({ fen: LONG.fen, lastMove: null });
+    expect(d.send({ type: 'browse', delta: -1 })).toEqual([]);
+    expect(browseOf(d.s)).toEqual({ back: false, forward: true });
+    for (let i = 0; i < 3; i++) d.send({ type: 'browse', delta: 1 });
+    expect(d.s.view).toBeNull();
+    expect(d.last('interactive')).toEqual({ type: 'interactive', on: true });
+    d.move('b3c1');
+    expect(d.s.phase).toBe('opponentReplying');
+    expect(browseOf(d.s)).toEqual({ back: false, forward: false });
   });
 
   it('an illegal move is taken back; the alternative mate solves', () => {
