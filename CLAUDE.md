@@ -12,7 +12,8 @@ PARITY.md mark them "fix".
 
 **The web is a full client again** (owner, 2026-11-04, D31): it catches up with the app, in design
 v2, on `@tac/core`. Plan: `docs/web/PLAN.md`; parity: `docs/web/PARITY-WEB.md`. The app stays the
-source of truth for behaviour; the web follows it.
+source of truth for behaviour; the web follows it. **Paused** the same day after W0–W2 (all on
+prod): do not start W3+ unless the owner asks; to resume read `docs/web/RESUME.md`.
 
 **Talk to the owner in Ukrainian** (chat replies, questions, morning summaries). Code, comments,
 commits, PRs and the docs/mobile files are in English, except `docs/mobile/OWNER-QUESTIONS.md`,

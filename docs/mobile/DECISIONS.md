@@ -339,3 +339,5 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   Web work goes on `web/*` branches from `main`; Claude merges them into `main` itself after the
   checks in `docs/web/PLAN.md` §5 ("Мерджу сам, як api/*").
 - **Not on the web:** offline packs, push, haptics.
+- **Paused (owner, 2026-11-04)** after W0–W2 shipped, on hearing the 1–2 day estimate for the
+  rest. Resume from `docs/web/RESUME.md` (next: W3 Play).
