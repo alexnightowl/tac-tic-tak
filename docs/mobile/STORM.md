@@ -19,7 +19,7 @@ Decisions: D29. Mobile-only.
 | Clock | 3:00 | 3:00 | 5:00 | none |
 | Lives | 3 | 3 | 3 | 3 |
 | A mistake | −1 life, −10 s, combo resets | same | same | −1 life, combo resets |
-| Combo bonus | +3 s at 5, 15, 25…; +5 s at 10, 20, 30… | same | same | none |
+| Combo bonus (D34) | from combo 5: +1 s a move, +3 s a solve; 12: +2 / +4; 20 (max): +3 / +5 | same | same | none |
 | Ends when | the clock hits 0, or 3 mistakes | same | same | 3 mistakes |
 
 - **The clock never pauses** and runs on wall time. Backgrounding the app does not stop it, and
@@ -27,7 +27,8 @@ Decisions: D29. Mobile-only.
   killed, the next launch submits it as finished.
 - **Moves.** A puzzle is the Lichess line: the opponent's setup move, then the player's moves.
   Every player move must be the line's move, except that any mate in one is accepted. A solved
-  puzzle scores +1 and adds 1 to the combo. A wrong move is a mistake: the right move flashes for
+  puzzle scores +1. The combo counts right moves in a row (D34, like Lichess), the solving move
+  included; a mistake resets it. A wrong move is a mistake: the right move flashes for
   ~400 ms, then the next puzzle comes. Storm has no hints and no skip. Tap-tap and drag both work.
 - **Score** is the number of puzzles solved. The runs feed **accuracy** (solved / (solved +
   mistakes)), **best combo**, and **hardest solved** (the highest-rated puzzle solved).
@@ -63,8 +64,9 @@ Decisions: D29. Mobile-only.
 **Run** (`/storm/run`):
 - **Header:** ✕ ends the run after a confirm, then shows the result. The time bar and m:ss turn
   ember at ≤ 20 s.
-- **Score row:** the score, "Combo ×n" with a 10-step bar and the next bonus hint, and the lives.
-- **Board:** the board, "Puzzle n · rating" and the side to move.
+- **Score row:** the score, the combo meter (chip "Combo ×n" with level pips, a bar towards the
+  next level in that level's colours, the line pricing a move and a solve) and the lives.
+- **Board:** the board, "Puzzle n · rating" and the side to move (a king on a square-coloured disc).
 - **History:** the run so far as squares: green solved, ember mistake, light for the current one.
 - **Footer:** "No hints in Storm · tap the piece, then the square".
 
@@ -131,6 +133,7 @@ Decisions: D29. Mobile-only.
 | `GET /challenges` | | `{ incoming, outgoing, finished }` |
 | `GET /challenges/:id` | | `ChallengeDetail` |
 | `POST /challenges/:id/decline` | | `ChallengeSummary` |
+| `POST /challenges/:id/remove` | | `{ ok }`: withdraws mine (`cancelled`), declines theirs, hides a finished one from my list |
 | `GET /friends` | | rows gain `online: boolean` |
 
 `StormRunBody`:

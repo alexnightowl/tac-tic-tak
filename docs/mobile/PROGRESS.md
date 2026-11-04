@@ -327,3 +327,19 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
 - **Rank eyes:** tomoe 1–3, mangekyo and rinnegan were 128 px and blurry in the rank ceremony and
   the summary; regenerated from the canvas's 512 px originals (band icons, onboarding rank path,
   achievement medals and their locked variants).
+
+## 2026-11-04 — League tab, challenge removal, inactive reset, Storm combo levels, confirm sheet
+
+- **Confirm sheet:** every native `Alert.alert` confirm (Storm quit, exam leave, discard session /
+  profile edit / challenge, unfriend) is now the design's confirm sheet (`confirm()` in
+  `src/ui/ConfirmSheet.tsx`, FullWindowOverlay on iOS so it shows over modal routes).
+- **League (D32):** weekly XP board by default, all-time rating behind a switch; swipe a challenge
+  row to decline / withdraw / remove. Backend `api/league` on prod (86a6196).
+- **Inactive reset (D33):** one-time migration on prod with the same deploy.
+- **Storm combo (D34):** combo levels with per-move and per-solve time, a livelier meter, the side
+  to move as a king disc. Backend `api/storm-combo` on prod (b353816).
+- **Verified:** typechecks, core tests 259, local API smoke (storm.mjs incl. remove + league),
+  Maestro `16-storm`, `18-league` (en + uk), `08-friends` on an iOS sim. `05-resume` is stale
+  (old Play setup ids) — needs a rewrite.
+- **Canvas:** League board, challenge swipe, confirm sheet and the new combo meter still need
+  drawing into the canvas (design-parity rule).

@@ -341,3 +341,31 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
 - **Not on the web:** offline packs, push, haptics.
 - **Paused (owner, 2026-11-04)** after W0–W2 shipped, on hearing the 1–2 day estimate for the
   rest. Resume from `docs/web/RESUME.md` (next: W3 Play).
+
+### D32. League tab: this week's XP board (owner, 2026-11-04)
+
+- Rivals is now **League** (trophy icon). It opens on the **weekly league**: XP earned since
+  Monday 00:00 Kyiv time, every source (sessions, review, Storm, Library, offline), global or
+  friends; ties go to whoever got there first. "All time" is the old rating board.
+- `GET /leaderboard?period=week` (additive) returns `{ weekStart, weekEnd, rows, self }`.
+- Challenge rows swipe left: decline an incoming one, withdraw a waiting one of mine (both
+  behind a confirm sheet; withdrawn = `cancelled` for the friend), remove a finished one from my
+  list only (`POST /challenges/:id/remove`, nullable `challengerHiddenAt` / `opponentHiddenAt`).
+- Future idea (not built): tiered leagues with promotion / relegation (IDEAS.md).
+
+### D33. One-time rating reset for inactive players (owner, 2026-11-04)
+
+- Migration `20261104200000_reset_inactive_ratings` (prod, with the deploy's pre-migration dump):
+  every player with no activity for 60 days restarts at 1200 in all styles with a fresh 5-session
+  calibration window; XP, streaks, achievements and history stay. Activity = the latest of
+  sign-up, a session, an XP award, a seen puzzle, a Storm run, a Library attempt, a course exam,
+  an offline receipt (logins leave no trace). One-time only (owner chose "Тільки разово").
+
+### D34. Storm combo levels (owner, 2026-11-04, "like Lichess")
+
+- The combo counts right moves in a row. Levels at 5 / 12 / 20 moves: +1 s a move and +3 s a
+  solve, then +2 / +4, then +3 / +5 at the max; a solve's last move earns the solve bonus only.
+  A mistake: −10 s and the combo. **PROVISIONAL:** the owner named only the base (+1 / +3) and
+  the max (+3 / +5); level 2 and the thresholds 5 / 12 / 20 (Lichess's combo levels) are mine.
+- The backend accepts `bestCombo ≤ 3 × (score + 1)` and timed runs up to 40 / 45 min.
+- The run shows who is to move as a king on a square-coloured disc.
