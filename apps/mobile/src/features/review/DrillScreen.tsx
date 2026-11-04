@@ -6,6 +6,7 @@ import {
   nextReviewPuzzleId,
   practiceTitleOf,
   tacticalThemes,
+  type ReviewListItem,
 } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { eos, layout, space } from '@tac/core/tokens';
@@ -41,26 +42,43 @@ const puzzleQuery = (id: string) => ({
 });
 
 /**
- * Drill: resolve the solved puzzle (errors swallowed, as on the web), then
- * a fresh list, then the first other puzzle. Resolve goes first so a stale
- * list can't steer the drill back to the puzzle just solved.
+ * Drill: the next puzzle comes from the cached list at once (it was
+ * prefetched), while the resolve (errors swallowed, as on the web) and a
+ * fresh list run in the background. Puzzles solved in this drill are kept
+ * out locally, so a list fetched before its resolve landed can't steer the
+ * drill back. Only when the cached list runs dry does the drill wait for
+ * the server, to be sure the theme is really cleared.
  */
 function drillHooks(theme: string | undefined): PracticeHooks {
+  const solved = new Set<string>();
+  let synced: Promise<void> = Promise.resolve();
+  const pick = (list: readonly ReviewListItem[], current: string) =>
+    nextReviewPuzzleId(list.filter((i) => !solved.has(i.puzzleId)), current);
+  const fresh = async () => {
+    const list = await reviewApi.list(theme);
+    queryClient.setQueryData(reviewKeys.list(theme), list);
+    void queryClient.invalidateQueries({ queryKey: reviewKeys.themes() });
+    return list;
+  };
   return {
     advance: async (solvedId) => {
-      try {
-        await reviewApi.resolve(solvedId);
-      } catch {
-        // Non-fatal: the drill still moves on.
+      solved.add(solvedId);
+      synced = reviewApi
+        .resolve(solvedId)
+        .catch(() => undefined) // Non-fatal: the drill still moves on.
+        .then(fresh)
+        .then(() => undefined, () => undefined);
+      let list = queryClient.getQueryData<ReviewListItem[]>(reviewKeys.list(theme)) ?? [];
+      let nextId = pick(list, solvedId);
+      if (!nextId) {
+        await synced;
+        list = await fresh();
+        nextId = pick(list, solvedId);
       }
-      const fresh = await reviewApi.list(theme);
-      queryClient.setQueryData(reviewKeys.list(theme), fresh);
-      void queryClient.invalidateQueries({ queryKey: reviewKeys.themes() });
-      const nextId = nextReviewPuzzleId(fresh, solvedId);
       if (!nextId) return null;
       const puzzle = await queryClient.fetchQuery(puzzleQuery(nextId));
       // Warm the one after, so the next swap is instant too.
-      const after = nextReviewPuzzleId(fresh.filter((i) => i.puzzleId !== solvedId), nextId);
+      const after = pick(list, nextId);
       if (after) void queryClient.prefetchQuery(puzzleQuery(after));
       return { puzzle };
     },

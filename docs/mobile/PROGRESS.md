@@ -287,3 +287,12 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
 - **Open:** OWNER-QUESTIONS 48 (provisional rules); stage B needs a realtime channel (websocket
   or SSE through nginx) and push needs the Apple Developer account.
 
+
+## 2026-11-04 — Review drill: instant next puzzle
+
+- Owner: drill puzzles loaded slowly one after another. Each advance waited for two prod round
+  trips in a row (`POST /review/:id/resolve`, then `GET /review`). The next puzzle now comes
+  from the cached list (already prefetched); resolve + list refresh run in the background, and
+  puzzles solved in the drill are kept out locally. The drill waits for the server only when the
+  cached list runs dry, to confirm the theme is cleared.
+- **Verified:** mobile typecheck, lint; Maestro `06-review` on an iOS sim (theme cleared, row gone).
