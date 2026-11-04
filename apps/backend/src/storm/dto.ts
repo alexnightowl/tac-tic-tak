@@ -20,6 +20,8 @@ export type StormFormat = (typeof STORM_FORMATS)[number];
 export const STREAM_LENGTH = 100;
 export const STORM_LIVES = 3;
 export const NOTE_MAX = 80;
+/** The combo counts right moves (2026-11-04): at most 3 player moves a puzzle (≤ 6 plies). */
+export const MAX_COMBO = 3 * (STREAM_LENGTH + 1);
 /** A run lasts at most 5:00 plus combo time; Survival is capped at 2 h. */
 export const MAX_RUN_MS = 2 * 3600_000;
 
@@ -58,7 +60,7 @@ export class StormRunDto {
   @IsInt() @Min(0) @Max(STORM_LIVES)
   mistakes!: number;
 
-  @IsInt() @Min(0) @Max(STREAM_LENGTH)
+  @IsInt() @Min(0) @Max(MAX_COMBO)
   bestCombo!: number;
 
   @IsInt() @Min(0) @Max(MAX_RUN_MS)
