@@ -1,0 +1,34 @@
+{
+  "size": 256,
+  "format": "webp",
+  "sets": {
+    "ember": {
+      "wK": "ember/wK.webp",
+      "wQ": "ember/wQ.webp",
+      "wR": "ember/wR.webp",
+      "wB": "ember/wB.webp",
+      "wN": "ember/wN.webp",
+      "wP": "ember/wP.webp",
+      "bK": "ember/bK.webp",
+      "bQ": "ember/bQ.webp",
+      "bR": "ember/bR.webp",
+      "bB": "ember/bB.webp",
+      "bN": "ember/bN.webp",
+      "bP": "ember/bP.webp"
+    },
+    "classic": {
+      "wK": "classic/wK.webp",
+      "wQ": "classic/wQ.webp",
+      "wR": "classic/wR.webp",
+      "wB": "classic/wB.webp",
+      "wN": "classic/wN.webp",
+      "wP": "classic/wP.webp",
+      "bK": "classic/bK.webp",
+      "bQ": "classic/bQ.webp",
+      "bR": "classic/bR.webp",
+      "bB": "classic/bB.webp",
+      "bN": "classic/bN.webp",
+      "bP": "classic/bP.webp"
+    }
+  }
+}

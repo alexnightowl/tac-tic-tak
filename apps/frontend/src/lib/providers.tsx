@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider, keepPreviousData } from '@tanstack/react-query';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react';
 import { http, getToken } from './api';
 import { useAppStore } from './store';
 import type { Progressions, Streak } from './store';
@@ -23,7 +23,7 @@ type Me = {
   streak?: Streak;
 };
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
   const [client] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -91,6 +91,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
       .catch(() => {})
       .finally(() => setSettingsReady(true));
   }, [setUser, setSettings, setProgressions, setStreak, setSettingsReady]);
+
+  // <html lang> picks the display face (tokensCss: Forum for uk).
+  const language = useAppStore((s) => s.settings.language);
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }

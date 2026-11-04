@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from 'next';
+import type { ReactNode } from 'react';
 import './fonts.css';
 import './globals.css';
 import { Providers } from '@/lib/providers';
 import { ToastContainer } from '@/components/Toast';
 import { OnboardingModal } from '@/components/Onboarding';
+import { tokensCss } from '@/v2/tokens';
 
 // Ember on stone: Cinzel for display (titles, numbers, buttons),
 // Manrope for UI text. Oswald stays for the landing page. Self-hosted in
@@ -47,10 +49,12 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        {/* Design v2 tokens from @tac/core (D31). */}
+        <style dangerouslySetInnerHTML={{ __html: tokensCss() }} />
         {PRELOAD_FONTS.map((f) => (
           <link key={f} rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         ))}
