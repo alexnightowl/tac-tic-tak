@@ -1,13 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import {
   comboBar,
-  comboBonusMs,
+  comboLevel,
   hardestSolved,
+  moveBonusMs,
   raceBase,
   raceVerdict,
   stormClock,
   stormInit,
   stormLadder,
+  solveBonusMs,
   stormReduce,
   type StormEvent,
   type StormState,
@@ -28,12 +30,40 @@ const run = (s: StormState, events: StormEvent[]) => events.reduce(stormReduce, 
 const T0 = 1_000_000;
 
 describe('storm engine', () => {
-  it('counts solves, builds the combo and buys time at 5 and 10', () => {
+  it('counts solves; from combo 5 every solve buys 3 s', () => {
     const solves = Array.from({ length: 10 }, (_, k) => ({ type: 'solve' as const, at: T0 + (k + 1) * 1000 }));
     const s = run(stormInit('time3'), [{ type: 'start', at: T0 }, ...solves]);
-    expect(s).toMatchObject({ score: 10, combo: 10, bestCombo: 10, index: 10, extraMs: 8000, lastSolveMs: 10_000, ended: null });
-    expect(stormClock(s, T0 + 10_000)).toBe(180_000 + 8000 - 10_000);
+    // Combos 5..10 are level 1: six solves × 3 s.
+    expect(s).toMatchObject({ score: 10, combo: 10, bestCombo: 10, index: 10, extraMs: 18_000, lastSolveMs: 10_000, ended: null });
+    expect(stormClock(s, T0 + 10_000)).toBe(180_000 + 18_000 - 10_000);
     expect(s.results[3]).toEqual({ i: 3, ok: true, ms: 1000 });
+  });
+
+  it('correct moves build the combo; the level prices each move and solve', () => {
+    const moves = (n: number, from: number) => Array.from({ length: n }, (_, k) => ({ type: 'move' as const, at: T0 + from + k }));
+    let s = run(stormInit('time3'), [{ type: 'start', at: T0 }, ...moves(4, 1)]);
+    expect(s).toMatchObject({ combo: 4, extraMs: 0, score: 0, index: 0, results: [] });
+    s = run(s, [{ type: 'move', at: T0 + 10 }]); // combo 5: level 1
+    expect(s).toMatchObject({ combo: 5, extraMs: 1000 });
+    s = run(s, [{ type: 'solve', at: T0 + 20 }]); // combo 6: a level-1 solve
+    expect(s).toMatchObject({ combo: 6, extraMs: 4000, score: 1, index: 1 });
+    s = run(s, [...moves(14, 30)]); // combo 20: max
+    expect(s.combo).toBe(20);
+    const before = s.extraMs;
+    s = run(s, [{ type: 'move', at: T0 + 100 }, { type: 'solve', at: T0 + 101 }]);
+    expect(s.extraMs - before).toBe(3000 + 5000);
+    expect(s.bestCombo).toBe(22);
+  });
+
+  it('a wrong move resets a long combo to level 0', () => {
+    const s = run(stormInit('time3'), [
+      { type: 'start', at: T0 },
+      ...Array.from({ length: 12 }, (_, k) => ({ type: 'move' as const, at: T0 + k + 1 })),
+      { type: 'miss', at: T0 + 50 },
+      { type: 'move', at: T0 + 60 },
+    ]);
+    expect(s).toMatchObject({ combo: 1, bestCombo: 12, lives: 2 });
+    expect(comboLevel(s.combo)).toBe(0);
   });
 
   it('a mistake costs a life, 10 s and the combo; three end the run', () => {
@@ -60,6 +90,7 @@ describe('storm engine', () => {
   });
 
   it('Survival has no clock and no bonus', () => {
+    expect(run(stormInit('survival'), [{ type: 'start', at: T0 }, ...Array.from({ length: 8 }, (_, k) => ({ type: 'move' as const, at: T0 + k }))]).extraMs).toBe(0);
     const s = run(stormInit('survival'), [{ type: 'start', at: T0 }, ...Array.from({ length: 5 }, (_, k) => ({ type: 'solve' as const, at: T0 + 600_000 * (k + 1) }))]);
     expect(s).toMatchObject({ score: 5, extraMs: 0, ended: null });
     expect(stormClock(s, T0)).toBeNull();
@@ -72,12 +103,13 @@ describe('storm engine', () => {
 });
 
 describe('storm helpers', () => {
-  it('combo bonuses and the bar', () => {
-    expect([0, 4, 5, 9, 10, 15, 20].map(comboBonusMs)).toEqual([0, 0, 3000, 0, 5000, 3000, 5000]);
-    expect(comboBar(0)).toMatchObject({ filled: 0, nextAt: 5 });
-    expect(comboBar(6)).toMatchObject({ filled: 6, nextAt: 10, nextBonusMs: 5000 });
-    expect(comboBar(10).filled).toBe(10);
-    expect(comboBar(11)).toMatchObject({ filled: 1, nextAt: 5 });
+  it('combo levels, bonuses and the bar', () => {
+    expect([0, 4, 5, 11, 12, 19, 20, 100].map(comboLevel)).toEqual([0, 0, 1, 1, 2, 2, 3, 3]);
+    expect([4, 5, 12, 20].map(moveBonusMs)).toEqual([0, 1000, 2000, 3000]);
+    expect([4, 5, 12, 20].map(solveBonusMs)).toEqual([0, 3000, 4000, 5000]);
+    expect(comboBar(0)).toEqual({ level: 0, progress: 0, nextAt: 5, next: { moveMs: 1000, solveMs: 3000 } });
+    expect(comboBar(8)).toMatchObject({ level: 1, progress: 3 / 7, nextAt: 12 });
+    expect(comboBar(25)).toEqual({ level: 3, progress: 1, nextAt: null, next: null });
   });
 
   it('the ladder rises fast, then flattens', () => {

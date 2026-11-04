@@ -1,6 +1,6 @@
 import type { PracticeItem, PracticeState } from '@tac/core/runner';
 import {
-  comboBonusMs,
+  comboLevel,
   stormClockMs,
   stormInit,
   stormReduce,
@@ -27,6 +27,8 @@ export type RunSnap = {
   shown: number;
   /** The last combo bonus (ms) and a counter that changes with each one. */
   bonus: { ms: number; seq: number };
+  /** The combo level reached last and a counter that changes on each level-up. */
+  levelUp: { level: number; seq: number };
   /** The finished local run, once ended. */
   finished: StormLocalRun | null;
 };
@@ -36,6 +38,8 @@ export class StormRun {
   private snap: RunSnap;
   private listeners = new Set<() => void>();
   private answered = -1;
+  /** `${shown}:${moves left}` of the last correct move sent (one event per move). */
+  private moved = '';
   private board: BoardHandle | null = null;
 
   constructor(
@@ -54,7 +58,7 @@ export class StormRun {
       state,
       savedAt: Date.now(),
     };
-    this.snap = { state, shown: 0, bonus: { ms: 0, seq: 0 }, finished: null };
+    this.snap = { state, shown: 0, bonus: { ms: 0, seq: 0 }, levelUp: { level: 0, seq: 0 }, finished: null };
   }
 
   subscribe = (fn: () => void) => {
@@ -95,14 +99,24 @@ export class StormRun {
     return this.item(s.index);
   };
 
-  /** Watches the practice runner: its first turn starts the clock, a solve or a wrong move is an answer. */
+  /**
+   * Watches the practice runner: its first turn starts the clock, a correct
+   * move that hands the turn to the opponent feeds the combo, a solve or a
+   * wrong move is an answer.
+   */
   onPractice = (p: PracticeState) => {
     const s = this.snap.state;
     if (s.ended || p.item?.puzzle.id !== this.stream.puzzles[this.snap.shown]?.id) return;
     const now = Date.now();
     if (s.startedAt == null && p.phase === 'playerTurn') this.send({ type: 'start', at: now });
     if (this.answered >= this.snap.shown) return;
-    if (p.phase === 'solved') {
+    if (p.phase === 'opponentReplying') {
+      const key = `${this.snap.shown}:${p.remaining.length}`;
+      if (key !== this.moved) {
+        this.moved = key;
+        this.send({ type: 'move', at: now });
+      }
+    } else if (p.phase === 'solved') {
       this.answered = this.snap.shown;
       this.send({ type: 'solve', at: now });
     } else if (p.phase === 'rewinding') {
@@ -124,13 +138,13 @@ export class StormRun {
     const prev = this.snap.state;
     const state = stormReduce(prev, e);
     if (state === prev) return;
-    let bonus = this.snap.bonus;
-    if (e.type === 'solve' && !state.ended) {
-      const ms = stormClockMs(state.format) != null ? comboBonusMs(state.combo) : 0;
-      if (ms > 0) {
-        bonus = { ms, seq: bonus.seq + 1 };
-        feel.emit('streakUp', { streak: state.combo });
-      }
+    let { bonus, levelUp } = this.snap;
+    const gained = state.extraMs - prev.extraMs;
+    if ((e.type === 'move' || e.type === 'solve') && !state.ended && gained > 0) bonus = { ms: gained, seq: bonus.seq + 1 };
+    const level = comboLevel(state.combo);
+    if (level !== levelUp.level) {
+      if (level > levelUp.level) feel.emit('streakUp', { streak: state.combo });
+      levelUp = { level, seq: level > levelUp.level ? levelUp.seq + 1 : levelUp.seq };
     }
     let finished = this.snap.finished;
     const live: StormLive = { ...this.live, state, savedAt: e.at };
@@ -142,7 +156,7 @@ export class StormRun {
     } else {
       stormStore.getState().setLive(live);
     }
-    this.snap = { ...this.snap, state, bonus, finished };
+    this.snap = { ...this.snap, state, bonus, levelUp, finished };
     this.emit();
   }
 

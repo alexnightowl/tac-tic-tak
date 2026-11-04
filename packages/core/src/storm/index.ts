@@ -1,8 +1,9 @@
 // Puzzle Storm and the async Race (docs/mobile/STORM.md): one run engine
 // for both, the stream's difficulty ladder, the race verdict and the wire
 // types of /storm and /challenges. A run is a stream of rising puzzles
-// against a clock that never pauses: solves build a combo that buys
-// time, a mistake costs a life (and 10 s), three mistakes end it.
+// against a clock that never pauses: correct moves build a combo whose
+// level buys time on every move and every solve, a mistake costs a life
+// (and 10 s) and the combo, three mistakes end it.
 import type { XpAward } from '../api/types';
 
 export type StormFormat = 'time3' | 'time5' | 'survival';
@@ -13,8 +14,6 @@ export const STORM_MISTAKE_MS = 10_000;
 export const STORM_STREAM_LENGTH = 100;
 /** Solo Storm's ladder starts here for everyone, so friends' scores compare. */
 export const STORM_SOLO_BASE = 1000;
-/** Steps of the combo bar; the bonuses repeat every this many solves. */
-export const STORM_COMBO_STEPS = 10;
 export const STORM_NOTE_MAX = 80;
 /** How long a sent challenge waits for the friend. */
 export const CHALLENGE_TTL_MS = 24 * 3600_000;
@@ -24,18 +23,53 @@ export function stormClockMs(format: StormFormat): number | null {
   return format === 'time3' ? 180_000 : format === 'time5' ? 300_000 : null;
 }
 
-/** Time bought by reaching this combo: +3 s at 5, 15, 25…; +5 s at 10, 20, 30…; else 0. */
-export function comboBonusMs(combo: number): number {
-  if (combo <= 0) return 0;
-  const r = combo % STORM_COMBO_STEPS;
-  return r === 0 ? 5_000 : r === 5 ? 3_000 : 0;
+/**
+ * Combo levels (owner, 2026-11-04, "like Lichess"): the combo counts correct
+ * moves in a row. From level 1 every correct move and every solve buy time;
+ * the max level buys +3 s a move and +5 s a solve. A solve's last move earns
+ * the solve bonus only. Level i starts at STORM_COMBO_LEVELS[i] moves.
+ */
+export const STORM_COMBO_LEVELS = [0, 5, 12, 20] as const;
+export const STORM_COMBO_BONUS: readonly { moveMs: number; solveMs: number }[] = [
+  { moveMs: 0, solveMs: 0 },
+  { moveMs: 1_000, solveMs: 3_000 },
+  { moveMs: 2_000, solveMs: 4_000 },
+  { moveMs: 3_000, solveMs: 5_000 },
+];
+export const STORM_MAX_LEVEL = STORM_COMBO_LEVELS.length - 1;
+
+/** The level a combo (correct moves in a row) has reached, 0..STORM_MAX_LEVEL. */
+export function comboLevel(combo: number): number {
+  let level = 0;
+  for (let i = 1; i < STORM_COMBO_LEVELS.length; i++) if (combo >= STORM_COMBO_LEVELS[i]) level = i;
+  return level;
 }
 
-/** The combo bar: filled steps (1..10 while a combo runs) and the next bonus. */
-export function comboBar(combo: number): { filled: number; nextAt: number; nextBonusMs: number } {
-  const filled = combo === 0 ? 0 : ((combo - 1) % STORM_COMBO_STEPS) + 1;
-  const nextAt = filled < 5 ? 5 : 10;
-  return { filled, nextAt, nextBonusMs: nextAt === 5 ? 3_000 : 5_000 };
+/** Time a correct non-final move buys once the combo has reached `combo`. */
+export function moveBonusMs(combo: number): number {
+  return STORM_COMBO_BONUS[comboLevel(combo)].moveMs;
+}
+
+/** Time a solve buys once the combo has reached `combo`. */
+export function solveBonusMs(combo: number): number {
+  return STORM_COMBO_BONUS[comboLevel(combo)].solveMs;
+}
+
+/**
+ * The combo bar: the level, the progress (0..1) towards the next one, the
+ * combo where it starts (null at the max) and that level's bonuses.
+ */
+export function comboBar(combo: number): {
+  level: number;
+  progress: number;
+  nextAt: number | null;
+  next: { moveMs: number; solveMs: number } | null;
+} {
+  const level = comboLevel(combo);
+  if (level >= STORM_MAX_LEVEL) return { level, progress: 1, nextAt: null, next: null };
+  const from = STORM_COMBO_LEVELS[level];
+  const to = STORM_COMBO_LEVELS[level + 1];
+  return { level, progress: (combo - from) / (to - from), nextAt: to, next: STORM_COMBO_BONUS[level + 1] };
 }
 
 /** Target rating of the i-th puzzle (0-based) of a stream from `base`. */
@@ -65,6 +99,7 @@ export type StormState = {
   /** Net time added to the clock: combo bonuses minus mistake penalties. */
   extraMs: number;
   lives: number;
+  /** Correct moves in a row (a mistake resets it). */
   combo: number;
   bestCombo: number;
   score: number;
@@ -82,6 +117,8 @@ export type StormState = {
 
 export type StormEvent =
   | { type: 'start'; at: number }
+  /** A correct move that does not finish the puzzle. */
+  | { type: 'move'; at: number }
   | { type: 'solve'; at: number }
   | { type: 'miss'; at: number }
   | { type: 'quit'; at: number }
@@ -140,6 +177,11 @@ export function stormReduce(s: StormState, e: StormEvent): StormState {
   if (dl != null && e.at >= dl) return end(s, 'time', dl);
   if (e.type === 'tick') return s;
   if (e.type === 'quit') return end(s, 'quit', e.at);
+  if (e.type === 'move') {
+    const combo = s.combo + 1;
+    const timed = stormClockMs(s.format) != null;
+    return { ...s, combo, bestCombo: Math.max(s.bestCombo, combo), extraMs: s.extraMs + (timed ? moveBonusMs(combo) : 0) };
+  }
 
   const ms = Math.max(0, e.at - s.puzzleAt);
   const timed = stormClockMs(s.format) != null;
@@ -153,7 +195,7 @@ export function stormReduce(s: StormState, e: StormEvent): StormState {
       score: s.score + 1,
       combo,
       bestCombo: Math.max(s.bestCombo, combo),
-      extraMs: s.extraMs + (timed ? comboBonusMs(combo) : 0),
+      extraMs: s.extraMs + (timed ? solveBonusMs(combo) : 0),
       lastSolveMs: e.at - s.startedAt,
     };
   } else {

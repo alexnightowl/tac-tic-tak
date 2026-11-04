@@ -1,4 +1,5 @@
-import { comboBar, STORM_COMBO_STEPS, STORM_LIVES, stormClockMs, type StormFormat, type StormStreamResponse } from '@tac/core/storm';
+import { normalizePieceSet } from '@tac/core/board';
+import { STORM_LIVES, stormClockMs, type StormFormat, type StormStreamResponse } from '@tac/core/storm';
 import { eos, layout, radii, space, tone } from '@tac/core/tokens';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, usePreventRemove, type Href } from 'expo-router';
@@ -19,9 +20,11 @@ import { useT } from '@/ui/lang';
 import { stormApi } from './api';
 import { clockText } from './format';
 import { BAR_JUMP, BONUS_FLOAT, END_HOLD_MS, LOW_TIME_MS, TICK_LAST_S, WARN_TIME_MS } from './motion';
-import { Bolt, EmberChip, Heart } from './parts';
+import { ComboMeter, SideToMove } from './Combo';
+import { EmberChip, Heart } from './parts';
 import { StormRun } from './run';
 import { setMountedRun } from './store';
+import { useAppStore } from '@/stores/appStore';
 
 // /storm/run?challenge&format (canvas StormRun). Solo Storm and the async
 // Race share it (docs/mobile/STORM.md "Rules"): the stream is fetched here,
@@ -131,7 +134,7 @@ function Run({ stream, format, challengeId }: { stream: StormStreamResponse; for
     return () => clearTimeout(timer);
   }, [finished]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const bar = comboBar(s.combo);
+  const pieceSet = useAppStore((st) => normalizePieceSet(st.settings.pieceSet));
   const shown = stream.puzzles[snap.shown];
   const solved = s.results.filter((r) => r.ok).length;
 
@@ -167,24 +170,7 @@ function Run({ stream, format, challengeId }: { stream: StormStreamResponse; for
           </AppText>
         </View>
         <View style={styles.flex}>
-          <View style={styles.comboLine}>
-            <EmberChip testID="storm-run-combo">
-              <Bolt size={13} color={tone.blush} strokeWidth={2} />
-              <AppText variant="captionStrong" color={tone.blush} style={styles.comboText}>
-                {t('storm.run.combo', { n: s.combo })}
-              </AppText>
-            </EmberChip>
-            {timed ? (
-              <AppText variant="captionStrong" color={eos.ash} numberOfLines={1} style={styles.flex}>
-                {t('storm.run.next_bonus', { s: bar.nextBonusMs / 1000, n: bar.nextAt })}
-              </AppText>
-            ) : null}
-          </View>
-          <View style={styles.steps}>
-            {Array.from({ length: STORM_COMBO_STEPS }, (_, i) => (
-              <View key={i} style={[styles.step, i < bar.filled && styles.stepOn]} />
-            ))}
-          </View>
+          <ComboMeter combo={s.combo} levelUpSeq={snap.levelUp.seq} timed={timed} />
         </View>
         <View style={styles.livesBox}>
           <AppText variant="label" color={eos.dust} style={styles.tinyLabel}>
@@ -208,9 +194,7 @@ function Run({ stream, format, challengeId }: { stream: StormStreamResponse; for
             {String(shown?.rating ?? '')}
           </AppText>
         </AppText>
-        <AppText variant="bodyStrong" color={eos.ash} style={styles.lineText}>
-          {t(p.playerColor === 'w' ? 'storm.run.white' : 'storm.run.black')}
-        </AppText>
+        <SideToMove color={p.playerColor} pieceSet={pieceSet} />
       </View>
 
       <History results={s.results} current={s.ended ? -1 : s.index} label={t('storm.run.history_a11y', { solved, missed: s.mistakes })} />
@@ -364,11 +348,6 @@ const styles = StyleSheet.create({
   scoreRow: { height: 82, paddingTop: space[2.5], paddingBottom: space[3], paddingHorizontal: layout.gutter, flexDirection: 'row', alignItems: 'center', gap: space[3.5] },
   tinyLabel: { fontSize: 10 },
   score: { fontVariant: ['tabular-nums'] },
-  comboLine: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
-  comboText: { fontWeight: '800' },
-  steps: { marginTop: space[2], flexDirection: 'row', gap: 3 },
-  step: { flex: 1, height: 5, borderRadius: radii.sm, backgroundColor: eos.rise },
-  stepOn: { backgroundColor: eos.ember },
   livesBox: { alignItems: 'flex-end' },
   lives: { marginTop: space[1], flexDirection: 'row', gap: 3 },
   puzzleLine: { marginTop: space[4], marginHorizontal: layout.gutter, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

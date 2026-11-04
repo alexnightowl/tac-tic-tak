@@ -29,7 +29,7 @@ if maestro "${DEVICE[@]}" test --test-output-dir "$OUT" -e E2E_USER="$ME" -e E2E
      -e SHOTS="shots" -e LANG="$LANG_TAG" 16-storm.yaml; then
   got=$(psql "select count(*)||' '||max(score) from \"StormRun\" where \"userId\"='$ME_ID'")
   read -r n best <<<"$got"
-  if [[ $n -eq 2 && $best -eq 3 ]]; then echo "   DB ok: runs=$n best=$best"
+  if [[ $n -eq 2 && $best -eq 6 ]]; then echo "   DB ok: runs=$n best=$best"
   else echo "   DB MISMATCH: runs=$n best=$best"; fail=1; fi
 else
   echo "   FLOW FAILED"; fail=1

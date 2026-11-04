@@ -44,14 +44,17 @@ appId: online.tactictak.app
 - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 20000 }
 - assertVisible: { id: storm-run-timer }
 - assertVisible: { id: storm-run-score, text: "0" }
+# Six solves: the combo (right moves in a row) reaches level 1 by then.
 - repeat:
-    times: 3
+    times: 6
     commands:
       - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
       - tapOn: { id: e2e-solve }
       - extendedWaitUntil: { visible: { id: runner-phase, text: "(solved|swapping|setupAnimating|opponentReplying)" }, timeout: 5000, optional: true }
-- extendedWaitUntil: { visible: { id: storm-run-score, text: "3" }, timeout: 20000 }
+- extendedWaitUntil: { visible: { id: storm-run-score, text: "6" }, timeout: 20000 }
 - extendedWaitUntil: { visible: { id: runner-phase, text: playerTurn }, timeout: 15000 }
+- waitForAnimationToEnd: { timeout: 2000 }
+- takeScreenshot: ${SHOTS}/combo-${LANG}
 - tapOn: { id: e2e-wrong }
 # The miss: a life gone (2 of 3), then the next puzzle.
 - extendedWaitUntil: { visible: { id: storm-run-lives, text: ".*2.*3.*" }, timeout: 10000 }
@@ -66,7 +69,7 @@ appId: online.tactictak.app
 - takeScreenshot: ${SHOTS}/quit-${LANG}
 - tapOn: { id: storm-quit-confirm }
 - extendedWaitUntil: { visible: { id: storm-result }, timeout: 15000 }
-- assertVisible: { id: storm-result-score, text: "3" }
+- assertVisible: { id: storm-result-score, text: "6" }
 - assertVisible: { id: storm-result-chart }
 - assertVisible: { id: storm-result-again }
 - extendedWaitUntil: { visible: { id: storm-result-dare }, timeout: 10000 }
