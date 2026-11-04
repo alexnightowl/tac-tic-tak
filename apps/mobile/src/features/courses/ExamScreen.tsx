@@ -3,7 +3,7 @@ import { alpha, eos, layout, radii, space, tone } from '@tac/core/tokens';
 import { router, usePreventRemove } from 'expo-router';
 import { Star } from 'lucide-react-native';
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useCourseContent, useCourseProgress } from '@/features/library/model';
@@ -15,7 +15,7 @@ import { PracticeBoard } from '@/features/review/practice/PracticeBoard';
 import type { PracticeHooks } from '@/features/review/practice/PracticeController';
 import { usePractice } from '@/features/review/practice/usePractice';
 import { FocusStatusBar } from '@/shell/FocusStatusBar';
-import { AppText, PlateButton, useLang } from '@/ui';
+import { AppText, confirm, PlateButton, useLang } from '@/ui';
 import { useT } from '@/ui/lang';
 import { courseHref } from './model';
 import { BackLink, Segments, type SegmentLook } from './parts';
@@ -103,17 +103,17 @@ function Exam({ course, cycle }: { course: Course; cycle: number }) {
   // Back, hardware back and gestures ask first; the try is dropped on leave.
   const [guard, setGuard] = useState(true);
   const allowLeave = usePreventRemove(guard, ({ repeat }) => {
-    Alert.alert(t('courses.exam_leave_title'), t('courses.exam_leave_body'), [
-      { text: t('courses.exam_stay'), style: 'cancel' },
-      {
-        text: t('courses.exam_leave'),
-        style: 'destructive',
-        onPress: () => {
-          setGuard(false);
-          repeat();
-        },
+    confirm({
+      testID: 'exam-leave',
+      title: t('courses.exam_leave_title'),
+      body: t('courses.exam_leave_body'),
+      confirmLabel: t('courses.exam_leave'),
+      cancelLabel: t('courses.exam_stay'),
+      onConfirm: () => {
+        setGuard(false);
+        repeat();
       },
-    ]);
+    });
   });
   const leave = () => {
     if (router.canGoBack()) router.back();

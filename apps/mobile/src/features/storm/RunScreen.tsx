@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, usePreventRemove, type Href } from 'expo-router';
 import { X } from 'lucide-react-native';
 import { memo, useEffect, useState, useSyncExternalStore } from 'react';
-import { ActivityIndicator, Alert, AppState, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, AppState, StyleSheet, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -14,7 +14,7 @@ import { E2E, PracticeE2EStrip } from '@/features/review/practice/E2EStrip';
 import { PracticeBoard } from '@/features/review/practice/PracticeBoard';
 import { usePractice } from '@/features/review/practice/usePractice';
 import { FocusStatusBar } from '@/shell/FocusStatusBar';
-import { AppText, PlateButton, Tap } from '@/ui';
+import { AppText, confirm, PlateButton, Tap } from '@/ui';
 import { useT } from '@/ui/lang';
 import { stormApi } from './api';
 import { clockText } from './format';
@@ -107,10 +107,14 @@ function Run({ stream, format, challengeId }: { stream: StormStreamResponse; for
   const confirmQuit = () => {
     if (run.getSnap().state.ended) return;
     feel.emit('exitSheet');
-    Alert.alert(t('storm.run.confirm_title'), t('storm.run.confirm_body'), [
-      { text: t('storm.run.confirm_keep'), style: 'cancel' },
-      { text: t('storm.run.confirm_end'), style: 'destructive', onPress: () => run.quit() },
-    ]);
+    confirm({
+      testID: 'storm-quit',
+      title: t('storm.run.confirm_title'),
+      body: t('storm.run.confirm_body'),
+      confirmLabel: t('storm.run.confirm_end'),
+      cancelLabel: t('storm.run.confirm_keep'),
+      onConfirm: () => run.quit(),
+    });
   };
   const allowLeave = usePreventRemove(guard, confirmQuit);
 

@@ -4,7 +4,7 @@ import type { RunnerSnapshot } from '@tac/core/runner';
 import { control, eos, layout, radii, space } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { NoteCard, StyleIcon, STRONG } from '@/features/play/ui';
 import { feel } from '@/feel';
@@ -12,7 +12,7 @@ import { api } from '@/platform/api';
 import { queryClient } from '@/platform/query';
 import { clearActiveSnapshot } from '@/runner';
 import { toast } from '@/shell/toast/store';
-import { AppText, PlateButton } from '@/ui';
+import { AppText, confirm, PlateButton } from '@/ui';
 import type { TFn } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 
@@ -54,10 +54,14 @@ export function ResumeCard({ snap, onGone, t }: { snap: RunnerSnapshot; onGone: 
 
   const confirmDiscard = () => {
     feel.emit('exitSheet');
-    Alert.alert(t('home.discard_title'), t('home.discard_body'), [
-      { text: t('common.cancel'), style: 'cancel' },
-      { text: t('home.discard'), style: 'destructive', onPress: () => void discard() },
-    ]);
+    confirm({
+      testID: 'resume-discard',
+      title: t('home.discard_title'),
+      body: t('home.discard_body'),
+      confirmLabel: t('home.discard'),
+      cancelLabel: t('common.cancel'),
+      onConfirm: () => void discard(),
+    });
   };
 
   const id = encodeURIComponent(snap.sessionId);

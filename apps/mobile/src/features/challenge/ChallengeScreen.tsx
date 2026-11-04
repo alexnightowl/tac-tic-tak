@@ -3,14 +3,14 @@ import { eos, layout, radii, space, surface, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, useFocusEffect, type Href } from 'expo-router';
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { feel } from '@/feel';
 import { BackLink, Glow } from '@/features/courses/parts';
 import { displayNameOf } from '@/features/social/actions';
 import { toast } from '@/shell/toast/store';
-import { AppText, BackButton, HeroCard, PlateButton, Tap, TextLink } from '@/ui';
+import { AppText, BackButton, confirm, HeroCard, PlateButton, Tap, TextLink } from '@/ui';
 import { useT, useTn, type TFn } from '@/ui/lang';
 import { challengeApi, challengeDetailQuery, invalidateChallenges } from './api';
 import { clock, ExpiryCountdown, playedLine, PresenceAvatar, RunStrip, StripLegend } from './parts';
@@ -134,27 +134,27 @@ function Incoming({ c, onExpire }: { c: ChallengeDetail; onExpire: () => void })
 
   const decline = () => {
     feel.emit('exitSheet');
-    Alert.alert(t('challenge.decline_title'), t('challenge.decline_body', { name }), [
-      { text: t('challenge.decline_keep'), style: 'cancel' },
-      {
-        text: t('challenge.decline'),
-        style: 'destructive',
-        onPress: async () => {
-          setDeclining(true);
-          try {
-            await challengeApi.decline(c.id);
-            feel.emit('discard');
-            invalidateChallenges();
-            goBack();
-          } catch {
-            feel.emit('formError');
-            toast.show({ title: t('challenge.decline_error') });
-            invalidateChallenges();
-            setDeclining(false);
-          }
-        },
+    confirm({
+      testID: 'challenge-decline',
+      title: t('challenge.decline_title'),
+      body: t('challenge.decline_body', { name }),
+      confirmLabel: t('challenge.decline'),
+      cancelLabel: t('challenge.decline_keep'),
+      onConfirm: async () => {
+        setDeclining(true);
+        try {
+          await challengeApi.decline(c.id);
+          feel.emit('discard');
+          invalidateChallenges();
+          goBack();
+        } catch {
+          feel.emit('formError');
+          toast.show({ title: t('challenge.decline_error') });
+          invalidateChallenges();
+          setDeclining(false);
+        }
       },
-    ]);
+    });
   };
 
   return (

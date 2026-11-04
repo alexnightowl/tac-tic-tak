@@ -1,10 +1,10 @@
 import { queryKeys } from '@tac/core/api';
-import { Alert } from 'react-native';
 
 import { feel, type FeelEvent } from '@/feel';
 import { queryClient } from '@/platform/query';
 import { toast } from '@/shell/toast/store';
 import { appStore } from '@/stores/appStore';
+import { confirm } from '@/ui/ConfirmSheet';
 import { translatorFor } from '@/ui/lang';
 import { friendsApi, type FriendshipStatus, type UserCard } from './api';
 
@@ -93,28 +93,29 @@ export async function removeRequest(friendshipId: string, user: UserCard, kind: 
   }
 }
 
-/** Unfriend behind a native confirm (the web removed on one tap). */
+/** Unfriend behind a confirm sheet (the web removed on one tap). */
 export function confirmUnfriend(user: UserCard, onDone?: (ok: boolean) => void): void {
   const { t } = tr();
   const name = displayNameOf(user);
   feel.emit(FEEL.confirm);
-  Alert.alert(t('friends.unfriend_confirm_title', { name }), t('friends.unfriend_confirm_body'), [
-    { text: t('common.cancel'), style: 'cancel', onPress: () => onDone?.(false) },
-    {
-      text: t('friends.unfriend'),
-      style: 'destructive',
-      onPress: async () => {
-        try {
-          await friendsApi.unfriend(user.id);
-          feel.emit(FEEL.removed);
-          toast.show({ title: t('friends.toast_removed', { name }) });
-          refresh(user.nickname);
-          onDone?.(true);
-        } catch {
-          failed();
-          onDone?.(false);
-        }
-      },
+  confirm({
+    testID: 'unfriend',
+    title: t('friends.unfriend_confirm_title', { name }),
+    body: t('friends.unfriend_confirm_body'),
+    confirmLabel: t('friends.unfriend'),
+    cancelLabel: t('common.cancel'),
+    onCancel: () => onDone?.(false),
+    onConfirm: async () => {
+      try {
+        await friendsApi.unfriend(user.id);
+        feel.emit(FEEL.removed);
+        toast.show({ title: t('friends.toast_removed', { name }) });
+        refresh(user.nickname);
+        onDone?.(true);
+      } catch {
+        failed();
+        onDone?.(false);
+      }
     },
-  ]);
+  });
 }

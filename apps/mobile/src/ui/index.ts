@@ -16,6 +16,7 @@ export {
   type MiniVariant,
 } from './Buttons';
 export { CardRow, EmptyState } from './CardRow';
+export { confirm, ConfirmHost, type ConfirmRequest } from './ConfirmSheet';
 export { fontFamily, UK_DISPLAY_CANDIDATES, UK_DISPLAY_DEFAULT, type UkDisplayCandidate } from './fonts';
 export { ControlBlock, GroupedList, InfoRow, ListSection, Row, Seam, ToggleRow, type RowProps } from './GroupedList';
 export { IconTile, ProgressBar, TintIcon } from './IconTile';

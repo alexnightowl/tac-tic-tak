@@ -1,7 +1,7 @@
 import { queryKeys } from '@tac/core/api';
 import { eos, graphite, layout, radii, semantic, shadows, space } from '@tac/core/tokens';
 import { useEffect, useState } from 'react';
-import { Alert, Modal, StyleSheet, TextInput, View } from 'react-native';
+import { Modal, StyleSheet, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
@@ -12,6 +12,7 @@ import { queryClient } from '@/platform/query';
 import { toast } from '@/shell/toast/store';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText, textStyle } from '@/ui/AppText';
+import { confirm } from '@/ui/ConfirmSheet';
 import { Input } from '@/ui/Input';
 import { useLang, useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
@@ -96,10 +97,13 @@ function EditorBody({
       return;
     }
     feel.emit('exitSheet');
-    Alert.alert(t('profile.discard_title'), undefined, [
-      { text: t('profile.keep_editing'), style: 'cancel' },
-      { text: t('profile.discard'), style: 'destructive', onPress: onClose },
-    ]);
+    confirm({
+      testID: 'profile-discard',
+      title: t('profile.discard_title'),
+      confirmLabel: t('profile.discard'),
+      cancelLabel: t('profile.keep_editing'),
+      onConfirm: onClose,
+    });
   };
 
   const save = async () => {

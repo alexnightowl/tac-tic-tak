@@ -1,7 +1,7 @@
 # Phase 8 exit flow: A finds B and sends a request, logs out; B sees the
 # Header friends badge and the incoming request, swipes right to accept; both
 # friends lists and the friends-scope leaderboard show the pair; A then
-# unfriends B (confirm alert) so the flow can run again.
+# unfriends B (confirm sheet) so the flow can run again.
 # Local backend only. Two local users with E2E_PASSWORD (default
 # e2e_friend_a / e2e_friend_b) that are not friends when it starts:
 #   maestro test -e E2E_PASSWORD=… .maestro/08-friends.yaml
@@ -82,11 +82,10 @@ env:
     timeout: 15000
 - assertNotVisible: { id: friends-h-out }
 - tapOn: { id: "friends-unfriend-${FRIEND_B}" }
-# Native confirm; while it is up Maestro sees only the alert.
 - extendedWaitUntil:
     visible: "Remove .* from friends\\?"
     timeout: 5000
-- tapOn: "Unfriend"
+- tapOn: { id: unfriend-confirm }
 - extendedWaitUntil:
     visible: { id: friends-empty }
     timeout: 15000

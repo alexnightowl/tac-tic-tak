@@ -1,7 +1,7 @@
 # Phase 5 exit criterion "kill test" (PLAN §2.10): a session killed mid-puzzle
 # comes back from Home's resume card on the SAME puzzle with the remaining
 # time (±2 s), paused. Then the card's Finish (saved as an early exit) and
-# Discard (alert, session gone) paths.
+# Discard (confirm sheet, session gone) paths.
 #   maestro test -e E2E_USER=… -e E2E_PASSWORD=… .maestro/05-resume.yaml
 # DB check after the run (local only): the resumed session has exactly the
 # attempts made in the app (1 before the kill + 1 after), no duplicate:
@@ -105,7 +105,7 @@ appId: online.tactictak.app
     timeout: 10000
 - assertNotVisible: { id: home-resume-card }
 
-# 3. Discard from the card (confirm alert): the card goes, nothing to resume.
+# 3. Discard from the card (confirm sheet): the card goes, nothing to resume.
 - runFlow: { file: 05-start-bullet.yaml, env: { DUR: "180" } }
 - tapOn: { id: e2e-wrong, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
 - extendedWaitUntil:
@@ -122,8 +122,7 @@ appId: online.tactictak.app
 - extendedWaitUntil:
     visible: { text: "Discard this session?" }
     timeout: 5000
-# The alert button, not the card's own Discard (both read "Discard").
-- tapOn: { text: "Discard", below: { text: "Its attempts are deleted.*" } }
+- tapOn: { id: resume-discard-confirm }
 - extendedWaitUntil:
     notVisible: { id: home-resume-card }
     timeout: 10000

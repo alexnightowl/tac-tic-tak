@@ -14,6 +14,7 @@ import { persistOptions, queryClient, wireQueryManagers } from '@/platform/query
 import { ShellErrorBoundary } from '@/shell/ErrorScreen';
 import { OfflineHost } from '@/shell/OfflineBanner';
 import { ToastHost } from '@/shell/toast/ToastHost';
+import { ConfirmHost } from '@/ui/ConfirmSheet';
 import { useToastStore } from '@/shell/toast/store';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -74,6 +75,7 @@ export default function RootLayout() {
               <OfflineHost />
               {/* Above every navigator, iOS modals included (FullWindowOverlay). */}
               <ToastHost />
+              <ConfirmHost />
             </LangProvider>
           </PersistQueryClientProvider>
         </KeyboardProvider>

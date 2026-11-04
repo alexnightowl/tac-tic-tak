@@ -61,7 +61,10 @@ appId: online.tactictak.app
 
 # ✕ confirms, then the result.
 - tapOn: { id: storm-run-exit }
-- tapOn: { text: "(End run|Завершити)" }
+- extendedWaitUntil: { visible: { id: storm-quit-confirm }, timeout: 5000 }
+- waitForAnimationToEnd: { timeout: 2000 }
+- takeScreenshot: ${SHOTS}/quit-${LANG}
+- tapOn: { id: storm-quit-confirm }
 - extendedWaitUntil: { visible: { id: storm-result }, timeout: 15000 }
 - assertVisible: { id: storm-result-score, text: "3" }
 - assertVisible: { id: storm-result-chart }
