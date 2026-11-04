@@ -3,7 +3,7 @@ RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
 WORKDIR /app
 
 FROM base AS deps
-COPY pnpm-workspace.yaml package.json ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY apps/frontend/package.json apps/frontend/
 RUN pnpm install --filter frontend --frozen-lockfile || pnpm install --filter frontend
 
