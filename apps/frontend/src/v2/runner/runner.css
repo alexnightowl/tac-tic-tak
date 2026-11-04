@@ -1,0 +1,41 @@
+/* Runner pieces (src/v2/runner): the timer pill and the practice board
+   slot. Colours and sizes from tokensCss() / kitVars(); no raw values. */
+
+.v2r-timer {
+  position: relative;
+  min-width: var(--s-20);
+  height: var(--s-10);
+  padding: 0 var(--s-4);
+  border-radius: var(--r-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-float-card);
+  border: 1px solid var(--semantic-border-soft);
+}
+.v2r-timer--warn {
+  background: var(--control-ember-tint16);
+  border-color: var(--control-danger-border);
+}
+.v2r-timer-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--r-full);
+  border: 2px solid var(--feedback-timer-pulse);
+  pointer-events: none;
+}
+.v2r-timer-ring--static { opacity: 0.6; }
+
+.v2r-practice-board {
+  position: relative;
+  width: 100%;
+}
+.v2r-practice-fade { width: 100%; }
+.v2r-practice-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
