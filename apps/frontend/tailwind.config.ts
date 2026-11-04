@@ -1,4 +1,7 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
+
+import { kitVars } from './src/v2/ui/cssVars';
 
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
@@ -65,7 +68,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  // Design v2 primitives (src/v2/ui): shadows, transitions etc. from @tac/core/tokens as :root vars.
+  plugins: [plugin(({ addBase }) => addBase({ ':root': kitVars() }))],
 };
 
 export default config;
