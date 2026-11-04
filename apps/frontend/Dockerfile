@@ -5,11 +5,14 @@ WORKDIR /app
 FROM base AS deps
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY apps/frontend/package.json apps/frontend/
-RUN pnpm install --filter frontend --frozen-lockfile || pnpm install --filter frontend
+COPY packages/core/package.json packages/core/
+# `frontend...` also installs its workspace deps (@tac/core and chess.js).
+RUN pnpm install --filter frontend... --frozen-lockfile || pnpm install --filter frontend...
 
 FROM base AS build
 COPY --from=deps /app /app
 COPY apps/frontend apps/frontend
+COPY packages/core packages/core
 # Bake the public API URL into the Next.js bundle. Defaults to same-origin `/api`.
 ARG NEXT_PUBLIC_API_URL=/api
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
