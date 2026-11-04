@@ -3,6 +3,7 @@
 // docs/mobile/DESIGN-SYSTEM-V2.md describes each one; /dev/kit shows them.
 import './kit.css';
 
+export { Avatar, ShellAvatar, initialsOf } from './Avatar';
 export { AppText, textClass, textColor, type AppTextProps, type TextVariantName } from './AppText';
 export { BrandLogo, HEADER_LOGO_GLOW, type LogoGlow } from './BrandLogo';
 export {

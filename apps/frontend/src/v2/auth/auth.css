@@ -1,0 +1,36 @@
+/* Login / register (src/v2/auth). Values from tokensCss(); no raw colours. */
+
+.v2-auth {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--s-16) var(--l-gutter) var(--s-8);
+  background: var(--eos-ink);
+}
+.v2-auth-lang {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + var(--s-3));
+  right: var(--l-gutter);
+  z-index: 1;
+}
+.v2-auth-col { display: flex; flex-direction: column; gap: var(--s-6); width: 100%; max-width: 400px; }
+.v2-auth-brand { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); }
+.v2-auth-form { display: flex; flex-direction: column; gap: var(--s-4); }
+.v2-auth-form--tight { gap: var(--s-3); }
+.v2-auth-form .v2-plate-btn { margin-top: var(--s-1); }
+.v2-auth-rules { display: flex; flex-direction: column; gap: var(--s-1); margin: calc(-1 * var(--s-1)) 0 0; padding: 0; list-style: none; }
+.v2-auth-rule { display: flex; align-items: center; gap: var(--s-2); }
+.v2-auth-rule > svg { flex: none; }
+.v2-auth-switch { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--s-2); margin: 0; }
+.v2-auth-switch-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  border-radius: var(--r-control);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--eos-bone);
+}

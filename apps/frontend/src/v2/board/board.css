@@ -1,0 +1,277 @@
+/* Board v2 (src/v2/board). Colours, radii and shadows come from tokensCss()
+   (src/v2/tokens.ts) and kitVars() (src/v2/ui/cssVars.ts): no raw colour
+   values here. Everything that sits on a square is a one-square box placed
+   with translate(col*100%, row*100%) by the engine, so the layers never
+   depend on the board's pixel size. Stroke widths follow the app's px():
+   the web's px at a ~50 px square, i.e. a fraction of --v2b-sq. */
+
+.v2b-root {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  container-type: inline-size;
+  --v2b-sq: 12.5cqw;
+}
+
+.v2b-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-board);
+  box-shadow: var(--sh-board);
+  flex: none;
+}
+
+.v2b-board {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: default;
+  outline: none;
+}
+
+.v2b-board img {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.v2b-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-board);
+  overflow: hidden;
+  background: var(--board-dark);
+}
+.v2b-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.v2b-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.v2b-coords { z-index: 1; }
+.v2b-under { z-index: 2; }
+.v2b-pieces { z-index: 4; }
+.v2b-squares { z-index: 5; }
+.v2b-feedback { z-index: 6; }
+.v2b-arrows { z-index: 7; width: 100%; height: 100%; overflow: visible; }
+.v2b-sparks { z-index: 8; }
+
+/* ---- coordinates ------------------------------------------------------- */
+
+.v2b-coord {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12.5%;
+  height: 12.5%;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.v2b-coord[data-tone='light'] { color: var(--board-coord-on-light); }
+.v2b-coord[data-tone='dark'] { color: var(--board-coord-on-dark); }
+.v2b-coord-rank {
+  position: absolute;
+  left: 5%;
+  top: 2%;
+}
+.v2b-coord-file {
+  position: absolute;
+  right: 5%;
+  bottom: 0;
+}
+
+/* ---- one-square marks -------------------------------------------------- */
+
+.v2b-mark,
+.v2b-piece,
+.v2b-sq {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12.5%;
+  height: 12.5%;
+}
+.v2b-mark { opacity: 0; }
+.v2b-mark[data-on] { opacity: 1; }
+
+.v2b-lastFrom,
+.v2b-lastTo { background: var(--board-last-move); }
+.v2b-selected {
+  background: var(--board-selected);
+  box-shadow: inset 0 0 0 max(1px, calc(var(--v2b-sq) * 0.06)) var(--board-selected-ring);
+}
+/* radial-gradient(circle, c0 10%, c1 55%, transparent 80%) over the square's half-width. */
+.v2b-check {
+  background: radial-gradient(
+    circle closest-side,
+    var(--board-check-0) calc(var(--board-check-stops-0) * 100%),
+    var(--board-check-1) calc(var(--board-check-stops-1) * 100%),
+    transparent calc(var(--board-check-stops-2) * 100%)
+  );
+}
+
+/* ---- pieces ------------------------------------------------------------ */
+
+.v2b-piece { will-change: transform; }
+.v2b-sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ---- squares: a11y, dots, rings --------------------------------------- */
+
+.v2b-sq { outline: none; }
+.v2b-sq:focus-visible { box-shadow: inset 0 0 0 2px var(--eos-ember); }
+.v2b-dot,
+.v2b-ring {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+}
+.v2b-dot {
+  left: 37%;
+  top: 37%;
+  width: 26%;
+  height: 26%;
+  background: var(--board-legal);
+}
+.v2b-ring {
+  inset: 4%;
+  box-shadow: inset 0 0 0 max(1px, calc(var(--v2b-sq) * 0.12)) var(--board-legal);
+}
+.v2b-sq[data-t='dot'] .v2b-dot,
+.v2b-sq[data-t='ring'] .v2b-ring { opacity: 1; }
+
+/* ---- feedback: hint rings and glow, drop ring, flash ------------------- */
+
+.v2b-hint {
+  border-radius: var(--r-square-ring);
+  box-shadow: inset 0 0 0 max(1px, calc(var(--v2b-sq) * 0.08)) var(--feedback-hint);
+}
+.v2b-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  border-radius: calc(var(--r-square-ring) * 2);
+  box-shadow: inset 0 0 0 max(1px, calc(var(--v2b-sq) * 0.1)) var(--feedback-hint-glow);
+}
+.v2b-hover {
+  border-radius: var(--r-square-ring);
+  box-shadow: inset 0 0 0 max(1px, calc(var(--v2b-sq) * 0.08)) var(--board-drop-ring);
+}
+.v2b-flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: var(--feedback-correct);
+}
+.v2b-flash[data-ok='0'] { background: var(--feedback-fail); }
+
+/* ---- arrows ------------------------------------------------------------ */
+
+.v2b-arrow-shaft { stroke: var(--board-arrow); }
+.v2b-arrow-head { fill: var(--board-arrow); }
+
+/* ---- sparks ------------------------------------------------------------ */
+
+.v2b-spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* ---- drag overlay: one piece above everything --------------------------- */
+
+.v2b-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12.5%;
+  height: 12.5%;
+  z-index: 9;
+  pointer-events: none;
+  visibility: hidden;
+  will-change: transform;
+}
+.v2b-overlay[data-on] { visibility: visible; }
+.v2b-overlay-lift {
+  position: absolute;
+  inset: 0;
+}
+.v2b-overlay-sprite {
+  position: absolute;
+  inset: 0;
+}
+.v2b-overlay-sprite[hidden] { display: none; }
+
+/* ---- promotion picker --------------------------------------------------- */
+
+.v2b-promo {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+.v2b-promo-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: var(--board-promotion-backdrop);
+  border-radius: var(--r-board);
+  cursor: default;
+}
+.v2b-promo-column {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: var(--board-promotion-picker);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-float-card);
+  overflow: hidden;
+}
+.v2b-promo-option {
+  flex: 1;
+  display: block;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-press);
+}
+.v2b-promo-option img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.v2b-promo-option:active { background: var(--board-promotion-press); }
+@media (hover: hover) {
+  .v2b-promo-option:hover { background: var(--board-promotion-press); }
+}
+.v2b-promo-option:focus-visible {
+  outline: 2px solid var(--eos-ember);
+  outline-offset: -2px;
+}
