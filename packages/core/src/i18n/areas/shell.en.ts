@@ -8,6 +8,7 @@ export const shellEn: Dict = {
   'shell.menu.title': 'Account',
   'shell.menu.profile': 'My profile',
   'shell.menu.close': 'Close',
+  'shell.menu.admin': 'Admin',
 
   // Tab bar.
   'shell.tabs': 'Main sections',

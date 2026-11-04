@@ -32,6 +32,9 @@ export function textShadow(list: readonly TextShadow[]): string {
 export function kitVars(): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(shadows)) out[`--sh-${kebab(k)}`] = boxShadow(v);
+  // The avatar's inset layers ride on an overlay above the photo (app ShellAvatar).
+  out['--sh-avatar-inset'] = boxShadow(shadows.avatar.filter((s) => s.inset));
+  out['--sh-avatar-outer'] = boxShadow(shadows.avatar.filter((s) => !s.inset));
   for (const [k, v] of Object.entries(textShadows)) out[`--tsh-${kebab(k)}`] = textShadow(v);
   for (const [k, v] of Object.entries(transitions)) {
     out[`--t-${kebab(k)}`] = `${v.duration}ms ${bezier(v.easing)}`;

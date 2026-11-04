@@ -8,6 +8,7 @@ export const shellUk: Dict = {
   'shell.menu.title': 'Акаунт',
   'shell.menu.profile': 'Мій профіль',
   'shell.menu.close': 'Закрити',
+  'shell.menu.admin': 'Адмінка',
 
   // Tab bar.
   'shell.tabs': 'Основні розділи',

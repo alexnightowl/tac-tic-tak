@@ -576,6 +576,60 @@ textarea.v2-input { padding: var(--s-3) var(--l-input-padding-x); line-height: 2
 /* The kit page's static previews. */
 .v2-sheet--static { animation: none !important; }
 
+/* ---- avatar (.av) ----------------------------------------------------- */
+
+.v2-av {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--r-full);
+  background:
+    radial-gradient(circle at 35% 28%, var(--surface-avatar-highlight), transparent 60%),
+    linear-gradient(var(--surface-avatar-veil-top), var(--surface-avatar-veil-bottom)),
+    url(/v2/textures/slate.webp) center / 220px;
+  box-shadow: var(--sh-avatar-outer);
+}
+.v2-av-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The two inset layers ride above the photo, as in the app. */
+.v2-av::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--sh-avatar-inset);
+  pointer-events: none;
+}
+.v2-av-initials {
+  color: var(--eos-bone);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: var(--tsh-avatar);
+  user-select: none;
+}
+.v2-av-initials[lang='uk'] { font-family: var(--font-serif-cyrillic); }
+.v2-av-initials[lang='en'] { font-family: var(--font-serif-latin); }
+/* Creator: 2 px gold ring with a 2 px gap, crown chip bottom-right. */
+.v2-av-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--r-full);
+  border: 2px solid var(--tone-gold);
+  pointer-events: none;
+}
+.v2-av-crown {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-full);
+  background: var(--eos-ink);
+}
+.v2-av-crown > span { display: flex; align-items: center; justify-content: center; border-radius: var(--r-full); }
+
 /* ---- reduced motion --------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {

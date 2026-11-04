@@ -1,0 +1,264 @@
+/* The signed-in shell (src/v2/shell). Values come from tokensCss() and
+   kitVars(); no raw colours. Phone layout below 1024 px (header + tab bar),
+   desktop layout from 1024 px (rail + centred column). */
+
+.v2-shell {
+  --shell-rail-w: 248px;
+  --shell-rail-row: 48px;
+  --shell-rail-gap: 4px;
+  position: relative;
+  min-height: 100dvh;
+}
+.v2-shell-bare { position: relative; min-height: 100dvh; }
+
+/* ---- brand + avatar button --------------------------------------------- */
+
+.v2-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2_5);
+  min-width: 0;
+  border-radius: var(--r-control);
+}
+.v2-avatar-btn { position: relative; display: inline-flex; flex: none; border-radius: var(--r-full); }
+.v2-av-ghost {
+  display: inline-block;
+  flex: none;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--eos-bone) 5%, transparent);
+}
+
+/* ---- phone header ------------------------------------------------------ */
+
+.v2-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  height: var(--l-shell-header-height);
+  padding: 0 var(--l-gutter);
+  background: var(--eos-ink);
+}
+
+/* ---- phone tab bar ----------------------------------------------------- */
+
+.v2-tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--eos-shade);
+  box-shadow: inset 0 1px 0 var(--eos-seam);
+}
+.v2-tabbar-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--l-tab-rule-height);
+  pointer-events: none;
+  transition: transform var(--t-toggle), opacity var(--t-colors);
+}
+.v2-tabbar-rule > span {
+  display: block;
+  height: 100%;
+  margin: 0 28%;
+  border-radius: 1px;
+  background: var(--eos-ember);
+}
+.v2-tab {
+  flex: 1;
+  min-width: 0;
+  height: var(--l-tab-bar-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-1);
+  color: var(--eos-dust);
+  transition: color var(--t-colors);
+}
+.v2-tab.is-active { color: var(--eos-bone); }
+.v2-tab-label { max-width: 100%; padding: 0 2px; }
+.v2-tab-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 24px; flex: none; }
+.v2-tab-mask {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+.v2-tab-home { display: block; transition: opacity var(--t-colors); }
+
+/* ---- page ------------------------------------------------------------- */
+
+.v2-shell-body {
+  min-width: 0;
+  padding-bottom: calc(var(--l-tab-bar-height) + env(safe-area-inset-bottom) + var(--s-8));
+}
+.v2-shell-main { position: relative; margin: 0 auto; }
+.v2-shell-main[data-frame='column'] { max-width: 560px; padding: var(--s-2) var(--l-gutter) 0; }
+/* Pre-v2 pages: the old layout's max-w-5xl px-4 py-4 (md: px-6 py-6). */
+.v2-shell-main[data-frame='wide'] { max-width: 1024px; padding: var(--s-4) var(--s-4) 0; }
+@media (min-width: 768px) {
+  .v2-shell-main[data-frame='wide'] { padding: var(--s-6) var(--s-6) 0; }
+}
+
+/* ---- desktop rail ------------------------------------------------------ */
+
+.v2-rail { display: none; }
+
+@media (min-width: 1024px) {
+  .v2-shell-header,
+  .v2-tabbar { display: none; }
+  .v2-shell-body { margin-left: var(--shell-rail-w); padding-bottom: var(--s-12); }
+  .v2-shell-main[data-frame='column'] { padding-top: var(--s-8); }
+
+  .v2-rail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    width: var(--shell-rail-w);
+    padding: calc(env(safe-area-inset-top) + var(--s-5)) var(--s-3) var(--s-4);
+    background: var(--eos-shade);
+    box-shadow: inset -1px 0 0 var(--eos-seam);
+  }
+}
+
+.v2-rail-brand { align-self: flex-start; padding: var(--s-1) var(--s-3); margin-bottom: var(--s-6); }
+.v2-rail-nav { position: relative; display: flex; flex-direction: column; gap: var(--shell-rail-gap); }
+.v2-rail-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  height: var(--shell-rail-row);
+  padding: 0 var(--s-3);
+  border-radius: var(--r-control);
+  color: var(--eos-dust);
+  transition: color var(--t-colors), background-color var(--t-colors);
+}
+.v2-rail-item.is-active { color: var(--eos-bone); background: color-mix(in srgb, var(--eos-bone) 4%, transparent); }
+/* The tab bar's ember rule, on the row's left edge over the middle 44 %. */
+.v2-rail-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 28%;
+  bottom: 28%;
+  width: var(--l-tab-rule-height);
+  border-radius: 1px;
+  background: var(--eos-ember);
+}
+@media (hover: hover) {
+  .v2-rail-item:not(.is-active):hover { color: var(--eos-ash); background: color-mix(in srgb, var(--eos-bone) 3%, transparent); }
+  .v2-tab:not(.is-active):hover { color: var(--eos-ash); }
+}
+.v2-rail-foot { margin-top: auto; padding-top: var(--s-4); box-shadow: inset 0 1px 0 var(--eos-seam); }
+.v2-rail-me {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-control);
+  text-align: left;
+}
+.v2-rail-me-text { display: flex; flex-direction: column; gap: var(--s-0_5); min-width: 0; flex: 1; }
+
+/* ---- account menu ------------------------------------------------------ */
+
+.v2-menu { display: flex; flex-direction: column; gap: var(--s-4); padding-bottom: var(--s-2); }
+.v2-sheet .v2-menu { padding-top: var(--s-2); }
+.v2-menu-me {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 56px;
+  border-radius: var(--r-control);
+}
+.v2-menu-me > span:last-child { display: flex; flex-direction: column; gap: var(--s-0_5); min-width: 0; flex: 1; }
+.v2-menu-lang { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: 0 var(--s-1); }
+.v2-menu-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--r-full);
+  background: var(--eos-ember);
+}
+.v2-menu-count > span { font-size: 11px; letter-spacing: 0; line-height: 1; }
+
+/* Desktop: a popover beside the rail, bottom-aligned with the player. */
+.v2-pop-backdrop { position: fixed; inset: 0; z-index: 60; background: transparent; }
+.v2-pop {
+  position: fixed;
+  z-index: 61;
+  left: calc(var(--shell-rail-w, 248px) + var(--s-3));
+  bottom: var(--s-4);
+  width: 360px;
+  max-height: calc(100dvh - 2 * var(--s-4));
+  overflow-y: auto;
+  padding: var(--s-5) var(--s-4) var(--s-3);
+  border-radius: var(--r-sheet);
+  border: 1px solid var(--surface-float-border);
+  background: var(--eos-shade);
+  box-shadow: var(--sh-card);
+  outline: none;
+}
+.v2-pop[data-state='open'] { animation: v2-pop-in var(--t-sheet); }
+.v2-pop[data-state='closed'] { animation: v2-pop-out var(--t-sheet) forwards; }
+@keyframes v2-pop-in { from { opacity: 0; transform: translateX(-6px); } }
+@keyframes v2-pop-out { to { opacity: 0; transform: translateX(-6px); } }
+
+/* ---- offline pill ------------------------------------------------------ */
+
+.v2-offline-host {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + var(--s-2));
+  left: 0;
+  right: 0;
+  z-index: 70;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.v2-offline {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  max-width: calc(100% - 2 * var(--l-gutter));
+  padding: var(--s-1_5) var(--s-3);
+  border-radius: var(--r-full);
+  border: 1px solid var(--eos-seam);
+  background: var(--surface-float-card);
+  animation: v2-fade-in 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-tabbar-rule,
+  .v2-tab,
+  .v2-tab-home,
+  .v2-rail-item { transition: none; }
+  .v2-pop[data-state='open'],
+  .v2-pop[data-state='closed'],
+  .v2-offline { animation: none; }
+}

@@ -46,6 +46,11 @@ const translators: Record<Language, Translator> = {
   uk: createTranslator('uk', dicts),
 };
 
+/** The translator for a language outside render (async callbacks that outlive a language switch). */
+export function tFor(lang: Language): Translator['t'] {
+  return (translators[lang] ?? translators.en).t;
+}
+
 /** `t(key, vars?)`: lang dict → en dict → key, `{var}` interpolation. */
 export function useT(): Translator['t'] {
   const lang = useAppStore((s) => s.settings.language);
