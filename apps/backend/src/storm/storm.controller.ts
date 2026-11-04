@@ -58,4 +58,10 @@ export class ChallengesController {
   decline(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
     return this.storm.decline(u.id, id);
   }
+
+  @Post(':id/remove')
+  @HttpCode(200)
+  remove(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
+    return this.storm.remove(u.id, id);
+  }
 }

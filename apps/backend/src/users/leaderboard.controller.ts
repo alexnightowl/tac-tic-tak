@@ -15,10 +15,13 @@ export class LeaderboardController {
     @Query('style') style: string,
     @Query('scope') scope?: string,
     @Query('limit') limit?: string,
+    @Query('period') period?: string,
   ) {
     const s: TrainingStyle = isTrainingStyle(style) ? style : 'blitz';
     const sc = scope === 'friends' ? 'friends' : 'global';
     const lim = limit ? Number(limit) : undefined;
+    // period=week: the weekly XP league (mobile); without it, today's rating board (web).
+    if (period === 'week') return this.board.weekly(u.id, { scope: sc, limit: lim });
     return this.board.topByStyle(s, { viewerId: u.id, scope: sc, limit: lim });
   }
 }
