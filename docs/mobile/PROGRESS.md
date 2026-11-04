@@ -304,3 +304,17 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
 - Mobile: `BrowseRow` (practice-back / practice-forward) on the drill and the mistakes runner.
 - **Verified:** mobile typecheck, lint; Maestro `06-review` (with a back/forward step) and
   `06-mistakes` on an iOS sim.
+
+## 2026-11-04 — Web catches up with the app: W0 foundation (D31)
+
+- Owner: the web is a full client again, in design v2, on `@tac/core`; Claude merges `web/*` into
+  `main`. Plan `docs/web/PLAN.md`, parity `docs/web/PARITY-WEB.md`.
+- `mobile` fast-forwarded into `main` (main now carries apps/mobile and packages/core).
+- **Fixes on the way:** root `.npmrc` keeps `@types/react` out of pnpm's hidden hoist and the root
+  pins the app's `@types/react` (a clean install broke the mobile typecheck); the frontend
+  Dockerfile copies `pnpm-lock.yaml` (fresh resolution broke the prod web build).
+- **W0 on prod (1d87dfc):** the web depends on `@tac/core` (transpiled; Dockerfile copies it);
+  strings from core i18n; `src/v2/tokens.ts` inlines every token as CSS variables and `.tv-*`
+  text classes; app assets in `public/v2`; Forum for uk display text; design v2 primitives in
+  `src/v2/ui` and a hidden `/dev/kit` (screens in `docs/web/screens/w0/`).
+- **Open:** CI `mobile` job red on expo-doctor (15 Expo packages have patch updates).
