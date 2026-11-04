@@ -43,4 +43,16 @@ export const commonUk: Dict = {
   'nav.rivals': 'Суперники',
   'brand.name': 'tac·tic·tak',
   'dev.open': 'Меню розробника',
+  // Board a11y (VoiceOver / screen readers): squares, pieces, promotion.
+  'board.label': 'Шахівниця',
+  'board.white': 'білий',
+  'board.black': 'чорний',
+  'board.piece.p': 'пішак',
+  'board.piece.n': 'кінь',
+  'board.piece.b': 'слон',
+  'board.piece.r': 'тура',
+  'board.piece.q': 'ферзь',
+  'board.piece.k': 'король',
+  'board.promotion': 'Перетворити на',
+  'board.promotion_cancel': 'Скасувати перетворення',
 };

@@ -43,4 +43,16 @@ export const commonEn: Dict = {
   'nav.rivals': 'Rivals',
   'brand.name': 'tac·tic·tak',
   'dev.open': 'Dev menu',
+  // Board a11y (VoiceOver / screen readers): squares, pieces, promotion.
+  'board.label': 'Chessboard',
+  'board.white': 'white',
+  'board.black': 'black',
+  'board.piece.p': 'pawn',
+  'board.piece.n': 'knight',
+  'board.piece.b': 'bishop',
+  'board.piece.r': 'rook',
+  'board.piece.q': 'queen',
+  'board.piece.k': 'king',
+  'board.promotion': 'Promote to',
+  'board.promotion_cancel': 'Cancel promotion',
 };
