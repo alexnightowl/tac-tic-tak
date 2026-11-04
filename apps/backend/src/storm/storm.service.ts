@@ -482,18 +482,21 @@ export class StormService implements OnModuleInit {
     const now = new Date();
     const [incoming, outgoing, finished] = await Promise.all([
       this.prisma.challenge.findMany({
-        where: { opponentId: userId, status: 'pending', expiresAt: { gt: now } },
+        where: { opponentId: userId, status: 'pending', expiresAt: { gt: now }, opponentHiddenAt: null },
         include: CHALLENGE_INCLUDE,
         orderBy: { sentAt: 'desc' },
       }),
       this.prisma.challenge.findMany({
-        where: { challengerId: userId, status: 'pending', expiresAt: { gt: now } },
+        where: { challengerId: userId, status: 'pending', expiresAt: { gt: now }, challengerHiddenAt: null },
         include: CHALLENGE_INCLUDE,
         orderBy: { sentAt: 'desc' },
       }),
       this.prisma.challenge.findMany({
         where: {
-          OR: [{ challengerId: userId }, { opponentId: userId }],
+          OR: [
+            { challengerId: userId, challengerHiddenAt: null },
+            { opponentId: userId, opponentHiddenAt: null },
+          ],
           AND: [{ OR: [{ status: { in: ['finished', 'declined'] } }, { status: 'pending', expiresAt: { lte: now } }] }],
         },
         include: CHALLENGE_INCLUDE,
@@ -556,6 +559,36 @@ export class StormService implements OnModuleInit {
     if (moved.count === 0) throw new ConflictException('cannot decline');
     const row = await this.prisma.challenge.findUniqueOrThrow({ where: { id }, include: CHALLENGE_INCLUDE });
     return this.summaryOf(userId, row);
+  }
+
+  /**
+   * Takes a challenge off my list (owner, 2026-11-04). Mine and not played
+   * by the friend yet (draft / pending): withdrawn for both. Theirs and
+   * pending: declined. Anything over (finished, declined, expired,
+   * cancelled): hidden from my list only.
+   */
+  async remove(userId: string, id: string) {
+    const c = await this.challengeFor(userId, id);
+    const mine = c.challengerId === userId;
+    const status = this.statusOf(c);
+    const now = new Date();
+    if (mine && (status === 'draft' || status === 'pending')) {
+      const moved = await this.prisma.challenge.updateMany({
+        where: { id, status: { in: ['draft', 'pending'] }, opponentRunId: null },
+        data: { status: 'cancelled', finishedAt: now, challengerHiddenAt: now },
+      });
+      // The friend played meanwhile: it is finished, so just hide it.
+      if (moved.count === 0) await this.prisma.challenge.update({ where: { id }, data: { challengerHiddenAt: now } });
+    } else if (!mine && status === 'pending') {
+      await this.prisma.challenge.updateMany({
+        where: { id, status: 'pending' },
+        data: { status: 'declined', finishedAt: now, opponentHiddenAt: now },
+      });
+      await this.prisma.challenge.update({ where: { id }, data: { opponentHiddenAt: now } });
+    } else {
+      await this.prisma.challenge.update({ where: { id }, data: mine ? { challengerHiddenAt: now } : { opponentHiddenAt: now } });
+    }
+    return { ok: true as const };
   }
 
   private summaryOf(userId: string, c: ChallengeRow) {

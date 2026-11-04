@@ -395,8 +395,8 @@ model Challenge {
   streamId        String
   avgRating       Int
   note            String?
-  // "draft" (the challenger has not played yet) | "pending" | "declined" | "finished";
-  // a pending one past expiresAt reads as "expired".
+  // "draft" (the challenger has not played yet) | "pending" | "declined" | "cancelled"
+  // (withdrawn by the challenger) | "finished"; a pending one past expiresAt reads as "expired".
   status          String    @default("draft")
   // The runs (a dare's challenger run is a solo Storm run).
   challengerRunId String?
@@ -404,6 +404,9 @@ model Challenge {
   sentAt          DateTime?
   expiresAt       DateTime?
   finishedAt      DateTime?
+  // Removed from that player's own list (POST /challenges/:id/remove).
+  challengerHiddenAt DateTime?
+  opponentHiddenAt   DateTime?
   createdAt       DateTime  @default(now())
   challenger      User      @relation("ChallengeChallenger", fields: [challengerId], references: [id], onDelete: Cascade)
   opponent        User      @relation("ChallengeOpponent", fields: [opponentId], references: [id], onDelete: Cascade)
