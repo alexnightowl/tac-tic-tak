@@ -44,7 +44,9 @@ const CHALLENGES_PER_DAY = 30;
 const FINISHED_SHOWN = 10;
 const DEFAULT_RATING = 1200;
 /** Longest a run may last: the clock plus every combo bonus a stream can buy, else 2 h (Survival). */
-const RUN_CAP_MS: Record<StormFormat, number> = { time3: 270_000, time5: 390_000, survival: 2 * 3600_000 };
+// Every right move from combo 5 buys time (up to +3 s a move, +5 s a solve),
+// so a strong timed run can last well past its clock; these only stop nonsense.
+const RUN_CAP_MS: Record<StormFormat, number> = { time3: 40 * 60_000, time5: 45 * 60_000, survival: 2 * 3600_000 };
 /** Slack between the phone's clock and ours. */
 const CLOCK_SLACK_MS = 30_000;
 
@@ -200,7 +202,8 @@ export class StormService implements OnModuleInit {
       results.every((r, k) => r.i === k && r.i < streamLength) &&
       ok === dto.score &&
       results.length - ok === dto.mistakes &&
-      dto.bestCombo <= dto.score &&
+      // The combo counts moves: a run of solves plus the start of the next puzzle.
+      dto.bestCombo <= 3 * (dto.score + 1) &&
       dto.lastSolveMs <= dto.durationMs &&
       dto.mistakes <= STORM_LIVES &&
       dto.durationMs <= RUN_CAP_MS[dto.format] &&
