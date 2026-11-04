@@ -63,3 +63,5 @@ the owner's go-ahead.
   (PLAN §3; review.md, stats-settings-shell.md)
 - **i18next / react-i18next** only if plurals or interpolation outgrow the custom `t()`.
   (stack-research.md › i18n)
+
+- **Tiered leagues** (from D32, 2026-11-04): Bronze → Diamond groups of ~30 by weekly XP, top 7 promoted and bottom 5 relegated every Monday, like Duolingo. Today the League is one weekly XP board.
