@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  createContext, useCallback, useContext, useEffect, useMemo, useState,
+  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react';
 
 export type LandingLang = 'en' | 'uk';
@@ -223,7 +223,7 @@ const LandingLangCtx = createContext<Ctx>({
   t: (k) => EN[k] ?? k,
 });
 
-export function LandingLangProvider({ children }: { children: React.ReactNode }) {
+export function LandingLangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<LandingLang>('en');
 
   // Hydrate the preferred language: stored choice > browser hint > English.

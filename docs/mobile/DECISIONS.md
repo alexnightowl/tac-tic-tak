@@ -327,3 +327,15 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   mistakes runner browse the positions of the puzzle so far, from the one before the setup move.
   Live only on the player's turn; away from the live position the board is read-only and the hint
   is off. Forward to the end hands the turn back.
+
+### D31. The web catches up with the app (owner, 2026-11-04)
+
+- **The web is a full client**, not a landing page to be: it gets every app feature (Storm,
+  challenges, Learn, XP, streak page, achievements, the new Review…). Plan: `docs/web/PLAN.md`.
+- **Design v2** on the web, as in the app (the canvas). Desktop gets a left rail and the app's
+  screen in a centred column; phones get the app's tab bar.
+- **Shared logic:** the web imports `@tac/core`. The frontend Dockerfile copies `packages/core`.
+- **Branches:** `mobile` is merged into `main` whenever green, so `main` has `packages/core`.
+  Web work goes on `web/*` branches from `main`; Claude merges them into `main` itself after the
+  checks in `docs/web/PLAN.md` §5 ("Мерджу сам, як api/*").
+- **Not on the web:** offline packs, push, haptics.

@@ -7,9 +7,12 @@ Chess-tactics trainer. Monorepo: `apps/backend` (NestJS 10 + Prisma 5 + Redis), 
 ## Mission
 
 Rebuild every web feature as a native iOS + Android app in `apps/mobile`. The approved plan is
-`docs/mobile/PLAN.md`; follow its phases and exit criteria. **The web is frozen**: it stays live for
-fixes only until parity, then is trimmed to a landing page (Phase 12). Do not port web bugs: the
-plan and PARITY.md mark them "fix".
+`docs/mobile/PLAN.md`; follow its phases and exit criteria. Do not port web bugs: the plan and
+PARITY.md mark them "fix".
+
+**The web is a full client again** (owner, 2026-11-04, D31): it catches up with the app, in design
+v2, on `@tac/core`. Plan: `docs/web/PLAN.md`; parity: `docs/web/PARITY-WEB.md`. The app stays the
+source of truth for behaviour; the web follows it.
 
 **Talk to the owner in Ukrainian** (chat replies, questions, morning summaries). Code, comments,
 commits, PRs and the docs/mobile files are in English, except `docs/mobile/OWNER-QUESTIONS.md`,
@@ -23,7 +26,11 @@ load-bearing, not optional:
 - **Every push to `main` deploys to prod** (GitHub Actions, ssh, `docker compose --profile app`,
   migrations on container start). Never commit on `main`, never push to `main`, never force-push.
 - **Mobile work stays on `mobile`** (optionally `mobile/<phase>-<topic>` branches merged into
-  `mobile`). `mobile` merges into `main` only at Phase 12.
+  `mobile`). Since D31 `mobile` is fast-forwarded / merged into `main` whenever it is green, so
+  `main` carries `packages/core` for the web.
+- **Web work** goes on `web/<phase>-<topic>` branches cut from `main`, each in its own worktree.
+  Claude merges them into `main` after the checks in `docs/web/PLAN.md` §5 (owner, 2026-11-04),
+  then merges `main` into `mobile`.
 - **Backend changes** go on short-lived `api/<topic>` branches **cut from `main`**, one small PR
   each into `main`. Only the owner merges. After a merge, merge `main` into `mobile`. Use a git
   worktree per `api/*` branch so the `mobile` checkout and the local backend keep working.
@@ -35,9 +42,10 @@ load-bearing, not optional:
 
 ## Do not touch
 
-- `apps/frontend`, except a fix the owner asked for. Never run `next build` inside `apps/frontend`
-  while the owner's dev server runs: it clobbers `.next`. Prefer `pnpm --filter frontend typecheck`.
-- The deploy job in `.github/workflows`, `deploy/` (outside the B12/B16/B17 PRs), both Dockerfiles.
+- Never run `next build` inside the main checkout's `apps/frontend` while the owner's dev server
+  runs: it clobbers `.next`. Build in a `web/*` worktree instead.
+- The deploy job in `.github/workflows`, `deploy/` (outside the B12/B16/B17 PRs), the backend
+  Dockerfile. The frontend Dockerfile changes only to bring in `packages/core` (D31).
 - Root `package.json` `engines` (Docker runs node 20; pnpm fails on a project's own engines
   mismatch). Node 22 is declared in `apps/mobile/package.json` only.
 - `pnpm-workspace.yaml` (copied into both Docker images). A linker fallback, if ever needed, goes in
@@ -103,7 +111,7 @@ pnpm -r run typecheck                         # what CI runs (plus pnpm -r run b
 ```
 
 Prefer typecheck over builds. Never run `pnpm install` or add dependencies to `apps/frontend` or
-`apps/backend` casually; in `apps/mobile` always use `npx expo install`.
+`apps/backend` casually (the web's `@tac/core` dependency is the D31 exception); in `apps/mobile` always use `npx expo install`.
 
 **Local ports.** Backend 4000, web dev 3000, Metro 8081, Postgres **5433** on the host
 (`docker-compose.override.yml` remaps it because the host already runs Postgres on 5432), Redis
@@ -125,7 +133,7 @@ iOS: iPhone 17 simulator (Xcode 26.6). Mobile-specific rules: `apps/mobile/CLAUD
 Never stop the night for a decision listed in PLAN.md §8: adopt the default as PROVISIONAL, log it
 in DECISIONS.md and OWNER-QUESTIONS.md, continue. Stop and report (PROGRESS.md and the PR) on: a
 backend change that cannot be additive; anything touching prod, the VPS env, secrets or
-credentials; an account requirement; an `apps/frontend` edit beyond a requested fix; a spike that
+credentials; an account requirement; a spike that
 misses its numeric gate twice; deviating from an SDK-pinned library.
 
 ## Definition of done
