@@ -318,3 +318,12 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   text classes; app assets in `public/v2`; Forum for uk display text; design v2 primitives in
   `src/v2/ui` and a hidden `/dev/kit` (screens in `docs/web/screens/w0/`).
 - **Open:** CI `mobile` job red on expo-doctor (15 Expo packages have patch updates).
+
+## 2026-11-04 — Web W1 + W2 on prod; web parity paused; rank eyes in full resolution
+
+- **Web W1** (shell, v2 login/register) and **W2** (v2 board, runners, feel, `/dev/board`) merged
+  into `main` (b505f8f) and deployed. The owner then paused web parity: the state, the next
+  phase (W3 Play) and how to restart are in `docs/web/RESUME.md`.
+- **Rank eyes:** tomoe 1–3, mangekyo and rinnegan were 128 px and blurry in the rank ceremony and
+  the summary; regenerated from the canvas's 512 px originals (band icons, onboarding rank path,
+  achievement medals and their locked variants).

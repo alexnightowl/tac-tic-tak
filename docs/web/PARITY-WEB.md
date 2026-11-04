@@ -5,11 +5,11 @@ v2 yet), `wip`, `done` (v2, app behaviour), `n/a` (not on the web). Phase as in 
 
 | App route | Web route | Phase | State | Notes |
 |---|---|---|---|---|
-| shell: tab bar, header, account menu | (app) layout | W1 | wip | desktop gets a left rail |
-| `(auth)/login`, `(auth)/register` | `/login`, `/register` | W1 | wip | |
+| shell: tab bar, header, account menu | (app) layout | W1 | done | desktop gets a left rail; tabs point at old pages until their phase |
+| `(auth)/login`, `(auth)/register` | `/login`, `/register` | W1 | done | EN/УКР switch for signed-out visitors |
 | `onboarding` | modal on first visit | W1+ | old | needs the W2 board |
-| board, feel | `src/v2/board`, `src/v2/feel.ts` | W2 | wip | no haptics on the web |
-| runners (session, practice) | `src/v2/runner` | W2 | wip | |
+| board, feel | `src/v2/board`, `src/v2/feel.ts` | W2 | done | no haptics on the web |
+| runners (session, practice) | `src/v2/runner` | W2 | done | used by no screen yet |
 | `(tabs)/play`, `play/levels`, `play/theme-picker` | `/play` | W3 | old | |
 | `play/[id]` (runner, pause, summary, RankCeremony) | `/play/[id]` | W3 | old | |
 | `review/index` | `/review` | W4 | old | |
@@ -32,7 +32,7 @@ v2 yet), `wip`, `done` (v2, app behaviour), `n/a` (not on the web). Phase as in 
 | `challenge/new`, `challenge/[id]` | — | W8 | missing | |
 | `(tabs)/stats` | `/analytics` → `/stats` | W9 | old | |
 | `settings/*` (index, profile, account, gameplay, sound, notifications, about) | `/settings` | W9 | old | notifications: email/web only, no push |
-| `menu` | account menu | W1 | wip | |
+| `menu` | account menu | W1 | done | |
 | `offline/*` | — | — | n/a | offline packs are app-only |
 | push notifications, haptics | — | — | n/a | |
 | `admin` | `/admin` | — | old | web-only, stays |
