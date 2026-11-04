@@ -416,14 +416,17 @@ function Closed({ c }: { c: ChallengeDetail }) {
   const t = useT();
   const name = displayNameOf(c.other);
   const declined = c.status === 'declined';
+  const cancelled = c.status === 'cancelled';
   const title = declined
     ? c.role === 'opponent'
       ? t('challenge.declined.title_me')
       : t('challenge.declined.title', { name })
-    : t('challenge.expired.title');
+    : cancelled
+      ? t('challenge.cancelled.title')
+      : t('challenge.expired.title');
   return (
     <Frame
-      testID={declined ? 'challenge-declined' : 'challenge-expired'}
+      testID={declined ? 'challenge-declined' : cancelled ? 'challenge-cancelled' : 'challenge-expired'}
       header={<Back t={t} />}
       dock={<PlateButton testID="challenge-again" label={t('challenge.again')} variant="slate" size="lg" block onPress={() => router.push(newHref(c.other.id, c.format))} />}
     >
@@ -435,7 +438,7 @@ function Closed({ c }: { c: ChallengeDetail }) {
           {title}
         </AppText>
         <AppText variant="body" color={eos.ash} style={styles.centerText}>
-          {declined ? t(`challenge.sub.${c.format}`) : t('challenge.expired.body')}
+          {declined ? t(`challenge.sub.${c.format}`) : cancelled ? t('challenge.cancelled.body') : t('challenge.expired.body')}
         </AppText>
       </HeroCard>
       {c.myRun ? (

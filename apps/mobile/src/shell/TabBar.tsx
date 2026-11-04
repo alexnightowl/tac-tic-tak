@@ -13,7 +13,7 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Path, Rect } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 
 import { feel } from '@/feel';
 import { fontFamily } from '@/ui/fonts';
@@ -133,10 +133,12 @@ function TabIcon({ id, pos, i }: { id: ShellTabId; pos: SharedValue<number>; i: 
           </Svg>
         );
       case 'rivals':
+        // The League tab: a trophy (lucide "trophy" outline).
         return (
-          <Svg width={21} height={21} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-            <Rect x={3.5} y={3.5} width={17} height={17} rx={1.5} />
-            <Path d="M3.5 9.2h17M3.5 14.8h17M9.2 3.5v17M14.8 3.5v17" />
+          <Svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+            <Path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16" />
+            <Path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+            <Path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
           </Svg>
         );
       default:

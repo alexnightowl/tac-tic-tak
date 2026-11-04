@@ -118,6 +118,17 @@ export const challengeUk: Dict = {
   'challenge.declined.title_me': 'Ви відмовилися',
   'challenge.expired.title': 'Час виклику минув',
   'challenge.expired.body': 'Ніхто не зіграв його за 24 год.',
+  'challenge.cancelled.title': 'Виклик скасовано',
+  'challenge.cancelled.body': 'Він більше не діє.',
+  'challenge.row.cancelled': 'Скасовано',
+  'challenge.swipe.decline': 'Відхилити',
+  'challenge.swipe.withdraw': 'Скасувати',
+  'challenge.swipe.remove': 'Прибрати',
+  'challenge.withdraw_title': 'Скасувати виклик?',
+  'challenge.withdraw_body': '{name} більше його не побачить.',
+  'challenge.withdraw': 'Скасувати виклик',
+  'challenge.withdraw_keep': 'Залишити',
+  'challenge.remove_error': 'Не вдалося прибрати. Спробуйте ще раз.',
   'challenge.again': 'Викликати знову',
 
   // Rivals section (app-only).

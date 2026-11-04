@@ -41,6 +41,7 @@ export const commonUk: Dict = {
   'ui.off': 'Вимк.',
   'nav.social': 'Спільнота',
   'nav.rivals': 'Суперники',
+  'nav.league': 'Ліга',
   'brand.name': 'tac·tic·tak',
   'dev.open': 'Меню розробника',
   // Board a11y (VoiceOver / screen readers): squares, pieces, promotion.

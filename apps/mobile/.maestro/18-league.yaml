@@ -1,0 +1,31 @@
+# League tab (2026-11-04): opens on this week's XP league; swipe a challenge
+# row left to take it off the list (withdraw mine after a confirm sheet,
+# a finished one at once); "All time" is the rating board.
+# Run through 18-league.sh (seeds a LOCAL user with three challenges).
+appId: online.tactictak.app
+---
+- runFlow: 07-sub-login.yaml
+- tapOn: { id: tab-rivals }
+- extendedWaitUntil: { visible: { id: league }, timeout: 15000 }
+- assertVisible: { id: league-ends }
+- assertVisible: { id: "rivals-challenge-swipe-.*", index: 2 }
+- takeScreenshot: ${SHOTS}/league-${LANG}
+
+# The waiting dare (2nd row): the withdraw sheet, then it is gone.
+- swipe: { from: { id: "rivals-challenge-swipe-.*", index: 1 }, direction: LEFT, duration: 400 }
+- extendedWaitUntil: { visible: { id: challenge-withdraw-confirm }, timeout: 5000 }
+- waitForAnimationToEnd: { timeout: 2000 }
+- takeScreenshot: ${SHOTS}/withdraw-${LANG}
+- tapOn: { id: challenge-withdraw-confirm }
+- extendedWaitUntil: { notVisible: { id: "rivals-challenge-swipe-.*", index: 2 }, timeout: 10000 }
+
+# The finished race (now 2nd): no sheet, just gone.
+- swipe: { from: { id: "rivals-challenge-swipe-.*", index: 1 }, direction: LEFT, duration: 400 }
+- extendedWaitUntil: { notVisible: { id: "rivals-challenge-swipe-.*", index: 1 }, timeout: 10000 }
+- assertVisible: { id: "rivals-challenge-swipe-.*", index: 0 }
+
+# All time: the rating board with its style switch.
+- tapOn: { text: "(All time|Весь час)" }
+- extendedWaitUntil: { visible: { id: leaderboard }, timeout: 10000 }
+- assertVisible: { id: board-style }
+- takeScreenshot: ${SHOTS}/alltime-${LANG}

@@ -6,7 +6,7 @@ export const SHELL_TABS = [
   { name: 'index', id: 'home', labelKey: 'home' },
   { name: 'play', id: 'play', labelKey: 'play' },
   { name: 'learn', id: 'learn', labelKey: 'learn.tab' },
-  { name: 'rivals', id: 'rivals', labelKey: 'nav.rivals' },
+  { name: 'rivals', id: 'rivals', labelKey: 'nav.league' },
   { name: 'stats', id: 'stats', labelKey: 'stats' },
 ] as const;
 

@@ -260,7 +260,8 @@ export type StormSummary = {
 
 // ─── Challenges ──────────────────────────────────────────────────────────
 
-export type ChallengeStatus = 'draft' | 'pending' | 'declined' | 'expired' | 'finished';
+/** `cancelled`: withdrawn by the challenger before the friend played. */
+export type ChallengeStatus = 'draft' | 'pending' | 'declined' | 'cancelled' | 'expired' | 'finished';
 
 export type ChallengeUser = StormUser & { rating: number };
 

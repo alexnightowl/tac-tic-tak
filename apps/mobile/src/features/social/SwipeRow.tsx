@@ -16,17 +16,18 @@ const COMMIT = 0.33;
 
 type Props = {
   testID: string;
-  acceptLabel: string;
+  /** Without `onAccept` the row only swipes left (challenge rows: remove). */
+  acceptLabel?: string;
   declineLabel: string;
-  /** Resolve false to spring the row back (the request failed). */
-  onAccept: () => Promise<boolean>;
+  /** Resolve false to spring the row back (the request failed or was cancelled). */
+  onAccept?: () => Promise<boolean>;
   onDecline: () => Promise<boolean>;
   children: ReactNode;
 };
 
 /**
  * Incoming-request row (PLAN Phase 8): swipe right to accept, left to
- * decline, Mail-style. The drag lives on SharedValues; JS hears one tick
+ * decline, Mail-style. Without `onAccept` it is a swipe-left-to-remove row. The drag lives on SharedValues; JS hears one tick
  * when the commit threshold is crossed and the action on release. The row
  * keeps explicit buttons too (VoiceOver, no-gesture users).
  */
@@ -42,8 +43,9 @@ export function SwipeRow({ testID, acceptLabel, declineLabel, onAccept, onDeclin
   }, [testID, x, armed]);
 
   const tick = () => feel.emit('sliderDetent');
+  const canAccept = !!onAccept;
   const run = (kind: 'accept' | 'decline') => {
-    void (kind === 'accept' ? onAccept() : onDecline()).then((ok) => {
+    void (kind === 'accept' && onAccept ? onAccept() : onDecline()).then((ok) => {
       if (!ok) x.set(withSpring(0, segmentedSpring));
     });
   };
@@ -53,9 +55,11 @@ export function SwipeRow({ testID, acceptLabel, declineLabel, onAccept, onDeclin
     failOffsetY: [-10, 10],
     onUpdate: (e) => {
       'worklet';
-      x.set(e.translationX);
+      // One-sided rows rubber-band to the right.
+      const dx = !canAccept && e.translationX > 0 ? e.translationX * 0.15 : e.translationX;
+      x.set(dx);
       const th = width.get() * COMMIT;
-      const side = e.translationX > th ? 1 : e.translationX < -th ? -1 : 0;
+      const side = dx > th ? 1 : dx < -th ? -1 : 0;
       if (side !== armed.get()) {
         armed.set(side);
         if (side !== 0) scheduleOnRN(tick);
@@ -80,12 +84,14 @@ export function SwipeRow({ testID, acceptLabel, declineLabel, onAccept, onDeclin
 
   return (
     <View testID={testID} onLayout={(e) => width.set(e.nativeEvent.layout.width)}>
-      <Animated.View style={[styles.under, styles.acceptBg, accept]}>
-        <Check size={18} color={eos.ink} />
-        <AppText variant="label" color={eos.ink}>
-          {acceptLabel}
-        </AppText>
-      </Animated.View>
+      {canAccept ? (
+        <Animated.View style={[styles.under, styles.acceptBg, accept]}>
+          <Check size={18} color={eos.ink} />
+          <AppText variant="label" color={eos.ink}>
+            {acceptLabel}
+          </AppText>
+        </Animated.View>
+      ) : null}
       <Animated.View style={[styles.under, styles.declineBg, decline]}>
         <AppText variant="label" color={control.segmentedActiveText}>
           {declineLabel}

@@ -65,6 +65,18 @@ export const leaderboardQuery = (style: TrainingStyle, scope: LeaderboardScope) 
       apiClient.get<LeaderboardRow[]>('/leaderboard', { query: { style, scope, limit: LEADERBOARD_LIMIT }, signal }),
   });
 
+/** One row of the weekly league (GET /leaderboard?period=week); rank null = no XP this week. */
+export type LeagueRow = Omit<LeaderboardRow, 'rank' | 'rating' | 'unlocked'> & { rank: number | null; xp: number };
+
+export type League = { weekStart: string; weekEnd: string; rows: LeagueRow[]; self: LeagueRow | null };
+
+export const leagueQuery = (scope: LeaderboardScope) =>
+  queryOptions({
+    queryKey: ['league', scope] as const,
+    queryFn: ({ signal }) =>
+      apiClient.get<League>('/leaderboard', { query: { period: 'week', scope, limit: LEADERBOARD_LIMIT }, signal }),
+  });
+
 export const friendsQuery = () =>
   queryOptions({
     queryKey: queryKeys.friends(),

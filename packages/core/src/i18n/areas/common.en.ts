@@ -41,6 +41,7 @@ export const commonEn: Dict = {
   'ui.off': 'Off',
   'nav.social': 'Social',
   'nav.rivals': 'Rivals',
+  'nav.league': 'League',
   'brand.name': 'tac·tic·tak',
   'dev.open': 'Dev menu',
   // Board a11y (VoiceOver / screen readers): squares, pieces, promotion.

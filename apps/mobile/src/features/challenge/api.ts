@@ -28,6 +28,8 @@ export const challengeApi = {
   detail: (id: string, signal?: AbortSignal) => apiClient.get<ChallengeDetail>(`/challenges/${enc(id)}`, { signal }),
   create: (body: ChallengeCreateBody) => apiClient.post<ChallengeCreated>('/challenges', body),
   decline: (id: string) => apiClient.post<ChallengeSummary>(`/challenges/${enc(id)}/decline`),
+  /** Off my list: withdraws mine, declines theirs, hides a finished one. */
+  remove: (id: string) => apiClient.post<{ ok: true }>(`/challenges/${enc(id)}/remove`),
 };
 
 export const challengeListQuery = () =>

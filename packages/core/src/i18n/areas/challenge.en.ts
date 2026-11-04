@@ -118,6 +118,17 @@ export const challengeEn: Dict = {
   'challenge.declined.title_me': 'You declined',
   'challenge.expired.title': 'The challenge expired',
   'challenge.expired.body': 'Nobody played it within 24 h.',
+  'challenge.cancelled.title': 'The challenge was withdrawn',
+  'challenge.cancelled.body': 'It no longer counts.',
+  'challenge.row.cancelled': 'Withdrawn',
+  'challenge.swipe.decline': 'Decline',
+  'challenge.swipe.withdraw': 'Withdraw',
+  'challenge.swipe.remove': 'Remove',
+  'challenge.withdraw_title': 'Withdraw this challenge?',
+  'challenge.withdraw_body': '{name} won’t see it any more.',
+  'challenge.withdraw': 'Withdraw',
+  'challenge.withdraw_keep': 'Keep it',
+  'challenge.remove_error': 'Couldn’t remove it. Try again.',
   'challenge.again': 'Challenge again',
 
   // Rivals section (app-only).

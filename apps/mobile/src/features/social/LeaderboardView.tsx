@@ -3,7 +3,7 @@ import type { TrainingStyle } from '@tac/core/rules';
 import { eos, graphite, layout, radii, rank, semantic, shadows, space } from '@tac/core/tokens';
 import { FlashList, type FlashListRef, type ViewToken } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
-import { Medal } from 'lucide-react-native';
+import { Medal, Zap } from 'lucide-react-native';
 import { useRef, useState, type ReactNode } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 
@@ -13,12 +13,20 @@ import { StyleIcon, STYLE_ORDER } from '@/features/stats/StyleIcon';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText } from '@/ui/AppText';
-import { useT } from '@/ui/lang';
+import { useT, type TFn } from '@/ui/lang';
 import { Segmented } from '@/ui/Segmented';
 import { Card } from '@/ui/Surfaces';
 import { Tap } from '@/ui/Tap';
 import { displayNameOf } from './actions';
-import { LEADERBOARD_LIMIT, leaderboardQuery, type LeaderboardRow, type LeaderboardScope } from './api';
+import {
+  LEADERBOARD_LIMIT,
+  leaderboardQuery,
+  leagueQuery,
+  type LeaderboardRow,
+  type LeaderboardScope,
+  type LeagueRow,
+  type UserCard,
+} from './api';
 import { LEADERBOARD_ME_ROW } from './flags';
 import { readBoardScope, readBoardStyle, writeBoardScope, writeBoardStyle } from './prefs';
 import { StreakBadge } from './StreakBadge';
@@ -29,22 +37,217 @@ const MEDAL = [rank.intermediate.color, graphite[300], rank.advanced.color];
 /** Own-row highlight (web: inset ember/55 ring on #2e262c). */
 const SELF_RING = semantic.accent;
 
+/** One place on either board: the rating board's rating or the league's weekly XP. */
+type Entry = {
+  rank: number | null;
+  value: number;
+  isSelf: boolean;
+  streakDays: number;
+  streakLastDay: string | null;
+  user: UserCard;
+};
+
+/** How a board draws its number: the style icon + rating, or a bolt + XP. */
+type Metric = {
+  icon: (size: number) => ReactNode;
+  a11y: (rank: number | string, name: string, value: number) => string;
+};
+
+const fromBoard = (r: LeaderboardRow): Entry => ({ ...r, value: r.rating });
+const fromLeague = (r: LeagueRow): Entry => ({ ...r, value: r.xp });
+
 /**
- * Leaderboard (web /leaderboard): style + scope switches (remembered on the
- * device), a top-3 podium, then a virtualised list. Your own row is ringed;
- * when it is scrolled away it docks at the bottom, tap to jump back.
- * `top` scrolls above the switches (Rivals' Challenges section).
+ * The all-time rating board (web /leaderboard): style + scope switches
+ * (remembered on the device), a top-3 podium, then a virtualised list.
+ * `top` scrolls above the switches (Rivals' Challenges, the period switch).
  */
 export function LeaderboardView({ top }: { top?: ReactNode } = {}) {
   const t = useT();
   const [style, setStyle] = useState<TrainingStyle>(readBoardStyle);
   const [scope, setScope] = useState<LeaderboardScope>(readBoardScope);
   const q = useQuery(leaderboardQuery(style, scope));
+  const rows = (q.data ?? []).map(fromBoard);
+
+  // Outside the top N on the global board (B13 pending) only the rating is known.
+  const myRating = useAppStore((s) => s.progressions[style].currentPuzzleRating);
+  const me = useAuthStore((s) => s.user);
+  const outside =
+    !rows.some((r) => r.isSelf) && !LEADERBOARD_ME_ROW && q.data && scope === 'global' && rows.length >= LEADERBOARD_LIMIT && me
+      ? {
+          entry: {
+            rank: null,
+            value: myRating,
+            isSelf: true,
+            streakDays: 0,
+            streakLastDay: null,
+            user: { id: me.id, nickname: me.nickname, displayName: me.displayName ?? null, avatarUrl: me.avatarUrl ?? null, country: null, verified: me.verified },
+          },
+          rankLabel: `${LEADERBOARD_LIMIT}+`,
+        }
+      : null;
+
+  const metric: Metric = {
+    icon: (size) => <StyleIcon style={style} size={size} color={eos.ash} />,
+    a11y: (rank, name, rating) => t('leaderboard.rank_a11y', { rank, name, rating }),
+  };
+
+  return (
+    <RankedList
+      rows={rows}
+      outside={outside}
+      metric={metric}
+      loaded={!!q.data}
+      dim={q.isPlaceholderData}
+      refetch={q.refetch}
+      testID="leaderboard"
+      header={
+        <>
+          {top}
+          <Segmented
+            options={STYLE_ORDER.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
+            value={style}
+            onChange={(s) => {
+              setStyle(s);
+              writeBoardStyle(s);
+            }}
+            testID="board-style"
+            accessibilityLabel={t('leaderboard.style_label')}
+          />
+          <ScopeSwitch scope={scope} onChange={setScope} t={t} />
+          {q.isError && !q.data ? <ErrorCard t={t} /> : null}
+          {q.data && rows.length === 0 ? (
+            <EmptyCard text={scope === 'friends' ? t('leaderboard.empty_friends') : t('leaderboard.empty')} />
+          ) : null}
+        </>
+      }
+    />
+  );
+}
+
+/**
+ * The weekly league (owner, 2026-11-04): XP earned since Monday 00:00
+ * Kyiv time, all modes, for everyone or friends. The viewer's own row docks
+ * at the bottom when it is off the list (server `self`).
+ */
+export function LeagueView({ top }: { top?: ReactNode } = {}) {
+  const t = useT();
+  const [scope, setScope] = useState<LeaderboardScope>(readBoardScope);
+  const q = useQuery(leagueQuery(scope));
+  const rows = (q.data?.rows ?? []).map(fromLeague);
+  const self = q.data?.self ? fromLeague(q.data.self) : null;
+
+  const metric: Metric = {
+    icon: (size) => <Zap size={size} color={eos.ash} strokeWidth={1.8} />,
+    a11y: (rank, name, xp) => t('league.rank_a11y', { rank, name, xp }),
+  };
+
+  return (
+    <RankedList
+      rows={rows}
+      outside={self ? { entry: self, rankLabel: self.rank != null ? String(self.rank) : '—' } : null}
+      metric={metric}
+      loaded={!!q.data}
+      dim={q.isPlaceholderData}
+      refetch={q.refetch}
+      testID="league"
+      header={
+        <>
+          {top}
+          <View style={styles.leagueHead}>
+            <ScopeSwitch scope={scope} onChange={setScope} t={t} />
+            {q.data ? (
+              <AppText variant="captionStrong" color={eos.ash} testID="league-ends">
+                {t('league.ends_in', { left: weekLeft(t, q.data.weekEnd) })}
+              </AppText>
+            ) : null}
+          </View>
+          <AppText variant="caption" color={eos.dust}>
+            {t('league.hint')}
+          </AppText>
+          {q.isError && !q.data ? <ErrorCard t={t} /> : null}
+          {q.data && rows.length === 0 ? (
+            <EmptyCard text={scope === 'friends' ? t('league.empty_friends') : t('league.empty')} />
+          ) : null}
+        </>
+      }
+    />
+  );
+}
+
+function weekLeft(t: TFn, endIso: string, now = Date.now()): string {
+  const h = Math.max(0, Math.floor((new Date(endIso).getTime() - now) / 3600_000));
+  return h >= 24 ? t('league.left_dh', { d: Math.floor(h / 24), h: h % 24 }) : t('league.left_h', { h: Math.max(1, h) });
+}
+
+function ScopeSwitch({ scope, onChange, t }: { scope: LeaderboardScope; onChange: (s: LeaderboardScope) => void; t: TFn }) {
+  return (
+    <View style={styles.scope}>
+      <Segmented
+        options={[
+          { value: 'global' as const, label: t('leaderboard.scope_global') },
+          { value: 'friends' as const, label: t('leaderboard.scope_friends') },
+        ]}
+        value={scope}
+        onChange={(s) => {
+          onChange(s);
+          writeBoardScope(s);
+        }}
+        size="sm"
+        testID="board-scope"
+        accessibilityLabel={t('leaderboard.scope_label')}
+      />
+    </View>
+  );
+}
+
+function ErrorCard({ t }: { t: TFn }) {
+  return (
+    <Card testID="board-error">
+      <AppText variant="body" color={eos.ash}>
+        {t('leaderboard.error')}
+      </AppText>
+    </Card>
+  );
+}
+
+function EmptyCard({ text }: { text: string }) {
+  return (
+    <Card testID="board-empty">
+      <AppText variant="body" color={eos.ash} style={styles.center}>
+        {text}
+      </AppText>
+    </Card>
+  );
+}
+
+/**
+ * Podium + virtualised rows shared by both boards. Your own row is ringed;
+ * when it is scrolled away (or off the list: `outside`) it docks at the
+ * bottom, tap to jump back.
+ */
+function RankedList({
+  rows,
+  outside,
+  metric,
+  header,
+  loaded,
+  dim,
+  refetch,
+  testID,
+}: {
+  rows: Entry[];
+  outside: { entry: Entry; rankLabel: string } | null;
+  metric: Metric;
+  header: ReactNode;
+  loaded: boolean;
+  dim: boolean;
+  refetch: () => Promise<unknown>;
+  testID: string;
+}) {
   const [refreshing, setRefreshing] = useState(false);
   const [selfVisible, setSelfVisible] = useState(true);
-  const list = useRef<FlashListRef<LeaderboardRow>>(null);
+  const list = useRef<FlashListRef<Entry>>(null);
 
-  const rows = q.data ?? [];
   const podium = rows.length >= 3 ? rows.slice(0, 3) : [];
   const rest = rows.length >= 3 ? rows.slice(3) : rows;
   const selfIndex = rest.findIndex((r) => r.isSelf);
@@ -54,94 +257,34 @@ export function LeaderboardView({ top }: { top?: ReactNode } = {}) {
   const onRefresh = async () => {
     feel.emit('refresh');
     setRefreshing(true);
-    await q.refetch();
+    await refetch();
     setRefreshing(false);
   };
 
-  const onViewable = ({ viewableItems }: { viewableItems: ViewToken<LeaderboardRow>[] }) => {
+  const onViewable = ({ viewableItems }: { viewableItems: ViewToken<Entry>[] }) => {
     const seen = viewableItems.some((v) => v.item?.isSelf);
     setSelfVisible((prev) => (prev === seen ? prev : seen));
   };
 
-  const header = (
-    <View style={styles.header}>
-      {top}
-      <Segmented
-        options={STYLE_ORDER.map((s) => ({ value: s, label: t(`style.${s}.name`) }))}
-        value={style}
-        onChange={(s) => {
-          setStyle(s);
-          writeBoardStyle(s);
-        }}
-        testID="board-style"
-        accessibilityLabel={t('leaderboard.style_label')}
-      />
-      <View style={styles.scope}>
-        <Segmented
-          options={[
-            { value: 'global' as const, label: t('leaderboard.scope_global') },
-            { value: 'friends' as const, label: t('leaderboard.scope_friends') },
-          ]}
-          value={scope}
-          onChange={(s) => {
-            setScope(s);
-            writeBoardScope(s);
-          }}
-          size="sm"
-          testID="board-scope"
-          accessibilityLabel={t('leaderboard.scope_label')}
-        />
-      </View>
-      {q.isError && !q.data ? (
-        <Card testID="board-error">
-          <AppText variant="body" color={eos.ash}>
-            {t('leaderboard.error')}
-          </AppText>
-        </Card>
-      ) : null}
-      {q.data && rows.length === 0 ? (
-        <Card testID="board-empty">
-          <AppText variant="body" color={eos.ash} style={styles.center}>
-            {scope === 'friends' ? t('leaderboard.empty_friends') : t('leaderboard.empty')}
-          </AppText>
-        </Card>
-      ) : null}
-      {podium.length === 3 ? <Podium rows={podium} style={style} /> : null}
-    </View>
-  );
-
-  // Docked self row: in the list but scrolled away, or (B13 pending) outside
-  // the top N on the global board, where only the rating is known.
-  const myRating = useAppStore((s) => s.progressions[style].currentPuzzleRating);
-  const me = useAuthStore((s) => s.user);
-  let dock: { row: LeaderboardRow; rankLabel: string } | null = null;
-  if (selfRow && !selfOnPodium && !selfVisible) {
-    dock = { row: selfRow, rankLabel: String(selfRow.rank) };
-  } else if (!selfRow && !LEADERBOARD_ME_ROW && q.data && scope === 'global' && rows.length >= LEADERBOARD_LIMIT && me) {
-    dock = {
-      row: {
-        rank: 0,
-        rating: myRating,
-        unlocked: 0,
-        isSelf: true,
-        streakDays: 0,
-        streakLastDay: null,
-        user: { id: me.id, nickname: me.nickname, displayName: me.displayName ?? null, avatarUrl: me.avatarUrl ?? null, country: null, verified: me.verified },
-      },
-      rankLabel: `${LEADERBOARD_LIMIT}+`,
-    };
-  }
+  let dock: { entry: Entry; rankLabel: string } | null = null;
+  if (selfRow && !selfOnPodium && !selfVisible) dock = { entry: selfRow, rankLabel: String(selfRow.rank) };
+  else if (!selfRow && loaded && outside) dock = outside;
 
   return (
-    <View style={styles.root} testID="leaderboard">
+    <View style={styles.root} testID={testID}>
       <FlashList
         ref={list}
         data={rest}
         keyExtractor={(r) => r.user.id}
-        renderItem={({ item }) => <BoardRow row={item} style={style} />}
-        ListHeaderComponent={header}
+        renderItem={({ item }) => <BoardRow row={item} metric={metric} />}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            {header}
+            {podium.length === 3 ? <Podium rows={podium} metric={metric} /> : null}
+          </View>
+        }
         ItemSeparatorComponent={Gap}
-        contentContainerStyle={[styles.content, q.isPlaceholderData && styles.dim]}
+        contentContainerStyle={[styles.content, dim && styles.dim]}
         onViewableItemsChanged={onViewable}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={eos.ash} />}
         testID="board-list"
@@ -149,8 +292,8 @@ export function LeaderboardView({ top }: { top?: ReactNode } = {}) {
       {dock ? (
         <View style={styles.dock} testID="board-self-dock">
           <BoardRow
-            row={dock.row}
-            style={style}
+            row={dock.entry}
+            metric={metric}
             rankLabel={dock.rankLabel}
             onPress={
               selfIndex >= 0
@@ -168,31 +311,31 @@ function Gap() {
   return <View style={styles.gap} />;
 }
 
-function Podium({ rows, style }: { rows: LeaderboardRow[]; style: TrainingStyle }) {
+function Podium({ rows, metric }: { rows: Entry[]; metric: Metric }) {
   // 2nd · 1st · 3rd, the winner raised.
   const order = [rows[1], rows[0], rows[2]];
   return (
     <View style={styles.podium} testID="board-podium">
       {order.map((r) => (
-        <PodiumPlace key={r.user.id} row={r} style={style} first={r.rank === 1} />
+        <PodiumPlace key={r.user.id} row={r} metric={metric} first={r.rank === 1} />
       ))}
     </View>
   );
 }
 
-function PodiumPlace({ row, style, first }: { row: LeaderboardRow; style: TrainingStyle; first: boolean }) {
-  const t = useT();
+function PodiumPlace({ row, metric, first }: { row: Entry; metric: Metric; first: boolean }) {
   const name = displayNameOf(row.user);
+  const place = row.rank ?? 0;
   return (
     <Tap
-      testID={`board-podium-${row.rank}`}
+      testID={`board-podium-${place}`}
       accessibilityRole="button"
-      accessibilityLabel={t('leaderboard.rank_a11y', { rank: row.rank, name, rating: row.rating })}
+      accessibilityLabel={metric.a11y(place, name, row.value)}
       onPress={() => openProfile(row.user.nickname)}
       style={[styles.place, first && styles.placeFirst]}
     >
       <View style={[styles.placeCard, first && styles.placeCardFirst, row.isSelf && styles.selfRing]}>
-        <Medal size={first ? 22 : 18} color={MEDAL[row.rank - 1]} />
+        <Medal size={first ? 22 : 18} color={MEDAL[place - 1]} />
         <Avatar nickname={row.user.nickname} avatarUrl={row.user.avatarUrl} size={first ? 60 : 48} />
         <View style={styles.placeName}>
           <AppText variant="body" numberOfLines={1} style={styles.shrink}>
@@ -201,9 +344,9 @@ function PodiumPlace({ row, style, first }: { row: LeaderboardRow; style: Traini
           <VerifiedBadge verified={row.user.verified} size={12} />
         </View>
         <View style={styles.rating}>
-          <StyleIcon style={style} size={14} color={eos.ash} />
+          {metric.icon(14)}
           <AppText variant="value" style={first ? undefined : styles.placeValue}>
-            {String(row.rating)}
+            {String(row.value)}
           </AppText>
         </View>
       </View>
@@ -213,25 +356,25 @@ function PodiumPlace({ row, style, first }: { row: LeaderboardRow; style: Traini
 
 function BoardRow({
   row,
-  style,
+  metric,
   rankLabel,
   onPress,
 }: {
-  row: LeaderboardRow;
-  style: TrainingStyle;
+  row: Entry;
+  metric: Metric;
   rankLabel?: string;
   onPress?: () => void;
 }) {
-  const t = useT();
   const showStreak = useAppStore((s) => s.settings.showStreak);
   const st = streakState(row.streakDays, row.streakLastDay);
   const name = displayNameOf(row.user);
-  const medal = row.rank >= 1 && row.rank <= 3 ? MEDAL[row.rank - 1] : null;
+  const medal = row.rank != null && row.rank >= 1 && row.rank <= 3 ? MEDAL[row.rank - 1] : null;
+  const label = rankLabel ?? String(row.rank ?? '—');
   return (
     <Tap
       testID={row.isSelf ? 'board-row-self' : `board-row-${row.user.nickname}`}
       accessibilityRole="button"
-      accessibilityLabel={t('leaderboard.rank_a11y', { rank: rankLabel ?? row.rank, name, rating: row.rating })}
+      accessibilityLabel={metric.a11y(label, name, row.value)}
       onPress={onPress ?? (() => openProfile(row.user.nickname))}
     >
       <View style={[styles.row, row.isSelf && styles.selfRow]}>
@@ -240,16 +383,16 @@ function BoardRow({
             <Medal size={18} color={medal} />
           ) : (
             <AppText variant="body" color={eos.dust} style={styles.tabular} numberOfLines={1} adjustsFontSizeToFit>
-              {rankLabel ?? String(row.rank)}
+              {label}
             </AppText>
           )}
         </View>
         <UserIdentity user={row.user} />
         {showStreak && (st === 'secured' || st === 'at_risk') ? <StreakBadge days={row.streakDays} size="sm" /> : null}
         <View style={styles.rating}>
-          <StyleIcon style={style} size={16} color={eos.ash} />
+          {metric.icon(16)}
           <AppText variant="body" style={styles.ratingText}>
-            {String(row.rating)}
+            {String(row.value)}
           </AppText>
         </View>
       </View>
@@ -263,6 +406,7 @@ const styles = StyleSheet.create({
   dim: { opacity: 0.6 },
   header: { gap: space[3], paddingTop: space[3], paddingBottom: space[3] },
   scope: { alignSelf: 'flex-start', minWidth: 220 },
+  leagueHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2] },
   center: { textAlign: 'center' },
   gap: { height: space[1.5] },
   podium: { flexDirection: 'row', alignItems: 'flex-end', gap: space[2], marginTop: space[2] },
