@@ -43,8 +43,33 @@ export class PuzzleBufferService {
   private seenKey(sid: string) { return `session:${sid}:seen`; }
   private recentKey(uid: string) { return `user:${uid}:recent`; }
 
-  /** Returns the next puzzle, pre-parsed. Triggers a background refill when low. */
+  /**
+   * Returns the next puzzle, pre-parsed. Triggers a background refill when
+   * low. When Redis is down it serves one puzzle straight from Postgres (no
+   * seen/recent exclusion), so a session still starts and continues.
+   */
   async getNext(opts: {
+    sessionId: string;
+    userId: string;
+    rating: number;
+    theme?: string | null;
+  }): Promise<CachedPuzzle | null> {
+    try {
+      return await this.getNextQueued(opts);
+    } catch (e: unknown) {
+      this.log.error(`queue unavailable, serving from Postgres: ${e instanceof Error ? e.message : String(e)}`);
+      const [id] = await this.pickIds({
+        min: opts.rating - 40,
+        max: opts.rating + 60,
+        count: 1,
+        theme: opts.theme,
+        exclude: new Set(),
+      });
+      return id ? ((await this.hydrate([id]))[0] ?? null) : null;
+    }
+  }
+
+  private async getNextQueued(opts: {
     sessionId: string;
     userId: string;
     rating: number;
@@ -81,8 +106,11 @@ export class PuzzleBufferService {
     await this.preload(opts);
   }
 
+  /** Best effort: a failed cleanup must not fail finishing a session. */
   async clearSession(sessionId: string) {
-    await this.redis.client.del(this.queueKey(sessionId), this.seenKey(sessionId));
+    await this.redis.client
+      .del(this.queueKey(sessionId), this.seenKey(sessionId))
+      .catch((e: Error) => this.log.error(`clearSession failed: ${e.message}`));
   }
 
   /**

@@ -6,8 +6,11 @@ services:
       POSTGRES_USER: taktic
       POSTGRES_PASSWORD: taktic
       POSTGRES_DB: taktic
+    # Host ports are bound to localhost only: on the VPS a 0.0.0.0 publish
+    # bypasses ufw, and an open Redis got a crypto miner (2026-11-07).
+    # nginx reaches backend/frontend over the compose network.
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -20,7 +23,7 @@ services:
     image: redis:7-alpine
     container_name: taktic_redis
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
     volumes:
       - redisdata:/data
     healthcheck:
@@ -41,7 +44,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in root .env}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
     ports:
-      - "4000:4000"
+      - "127.0.0.1:4000:4000"
     volumes:
       # Persist uploaded assets (avatars, etc) across redeploys. Path must
       # match `process.cwd()/uploads` in the backend runtime — the image has
@@ -62,7 +65,7 @@ services:
         NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-/api}
     container_name: taktic_frontend
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       - backend
     profiles: ["app"]

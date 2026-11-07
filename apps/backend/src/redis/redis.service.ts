@@ -7,7 +7,11 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
   onModuleInit() {
     const url = process.env.REDIS_URL ?? 'redis://localhost:6379';
-    this.client = new Redis(url, { lazyConnect: false, maxRetriesPerRequest: null });
+    // Fail fast instead of queueing forever: with maxRetriesPerRequest null a
+    // dead Redis made POST /sessions hang until the client gave up
+    // (2026-11-07). Callers fall back to Postgres or skip the cache.
+    this.client = new Redis(url, { lazyConnect: false, maxRetriesPerRequest: 1, commandTimeout: 2_000 });
+    this.client.on('error', () => undefined);
   }
 
   async onModuleDestroy() {
