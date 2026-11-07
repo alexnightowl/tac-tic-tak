@@ -18,6 +18,7 @@ import { FocusStatusBar } from '@/shell/FocusStatusBar';
 import { AppText, confirm, PlateButton, Tap } from '@/ui';
 import { useT } from '@/ui/lang';
 import { stormApi } from './api';
+import { takeStream } from './launch';
 import { clockText } from './format';
 import { BAR_JUMP, BONUS_FLOAT, END_HOLD_MS, LOW_TIME_MS, TICK_LAST_S, WARN_TIME_MS } from './motion';
 import { ComboMeter, SideToMove } from './Combo';
@@ -36,10 +37,15 @@ import { useAppStore } from '@/stores/appStore';
 export function RunScreen({ challengeId, format }: { challengeId: string | null; format: StormFormat }) {
   const t = useT();
   const insets = useSafeAreaInsets();
-  const [load, setLoad] = useState<{ status: 'loading' } | { status: 'error' } | { status: 'ready'; stream: StormStreamResponse }>({ status: 'loading' });
+  const [load, setLoad] = useState<{ status: 'loading' } | { status: 'error' } | { status: 'ready'; stream: StormStreamResponse }>(() => {
+    // Normally the Start button already loaded the stream (launch.ts).
+    const stream = takeStream(challengeId);
+    return stream ? { status: 'ready', stream } : { status: 'loading' };
+  });
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    if (load.status === 'ready') return;
     let alive = true;
     stormApi.stream(challengeId ?? undefined).then(
       (stream) => alive && setLoad(stream.puzzles.length > 0 ? { status: 'ready', stream } : { status: 'error' }),
@@ -48,7 +54,7 @@ export function RunScreen({ challengeId, format }: { challengeId: string | null;
     return () => {
       alive = false;
     };
-  }, [challengeId, attempt]);
+  }, [challengeId, attempt]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (load.status === 'ready') return <Run stream={load.stream} format={format} challengeId={challengeId} />;
   return (
@@ -66,11 +72,13 @@ export function RunScreen({ challengeId, format }: { challengeId: string | null;
           <AppText variant="body" color={eos.ash} style={styles.centerText} testID="storm-run-error">
             {t('storm.run.error')}
           </AppText>
-          <PlateButton testID="storm-run-retry" label={t('storm.run.retry')} size="md" onPress={() => {
-              setLoad({ status: 'loading' });
-              setAttempt((n) => n + 1);
-            }} />
-          <PlateButton testID="storm-run-close" label={t('storm.run.close')} variant="slate" size="sm" onPress={() => router.back()} />
+          <View style={styles.errorActions}>
+            <PlateButton testID="storm-run-retry" label={t('storm.run.retry')} size="md" block onPress={() => {
+                setLoad({ status: 'loading' });
+                setAttempt((n) => n + 1);
+              }} />
+            <PlateButton testID="storm-run-close" label={t('storm.run.close')} variant="slate" size="md" block onPress={() => router.back()} />
+          </View>
         </>
       )}
     </View>
@@ -338,6 +346,7 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
   center: { alignItems: 'center', justifyContent: 'center', gap: space[4], paddingHorizontal: layout.gutter },
   centerText: { textAlign: 'center' },
+  errorActions: { alignSelf: 'stretch', gap: space[2.5] },
   flex: { flex: 1, minWidth: 0 },
   header: { height: layout.shellHeaderHeight, paddingHorizontal: space[2], flexDirection: 'row', alignItems: 'center', gap: space[2.5] },
   exit: { width: 44, height: 44, borderRadius: radii.control, alignItems: 'center', justifyContent: 'center' },

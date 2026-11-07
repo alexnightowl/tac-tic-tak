@@ -343,3 +343,20 @@ the prod DB before migration deploys; norm snapped to the 25 grid (prod).
   (old Play setup ids) — needs a rewrite.
 - **Canvas:** League board, challenge swipe, confirm sheet and the new combo meter still need
   drawing into the canvas (design-parity rule).
+
+## 2026-11-07 — Prod incident (Redis miner) and the friends' bug batch
+
+- **Incident:** prod Redis was published on 0.0.0.0:6380 without auth and got a crypto miner
+  (~6 Nov); it moved Redis to another port, the ioredis client queued commands forever and
+  POST /sessions hung ("no connection" in the app). With the owner's ssh key: stopped the
+  container, fresh Redis volume, Redis + Postgres bound to localhost via a server-only
+  `docker-compose.override.yml`, OpenClaw (an old project) stopped. Code fix 558b1b9 on prod:
+  compose ports on 127.0.0.1, Redis fail-fast (1 retry, 2 s), puzzle buffer falls back to
+  Postgres. The owner still has to rotate the root password and the cleanup command.
+- **Bugs from testers:** Play setup slider no longer remounts to 0 on a style switch and the band
+  eye no longer moves with the band name; the wrong/right square flash and the shake wait for a
+  tap-move to land; Storm's load error has centred, equal buttons; the profile editor clears the
+  Android status bar; Storm now loads its stream on the Start / Play again / Accept button (like
+  a session) instead of a separate loading screen (`features/storm/launch.ts`).
+- **Verified:** mobile typecheck + lint, Maestro `16-storm`, `12-play-v2`, `17-challenge` on an
+  iOS sim; slider screenshots right after a style tap. Android status-bar fix not run on a device.

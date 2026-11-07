@@ -205,7 +205,6 @@ export function PlaySetupScreen() {
                 <DifficultyReadout live={live} bandLabels={bandLabels} />
               </View>
               <DifficultyTrack
-                key={`${style}-${mode}`}
                 testID="setup-slider"
                 accessibilityLabel={t('play.difficulty')}
                 value={difficulty}

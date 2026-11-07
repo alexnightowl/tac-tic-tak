@@ -19,6 +19,8 @@ import { BAND_ICONS } from './bandIcons';
 // `live`; React hears the value once, on release.
 
 const THUMB = 18;
+/** Last measured track width: a remounted track draws its thumb in place on the first frame. */
+let knownWidth = 0;
 const THUMB_MS = 90;
 const thumbEase = Easing.out(Easing.quad);
 
@@ -52,10 +54,10 @@ export function DifficultyTrack({
   testID,
   accessibilityLabel,
 }: DifficultyTrackProps) {
-  const width = useSharedValue(0);
-  const thumbX = useSharedValue(0);
-  const committed = useSharedValue(value);
   const ratio = (v: number) => (Math.min(max, Math.max(min, v)) - min) / (max - min);
+  const width = useSharedValue(knownWidth);
+  const thumbX = useSharedValue(ratio(value) * knownWidth);
+  const committed = useSharedValue(value);
   const mePct = `${ratio(me) * 100}%` as const;
 
   // External changes (style switch, preset chips) move the thumb.
@@ -68,6 +70,7 @@ export function DifficultyTrack({
 
   const onLayout = (e: LayoutChangeEvent) => {
     const w = e.nativeEvent.layout.width;
+    knownWidth = w;
     width.set(w);
     thumbX.set(ratio(committed.get()) * w);
   };
@@ -212,16 +215,26 @@ export function DifficultyReadout({ live, bandLabels }: { live: SharedValue<numb
   return (
     <View style={styles.readout}>
       <View style={styles.readoutBand}>
-        {DIFFICULTY_BANDS.map((b, i) => (
-          <ReadoutIcon key={b.key} index={i} live={live} icon={BAND_ICONS[BAND_ICON_KEY[b.key]]} />
-        ))}
-        <AnimatedTextInput
-          editable={false}
-          pointerEvents="none"
-          animatedProps={bandProps}
-          style={[textStyle('label', lang), styles.readoutBandText]}
-          testID="setup-band"
-        />
+        <View style={styles.readoutIcon}>
+          {DIFFICULTY_BANDS.map((b, i) => (
+            <ReadoutIcon key={b.key} index={i} live={live} icon={BAND_ICONS[BAND_ICON_KEY[b.key]]} />
+          ))}
+        </View>
+        {/* As wide as the longest band name, so the eye never moves as the name changes. */}
+        <View>
+          {labels.map((l) => (
+            <AppText key={l} variant="label" style={[styles.readoutBandText, styles.readoutSizer]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+              {l}
+            </AppText>
+          ))}
+          <AnimatedTextInput
+            editable={false}
+            pointerEvents="none"
+            animatedProps={bandProps}
+            style={[textStyle('label', lang), styles.readoutBandText, StyleSheet.absoluteFill]}
+            testID="setup-band"
+          />
+        </View>
       </View>
       <AnimatedTextInput
         editable={false}
@@ -237,7 +250,7 @@ export function DifficultyReadout({ live, bandLabels }: { live: SharedValue<numb
 function ReadoutIcon({ index, live, icon }: { index: number; live: SharedValue<number>; icon: number }) {
   const style = useAnimatedStyle(() => ({ opacity: bandIndexOf(live.get()) === index ? 1 : 0 }));
   return (
-    <Animated.View style={[styles.readoutIcon, style]}>
+    <Animated.View style={[styles.readoutIconLayer, style]}>
       <Image source={icon} style={styles.readoutIconImg} contentFit="contain" transition={null} />
     </Animated.View>
   );
@@ -246,9 +259,11 @@ function ReadoutIcon({ index, live, icon }: { index: number; live: SharedValue<n
 const styles = StyleSheet.create({
   readout: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
   readoutBand: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
-  readoutIcon: { position: 'absolute', left: 0, width: 20, height: 20 },
+  readoutIcon: { width: 20, height: 20 },
+  readoutIconLayer: { ...StyleSheet.absoluteFill },
   readoutIconImg: { width: 20, height: 20 },
-  readoutBandText: { paddingLeft: 20 + space[2], padding: 0, fontSize: 12, minWidth: space[20], textAlign: 'right' },
+  readoutBandText: { padding: 0, fontSize: 12, textAlign: 'left' },
+  readoutSizer: { height: 0, opacity: 0 },
   readoutValue: { padding: 0, height: 30, lineHeight: undefined, minWidth: space[14] },
   youRow: { height: 14 },
   youLabelWrap: { position: 'absolute', top: 0, width: 120, marginLeft: -60, alignItems: 'center' },

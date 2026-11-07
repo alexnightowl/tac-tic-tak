@@ -16,6 +16,7 @@ import { ordinal } from './format';
 import { EmberChip, StatTile } from './parts';
 import { useStormStore, type StormLocalRun } from './store';
 import { requestStormSync } from './sync';
+import { useStormLaunch } from './launch';
 
 // /storm/result?run=<clientId> (canvas StormResult). Drawn from the run on
 // the phone, so it works offline at once; the server's answer (old best,
@@ -43,6 +44,7 @@ export function ResultScreen({ clientId }: { clientId: string }) {
 
 function Result({ run }: { run: StormLocalRun }) {
   const t = useT();
+  const { launching, launch } = useStormLaunch();
   const { lang } = useLang();
   const insets = useSafeAreaInsets();
   // The last known summary stands in for the server's answer until it lands.
@@ -167,7 +169,7 @@ function Result({ run }: { run: StormLocalRun }) {
           end={{ x: 0, y: 0 }}
           style={StyleSheet.absoluteFill}
         />
-        <PlateButton testID="storm-result-again" label={t('storm.result.play_again')} size="lg" block onPress={() => router.replace('/storm/run' as Href)} />
+        <PlateButton testID="storm-result-again" label={t('storm.result.play_again')} size="lg" block loading={launching} onPress={() => void launch({ replace: true })} />
         <PlateButton
           testID="storm-result-dare"
           label={t('storm.result.dare', { n: score })}

@@ -17,6 +17,7 @@ import { AppText, Input, PlateButton, Segmented, Tap, TextLink } from '@/ui';
 import { useT } from '@/ui/lang';
 import { challengeApi, invalidateChallenges } from './api';
 import { PresenceAvatar, useMyRating } from './parts';
+import { openRun, runHref } from '@/features/storm/launch';
 
 /** GET /friends rows carry presence since the Storm backend. */
 type Friend = FriendRow & { online?: boolean };
@@ -96,7 +97,8 @@ export function CreateScreen({
         toast.show({ title: t('challenge.sent', { name }), icon: Send, ...(score ? { description: t('challenge.sent_body', { name, n: score }) } : {}) });
         router.replace(`/challenge/${id}` as Href);
       } else {
-        router.replace(`/storm/run?challenge=${encodeURIComponent(id)}&format=${format}` as Href);
+        // The challenge exists now: if its stream fails here, the runner retries it.
+        await openRun({ challengeId: id, format, replace: true }).catch(() => router.replace(runHref(id, format)));
       }
     } catch (e) {
       feel.emit('formError');

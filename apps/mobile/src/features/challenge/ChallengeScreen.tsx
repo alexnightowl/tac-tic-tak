@@ -14,8 +14,8 @@ import { AppText, BackButton, confirm, HeroCard, PlateButton, Tap, TextLink } fr
 import { useT, useTn, type TFn } from '@/ui/lang';
 import { challengeApi, challengeDetailQuery, invalidateChallenges } from './api';
 import { clock, ExpiryCountdown, playedLine, PresenceAvatar, RunStrip, StripLegend } from './parts';
+import { useStormLaunch } from '@/features/storm/launch';
 
-const runHref = (id: string, f: StormFormat) => `/storm/run?challenge=${encodeURIComponent(id)}&format=${f}` as Href;
 const newHref = (friendId: string, f: StormFormat) => `/challenge/new?friend=${encodeURIComponent(friendId)}&format=${f}` as Href;
 
 const goBack = () => (router.canGoBack() ? router.back() : router.replace('/rivals' as Href));
@@ -128,6 +128,7 @@ function Versus({ c, me, them, meRing }: { c: ChallengeDetail; me: string; them:
 
 function Incoming({ c, onExpire }: { c: ChallengeDetail; onExpire: () => void }) {
   const t = useT();
+  const { launching, launch } = useStormLaunch();
   const tn = useTn();
   const name = displayNameOf(c.other);
   const [declining, setDeclining] = useState(false);
@@ -164,7 +165,7 @@ function Incoming({ c, onExpire }: { c: ChallengeDetail; onExpire: () => void })
       header={<BackButton variant="back" glyph="close" testID="challenge-close" accessibilityLabel={t('challenge.close')} onPress={goBack} />}
       dock={
         <>
-          <PlateButton testID="challenge-accept" label={t('challenge.accept')} size="lg" block onPress={() => router.replace(runHref(c.id, c.format))} />
+          <PlateButton testID="challenge-accept" label={t('challenge.accept')} size="lg" block loading={launching} onPress={() => void launch({ challengeId: c.id, format: c.format, replace: true })} />
           <View style={styles.dockRow}>
             <PlateButton testID="challenge-later" label={t('challenge.later')} variant="slate" block style={styles.half} onPress={goBack} />
             <View style={styles.half}>
@@ -387,12 +388,13 @@ function Waiting({ c, onExpire }: { c: ChallengeDetail; onExpire: () => void }) 
 
 function Draft({ c }: { c: ChallengeDetail }) {
   const t = useT();
+  const { launching, launch } = useStormLaunch();
   const name = displayNameOf(c.other);
   return (
     <Frame
       testID="challenge-draft"
       header={<Back t={t} />}
-      dock={<PlateButton testID="challenge-play" label={t('challenge.draft.play')} size="lg" block onPress={() => router.replace(runHref(c.id, c.format))} />}
+      dock={<PlateButton testID="challenge-play" label={t('challenge.draft.play')} size="lg" block loading={launching} onPress={() => void launch({ challengeId: c.id, format: c.format, replace: true })} />}
     >
       <HeroCard style={styles.hero}>
         <AppText variant="kicker" color={tone.rose} style={styles.centerText}>

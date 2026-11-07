@@ -224,6 +224,9 @@ function BoardImpl({
   /** Plans waiting for a commit (a view must mount or swap its sprite first). */
   const queueRef = useRef<PlanSpec[]>([]);
   const pendingRef = useRef<{ id: number; at: number; ms: number; resolve: () => void }[]>([]);
+  /** When the user's last tap-move slide lands: square feedback waits for it. */
+  const landAtRef = useRef(0);
+  const untilLanded = () => Math.max(0, Math.round(landAtRef.current - performance.now()));
   const slideSeqRef = useRef(0);
   const coverRef = useRef<PieceHandle | null>(null);
   // Mirrors of React state, so position changes only set it when it is set.
@@ -630,6 +633,7 @@ function BoardImpl({
       feel.emit('illegal');
       return;
     }
+    if (!viaDrag) landAtRef.current = performance.now() + TAP_MOVE_MS;
     void commit({ from, to }, { ms: viaDrag ? 0 : TAP_MOVE_MS, dragFrom: viaDrag ? from : undefined });
     if (moveFeel === 'board') feel.emit(moveFeelEvent(move), { move });
     const accepted = onMove?.({
@@ -869,14 +873,14 @@ function BoardImpl({
         sv.flashSq.set(squareIndex(sq));
         sv.flashOk.set(ok);
         sv.flashOpacity.set(0);
-        sv.flashOpacity.set(withSequence(
+        sv.flashOpacity.set(withDelay(untilLanded(), withSequence(
           withTiming(1, { duration: d * inStop[0], easing: e }),
           withDelay(d * (holdStop[0] - inStop[0]), withTiming(0, { duration: d * (1 - holdStop[0]), easing: e }, () => {
             'worklet';
             sv.flashSq.set(-1);
             scheduleOnRN(resolve);
           })),
-        ));
+        )));
       }),
     shake: (sq) =>
       new Promise((resolve) => {
@@ -898,7 +902,7 @@ function BoardImpl({
           };
           return withTiming(v, { duration: d * (at - stops[i][0]), easing: e }, isLast ? onEnd : undefined);
         });
-        sv.shakeX.set(withSequence(...steps));
+        sv.shakeX.set(withDelay(untilLanded(), withSequence(...steps)));
       }),
     sparks: (sq) =>
       new Promise((resolve) => {

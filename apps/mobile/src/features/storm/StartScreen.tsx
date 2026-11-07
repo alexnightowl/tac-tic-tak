@@ -16,6 +16,7 @@ import { useT, useTn } from '@/ui/lang';
 import { useStormSummary } from './api';
 import { nameOf, shortDate } from './format';
 import { Bolt, NumberTile, StormEmblem } from './parts';
+import { useStormLaunch } from './launch';
 
 // /storm (canvas StormStart): the rules, Your best, Today, the week among
 // friends (top 3, plus me as a 4th row when I am outside them) and Start.
@@ -26,6 +27,7 @@ const RULE_ICON = 18;
 
 export function StartScreen() {
   const t = useT();
+  const { launching, launch } = useStormLaunch();
   const tn = useTn();
   const { lang } = useLang();
   const insets = useSafeAreaInsets();
@@ -136,7 +138,8 @@ export function StartScreen() {
           icon={<Bolt size={18} color={tone.plateInk} />}
           size="lg"
           block
-          onPress={() => router.push('/storm/run' as Href)}
+          loading={launching}
+          onPress={() => void launch()}
         />
       </View>
     </View>

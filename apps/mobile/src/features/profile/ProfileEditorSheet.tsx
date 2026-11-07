@@ -1,7 +1,7 @@
 import { queryKeys } from '@tac/core/api';
 import { eos, graphite, layout, radii, semantic, shadows, space } from '@tac/core/tokens';
 import { useEffect, useState } from 'react';
-import { Modal, StyleSheet, TextInput, View } from 'react-native';
+import { Modal, Platform, StyleSheet, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
@@ -140,7 +140,9 @@ function EditorBody({
   );
 
   return (
-    <View style={styles.root} testID="profile-editor">
+    // iOS presents a pageSheet below the status bar; Android draws the modal
+    // edge to edge, so the bar needs the status-bar inset there.
+    <View style={[styles.root, Platform.OS === 'android' && { paddingTop: insets.top }]} testID="profile-editor">
       {/* Save lives in the bar (iOS edit-sheet pattern) so the keyboard never covers it. */}
       <View style={styles.bar}>
         <Tap
