@@ -1,4 +1,7 @@
-# Web parity: paused (how to pick it up again)
+# Web parity: status and how to run a phase
+
+**Resumed 2026-11-08** (owner: keep the web in sync with the app; its job is using the app from
+a computer). W3, W4, W5 run in parallel first, then W6, W8, W9, then W7 and W10.
 
 **Status (2026-11-04):** the owner paused web parity after W0–W2 (all three on prod) ("давай тоді забʼєм на це …").
 Nothing on the web is half-switched: every finished phase is on `main` and prod, and the

@@ -1,7 +1,7 @@
 # Web parity with the app (D31)
 
 One row per app screen. **State:** `missing` (no web screen), `old` (an old web screen exists, not
-v2 yet), `wip`, `done` (v2, app behaviour), `n/a` (not on the web). Phase as in `PLAN.md` §3.
+v2 yet), `wip`, `done` (v2, app behaviour), `behind` (done, but a later app change is not on the web yet), `n/a` (not on the web). Phase as in `PLAN.md` §3.
 
 | App route | Web route | Phase | State | Notes |
 |---|---|---|---|---|

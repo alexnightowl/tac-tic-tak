@@ -12,8 +12,10 @@ PARITY.md mark them "fix".
 
 **The web is a full client again** (owner, 2026-11-04, D31): it catches up with the app, in design
 v2, on `@tac/core`. Plan: `docs/web/PLAN.md`; parity: `docs/web/PARITY-WEB.md`. The app stays the
-source of truth for behaviour; the web follows it. **Paused** the same day after W0–W2 (all on
-prod): do not start W3+ unless the owner asks; to resume read `docs/web/RESUME.md`.
+source of truth for behaviour; the web follows it. Paused after W0–W2, **resumed 2026-11-08**
+(owner: keep the web in sync with the app; its job is using the app from a computer). Status and
+how-to: `docs/web/RESUME.md`. Once a feature has a web screen, an app change to it ships its web
+counterpart too (same night, a `web/*` branch), or gets a `PARITY-WEB.md` row marked `behind`.
 
 **Talk to the owner in Ukrainian** (chat replies, questions, morning summaries). Code, comments,
 commits, PRs and the docs/mobile files are in English, except `docs/mobile/OWNER-QUESTIONS.md`,

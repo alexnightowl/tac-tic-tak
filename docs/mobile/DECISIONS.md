@@ -341,6 +341,9 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
 - **Not on the web:** offline packs, push, haptics.
 - **Paused (owner, 2026-11-04)** after W0–W2 shipped, on hearing the 1–2 day estimate for the
   rest. Resume from `docs/web/RESUME.md` (next: W3 Play).
+- **Resumed (owner, 2026-11-08):** "я все ж хочу підтримувати їх синхронно, головна мета веб
+  версії це саме використовувати апку з компа". W3–W10 continue; from now on an app change to a
+  feature the web already has ships its web counterpart too (or a `behind` row in PARITY-WEB.md).
 
 ### D32. League tab: this week's XP board (owner, 2026-11-04)
 
