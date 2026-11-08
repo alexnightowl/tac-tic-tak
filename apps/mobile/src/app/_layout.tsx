@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -20,6 +21,7 @@ import { useToastStore } from '@/shell/toast/store';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { LangProvider } from '@/ui/lang';
+import { useWebFonts } from '@/ui/webFonts';
 
 // Module scope, before the first render: hold the splash while a stored
 // session's keychain read runs (MMKV state is already synchronous), and
@@ -38,6 +40,7 @@ export default function RootLayout() {
   const status = useAuthStore((s) => s.status);
   const signedIn = status !== 'anon';
   const lang = useAppStore((s) => s.settings.language);
+  const fontsReady = useWebFonts();
 
   // Decode every short clip up front: without it the first sound of a
   // session lands ~200 ms late.
@@ -52,6 +55,10 @@ export default function RootLayout() {
     // A previous account's toasts must not show over the login screen.
     if (status === 'anon') useToastStore.getState().clear();
   }, [status]);
+
+  // Web only: hold the first frame until the fonts are in (no flash of a
+  // system serif). Native has them embedded and is always ready.
+  if (!fontsReady) return <View style={{ flex: 1, backgroundColor: eos.ink }} />;
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: eos.ink }}>

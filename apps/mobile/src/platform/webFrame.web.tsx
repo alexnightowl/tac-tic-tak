@@ -30,6 +30,7 @@ if (rawRemove) {
 // Desktop affordances react-native-web leaves out: a hand over anything
 // clickable, and no text selection when a button is clicked or dragged.
 const CSS = `
+html, body { background-color: ${eos.ink}; }
 [role="button"], [role="link"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="menuitem"] {
   cursor: pointer; user-select: none; -webkit-user-select: none;
 }
