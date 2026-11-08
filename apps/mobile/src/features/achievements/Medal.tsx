@@ -110,7 +110,7 @@ export function Medal({
     );
   } else {
     glyph = (
-      <Svg width={32 * k} height={32 * k} viewBox="0 0 24 24" accessible={false}>
+      <Svg width={32 * k} height={32 * k} viewBox="0 0 24 24" aria-hidden>
         <Path d={art.d} fill="none" stroke={ink} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" />
       </Svg>
     );

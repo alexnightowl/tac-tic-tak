@@ -1,7 +1,7 @@
 import { eos, layout, text } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -13,21 +13,19 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
 
 import { feel } from '@/feel';
+import { useWideWeb } from '@/platform/webFrame';
 import { fontFamily } from '@/ui/fonts';
 import { useLang, useT } from '@/ui/lang';
 import { segmentedSpring } from '@/ui/motion';
 import { Tap } from '@/ui/Tap';
+import { TabGlyph } from './TabGlyph';
 import { SHELL_TABS, type ShellTabId } from './tabs';
 
 const HOME = require('../../assets/icons/nav-home.webp');
-const PLAY = require('../../assets/icons/nav-play.webp');
 
 const BAR_H = layout.tabBarHeight;
-/** The Learn tab's open book (canvas LearnHome nav). */
-const LEARN = 'M2.5 5.5c3-1.3 6.2-1.3 9.5.8 3.3-2.1 6.5-2.1 9.5-.8v13c-3-1.3-6.2-1.3-9.5.8-3.3-2.1-6.5-2.1-9.5-.8zM12 6.3v13';
 /** The ember rule spans the middle 44% of the tab (left/right 28%). */
 const RULE = layout.tabRule.span;
 
@@ -40,7 +38,12 @@ const RULE = layout.tabRule.span;
  * over the middle 44 % of the active tab. The rule slides and icon/label
  * colours crossfade on one SharedValue; React only swaps the page.
  */
-export function ShellTabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
+export function ShellTabBar(props: BottomTabBarProps) {
+  // A desktop browser shows the rail instead (D35).
+  return useWideWeb() ? null : <TabBar {...props} />;
+}
+
+function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
   const reduced = useReducedMotion();
   const t = useT();
@@ -122,33 +125,7 @@ function TabIcon({ id, pos, i }: { id: ShellTabId; pos: SharedValue<number>; i: 
       </Animated.View>
     );
   }
-  const draw = (color: string, strong: boolean): ReactNode => {
-    switch (id) {
-      case 'play':
-        return <Image source={PLAY} style={styles.i24} tintColor={color} />;
-      case 'learn':
-        return (
-          <Svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-            <Path d={LEARN} />
-          </Svg>
-        );
-      case 'rivals':
-        // The League tab: a trophy (lucide "trophy" outline).
-        return (
-          <Svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-            <Path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16" />
-            <Path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
-            <Path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-          </Svg>
-        );
-      default:
-        return (
-          <Svg width={21} height={21} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strong ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
-            <Path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
-          </Svg>
-        );
-    }
-  };
+  const draw = (color: string, strong: boolean) => <TabGlyph id={id} color={color} strong={strong} />;
   // Two tinted copies crossfaded: SVG/tint colours can't animate on the UI thread.
   return (
     <View style={styles.icon}>

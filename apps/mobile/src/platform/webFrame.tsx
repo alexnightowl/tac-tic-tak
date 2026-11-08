@@ -4,3 +4,8 @@ import type { ReactNode } from 'react';
 export function WebFrame({ children }: { children: ReactNode }) {
   return children;
 }
+
+/** Native: never a desktop browser. */
+export function useWideWeb(): boolean {
+  return false;
+}

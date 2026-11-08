@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/features/profile/Avatar';
 import { useIncomingRequestCount } from '@/features/social/badge';
+import { useWideWeb } from '@/platform/webFrame';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText } from '@/ui/AppText';
 import { BrandLogo, HEADER_LOGO_GLOW } from '@/ui/BrandLogo';
@@ -20,6 +21,11 @@ import { Tap } from '@/ui/Tap';
  * carries the incoming friend-request count (DECISIONS D22).
  */
 export function ShellHeader() {
+  // A desktop browser shows the rail instead (D35).
+  return useWideWeb() ? null : <Header />;
+}
+
+function Header() {
   const insets = useSafeAreaInsets();
   const t = useT();
   const user = useAuthStore((s) => s.user);

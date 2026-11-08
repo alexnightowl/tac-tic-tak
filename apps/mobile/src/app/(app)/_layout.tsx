@@ -1,5 +1,6 @@
 import { eos, radii, surface } from '@tac/core/tokens';
 import { Stack } from 'expo-router';
+import { Platform } from 'react-native';
 
 // Module side effect: every achievement toast gets its glyph, whichever
 // screen raised it (the shell's icon registry).
@@ -29,12 +30,14 @@ const DEFAULT_HEADER = stackHeader('back');
 //  - formSheet: the account menu and the small pickers.
 export default function AppLayout() {
   const t = useT();
+  // The web has no formSheet: there a sheet route is a transparent modal
+  // that draws itself as a dialog over a backdrop (ui/webSheet).
   const sheet = {
-    presentation: 'formSheet',
+    presentation: Platform.OS === 'web' ? 'transparentModal' : 'formSheet',
     headerShown: false,
     sheetGrabberVisible: true,
     sheetCornerRadius: radii.sheet,
-    contentStyle: { backgroundColor: surface.sheet },
+    contentStyle: { backgroundColor: Platform.OS === 'web' ? 'transparent' : surface.sheet },
   } as const;
   return (
     <>
