@@ -63,6 +63,14 @@ const config: ExpoConfig = {
     // Pulled in by native audio/media libraries; the app never records.
     blockedPermissions: ['android.permission.RECORD_AUDIO'],
   },
+  // The web build (react-native-web, D35): browser tab icon and colours.
+  web: {
+    favicon: './assets/images/icon.png',
+    name: 'tac·tic·tak',
+    shortName: 'tac·tic·tak',
+    backgroundColor: STONE,
+    themeColor: STONE,
+  },
   plugins: [
     // First on purpose: entitlement mods run in reverse plugin order, so this
     // one runs after expo-notifications has added aps-environment.

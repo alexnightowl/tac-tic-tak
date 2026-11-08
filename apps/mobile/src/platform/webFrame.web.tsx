@@ -27,6 +27,21 @@ if (rawRemove) {
   dimsWithRemove.removeEventListener = (type, handler) => rawRemove(type, wrapped.get(handler) ?? handler);
 }
 
+// Desktop affordances react-native-web leaves out: a hand over anything
+// clickable, and no text selection when a button is clicked or dragged.
+const CSS = `
+[role="button"], [role="link"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="menuitem"] {
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+}
+[aria-disabled="true"] { cursor: default; }
+`;
+if (typeof document !== 'undefined' && !document.getElementById('tt-web-css')) {
+  const el = document.createElement('style');
+  el.id = 'tt-web-css';
+  el.textContent = CSS;
+  document.head.appendChild(el);
+}
+
 export function WebFrame({ children }: { children: ReactNode }) {
   return (
     <View style={styles.ground}>
