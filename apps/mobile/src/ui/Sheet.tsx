@@ -21,6 +21,12 @@ import { Tap } from './Tap';
 /** From this window width the web draws a sheet as a centred dialog. */
 const WEB_DIALOG_MIN = 600;
 
+/** True where a bottom sheet should be a centred dialog: a browser wider than a phone (D35). */
+export function useSheetAsDialog(): boolean {
+  const { width } = useWindowDimensions();
+  return Platform.OS === 'web' && width >= WEB_DIALOG_MIN;
+}
+
 export type GrabberTone = 'seam' | 'ash' | 'glass' | 'light' | 'iron';
 
 const GRABBER: Record<GrabberTone, string> = {
@@ -123,9 +129,7 @@ export function SheetBody({
   const insets = useSafeAreaInsets();
   const reduced = useReducedMotion();
   const drag = useSharedValue(0);
-  // A browser wider than a phone gets a centred dialog instead (D35).
-  const { width } = useWindowDimensions();
-  const dialog = Platform.OS === 'web' && width >= WEB_DIALOG_MIN;
+  const dialog = useSheetAsDialog();
 
   const pan = usePanGesture({
     enabled: dismissible,

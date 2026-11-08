@@ -6,6 +6,7 @@ import Animated, { Easing, FadeIn, FadeOut, SlideInDown, SlideOutDown } from 're
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText, PlateButton } from '@/ui';
+import { useSheetAsDialog } from '@/ui/Sheet';
 import { Tap } from '@/ui/Tap';
 import type { PlayT } from '../strings';
 
@@ -61,8 +62,9 @@ export function ExitSheet({
   t: PlayT;
 }) {
   const insets = useSafeAreaInsets();
+  const dialog = useSheetAsDialog();
   return (
-    <View style={styles.fill} testID="exit-sheet">
+    <View style={[styles.fill, dialog && styles.dialogFill]} testID="exit-sheet">
       <Animated.View entering={fadeIn} exiting={fadeOut} style={StyleSheet.absoluteFill}>
         <Tap
           testID="exit-backdrop"
@@ -73,9 +75,9 @@ export function ExitSheet({
         />
       </Animated.View>
       <Animated.View
-        entering={SlideInDown.duration(t200.duration).easing(ease)}
-        exiting={SlideOutDown.duration(t200.duration).easing(ease)}
-        style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, space[4]) + space[2] }]}
+        entering={dialog ? fadeIn : SlideInDown.duration(t200.duration).easing(ease)}
+        exiting={dialog ? fadeOut : SlideOutDown.duration(t200.duration).easing(ease)}
+        style={dialog ? [styles.sheet, styles.dialog] : [styles.sheet, { paddingBottom: Math.max(insets.bottom, space[4]) + space[2] }]}
         accessibilityViewIsModal
       >
         <AppText variant="title">{t('play.exit_title')}</AppText>
@@ -131,6 +133,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: surface.cardBorder,
   },
+  // A wide browser: the sheet becomes a centred dialog (ui/Sheet useSheetAsDialog).
+  dialogFill: { alignItems: 'center', justifyContent: 'center', padding: space[6] },
+  dialog: { position: 'relative', width: '100%', maxWidth: 480, paddingBottom: space[5], borderRadius: radii.sheet, borderWidth: 1 },
   sheetButtons: { gap: space[2.5], marginTop: space[2] },
   discard: {
     height: layout.plateHeight.md,

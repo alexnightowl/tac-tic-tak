@@ -85,8 +85,7 @@ const FOCUS = [
   /^\/review\/[^/]+$/,
   /^\/sessions\/[^/]+\/review/,
   /^\/storm\/run/,
-  /^\/(course|library|offline)\/(solve|exam)/,
-  /^\/challenge\/[^/]+$/,
+  /^\/(course|library|offline)\/(solve|exam|done|result|certificate|synced)/,
 ];
 
 export function WebFrame({ children }: { children: ReactNode }) {
