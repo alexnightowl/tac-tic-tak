@@ -1,10 +1,11 @@
-import { alpha, black, eos, radii, tone } from '@tac/core/tokens';
+import { alpha, eos, radii, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { WELCOME, ease, kf, useTrack } from './motion';
 import { RadialDisc } from './parts';
+import { imageShadow } from '@/ui/imageShadow';
 
 const LOGO = require('../../../assets/icons/knight-logo.webp');
 
@@ -78,6 +79,6 @@ const styles = StyleSheet.create({
   fill: { ...StyleSheet.absoluteFill },
   ring: { borderRadius: radii.full, borderWidth: 1.5, borderColor: alpha(tone.rose, 0.45) },
   // drop-shadow(0 12px 22px rgba(17,15,17,.6)); iOS follows the image alpha.
-  logoShadow: { shadowColor: black, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.6, shadowRadius: 11 },
+  logoShadow: imageShadow(12, 22, 0.6),
   logo: { width: LOGO_SIZE, height: LOGO_SIZE },
 });

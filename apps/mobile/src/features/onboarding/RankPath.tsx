@@ -1,4 +1,4 @@
-import { alpha, black, eos, radii, tone } from '@tac/core/tokens';
+import { alpha, eos, radii, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
@@ -7,6 +7,7 @@ import Svg, { Path } from 'react-native-svg';
 import { AppText } from '@/ui/AppText';
 import { PATH, ease, kf, useTrack } from './motion';
 import { HEAVY, RadialDisc, svgStop } from './parts';
+import { imageShadow } from '@/ui/imageShadow';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
   stage: { width: W, height: H },
   column: { position: 'absolute', alignItems: 'center', gap: 8 },
   glow: { position: 'absolute', left: -46, top: -46, width: 174, height: 174 },
-  eyeShadow: { shadowColor: black, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.6, shadowRadius: 9 },
+  eyeShadow: imageShadow(10, 18, 0.6),
   // 10 / 800, 1 px tracking, nowrap: wider than its column, centred on it.
   name: { width: 200, textAlign: 'center', fontFamily: HEAVY, fontSize: 10, lineHeight: 14, letterSpacing: 1 },
   nameYou: { fontSize: 12, lineHeight: 16 },

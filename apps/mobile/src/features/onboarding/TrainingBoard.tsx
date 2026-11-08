@@ -8,6 +8,7 @@ import { BOARD_IMAGE, PIECE_IMAGES, type PieceCode } from '@/board/assets';
 import { AppText } from '@/ui/AppText';
 import { TRAINING, ease, kf, useTrack, type Stops } from './motion';
 import { HEAVY, svgStop } from './parts';
+import { imageShadow } from '@/ui/imageShadow';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: alpha(tone.legalGrey, 0.42),
   },
-  rookShadow: { shadowColor: black, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.45, shadowRadius: 4 },
+  rookShadow: imageShadow(6, 8, 0.45),
   // translate(0, -2%) scale(1.1), origin 50% 94%.
   rook: { width: SQ, height: SQ, transformOrigin: '50% 94%', transform: [{ translateY: -0.02 * SQ }, { scale: 1.1 }] },
   pillRow: { position: 'absolute', left: 0, right: 0, bottom: 12, alignItems: 'center' },

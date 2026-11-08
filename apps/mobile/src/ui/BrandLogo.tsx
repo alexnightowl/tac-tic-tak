@@ -1,8 +1,9 @@
-import { black, logoGlow } from '@tac/core/tokens';
+import { logoGlow } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { useId } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, FeGaussianBlur, Filter, RadialGradient, Stop } from 'react-native-svg';
+import { imageShadow } from '@/ui/imageShadow';
 
 const LOGO = require('../../assets/icons/knight-logo.webp');
 
@@ -84,10 +85,5 @@ export function BrandLogo({ size, glow = true }: Props) {
 
 const styles = StyleSheet.create({
   glow: { position: 'absolute' },
-  shadow: {
-    shadowColor: black,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.55,
-    shadowRadius: 7,
-  },
+  shadow: imageShadow(8, 14, 0.55),
 });
