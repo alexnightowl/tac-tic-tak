@@ -1,3 +1,6 @@
+> **Superseded 2026-11-08 (D35):** the web is now the app itself via react-native-web
+> (`apps/mobile`, `dev.tactictak.online`). This file documents the old Next plan only.
+
 # Web parity: status and how to run a phase
 
 **Resumed 2026-11-08** (owner: keep the web in sync with the app; its job is using the app from

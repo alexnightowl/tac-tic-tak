@@ -372,3 +372,19 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   the max (+3 / +5); level 2 and the thresholds 5 / 12 / 20 (Lichess's combo levels) are mine.
 - The backend accepts `bestCombo ≤ 3 × (score + 1)` and timed runs up to 40 / 45 min.
 - The run shows who is to move as a king on a square-coloured disc.
+
+### D35. The web runs the app itself, via react-native-web (owner, 2026-11-08)
+
+- Owner: "давай тоді переїжаєм на реакт нейтів веб … дев інстанс для фронта шоб прод не сносити …
+  старий веб пока не трогаєм взагалі". Reason: one codebase, so the web never drifts from the app;
+  the D31 Next catch-up (W3–W10) would have doubled every feature.
+- Spike (branch `rnweb/foundation`, 2026-11-08): the whole app bundles for web with three shims
+  (token in localStorage, web API host, a stub for the haptics lib). Login, Home, Play, a rated
+  session (drag and tap-tap), Storm, Review, League, Stats and Learn work; sound works through
+  react-native-audio-api. Production export ≈ 1.2 MB JS gzipped. Images with only @2x/@3x files
+  need a base copy in the export.
+- Hosting: a static export on the VPS at `dev.tactictak.online` against the prod API. The Next web
+  on tactictak.online is not touched (no edits, no deploy changes) until the owner switches.
+- Not on the web (no-ops): haptics, push, offline packs, Android back handler.
+- W0–W2 of the Next plan stay on prod as they are; W3–W5 branches were stopped unmerged.
+

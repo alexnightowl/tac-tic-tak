@@ -10,12 +10,13 @@ Rebuild every web feature as a native iOS + Android app in `apps/mobile`. The ap
 `docs/mobile/PLAN.md`; follow its phases and exit criteria. Do not port web bugs: the plan and
 PARITY.md mark them "fix".
 
-**The web is a full client again** (owner, 2026-11-04, D31): it catches up with the app, in design
-v2, on `@tac/core`. Plan: `docs/web/PLAN.md`; parity: `docs/web/PARITY-WEB.md`. The app stays the
-source of truth for behaviour; the web follows it. Paused after W0–W2, **resumed 2026-11-08**
-(owner: keep the web in sync with the app; its job is using the app from a computer). Status and
-how-to: `docs/web/RESUME.md`. Once a feature has a web screen, an app change to it ships its web
-counterpart too (same night, a `web/*` branch), or gets a `PARITY-WEB.md` row marked `behind`.
+**The web is the app itself** (owner, 2026-11-08, D35): `apps/mobile` runs in the browser through
+react-native-web (Expo web export), so one codebase serves iOS, Android and the web; its job is
+using the app from a computer. It ships first to a dev instance (`dev.tactictak.online`, static
+export on the VPS, prod API); the old Next web (`apps/frontend`) stays untouched on
+tactictak.online until the owner switches over. The D31 Next plan (`docs/web/PLAN.md`, W3+) is
+superseded. Web-only code goes in `*.web.ts(x)` platform files; every app change must keep the web
+build working (`npx expo export --platform web`).
 
 **Talk to the owner in Ukrainian** (chat replies, questions, morning summaries). Code, comments,
 commits, PRs and the docs/mobile files are in English, except `docs/mobile/OWNER-QUESTIONS.md`,
