@@ -5,6 +5,24 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-09 — Web pass: desktop shell, full flow, fixes
+
+- Desktop shell (≥ 1024 px): left rail (brand, five tabs, the player → account menu) replaces
+  the header and tab bar; runners, exams, completion screens and onboarding hide it. Every sheet
+  (route sheets and ui/Sheet, the runner's exit sheet) is a centred dialog on a wider-than-phone
+  browser; backdrop / Esc close. Canvas: two new boards on "Mobile app" (Web — desktop shell,
+  Web — sheets as dialogs).
+- Fixes found walking the whole flow on the web (register → onboarding → Play rated/casual/
+  themes → session → pause/exit/summary → history/detail/viewer → mistakes → Review drill →
+  Stats/achievements → League/profile/friends/search → Learn course intro/solve → Library →
+  Settings → Storm → challenge create): fonts loaded on web (were system faces), logo glow in CSS
+  (svg blur banded), image shadows as CSS drop-shadow (square around the art), difficulty
+  readout (band name hidden, value off-centre), onboarding rank labels clipped, Share → clipboard
+  fallback, avatar opens the file picker (RNW Alert is a no-op), app-only entries hidden on web
+  (offline packs/downloads, haptics, reminders), no browser focus ring on fields.
+- Checked at 1512, 820 and 390 px. Native regression: Maestro 12-play-v2 and 16-storm on iOS.
+- Not verified: avatar upload end to end (OS file dialog), Safari/Firefox, real-hand drag feel.
+
 ## 2026-11-08 — The web becomes the app itself (react-native-web, D35)
 
 - Owner asked whether the web should run the React Native app instead of a second (Next) client.
