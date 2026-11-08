@@ -31,6 +31,12 @@ type Source = 'camera' | 'library';
 
 /** Native action sheet (iOS) / alert (Android): camera, library, remove. */
 export function chooseAvatar(): void {
+  // The browser has no action sheet (RNW's Alert is a no-op): open the file
+  // picker straight away.
+  if (Platform.OS === 'web') {
+    void pickAndUpload('library');
+    return;
+  }
   const t = tr();
   const options: { label: string; run: () => void; destructive?: boolean }[] = [
     { label: t('profile.avatar_camera'), run: () => void pickAndUpload('camera') },

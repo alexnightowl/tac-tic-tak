@@ -1,6 +1,6 @@
 import { layout, radii, space, surface } from '@tac/core/tokens';
 import type { ReactNode } from 'react';
-import { Modal, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Modal, Platform, StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-native-gesture-handler';
 import Animated, {
   FadeIn,
@@ -17,6 +17,9 @@ import { scheduleOnRN } from 'react-native-worklets';
 
 import { SHEET_DISMISS, sheetSpring, sheetTiming } from './motion';
 import { Tap } from './Tap';
+
+/** From this window width the web draws a sheet as a centred dialog. */
+const WEB_DIALOG_MIN = 600;
 
 export type GrabberTone = 'seam' | 'ash' | 'glass' | 'light' | 'iron';
 
@@ -120,6 +123,9 @@ export function SheetBody({
   const insets = useSafeAreaInsets();
   const reduced = useReducedMotion();
   const drag = useSharedValue(0);
+  // A browser wider than a phone gets a centred dialog instead (D35).
+  const { width } = useWindowDimensions();
+  const dialog = Platform.OS === 'web' && width >= WEB_DIALOG_MIN;
 
   const pan = usePanGesture({
     enabled: dismissible,
@@ -142,8 +148,9 @@ export function SheetBody({
   const follow = useAnimatedStyle(() => ({ transform: [{ translateY: drag.get() }] }));
 
   const fadeIn = reduced ? undefined : FadeIn.duration(sheetTiming.duration ?? 200).easing(sheetTiming.easing!);
-  const slideIn = reduced ? FadeIn.duration(120) : SlideInDown.duration(sheetTiming.duration ?? 200).easing(sheetTiming.easing!);
-  const slideOut = reduced ? FadeOut.duration(120) : SlideOutDown.duration(sheetTiming.duration ?? 200);
+  const slideIn =
+    reduced || dialog ? FadeIn.duration(120) : SlideInDown.duration(sheetTiming.duration ?? 200).easing(sheetTiming.easing!);
+  const slideOut = reduced || dialog ? FadeOut.duration(120) : SlideOutDown.duration(sheetTiming.duration ?? 200);
 
   return (
     <View style={styles.fill} testID={testID}>
@@ -156,21 +163,23 @@ export function SheetBody({
           style={[styles.fill, styles.backdrop]}
         />
       </Animated.View>
-      <Animated.View entering={slideIn} exiting={slideOut} style={styles.dock} pointerEvents="box-none">
+      <Animated.View entering={slideIn} exiting={slideOut} style={dialog ? styles.center : styles.dock} pointerEvents="box-none">
         <GestureDetector gesture={pan}>
           <Animated.View
             style={[
               styles.panel,
-              {
-                paddingTop: grabber ? layout.sheetPadTop : layout.sheetPadTopPlain,
-                paddingBottom: Math.max(insets.bottom, space[4]) + layout.sheetPadBottom,
-              },
+              dialog
+                ? styles.panelDialog
+                : {
+                    paddingTop: grabber ? layout.sheetPadTop : layout.sheetPadTopPlain,
+                    paddingBottom: Math.max(insets.bottom, space[4]) + layout.sheetPadBottom,
+                  },
               follow,
               style,
             ]}
             accessibilityViewIsModal
           >
-            {grabber ? <SheetGrabber /> : null}
+            {grabber && !dialog ? <SheetGrabber /> : null}
             {children}
           </Animated.View>
         </GestureDetector>
@@ -183,6 +192,15 @@ const styles = StyleSheet.create({
   fill: { ...StyleSheet.absoluteFill },
   backdrop: { backgroundColor: surface.backdrop },
   dock: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+  center: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', padding: space[6] },
+  panelDialog: {
+    width: '100%',
+    maxWidth: 480,
+    paddingTop: layout.sheetPadTopPlain,
+    paddingBottom: space[5],
+    borderRadius: radii.sheet,
+    borderWidth: 1,
+  },
   panel: {
     gap: space[3],
     paddingHorizontal: layout.gutter,
