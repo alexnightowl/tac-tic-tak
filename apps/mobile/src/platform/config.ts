@@ -8,6 +8,7 @@ import { Platform, TurboModuleRegistry, type TurboModule } from 'react-native';
 // Metro and needs EXPO_PUBLIC_API_URL. Switch to /api/v1 once B2 lands.
 function devHostApi(): string | null {
   if (!__DEV__) return null;
+  if (Platform.OS === 'web') return `http://${window.location.hostname}:4000/api`;
   // The URL the JS bundle was actually loaded from (http://<mac>:8081/…).
   // expo-constants' hostUri only exists in Expo Go / dev-client builds.
   const sourceCode = TurboModuleRegistry.get<{ getConstants(): { scriptURL?: string } } & TurboModule>('SourceCode');

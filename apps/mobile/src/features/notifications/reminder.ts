@@ -310,7 +310,8 @@ let started = false;
  * drops today's once played). Idempotent; returns a stop function.
  */
 export function startReminderSync(): () => void {
-  if (started) return () => {};
+  // Local reminders are app-only; the web has no scheduled notifications.
+  if (started || Platform.OS === 'web') return () => {};
   started = true;
   const unsubApp = appStore.subscribe((s, prev) => {
     if (s.streak !== prev.streak || s.settings.language !== prev.settings.language) void syncReminders();

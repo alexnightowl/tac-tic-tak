@@ -77,7 +77,7 @@ function ConfirmLayer({ req }: { req: ConfirmRequest }) {
 
   // Android back cancels, as the backdrop does.
   useEffect(() => {
-    if (!open) return;
+    if (!open || Platform.OS === 'web') return;
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
       cancel();
       return true;

@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { boot } from '@/features/auth/session';
 import { preloadSounds } from '@/feel';
 import { persistOptions, queryClient, wireQueryManagers } from '@/platform/query';
+import { WebFrame } from '@/platform/webFrame';
 import { ShellErrorBoundary } from '@/shell/ErrorScreen';
 import { OfflineHost } from '@/shell/OfflineBanner';
 import { ToastHost } from '@/shell/toast/ToastHost';
@@ -58,24 +59,26 @@ export default function RootLayout() {
         <KeyboardProvider>
           <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
             <LangProvider lang={lang}>
-              <StatusBar style="light" />
-              <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: eos.ink } }}>
-                {/* PLAN §2.3 guard. A booting session counts as signed in, so a
-                    cold start with a stored session lands on the cached Home. */}
-                <Stack.Protected guard={!signedIn} redirectTo="/">
-                  <Stack.Screen name="(auth)" />
-                </Stack.Protected>
-                <Stack.Protected guard={signedIn} redirectTo="/login">
-                  <Stack.Screen name="(app)" />
-                </Stack.Protected>
-                {/* Dev labs stay reachable signed in or out (open-dev on both). */}
-                <Stack.Screen name="dev" />
-                <Stack.Screen name="+not-found" />
-              </Stack>
-              <OfflineHost />
-              {/* Above every navigator, iOS modals included (FullWindowOverlay). */}
-              <ToastHost />
-              <ConfirmHost />
+              <WebFrame>
+                <StatusBar style="light" />
+                <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: eos.ink } }}>
+                  {/* PLAN §2.3 guard. A booting session counts as signed in, so a
+                      cold start with a stored session lands on the cached Home. */}
+                  <Stack.Protected guard={!signedIn} redirectTo="/">
+                    <Stack.Screen name="(auth)" />
+                  </Stack.Protected>
+                  <Stack.Protected guard={signedIn} redirectTo="/login">
+                    <Stack.Screen name="(app)" />
+                  </Stack.Protected>
+                  {/* Dev labs stay reachable signed in or out (open-dev on both). */}
+                  <Stack.Screen name="dev" />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+                <OfflineHost />
+                {/* Above every navigator, iOS modals included (FullWindowOverlay). */}
+                <ToastHost />
+                <ConfirmHost />
+              </WebFrame>
             </LangProvider>
           </PersistQueryClientProvider>
         </KeyboardProvider>

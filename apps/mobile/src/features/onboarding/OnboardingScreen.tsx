@@ -2,7 +2,7 @@ import { CALIBRATION_SESSIONS } from '@tac/core/rules';
 import { eos, layout, space, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { BackHandler, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { BackHandler, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
@@ -83,13 +83,17 @@ export function OnboardingScreen() {
   useEffect(() => {
     setOnboardingOpen(true);
     // Android back: one step back; on the first step it skips (web: X = done).
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (stepRef.current > 0) goTo(stepRef.current - 1);
-      else finish('close');
-      return true;
-    });
+    // No hardware back on the web.
+    const sub =
+      Platform.OS === 'web'
+        ? null
+        : BackHandler.addEventListener('hardwareBackPress', () => {
+            if (stepRef.current > 0) goTo(stepRef.current - 1);
+            else finish('close');
+            return true;
+          });
     return () => {
-      sub.remove();
+      sub?.remove();
       setOnboardingOpen(false);
       // Dismissed some other way (a deep link replaced it): still done, or
       // the gate would bring it straight back.
