@@ -5,6 +5,25 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-08 — The web becomes the app itself (react-native-web, D35)
+
+- Owner asked whether the web should run the React Native app instead of a second (Next) client.
+  Stopped the W3–W5 Next agents (unmerged worktrees left in the scratchpad) and ran a spike:
+  the whole app bundles for web with three shims; login, Home, Play, a rated session (drag and
+  tap-tap), Storm, Review, League, Stats, Learn and Library work, sound included. Owner: move.
+- `apps/mobile` now builds for web: react-native-web + @expo/metro-runtime; `token.web.ts`
+  (localStorage), web API host, no BackHandler / local reminders on web, null Pulsar lab route;
+  `WebFrame` keeps the phone layout in a 600 px centred column (window width clamped for
+  screens that size from it); pointer cursor CSS; web favicon/colours.
+- `tools/web/export.sh` (tree-shaken export, ~0.9 MB gzipped first-load JS; @2x images copied to
+  the bare names the web bundle asks for) and `tools/web/deploy-dev.sh` (rsync + swap into
+  `/opt/tactictak-web/dev`).
+- Test instance: **https://tactictak.online:8443** (nginx server on 8443 with the apex cert,
+  static files, prod API). The Next site on 443 is untouched. Config checked with `nginx -t`
+  on the server before the merge; prod healthy after the deploy.
+- Native regression: Maestro 12-play-v2 green on iOS after the changes.
+- Not on the web yet: a desktop side rail (bottom tabs for now), keyboard play on the board.
+
 ## 2026-10-25: inventory and plan done, Phase 0 started
 
 **Done**
