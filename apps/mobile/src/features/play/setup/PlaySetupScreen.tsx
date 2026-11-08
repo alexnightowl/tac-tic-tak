@@ -11,6 +11,7 @@ import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HAS_OFFLINE } from '@/platform/capabilities';
 import { ChallengeEntry } from '@/features/challenge/ChallengeEntry';
 import { OfflineEntry } from '@/features/offline/OfflineEntry';
 import { StormEntry } from '@/features/storm/StormEntry';
@@ -338,7 +339,7 @@ export function PlaySetupScreen() {
               {err}
             </AppText>
           )}
-          {netErr && (
+          {netErr && HAS_OFFLINE && (
             <Tap
               testID="setup-offline-link"
               accessibilityRole="link"
@@ -358,7 +359,7 @@ export function PlaySetupScreen() {
         <StormEntry />
         <ChallengeEntry />
         <ReviewEntry />
-        <OfflineEntry />
+        {HAS_OFFLINE && <OfflineEntry />}
       </ScrollView>
 
       {/* A full-width CTA docked above the tab bar. */}

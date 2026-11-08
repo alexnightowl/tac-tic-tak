@@ -13,6 +13,7 @@ import { boot } from '@/features/auth/session';
 import { preloadSounds } from '@/feel';
 import { persistOptions, queryClient, wireQueryManagers } from '@/platform/query';
 import { WebFrame } from '@/platform/webFrame';
+import '@/platform/webShare';
 import { ShellErrorBoundary } from '@/shell/ErrorScreen';
 import { OfflineHost } from '@/shell/OfflineBanner';
 import { ToastHost } from '@/shell/toast/ToastHost';

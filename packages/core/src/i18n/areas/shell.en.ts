@@ -9,6 +9,8 @@ export const shellEn: Dict = {
   'shell.menu.profile': 'My profile',
   'shell.menu.close': 'Close',
   'shell.menu.admin': 'Admin',
+  // Web: Share falls back to the clipboard where the browser has no share sheet.
+  'shell.copied': 'Copied to the clipboard',
 
   // Tab bar.
   'shell.tabs': 'Main sections',

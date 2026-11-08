@@ -3,7 +3,7 @@ import { alpha, black, control, eos, graphite, radii, space, tone } from '@tac/c
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
-import { StyleSheet, TextInput, View, type LayoutChangeEvent } from 'react-native';
+import { Platform, StyleSheet, TextInput, type LayoutChangeEvent, View } from 'react-native';
 import { GestureDetector, useExclusiveGestures, usePanGesture, useTapGesture } from 'react-native-gesture-handler';
 import Animated, { Easing, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming, type SharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -221,7 +221,7 @@ export function DifficultyReadout({ live, bandLabels }: { live: SharedValue<numb
           ))}
         </View>
         {/* As wide as the longest band name, so the eye never moves as the name changes. */}
-        <View>
+        <View style={styles.readoutBandBox}>
           {labels.map((l) => (
             <AppText key={l} variant="label" style={[styles.readoutBandText, styles.readoutSizer]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
               {l}
@@ -264,7 +264,17 @@ const styles = StyleSheet.create({
   readoutIconImg: { width: 20, height: 20 },
   readoutBandText: { padding: 0, fontSize: 12, textAlign: 'left' },
   readoutSizer: { height: 0, opacity: 0 },
-  readoutValue: { padding: 0, height: 30, lineHeight: undefined, minWidth: space[14] },
+  readoutValue: {
+    padding: 0,
+    height: 30,
+    lineHeight: undefined,
+    minWidth: space[14],
+    // A browser <input> does not hug its text: give it the 4-digit width, right-aligned.
+    ...Platform.select({ web: { width: 72, textAlign: 'right' as const } }),
+  },
+  // Native lets the absolutely placed band input overflow its 0-tall box; a
+  // browser input needs the box to have the label's height.
+  readoutBandBox: Platform.select({ web: { height: 16 }, default: {} }),
   youRow: { height: 14 },
   youLabelWrap: { position: 'absolute', top: 0, width: 120, marginLeft: -60, alignItems: 'center' },
   youLabel: { fontSize: 10, lineHeight: 12, letterSpacing: 0.6 },

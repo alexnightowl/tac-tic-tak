@@ -46,13 +46,15 @@ if (rawRemove) {
 }
 
 // Desktop affordances react-native-web leaves out: a hand over anything
-// clickable, and no text selection when a button is clicked or dragged.
+// clickable, no text selection when a button is clicked or dragged, and no
+// browser focus ring on text fields (the app's inputs draw their own).
 const CSS = `
 html, body { background-color: ${eos.ink}; }
 [role="button"], [role="link"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="menuitem"] {
   cursor: pointer; user-select: none; -webkit-user-select: none;
 }
 [aria-disabled="true"] { cursor: default; }
+input, textarea { outline: none; }
 `;
 if (typeof document !== 'undefined') {
   const el = document.getElementById('tt-web-css') ?? document.head.appendChild(document.createElement('style'));

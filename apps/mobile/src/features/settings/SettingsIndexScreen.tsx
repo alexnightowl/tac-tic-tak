@@ -7,6 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { initialWindowMetrics, SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HAS_REMINDERS } from '@/platform/capabilities';
 import { feel } from '@/feel';
 import { formatHour, useReminderPrefs } from '@/features/notifications/reminder';
 import { openOnboarding } from '@/features/onboarding/gate';
@@ -56,13 +57,15 @@ export function SettingsIndexScreen() {
           testID="settings-sound"
           onPress={() => router.push('/settings/sound')}
         />
-        <Row
-          icon={Bell}
-          label={t('settings.notifications')}
-          value={reminder.enabled ? formatHour(reminder.hour) : t('ui.off')}
-          testID="settings-notifications"
-          onPress={() => router.push('/settings/notifications')}
-        />
+        {HAS_REMINDERS && (
+          <Row
+            icon={Bell}
+            label={t('settings.notifications')}
+            value={reminder.enabled ? formatHour(reminder.hour) : t('ui.off')}
+            testID="settings-notifications"
+            onPress={() => router.push('/settings/notifications')}
+          />
+        )}
         <Row
           icon={KeyRound}
           label={t('settings.account')}

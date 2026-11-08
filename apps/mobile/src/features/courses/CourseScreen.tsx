@@ -6,6 +6,7 @@ import { Check, Download, Lock, Star, Trash2 } from 'lucide-react-native';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HAS_OFFLINE } from '@/platform/capabilities';
 import { CourseEmblem } from '@/features/learn/CourseEmblem';
 import { useCourseContent, useCourseProgress, useCourses, useCourseSummary, type DownloadView } from '@/features/library/model';
 import { useAttempts, useLibraryStore } from '@/features/library/store';
@@ -365,7 +366,12 @@ function useCourseDownloadView(id: string): DownloadView {
   return useLibraryStore((s) => (s.courses[id] ? 'downloaded' : s.downloads[id] === 'loading' ? 'downloading' : 'remote'));
 }
 
+/** Offline copies are app-only (platform/capabilities). */
 function DownloadChip({ courseId }: { courseId: string }) {
+  return HAS_OFFLINE ? <DownloadChipInner courseId={courseId} /> : null;
+}
+
+function DownloadChipInner({ courseId }: { courseId: string }) {
   const t = useT();
   const state = useCourseDownloadView(courseId);
   const failed = useLibraryStore((s) => s.downloads[courseId] === 'error' || s.downloads[courseId] === 'offline');

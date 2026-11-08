@@ -5,6 +5,7 @@ import { Check, ChevronDown, Play } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { HAS_HAPTICS } from '@/platform/capabilities';
 import { feel, setFeelPrefs, stopLongClip, useFeelPrefs, type FeelContext, type FeelEvent } from '@/feel';
 import { useAppStore } from '@/stores/appStore';
 import { AppText, ControlBlock, ListSection, PlateButton, Sheet, Tap, ToggleRow } from '@/ui';
@@ -80,13 +81,15 @@ export function SoundScreen() {
             accessibilityLabel={t('settings.sound_volume')}
           />
         </ControlBlock>
-        <ToggleRow
-          label={t('settings.haptics')}
-          hint={t('settings.haptics_hint')}
-          value={prefs.hapticsEnabled}
-          onChange={(v) => setFeelPrefs({ hapticsEnabled: v })}
-          testID="settings-haptics-toggle"
-        />
+        {HAS_HAPTICS && (
+          <ToggleRow
+            label={t('settings.haptics')}
+            hint={t('settings.haptics_hint')}
+            value={prefs.hapticsEnabled}
+            onChange={(v) => setFeelPrefs({ hapticsEnabled: v })}
+            testID="settings-haptics-toggle"
+          />
+        )}
       </ListSection>
 
       <ListSection title={t('settings.sound_section')} footer={t('settings.sound_section_hint')} testID="settings-sound-events">

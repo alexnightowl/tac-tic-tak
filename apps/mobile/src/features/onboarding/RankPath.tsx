@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
   glow: { position: 'absolute', left: -46, top: -46, width: 174, height: 174 },
   eyeShadow: imageShadow(10, 18, 0.6),
   // 10 / 800, 1 px tracking, nowrap: wider than its column, centred on it.
-  name: { width: 200, textAlign: 'center', fontFamily: HEAVY, fontSize: 10, lineHeight: 14, letterSpacing: 1 },
+  // maxWidth: react-native-web caps a one-line Text at its parent's width.
+  name: { width: 200, maxWidth: 200, textAlign: 'center', fontFamily: HEAVY, fontSize: 10, lineHeight: 14, letterSpacing: 1 },
   nameYou: { fontSize: 12, lineHeight: 16 },
   spark: {
     position: 'absolute',

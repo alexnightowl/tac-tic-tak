@@ -9,6 +9,8 @@ export const shellUk: Dict = {
   'shell.menu.profile': 'Мій профіль',
   'shell.menu.close': 'Закрити',
   'shell.menu.admin': 'Адмінка',
+  // Web: Share falls back to the clipboard where the browser has no share sheet.
+  'shell.copied': 'Скопійовано в буфер обміну',
 
   // Tab bar.
   'shell.tabs': 'Основні розділи',

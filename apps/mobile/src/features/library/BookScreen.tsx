@@ -7,6 +7,7 @@ import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HAS_OFFLINE } from '@/platform/capabilities';
 import { toast } from '@/shell/toast/store';
 import { AppText, PlateButton, ProgressBar, Tap, useLang } from '@/ui';
 import { useT } from '@/ui/lang';
@@ -267,7 +268,12 @@ function ChapterRow({ book, index, progress, onPress }: { book: LibraryBookSumma
   );
 }
 
+/** Offline copies are app-only (platform/capabilities). */
 function DownloadChip({ bookId }: { bookId: string }) {
+  return HAS_OFFLINE ? <DownloadChipInner bookId={bookId} /> : null;
+}
+
+function DownloadChipInner({ bookId }: { bookId: string }) {
   const t = useT();
   const state = useDownloadView(bookId);
   const failed = useLibraryStore((s) => s.downloads[bookId] === 'error' || s.downloads[bookId] === 'offline');

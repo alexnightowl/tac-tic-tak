@@ -3,6 +3,7 @@ import { Check, Download } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
+import { HAS_OFFLINE } from '@/platform/capabilities';
 import type { DownloadView } from '@/features/library/model';
 import { AppText, Chip, ProgressBar } from '@/ui';
 import { useT } from '@/ui/lang';
@@ -11,7 +12,8 @@ import { useT } from '@/ui/lang';
 // chips, the meta line under a grid tile, the status icon.
 
 export type LearnFilter = 'all' | 'progress' | 'downloaded' | 'finished';
-const FILTERS: readonly LearnFilter[] = ['all', 'progress', 'downloaded', 'finished'];
+// The web has no offline copies, so no "on this device" filter there.
+const FILTERS: readonly LearnFilter[] = HAS_OFFLINE ? ['all', 'progress', 'downloaded', 'finished'] : ['all', 'progress', 'finished'];
 
 export const GRID_GAP = space[4];
 
@@ -46,6 +48,7 @@ export function FilterChips({
 
 /** 14 pt status glyph: on the phone (sage check), downloading (copper spinner), not downloaded (dust arrow). */
 export function StatusIcon({ state, testID }: { state: DownloadView; testID: string }) {
+  if (!HAS_OFFLINE) return null;
   if (state === 'downloaded') return <Check testID={testID} size={14} color={tone.sageDeep} strokeWidth={2.4} style={styles.icon} />;
   if (state === 'downloading') return <ActivityIndicator testID={testID} size="small" color={tone.copper} style={styles.spinner} />;
   return <Download testID={testID} size={14} color={eos.dust} strokeWidth={2} style={styles.icon} />;
