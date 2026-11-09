@@ -5,6 +5,40 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-09 — Desktop web from the canvas "Desktop — redesign" (D36)
+
+- **Shell:** sidebar with the five sections, streak card (this week's days) and the player card
+  (style rating · XP rank) opening the account popover (profile, friends, settings, shortcuts,
+  language, log out); compact 64 px rail on board screens; page header with player search (⌘K)
+  and bell; desktop dialogs portal to `<body>` so the scrim covers the sidebar; window hotkeys.
+- **Pages (artboard → route):** login, register, onboarding 1–4 (bare); Home + new-account Home,
+  Play (rated / free / themes, inline theme grid, "how levels work" side panel), Storm intro and
+  result, Challenge; session runner (move, selection, wrong, pause, exit dialog) and its summary,
+  Storm run, review drill / mistakes runner, course / book / exam solve; Learn (courses, books),
+  course page, chapter intro, book page, Review; League, Stats, Achievements + medal dialog,
+  session history and detail (no artboard); profile, profile edit dialog, Experience, Friends,
+  Settings (profile, gameplay with live board, sound, account, about).
+- **Adapted or left out (no data / feature in the app):** forgot password, remember me; hero
+  stats use real figures (47 themes, 3 styles, 1 min shortest session); no placement test or
+  reminders in onboarding; difficulty "± spread"; per-puzzle time per style; hint / skip /
+  "show solution" in rated sessions (the runner has none); league tier names, place changes and
+  promotion zone; per-style peaks; "94 % of players"; friend rows show the API's
+  `online` flag, no rating / last seen; "maybe you know", invite link; theme and reminders
+  settings; per-event clip pickers beyond "rank down"; offline chips and "available offline".
+- **Not desktop yet (phone layout in the column):** course done / result / certificate, library
+  done, offline screens, puzzle viewer, challenge detail, Storm friends.
+- **Verified:** `pnpm -r run typecheck`, mobile eslint (0 errors), core tests 259; web export
+  builds; every page screenshotted at 1440 × 900, 1280 × 800 and 1024 × 768 with seeded local
+  users, the runner / Storm / drills / chapter solve played by clicking squares; 390 px phone
+  layout unchanged. Native regression on the iOS sim (tt-agent-1): 02-auth, 09-onboarding,
+  06-review, 06-mistakes, 07-theme-drill, 07-stats, 07-achievements, 08-profile-edit, 09-account,
+  09-settings, 14-learn, 12-play-v2, 16-storm, 13-library, 15-courses, 17-challenge, 18-league
+  green (09-account and 07-achievements on a rerun: the first run hit a Metro refresh from the
+  agents' edits, then a test user left in uk). 08-friends fails at the friends' league board:
+  it expects the friend on this week's XP board, empty on a Monday (stale since D32).
+- **iPhone:** Release build with the prod API reinstalled on the owner's phone (profile valid to
+  2026-11-11 ~16:49 local).
+
 ## 2026-11-09 — Web pass: desktop shell, full flow, fixes
 
 - Desktop shell (≥ 1024 px): left rail (brand, five tabs, the player → account menu) replaces

@@ -388,3 +388,23 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
 - Not on the web (no-ops): haptics, push, offline packs, Android back handler.
 - W0–W2 of the Next plan stay on prod as they are; W3–W5 branches were stopped unmerged.
 
+
+### D36. Desktop layouts on the web from the canvas "Desktop — redesign" page (owner, 2026-11-09)
+
+- Owner: "я в дизайні накидав адаптиви для десктопа … імплементуй його на вебі, шоб десктоп
+  виглядав як ракєта". The canvas page "Desktop — redesign" (44 `DX*` artboards, 1440 × 900) is
+  the source for every desktop page; "Desktop — current" is the earlier pass and is not built.
+- From a real window width of 1024 px the web shows the desktop app: a 248 px sidebar (sections,
+  streak card, player card → account popover), a 64 px icon rail on board screens, page headers
+  with player search (⌘K) and a bell (→ Friends), and each route's own desktop layout. Below
+  1024 px the phone layout is unchanged.
+- Code: `apps/mobile/src/desktop/` (shell, kit, `routes.ts` registry of desktop routes and their
+  chrome, per-area folders with native stand-ins), palette in `@tac/core/tokens` `desk.ts`, copy
+  in the `dx*` i18n areas. Screens share their logic with the phone through hooks extracted from
+  the phone screens (no change to native behaviour or testIDs).
+- Rule: artboard elements the app has no data or feature for are adapted or left out, never
+  built as new product (forgot password, remember me, placement test, offline on web, league
+  tiers, peak per style, per-event clip pickers, "maybe you know", invite link, …). The full list
+  is in the 2026-11-09 PROGRESS entry.
+- Keyboard: Space start, 1 2 3 mode (Play); F flip, Esc pause (session); H hint, R solution, Esc
+  close (drills, chapters); P profile, `,` settings, `?` shortcuts, ⌘K search everywhere.
