@@ -1,13 +1,14 @@
-import { cycleTargetSec, localized, type CourseProgress } from '@tac/core/library';
+import { chapterCycleStats, cycleTargetSec, localized, type CourseProgress, type LibraryAttemptRecord } from '@tac/core/library';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Check, Lock, Star } from 'lucide-react-native';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { CourseEmblem } from '@/features/learn/CourseEmblem';
-import { courseCta, courseHref, lastTry, lessonsOf, nextLesson, openChapter, passedInCycle, type CourseLike } from '@/features/courses/model';
+import { clock, courseCta, courseHref, lastTry, lessonsOf, nextLesson, openChapter, passedInCycle, type CourseLike } from '@/features/courses/model';
 import { courseTones, type CourseTones } from '@/features/courses/tones';
 import { useCourseContent, useCourseProgress, useCourses, useCourseSummary } from '@/features/library/model';
+import { useAttempts } from '@/features/library/store';
 import { plural } from '@/features/offline/format';
 import { ThemeIcon } from '@/features/review/ThemeIcon';
 import { PlateButton } from '@/ui';
@@ -31,6 +32,7 @@ export function DxCourse({ courseId }: { courseId: string }) {
   const content = useCourseContent(courseId);
   const course: CourseLike | null = summary ?? content.course;
   const progress = useCourseProgress(course);
+  const attempts = useAttempts();
   const { width: winW } = useRawWindow();
   const asideW = winW < 1280 ? 300 : 340;
   const w = usePageWidth(asideW);
@@ -73,7 +75,7 @@ export function DxCourse({ courseId }: { courseId: string }) {
       asideWidth={asideW}
       aside={
         <>
-          <CycleCard course={course} progress={progress} tones={tones} compact={asideW < 340} />
+          <CycleCard course={course} progress={progress} tones={tones} width={asideW} />
           <ExamCard course={course} progress={progress} />
         </>
       }
@@ -115,7 +117,7 @@ export function DxCourse({ courseId }: { courseId: string }) {
           />
         </View>
         <View style={styles.grid}>
-          {w > 0 ? course.chapters.map((_, i) => <ChapterTile key={i} course={course} index={i} progress={progress} tones={tones} width={tileW} />) : null}
+          {w > 0 ? course.chapters.map((_, i) => <ChapterTile key={i} course={course} index={i} progress={progress} attempts={attempts} tones={tones} width={tileW} />) : null}
         </View>
       </View>
     </DesktopPage>
@@ -133,11 +135,29 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
-function ChapterTile({ course, index, progress, tones, width }: { course: CourseLike; index: number; progress: CourseProgress; tones: CourseTones; width: number }) {
+function ChapterTile({
+  course,
+  index,
+  progress,
+  attempts,
+  tones,
+  width,
+}: {
+  course: CourseLike;
+  index: number;
+  progress: CourseProgress;
+  attempts: readonly LibraryAttemptRecord[];
+  tones: CourseTones;
+  width: number;
+}) {
   const t = useT();
   const { lang } = useLang();
   const c = course.chapters[index];
   const p = progress.chapters[index];
+  // A finished chapter shows this cycle's average time a puzzle (the phone's row).
+  const avg = p.complete ? (chapterCycleStats(course.id, c.puzzleIds, attempts, progress.cycle).avgSec ?? 0) : null;
+  const avgLine =
+    avg == null ? null : progress.cycle >= 2 ? t('courses.row_cycle', { c: progress.cycle, time: clock(avg) }) : t('courses.row_avg', { time: clock(avg) });
   const now = !progress.cycleComplete && nextLesson(course, progress) === index;
   const lit = p.complete || now || p.done > 0;
   const title = localized(c.title, lang);
@@ -163,7 +183,12 @@ function ChapterTile({ course, index, progress, tones, width }: { course: Course
       </View>
       <View style={styles.chapterRight} testID={`dx-course-chapter-${index}-state`}>
         {p.complete ? (
-          <Check size={14} color={dx.dust} strokeWidth={2.4} />
+          <>
+            <Check size={14} color={dx.sage} strokeWidth={2.4} />
+            <DText size={12} weight={800} color={dx.sage} tabular numberOfLines={1} testID={`dx-course-chapter-${index}-avg`}>
+              {avgLine}
+            </DText>
+          </>
         ) : (
           <DText size={12} weight={800} color={dx.dust} tabular>{`${p.done}/${p.total}`}</DText>
         )}
@@ -172,23 +197,66 @@ function ChapterTile({ course, index, progress, tones, width }: { course: Course
   );
 }
 
-function CycleCard({ course, progress, tones, compact }: { course: CourseLike; progress: CourseProgress; tones: CourseTones; compact: boolean }) {
+function CycleCard({ course, progress, tones, width }: { course: CourseLike; progress: CourseProgress; tones: CourseTones; width: number }) {
+  const compact = width < 340;
   const t = useT();
   const { lang } = useLang();
+  // The phone's model: "Continue · <chapter>, n of N" (the chapter number when that is too long for the plate).
   const cta = courseCta(course, progress, t, lang);
-  const label = cta.kind === 'continue' ? t('courses.cta_continue_short', { ch: (nextLesson(course, progress) ?? 0) + 1 }) : cta.label;
+  // When the plate falls back to the chapter number, its title goes under it.
+  const next = nextLesson(course, progress);
+  const full =
+    next != null
+      ? t('courses.cta_continue', {
+          title: localized(course.chapters[next].title, lang),
+          n: Math.min(progress.chapters[next].total, progress.chapters[next].done + 1),
+          total: progress.chapters[next].total,
+        })
+      : null;
+  // The phone's 26-capital rule, measured for this plate (~12 px a Cinzel capital): too long → "Continue · Chapter N", then "Continue".
+  const fits = (l: string) => l.length <= Math.floor((width - 80) / 12);
+  const short = next != null ? t('courses.cta_continue_short', { ch: next + 1 }) : '';
+  const label = cta.kind === 'continue' && full ? (fits(full) ? full : fits(short) ? short : t('learn.continue')) : cta.label;
   const target = cycleTargetSec(progress.cycles, progress.cycle);
   const note = progress.cycle <= 1 ? t('dx.learn.cycle_first_note') : target != null ? t('dx.learn.cycle_target_note', { s: target }) : t('dx.learn.cycle_free_note');
+  const cycles = progress.cycle >= 2 || progress.cycleComplete;
+  // The first pass: the running average a puzzle (the phone's FirstPass card).
+  const avg = cycles ? null : (progress.cycles.find((c) => c.cycle === 1)?.avgSec ?? null);
   return (
     <Card style={styles.side} testID="dx-course-cycle-card">
       <Label>{t('courses.cycle', { n: progress.cycle })}</Label>
       <Num size={30} style={styles.mt6}>{`${progress.done} / ${progress.total}`}</Num>
       <Bar value={progress.total ? progress.done / progress.total : 0} colors={tones.bar} style={styles.mt10} />
+      {avg != null ? (
+        <View style={styles.cardFoot}>
+          <DText size={12} color={dx.dust}>
+            {t('courses.cycle_first')}
+          </DText>
+          <DText size={12} weight={700} color={dx.ash} tabular testID="dx-course-avg">
+            {t('courses.avg', { s: avg })}
+          </DText>
+        </View>
+      ) : null}
       <DText size={12.5} lh={18} color={dx.ash} style={styles.mt10}>
         {note}
       </DText>
-      {progress.cycle >= 2 || progress.cycleComplete ? <CyclePills progress={progress} testID="dx-course-cycles" /> : null}
+      {cycles ? (
+        <View style={styles.mt12}>
+          <View style={styles.cyclesHead}>
+            <Label size={10}>{t('courses.cycles')}</Label>
+            <DText size={12} color={dx.dust} testID="dx-course-cycles-hint">
+              {t('courses.cycles_hint')}
+            </DText>
+          </View>
+          <CyclePills progress={progress} testID="dx-course-cycles" />
+        </View>
+      ) : null}
       <PlateButton testID="dx-course-cta" label={label} size={compact ? 'md' : 'lg'} block onPress={cta.run} style={styles.mt18} />
+      {next != null && cta.kind === 'continue' && label !== full ? (
+        <DText size={12.5} color={dx.ash} align="center" numberOfLines={2} style={styles.mt8} testID="dx-course-cta-chapter">
+          {t('learn.course.chapter_line', { n: next + 1, title: localized(course.chapters[next].title, lang), done: progress.chapters[next].done, total: progress.chapters[next].total })}
+        </DText>
+      ) : null}
     </Card>
   );
 }
@@ -254,6 +322,9 @@ function ExamCard({ course, progress }: { course: CourseLike; progress: CoursePr
 
 const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
+  shrink: { flexShrink: 1 },
+  cyclesHead: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: 10, rowGap: 2 },
+  cardFoot: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, marginTop: 6 },
   mt4: { marginTop: 4 },
   mt6: { marginTop: 6 },
   mt8: { marginTop: 8 },
@@ -279,7 +350,7 @@ const styles = StyleSheet.create({
   },
   chapterHover: { backgroundColor: dx.chipHover },
   chapterIcon: { width: 44, height: 44, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
-  chapterRight: { width: 40, alignItems: 'flex-end' },
+  chapterRight: { minWidth: 40, alignItems: 'flex-end', gap: 4 },
   side: {
     padding: 20,
     borderRadius: 14,

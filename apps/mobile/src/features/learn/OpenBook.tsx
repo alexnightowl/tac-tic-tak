@@ -31,10 +31,13 @@ export type OpenBookRun = {
   chapterIndex: number;
 };
 
+/** The column the book rises and zooms in, window coordinates (default: the whole window; the desktop page's body). */
+export type OpenBookStage = { left: number; width: number; height: number };
+
 const BASE_W = 173;
 
-export function OpenBookOverlay({ run, onPush, onDone }: { run: OpenBookRun; onPush: () => void; onDone: () => void }) {
-  const layer = <OpenBookLayer run={run} onPush={onPush} onDone={onDone} />;
+export function OpenBookOverlay({ run, onPush, onDone, stage }: { run: OpenBookRun; onPush: () => void; onDone: () => void; stage?: OpenBookStage }) {
+  const layer = <OpenBookLayer run={run} onPush={onPush} onDone={onDone} stage={stage} />;
   if (Platform.OS === 'ios') return <FullWindowOverlay>{layer}</FullWindowOverlay>;
   return (
     <Modal visible transparent animationType="none" statusBarTranslucent navigationBarTranslucent onRequestClose={() => {}}>
@@ -43,8 +46,9 @@ export function OpenBookOverlay({ run, onPush, onDone }: { run: OpenBookRun; onP
   );
 }
 
-function OpenBookLayer({ run, onPush, onDone }: { run: OpenBookRun; onPush: () => void; onDone: () => void }) {
-  const { width: W, height: H } = useWindowDimensions();
+function OpenBookLayer({ run, onPush, onDone, stage }: { run: OpenBookRun; onPush: () => void; onDone: () => void; stage?: OpenBookStage }) {
+  const win = useWindowDimensions();
+  const { left: X0, width: W, height: H } = stage ?? { left: 0, width: win.width, height: win.height };
   const { x, y, w, h } = run.rect;
   const t = useSharedValue(0);
 
@@ -66,9 +70,9 @@ function OpenBookLayer({ run, onPush, onDone }: { run: OpenBookRun; onPush: () =
   // Rise: spine on the centre line; zoom: the open page fills 86 % of the width.
   const s1 = (M.riseWidth * W) / w;
   const s2 = (M.zoomWidth * W) / w;
-  const left1 = W / 2;
+  const left1 = X0 + W / 2;
   const top1 = M.riseTop * H;
-  const left2 = (W - M.zoomWidth * W) / 2;
+  const left2 = X0 + (W - M.zoomWidth * W) / 2;
   const top2 = M.zoomTop * H;
 
   const book = useAnimatedStyle(() => {

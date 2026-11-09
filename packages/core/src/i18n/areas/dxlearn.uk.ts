@@ -13,7 +13,6 @@ export const dxlearnUk: Dict = {
   'dx.learn.not_started': 'Не розпочато',
   'dx.learn.search': 'Назва або автор',
   'dx.learn.search_a11y': 'Пошук книг за назвою або автором',
-  'dx.learn.book_reading': 'читаю {done}/{total}',
   'dx.learn.no_match': 'Жодна книга не підходить.',
   // Course page (DXCourse).
   'dx.learn.stat.chapters': 'розділи',
@@ -46,4 +45,5 @@ export const dxlearnUk: Dict = {
   'dx.learn.session_a11y': '{title}, {when}, {mistakes}',
   'dx.learn.mistakes_a11y': 'Розібрати помилки цієї сесії',
   'dx.learn.history_empty': 'Ще немає сесій.',
+  'dx.learn.refresh_a11y': 'Оновити',
 };

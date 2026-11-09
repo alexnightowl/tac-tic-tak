@@ -11,7 +11,7 @@ import { roman, useBookProgress, useBookSummary, useShelf } from '@/features/lib
 import { useRawWindow } from '@/platform/webFrame';
 import { PlateButton } from '@/ui';
 import { useLang, useT } from '@/ui/lang';
-import { DText, Hover, Label, Num, RowRule, Tile, Title } from '../kit';
+import { Bar, DText, Hover, Label, Num, RowRule, Tile, Title } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
 import { CyclePills, LearnSwitch, SectionHead } from './parts';
@@ -89,7 +89,12 @@ export function DxBook({ bookId }: { bookId: string }) {
               label={t('library.stat.cycle')}
             />
             <Tile style={styles.cycles} testID="dx-book-cycles-tile">
-              <Label size={10}>{t('library.cycles')}</Label>
+              <View style={styles.cyclesHead}>
+                <Label size={10}>{t('library.cycles')}</Label>
+                <DText size={12} color={dx.dust} testID="dx-book-cycles-hint">
+                  {t('library.cycles_hint')}
+                </DText>
+              </View>
               <CyclePills progress={progress} testID="dx-book-cycles" />
             </Tile>
           </View>
@@ -152,6 +157,7 @@ function ChapterRow({ book, index, progress, onPress }: { book: LibraryBookSumma
         <DText size={12.5} color={dx.dust} numberOfLines={1}>
           {localized(c.subtitle, lang)}
         </DText>
+        {current && p.done > 0 ? <Bar value={p.done / p.total} height={3} style={styles.mt6} /> : null}
       </View>
       <DText size={13} weight={800} color={p.complete ? dx.sage : dx.ash} tabular testID={`dx-book-chapter-${index}-count`}>
         {`${p.done}/${p.total}`}
@@ -165,6 +171,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
   mt2: { marginTop: 2 },
   mt4: { marginTop: 4 },
+  mt6: { marginTop: 6 },
+  cyclesHead: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', columnGap: 10, rowGap: 2 },
   mt24: { marginTop: 24 },
   center: { paddingVertical: 80, alignItems: 'center' },
   cols: { flexDirection: 'row', alignItems: 'flex-start', gap: 36 },

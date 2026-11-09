@@ -2,13 +2,15 @@ import { formatSessionTime, groupSessionsByDay, type SessionRow } from '@tac/cor
 import { isTrainingStyle } from '@tac/core/rules';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, tone } from '@tac/core/tokens';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
-import { ChevronRight, RefreshCw, Zap } from 'lucide-react-native';
-import { useState } from 'react';
+import { ChevronRight, CloudOff, PartyPopper, RefreshCw, RotateCw, Zap, type LucideIcon } from 'lucide-react-native';
+import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
+import { feel } from '@/feel';
 import { reviewApi, reviewKeys, sessionApi } from '@/features/review/api';
+import { Skeleton } from '@/features/review/states';
 import { ThemeIcon } from '@/features/review/ThemeIcon';
 import { useReviewThemes, type ThemeRow } from '@/features/review/useReviewThemes';
 import { sessionThemeLabel } from '@/features/sessions/format';
@@ -16,8 +18,8 @@ import { plural } from '@/features/offline/format';
 import { useRawWindow } from '@/platform/webFrame';
 import { PlateButton } from '@/ui';
 import { useLang, useT, useTn } from '@/ui/lang';
-import { Card, DText, Hover, Label, RowRule, Seg, Title } from '../kit';
-import { DesktopPage } from '../Page';
+import { Card, DText, GhostButton, Hover, Label, RowRule, Seg, Title } from '../kit';
+import { DesktopPage, HeaderTools } from '../Page';
 import { dx } from '../tokens';
 import { colWidth, usePageWidth } from './parts';
 
@@ -41,40 +43,67 @@ export function DxReview() {
   const asideW = winW < 1280 ? 300 : 360;
   const w = usePageWidth(asideW);
 
+  const history = useQuery({ queryKey: reviewKeys.overview(), queryFn: () => sessionApi.overview() });
+  const [refreshing, setRefreshing] = useState(false);
+
   const rows = q.data ?? [];
   const sorted = sort === 'hardest' ? [...rows].sort((a, b) => b.minRating - a.minRating) : rows;
   const waiting = all.data?.length ?? null;
   const first = all.data?.[0]?.puzzleId ?? null;
   const cols = w >= 600 ? 3 : w >= 460 ? 2 : 1;
   const cardW = colWidth(w, cols, 12);
+  const failed = q.isError && !q.data;
+  const empty = !q.isPending && !failed && rows.length === 0;
 
-  return (
-    <DesktopPage
-      testID="dx-review"
-      title={t('review.title')}
-      subtitle={t('review.subtitle_themes')}
-      asideWidth={asideW}
-      aside={<History />}
-    >
-      <View>
-        <Card texture style={styles.hero} testID="dx-review-hero">
-          <View style={styles.heroText}>
-            <Title size={22}>{waiting === 0 ? t('review.empty') : plural(tn, 'learn.review_entry.waiting', waiting ?? rows.reduce((n, r) => n + r.count, 0))}</Title>
-            <DText size={14} color={dx.ash} style={styles.mt4}>
-              {waiting === 0 ? t('review.empty_hint') : t('dx.learn.review_hint')}
-            </DText>
-          </View>
-          {first ? (
-            <PlateButton
-              testID="dx-review-all"
-              label={t('dx.learn.review_all')}
-              size="lg"
-              icon={<RefreshCw size={16} color={tone.onEmber} strokeWidth={2} />}
-              onPress={() => router.push(`/review/${encodeURIComponent(first)}` as Href)}
-              style={styles.heroCta}
-            />
-          ) : null}
-        </Card>
+  // The phone's pull-to-refresh: the themes, the queue and the history again.
+  const refresh = async () => {
+    feel.emit('refresh');
+    setRefreshing(true);
+    try {
+      await Promise.all([q.refetch(), all.refetch(), history.refetch()]);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  let body: ReactNode;
+  if (failed) {
+    body = (
+      <StateBlock
+        testID="dx-review-error"
+        icon={CloudOff}
+        title={t('review.error_title')}
+        body={t('review.error_hint')}
+        action={{ label: t('review.retry_load'), testID: 'dx-review-retry', onPress: () => void refresh() }}
+      />
+    );
+  } else if (empty) {
+    body = <StateBlock testID="dx-review-empty" icon={PartyPopper} iconColor={eos.sage} title={t('review.empty')} body={t('review.empty_hint')} />;
+  } else {
+    body = (
+      <>
+        {q.isPending && waiting == null ? (
+          <Skeleton style={styles.heroSkeleton} />
+        ) : (
+          <Card texture style={styles.hero} testID="dx-review-hero">
+            <View style={styles.heroText}>
+              <Title size={22}>{plural(tn, 'learn.review_entry.waiting', waiting ?? rows.reduce((n, r) => n + r.count, 0))}</Title>
+              <DText size={14} color={dx.ash} style={styles.mt4}>
+                {t('dx.learn.review_hint')}
+              </DText>
+            </View>
+            {first ? (
+              <PlateButton
+                testID="dx-review-all"
+                label={t('dx.learn.review_all')}
+                size="lg"
+                icon={<RefreshCw size={16} color={tone.onEmber} strokeWidth={2} />}
+                onPress={() => router.push(`/review/${encodeURIComponent(first)}` as Href)}
+                style={styles.heroCta}
+              />
+            ) : null}
+          </Card>
+        )}
 
         <View style={styles.themesHead}>
           <Label>{t('dx.learn.by_theme')}</Label>
@@ -94,15 +123,8 @@ export function DxReview() {
         </View>
 
         {q.isPending ? (
-          <View style={styles.center} testID="dx-review-loading">
-            <ActivityIndicator color={eos.ash} />
-          </View>
-        ) : q.isError && !q.data ? (
-          <View style={styles.center} testID="dx-review-error">
-            <DText size={14} color={dx.ash}>
-              {t('review.error_title')}
-            </DText>
-            <PlateButton testID="dx-review-retry" label={t('review.retry_load')} variant="slate" size="sm" onPress={() => void q.refetch()} />
+          <View style={styles.grid} testID="dx-review-loading">
+            {w > 0 ? Array.from({ length: cols * 2 }, (_, i) => <Skeleton key={i} style={[styles.themeSkeleton, { width: cardW }]} />) : null}
           </View>
         ) : (
           <View style={styles.grid}>
@@ -111,15 +133,67 @@ export function DxReview() {
                   <ThemeCard key={row.slug} row={row} width={cardW} opening={opening === row.slug} onPress={() => void open(row)} lang={lang} />
                 ))
               : null}
-            {rows.length === 0 ? (
-              <DText size={14} color={dx.dust} style={styles.empty} testID="dx-review-empty">
-                {t('review.empty_hint')}
-              </DText>
-            ) : null}
           </View>
         )}
-      </View>
+      </>
+    );
+  }
+
+  return (
+    <DesktopPage
+      testID="dx-review"
+      title={t('review.title')}
+      subtitle={t('review.subtitle_themes')}
+      right={
+        <View style={styles.headRight}>
+          <GhostButton
+            testID="dx-review-refresh"
+            accessibilityLabel={t('dx.learn.refresh_a11y')}
+            icon={RotateCw}
+            square
+            disabled={refreshing}
+            onPress={() => void refresh()}
+          />
+          <HeaderTools />
+        </View>
+      }
+      asideWidth={asideW}
+      aside={<History q={history} />}
+    >
+      <View>{body}</View>
     </DesktopPage>
+  );
+}
+
+/** The phone's StateView at desktop size: the icon disc, title, hint, optional plate. */
+function StateBlock({
+  testID,
+  icon: Icon,
+  iconColor = eos.ash,
+  title,
+  body,
+  action,
+}: {
+  testID: string;
+  icon: LucideIcon;
+  iconColor?: string;
+  title: string;
+  body: string;
+  action?: { label: string; testID: string; onPress: () => void };
+}) {
+  return (
+    <Card style={styles.state} testID={testID}>
+      <View style={styles.stateIcon}>
+        <Icon size={26} color={iconColor} strokeWidth={1.8} />
+      </View>
+      <Title size={22} style={styles.centerText}>
+        {title}
+      </Title>
+      <DText size={14} lh={20} color={dx.ash} align="center" style={styles.stateBody}>
+        {body}
+      </DText>
+      {action ? <PlateButton testID={action.testID} label={action.label} variant="slate" size="md" onPress={action.onPress} style={styles.stateAction} /> : null}
+    </Card>
   );
 }
 
@@ -160,11 +234,10 @@ function ThemeCard({ row, width, opening, onPress, lang }: { row: ThemeRow; widt
 }
 
 /** The latest sessions (GET /analytics, as the history page): a row opens the session, its pill the mistakes. */
-function History() {
+function History({ q }: { q: UseQueryResult<Awaited<ReturnType<typeof sessionApi.overview>>> }) {
   const t = useT();
   const tn = useTn();
   const { lang } = useLang();
-  const q = useQuery({ queryKey: reviewKeys.overview(), queryFn: () => sessionApi.overview() });
   const rows = (q.data?.recentSessions ?? []).slice(0, HISTORY_ROWS);
   return (
     <Card style={styles.history} testID="dx-review-history">
@@ -252,14 +325,28 @@ const styles = StyleSheet.create({
   mt4: { marginTop: 4 },
   mt6: { marginTop: 6 },
   mt12: { marginTop: 12 },
-  center: { paddingVertical: 48, alignItems: 'center', gap: 12 },
+  centerText: { textAlign: 'center' },
+  headRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  heroSkeleton: { height: 104, borderRadius: 14 },
+  themeSkeleton: { height: 96, borderRadius: 12 },
+  state: { alignItems: 'center', gap: 12, paddingVertical: 48, paddingHorizontal: 32 },
+  stateIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: dx.card2,
+    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: dx.cardEdge, inset: true }],
+  },
+  stateBody: { maxWidth: 460 },
+  stateAction: { marginTop: 8, alignSelf: 'center' },
   hero: { paddingVertical: 24, paddingHorizontal: 26, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 20 },
   heroText: { flex: 1, minWidth: 240 },
   heroCta: { minWidth: 250 },
   themesHead: { flexDirection: 'row', alignItems: 'center', marginTop: 20 },
   sort: { width: 220 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 12 },
-  empty: { paddingVertical: 24 },
   theme: {
     padding: 16,
     gap: 12,

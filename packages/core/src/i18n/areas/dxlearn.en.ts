@@ -13,7 +13,6 @@ export const dxlearnEn: Dict = {
   'dx.learn.not_started': 'Not started',
   'dx.learn.search': 'Title or author',
   'dx.learn.search_a11y': 'Search books by title or author',
-  'dx.learn.book_reading': 'reading {done}/{total}',
   'dx.learn.no_match': 'No book matches.',
   // Course page (DXCourse).
   'dx.learn.stat.chapters': 'chapters',
@@ -46,4 +45,5 @@ export const dxlearnEn: Dict = {
   'dx.learn.session_a11y': '{title}, {when}, {mistakes}',
   'dx.learn.mistakes_a11y': 'Review the mistakes of this session',
   'dx.learn.history_empty': 'No sessions yet.',
+  'dx.learn.refresh_a11y': 'Refresh',
 };
