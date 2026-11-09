@@ -177,7 +177,8 @@ const styles = StyleSheet.create({
   bellHover: { backgroundColor: dx.ghostHover },
   dot: { position: 'absolute', top: 9, right: 10, width: 7, height: 7, borderRadius: 4, backgroundColor: dx.rose },
   body: { paddingTop: dxSize.padTop, paddingHorizontal: dxSize.padX, paddingBottom: 40 },
-  cap: { width: '100%', maxWidth: dxSize.maxContent },
+  // The page fills the window beside the sidebar, as the artboards do.
+  cap: { width: '100%' },
   cols: { flexDirection: 'row', alignItems: 'flex-start', gap: dxSize.gap },
   main: { flex: 1, minWidth: 0, gap: 16 },
 });

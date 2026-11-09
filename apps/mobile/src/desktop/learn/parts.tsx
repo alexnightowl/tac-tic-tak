@@ -40,13 +40,13 @@ export function LearnSwitch({ value }: { value: LearnSegment }) {
 }
 
 /**
- * The page body's width from the real window (sidebar, side padding, the
- * content cap), less a right column of `aside` px: the grids pick their
+ * The page body's width: the real window less the sidebar and the side
+ * padding, and less a right column of `aside` px: the grids pick their
  * column count from it.
  */
 export function usePageWidth(aside = 0): number {
   const { width } = useRawWindow();
-  const body = Math.min(width - dxSize.sidebar - 2 * dxSize.padX, dxSize.maxContent);
+  const body = width - dxSize.sidebar - 2 * dxSize.padX;
   return Math.max(0, body - (aside ? aside + dxSize.gap : 0));
 }
 

@@ -107,6 +107,4 @@ export const deskSize = {
   /** Right column of two-column pages. */
   aside: 340,
   gap: 20,
-  /** Content stops growing here on very wide windows. */
-  maxContent: 1240,
 } as const;
