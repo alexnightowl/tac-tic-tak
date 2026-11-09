@@ -5,6 +5,23 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-09 — Desktop parity pass (owner: "урізали функціонал?")
+
+- Owner rule: the desktop offers everything the phone does; only the layout differs. An audit of
+  every desktop route against its phone screen found dropped features; five area agents fixed
+  them: Stats (radar, full theme list), Profile (heatmap, rating chart, radar, peak, streak,
+  avatar), Friends (unfriend, error states), League (full challenges card, row details,
+  medals), Achievements (dates, sections, retry), Sessions (sticky days, columns), Home (resume
+  card, full quick start, peak / sessions tiles, since-last-visit deltas), Play / levels / Storm /
+  Challenge details and back links, runner win-streak chip, summary review / XP / failed tile,
+  Storm combo meter, drill error close, Experience, Learn / course / book / Review details,
+  settings rows and piece picker. Pages fill the window (no max-width), the board fills the height,
+  button rows share one height, shortcuts listed by where they work, "full session to reach N"
+  instead of "0 to N".
+- Verified: `pnpm -r run typecheck`, eslint, core 263; screenshots 1440 / 1800 / 1024 / 390;
+  Maestro 17-challenge, 18-league, 13-library, 14-learn, 08-profile-edit, 09-account green.
+  Not done: manual refresh on web (react-query refetches on window focus).
+
 ## 2026-11-09 — Level-up pace per time control (D37)
 
 - Backend (prod ddfb9d6): a v2 level-up also needs the style's pace target; the speed bonus is
