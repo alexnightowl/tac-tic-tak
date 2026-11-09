@@ -210,11 +210,13 @@ export class PuzzleBufferService {
     }
     const order = [...themes].sort(() => Math.random() - 0.5);
     const share = Math.ceil(opts.count / order.length);
-    // In parallel: pickIds marks what it takes in `exclude` synchronously,
-    // so two themes never return the same puzzle.
-    const groups = await Promise.all(
-      order.map((theme) => this.pickIds({ min: opts.min, max: opts.max, count: share, theme, exclude: opts.exclude })),
-    );
+    // One theme after another: preload already runs its three rating
+    // buckets in parallel, and nine random-order scans at once exhaust
+    // Postgres' shared memory in the docker image.
+    const groups: string[][] = [];
+    for (const theme of order) {
+      groups.push(await this.pickIds({ min: opts.min, max: opts.max, count: share, theme, exclude: opts.exclude }));
+    }
     const out: string[] = [];
     for (let i = 0; i < share && out.length < opts.count; i++) {
       for (const g of groups) if (g[i] && out.length < opts.count) out.push(g[i]);
