@@ -436,7 +436,8 @@ export class SessionsService {
         progression.level ?? initialLevel(session.startRating, progression.unlockedStartRating),
         progression.currentPuzzleRating,
         progression.levelGuard,
-        // D37: the level-up also needs the style's pace.
+        // D37: the level-up also needs the style's pace (solves against
+        // paceTarget for the session's style and length).
         { solved: stats.solved, target: paceTarget(style, session.durationSec) },
       );
       const settlingLeft = Math.max(0, progression.calibrationSessionsLeft - 1);
