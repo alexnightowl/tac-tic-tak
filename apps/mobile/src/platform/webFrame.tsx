@@ -9,3 +9,8 @@ export function WebFrame({ children }: { children: ReactNode }) {
 export function useWideWeb(): boolean {
   return false;
 }
+
+/** Native: the window (only desktop layouts read it, and they never render here). */
+export function useRawWindow(): { width: number; height: number } {
+  return { width: 0, height: 0 };
+}

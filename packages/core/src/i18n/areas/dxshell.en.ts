@@ -1,0 +1,33 @@
+// dxshell area, en: desktop web shell (canvas page "Desktop — redesign":
+// sidebar, page header, account popover, shortcuts). Keys start with 'dx.shell.'.
+import type { Dict } from '../types';
+
+export const dxshellEn: Dict = {
+  'dx.shell.streak': 'Streak',
+  'dx.shell.streak_days.one': '{n} day',
+  'dx.shell.streak_days.other': '{n} days',
+  'dx.shell.streak_days.few': '{n} days',
+  'dx.shell.streak_days.many': '{n} days',
+  'dx.shell.streak_today': 'One session today keeps it',
+  'dx.shell.streak_done': 'Today counts',
+  'dx.shell.streak_none': 'Finish a session to start one',
+  'dx.shell.open_settings': 'Settings',
+  'dx.shell.search': 'Search players…',
+  'dx.shell.notifications': 'Friend requests and challenges',
+  'dx.shell.back': 'Back',
+  'dx.shell.hotkeys': 'Keyboard shortcuts',
+  'dx.shell.language': 'Language',
+  'dx.shell.lang_en': 'EN',
+  'dx.shell.lang_uk': 'УКР',
+  'dx.shell.key.start': 'Start a session',
+  'dx.shell.key.skip': 'Skip',
+  'dx.shell.key.pause': 'Pause',
+  'dx.shell.key.next': 'Next puzzle',
+  'dx.shell.key.hint': 'Hint',
+  'dx.shell.key.flip': 'Flip the board',
+  'dx.shell.key.search': 'Search',
+  'dx.shell.key.all': 'All shortcuts',
+  'dx.shell.key.profile': 'My profile',
+  'dx.shell.key.settings': 'Settings',
+  'dx.shell.key.modes': 'Pick a mode',
+};

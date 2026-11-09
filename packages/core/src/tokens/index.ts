@@ -4,3 +4,4 @@ export * from './layout';
 export * from './type';
 export * from './shadows';
 export * from './motion';
+export * from './desk';

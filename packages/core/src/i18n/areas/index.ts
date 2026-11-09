@@ -42,6 +42,20 @@ import { challengeEn } from './challenge.en';
 import { challengeUk } from './challenge.uk';
 import { stormEn } from './storm.en';
 import { stormUk } from './storm.uk';
+import { dxshellEn } from './dxshell.en';
+import { dxshellUk } from './dxshell.uk';
+import { dxauthEn } from './dxauth.en';
+import { dxauthUk } from './dxauth.uk';
+import { dxhomeEn } from './dxhome.en';
+import { dxhomeUk } from './dxhome.uk';
+import { dxboardEn } from './dxboard.en';
+import { dxboardUk } from './dxboard.uk';
+import { dxlearnEn } from './dxlearn.en';
+import { dxlearnUk } from './dxlearn.uk';
+import { dxrivalsEn } from './dxrivals.en';
+import { dxrivalsUk } from './dxrivals.uk';
+import { dxaccountEn } from './dxaccount.en';
+import { dxaccountUk } from './dxaccount.uk';
 
 export const AREAS = [
   'common',
@@ -63,6 +77,13 @@ export const AREAS = [
   'courses',
   'challenge',
   'storm',
+  'dxshell',
+  'dxauth',
+  'dxhome',
+  'dxboard',
+  'dxlearn',
+  'dxrivals',
+  'dxaccount',
 ] as const;
 
 export type Area = (typeof AREAS)[number];
@@ -87,6 +108,13 @@ export const AREA_DICTS: Record<Area, Record<Language, Dict>> = {
   courses: { en: coursesEn, uk: coursesUk },
   challenge: { en: challengeEn, uk: challengeUk },
   storm: { en: stormEn, uk: stormUk },
+  dxshell: { en: dxshellEn, uk: dxshellUk },
+  dxauth: { en: dxauthEn, uk: dxauthUk },
+  dxhome: { en: dxhomeEn, uk: dxhomeUk },
+  dxboard: { en: dxboardEn, uk: dxboardUk },
+  dxlearn: { en: dxlearnEn, uk: dxlearnUk },
+  dxrivals: { en: dxrivalsEn, uk: dxrivalsUk },
+  dxaccount: { en: dxaccountEn, uk: dxaccountUk },
 };
 
 /** All areas of one language merged into a flat dict (the web shape). */
