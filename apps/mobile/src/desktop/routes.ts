@@ -18,6 +18,12 @@ export const DESKTOP_ROUTES: readonly Entry[] = [
   { re: /^\/register$/, chrome: 'bare' },
   { re: /^\/onboarding$/, chrome: 'bare' },
   // ── home, play setup, storm intro/result, challenge ──
+  { re: /^\/$/, chrome: 'full' },
+  { re: /^\/play$/, chrome: 'full' },
+  { re: /^\/play\/levels$/, chrome: 'full' },
+  { re: /^\/storm$/, chrome: 'full' },
+  { re: /^\/storm\/result$/, chrome: 'full' },
+  { re: /^\/challenge\/new$/, chrome: 'full' },
   // ── board screens (runner, storm run, drills, course/library solve) ──
   // ── review, learn, courses, books ──
   // ── league, stats, achievements ──

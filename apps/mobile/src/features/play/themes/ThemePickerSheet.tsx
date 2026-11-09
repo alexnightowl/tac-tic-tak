@@ -26,7 +26,8 @@ const MEDIUM = { fontFamily: fontFamily('en', 'body', 500) } as const;
 // popular / all tabs, search by localised label, stat chip per tab) on a
 // FlashList. The pick goes to the shared useThemePick store.
 
-type Tab = 'weakest' | 'popular' | 'all';
+export type ThemeTab = 'weakest' | 'popular' | 'all';
+type Tab = ThemeTab;
 /** GET /analytics/themes row (analytics.service.ts ThemeRow). */
 export type ThemeStatRow = { slug: string; attempts: number; failureRate: number; weakness: number; rating: number };
 
@@ -36,7 +37,29 @@ export const themeStatsQuery = {
   queryFn: () => apiClient.get<ThemeStatRow[]>('/analytics/themes'),
 };
 
-type Item = { slug: string; row?: ThemeStatRow };
+export type ThemeItem = { slug: string; row?: ThemeStatRow };
+type Item = ThemeItem;
+
+/**
+ * The picker's list for a tab (web ThemePicker): tactical themes by
+ * weakness or by volume, or every known theme A–Z; filtered by the
+ * localised label. Shared with the desktop Play page's theme grid.
+ */
+export function pickerItems(rows: ThemeStatRow[] | undefined, tab: ThemeTab, query: string, lang: 'en' | 'uk'): { items: ThemeItem[]; tactical: ThemeStatRow[] } {
+  const tactical = (rows ?? []).filter((r) => !isMetaTheme(r.slug));
+  const bySlug = new Map(tactical.map((r) => [r.slug, r]));
+  let items: ThemeItem[];
+  if (tab === 'weakest') items = [...tactical].sort((a, b) => b.weakness - a.weakness).map((r) => ({ slug: r.slug, row: r }));
+  else if (tab === 'popular') items = [...tactical].sort((a, b) => b.attempts - a.attempts).map((r) => ({ slug: r.slug, row: r }));
+  else {
+    items = KNOWN_THEME_SLUGS.map((slug) => ({ slug, row: bySlug.get(slug) })).sort((a, b) =>
+      themeLabel(a.slug, lang).localeCompare(themeLabel(b.slug, lang), lang === 'uk' ? 'uk' : 'en'),
+    );
+  }
+  const q = query.trim().toLowerCase();
+  if (q) items = items.filter((it) => themeLabel(it.slug, lang).toLowerCase().includes(q));
+  return { items, tactical };
+}
 
 export function ThemePickerSheet() {
   const t = usePlayT();
@@ -48,18 +71,7 @@ export function ThemePickerSheet() {
   const [query, setQuery] = useState('');
   const stats = useQuery(themeStatsQuery);
 
-  const tactical = (stats.data ?? []).filter((r) => !isMetaTheme(r.slug));
-  const bySlug = new Map(tactical.map((r) => [r.slug, r]));
-  let items: Item[];
-  if (tab === 'weakest') items = [...tactical].sort((a, b) => b.weakness - a.weakness).map((r) => ({ slug: r.slug, row: r }));
-  else if (tab === 'popular') items = [...tactical].sort((a, b) => b.attempts - a.attempts).map((r) => ({ slug: r.slug, row: r }));
-  else {
-    items = KNOWN_THEME_SLUGS.map((slug) => ({ slug, row: bySlug.get(slug) })).sort((a, b) =>
-      themeLabel(a.slug, lang).localeCompare(themeLabel(b.slug, lang), lang === 'uk' ? 'uk' : 'en'),
-    );
-  }
-  const q = query.trim().toLowerCase();
-  if (q) items = items.filter((it) => themeLabel(it.slug, lang).toLowerCase().includes(q));
+  const { items, tactical } = pickerItems(stats.data, tab, query, lang);
   const needsStats = tab === 'weakest' || tab === 'popular';
   const emptyStats = needsStats && stats.isSuccess && tactical.length === 0;
 

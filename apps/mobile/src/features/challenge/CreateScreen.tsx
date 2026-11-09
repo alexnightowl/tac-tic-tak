@@ -1,28 +1,16 @@
-import { raceBase, STORM_FORMATS, STORM_NOTE_MAX, type StormFormat } from '@tac/core/storm';
+import { STORM_FORMATS, STORM_NOTE_MAX } from '@tac/core/storm';
 import { alpha, eos, layout, radii, space, surface, tone } from '@tac/core/tokens';
-import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
 import { Search, Send, Users, Zap } from 'lucide-react-native';
-import { useMemo, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { feel } from '@/feel';
 import { BackLink } from '@/features/courses/parts';
 import { displayNameOf } from '@/features/social/actions';
-import { friendsQuery, profileQuery, type FriendRow } from '@/features/social/api';
-import { isApiError } from '@tac/core/api';
-import { toast } from '@/shell/toast/store';
 import { AppText, Input, PlateButton, Segmented, Tap, TextLink } from '@/ui';
 import { useT } from '@/ui/lang';
-import { challengeApi, invalidateChallenges } from './api';
-import { PresenceAvatar, useMyRating } from './parts';
-import { openRun, runHref } from '@/features/storm/launch';
-
-/** GET /friends rows carry presence since the Storm backend. */
-type Friend = FriendRow & { online?: boolean };
-
-const isFormat = (f: string | undefined): f is StormFormat => !!f && (STORM_FORMATS as readonly string[]).includes(f);
+import { PresenceAvatar } from './parts';
+import { useChallengeCreate } from './useCreate';
 
 /**
  * /challenge/new?friend&format&run&score (canvas ChallengeCreate). Who
@@ -46,78 +34,10 @@ export function CreateScreen({
 }) {
   const t = useT();
   const insets = useSafeAreaInsets();
-  const dare = !!run;
-  const friends = useQuery(friendsQuery());
-  const [query, setQuery] = useState('');
-  const [picked, setPicked] = useState<string | null>(friend ?? null);
-  const [format, setFormat] = useState<StormFormat>(dare ? 'time3' : isFormat(formatParam) ? formatParam : 'time3');
-  const [note, setNote] = useState('');
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const rows = useMemo(() => {
-    const all = ((friends.data ?? []) as Friend[]).slice();
-    // Online first, then by name; the preselected friend leads.
-    all.sort((a, b) => Number(!!b.online) - Number(!!a.online) || displayNameOf(a.user).localeCompare(displayNameOf(b.user)));
-    if (friend) {
-      const i = all.findIndex((f) => f.user.id === friend);
-      if (i > 0) all.unshift(...all.splice(i, 1));
-    }
-    const q = query.trim().replace(/^@/, '').toLowerCase();
-    return q ? all.filter((f) => f.user.nickname.toLowerCase().includes(q) || (f.user.displayName ?? '').toLowerCase().includes(q)) : all;
-  }, [friends.data, query, friend]);
-
-  const selected = ((friends.data ?? []) as Friend[]).find((f) => f.user.id === picked) ?? null;
-  const name = selected ? displayNameOf(selected.user) : '';
-
-  // The friend's rating: their highest style rating from the public profile.
-  const profile = useQuery({ ...profileQuery(selected?.user.nickname ?? ''), enabled: !!selected });
-  const mine = useMyRating();
-  const theirs = profile.data
-    ? Math.max(0, ...Object.values(profile.data.progressions).map((p) => p?.currentPuzzleRating ?? 0))
-    : 0;
-  const avg = selected && theirs > 0 ? raceBase(mine, theirs).avg : null;
-
-  const send = async () => {
-    if (!selected || sending) return;
-    setSending(true);
-    setError(null);
-    try {
-      const trimmed = note.trim();
-      const r = await challengeApi.create({
-        opponentId: selected.user.id,
-        format,
-        ...(trimmed ? { note: trimmed } : {}),
-        ...(run ? { runId: run } : {}),
-      });
-      invalidateChallenges();
-      const id = r.challenge.id;
-      if (dare) {
-        feel.emit('achievementToast');
-        toast.show({ title: t('challenge.sent', { name }), icon: Send, ...(score ? { description: t('challenge.sent_body', { name, n: score }) } : {}) });
-        router.replace(`/challenge/${id}` as Href);
-      } else {
-        // The challenge exists now: if its stream fails here, the runner retries it.
-        await openRun({ challengeId: id, format, replace: true }).catch(() => router.replace(runHref(id, format)));
-      }
-    } catch (e) {
-      feel.emit('formError');
-      const status = isApiError(e) ? e.status : 0;
-      setError(
-        status === 403
-          ? t('challenge.err.friends')
-          : status === 429
-            ? t('challenge.err.limit')
-            : status === 404 && dare
-              ? t('challenge.err.run')
-              : t('challenge.err.generic'),
-      );
-      setSending(false);
-    }
-  };
+  const { dare, friends, query, setQuery, picked, pick, rows, selected, name, avg, format, setFormat, note, setNote, sending, error, send, hint } =
+    useChallengeCreate({ friend, format: formatParam, run, score });
 
   const dock = space[4] + layout.plateHeight.lg + Math.max(insets.bottom, space[4]) + space[2];
-  const hint = dare ? t('challenge.hint.dare', { n: score ?? '' }) : t(`challenge.hint.${format}`);
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]} testID="challenge-create">
@@ -172,11 +92,7 @@ export function CreateScreen({
                       accessibilityRole="button"
                       accessibilityLabel={t(f.online ? 'challenge.friend_online_a11y' : 'challenge.friend_a11y', { name: n })}
                       accessibilityState={{ selected: on }}
-                      onPress={() => {
-                        feel.emit('toggle');
-                        setPicked(f.user.id);
-                        setError(null);
-                      }}
+                      onPress={() => pick(f.user.id)}
                       style={styles.friend}
                     >
                       <PresenceAvatar nickname={f.user.nickname} avatarUrl={f.user.avatarUrl} size={52} online={f.online} ring={on ? eos.ember : undefined} />

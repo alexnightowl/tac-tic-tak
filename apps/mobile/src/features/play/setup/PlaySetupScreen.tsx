@@ -1,14 +1,12 @@
-import { CALIBRATION_SESSIONS, STYLE_FORMULAS, UI_STYLE_ORDER, bandFor, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, bandFor, type BandKey, type TrainingStyle } from '@tac/core/rules';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { control, eos, layout, mixed, radii, semantic, space, surface, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, useLocalSearchParams, type Href } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { ChevronRight, CloudOff, Coffee, MinusCircle, TrendingUp, type LucideIcon } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
 import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HAS_OFFLINE } from '@/platform/capabilities';
@@ -16,29 +14,17 @@ import { ChallengeEntry } from '@/features/challenge/ChallengeEntry';
 import { OfflineEntry } from '@/features/offline/OfflineEntry';
 import { StormEntry } from '@/features/storm/StormEntry';
 import { useAppStore } from '@/stores/appStore';
-import { AppText, Card, Input, PlateButton, Segmented, useLang } from '@/ui';
+import { AppText, Card, Input, PlateButton, Segmented } from '@/ui';
 import { fontFamily } from '@/ui/fonts';
 import { Tap } from '@/ui/Tap';
-import {
-  DIFFICULTY_MAX,
-  DIFFICULTY_MIN,
-  DIFFICULTY_STEP,
-  clampDifficulty,
-  clampMinutes,
-  minuteRange,
-  readLastStyle,
-  resolveDurationFor,
-  writeLastDuration,
-  writeLastStyle,
-  type SetupMode,
-} from '../setupPrefs';
-import { startSession, useThemePick } from '../startSession';
-import { startErrorKey, usePlayT, type PlayT } from '../strings';
+import { DIFFICULTY_MAX, DIFFICULTY_MIN, DIFFICULTY_STEP, clampDifficulty, type SetupMode } from '../setupPrefs';
+import { type PlayT } from '../strings';
 import { ThemeIcon } from '../themes/ThemeIcon';
 import { STRONG, STYLE_ICON, TABULAR } from '../ui';
 import { bandIcon } from './bandIcons';
 import { DifficultyReadout, DifficultyTrack } from './DifficultyTrack';
 import { ReviewEntry } from './ReviewEntry';
+import { PRESET_SPAN, diffDelta, usePlaySetup } from './usePlaySetup';
 
 // /play (Play tab), design "Play — simplified" (PlayV2*): Rated / Casual /
 // Themes. Rated has no slider: it starts at the player's rating and shows
@@ -46,11 +32,7 @@ import { ReviewEntry } from './ReviewEntry';
 // difficulty and never touch the rating. Then the duration, the theme for
 // Themes, and the Start dock above the tab bar.
 
-/** A difficulty pick is tied to the rating it was made against. */
-type Pick = { value: number; rating: number };
-
 const DOCK_H = layout.plateHeight.lg + space[5] + space[3];
-const PRESET_SPAN = 200;
 
 const TYPES: { mode: SetupMode; key: 'rated' | 'casual' | 'themes'; icon: LucideIcon }[] = [
   { mode: 'mixed', key: 'rated', icon: TrendingUp },
@@ -59,111 +41,36 @@ const TYPES: { mode: SetupMode; key: 'rated' | 'casual' | 'themes'; icon: Lucide
 ];
 
 export function PlaySetupScreen() {
-  const t = usePlayT();
-  const { lang } = useLang();
   const insets = useSafeAreaInsets();
-  const progressions = useAppStore((s) => s.progressions);
-  const theme = useThemePick((s) => s.theme);
-
-  // MMKV is synchronous: the stored picks are there on the first frame.
-  const [style, setStyle] = useState<TrainingStyle>(readLastStyle);
-  const [dur, setDur] = useState(() => resolveDurationFor(readLastStyle()));
-  const [mode, setMode] = useState<SetupMode>('mixed');
-  // /play?mode=theme&at=<stamp> (Stats theme row with nothing to review):
-  // open in theme mode, once per request. Adjusted during render, not in
-  // an effect, so the first frame already shows theme mode.
-  const params = useLocalSearchParams<{ mode?: string; at?: string }>();
-  const [seenAt, setSeenAt] = useState<string | undefined>(undefined);
-  if (params.mode === 'theme' && params.at !== seenAt) {
-    setSeenAt(params.at);
-    setMode('theme');
-  }
-  const [pick, setPick] = useState<Pick | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [netErr, setNetErr] = useState(false);
-  const [loading, setLoading] = useState(false);
-  /** Only a tap on Custom opens the number pad, not a restored custom pick. */
-  const [focusCustom, setFocusCustom] = useState(false);
-
-  const prog = progressions[style];
-  const rating = prog.currentPuzzleRating;
-  const rated = mode === 'mixed';
-  // The difficulty follows the rating until the player picks one.
-  const difficulty = clampDifficulty(pick && pick.rating === rating ? pick.value : rating);
-  const setDifficulty = (v: number) => setPick({ value: clampDifficulty(v), rating });
-
-  const live = useSharedValue(difficulty);
-  useEffect(() => {
-    live.set(difficulty);
-  }, [live, difficulty]);
-
-  const { min: minMinutes, max: maxMinutes } = minuteRange(style);
-  const effectiveDuration = dur.custom ? clampMinutes(style, dur.customMinutes) * 60 : dur.duration;
-  const customInvalid = dur.custom && dur.customMinutes === '';
-
-  const bandLabels = {
-    novice: t('levels.novice'),
-    beginner: t('levels.beginner'),
-    intermediate: t('levels.intermediate'),
-    advanced: t('levels.advanced'),
-    expert: t('levels.expert'),
-  } satisfies Record<BandKey, string>;
-
-  // In the handler, not an effect: style, difficulty and duration change in one render.
-  const selectStyle = (next: TrainingStyle) => {
-    if (next === style) return;
-    setStyle(next);
-    setPick(null);
-    setDur(resolveDurationFor(next));
-    writeLastStyle(next);
-  };
-
-  const selectDuration = (v: string) => {
-    if (v === 'custom') {
-      setDur((d) => ({ ...d, custom: true }));
-      setFocusCustom(true);
-      return;
-    }
-    const sec = Number(v);
-    setDur({ duration: sec, custom: false, customMinutes: String(sec / 60) });
-    writeLastDuration(style, sec);
-  };
-
-  const onMinutes = (v: string) => {
-    if (v === '' || /^\d{1,2}$/.test(v)) setDur((d) => ({ ...d, customMinutes: v }));
-  };
-
-  // web onBlur: '' becomes the minimum, anything else its clamped value.
-  const normaliseMinutes = () => {
-    const m = clampMinutes(style, dur.customMinutes);
-    setDur((d) => ({ ...d, customMinutes: String(m) }));
-    writeLastDuration(style, m * 60);
-  };
-
-  const start = async () => {
-    setErr(null);
-    setNetErr(false);
-    setLoading(true);
-    try {
-      const id = await startSession({
-        style,
-        durationSec: effectiveDuration,
-        mode,
-        theme: mode === 'theme' ? theme : null,
-        startRating: rated ? rating : difficulty,
-      });
-      router.push(`/play/${id}` as Href);
-    } catch (e) {
-      const key = startErrorKey(e);
-      setErr(t(key));
-      setNetErr(key === 'play.err_network');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const presets = STYLE_FORMULAS[style].durationPresetsSec;
-  const cta = rated ? t('play.start_rated') : mode === 'casual' ? t('play.start_casual') : t('play.start_drill', { theme: themeLabel(theme, lang) });
+  const {
+    t,
+    lang,
+    theme,
+    style,
+    selectStyle,
+    dur,
+    selectDuration,
+    onMinutes,
+    normaliseMinutes,
+    focusCustom,
+    minMinutes,
+    maxMinutes,
+    presets,
+    customInvalid,
+    mode,
+    setMode,
+    rated,
+    rating,
+    difficulty,
+    setDifficulty,
+    live,
+    bandLabels,
+    start,
+    loading,
+    err,
+    netErr,
+    cta,
+  } = usePlaySetup();
 
   return (
     <View style={styles.root} testID="play-setup">
@@ -384,11 +291,6 @@ export function PlaySetupScreen() {
       </View>
     </View>
   );
-}
-
-function diffDelta(delta: number, t: PlayT): string {
-  if (delta === 0) return t('play.diff_same');
-  return delta > 0 ? t('play.diff_above', { n: delta }) : t('play.diff_below', { n: -delta });
 }
 
 function TypeButton({
