@@ -15,6 +15,7 @@ import { ExperienceService } from '../experience/experience.service';
 import { OfflineService } from '../offline/offline.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
 import { trainingXp } from '../sessions/progress';
+import { initialLevel } from '../sessions/progress';
 import {
   ChallengeCreateDto,
   STORM_LIVES,
@@ -422,18 +423,30 @@ export class StormService implements OnModuleInit {
   }
 
   /** Each player's rating: their highest style rating (else the global one, else 1200). */
+  /**
+   * Each player's strength for a challenge: their best level across the
+   * styles (D39: the level is the only number), from the progressions'
+   * stored levels or, never-played-v2, the level their first session
+   * would start at.
+   */
   private async ratings(ids: string[]): Promise<Map<string, number>> {
     const [styles, globals] = await Promise.all([
-      this.prisma.userStyleProgression.groupBy({ by: ['userId'], where: { userId: { in: ids } }, _max: { currentPuzzleRating: true } }),
+      this.prisma.userStyleProgression.findMany({
+        where: { userId: { in: ids } },
+        select: { userId: true, level: true, currentPuzzleRating: true, unlockedStartRating: true },
+      }),
       this.prisma.userProgression.findMany({ where: { userId: { in: ids } }, select: { userId: true, currentPuzzleRating: true } }),
     ]);
     const out = new Map<string, number>();
     for (const id of ids) {
+      const levels = styles
+        .filter((s) => s.userId === id)
+        .map((s) => s.level ?? initialLevel(s.currentPuzzleRating, s.unlockedStartRating));
       out.set(
         id,
-        styles.find((s) => s.userId === id)?._max.currentPuzzleRating
-          ?? globals.find((g) => g.userId === id)?.currentPuzzleRating
-          ?? DEFAULT_RATING,
+        levels.length > 0
+          ? Math.max(...levels)
+          : (globals.find((g) => g.userId === id)?.currentPuzzleRating ?? DEFAULT_RATING),
       );
     }
     return out;
