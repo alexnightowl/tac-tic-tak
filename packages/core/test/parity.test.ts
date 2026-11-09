@@ -138,6 +138,8 @@ describe('backend rating.ts parity', () => {
       const provisional = r.bool();
       expect(core.computeRatingStep(cur, a, { provisional })).toBe(beRating.computeRatingStep(cur, a, { provisional }));
       expect(core.computeRatingStep(cur, a)).toBe(beRating.computeRatingStep(cur, a));
+      const style = r.pick(['bullet', 'blitz', 'rapid'] as const);
+      expect(core.computeRatingStep(cur, a, { provisional, style })).toBe(beRating.computeRatingStep(cur, a, { provisional, style }));
     }
   });
 
@@ -148,6 +150,11 @@ describe('backend rating.ts parity', () => {
       const rating = level + r.int(-300, 300);
       const guard = r.int(0, 2);
       expect(core.evaluateLevel(level, rating, guard)).toEqual(beProgress.evaluateLevel(level, rating, guard));
+      const style = r.pick(['bullet', 'blitz', 'rapid'] as const);
+      const duration = r.int(60, 3600);
+      const pace = { solved: r.int(0, 60), target: core.paceTarget(style, duration) };
+      expect(core.paceTarget(style, duration)).toBe(beProgress.paceTarget(style, duration));
+      expect(core.evaluateLevel(level, rating, guard, pace)).toEqual(beProgress.evaluateLevel(level, rating, guard, pace));
       expect(core.initialLevel(rating, level)).toBe(beProgress.initialLevel(rating, level));
       const xp = r.int(0, 80_000);
       expect(core.xpStanding(xp)).toEqual(beProgress.xpStanding(xp));
