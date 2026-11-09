@@ -195,6 +195,8 @@ export class AnalyticsService {
         id: true,
         endedAt: true,
         style: true,
+        mode: true,
+        ruleset: true,
         startRating: true,
         peakRating: true,
         solvedCount: true,
@@ -205,6 +207,9 @@ export class AnalyticsService {
       id: r.id,
       endedAt: r.endedAt,
       style: r.style,
+      // D39: the level chart plots rated v2 sessions' starts (the level) only.
+      mode: r.mode,
+      ruleset: r.ruleset,
       startRating: r.startRating,
       peakRating: r.peakRating,
       solved: r.solvedCount,
