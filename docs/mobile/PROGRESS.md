@@ -5,6 +5,19 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-09 — Level-up pace per time control (D37)
+
+- Backend (prod ddfb9d6): a v2 level-up also needs the style's pace target; the speed bonus is
+  measured per style; finish's `level` gains `pace` and `paceHeld`. Core mirrors + parity and
+  pace tests (263). The first deploy was skipped: main's core parity test failed until the
+  mirrors landed there too, and the path filter only deploys on backend changes.
+- App + web: pace row under the runner's level bar (phone and desktop), "level N needs the pace"
+  card on the summary, the next-mark line explains a pace hold or an early exit (was "0 to N"),
+  the rated setup hint and the levels sheet name the pace.
+- Verified: local API smoke (1-min bullet: 4 solves → held at 1200 with 1274, 6 → 1300),
+  Maestro 12-play-v2 (levelup, guard on rerun, down, casual, early), desktop screenshots; iPhone
+  Release build with the prod API installed.
+
 ## 2026-11-09 — Desktop web from the canvas "Desktop — redesign" (D36)
 
 - **Shell:** sidebar with the five sections, streak card (this week's days) and the player card

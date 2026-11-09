@@ -408,3 +408,21 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   is in the 2026-11-09 PROGRESS entry.
 - Keyboard: Space start, 1 2 3 mode (Play); F flip, Esc pause (session); H hint, R solution, Esc
   close (drills, chapters); P profile, `,` settings, `?` shortcuts, ⌘K search everywhere.
+
+### D37. Level-up needs the time control's pace (owner, 2026-11-09)
+
+- Owner: the old norm asked each time control for a number of solves and an accuracy ("чим швидше
+  часовий контроль тим більше задач треба рішити"); D25 dropped that, so bullet and rapid only
+  differed by their length. Agreed rule, derived rather than simulated (owner: too few players to
+  trust the data):
+- **Level-up** = a full rated session ends above the next mark **and** solved at least
+  `paceTarget(style, durationSec)`: attempts = duration / (thinking time + 1 s between puzzles),
+  thinking time bullet 5 s / blitz 12 s / rapid 30 s, × 60 % reference accuracy (one value: the
+  rating already moves puzzles to where accuracy evens out per style), minus 0.67 binomial sd so a
+  player at the style's pace meets it in about 3 of 4 sessions. Presets: bullet 1/2/3 min → 5/11/16,
+  blitz 5/10/15 → 12/25/39, rapid 10/20/30 → 10/21/32. Guard and level-down unchanged.
+- **Speed bonus** stays (owner) but per style: full at ≤ 2 / 4 / 10 s, none from 6 / 12 / 40 s
+  (blitz = the old window).
+- Play v2 sessions only (`ruleset: 'v2'`); the Next web's norm sessions and offline puzzles keep
+  the old step. Backend `api/level-pace` on prod (ddfb9d6). PROVISIONAL knobs: thinking times,
+  60 %, 0.67 sd; finish's `level.pace` lets us retune from real sessions later.
