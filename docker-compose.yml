@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: taktic_postgres
+    restart: unless-stopped
     environment:
       POSTGRES_USER: taktic
       POSTGRES_PASSWORD: taktic
@@ -22,6 +23,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: taktic_redis
+    restart: unless-stopped
     ports:
       - "127.0.0.1:6380:6379"
     volumes:
@@ -37,6 +39,7 @@ services:
       context: .
       dockerfile: apps/backend/Dockerfile
     container_name: taktic_backend
+    restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://taktic:taktic@postgres:5432/taktic?schema=public
       REDIS_URL: redis://redis:6379
@@ -64,6 +67,7 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-/api}
     container_name: taktic_frontend
+    restart: unless-stopped
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
@@ -73,6 +77,7 @@ services:
   nginx:
     image: nginx:alpine
     container_name: taktic_nginx
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
