@@ -243,8 +243,9 @@ function RankRow({ width }: { width: number }) {
         {DIFFICULTY_BANDS.map((b, i) => (
           <View key={b.key} style={[styles.eyeCol, { opacity: EYE_OPACITY[i] }]}>
             <Image source={BAND_ICONS[BAND_ICON_KEY[b.key]]} style={{ width: EYE_SIZES[i] * k, height: EYE_SIZES[i] * k }} contentFit="contain" />
-            <DText size={k < 1 ? 12 : 13} weight={700} numberOfLines={1}>
-              {t(`levels.${b.key satisfies BandKey}`)}
+            {/* The phone's rank path marks Intermediate as "you". */}
+            <DText size={k < 1 ? 12 : 13} weight={700} numberOfLines={1} color={b.key === 'intermediate' ? tone.rose : undefined}>
+              {b.key === 'intermediate' ? t('onboarding.path.you', { level: t('levels.intermediate') }) : t(`levels.${b.key satisfies BandKey}`)}
             </DText>
             <DText size={11.5} color={dx.dust} tabular>
               {String(b.min)}
@@ -283,6 +284,9 @@ function HabitCard({ width }: { width: number }) {
               </DText>
               <DText size={14} color={dx.ash}>
                 {t('dx.auth.onb.streak_caption')}
+              </DText>
+              <DText size={13} color={dx.dust} style={styles.best}>
+                {t('onboarding.habit.best')}
               </DText>
             </View>
           </View>
@@ -378,6 +382,7 @@ const styles = StyleSheet.create({
   pill: { alignSelf: 'center' },
   eyes: { flexDirection: 'row', alignItems: 'flex-end', gap: 22 },
   eyeCol: { alignItems: 'center', gap: 10 },
+  best: { marginTop: 2 },
   habit: { padding: 28 },
   streakRow: { flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 16 },
   week: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 22 },

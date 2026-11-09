@@ -72,8 +72,10 @@ export function SwitchLink({ prompt, action, to, testID }: { prompt: string; act
 }
 
 const RULE_CHECK = 'M5 12.5l4.5 4.5L19 7.5';
+/** An unmet rule shows an X, as on the phone's register screen. */
+const RULE_UNMET = 'M6 6l12 12M18 6L6 18';
 
-/** DXRegister's rule row: a check per rule, sage once met, dust until then. */
+/** DXRegister's rule row: a sage check once met, a dust X until then. */
 export function RuleChecks({
   rows,
   t,
@@ -93,7 +95,7 @@ export function RuleChecks({
         return (
           <View key={r.id} style={styles.rule} testID={`${rowPrefix}-${r.id}-${r.met ? 'met' : 'unmet'}`}>
             <Svg width={13} height={13} viewBox="0 0 24 24" fill="none">
-              <Path d={RULE_CHECK} stroke={c} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
+              <Path d={r.met ? RULE_CHECK : RULE_UNMET} stroke={c} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
             </Svg>
             <DText size={12} color={c}>
               {t(r.labelKey)}
