@@ -126,7 +126,7 @@ function Body({
   const total = summary.solved + summary.failed;
 
   // A rated finish without the level fields (an early exit, an older API):
-  // the hero still shows the rating move, from the session record and the
+  // the hero still shows the level and the session's difficulty move, from the session record and the
   // stored progression. Display only; the outcome cards stay off.
   const prog = useAppStore((st) => (style ? st.progressions[style] : null));
   const d = detail.data;
@@ -172,7 +172,7 @@ function Body({
       <View style={[styles.cols, stacked && styles.stacked]}>
         <View style={styles.main}>
           {summary.streak ? <StreakOutcomeChip streak={summary.streak} t={t} /> : null}
-          {shownOutcome ? <RatingCard o={shownOutcome} styleLabel={styleLabel} t={t} /> : null}
+          {shownOutcome ? <LevelCard o={shownOutcome} styleLabel={styleLabel} t={t} /> : null}
           {outcome?.early && <EarlyExitNote t={t} />}
           {outcome?.up && <LevelUpCard level={outcome.level} styleName={styleLabel.toLowerCase()} t={t} />}
           {outcome?.paceHeld && outcome.pace && (
@@ -297,26 +297,38 @@ function SumTile({
   );
 }
 
-/** DXSessionSummary hero: the band eye, the rating and its move, the way to the next mark. */
-function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: TFn }) {
+/**
+ * DXSessionSummary hero, the level card (D39): the band eye, the level
+ * after the session (big, with its move when it moved), the session's
+ * difficulty start → end, the way to the next mark.
+ */
+function LevelCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: TFn }) {
   const up = o.delta >= 0;
+  const moved = o.level - o.levelBefore;
   const nextNote = levelNextNote(o);
   return (
     <Card texture style={styles.hero} testID="summary-rating">
-      <Image source={bandIcon(o.ratingAfter)} style={styles.eye} contentFit="contain" transition={null} />
+      <Image source={bandIcon(o.level)} style={styles.eye} contentFit="contain" transition={null} />
       <View style={styles.flex}>
-        <Label>{t('play.your_rating', { style: styleLabel.toLowerCase() })}</Label>
+        <Label>{t('dx.board.your_level', { style: styleLabel.toLowerCase() })}</Label>
         <View style={styles.heroRow}>
-          <DText size={46} weight={800} ls={-0.3} tabular testID="summary-rating-after">
-            {String(o.ratingAfter)}
+          <DText size={46} weight={800} ls={-0.3} tabular testID="summary-level-after">
+            {String(o.level)}
           </DText>
-          <View style={[styles.delta, { backgroundColor: alpha(up ? tone.sageDeep : eos.ember, 0.16) }]}>
-            <DText size={13} weight={800} color={up ? eos.sage : eos.rose} tabular testID="summary-rating-delta">
-              {`${up ? '+' : '−'}${Math.abs(o.delta)}`}
-            </DText>
-          </View>
-          <DText size={13} color={dx.dust} tabular>
-            {t('summary.rating_from', { rating: o.ratingBefore })}
+          {moved ? (
+            <View style={[styles.delta, { backgroundColor: alpha(moved > 0 ? tone.sageDeep : eos.ember, 0.16) }]}>
+              <DText size={13} weight={800} color={moved > 0 ? eos.sage : eos.rose} tabular testID="summary-level-delta">
+                {`${moved > 0 ? '+' : '−'}${Math.abs(moved)}`}
+              </DText>
+            </View>
+          ) : null}
+        </View>
+        <View style={styles.sessionRow} testID="summary-session-line">
+          <DText size={13} color={dx.ash} tabular testID="summary-rating-after">
+            {t('dx.board.session_line', { from: o.ratingBefore, to: o.ratingAfter })}
+          </DText>
+          <DText size={13} weight={800} color={up ? eos.sage : eos.rose} tabular testID="summary-rating-delta">
+            {`(${up ? '+' : '−'}${Math.abs(o.delta)})`}
           </DText>
         </View>
         <Bar value={o.guarded ? 0 : o.ratio} mark={o.guarded ? null : o.levelMark} style={styles.mt12} />
@@ -461,6 +473,7 @@ const styles = StyleSheet.create({
   heroRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 4, flexWrap: 'wrap' },
   delta: { height: 28, paddingHorizontal: 9, borderRadius: 999, justifyContent: 'center' },
   levelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  sessionRow: { flexDirection: 'row', alignItems: 'baseline', gap: 6, marginTop: 2 },
   mt2: { marginTop: 2 },
   tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   tile: { flexGrow: 1, flexBasis: 150, minWidth: 0 },

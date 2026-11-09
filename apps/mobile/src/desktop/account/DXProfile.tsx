@@ -2,6 +2,7 @@ import { achievementNameKey } from '@tac/core/catalogs';
 import { queryKeys } from '@tac/core/api';
 import { bucketByLocalDay, RADAR_MIN_THEMES, selectRadarThemes } from '@tac/core/charts';
 import { localeFor, streakState } from '@tac/core/format';
+import { bandFor } from '@tac/core/rules';
 import { levelFor } from '@tac/core/runner';
 import { alpha, eos, graphite, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -22,7 +23,7 @@ import { acceptRequest, confirmUnfriend, removeRequest, sendRequest } from '@/fe
 import { friendshipQuery, friendsQuery, profileQuery, type PublicProfile, type UserCard } from '@/features/social/api';
 import { FlameGlyph } from '@/features/social/glyphs';
 import { ActivityHeatmap } from '@/features/stats/ActivityHeatmap';
-import { profileThemesQuery, profileTimelineQuery, toRatingPoints, type TimelinePoint } from '@/features/stats/api';
+import { profileThemesQuery, profileTimelineQuery, type TimelinePoint } from '@/features/stats/api';
 import { RadarChart } from '@/features/stats/RadarChart';
 import { RatingHistoryChart } from '@/features/stats/RatingHistoryChart';
 import { StyleIcon, STYLE_ORDER } from '@/features/stats/StyleIcon';
@@ -34,6 +35,7 @@ import { useLang, useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
 import { DesktopPage } from '../Page';
 import { Card, DText, GhostButton, Hover, Label, Num, Tile } from '../kit';
+import { toLevelPoints } from '../level';
 import { dx } from '../tokens';
 import { DxProfileEdit } from './DXProfileEdit';
 import { useWidth } from '../rivals/layout';
@@ -156,6 +158,12 @@ function Hero({ data, isSelf, onEdit }: { data: PublicProfile; isSelf: boolean; 
   // The phone's rule: a live streak only (secured today or at risk), and only with the setting on.
   const st = data.streak ? streakState(data.streak.days, data.streak.lastDay) : 'none';
   const streakDays = showStreak && data.streak && data.streak.days > 0 && (st === 'secured' || st === 'at_risk') ? data.streak.days : null;
+  // D39: the peak line shows the best level across the styles (once the player has played).
+  const levels = STYLE_ORDER.flatMap((s) => {
+    const p = data.progressions[s];
+    return p ? [levelFor(p)] : [];
+  });
+  const bestLevel = data.allTimePeak != null && levels.length ? Math.max(...levels) : null;
   const avatar = <Avatar nickname={data.nickname} avatarUrl={data.avatarUrl} previewUri={isSelf ? preview : null} size={96} />;
   return (
     <Card texture style={styles.hero} testID="profile-hero">
@@ -195,12 +203,14 @@ function Hero({ data, isSelf, onEdit }: { data: PublicProfile; isSelf: boolean; 
         <DText size={14} color={dx.ash} numberOfLines={1} testID="profile-nickname">
           {t('dx.account.member_since', { nickname: data.nickname, date: since })}
         </DText>
-        {data.allTimePeak != null || streakDays != null ? (
+        {bestLevel != null || streakDays != null ? (
           <View style={styles.meta}>
-            {data.allTimePeak != null ? (
+            {bestLevel != null ? (
               <View style={styles.metaItem} testID="profile-peak">
                 <Trophy size={13} color={dx.dust} strokeWidth={2} />
-                <DText size={13} color={dx.ash} tabular>{`${t('profile.peak')} ${data.allTimePeak}`}</DText>
+                <DText size={13} color={dx.ash} tabular>
+                  {t('dx.account.best_level', { level: bestLevel })}
+                </DText>
               </View>
             ) : null}
             {streakDays != null ? (
@@ -347,9 +357,9 @@ function Ratings({ data }: { data: PublicProfile }) {
               <StyleIcon style={s} size={14} color={dx.ash} />
               <Label size={10}>{t(`style.${s}.name`)}</Label>
             </View>
-            <Num style={styles.mt6}>{p ? String(p.currentPuzzleRating) : DASH}</Num>
+            <Num style={styles.mt6}>{p ? String(levelFor(p)) : DASH}</Num>
             <DText size={12} color={dx.dust}>
-              {p ? t('play.level', { level: levelFor(p) }) : DASH}
+              {p ? t(`levels.${bandFor(levelFor(p)).key}`) : DASH}
             </DText>
           </Tile>
         );
@@ -416,16 +426,16 @@ function Activity({ timeline }: { timeline: TimelinePoint[] | undefined }) {
   );
 }
 
-/** The phone's rating-history card (peak rating per session, a line per style). */
+/** "Level over time" (D39): each session at the difficulty it started at, a line per style. */
 function RatingHistory({ timeline }: { timeline: TimelinePoint[] | undefined }) {
   const t = useT();
-  const points = toRatingPoints(timeline);
+  const points = toLevelPoints(timeline);
   if (points.length === 0) return null;
   return (
     <Card style={styles.card} testID="profile-rating-card">
-      <Label>{t('stats.rating_history')}</Label>
+      <Label>{t('dx.account.level_history')}</Label>
       <DText size={12.5} color={dx.dust} style={styles.mt4}>
-        {t('stats.rating_history_hint')}
+        {t('dx.account.level_history_hint')}
       </DText>
       <View style={styles.mt12}>
         <RatingHistoryChart data={points} testID="profile-rating" />

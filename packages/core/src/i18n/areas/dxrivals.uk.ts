@@ -5,16 +5,19 @@ import type { Dict } from '../types';
 export const dxrivalsUk: Dict = {
   // DXLeague
   'dx.rivals.league_title': 'Ліга',
-  'dx.rivals.league_sub': 'Тижневий рейтинг за досвідом',
-  'dx.rivals.board_sub': 'Рейтинг за весь час',
-  'dx.rivals.all_time_hint': 'Поточний рейтинг задач у вибраному стилі.',
+  'dx.rivals.league_sub': 'Тижнева таблиця за досвідом',
+  'dx.rivals.board_sub': 'Таблиця рівнів за весь час',
+  'dx.rivals.all_time_hint': 'Поточний рівень у вибраному стилі.',
   'dx.rivals.xp': '{n} XP',
   'dx.rivals.you_name': '{name} (ти)',
   'dx.rivals.your_place': 'Твоє місце',
   'dx.rivals.behind': '{value} · на {gap} позаду {name}',
   'dx.rivals.leader': '{value} · ти лідер',
   'dx.rivals.no_rating': 'Тебе ще немає в цій таблиці',
-  'dx.rivals.outside': 'Рейтинг {rating} · поза топ-{n}',
+  'dx.rivals.outside': 'Рівень {rating} · поза топ-{n}',
+  'dx.rivals.rank_a11y': 'Місце {rank}, {name}, рівень {level}',
+  'dx.rivals.stats.level_history': 'Рівень у часі',
+  'dx.rivals.stats.peak_difficulty': 'Пік складності',
   'dx.rivals.waits_for_you': 'чекає твою відповідь',
   'dx.rivals.accept': 'Прийняти',
   // DXStats
@@ -47,5 +50,5 @@ export const dxrivalsUk: Dict = {
   // /sessions (no artboard)
   'dx.rivals.sessions.time': 'Час',
   'dx.rivals.sessions.theme': 'Сесія',
-  'dx.rivals.sessions.rating': 'Рейтинг',
+  'dx.rivals.sessions.rating': 'Складність',
 };

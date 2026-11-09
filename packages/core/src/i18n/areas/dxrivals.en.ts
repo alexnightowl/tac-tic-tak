@@ -6,15 +6,18 @@ export const dxrivalsEn: Dict = {
   // DXLeague
   'dx.rivals.league_title': 'League',
   'dx.rivals.league_sub': 'Weekly ranking by experience',
-  'dx.rivals.board_sub': 'All-time ranking by rating',
-  'dx.rivals.all_time_hint': 'Current puzzle rating in the chosen style.',
+  'dx.rivals.board_sub': 'All-time ranking by level',
+  'dx.rivals.all_time_hint': 'Current level in the chosen style.',
   'dx.rivals.xp': '{n} XP',
   'dx.rivals.you_name': '{name} (you)',
   'dx.rivals.your_place': 'Your place',
   'dx.rivals.behind': '{value} · {gap} behind {name}',
   'dx.rivals.leader': '{value} · you lead',
   'dx.rivals.no_rating': 'You are not on this board yet',
-  'dx.rivals.outside': 'Rating {rating} · outside the top {n}',
+  'dx.rivals.outside': 'Level {rating} · outside the top {n}',
+  'dx.rivals.rank_a11y': 'Rank {rank}, {name}, level {level}',
+  'dx.rivals.stats.level_history': 'Level over time',
+  'dx.rivals.stats.peak_difficulty': 'Peak difficulty',
   'dx.rivals.waits_for_you': 'is waiting for your run',
   'dx.rivals.accept': 'Accept',
   // DXStats
@@ -47,5 +50,5 @@ export const dxrivalsEn: Dict = {
   // /sessions (no artboard)
   'dx.rivals.sessions.time': 'Time',
   'dx.rivals.sessions.theme': 'Session',
-  'dx.rivals.sessions.rating': 'Rating',
+  'dx.rivals.sessions.rating': 'Difficulty',
 };

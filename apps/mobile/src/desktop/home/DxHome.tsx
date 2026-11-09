@@ -1,9 +1,9 @@
 import { localeFor, streakState, type SessionRow } from '@tac/core/format';
 import { localized, suggestedCourse, type CourseSummary } from '@tac/core/library';
-import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, isTrainingStyle, levelOf, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, LEVEL_STEP, UI_STYLE_ORDER, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
 import type { Progression } from '@tac/core/api';
 import type { RunnerSnapshot } from '@tac/core/runner';
-import { levelFor, levelProgress } from '@tac/core/runner';
+import { levelFor } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -31,7 +31,7 @@ import { pct, responseTime } from '@/features/sessions/format';
 import { reviewApi, reviewKeys } from '@/features/review/api';
 import { friendsQuery, leagueQuery, type LeagueRow } from '@/features/social/api';
 import { readBoardScope } from '@/features/social/prefs';
-import { timelineQuery, toRatingPoints } from '@/features/stats/api';
+import { timelineQuery } from '@/features/stats/api';
 import { readActiveSnapshot } from '@/runner';
 import { toast } from '@/shell/toast/store';
 import { useAppStore } from '@/stores/appStore';
@@ -39,6 +39,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { PlateButton } from '@/ui';
 import { useLang, useT, useTn, type TFn } from '@/ui/lang';
 import { useHotkeys } from '../hotkeys';
+import { levelDelta, toLevelPoints } from '../level';
 import { Bar, Card, DText, GhostButton, Hover, Label, Num, Pill, Seg, StatTile, TextButton } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
@@ -120,8 +121,9 @@ function useQuickStart() {
 type QuickStart = ReturnType<typeof useQuickStart>;
 
 /**
- * The phone Home's rating deltas: each visit compares the ratings with what
- * the previous visit showed (the same device record the phone keeps).
+ * The phone Home's "since last visit" deltas: each visit compares the
+ * levels (D39) with what the previous visit showed (the device record the
+ * phone keeps).
  */
 function useSeenRatings(): SeenRatings {
   const [seen, setSeen] = useState<SeenRatings>({});
@@ -130,7 +132,7 @@ function useSeenRatings(): SeenRatings {
       const uid = useAuthStore.getState().user?.id ?? '';
       const now = useAppStore.getState().progressions;
       setSeen(readLastSeenRatings(uid));
-      writeLastSeenRatings(uid, { bullet: now.bullet.currentPuzzleRating, blitz: now.blitz.currentPuzzleRating, rapid: now.rapid.currentPuzzleRating });
+      writeLastSeenRatings(uid, { bullet: levelFor(now.bullet), blitz: levelFor(now.blitz), rapid: levelFor(now.rapid) });
     }, []),
   );
   return seen;
@@ -221,12 +223,6 @@ function describeSetup(t: TFn, lang: 'en' | 'uk', setup: SessionSetup, prog: Pro
   return { startRating, plate, label };
 }
 
-/** Rating now minus what Home showed on the previous visit (0: unchanged or first visit). */
-function seenDelta(seen: SeenRatings, style: TrainingStyle, rating: number): number {
-  const was = seen[style];
-  return was == null ? 0 : rating - was;
-}
-
 const signed = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '0');
 
 function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
@@ -234,10 +230,10 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
   const { lang } = useLang();
   const { setup } = quick;
   const prog = useAppStore((s) => s.progressions[setup.style]);
-  const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
-  const p = levelProgress(rating, level);
-  const delta = seenDelta(seen, setup.style, rating);
+  const delta = levelDelta(seen, setup.style, level);
+  // Two sessions in a row under level − 50 drop it; after the first one the hero warns.
+  const guarded = (prog.levelGuard ?? 0) > 0;
   const styleName = t(`style.${setup.style}.name`);
   const minutes = `${Math.round(setup.durationSec / 60)} ${t('play.minutes')}`;
   const Glyph = STYLE_GLYPH[setup.style];
@@ -261,25 +257,22 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
           <Circle cx={170} cy={170} r={170} fill="url(#dx-home-glow)" />
         </Svg>
       </View>
-      <Image source={bandIcon(rating)} style={styles.heroEye} contentFit="contain" transition={null} />
+      <Image source={bandIcon(level)} style={styles.heroEye} contentFit="contain" transition={null} />
       <View style={styles.flex}>
-        <Label color={tone.rose}>{`${styleName} · ${t('play.level', { level })}`}</Label>
+        <Label color={tone.rose}>{t('dx.home.level_label', { style: styleName })}</Label>
         <View style={styles.heroRating}>
           <Num size={44} style={styles.lh50}>
-            {String(rating)}
+            {String(level)}
           </Num>
           {delta ? <Pill tone={delta > 0 ? 'sage' : 'rose'} label={t('dx.home.since_visit', { delta: signed(delta) })} /> : null}
         </View>
-        <View style={styles.heroBar}>
-          <Bar value={p.ratio} mark={p.levelMark} />
-          <View style={styles.barFoot}>
-            <DText size={12} color={dx.dust}>
-              {t('play.level', { level })}
-            </DText>
-            <DText size={12} color={dx.dust}>
-              {rating >= p.next ? t('level.full_session', { next: levelOf(rating) }) : t('dx.home.to_next', { n: p.toNext, next: p.next })}
-            </DText>
-          </View>
+        <View style={[styles.heroBar, styles.heroFoot]}>
+          <DText size={12.5} color={dx.ash} numberOfLines={2}>
+            {t('dx.home.level_start', { level })}
+          </DText>
+          <DText size={12.5} color={guarded ? tone.rose : dx.dust} numberOfLines={2} testID="dx-home-level-next">
+            {guarded ? t('dx.home.level_guard') : t('dx.home.next_mark', { next: level + LEVEL_STEP })}
+          </DText>
         </View>
       </View>
       <View style={narrow ? styles.heroCtasNarrow : styles.heroCtas}>
@@ -316,7 +309,7 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
             <GhostButton
               testID="dx-home-start-rating"
             height={ghostH}
-              accessibilityLabel={t('dx.home.change_setup', { value: `${t('play.start_rating')} ${startRating}` })}
+              accessibilityLabel={t('dx.home.change_setup', { value: `${t('play.difficulty')} ${startRating}` })}
               label={String(startRating)}
               icon={Target}
               onPress={() => router.navigate('/play' as Href)}
@@ -329,7 +322,7 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
   );
 }
 
-/** The three style ratings (with the change since the last visit), then the phone's Peak and Sessions tiles. */
+/** The three style levels (with the change since the last visit), then the phone's Peak and Sessions tiles. */
 function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; seen: SeenRatings; data: Overview | undefined; empty?: boolean }) {
   const t = useT();
   const tn = useTn();
@@ -339,17 +332,17 @@ function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; 
     <View style={styles.tiles}>
       {UI_STYLE_ORDER.map((st) => {
         const prog = progressions[st];
-        const rating = prog.currentPuzzleRating;
-        const delta = seenDelta(seen, st, rating);
+        const level = levelFor(prog);
+        const delta = levelDelta(seen, st, level);
         const settling = prog.calibrationSessionsLeft;
         return (
           <StatTile
             key={st}
             testID={`dx-home-style-${st}`}
             label={t(`style.${st}.name`)}
-            value={String(rating)}
+            value={String(level)}
             icon={STYLE_GLYPH[st]}
-            caption={empty && settling > 0 ? plural(tn, 'dx.home.settling', settling) : t('play.level', { level: levelFor(prog) })}
+            caption={empty && settling > 0 ? plural(tn, 'dx.home.settling', settling) : t('dx.home.next_mark', { next: level + LEVEL_STEP })}
             // A blank keeps the label rows of all the tiles the same height.
             delta={delta ? signed(delta) : ' '}
             deltaColor={delta < 0 ? tone.rose : dx.sage}
@@ -358,7 +351,7 @@ function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; 
           />
         );
       })}
-      <StatTile testID="dx-home-peak" label={t('profile.peak')} value={data?.allTimePeak ? String(data.allTimePeak) : '—'} icon={Trophy} delta=" " style={styles.tile} />
+      <StatTile testID="dx-home-peak" label={t('profile.peak')} value={data?.allTimePeak ? String(data.allTimePeak) : '—'} caption={t('dx.home.peak_caption')} icon={Trophy} delta=" " style={styles.tile} />
       <StatTile testID="dx-home-sessions" label={t('dashboard.sessions')} value={String(sessions)} icon={History} delta=" " style={styles.tile} />
     </View>
   );
@@ -370,7 +363,7 @@ function ChartCard({ style }: { style: TrainingStyle }) {
   const timeline = useQuery(timelineQuery());
   const days = RANGE_DAYS[range];
   const since = rangeStart(days);
-  const points = toRatingPoints(timeline.data).filter((p) => p.style === style && +new Date(p.endedAt) >= since);
+  const points = toLevelPoints(timeline.data).filter((p) => p.style === style && +new Date(p.endedAt) >= since);
   const styleName = t(`style.${style}.name`);
   return (
     <Card style={styles.chart} testID="dx-home-chart">
@@ -597,13 +590,14 @@ function LeagueCard() {
   );
 }
 
-/** The course played last (Continue), else the suggested one for the player's rating. */
+/** The course played last (Continue), else the suggested one for the player's level. */
 function CourseCard() {
   const t = useT();
   const { lang } = useLang();
   const data = useLearnCourses();
   const progress = useCourseProgressMap(data);
-  const rating = useAppStore((s) => s.progressions[readLastStyle()]?.currentPuzzleRating ?? null);
+  const prog = useAppStore((s) => s.progressions[readLastStyle()]);
+  const level = prog ? levelFor(prog) : null;
   const courses = data.courses ?? [];
   if (courses.length === 0) return null;
   const lastId = lastPlayedIn(data.attempts, new Set(courses.map((c) => c.id)));
@@ -631,16 +625,16 @@ function CourseCard() {
       </Hover>
     );
   }
-  const suggest = suggestedCourse(courses, rating);
-  return suggest && rating != null ? <SuggestCard course={suggest} rating={rating} /> : null;
+  const suggest = suggestedCourse(courses, level);
+  return suggest && level != null ? <SuggestCard course={suggest} level={level} /> : null;
 }
 
-function SuggestCard({ course, rating }: { course: CourseSummary; rating: number }) {
+function SuggestCard({ course, level }: { course: CourseSummary; level: number }) {
   const t = useT();
   const { lang } = useLang();
   const title = localized(course.title, lang);
   const MARK = '\u0001';
-  const [pre, post = ''] = t('learn.suggest', { rating, course: MARK }).split(MARK);
+  const [pre, post = ''] = t('dx.home.suggest', { level, course: MARK }).split(MARK);
   return (
     <Card style={styles.side} testID="dx-home-suggest">
       <Label>{t('learn.title')}</Label>
@@ -866,7 +860,7 @@ const styles = StyleSheet.create({
   heroEye: { width: 92, height: 92 },
   heroRating: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 6 },
   heroBar: { maxWidth: 420, marginTop: 12 },
-  barFoot: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  heroFoot: { flexDirection: 'row', alignItems: 'baseline', gap: 16 },
   heroCtas: { width: 280, gap: 10 },
   heroNarrow: { flexWrap: 'wrap', rowGap: 20 },
   heroCtasNarrow: { width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10 },
@@ -900,7 +894,7 @@ const styles = StyleSheet.create({
   },
   leagueRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 7, paddingHorizontal: 6, borderRadius: 8 },
   leagueMe: { backgroundColor: alpha(eos.ember, 0.16) },
-  rank: { width: 14 },
+  rank: { minWidth: 14 },
   course: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16, paddingHorizontal: 18 },
   coursePiece: { width: 44, height: 44 },
   suggestRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 10, padding: 4, borderRadius: 8 },

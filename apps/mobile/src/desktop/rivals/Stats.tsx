@@ -13,7 +13,6 @@ import {
   recommendationQuery,
   themesQuery,
   timelineQuery,
-  toRatingPoints,
   type StyleFilter,
   type ThemeRow,
   type TimelinePoint,
@@ -28,6 +27,7 @@ import { useAppStore } from '@/stores/appStore';
 import { useLang, useT, useTn, type TFn } from '@/ui/lang';
 import { Bar, Card, DText, GhostButton, Hover, Label, Seg, StatTile } from '../kit';
 import { DesktopPage } from '../Page';
+import { toLevelPoints } from '../level';
 import { dx } from '../tokens';
 import { DxHeatmap, weeksFor } from './Heatmap';
 import { TWO_COLUMN_MIN, useWidth } from './layout';
@@ -106,7 +106,8 @@ export function DxStats({ switcher }: { switcher: ReactNode }) {
   const streakDays = st === 'secured' || st === 'at_risk' ? streak.days : 0;
   const streakCaption = st === 'secured' ? t('dx.shell.streak_done') : st === 'at_risk' ? t('dx.shell.streak_today') : t('dx.shell.streak_none');
 
-  const ratingPoints = toRatingPoints(timeline.data).filter((p) => new Date(p.endedAt).getTime() >= cutoff);
+  // D39: "Level over time": each session at the difficulty it started at (rated ones start at the level).
+  const ratingPoints = toLevelPoints(timeline.data).filter((p) => new Date(p.endedAt).getTime() >= cutoff);
   const weeks = weeksFor(Math.max(0, heatW - 44));
   const failed = overview.isError && !overview.data && timeline.isError && !timeline.data;
 
@@ -117,7 +118,7 @@ export function DxStats({ switcher }: { switcher: ReactNode }) {
 
   const ratingCard = (
     <Card style={[styles.card, two && styles.wide]} testID="dx-stats-rating">
-      <Label>{t('stats.rating_history')}</Label>
+      <Label>{t('dx.rivals.stats.level_history')}</Label>
       <View style={styles.mt18}>
         {timeline.data ? (
           <RatingHistoryChart data={ratingPoints} highlightStyle={filter === 'all' ? null : filter} testID="dx-stats-rating-chart" />
@@ -298,7 +299,7 @@ export function DxStats({ switcher }: { switcher: ReactNode }) {
           />
           <StatTile
             style={styles.kpi}
-            label={t('stats.lifetime.peak')}
+            label={t('dx.rivals.stats.peak_difficulty')}
             value={life && life.peakRating > 0 ? String(life.peakRating) : DASH}
             caption={peakCaption}
             testID="dx-stats-peak"

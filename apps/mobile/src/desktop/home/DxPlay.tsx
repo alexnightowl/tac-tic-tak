@@ -1,5 +1,5 @@
-import { UI_STYLE_ORDER, bandFor, levelOf, paceTarget } from '@tac/core/rules';
-import { levelFor, levelProgress } from '@tac/core/runner';
+import { LEVEL_STEP, UI_STYLE_ORDER, bandFor, paceTarget } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, rank, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -164,30 +164,37 @@ export function DxPlay({ levelsOpen = false, onLevelsClose }: { levelsOpen?: boo
   );
 }
 
-/** Rated: the eye, rating, band and level, the bar to the next level. */
+/**
+ * Rated: the eye, the level (D39: the only number) and its band, the
+ * session's way from the level to the next mark (empty: every rated
+ * session starts at the level).
+ */
 function RatedCard({ s }: { s: PlaySetup }) {
   const { t } = s;
   const level = levelFor(s.prog);
-  const p = levelProgress(s.rating, level);
+  const next = level + LEVEL_STEP;
+  const guarded = (s.prog.levelGuard ?? 0) > 0;
   return (
     <Card texture style={styles.rated} testID="dx-play-rated">
-      <Image source={bandIcon(s.rating)} style={styles.eye} contentFit="contain" transition={null} />
+      <Image source={bandIcon(level)} style={styles.eye} contentFit="contain" transition={null} />
       <View style={styles.flex}>
-        <Label>{t('play.your_rating', { style: t(`style.${s.style}.name`) })}</Label>
+        <Label>{t('dx.home.your_level', { style: t(`style.${s.style}.name`) })}</Label>
         <View style={styles.ratingRow}>
-          <Num size={34}>{String(s.rating)}</Num>
+          <Num size={34}>{String(level)}</Num>
           <DText size={14} color={dx.ash} numberOfLines={1} style={styles.shrink}>
-            {t('dx.home.rated_line', { band: s.bandLabels[bandFor(s.rating).key], level: t('play.level', { level }) })}
+            {t('dx.home.rated_line', { band: s.bandLabels[bandFor(level).key], level: t('dx.home.level_start', { level }) })}
           </DText>
         </View>
-        <Bar value={p.ratio} mark={p.levelMark} style={styles.mt10} />
+        <Bar value={0} style={styles.mt10} />
         <View style={styles.barFoot}>
           <DText size={12} color={dx.dust} numberOfLines={1} style={styles.shrink}>
-            {t('dx.home.rated_hint', { next: p.next, pace: paceTarget(s.style, s.effectiveDuration) })}
+            {t('dx.home.rated_hint', { next, pace: paceTarget(s.style, s.effectiveDuration) })}
           </DText>
-          <DText size={12} color={dx.dust} tabular testID="dx-play-rated-next">
-            {s.rating >= p.next ? t('level.full_session', { next: levelOf(s.rating) }) : t('dx.home.to_next', { n: p.toNext, next: p.next })}
-          </DText>
+          {guarded ? (
+            <DText size={12} color={tone.rose} testID="dx-play-rated-next">
+              {t('dx.home.level_guard')}
+            </DText>
+          ) : null}
         </View>
       </View>
     </Card>
@@ -197,10 +204,12 @@ function RatedCard({ s }: { s: PlaySetup }) {
 /** Casual / Themes: the phone's difficulty slider, presets and the unrated note. */
 function DifficultyCard({ s }: { s: PlaySetup }) {
   const { t } = s;
+  // The presets and the "you" marker sit around the level (D39).
+  const level = levelFor(s.prog);
   const presets = [
-    ['warmup', s.rating - PRESET_SPAN, '−200'],
-    ['level', s.rating, ''],
-    ['push', s.rating + PRESET_SPAN, '+200'],
+    ['warmup', level - PRESET_SPAN, '−200'],
+    ['level', level, ''],
+    ['push', level + PRESET_SPAN, '+200'],
   ] as const;
   return (
     <Card style={styles.diff} testID="dx-play-difficulty">
@@ -216,11 +225,11 @@ function DifficultyCard({ s }: { s: PlaySetup }) {
           value={s.difficulty}
           live={s.live}
           onChange={s.setDifficulty}
-          me={s.rating}
+          me={level}
           min={DIFFICULTY_MIN}
           max={DIFFICULTY_MAX}
           step={DIFFICULTY_STEP}
-          youLabel={t('play.you_marker', { rating: s.rating })}
+          youLabel={t('play.you_marker', { rating: level })}
           easierLabel={t('play.easier')}
           harderLabel={t('play.harder')}
         />
@@ -247,7 +256,7 @@ function DifficultyCard({ s }: { s: PlaySetup }) {
       <View style={styles.note}>
         <MinusCircle size={14} color={dx.dust} strokeWidth={1.8} />
         <DText size={12.5} color={dx.dust} style={styles.flex} testID="dx-play-diff-note">
-          {`${diffDelta(s.difficulty - s.rating, t)} · ${s.mode === 'theme' ? t('play.diff_themes') : t('play.diff_casual')}`}
+          {`${diffDelta(s.difficulty - level, t)} · ${s.mode === 'theme' ? t('dx.home.diff_themes') : t('dx.home.diff_casual')}`}
         </DText>
       </View>
     </Card>
@@ -448,7 +457,7 @@ function Summary({ s, onLevels }: { s: PlaySetup; onLevels: () => void }) {
         <SummaryRow label={t('dx.home.sum.mode')} value={modeName} testID="dx-play-sum-mode" />
         <SummaryRow label={t('dx.home.sum.style')} value={t(`style.${s.style}.name`)} />
         <SummaryRow label={t('dx.home.sum.duration')} value={`${minutes} ${t('play.minutes')}`} testID="dx-play-sum-duration" />
-        <SummaryRow label={t('dx.home.sum.difficulty')} value={s.rated ? `~${s.rating}` : String(s.difficulty)} testID="dx-play-sum-difficulty" />
+        <SummaryRow label={t('dx.home.sum.difficulty')} value={String(s.rated ? levelFor(s.prog) : s.difficulty)} testID="dx-play-sum-difficulty" />
         <SummaryRow label={t('dx.home.sum.rating')} value={s.rated ? t('dx.home.sum.changes') : t('dx.home.sum.unchanged')} last />
       </View>
       <PlateButton

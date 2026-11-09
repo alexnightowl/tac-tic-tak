@@ -6,7 +6,7 @@ export const dxauthUk: Dict = {
   // Login / register hero panel (DXLogin, DXRegister).
   'dx.auth.eyebrow': 'Тактичний тренажер',
   'dx.auth.headline': 'Бач комбінацію\nраніше за суперника.',
-  'dx.auth.lede': 'Короткі сесії на твоєму рівні. Рейтинг росте, коли ти бачиш комбінації швидше за суперника.',
+  'dx.auth.lede': 'Короткі сесії на твоєму рівні. Рівень росте, коли ти бачиш комбінації швидше за суперника.',
   // Stat captions; the numbers come from the app's own catalogues.
   'dx.auth.stat_themes.one': 'тактична тема',
   'dx.auth.stat_themes.few': 'тактичні теми',

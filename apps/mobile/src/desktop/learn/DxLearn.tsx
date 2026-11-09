@@ -1,4 +1,5 @@
 import { bookProgress, cycleTargetSec, localized, suggestedCourse, type BookProgress, type CourseProgress, type CourseSummary, type LibraryBookSummary } from '@tac/core/library';
+import { levelFor } from '@tac/core/runner';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Search, Star } from 'lucide-react-native';
@@ -102,7 +103,9 @@ function Courses() {
   const progress = useCourseProgressMap(data);
   const stored = useLibraryStore((s) => s.courses);
   const [filter, setFilter] = useState<LearnFilter>('all');
-  const rating = useAppStore((s) => s.progressions[readLastStyle()]?.currentPuzzleRating ?? null);
+  // D39: courses are suggested for the level (the player's only number).
+  const prog = useAppStore((s) => s.progressions[readLastStyle()]);
+  const rating = prog ? levelFor(prog) : null;
   const w = usePageWidth();
 
   if (!data.courses) {
@@ -150,7 +153,7 @@ function Courses() {
           <Hover
             testID="dx-learn-suggest"
             accessibilityRole="link"
-            accessibilityLabel={t('learn.suggest', { rating, course: localized(suggest.title, lang) })}
+            accessibilityLabel={t('dx.learn.suggest', { level: rating, course: localized(suggest.title, lang) })}
             onPress={() => openCourse(suggest.id)}
             style={styles.suggest}
           >
@@ -176,11 +179,11 @@ function Courses() {
   );
 }
 
-/** "З рейтингом 1612 радимо **Середній**." */
+/** "З рівнем 1600 радимо **Середній**." */
 function Suggestion({ rating, course }: { rating: number; course: string }) {
   const t = useT();
   const MARK = '\u0001';
-  const [pre, post = ''] = t('learn.suggest', { rating, course: MARK }).split(MARK);
+  const [pre, post = ''] = t('dx.learn.suggest', { level: rating, course: MARK }).split(MARK);
   return (
     <DText size={13} color={dx.ash} numberOfLines={1}>
       {pre}

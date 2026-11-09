@@ -70,6 +70,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
   });
 
   const unrated = s.sessionMode !== 'mixed';
+  // The session's live difficulty (D39: a rated session starts at the level and moves with each puzzle).
   const rating = unrated ? s.sessionStartRating : (storeRating ?? s.rating);
 
   // Session dots: the results in the order they came (a restored session
@@ -156,7 +157,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
         <SmallTile label={t('play.solved')} value={String(solved)} color={eos.sage} testID="dx-runner-solved" />
         <SmallTile label={t('dx.board.mistakes')} value={String(failed)} color={tone.roseSoft} testID="dx-runner-failed" />
         <SmallTile
-          label={s.sessionMode === 'theme' ? t('play.drill') : s.sessionMode === 'casual' ? t('play.puzzles') : t('play.rating')}
+          label={s.sessionMode === 'theme' ? t('play.drill') : s.sessionMode === 'casual' ? t('play.puzzles') : t('play.difficulty')}
           value={rating != null ? String(rating) : '—'}
           testID="dx-runner-rating"
         />
@@ -271,7 +272,7 @@ function WrongCard({ san, delta, streakBroken, t }: { san: string | null; delta:
           {san ? t('dx.board.wrong_san', { san }) : t('dx.board.wrong')}
         </DText>
         <DText size={12.5} color={dx.ash} numberOfLines={1}>
-          {delta < 0 ? `${t('dx.board.wrong_review')} · ${t('dx.board.wrong_rating', { n: `−${Math.abs(delta)}` })}` : t('dx.board.wrong_review')}
+          {delta < 0 ? `${t('dx.board.wrong_review')} · ${t('dx.board.wrong_difficulty', { n: `−${Math.abs(delta)}` })}` : t('dx.board.wrong_review')}
         </DText>
       </View>
       {/* The miss broke a streak: the chip shows it crossed out while the runner holds it. */}
@@ -283,6 +284,7 @@ function WrongCard({ san, delta, streakBroken, t }: { san: string | null; delta:
 /** The way to the next level (rated), the casual note, nothing for a theme drill. */
 function ProgressCard({ s, prog, t }: { s: Model['s']; prog: Progression | null; t: TFn }) {
   if (!prog || !s.style || s.phase === 'booting' || s.sessionMode === 'theme') return null;
+  // In a session the stored rating is the session's live difficulty; the level stays put until the finish.
   const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
   if (s.sessionMode === 'casual') {
@@ -290,14 +292,14 @@ function ProgressCard({ s, prog, t }: { s: Model['s']; prog: Progression | null;
     return (
       <Card2 testID="runner-casual-bar">
         <View style={panelStyles.row}>
-          <Label size={10}>{t('casual.bar')}</Label>
+          <Label size={10}>{t('dx.board.casual_bar')}</Label>
           <Spacer />
           <DText size={12} weight={700} color={dx.dust} tabular>
             {t('casual.puzzles', { rating: difficulty })}
           </DText>
         </View>
         <DText size={12} color={dx.dust} style={styles.mt8}>
-          {t('casual.bar_note', { rating, level })}
+          {t('dx.board.casual_note', { level })}
         </DText>
       </Card2>
     );
@@ -310,11 +312,11 @@ function ProgressCard({ s, prog, t }: { s: Model['s']; prog: Progression | null;
   const paceMet = !pace || pace.solved >= pace.target;
   const note = ready
     ? paceMet
-      ? t('level.ready_note', { rating, next: p.next })
-      : t('level.ready_pace_note', { rating, next: p.next, n: pace ? pace.target - pace.solved : 0 })
+      ? t('dx.board.level_ready', { rating, next: p.next })
+      : t('dx.board.level_ready_pace', { rating, next: p.next, n: pace ? pace.target - pace.solved : 0 })
     : below
-      ? t('level.below_note', { rating, line: level - LEVEL_GUARD_GAP })
-      : t('level.bar_note', { rating, n: p.toNext, next: p.next });
+      ? t('dx.board.level_below', { rating, line: level - LEVEL_GUARD_GAP })
+      : t('dx.board.level_note', { rating, n: p.toNext, next: p.next });
   return (
     <Card2 testID="runner-level-bar" style={ready ? styles.levelReady : undefined}>
       <View style={panelStyles.row}>

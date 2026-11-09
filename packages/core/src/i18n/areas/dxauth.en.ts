@@ -6,7 +6,7 @@ export const dxauthEn: Dict = {
   // Login / register hero panel (DXLogin, DXRegister).
   'dx.auth.eyebrow': 'Tactics trainer',
   'dx.auth.headline': 'See the strike\nbefore they do.',
-  'dx.auth.lede': 'Short sessions at your level. Your rating climbs as you spot combinations faster than your opponent.',
+  'dx.auth.lede': 'Short sessions at your level. Your level climbs as you spot combinations faster than your opponent.',
   // Stat captions; the numbers come from the app's own catalogues.
   'dx.auth.stat_themes.one': 'tactical theme',
   'dx.auth.stat_themes.other': 'tactical themes',

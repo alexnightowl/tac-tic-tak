@@ -1,5 +1,6 @@
 import { streakState } from '@tac/core/format';
 import type { TrainingStyle } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 import type { ChallengeSummary } from '@tac/core/storm';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -31,7 +32,7 @@ import { TWO_COLUMN_MIN, useWidth } from './layout';
 
 type Period = 'week' | 'all';
 
-/** One place on either board: weekly XP or the style rating. */
+/** One place on either board: weekly XP or the style level (D39). */
 type Entry = { rank: number | null; value: number; isSelf: boolean; streakDays: number; streakLastDay: string | null; user: UserCard };
 
 const GOLD_BAR = [dx.goldFrom, tone.gold] as const;
@@ -42,7 +43,7 @@ const ASIDE = 360;
  * and the week's countdown over one ranking table, your row on an ember
  * edge; on the right "your place" with the gap to the next player, and the
  * challenges card (new challenge, incoming ones to accept). Same data as
- * the phone's RivalsScreen (weekly XP league, all-time rating board).
+ * the phone's RivalsScreen (weekly XP league, all-time level board).
  */
 export function DxLeague() {
   const t = useT();
@@ -76,6 +77,7 @@ export function DxLeague() {
     loaded = !!league.data;
     failed = league.isError && !league.data;
   } else {
+    // D39: the all-time board's 'rating' is the level.
     rows = (board.data ?? []).map((r) => ({ ...r, value: r.rating }));
     self = rows.find((r) => r.isSelf) ?? null;
     loaded = !!board.data;
@@ -217,7 +219,7 @@ function PlaceRow({
   const label =
     period === 'week'
       ? t('league.rank_a11y', { rank: place, name, xp: row.value })
-      : t('leaderboard.rank_a11y', { rank: place, name, rating: row.value });
+      : t('dx.rivals.rank_a11y', { rank: place, name, level: row.value });
   return (
     <Hover
       testID={row.isSelf ? 'dx-league-row-self' : `dx-league-row-${row.user.nickname}`}
@@ -280,14 +282,14 @@ function YourPlace({
   unit: (v: number) => string;
   t: TFn;
 }) {
-  const myRating = useAppStore((s) => s.progressions[style].currentPuzzleRating);
+  const myLevel = useAppStore((s) => levelFor(s.progressions[style]));
   const idx = rows.findIndex((r) => r.isSelf);
   const ahead = idx > 0 ? rows[idx - 1] : null;
   const ranked = self?.rank != null;
   let caption: string;
   let fill = 0;
   if (!loaded) caption = ' ';
-  else if (period === 'all' && !self && rows.length >= LEADERBOARD_LIMIT) caption = t('dx.rivals.outside', { rating: myRating, n: LEADERBOARD_LIMIT });
+  else if (period === 'all' && !self && rows.length >= LEADERBOARD_LIMIT) caption = t('dx.rivals.outside', { rating: myLevel, n: LEADERBOARD_LIMIT });
   else if (!self || !ranked) caption = period === 'week' ? t('league.no_rank') : t('dx.rivals.no_rating');
   else if (self.rank === 1) {
     caption = t('dx.rivals.leader', { value: unit(self.value) });

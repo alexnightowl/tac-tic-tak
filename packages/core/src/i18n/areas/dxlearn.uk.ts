@@ -5,6 +5,7 @@ import type { Dict } from '../types';
 export const dxlearnUk: Dict = {
   // Learn (DXLearn / DXBooks).
   'dx.learn.books_subtitle': 'Класичні збірки, що вирішуються циклами',
+  'dx.learn.suggest': 'З рівнем {level} радимо курс {course}.',
   'dx.learn.chapters_exam.one': '{n} розділ + іспит',
   'dx.learn.chapters_exam.few': '{n} розділи + іспит',
   'dx.learn.chapters_exam.many': '{n} розділів + іспит',

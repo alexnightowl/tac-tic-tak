@@ -1,6 +1,7 @@
 import type { Language } from '@tac/core/i18n';
 import { queryKeys } from '@tac/core/api';
 import { streakState } from '@tac/core/format';
+import { levelFor } from '@tac/core/runner';
 import { alpha, eos } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, usePathname, type Href } from 'expo-router';
@@ -178,13 +179,13 @@ function StreakCard() {
   );
 }
 
-/** "Бліц 1612 · Пішак 4": the last style's rating and the XP rank. */
+/** "Бліц 1600 · Пішак 4": the last style's level (D39) and the XP rank. */
 function usePlayerLine(): string {
   const t = useT();
   const style = readLastStyle();
-  const rating = useAppStore((s) => s.progressions[style]?.currentPuzzleRating);
+  const prog = useAppStore((s) => s.progressions[style]);
   const xp = useQuery({ queryKey: queryKeys.experience(), queryFn: () => api.users.experience(), staleTime: 60_000 });
-  const parts = [rating ? `${t(`style.${style}.name`)} ${Math.round(rating)}` : null];
+  const parts = [prog ? `${t(`style.${style}.name`)} ${levelFor(prog)}` : null];
   if (xp.data) parts.push(`${t(`xp.rank.${xp.data.rank}`)} ${xp.data.level}`);
   return parts.filter(Boolean).join(' · ');
 }

@@ -26,15 +26,15 @@ export function DxLevelsPanel({ style: pageStyle, onClose }: { style: TrainingSt
   const params = useLocalSearchParams<{ style?: string }>();
   const style = isTrainingStyle(params.style) ? params.style : pageStyle;
   const prog = useAppStore((s) => s.progressions[style]);
-  const rating = prog.currentPuzzleRating;
+  // D39: at rest the player is at the level (every rated session starts there).
   const level = levelFor(prog);
   const lo = level + MARKS[0] * LEVEL_STEP;
   const hi = level + MARKS[MARKS.length - 1] * LEVEL_STEP;
   const ratio = (v: number) => (Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo);
   const pct = (v: number) => `${ratio(v) * 100}%` as const;
   // Near an end the "you" pill hugs that edge instead of spilling out of the card.
-  const edge = ratio(rating) > 0.85 ? 'end' : ratio(rating) < 0.15 ? 'start' : null;
-  const tipBox = edge === 'end' ? styles.tipEnd : edge === 'start' ? styles.tipStart : { left: pct(rating) };
+  const edge = ratio(level) > 0.85 ? 'end' : ratio(level) < 0.15 ? 'start' : null;
+  const tipBox = edge === 'end' ? styles.tipEnd : edge === 'start' ? styles.tipStart : { left: pct(level) };
   const tipSelf = { alignSelf: edge === 'end' ? 'flex-end' : edge === 'start' ? 'flex-start' : 'center' } as const;
   const ticks = MARKS.slice(1, -1).map((m) => level + m * LEVEL_STEP);
   const styleName = t(`style.${style}.name`);
@@ -62,16 +62,16 @@ export function DxLevelsPanel({ style: pageStyle, onClose }: { style: TrainingSt
           {t('levels.intro')}
         </DText>
 
-        <View style={styles.barCard} accessible accessibilityLabel={`${t('levels.bar_label', { style: styleName, level })}, ${rating}`}>
+        <View style={styles.barCard} accessible accessibilityLabel={t('levels.bar_label', { style: styleName, level })}>
           <Label size={10}>{t('levels.bar_label', { style: styleName, level })}</Label>
           <View style={styles.track}>
             <LinearGradient colors={[dx.barOff, dx.ember]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.line} />
             {ticks.map((v) => (
               <View key={v} style={[styles.tick, { left: pct(v) }, v === level && styles.tickOwn]} />
             ))}
-            <View style={[styles.thumb, { left: pct(rating) }]} />
+            <View style={[styles.thumb, { left: pct(level) }]} />
             <View style={[styles.tip, tipBox]}>
-              <Pill tone="ash" label={t('play.you_marker', { rating })} style={[styles.tipPill, tipSelf]} />
+              <Pill tone="ash" label={t('play.you_marker', { rating: level })} style={[styles.tipPill, tipSelf]} />
             </View>
           </View>
           <View style={styles.ends}>
