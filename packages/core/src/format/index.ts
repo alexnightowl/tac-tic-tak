@@ -78,6 +78,8 @@ export type SessionRow = {
    *  tolerance with older endpoints that don't return it. */
   style?: string;
   theme: string | null;
+  /** 'blind' | 'plan' (D40); null or absent for a plain session. */
+  variant?: string | null;
 };
 
 const DAY_MS = 24 * 60 * 60 * 1000;

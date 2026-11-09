@@ -221,6 +221,8 @@ export type SessionDetail = {
   endedAt: string | null;
   mode: SessionMode;
   theme: string | null;
+  /** 'blind' | 'plan' (D40); null for a plain session. */
+  variant?: string | null;
   durationSec: number;
   startRating: number;
   endRating: number;

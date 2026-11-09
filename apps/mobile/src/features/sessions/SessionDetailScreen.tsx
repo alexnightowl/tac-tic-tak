@@ -10,7 +10,7 @@ import { Skeleton, StateView } from '@/features/review/states';
 import { AppText, Card, PlateButton, stackHeader } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
-import { formatSessionTitle, pct, responseTime, sessionThemeLabel } from './format';
+import { formatSessionTitle, pct, responseTime, sessionKindLabel } from './format';
 import { useSessionDetail } from './useSessionDetail';
 
 /** MobSessions / MobSessionDetail: the `.float` round back button. */
@@ -76,7 +76,7 @@ export function SessionDetailScreen({ id }: { id: string }) {
           {formatSessionTitle(s.startedAt, lang)}
         </AppText>
         <AppText variant="body" color={eos.ash} testID="session-subtitle">
-          {`${sessionThemeLabel(s.theme, lang, t('sessions.mixed'))} · ${t('sessions.minutes', { n: Math.round(s.durationSec / 60) })}`}
+          {`${sessionKindLabel(s, lang, t)} · ${t('sessions.minutes', { n: Math.round(s.durationSec / 60) })}`}
         </AppText>
       </View>
       <View style={styles.grid}>

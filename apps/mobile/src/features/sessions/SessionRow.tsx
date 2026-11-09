@@ -15,7 +15,7 @@ import { AppText, fontFamily } from '@/ui';
 import type { TFn } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { crossfadeTiming, swipeSpring } from '@/features/review/motion';
-import { pct, responseTime, sessionThemeLabel } from './format';
+import { pct, responseTime, sessionKindLabel } from './format';
 
 /** Delete action width (web REVEAL = 88). */
 export const REVEAL = 88;
@@ -121,7 +121,7 @@ export function SessionRow({ row, lang, t, onDelete }: { row: Row; lang: 'en' | 
   const time = formatSessionTime(row.startedAt, lang);
   const style = row.style && isTrainingStyle(row.style) ? row.style : null;
   const sub = [
-    sessionThemeLabel(row.theme, lang, t('sessions.mixed')),
+    sessionKindLabel(row, lang, t),
     pct(row.accuracy),
     responseTime(row.avgResponseMs),
     t('sessions.minutes', { n: Math.round(row.durationSec / 60) }),

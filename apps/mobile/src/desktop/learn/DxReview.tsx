@@ -13,7 +13,7 @@ import { reviewApi, reviewKeys, sessionApi } from '@/features/review/api';
 import { Skeleton } from '@/features/review/states';
 import { ThemeIcon } from '@/features/review/ThemeIcon';
 import { useReviewThemes, type ThemeRow } from '@/features/review/useReviewThemes';
-import { sessionThemeLabel } from '@/features/sessions/format';
+import { sessionKindLabel } from '@/features/sessions/format';
 import { plural } from '@/features/offline/format';
 import { useRawWindow } from '@/platform/webFrame';
 import { PlateButton } from '@/ui';
@@ -274,7 +274,7 @@ function History({ q }: { q: UseQueryResult<Awaited<ReturnType<typeof sessionApi
 
 function HistoryRow({ row, lang, t, tn }: { row: SessionRow; lang: 'en' | 'uk'; t: ReturnType<typeof useT>; tn: ReturnType<typeof useTn> }) {
   const style = row.style && isTrainingStyle(row.style) ? t(`style.${row.style}.name`) : null;
-  const title = [style, sessionThemeLabel(row.theme, lang, t('sessions.mixed'))].filter(Boolean).join(' · ');
+  const title = [style, sessionKindLabel(row, lang, t)].filter(Boolean).join(' · ');
   const day = groupSessionsByDay([row], lang)[0]?.[0] ?? '';
   const when = `${day}, ${formatSessionTime(row.startedAt, lang)}`;
   const mistakes = row.failed > 0 ? plural(tn, 'dx.learn.mistakes', row.failed) : t('dx.learn.no_mistakes');

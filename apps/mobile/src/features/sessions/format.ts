@@ -21,6 +21,17 @@ export function sessionThemeLabel(theme: string | null | undefined, lang: 'en' |
   return theme ? themeLabel(theme, lang) : mixed;
 }
 
+/** The theme label, or the daily plan's name, or "Blind · <theme>" (D40). */
+export function sessionKindLabel(
+  row: { theme: string | null; variant?: string | null },
+  lang: 'en' | 'uk',
+  t: (key: string) => string,
+): string {
+  if (row.variant === 'plan') return t('plan.title');
+  const base = sessionThemeLabel(row.theme, lang, t('sessions.mixed'));
+  return row.variant === 'blind' ? `${t('blind.title')} · ${base}` : base;
+}
+
 export const pct = (accuracy: number) => `${Math.round((accuracy ?? 0) * 100)}%`;
 
 /** fix: attempt times used fmtDuration (seconds) on milliseconds — 5000 ms read '83:20'. */

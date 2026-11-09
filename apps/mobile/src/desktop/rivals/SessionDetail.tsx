@@ -4,7 +4,7 @@ import { router, Stack, type Href } from 'expo-router';
 import { Check, ChevronRight, X } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 
-import { formatSessionTitle, pct, responseTime, sessionThemeLabel } from '@/features/sessions/format';
+import { formatSessionTitle, pct, responseTime, sessionKindLabel } from '@/features/sessions/format';
 import { useSessionDetail } from '@/features/sessions/useSessionDetail';
 import { PlateButton } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
@@ -54,7 +54,7 @@ export function DxSessionDetail({ id }: { id: string }) {
   }
 
   const s = q.data!;
-  const subtitle = `${sessionThemeLabel(s.theme, lang, t('sessions.mixed'))} · ${t('sessions.minutes', { n: Math.round(s.durationSec / 60) })}`;
+  const subtitle = `${sessionKindLabel(s, lang, t)} · ${t('sessions.minutes', { n: Math.round(s.durationSec / 60) })}`;
   const review =
     items.data && items.data.items.length > 0 ? (
       <Card texture style={styles.cta} testID="session-review-cta">

@@ -448,9 +448,13 @@ function SessionLine({ row, first }: { row: SessionRow; first: boolean }) {
   const style = row.style && isTrainingStyle(row.style) ? row.style : null;
   const styleName = style ? t(`style.${style}.name`) : '';
   const title =
-    row.mode === 'theme' && row.theme
-      ? `${t('play.theme')} · ${themeLabel(row.theme, lang)}`
-      : [t(row.mode === 'casual' ? 'play.type.casual' : 'play.type.rated'), styleName].filter(Boolean).join(' · ');
+    row.variant === 'plan'
+      ? [t('plan.title'), styleName].filter(Boolean).join(' · ')
+      : row.mode === 'theme' && row.theme
+        ? `${row.variant === 'blind' ? t('blind.title') : t('play.theme')} · ${themeLabel(row.theme, lang)}`
+        : [t(row.variant === 'blind' ? 'blind.title' : row.mode === 'casual' ? 'play.type.casual' : 'play.type.rated'), styleName]
+            .filter(Boolean)
+            .join(' · ');
   const when = whenLabel(row.startedAt, lang, t);
   const total = row.solved + row.failed;
   const acc = pct(row.accuracy);
