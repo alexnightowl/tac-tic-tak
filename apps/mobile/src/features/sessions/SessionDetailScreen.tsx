@@ -1,20 +1,17 @@
 import { isApiError, type SessionDetail } from '@tac/core/api';
 import { control, eos, layout, radii, space } from '@tac/core/tokens';
 import { FlashList } from '@shopify/flash-list';
-import { useQuery } from '@tanstack/react-query';
 import { router, Stack, type Href } from 'expo-router';
 import { Check, ChevronRight, CloudOff, SearchX, X } from 'lucide-react-native';
-import { useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { feel } from '@/feel';
-import { reviewKeys, sessionApi } from '@/features/review/api';
 import { Skeleton, StateView } from '@/features/review/states';
 import { AppText, Card, PlateButton, stackHeader } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { formatSessionTitle, pct, responseTime, sessionThemeLabel } from './format';
+import { useSessionDetail } from './useSessionDetail';
 
 /** MobSessions / MobSessionDetail: the `.float` round back button. */
 const FLOAT_HEADER = stackHeader('float');
@@ -30,29 +27,7 @@ export function SessionDetailScreen({ id }: { id: string }) {
   const t = useT();
   const { lang } = useLang();
   const insets = useSafeAreaInsets();
-  const q = useQuery({
-    queryKey: reviewKeys.session(id),
-    queryFn: () => sessionApi.detail(id),
-    retry: (n, e) => !(isApiError(e) && e.status === 404) && n < 1,
-  });
-  // Shared with the mistakes runner (the web used two different fetches).
-  const items = useQuery({
-    queryKey: reviewKeys.sessionReviewItems(id),
-    queryFn: () => sessionApi.reviewItems(id),
-    staleTime: 60_000,
-    enabled: q.isSuccess,
-  });
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = async () => {
-    feel.emit('refresh');
-    setRefreshing(true);
-    try {
-      await Promise.all([q.refetch(), items.refetch()]);
-    } finally {
-      setRefreshing(false);
-    }
-  };
+  const { q, items, refreshing, onRefresh, failed, slow } = useSessionDetail(id);
 
   const title = <Stack.Screen options={{ title: t('sessions.detail_title'), header: FLOAT_HEADER }} />;
 
@@ -93,8 +68,6 @@ export function SessionDetailScreen({ id }: { id: string }) {
   }
 
   const s = q.data;
-  const failed = items.data?.items.filter((i) => i.reason === 'failed').length ?? 0;
-  const slow = (items.data?.items.length ?? 0) - failed;
 
   const header = (
     <View style={styles.header}>

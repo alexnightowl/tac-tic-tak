@@ -39,11 +39,7 @@ export function AchievementSheet({ slug }: { slug: string }) {
   const name = t(achievementNameKey(slug));
   const category = meta ? t(achievementCategoryKey(meta.category)) : null;
 
-  const share = () => {
-    const url = me ? PROFILE_URL(me.nickname) : '';
-    const message = t('achv.share_message', { name });
-    void Share.share(Platform.OS === 'ios' && url ? { url, message } : { message: url ? `${message} ${url}` : message });
-  };
+  const share = () => shareAchievement(t('achv.share_message', { name }), me?.nickname);
 
   return (
     <View
@@ -92,6 +88,12 @@ export function AchievementSheet({ slug }: { slug: string }) {
       )}
     </View>
   );
+}
+
+/** Share an unlock: the message plus my profile link (the URL field on iOS). */
+export function shareAchievement(message: string, nickname: string | undefined): void {
+  const url = nickname ? PROFILE_URL(nickname) : '';
+  void Share.share(Platform.OS === 'ios' && url ? { url, message } : { message: url ? `${message} ${url}` : message });
 }
 
 const styles = StyleSheet.create({

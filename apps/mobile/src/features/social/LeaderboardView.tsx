@@ -174,7 +174,7 @@ export function LeagueView({ top }: { top?: ReactNode } = {}) {
   );
 }
 
-function weekLeft(t: TFn, endIso: string, now = Date.now()): string {
+export function weekLeft(t: TFn, endIso: string, now = Date.now()): string {
   const h = Math.max(0, Math.floor((new Date(endIso).getTime() - now) / 3600_000));
   return h >= 24 ? t('league.left_dh', { d: Math.floor(h / 24), h: h % 24 }) : t('league.left_h', { h: Math.max(1, h) });
 }

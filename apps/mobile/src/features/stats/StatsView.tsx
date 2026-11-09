@@ -35,13 +35,13 @@ import { RadarChart } from './RadarChart';
 import { RatingHistoryChart } from './RatingHistoryChart';
 import { STYLE_ORDER } from './StyleIcon';
 
-type ThemesTab = 'weakest' | 'strongest' | 'all';
+export type ThemesTab = 'weakest' | 'strongest' | 'all';
 
 /** Web's no-value mark (not copy, so not in the dictionaries). */
 const DASH = '—';
 
 /** Web ThemesList rules: tactical themes only; weakest/strongest top 20. */
-function visibleThemes(themes: ThemeRow[], tab: ThemesTab): ThemeRow[] {
+export function visibleThemes(themes: ThemeRow[], tab: ThemesTab): ThemeRow[] {
   const tactical = themes.filter((th) => !isMetaTheme(th.slug));
   if (tab === 'strongest') {
     return tactical.filter((th) => th.attempts > 0).sort((a, b) => a.weakness - b.weakness).slice(0, 20);

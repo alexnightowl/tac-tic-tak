@@ -91,7 +91,7 @@ export function AchievementsGrid() {
 
 /** Unlocks since the last visit, fixed for this mount; the stored seen set
  *  is updated right away so each one is "new" only once. */
-function freshUnlocks(list: Achievement[], userId: string): Set<string> {
+export function freshUnlocks(list: Achievement[], userId: string): Set<string> {
   const unlocked = list.filter((a) => a.unlocked).map((a) => a.slug);
   const seen = readSeen(userId);
   writeSeen(userId, [...(seen ?? []), ...unlocked]);
@@ -99,7 +99,7 @@ function freshUnlocks(list: Achievement[], userId: string): Set<string> {
   return new Set(seen ? unlocked.filter((s) => !seen.has(s)) : []);
 }
 
-function sections(list: Achievement[]) {
+export function sections(list: Achievement[]) {
   return SECTION_ORDER.map((category) => ({
     category,
     items: list.filter((a) => a.category === category).sort((a, b) => medalRank(a.slug) - medalRank(b.slug)),

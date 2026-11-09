@@ -1,24 +1,18 @@
 import { groupSessionsByDay, type SessionRow as Row } from '@tac/core/format';
-import { queryKeys } from '@tac/core/api';
-import { eos, keyframes, layout, radii, semantic, space, surface, timing } from '@tac/core/tokens';
+import { eos, keyframes, layout, radii, semantic, space, surface } from '@tac/core/tokens';
 import { FlashList } from '@shopify/flash-list';
-import { useQuery } from '@tanstack/react-query';
 import { router, Stack, type Href } from 'expo-router';
 import { CloudOff, History } from 'lucide-react-native';
-import { useEffect, useRef, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, FadeOutDown, useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { feel } from '@/feel';
-import { reviewKeys, sessionApi, type OverviewResponse } from '@/features/review/api';
 import { Skeleton, StateView } from '@/features/review/states';
-import { queryClient } from '@/platform/query';
-import { toast } from '@/shell/toast/store';
 import { AppText, stackHeader } from '@/ui';
 import { useLang, useT } from '@/ui/lang';
 import { Tap } from '@/ui/Tap';
 import { SessionRow } from './SessionRow';
+import { useSessionHistory } from './useSessionHistory';
 
 /** MobSessions / MobSessionDetail: the `.float` round back button. */
 const FLOAT_HEADER = stackHeader('float');
@@ -29,22 +23,10 @@ const FLOAT_HEADER = stackHeader('float');
  * shows. Flip this once the endpoint lands and switch to useInfiniteQuery.
  */
 export const HISTORY_PAGINATION = false;
-const WINDOW = 20;
-/** Undo window (Q15, PROVISIONAL): the toast lifetime. */
-const UNDO_MS = timing.toastDismiss;
+export const HISTORY_WINDOW = 20;
+const WINDOW = HISTORY_WINDOW;
 
 type Item = { kind: 'header'; label: string } | { kind: 'row'; row: Row };
-
-/** After a delete lands: the web's invalidations (dashboard, analytics, theme stats). */
-function invalidateAfterDelete(id: string) {
-  queryClient.setQueryData<OverviewResponse>(reviewKeys.overview(), (d) =>
-    d ? { ...d, recentSessions: d.recentSessions.filter((s) => s.id !== id) } : d,
-  );
-  void queryClient.invalidateQueries({ queryKey: queryKeys.overview() });
-  void queryClient.invalidateQueries({ queryKey: queryKeys.analyticsAll() });
-  void queryClient.invalidateQueries({ queryKey: queryKeys.analyticsThemesAll() });
-  queryClient.removeQueries({ queryKey: reviewKeys.session(id) });
-}
 
 /**
  * /sessions (push): the history with sticky day headers. Delete is
@@ -56,70 +38,7 @@ export function HistoryScreen() {
   const { lang } = useLang();
   const insets = useSafeAreaInsets();
   const reduced = useReducedMotion();
-  const q = useQuery({ queryKey: reviewKeys.overview(), queryFn: () => sessionApi.overview() });
-  const [refreshing, setRefreshing] = useState(false);
-  const [hidden, setHidden] = useState<ReadonlySet<string>>(new Set());
-  const [undo, setUndo] = useState<string | null>(null);
-  // The one delete waiting for its undo window (a second delete commits the first).
-  const pending = useRef<{ id: string; timer: ReturnType<typeof setTimeout> } | null>(null);
-
-  const commit = (id: string) => {
-    sessionApi.remove(id).then(
-      () => {
-        invalidateAfterDelete(id);
-        setHidden((h) => without(h, id));
-      },
-      () => {
-        // Roll back: the row comes back and the user hears why.
-        setHidden((h) => without(h, id));
-        toast.show({ title: t('sessions.delete_failed') });
-      },
-    );
-  };
-
-  const flush = () => {
-    const p = pending.current;
-    if (!p) return;
-    clearTimeout(p.timer);
-    pending.current = null;
-    commit(p.id);
-  };
-
-  const onDelete = (id: string) => {
-    flush();
-    setHidden((h) => new Set(h).add(id));
-    setUndo(id);
-    pending.current = {
-      id,
-      timer: setTimeout(() => {
-        pending.current = null;
-        setUndo((u) => (u === id ? null : u));
-        commit(id);
-      }, UNDO_MS),
-    };
-  };
-
-  const onUndo = () => {
-    const p = pending.current;
-    if (!p) return;
-    clearTimeout(p.timer);
-    pending.current = null;
-    setHidden((h) => without(h, p.id));
-    setUndo(null);
-  };
-
-  // Leaving with a delete in its undo window still deletes.
-  useEffect(() => () => flush(), []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const onRefresh = async () => {
-    feel.emit('refresh');
-    setRefreshing(true);
-    try {
-      await q.refetch();
-    } finally {
-      setRefreshing(false);
-    }
-  };
+  const { q, rows, total, refreshing, onRefresh, onDelete, onUndo, undo } = useSessionHistory();
 
   const title = <Stack.Screen options={{ title: t('sessions.title'), header: FLOAT_HEADER }} />;
 
@@ -150,7 +69,6 @@ export function HistoryScreen() {
     );
   }
 
-  const rows = (q.data?.recentSessions ?? []).filter((r) => !hidden.has(r.id));
   const items: Item[] = [];
   const sticky: number[] = [];
   for (const [label, group] of groupSessionsByDay(rows, lang)) {
@@ -158,8 +76,6 @@ export function HistoryScreen() {
     items.push({ kind: 'header', label });
     for (const row of group) items.push({ kind: 'row', row });
   }
-  const total = q.data?.recentSessions.length ?? 0;
-
   return (
     <View style={styles.root} testID="screen-sessions">
       {title}
@@ -220,13 +136,6 @@ export function HistoryScreen() {
       ) : null}
     </View>
   );
-}
-
-function without(set: ReadonlySet<string>, id: string): ReadonlySet<string> {
-  if (!set.has(id)) return set;
-  const next = new Set(set);
-  next.delete(id);
-  return next;
 }
 
 const styles = StyleSheet.create({
