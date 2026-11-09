@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { router, type Href } from "expo-router";
-import { Search, Swords, UserRound, X } from "lucide-react-native";
+import { Search, Swords, UserMinus, UserRound, X } from "lucide-react-native";
 import { useState, type ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -8,6 +8,7 @@ import "@/features/achievements/icons";
 import { Avatar, VerifiedBadge } from "@/features/profile/Avatar";
 import {
   acceptRequest,
+  confirmUnfriend,
   displayNameOf,
   removeRequest,
 } from "@/features/social/actions";
@@ -29,9 +30,11 @@ import { useNarrow } from "./parts";
 
 /**
  * DXFriends (/friends): the search field (opens the app's player search),
- * your friends with Challenge + profile, and on the right the incoming
- * requests (accept / decline) and the requests you sent (cancel). Same
- * queries and actions as the phone Friends list.
+ * your friends with Challenge, profile and Unfriend (behind the app's
+ * confirm), and on the right the incoming requests (accept / decline) and
+ * the requests you sent (cancel). Same queries, actions and error states
+ * as the phone Friends list: a failed list shows the error and a retry
+ * that reloads both lists.
  */
 export function DxFriends() {
   const t = useT();
@@ -39,17 +42,24 @@ export function DxFriends() {
   const friends = useQuery(friendsQuery());
   const pending = useQuery(pendingQuery());
   // Rows acted on stay hidden until the refetch, so they never pop back.
+  // Keys are prefixed: an accepted request keeps its id as the friendship.
   const [gone, setGone] = useState<ReadonlySet<string>>(new Set());
-  const hide = (id: string) => setGone((s) => new Set(s).add(id));
+  const hide = (key: string) => setGone((s) => new Set(s).add(key));
   // Narrow windows stack the requests under the list.
   const narrow = useNarrow();
   const incoming = (pending.data?.incoming ?? []).filter(
-    (r) => !gone.has(r.id),
+    (r) => !gone.has(`req:${r.id}`),
   );
   const outgoing = (pending.data?.outgoing ?? []).filter(
-    (r) => !gone.has(r.id),
+    (r) => !gone.has(`req:${r.id}`),
   );
-  const mine = friends.data ?? [];
+  const mine = (friends.data ?? []).filter(
+    (r) => !gone.has(`friend:${r.friendshipId}`),
+  );
+  // The phone's retry reloads both lists.
+  const retry = () =>
+    void Promise.allSettled([friends.refetch(), pending.refetch()]);
+  const pendingFailed = pending.isError && !pending.data;
   const back = {
     label: t("settings.tab.profile"),
     onPress: () =>
@@ -67,7 +77,20 @@ export function DxFriends() {
             <Pill label={String(incoming.length)} tone="rose" />
           ) : null}
         </View>
-        {incoming.length === 0 ? (
+        {pendingFailed ? (
+          <View style={styles.sideError} testID="friends-requests-error">
+            <DText size={13} color={dx.ash}>
+              {t("dx.account.requests_error")}
+            </DText>
+            <GhostButton
+              testID="friends-requests-retry"
+              accessibilityLabel={t("friends.retry")}
+              label={t("friends.retry")}
+              height={36}
+              onPress={retry}
+            />
+          </View>
+        ) : incoming.length === 0 ? (
           <DText size={13} color={dx.dust} style={styles.mt10}>
             {t("dx.account.no_requests")}
           </DText>
@@ -84,10 +107,10 @@ export function DxFriends() {
                 accessibilityLabel={`${t("friends.decline")}: ${displayNameOf(r.user)}`}
                 icon={X}
                 square
-                height={34}
+                height={36}
                 onPress={() =>
                   void removeRequest(r.id, r.user, "decline").then(
-                    (ok) => ok && hide(r.id),
+                    (ok) => ok && hide(`req:${r.id}`),
                   )
                 }
               />
@@ -98,7 +121,7 @@ export function DxFriends() {
                 size="sm"
                 onPress={() =>
                   void acceptRequest(r.id, r.user).then(
-                    (ok) => ok && hide(r.id),
+                    (ok) => ok && hide(`req:${r.id}`),
                   )
                 }
               />
@@ -120,10 +143,10 @@ export function DxFriends() {
                 testID={`friends-cancel-${r.user.nickname}`}
                 accessibilityLabel={`${t("friends.cancel")}: ${displayNameOf(r.user)}`}
                 label={t("friends.cancel")}
-                height={32}
+                height={36}
                 onPress={() =>
                   void removeRequest(r.id, r.user, "cancel").then(
-                    (ok) => ok && hide(r.id),
+                    (ok) => ok && hide(`req:${r.id}`),
                   )
                 }
               />
@@ -169,7 +192,7 @@ export function DxFriends() {
               testID="friends-retry"
               accessibilityLabel={t("friends.retry")}
               label={t("friends.retry")}
-              onPress={() => void friends.refetch()}
+              onPress={retry}
             />
           </Card>
         ) : friends.data && mine.length === 0 ? (
@@ -181,7 +204,12 @@ export function DxFriends() {
         ) : (
           <Card testID="friends-list" style={styles.list}>
             {mine.map((r, i) => (
-              <FriendLine key={r.friendshipId} r={r} first={i === 0} />
+              <FriendLine
+                key={r.friendshipId}
+                r={r}
+                first={i === 0}
+                onGone={() => hide(`friend:${r.friendshipId}`)}
+              />
             ))}
           </Card>
         )}
@@ -201,7 +229,15 @@ function subline(u: UserCard, extra?: string | null): string {
     .join(" · ");
 }
 
-function FriendLine({ r, first }: { r: FriendRow; first: boolean }) {
+function FriendLine({
+  r,
+  first,
+  onGone,
+}: {
+  r: FriendRow;
+  first: boolean;
+  onGone: () => void;
+}) {
   const t = useT();
   const u = r.user;
   const name = displayNameOf(u);
@@ -262,6 +298,14 @@ function FriendLine({ r, first }: { r: FriendRow; first: boolean }) {
         height={36}
         onPress={() => openProfile(u.nickname)}
       />
+      <GhostButton
+        testID={`friends-unfriend-${u.nickname}`}
+        accessibilityLabel={`${t("friends.unfriend")}: ${name}`}
+        icon={UserMinus}
+        square
+        height={36}
+        onPress={() => confirmUnfriend(u, (ok) => ok && onGone())}
+      />
     </View>
   );
 }
@@ -292,11 +336,19 @@ function SmallRow({
       >
         <Avatar nickname={user.nickname} avatarUrl={user.avatarUrl} size={34} />
         <View style={styles.flex}>
-          <DText size={13.5} weight={700} numberOfLines={1}>
-            {name}
-          </DText>
-          <DText size={12} color={dx.dust} numberOfLines={1}>
-            {sub}
+          <View style={styles.nameLine}>
+            <DText
+              size={13.5}
+              weight={700}
+              numberOfLines={1}
+              style={styles.shrink}
+            >
+              {name}
+            </DText>
+            <VerifiedBadge verified={user.verified} size={12} />
+          </View>
+          <DText size={12} color={dx.dust} numberOfLines={2}>
+            {subline(user, sub)}
           </DText>
         </View>
       </Hover>
@@ -369,6 +421,7 @@ const styles = StyleSheet.create({
     ],
   },
   side: { paddingVertical: 18, paddingHorizontal: 20 },
+  sideError: { marginTop: 10, gap: 10, alignItems: "flex-start" },
   head: { flexDirection: "row", alignItems: "center" },
   small: {
     flexDirection: "row",

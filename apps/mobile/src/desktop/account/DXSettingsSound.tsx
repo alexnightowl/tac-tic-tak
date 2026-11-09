@@ -44,7 +44,7 @@ export function DxSettingsSound() {
     <DxSettingsFrame pane="sound">
       <PaneTitle>{t(HAS_HAPTICS ? 'settings.sound_haptics' : 'settings.sound')}</PaneTitle>
       <RowsCard style={styles.mt14}>
-        <SettingRow first title={t('settings.sound')} hint={soundEnabled ? t('settings.sound_hint') : t('settings.sound_off_hint')}>
+        <SettingRow first title={t('settings.sound')} hint={t('settings.sound_hint')}>
           <Toggle value={soundEnabled} onChange={(v) => void saveSettings({ soundEnabled: v })} testID="settings-sound-toggle" accessibilityLabel={t('settings.sound')} />
         </SettingRow>
         <SettingRow title={t('settings.sound_volume')} titleWidth={120}>
@@ -66,6 +66,10 @@ export function DxSettingsSound() {
           </SettingRow>
         ) : null}
       </RowsCard>
+      {/* The phone's section footer under the switch. */}
+      <DText size={12} color={dx.dust} style={styles.mt10} testID="settings-sound-footer">
+        {soundEnabled ? t('settings.silent_hint') : t('settings.sound_off_hint')}
+      </DText>
 
       <Label style={styles.eventsLabel}>{t('settings.sound_section')}</Label>
       <Card style={styles.events} testID="settings-sound-events">
@@ -129,6 +133,6 @@ const styles = StyleSheet.create({
   eventWide: { width: '100%' },
   event: { width: '46%', flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 11 },
   rule: { borderTopWidth: 1, borderTopColor: dx.rowRule },
-  chip: { height: 28, maxWidth: '55%' },
+  chip: { height: 32, maxWidth: '55%' },
   variant: { maxWidth: '50%' },
 });

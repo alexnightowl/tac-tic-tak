@@ -1,13 +1,13 @@
 import { achievementNameKey } from '@tac/core/catalogs';
 import { queryKeys } from '@tac/core/api';
-import { groupSessionsByDay, localeFor, type SessionRow } from '@tac/core/format';
-import { isTrainingStyle } from '@tac/core/rules';
+import { bucketByLocalDay, RADAR_MIN_THEMES, selectRadarThemes } from '@tac/core/charts';
+import { localeFor, streakState } from '@tac/core/format';
 import { levelFor } from '@tac/core/runner';
 import { alpha, eos, graphite, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
-import { ChevronRight, Pencil, Share2, Swords, Users, X, Check, UserMinus, UserPlus } from 'lucide-react-native';
-import { useState, type ReactNode } from 'react';
+import { Camera, ChevronRight, Pencil, Share2, Swords, Trophy, Users, X, Check, UserMinus, UserPlus } from 'lucide-react-native';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import '@/features/achievements/icons';
@@ -16,12 +16,18 @@ import { openAchievement } from '@/features/achievements/AchievementsGrid';
 import { Medal } from '@/features/achievements/Medal';
 import { fmtXp } from '@/features/experience/xp';
 import { Avatar, VerifiedBadge } from '@/features/profile/Avatar';
-import { shareProfile } from '@/features/profile/ProfileScreen';
-import { sessionThemeLabel } from '@/features/sessions/format';
+import { chooseAvatar, useAvatarUpload } from '@/features/profile/avatarUpload';
+import { profileRadarBounds, shareProfile } from '@/features/profile/ProfileScreen';
 import { acceptRequest, confirmUnfriend, removeRequest, sendRequest } from '@/features/social/actions';
 import { friendshipQuery, friendsQuery, profileQuery, type PublicProfile, type UserCard } from '@/features/social/api';
+import { FlameGlyph } from '@/features/social/glyphs';
+import { ActivityHeatmap } from '@/features/stats/ActivityHeatmap';
+import { profileThemesQuery, profileTimelineQuery, toRatingPoints, type TimelinePoint } from '@/features/stats/api';
+import { RadarChart } from '@/features/stats/RadarChart';
+import { RatingHistoryChart } from '@/features/stats/RatingHistoryChart';
 import { StyleIcon, STYLE_ORDER } from '@/features/stats/StyleIcon';
 import { api } from '@/platform/api';
+import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { scriptLang } from '@/ui/fonts';
 import { useLang, useT } from '@/ui/lang';
@@ -30,7 +36,9 @@ import { DesktopPage } from '../Page';
 import { Card, DText, GhostButton, Hover, Label, Num, Tile } from '../kit';
 import { dx } from '../tokens';
 import { DxProfileEdit } from './DXProfileEdit';
+import { useWidth } from '../rivals/layout';
 import { RankPiece, useNarrow, XpBar } from './parts';
+import { DxSessionRow } from './SessionRow';
 
 const DASH = '—';
 
@@ -45,18 +53,32 @@ function monthYear(iso: string, lang: 'en' | 'uk'): string {
 /** Medals shown on the profile card (the latest unlocks). */
 const MEDALS = 6;
 
+/** The phone ActivityHeatmap's geometry: a 26 px day column, 12 px cells 3 apart. */
+const HEAT_DAY_COL = 26;
+const HEAT_PITCH = 15;
+
+/** As many week columns as the card is wide (the phone draws 52 and scrolls). */
+function heatWeeks(width: number): number {
+  return Math.max(8, Math.min(52, Math.floor((width - HEAT_DAY_COL - 4) / HEAT_PITCH)));
+}
+
 /**
  * DXProfile (/profile/:nickname): the textured header card (avatar, name,
- * country, @nick · member since, bio; Friends · N, Share, Edit for you,
- * the friendship actions for another player), the three style ratings,
- * your XP card (→ /experience), recent sessions and, for you, the
- * achievements card. Data and actions are the phone profile's.
+ * country, @nick · member since, peak and streak, bio; Friends · N, Share,
+ * Edit for you, the friendship actions for another player; your own avatar
+ * opens the picker), the three style ratings, your XP card (→ /experience),
+ * the activity heatmap, the rating history, every recent session and, on
+ * the right, your achievements and the themes radar. Data and actions are
+ * the phone profile's (same queries and components).
  */
 export function DxProfile({ nickname }: { nickname: string }) {
   const t = useT();
+  const { lang } = useLang();
   const me = useAuthStore((s) => s.user);
   const isSelf = !!me && me.nickname.toLowerCase() === nickname.toLowerCase();
   const profile = useQuery(profileQuery(nickname));
+  const themes = useQuery(profileThemesQuery(nickname));
+  const timeline = useQuery(profileTimelineQuery(nickname));
   const [editing, setEditing] = useState(false);
   const narrow = useNarrow();
   const data = profile.data;
@@ -88,6 +110,9 @@ export function DxProfile({ nickname }: { nickname: string }) {
     );
   }
 
+  const radar = selectRadarThemes(themes.data ?? [], lang);
+  const showRadar = radar.length >= RADAR_MIN_THEMES;
+  const hasAside = isSelf || showRadar;
   return (
     <DesktopPage title={t('settings.tab.profile')} right={null} testID="dx-profile">
       <Hero data={data} isSelf={isSelf} onEdit={() => setEditing(true)} />
@@ -95,13 +120,17 @@ export function DxProfile({ nickname }: { nickname: string }) {
         <View style={narrow ? styles.mainStacked : styles.main}>
           <Ratings data={data} />
           {isSelf ? <XpCard /> : null}
-          <Recent data={data} isSelf={isSelf} />
+          <Activity timeline={timeline.data} />
+          <RatingHistory timeline={timeline.data} />
+          {narrow ? null : <Recent data={data} isSelf={isSelf} />}
         </View>
-        {isSelf ? (
-          <View style={narrow ? styles.asideStacked : styles.aside}>
-            <Achievements />
+        {hasAside ? (
+          <View style={narrow ? styles.mainStacked : styles.aside}>
+            {isSelf ? <Achievements /> : null}
+            {showRadar ? <ThemesRadar data={radar} /> : null}
           </View>
         ) : null}
+        {narrow ? <Recent data={data} isSelf={isSelf} /> : null}
       </View>
       {editing ? (
         <DxProfileEdit
@@ -120,14 +149,35 @@ function Hero({ data, isSelf, onEdit }: { data: PublicProfile; isSelf: boolean; 
   const t = useT();
   const { lang } = useLang();
   const friends = useQuery({ ...friendsQuery(), enabled: isSelf });
+  const showStreak = useAppStore((s) => s.settings.showStreak);
+  const preview = useAvatarUpload((s) => s.previewUri);
   const name = data.displayName?.trim() || data.nickname;
   const since = monthYear(data.createdAt, lang);
+  // The phone's rule: a live streak only (secured today or at risk), and only with the setting on.
+  const st = data.streak ? streakState(data.streak.days, data.streak.lastDay) : 'none';
+  const streakDays = showStreak && data.streak && data.streak.days > 0 && (st === 'secured' || st === 'at_risk') ? data.streak.days : null;
+  const avatar = <Avatar nickname={data.nickname} avatarUrl={data.avatarUrl} previewUri={isSelf ? preview : null} size={96} />;
   return (
     <Card texture style={styles.hero} testID="profile-hero">
       <View style={styles.glow} pointerEvents="none" />
-      <View style={styles.avatarRing}>
-        <Avatar nickname={data.nickname} avatarUrl={data.avatarUrl} size={96} testID="profile-avatar" />
-      </View>
+      {isSelf ? (
+        <Hover
+          testID="profile-avatar"
+          accessibilityLabel={t('profile.change_avatar')}
+          onPress={chooseAvatar}
+          style={styles.avatarRing}
+          hoverStyle={styles.avatarHover}
+        >
+          {avatar}
+          <View style={styles.camera} pointerEvents="none">
+            <Camera size={14} color={eos.bone} strokeWidth={2} />
+          </View>
+        </Hover>
+      ) : (
+        <View style={styles.avatarRing} testID="profile-avatar">
+          {avatar}
+        </View>
+      )}
       <View style={styles.heroText}>
         <View style={styles.nameLine}>
           <DText serif weight={700} size={30} lang={scriptLang(name)} numberOfLines={1} style={styles.shrink} testID="profile-name">
@@ -145,6 +195,22 @@ function Hero({ data, isSelf, onEdit }: { data: PublicProfile; isSelf: boolean; 
         <DText size={14} color={dx.ash} numberOfLines={1} testID="profile-nickname">
           {t('dx.account.member_since', { nickname: data.nickname, date: since })}
         </DText>
+        {data.allTimePeak != null || streakDays != null ? (
+          <View style={styles.meta}>
+            {data.allTimePeak != null ? (
+              <View style={styles.metaItem} testID="profile-peak">
+                <Trophy size={13} color={dx.dust} strokeWidth={2} />
+                <DText size={13} color={dx.ash} tabular>{`${t('profile.peak')} ${data.allTimePeak}`}</DText>
+              </View>
+            ) : null}
+            {streakDays != null ? (
+              <View style={styles.metaItem} testID="profile-streak">
+                <FlameGlyph size={13} color={tone.gold} />
+                <DText size={13} weight={700} color={tone.gold} tabular>{`${t('profile.streak')} ${streakDays}`}</DText>
+              </View>
+            ) : null}
+          </View>
+        ) : null}
         {data.bio ? (
           <DText size={14} color={graphite[300]} style={styles.bio} numberOfLines={3} testID="profile-bio">
             {data.bio}
@@ -154,6 +220,7 @@ function Hero({ data, isSelf, onEdit }: { data: PublicProfile; isSelf: boolean; 
       <View style={styles.heroActions}>
         {isSelf ? (
           <GhostButton
+            height={44}
             testID="profile-friends"
             accessibilityLabel={t('nav.friends')}
             icon={Users}
@@ -161,13 +228,13 @@ function Hero({ data, isSelf, onEdit }: { data: PublicProfile; isSelf: boolean; 
             onPress={() => router.push('/friends')}
           />
         ) : null}
-        <GhostButton testID="profile-share" accessibilityLabel={t('profile.share')} icon={Share2} label={t('dx.account.share')} onPress={() => shareProfile(data.nickname, name, t)} />
+        <GhostButton height={44} testID="profile-share" accessibilityLabel={t('profile.share')} icon={Share2} label={t('dx.account.share')} onPress={() => shareProfile(data.nickname, name, t)} />
         {isSelf ? (
           <PlateButton
             testID="profile-edit"
             label={t('profile.edit')}
             variant="slate"
-            size="sm"
+            size="md"
             icon={<Pencil size={14} color={eos.bone} strokeWidth={2} />}
             onPress={onEdit}
           />
@@ -199,7 +266,7 @@ function FriendActions({ user }: { user: UserCard }) {
         <PlateButton
           testID="profile-add-friend"
           label={t('profile.add_friend')}
-          size="sm"
+          size="md"
           icon={<UserPlus size={14} color={eos.bone} strokeWidth={2} />}
           loading={busy === 'add'}
           disabled={off}
@@ -209,6 +276,7 @@ function FriendActions({ user }: { user: UserCard }) {
     case 'outgoing':
       return (
         <GhostButton
+            height={44}
           testID="profile-cancel-request"
           accessibilityLabel={t('profile.cancel_request')}
           icon={X}
@@ -221,6 +289,7 @@ function FriendActions({ user }: { user: UserCard }) {
       return (
         <>
           <GhostButton
+            height={44}
             testID="profile-decline"
             accessibilityLabel={t('friends.decline')}
             icon={X}
@@ -231,7 +300,7 @@ function FriendActions({ user }: { user: UserCard }) {
           <PlateButton
             testID="profile-accept"
             label={t('friends.accept')}
-            size="sm"
+            size="md"
             icon={<Check size={14} color={eos.bone} strokeWidth={2} />}
             loading={busy === 'accept'}
             disabled={off}
@@ -243,6 +312,7 @@ function FriendActions({ user }: { user: UserCard }) {
       return (
         <>
           <GhostButton
+            height={44}
             testID="profile-unfriend"
             accessibilityLabel={`${t('profile.friends')}. ${t('profile.unfriend')}`}
             icon={UserMinus}
@@ -253,7 +323,7 @@ function FriendActions({ user }: { user: UserCard }) {
           <PlateButton
             testID="profile-challenge"
             label={t('challenge.profile_action')}
-            size="sm"
+            size="md"
             icon={<Swords size={14} color={eos.bone} strokeWidth={2} />}
             disabled={off}
             onPress={() => router.push(`/challenge/new?friend=${encodeURIComponent(user.id)}` as Href)}
@@ -327,6 +397,58 @@ function XpCard() {
   );
 }
 
+/** The phone's activity card: sessions per day, as many weeks as fit. */
+function Activity({ timeline }: { timeline: TimelinePoint[] | undefined }) {
+  const t = useT();
+  const [width, onLayout] = useWidth();
+  const heat = timeline ? bucketByLocalDay(timeline) : [];
+  if (heat.length === 0) return null;
+  return (
+    <Card style={styles.card} testID="profile-activity">
+      <Label>{t('stats.activity')}</Label>
+      <DText size={12.5} color={dx.dust} style={styles.mt4}>
+        {t('stats.activity_hint')}
+      </DText>
+      <View style={styles.mt12} onLayout={onLayout}>
+        {width > 0 ? <ActivityHeatmap data={heat} weeks={heatWeeks(width)} testID="profile-heatmap" /> : <View style={styles.ph} />}
+      </View>
+    </Card>
+  );
+}
+
+/** The phone's rating-history card (peak rating per session, a line per style). */
+function RatingHistory({ timeline }: { timeline: TimelinePoint[] | undefined }) {
+  const t = useT();
+  const points = toRatingPoints(timeline);
+  if (points.length === 0) return null;
+  return (
+    <Card style={styles.card} testID="profile-rating-card">
+      <Label>{t('stats.rating_history')}</Label>
+      <DText size={12.5} color={dx.dust} style={styles.mt4}>
+        {t('stats.rating_history_hint')}
+      </DText>
+      <View style={styles.mt12}>
+        <RatingHistoryChart data={points} testID="profile-rating" />
+      </View>
+    </Card>
+  );
+}
+
+/** The phone's "Themes profile" radar, with the profile's own bounds. */
+function ThemesRadar({ data }: { data: ReturnType<typeof selectRadarThemes> }) {
+  const t = useT();
+  const bounds = profileRadarBounds(data);
+  return (
+    <Card style={styles.card} testID="profile-radar-card">
+      <Label>{t('stats.by_theme')}</Label>
+      <View style={styles.mt12}>
+        <RadarChart data={data} min={bounds.min} max={bounds.max} testID="profile-radar" />
+      </View>
+    </Card>
+  );
+}
+
+/** Every recent session the profile returns, with the phone row's details. */
 function Recent({ data, isSelf }: { data: PublicProfile; isSelf: boolean }) {
   const t = useT();
   return (
@@ -338,52 +460,12 @@ function Recent({ data, isSelf }: { data: PublicProfile; isSelf: boolean }) {
         </DText>
       ) : (
         <View style={styles.mt4}>
-          {data.recentSessions.slice(0, 8).map((row, i) => (
-            <SessionLine key={row.id} row={row} first={i === 0} open={isSelf} />
+          {data.recentSessions.map((row, i) => (
+            <DxSessionRow key={row.id} row={row} first={i === 0} open={isSelf} />
           ))}
         </View>
       )}
     </Card>
-  );
-}
-
-/** "Rated · Blitz   Today   +18": style, theme, day, rating change. */
-function SessionLine({ row, first, open }: { row: SessionRow; first: boolean; open: boolean }) {
-  const t = useT();
-  const { lang } = useLang();
-  const style = row.style && isTrainingStyle(row.style) ? row.style : null;
-  const title = [style ? t(`style.${style}.name`) : null, sessionThemeLabel(row.theme, lang, t('sessions.mixed'))].filter(Boolean).join(' · ');
-  const day = groupSessionsByDay([row], lang)[0]?.[0] ?? '';
-  const delta = row.peakRating - row.startRating;
-  const deltaText = delta === 0 ? DASH : `${delta > 0 ? '+' : ''}${delta}`;
-  const deltaColor = delta > 0 ? dx.sage : delta < 0 ? dx.rose : dx.dust;
-  const body: ReactNode = (
-    <>
-      {style ? <StyleIcon style={style} size={14} color={dx.ash} /> : <View style={styles.iconGap} />}
-      <DText size={13.5} weight={700} style={styles.flex} numberOfLines={1}>
-        {title}
-      </DText>
-      <DText size={13} color={dx.ash} style={styles.day} numberOfLines={1}>
-        {day}
-      </DText>
-      <DText size={13.5} weight={800} color={deltaColor} tabular align="right" style={styles.delta}>
-        {deltaText}
-      </DText>
-    </>
-  );
-  // Session detail is owner-only on the server: others' rows are display-only.
-  return open ? (
-    <Hover
-      testID={`history-open-${row.id}`}
-      accessibilityRole="link"
-      accessibilityLabel={t('profile.session_a11y', { time: day, solved: row.solved, start: row.startRating, peak: row.peakRating })}
-      onPress={() => router.push(`/sessions/${encodeURIComponent(row.id)}` as Href)}
-      style={[styles.sessionRow, !first && styles.rule]}
-    >
-      {body}
-    </Hover>
-  ) : (
-    <View style={[styles.sessionRow, !first && styles.rule]}>{body}</View>
   );
 }
 
@@ -463,6 +545,22 @@ const styles = StyleSheet.create({
     borderRadius: 180,
     backgroundImage: `radial-gradient(circle, ${alpha(tone.emberGlow, 0.22)}, ${alpha(eos.ink, 0)} 65%)`,
   },
+  avatarHover: { opacity: 0.88 },
+  camera: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: dx.ghost,
+    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 2, color: dx.card }],
+  },
+  meta: { flexDirection: 'row', flexWrap: 'wrap', columnGap: 16, rowGap: 4, marginTop: 6 },
+  metaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  ph: { height: 130 },
   avatarRing: {
     borderRadius: 999,
     boxShadow: [
@@ -477,10 +575,9 @@ const styles = StyleSheet.create({
   heroActions: { flexDirection: 'row', alignItems: 'center', gap: 10, marginLeft: 'auto' },
   grid: { flexDirection: 'row', alignItems: 'flex-start', gap: 20, marginTop: 20 },
   main: { flex: 1, minWidth: 0, gap: 16 },
-  aside: { width: 380 },
+  aside: { width: 380, gap: 16 },
   stack: { flexDirection: 'column', alignItems: 'stretch' },
   mainStacked: { gap: 16 },
-  asideStacked: {},
   tiles: { flexDirection: 'row', gap: 12 },
   tile: { flex: 1, minWidth: 0 },
   xpCard: {
@@ -495,11 +592,6 @@ const styles = StyleSheet.create({
   },
   right: { alignItems: 'flex-end' },
   card: { paddingVertical: 18, paddingHorizontal: 20 },
-  sessionRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 11, borderRadius: 6 },
-  rule: { borderTopWidth: 1, borderTopColor: dx.rowRule },
-  iconGap: { width: 14 },
-  day: { width: 90 },
-  delta: { width: 50 },
   achHead: { flexDirection: 'row', alignItems: 'center', borderRadius: 6 },
   medals: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 14, marginTop: 16 },
   medal: { width: '33.333%', alignItems: 'center', gap: 6, paddingHorizontal: 4, paddingVertical: 4, borderRadius: 10 },

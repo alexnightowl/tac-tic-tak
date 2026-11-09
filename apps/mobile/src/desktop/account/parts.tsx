@@ -1,7 +1,7 @@
 import type { XpRankKey } from '@tac/core/rules';
 import { alpha, semantic, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
-import { Eye, EyeOff } from 'lucide-react-native';
+import { ChevronRight, Eye, EyeOff, type LucideIcon } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, TextInput, View, type StyleProp, type TextInputProps, type ViewStyle } from 'react-native';
 
@@ -10,7 +10,7 @@ import { useRawWindow } from '@/platform/webFrame';
 import { feel } from '@/feel';
 import { fontFamily } from '@/ui/fonts';
 import { useLang, useT } from '@/ui/lang';
-import { Bar, Card, DText, Label } from '../kit';
+import { Bar, Card, DText, Hover, Label } from '../kit';
 import { dx } from '../tokens';
 
 // Building blocks the account screens share (DXProfile, DXXP, DXFriends,
@@ -42,6 +42,7 @@ export function SettingRow({
   first,
   testID,
   titleWidth,
+  leading,
 }: {
   title: string;
   hint?: string | null;
@@ -50,9 +51,12 @@ export function SettingRow({
   testID?: string;
   /** Fixed title column (the volume row) instead of a flexible one. */
   titleWidth?: number;
+  /** Drawn left of the title (the profile row's avatar). */
+  leading?: ReactNode;
 }) {
   return (
     <View style={[styles.row, !first && styles.rule]} testID={testID}>
+      {leading}
       <View style={titleWidth ? { width: titleWidth } : styles.title}>
         <DText size={14.5} weight={700} numberOfLines={1}>
           {title}
@@ -65,6 +69,40 @@ export function SettingRow({
       </View>
       {children}
     </View>
+  );
+}
+
+/** A settings row that is one link: icon, title (and hint), chevron. */
+export function LinkRow({
+  icon: Icon,
+  title,
+  hint,
+  first,
+  onPress,
+  testID,
+}: {
+  icon?: LucideIcon;
+  title: string;
+  hint?: string;
+  first?: boolean;
+  onPress: () => void;
+  testID: string;
+}) {
+  return (
+    <Hover testID={testID} accessibilityLabel={title} onPress={onPress} style={[styles.link, !first && styles.rule]} hoverStyle={styles.linkHover}>
+      {Icon ? <Icon size={17} color={dx.ash} strokeWidth={1.8} /> : null}
+      <View style={styles.flex}>
+        <DText size={14.5} weight={700} numberOfLines={1}>
+          {title}
+        </DText>
+        {hint ? (
+          <DText size={12.5} color={dx.dust} style={styles.hint}>
+            {hint}
+          </DText>
+        ) : null}
+      </View>
+      <ChevronRight size={17} color={dx.dust} strokeWidth={1.8} />
+    </Hover>
   );
 }
 
@@ -185,6 +223,8 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 16, rowGap: 10, paddingVertical: 16 },
   title: { flexGrow: 1, flexShrink: 1, flexBasis: 200, minWidth: 0 },
   rule: { borderTopWidth: 1, borderTopColor: dx.rowRule },
+  link: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16, marginHorizontal: -22, paddingHorizontal: 22 },
+  linkHover: { backgroundColor: alpha(dx.bone, 0.03) },
   hint: { marginTop: 2 },
   labelRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   well: {

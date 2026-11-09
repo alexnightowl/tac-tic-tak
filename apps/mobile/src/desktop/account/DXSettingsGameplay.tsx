@@ -1,8 +1,8 @@
 import type { AnimationSpeedSetting, ColorMode } from '@tac/core/api';
-import { APP_PIECE_SETS, normalizePieceSet, type AppPieceSet } from '@tac/core/board';
+import { normalizePieceSet } from '@tac/core/board';
 import { StyleSheet, View } from 'react-native';
 
-import { LiveBoard } from '@/features/settings/GameplayScreen';
+import { LiveBoard, PieceSetPicker } from '@/features/settings/GameplayScreen';
 import { saveSettings } from '@/features/settings/patch';
 import { feel } from '@/feel';
 import { useAppStore } from '@/stores/appStore';
@@ -34,16 +34,11 @@ export function DxSettingsGameplay() {
       <PaneTitle>{t('settings.gameplay')}</PaneTitle>
       <View style={[styles.cols, narrow && styles.stack]}>
         <RowsCard style={narrow ? styles.full : styles.flex}>
-          <SettingRow first title={t('settings.pieces')} hint={APP_PIECE_SETS.map((p) => t(`settings.pieces.${p}`)).join(' · ')}>
-            <Seg
-              options={APP_PIECE_SETS.map((p) => ({ value: p, label: t(`settings.pieces.${p}`) }))}
-              value={pieceSet}
-              onChange={seg((v: AppPieceSet) => void saveSettings({ pieceSet: v }))}
-              small
-              testID="settings-pieces"
-              accessibilityLabel={t('settings.pieces')}
-              style={styles.w200}
-            />
+          <SettingRow first title={t('settings.pieces')}>
+            {/* The phone's picker: each set's pieces on board tiles. */}
+            <View style={styles.pieces} testID="settings-pieces">
+              <PieceSetPicker value={pieceSet} onChange={(v) => void saveSettings({ pieceSet: v })} />
+            </View>
           </SettingRow>
           <SettingRow title={t('settings.animation')}>
             <Seg
@@ -97,7 +92,7 @@ const styles = StyleSheet.create({
   preview: { width: 300 },
   mb10: { marginBottom: 10 },
   mt10: { marginTop: 10 },
-  w200: { width: 200 },
+  pieces: { width: 340 },
   w300: { width: 300 },
   w330: { width: 330 },
 });

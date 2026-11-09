@@ -13,6 +13,7 @@ export const dxaccountEn: Dict = {
   'dx.account.rank_more': '{xp} XP to go',
   'dx.account.requests': 'Requests',
   'dx.account.no_requests': 'No new requests',
+  'dx.account.requests_error': 'Couldn’t load your friend requests.',
   'dx.account.wants_to_add': 'wants to add you',
   'dx.account.your_friends': 'Your friends · {n}',
   'dx.account.online': 'online',

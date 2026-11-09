@@ -65,7 +65,7 @@ const COLLAPSE = [40, 110];
 const PROFILE_HEADER = stackHeader('glass', { compact: true });
 
 /** Web profile radar bounds (differs from the analytics page on purpose). */
-function profileRadarBounds(data: RadarDatum[]) {
+export function profileRadarBounds(data: RadarDatum[]) {
   if (data.length === 0) return { min: 1200, max: 2000 };
   const values = data.map((d) => d.value);
   const lo = Math.min(...values);

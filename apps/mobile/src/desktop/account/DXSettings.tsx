@@ -2,11 +2,13 @@ import type { Language } from '@tac/core/i18n';
 import { tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
-import { Flag, Gamepad2, Info, Lock, Pencil, RotateCcw, UserRound, Volume2, type LucideIcon } from 'lucide-react-native';
+import { Camera, Flag, Gamepad2, Info, KeyRound, Lock, Pencil, RotateCcw, UserRound, Volume2, type LucideIcon } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { meQuery } from '@/features/auth/session';
+import { Avatar } from '@/features/profile/Avatar';
+import { chooseAvatar, useAvatarUpload } from '@/features/profile/avatarUpload';
 import { openOnboarding } from '@/features/onboarding/gate';
 import { saveSettings } from '@/features/settings/patch';
 import { ResetSheet } from '@/features/settings/SettingsIndexScreen';
@@ -20,7 +22,7 @@ import { DesktopPage } from '../Page';
 import { Card, DText, GhostButton, Hover, Seg } from '../kit';
 import { dx } from '../tokens';
 import { DxProfileEdit } from './DXProfileEdit';
-import { PaneTitle, RowsCard, SettingRow, useNarrow } from './parts';
+import { LinkRow, PaneTitle, RowsCard, SettingRow, useNarrow } from './parts';
 
 export type SettingsPane = 'general' | 'gameplay' | 'sound' | 'account' | 'about';
 
@@ -104,7 +106,11 @@ export function DxSettingsFrame({ pane, children }: { pane: SettingsPane; childr
   );
 }
 
-/** DXSettings (/settings, /settings/profile): profile, interface language, keyboard shortcuts. */
+/**
+ * DXSettings (/settings, /settings/profile): the profile row (avatar, name,
+ * Edit) with the phone's Change avatar, Change password and View my profile
+ * rows, the interface language, keyboard shortcuts.
+ */
 export function DxSettings() {
   const t = useT();
   const user = useAuthStore((s) => s.user);
@@ -112,23 +118,40 @@ export function DxSettings() {
   const me = useQuery({ ...meQuery, enabled: authed });
   const lang = useAppStore((s) => s.settings.language);
   const [editing, setEditing] = useState(false);
+  const preview = useAvatarUpload((s) => s.previewUri);
+  const uploading = useAvatarUpload((s) => s.uploading);
   const nickname = user?.nickname ?? '';
   const country = me.data?.country;
+  const profileHref = `/profile/${encodeURIComponent(nickname)}` as Href;
 
   return (
     <DxSettingsFrame pane="general">
       <PaneTitle>{t('settings.tab.profile')}</PaneTitle>
       <RowsCard style={styles.mt14}>
-        <SettingRow first title={user?.displayName || nickname} hint={[`@${nickname}`, country ? country.toUpperCase() : null].filter(Boolean).join(' · ')} testID="settings-profile">
+        <SettingRow
+          first
+          title={user?.displayName || nickname}
+          hint={[`@${nickname}`, country ? country.toUpperCase() : null].filter(Boolean).join(' · ')}
+          testID="settings-profile"
+          leading={<Avatar nickname={nickname} avatarUrl={user?.avatarUrl} previewUri={preview} size={44} />}
+        >
           <GhostButton
             testID="settings-profile-edit"
             accessibilityLabel={t('profile.edit_title')}
             icon={Pencil}
             label={t('profile.edit')}
-            disabled={!me.data}
-            onPress={() => setEditing(true)}
+            // The editor seeds from /users/me; until it loads, the profile page edits.
+            onPress={() => (me.data ? setEditing(true) : router.push(profileHref))}
           />
         </SettingRow>
+        <LinkRow
+          icon={Camera}
+          title={uploading ? t('profile.avatar_uploading') : t('profile.change_avatar')}
+          testID="settings-profile-avatar"
+          onPress={chooseAvatar}
+        />
+        <LinkRow icon={KeyRound} title={t('profile.change_password')} testID="settings-profile-password" onPress={() => router.replace('/settings/account' as Href)} />
+        <LinkRow icon={UserRound} title={t('settings.profile.view')} testID="settings-profile-view" onPress={() => router.push(profileHref)} />
         <SettingRow title={t('dx.account.ui_language')} hint={t('dx.account.ui_language_hint')}>
           <Seg
             options={[

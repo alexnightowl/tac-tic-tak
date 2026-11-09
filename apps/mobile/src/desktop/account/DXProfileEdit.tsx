@@ -107,7 +107,7 @@ export function DxProfileEdit({ initial, onClose }: { initial: ProfileFields; on
       ) : null}
 
       <View style={styles.actions}>
-        <GhostButton testID="dx-profile-edit-cancel" accessibilityLabel={t('common.cancel')} label={t('common.cancel')} onPress={close} />
+        <GhostButton height={36} testID="dx-profile-edit-cancel" accessibilityLabel={t('common.cancel')} label={t('common.cancel')} onPress={close} />
         <PlateButton
           label={t('common.save')}
           size="sm"

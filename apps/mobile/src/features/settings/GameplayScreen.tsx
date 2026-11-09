@@ -166,7 +166,7 @@ const PREVIEW: readonly PieceCode[] = ['wK', 'wN', 'bQ', 'bP'];
 const TILE = 36;
 
 /** web PieceSetPicker: a radio pair, four pieces each on alternating tiles. */
-function PieceSetPicker({ value, onChange }: { value: AppPieceSet; onChange: (v: AppPieceSet) => void }) {
+export function PieceSetPicker({ value, onChange }: { value: AppPieceSet; onChange: (v: AppPieceSet) => void }) {
   const t = useT();
   return (
     <View style={styles.sets} accessibilityRole="radiogroup" accessibilityLabel={t('settings.pieces')}>

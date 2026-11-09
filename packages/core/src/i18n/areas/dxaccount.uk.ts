@@ -13,6 +13,7 @@ export const dxaccountUk: Dict = {
   'dx.account.rank_more': 'ще {xp} XP',
   'dx.account.requests': 'Запити',
   'dx.account.no_requests': 'Нових запитів немає',
+  'dx.account.requests_error': 'Не вдалося завантажити запити в друзі.',
   'dx.account.wants_to_add': 'хоче додати тебе',
   'dx.account.your_friends': 'Твої друзі · {n}',
   'dx.account.online': 'онлайн',

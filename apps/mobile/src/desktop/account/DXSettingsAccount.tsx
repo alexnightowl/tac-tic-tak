@@ -4,8 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Check, LogOut, MonitorSmartphone } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { meQuery, resetAll } from '@/features/auth/session';
+import { useShake } from '@/features/auth/useShake';
 import { DeleteSheet, LogoutAllSheet } from '@/features/settings/AccountScreen';
 import { ACCOUNT_DELETE, ACCOUNT_LOGOUT_ALL } from '@/features/settings/flags';
 import { usePasswordChange } from '@/features/settings/usePasswordChange';
@@ -94,82 +96,86 @@ export function DxSettingsAccount() {
 
 function PasswordCard() {
   const t = useT();
-  const f = usePasswordChange();
+  // A failed change shakes the form, as on the phone.
+  const { style: shakeStyle, shake } = useShake();
+  const f = usePasswordChange(shake);
   const rules = [
     { ok: f.rules.len, label: t('dx.account.rule_len') },
     { ok: f.rules.letter, label: t('dx.account.rule_letter') },
     { ok: f.rules.digit, label: t('dx.account.rule_digit') },
   ];
   return (
-    <Card style={styles.pw} testID="account-password-form">
-      <Label>{t('profile.change_password')}</Label>
-      <View style={styles.grid}>
-        <View style={styles.cell}>
-          <FieldLabel label={t('profile.current_password')} />
-          <DxField
-            testID="account-current"
-            accessibilityLabel={t('profile.current_password')}
-            value={f.current}
-            onChangeText={f.setCurrent}
-            secret
-            autoCapitalize="none"
-            autoComplete="current-password"
-            placeholder="••••••••"
-          />
-        </View>
-        <View style={styles.cell} />
-        <View style={styles.cell}>
-          <FieldLabel label={t('profile.new_password')} />
-          <DxField
-            testID="account-new"
-            accessibilityLabel={t('profile.new_password')}
-            value={f.next}
-            onChangeText={f.setNext}
-            secret
-            autoCapitalize="none"
-            autoComplete="new-password"
-            placeholder="••••••••"
-          />
-        </View>
-        <View style={styles.cell}>
-          <FieldLabel label={t('profile.repeat_new_password')} note={f.mismatch ?? undefined} noteColor={semantic.danger} />
-          <DxField
-            testID="account-repeat"
-            accessibilityLabel={t('profile.repeat_new_password')}
-            value={f.repeat}
-            onChangeText={f.setRepeat}
-            secret
-            autoCapitalize="none"
-            autoComplete="new-password"
-            placeholder="••••••••"
-            error={!!f.mismatch}
-            onSubmitEditing={() => void f.submit()}
-          />
-        </View>
-      </View>
-      <View style={styles.foot}>
-        {rules.map((r) => (
-          <View key={r.label} style={styles.rule} testID={`account-rule-${r.ok ? 'ok' : 'no'}`}>
-            <Check size={13} color={r.ok ? dx.sage : dx.dust} strokeWidth={2.2} />
-            <DText size={12} color={r.ok ? dx.sage : dx.dust}>
-              {r.label}
-            </DText>
+    <Animated.View style={shakeStyle}>
+      <Card style={styles.pw} testID="account-password-form">
+        <Label>{t('profile.change_password')}</Label>
+        <View style={styles.grid}>
+          <View style={styles.cell}>
+            <FieldLabel label={t('profile.current_password')} />
+            <DxField
+              testID="account-current"
+              accessibilityLabel={t('profile.current_password')}
+              value={f.current}
+              onChangeText={f.setCurrent}
+              secret
+              autoCapitalize="none"
+              autoComplete="current-password"
+              placeholder="••••••••"
+            />
           </View>
-        ))}
-        <View style={styles.flex} />
-        <PlateButton testID="account-password-save" label={t('common.save')} size="sm" disabled={!f.valid} loading={f.saving} onPress={() => void f.submit()} style={styles.save} />
-      </View>
-      {f.error ? (
-        <DText size={13} color={semantic.danger} style={styles.mt12} testID="account-password-error" accessibilityLiveRegion="polite">
-          {f.error}
-        </DText>
-      ) : null}
-      {f.ok ? (
-        <DText size={13} color={dx.sage} style={styles.mt12} testID="account-password-ok" accessibilityLiveRegion="polite">
-          {t('profile.password_changed')}
-        </DText>
-      ) : null}
-    </Card>
+          <View style={styles.cell} />
+          <View style={styles.cell}>
+            <FieldLabel label={t('profile.new_password')} />
+            <DxField
+              testID="account-new"
+              accessibilityLabel={t('profile.new_password')}
+              value={f.next}
+              onChangeText={f.setNext}
+              secret
+              autoCapitalize="none"
+              autoComplete="new-password"
+              placeholder="••••••••"
+            />
+          </View>
+          <View style={styles.cell}>
+            <FieldLabel label={t('profile.repeat_new_password')} note={f.mismatch ?? undefined} noteColor={semantic.danger} />
+            <DxField
+              testID="account-repeat"
+              accessibilityLabel={t('profile.repeat_new_password')}
+              value={f.repeat}
+              onChangeText={f.setRepeat}
+              secret
+              autoCapitalize="none"
+              autoComplete="new-password"
+              placeholder="••••••••"
+              error={!!f.mismatch}
+              onSubmitEditing={() => void f.submit()}
+            />
+          </View>
+        </View>
+        <View style={styles.foot}>
+          {rules.map((r) => (
+            <View key={r.label} style={styles.rule} testID={`account-rule-${r.ok ? 'ok' : 'no'}`}>
+              <Check size={13} color={r.ok ? dx.sage : dx.dust} strokeWidth={2.2} />
+              <DText size={12} color={r.ok ? dx.sage : dx.dust}>
+                {r.label}
+              </DText>
+            </View>
+          ))}
+          <View style={styles.flex} />
+          <PlateButton testID="account-password-save" label={t('common.save')} size="sm" disabled={!f.valid} loading={f.saving} onPress={() => void f.submit()} style={styles.save} />
+        </View>
+        {f.error ? (
+          <DText size={13} color={semantic.danger} style={styles.mt12} testID="account-password-error" accessibilityLiveRegion="polite">
+            {f.error}
+          </DText>
+        ) : null}
+        {f.ok ? (
+          <DText size={13} color={dx.sage} style={styles.mt12} testID="account-password-ok" accessibilityLiveRegion="polite">
+            {t('profile.password_changed')}
+          </DText>
+        ) : null}
+      </Card>
+    </Animated.View>
   );
 }
 
