@@ -23,6 +23,11 @@ export class AnalyticsController {
     return this.analytics.recommendations(u.id, style);
   }
 
+  @Get('haste')
+  haste(@CurrentUser() u: AuthedUser, @Query('days') days?: string) {
+    return this.analytics.haste(u.id, days);
+  }
+
   @Get('timeline')
   timeline(
     @CurrentUser() u: AuthedUser,

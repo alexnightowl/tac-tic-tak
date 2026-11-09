@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { isTrainingStyle, TrainingStyle } from '../sessions/unlock';
+import { hasteMs } from '../sessions/progress';
+import { isTrainingStyle, TrainingStyle, TRAINING_STYLES } from '../sessions/unlock';
 
 type ThemeRow = {
   slug: string;
@@ -80,6 +81,8 @@ export class AnalyticsService {
         mode: s.mode,
         style: s.style,
         theme: s.theme,
+        themes: s.themes,
+        variant: s.variant,
       })),
       allTimePeak,
       lifetime,
@@ -114,6 +117,7 @@ export class AnalyticsService {
           JOIN "PuzzleTheme" pt ON pt."puzzleId" = a."puzzleId"
           JOIN "Theme" t ON t."id" = pt."themeId"
           WHERE a."userId" = ${userId} AND s."style" = ${style}
+            AND s."variant" IS DISTINCT FROM 'blind'
           GROUP BY t."slug"
           HAVING COUNT(*) >= 3
           ORDER BY attempts DESC
@@ -136,9 +140,11 @@ export class AnalyticsService {
                    0
                  )::int AS rating
           FROM "TrainingAttempt" a
+          JOIN "TrainingSession" s ON s."id" = a."sessionId"
           JOIN "PuzzleTheme" pt ON pt."puzzleId" = a."puzzleId"
           JOIN "Theme" t ON t."id" = pt."themeId"
           WHERE a."userId" = ${userId}
+            AND s."variant" IS DISTINCT FROM 'blind'
           GROUP BY t."slug"
           HAVING COUNT(*) >= 3
           ORDER BY attempts DESC
@@ -197,6 +203,7 @@ export class AnalyticsService {
         style: true,
         mode: true,
         ruleset: true,
+        variant: true,
         startRating: true,
         peakRating: true,
         solvedCount: true,
@@ -210,10 +217,79 @@ export class AnalyticsService {
       // D39: the level chart plots rated v2 sessions' starts (the level) only.
       mode: r.mode,
       ruleset: r.ruleset,
+      variant: r.variant,
       startRating: r.startRating,
       peakRating: r.peakRating,
       solved: r.solvedCount,
       durationSec: r.durationSec,
     }));
   }
+
+  /**
+   * Hasty mistakes (D40): wrong attempts whose wrong move came in under
+   * the style's haste threshold (hasteMs). Older rows have no mistakeMs;
+   * their whole-puzzle time stands in (it can only be longer, so an old
+   * row is never counted hasty by mistake). Blind sessions are left out.
+   */
+  async haste(userId: string, daysParam?: string) {
+    const days = clampInt(daysParam, 30, 7, 180);
+    const DAY = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    const week0 = mondayUtc(now) - 7 * 7 * DAY;
+    const since = Math.min(now - 2 * days * DAY, week0);
+    const rows = await this.prisma.trainingAttempt.findMany({
+      where: {
+        userId,
+        correct: false,
+        createdAt: { gte: new Date(since) },
+        session: { OR: [{ variant: null }, { variant: { not: 'blind' } }] },
+      },
+      select: { createdAt: true, responseMs: true, mistakeMs: true, session: { select: { style: true } } },
+    });
+
+    const counts = () => ({ mistakes: 0, hasty: 0 });
+    const total = counts();
+    const previous = counts();
+    const byStyle = new Map<TrainingStyle, ReturnType<typeof counts>>();
+    const weeks = Array.from({ length: 8 }, (_, i) => ({ start: week0 + i * 7 * DAY, ...counts() }));
+    const add = (c: ReturnType<typeof counts>, hasty: boolean) => {
+      c.mistakes += 1;
+      if (hasty) c.hasty += 1;
+    };
+    for (const r of rows) {
+      const style = isTrainingStyle(r.session.style) ? r.session.style : 'blitz';
+      const hasty = (r.mistakeMs ?? r.responseMs) < hasteMs(style);
+      const at = r.createdAt.getTime();
+      if (at >= now - days * DAY) {
+        add(total, hasty);
+        if (!byStyle.has(style)) byStyle.set(style, counts());
+        add(byStyle.get(style)!, hasty);
+      } else if (at >= now - 2 * days * DAY) {
+        add(previous, hasty);
+      }
+      const w = Math.floor((at - week0) / (7 * DAY));
+      if (w >= 0 && w < weeks.length) add(weeks[w], hasty);
+    }
+    const withShare = (c: ReturnType<typeof counts>) => ({ ...c, share: c.mistakes > 0 ? c.hasty / c.mistakes : 0 });
+    return {
+      thresholdsMs: Object.fromEntries(TRAINING_STYLES.map((s) => [s, hasteMs(s)])) as Record<TrainingStyle, number>,
+      days,
+      total: withShare(total),
+      previous: withShare(previous),
+      byStyle: TRAINING_STYLES.filter((s) => byStyle.has(s)).map((s) => ({ style: s, ...withShare(byStyle.get(s)!) })),
+      weeks: weeks.map(({ start, ...c }) => ({ weekStart: new Date(start).toISOString().slice(0, 10), ...withShare(c) })),
+    };
+  }
+}
+
+function clampInt(raw: string | undefined, fallback: number, min: number, max: number): number {
+  const n = Number.parseInt(raw ?? '', 10);
+  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
+}
+
+/** Midnight UTC of the Monday of the week holding `ms`. */
+function mondayUtc(ms: number): number {
+  const d = new Date(ms);
+  const midnight = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  return midnight - ((d.getUTCDay() + 6) % 7) * 24 * 60 * 60 * 1000;
 }

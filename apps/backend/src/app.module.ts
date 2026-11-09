@@ -14,6 +14,8 @@ import { OfflineModule } from './offline/offline.module';
 import { ExperienceModule } from './experience/experience.module';
 import { LibraryModule } from './library/library.module';
 import { StormModule } from './storm/storm.module';
+import { PlanModule } from './plan/plan.module';
+import { WoodpeckerModule } from './woodpecker/woodpecker.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { StormModule } from './storm/storm.module';
     ExperienceModule,
     LibraryModule,
     StormModule,
+    PlanModule,
+    WoodpeckerModule,
   ],
 })
 export class AppModule {}

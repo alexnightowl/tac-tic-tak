@@ -301,15 +301,32 @@ export class LibraryService implements OnModuleInit {
    * the streak (as offline days do: up to 3 days late); the rating never
    * moves.
    */
+  /**
+   * The player's Woodpecker sets named in a batch (D40): their results
+   * ride the Library pipeline with bookId = the set id. Archived sets
+   * still take late results.
+   */
+  private async woodpeckerSets(userId: string, attempts: LibraryAttemptDto[]): Promise<Map<string, Set<string>>> {
+    const ids = [...new Set(attempts.map((a) => a.bookId).filter(isWoodpeckerId))];
+    if (ids.length === 0) return new Map();
+    const rows = await this.prisma.woodpeckerSet.findMany({
+      where: { id: { in: ids }, userId },
+      select: { id: true, puzzleIds: true },
+    });
+    return new Map(rows.map((r) => [r.id, new Set(r.puzzleIds)]));
+  }
+
   async sync(userId: string, dto: LibrarySyncDto) {
     const now = Date.now();
     const seen = new Set<string>();
     let unknown = 0;
     const valid: (LibraryAttemptDto & { at: Date })[] = [];
+    const sets = await this.woodpeckerSets(userId, dto.attempts);
     for (const a of dto.attempts) {
       if (seen.has(a.clientId)) continue;
       seen.add(a.clientId);
-      if ((LIBRARY_PUZZLE_BOOK.get(a.puzzleId) ?? COURSE_PUZZLE_COURSE.get(a.puzzleId)) !== a.bookId) {
+      const inSet = sets.get(a.bookId)?.has(a.puzzleId) ?? false;
+      if (!inSet && (LIBRARY_PUZZLE_BOOK.get(a.puzzleId) ?? COURSE_PUZZLE_COURSE.get(a.puzzleId)) !== a.bookId) {
         unknown += 1;
         continue;
       }
@@ -384,4 +401,8 @@ export class LibraryService implements OnModuleInit {
     const examsSaved = await this.saveExams(userId, dto.exams);
     return { ...saved, streak, ...(dto.exams ? { exams: examsSaved } : {}) };
   }
+}
+
+function isWoodpeckerId(id: string): boolean {
+  return id.startsWith('wp_');
 }
