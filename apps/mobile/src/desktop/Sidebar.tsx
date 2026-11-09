@@ -21,12 +21,15 @@ import { SHELL_TABS, type ShellTabId } from '@/shell/tabs';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { CountBadge } from '@/ui/Buttons';
-import { BrandLogo, HEADER_LOGO_GLOW } from '@/ui/BrandLogo';
+import { BrandLogo, type LogoGlow } from '@/ui/BrandLogo';
 import { useT, useTn } from '@/ui/lang';
 import { HotkeysDialog } from './HotkeysDialog';
 import { useHotkeys } from './hotkeys';
 import { DText, Hover, Kbd, Label, Seg } from './kit';
 import { dx, dxSize } from './tokens';
+
+/** A tighter ember halo than the phone header's: the sidebar corner would clip that one. */
+const SIDE_LOGO_GLOW: LogoGlow = { box: 64, blur: 4 };
 
 const HREF: Record<ShellTabId, string> = { home: '/', play: '/play', learn: '/learn', rivals: '/rivals', stats: '/stats' };
 
@@ -75,7 +78,7 @@ export function Sidebar({ compact = false }: { compact?: boolean }) {
   return (
     <View style={[styles.side, compact && styles.sideCompact]} testID="dx-sidebar">
       <View style={[styles.brand, compact && styles.brandCompact]} accessible accessibilityRole="header" accessibilityLabel={t('brand.name')}>
-        <BrandLogo size={compact ? 26 : 30} glow={HEADER_LOGO_GLOW} />
+        <BrandLogo size={compact ? 26 : 30} glow={SIDE_LOGO_GLOW} />
         {compact ? null : (
           <DText serif weight={700} size={19} ls={0.5} lang="en" numberOfLines={1}>
             {t('brand.name')}

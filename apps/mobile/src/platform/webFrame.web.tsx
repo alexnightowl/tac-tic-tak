@@ -58,6 +58,7 @@ html, body { background-color: ${eos.ink}; }
 }
 [aria-disabled="true"] { cursor: default; }
 input, textarea { outline: none; }
+[tabindex]:focus:not(:focus-visible) { outline: none; }
 `;
 if (typeof document !== 'undefined') {
   const el = document.getElementById('tt-web-css') ?? document.head.appendChild(document.createElement('style'));
