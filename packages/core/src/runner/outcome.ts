@@ -8,6 +8,7 @@ import {
   LEVEL_STEP,
   UNLOCK_REWARD,
   bandFor,
+  initialLevel,
   levelOf,
   type BandKey,
   type CriterionId,
@@ -123,9 +124,15 @@ export function levelProgress(
   return { next, toNext: Math.max(0, next - rating), ratio: clamp01((rating - level) / LEVEL_STEP), levelMark: null };
 }
 
-/** The player's level for a progression; derived from the rating before the server sent one. */
-export function levelFor(p: { level?: number; currentPuzzleRating: number }): number {
-  return p.level ?? levelOf(p.currentPuzzleRating);
+/**
+ * The player's level for a progression (D39: the only number a player
+ * sees at rest). Before the server sent one it is derived the way the
+ * server starts the first v2 session: initialLevel(rating, norm) when the
+ * norm is known, else the rating's grid mark.
+ */
+export function levelFor(p: { level?: number | null; currentPuzzleRating: number; unlockedStartRating?: number }): number {
+  if (p.level != null) return p.level;
+  return p.unlockedStartRating != null ? initialLevel(p.currentPuzzleRating, p.unlockedStartRating) : levelOf(p.currentPuzzleRating);
 }
 
 /** What a Play v2 rated finish shows: the rating move and the level outcome. */

@@ -82,7 +82,7 @@ export const stormEn: Dict = {
   'storm.result.chart_a11y': 'Bar per puzzle: height is difficulty; {n} mistakes marked in ember',
   'storm.result.legend_solved': 'Solved',
   'storm.result.legend_mistake': 'Mistake — tap to review',
-  'storm.result.mistake_a11y': 'Mistake on puzzle {n}, rating {r}. Open it',
+  'storm.result.mistake_a11y': 'Mistake on puzzle {n}, difficulty {r}. Open it',
   'storm.result.play_again': 'Play again',
   'storm.result.dare': 'Dare a friend to beat {n}',
   'storm.result.missing': 'This run isn’t on this phone any more.',

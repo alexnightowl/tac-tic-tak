@@ -19,13 +19,13 @@ export const commonEn: Dict = {
 
   'style.bullet.name': 'Bullet',
   'style.bullet.desc': 'Rapid-fire pattern recognition. Short sessions, snap decisions — trains the speed you need for bullet and hyper-bullet games.',
-  'style.bullet.rating_label': 'Bullet rating',
+  'style.bullet.rating_label': 'Bullet level',
   'style.blitz.name': 'Blitz',
   'style.blitz.desc': 'The all-rounder. Balanced pace and difficulty — the default choice for building tactical sharpness for blitz.',
-  'style.blitz.rating_label': 'Blitz rating',
+  'style.blitz.rating_label': 'Blitz level',
   'style.rapid.name': 'Rapid',
   'style.rapid.desc': 'Deep calculation. Longer sessions, tougher positions, higher accuracy bar — geared for rapid and classical play.',
-  'style.rapid.rating_label': 'Rapid rating',
+  'style.rapid.rating_label': 'Rapid level',
 
   'levels.novice': 'Novice',
   'levels.beginner': 'Beginner',

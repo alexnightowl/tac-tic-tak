@@ -1,7 +1,7 @@
 // Pure parts of apps/frontend/src/components/charts/RatingHistoryChart.tsx.
 // The web draws into a 1000-wide viewBox stretched with
 // preserveAspectRatio="none"; here the caller passes real pixel sizes.
-import type { TrainingStyle } from '../rules';
+import { isTrainingStyle, type TrainingStyle } from '../rules';
 import { eos, tone } from '../tokens/colors';
 
 export type RatingPoint = { endedAt: string; style: TrainingStyle; rating: number };
@@ -25,6 +25,36 @@ export const RATING_AREA_OPACITY: Record<TrainingStyle, number> = {
 /** Straight segments through every point (the canvas draws polylines). */
 export function linearPath(pts: XY[]): string {
   return pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+}
+
+/** A row of GET /analytics/timeline (or a profile's timeline) as levelPoints reads it. */
+export type LevelTimelineRow = {
+  endedAt: string;
+  style: string;
+  startRating: number;
+  /** 'mixed' | 'casual' | 'theme' (older servers don't send it). */
+  mode?: string | null;
+  /** 'v2' for Play v2 sessions, null for the old norm rules (older servers don't send it). */
+  ruleset?: string | null;
+};
+
+/**
+ * D39 "Level over time": every rated v2 session starts at the player's
+ * level, so its start is the level it was played at. When the row carries
+ * `mode` / `ruleset`, only rated (mode 'mixed') v2 sessions count; a row
+ * without the fields (an older server) counts if its style is a training
+ * style.
+ */
+export function levelPoints(rows: ReadonlyArray<LevelTimelineRow> | undefined): RatingPoint[] {
+  if (!rows) return [];
+  const out: RatingPoint[] = [];
+  for (const r of rows) {
+    if (!isTrainingStyle(r.style)) continue;
+    if (r.mode !== undefined && r.mode !== 'mixed') continue;
+    if (r.ruleset !== undefined && r.ruleset !== 'v2') continue;
+    out.push({ endedAt: r.endedAt, style: r.style, rating: r.startRating });
+  }
+  return out;
 }
 
 export const RATING_STYLE_ORDER: TrainingStyle[] = ['rapid', 'blitz', 'bullet'];

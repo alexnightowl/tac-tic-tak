@@ -13,7 +13,7 @@ export const learnEn: Dict = {
   'learn.review_entry.waiting.many': '{n} puzzles waiting',
   // Learn screen (canvas LearnHome / LearnBooks).
   'learn.title': 'Learn',
-  'learn.subtitle': 'Calm study. Nothing here touches your rating.',
+  'learn.subtitle': 'Calm study. Nothing here touches your level.',
   'learn.segment.courses': 'Courses',
   'learn.segment.books': 'Books',
   'learn.segments_a11y': 'Learn sections',
@@ -22,7 +22,7 @@ export const learnEn: Dict = {
   'learn.course.exam_line': 'Final exam',
   'learn.course.continue_cycle': 'Continue · cycle {n}',
   'learn.course.start_cycle': 'Start cycle {n}',
-  'learn.suggest': 'At {rating} we suggest {course}.',
+  'learn.suggest': 'At level {rating} we suggest {course}.',
   'learn.course_a11y': '{title}, {range}, {status}',
   'learn.filter.all': 'All',
   'learn.filter.progress': 'In progress',

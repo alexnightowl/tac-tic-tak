@@ -5,7 +5,7 @@ import type { Dict } from '../types';
 export const offlineEn: Dict = {
   // Packs screen.
   'offline.title': 'Offline puzzles',
-  'offline.lede': 'Download ahead, solve on a plane or in the metro. Ratings update when you’re back online.',
+  'offline.lede': 'Download ahead, solve on a plane or in the metro. Results sync when you’re back online; offline solving never changes your level.',
   'offline.on_phone.one': 'puzzle on this phone',
   'offline.on_phone.other': 'puzzles on this phone',
   'offline.on_phone.few': 'puzzles on this phone',
@@ -73,9 +73,9 @@ export const offlineEn: Dict = {
   'offline.exit': 'Exit',
   'offline.chip': 'Offline',
   'offline.progress': '{pack} pack · {n} of {total}',
-  'offline.rating': 'Rating',
-  'offline.rating_a11y': 'Rating {rating}, frozen until the next sync',
-  'offline.frozen_note': '* Rating is frozen offline and catches up when you land.',
+  'offline.rating': 'Level',
+  'offline.rating_a11y': 'Level {rating}, offline solving doesn’t change it',
+  'offline.frozen_note': '* Offline puzzles train you but never change your level.',
   'offline.nothing_waiting': 'Results sync when you’re online',
   'offline.skip': 'Skip',
   'offline.skip_a11y': 'Skip this puzzle (counts as missed)',

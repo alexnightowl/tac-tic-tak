@@ -12,7 +12,7 @@ export const onboardingUk: Dict = {
   // Replayed by a player who already has a level (calibration done).
   'onboarding.recalibrate': 'Перекалібрувати рівень',
   'onboarding.keep_level': 'Залишити мій рівень',
-  'onboarding.recalibrate_note': 'Наступні 5 сесій у кожному стилі рейтинг рухатиметься швидше, щоб заново знайти твій рівень. Рейтинг, рівень та історія залишаться.',
+  'onboarding.recalibrate_note': 'Наступні 5 сесій у кожному стилі складність рухатиметься швидше, щоб заново знайти твій рівень. Рівень та історія залишаться.',
   'onboarding.recalibrate_error': 'Не вдалося зв’язатися із сервером. Спробуй ще раз.',
 
   // 1 · Welcome (kicker = brand.name).
@@ -22,14 +22,14 @@ export const onboardingUk: Dict = {
   // 2 · The training (animated back-rank mate).
   'onboarding.training.kicker': 'Тренування',
   'onboarding.training.title': 'Один хід виграє.\nЗнайди його.',
-  'onboarding.training.body': 'Кожна сесія — серія задач під твій рівень. Розвʼязуй швидко й чисто — рейтинг піде слідом.',
+  'onboarding.training.body': 'Кожна сесія — серія задач під твій рівень. Розвʼязуй швидко й чисто — рівень піде слідом.',
   'onboarding.training.board': 'Мат по останній горизонталі: тура d1–d8',
   'onboarding.training.pill': 'Rd8# · розвʼязано за 4 с',
 
   // 3 · Your path (the rank eyes).
   'onboarding.path.kicker': 'Твій шлях',
   'onboarding.path.title': 'Кожен рівень\nпробуджує нове око',
-  'onboarding.path.body': 'Піднімайся від Новачка до Експерта. Ранг іде за рейтингом — і може впасти, якщо перестанеш тренуватися.',
+  'onboarding.path.body': 'Піднімайся від Новачка до Експерта. Ранг іде за рівнем — і може впасти, якщо перестанеш тренуватися.',
   'onboarding.path.you': '{level} · ти',
 
   // 4 · The habit (sample streak card; illustrative values).

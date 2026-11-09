@@ -45,11 +45,11 @@ export const achievementsUk: Dict = {
   'achv.calibration-done.name': 'Перший погляд',
   'achv.calibration-done.desc': 'Заверши калібровку в будь-якому стилі.',
   'achv.peak-1500.name': 'Пробудження',
-  'achv.peak-1500.desc': 'Досягни піку 1500 в будь-якому стилі.',
+  'achv.peak-1500.desc': 'Досягни рівня 1500 в будь-якому стилі.',
   'achv.peak-1800.name': 'Гостре око',
   'achv.peak-1800.desc': 'Досягни рівня «Просунутий» (1800) у будь-якому стилі.',
   'achv.peak-2000.name': 'Всевидюче око',
-  'achv.peak-2000.desc': 'Досягни піку 2000 в будь-якому стилі.',
+  'achv.peak-2000.desc': 'Досягни рівня 2000 в будь-якому стилі.',
 
   'achv.streak-3.name': 'Іскра',
   'achv.streak-3.desc': 'Грай три дні підряд.',

@@ -5,7 +5,7 @@ import type { Dict } from '../types';
 export const offlineUk: Dict = {
   // Packs screen.
   'offline.title': 'Задачі офлайн',
-  'offline.lede': 'Завантажте заздалегідь і розв’язуйте в літаку чи метро. Рейтинг оновиться, щойно ви повернетеся онлайн.',
+  'offline.lede': 'Завантажте заздалегідь і розв’язуйте в літаку чи метро. Результати синхронізуються, щойно ви повернетеся онлайн; рівень офлайн не змінюється.',
   'offline.on_phone.one': 'задача на телефоні',
   'offline.on_phone.few': 'задачі на телефоні',
   'offline.on_phone.many': 'задач на телефоні',
@@ -73,9 +73,9 @@ export const offlineUk: Dict = {
   'offline.exit': 'Вийти',
   'offline.chip': 'Офлайн',
   'offline.progress': '{pack} · {n} з {total}',
-  'offline.rating': 'Рейтинг',
-  'offline.rating_a11y': 'Рейтинг {rating}, заморожений до синхронізації',
-  'offline.frozen_note': '* Офлайн рейтинг заморожено, він наздожене після синхронізації.',
+  'offline.rating': 'Рівень',
+  'offline.rating_a11y': 'Рівень {rating}, офлайн він не змінюється',
+  'offline.frozen_note': '* Офлайн задачі тренують, але рівень не змінюють.',
   'offline.nothing_waiting': 'Результати синхронізуються, щойно ви будете онлайн',
   'offline.skip': 'Пропустити',
   'offline.skip_a11y': 'Пропустити задачу (зарахується як помилка)',

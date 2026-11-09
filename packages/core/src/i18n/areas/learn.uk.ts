@@ -13,7 +13,7 @@ export const learnUk: Dict = {
   'learn.review_entry.waiting.other': '{n} задачі чекають',
   // Learn screen (canvas LearnHome / LearnBooks).
   'learn.title': 'Навчання',
-  'learn.subtitle': 'Спокійне навчання. Тут ніщо не впливає на ваш рейтинг.',
+  'learn.subtitle': 'Спокійне навчання. Тут ніщо не впливає на ваш рівень.',
   'learn.segment.courses': 'Курси',
   'learn.segment.books': 'Книги',
   'learn.segments_a11y': 'Розділи навчання',
@@ -22,7 +22,7 @@ export const learnUk: Dict = {
   'learn.course.exam_line': 'Підсумковий іспит',
   'learn.course.continue_cycle': 'Продовжити · цикл {n}',
   'learn.course.start_cycle': 'Почати цикл {n}',
-  'learn.suggest': 'З рейтингом {rating} радимо курс {course}.',
+  'learn.suggest': 'На рівні {rating} радимо курс {course}.',
   'learn.course_a11y': '{title}, {range}, {status}',
   'learn.filter.all': 'Усі',
   'learn.filter.progress': 'У процесі',

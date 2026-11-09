@@ -19,13 +19,13 @@ export const commonUk: Dict = {
 
   'style.bullet.name': 'Пуля',
   'style.bullet.desc': 'Швидке розпізнавання патернів. Короткі сесії, миттєві рішення — тренування для пулі та гіпер-пулі.',
-  'style.bullet.rating_label': 'Рейтинг пулі',
+  'style.bullet.rating_label': 'Рівень пулі',
   'style.blitz.name': 'Бліц',
   'style.blitz.desc': 'Універсальний стиль. Збалансований темп і складність — основа для тренування тактики під бліц.',
-  'style.blitz.rating_label': 'Рейтинг бліцу',
+  'style.blitz.rating_label': 'Рівень бліцу',
   'style.rapid.name': 'Рапід',
   'style.rapid.desc': 'Глибокі розрахунки. Довші сесії, складніші позиції, вища точність — для рапіду та класики.',
-  'style.rapid.rating_label': 'Рейтинг рапіду',
+  'style.rapid.rating_label': 'Рівень рапіду',
 
   'levels.novice': 'Новачок',
   'levels.beginner': 'Початківець',

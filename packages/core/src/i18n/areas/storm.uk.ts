@@ -82,7 +82,7 @@ export const stormUk: Dict = {
   'storm.result.chart_a11y': 'Стовпчик на задачу: висота — складність; помилок позначено: {n}',
   'storm.result.legend_solved': 'Розв’язано',
   'storm.result.legend_mistake': 'Помилка — торкніться, щоб розібрати',
-  'storm.result.mistake_a11y': 'Помилка в задачі {n}, рейтинг {r}. Відкрити',
+  'storm.result.mistake_a11y': 'Помилка в задачі {n}, складність {r}. Відкрити',
   'storm.result.play_again': 'Ще раз',
   'storm.result.dare': 'Киньте виклик: побити {n}',
   'storm.result.missing': 'Цього забігу вже немає на телефоні.',

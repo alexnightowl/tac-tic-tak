@@ -45,11 +45,11 @@ export const achievementsEn: Dict = {
   'achv.calibration-done.name': 'First sight',
   'achv.calibration-done.desc': 'Complete the calibration window in any style.',
   'achv.peak-1500.name': 'Awakening',
-  'achv.peak-1500.desc': 'Hit a peak rating of 1500 in any style.',
+  'achv.peak-1500.desc': 'Reach level 1500 in any style.',
   'achv.peak-1800.name': 'Sharp eye',
   'achv.peak-1800.desc': 'Reach Advanced (1800) in any style.',
   'achv.peak-2000.name': 'All-seeing',
-  'achv.peak-2000.desc': 'Hit a peak rating of 2000 in any style.',
+  'achv.peak-2000.desc': 'Reach level 2000 in any style.',
 
   'achv.streak-3.name': 'Spark',
   'achv.streak-3.desc': 'Play three days in a row.',
