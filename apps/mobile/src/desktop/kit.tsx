@@ -173,11 +173,25 @@ export function RowRule() {
 }
 
 /** .bar: 6 px track with the ember gradient fill (0..1). */
-export function Bar({ value, height = 6, colors, style }: { value: number; height?: number; colors?: readonly [string, string]; style?: StyleProp<ViewStyle> }) {
+export function Bar({
+  value,
+  height = 6,
+  colors,
+  mark,
+  style,
+}: {
+  value: number;
+  height?: number;
+  colors?: readonly [string, string];
+  /** A tick at this fraction (the level on a protected-level bar). */
+  mark?: number | null;
+  style?: StyleProp<ViewStyle>;
+}) {
   const w = `${Math.max(0, Math.min(1, value)) * 100}%` as const;
   return (
     <View style={[styles.bar, { height }, style]}>
       <LinearGradient colors={colors ?? [dx.barFrom, dx.barTo]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.barFill, { width: w }]} />
+      {mark != null ? <View style={[styles.barMark, { left: `${mark * 100}%` }]} /> : null}
     </View>
   );
 }
@@ -404,6 +418,7 @@ const styles = StyleSheet.create({
   rule: { height: 1, backgroundColor: dx.rowRule },
   bar: { borderRadius: radii.full, backgroundColor: dx.track, overflow: 'hidden' },
   barFill: { height: '100%', borderRadius: radii.full },
+  barMark: { position: 'absolute', top: 0, bottom: 0, width: 2, marginLeft: -1, backgroundColor: eos.bone },
   hover: { backgroundColor: alpha(eos.bone, 0.035) },
   pressed: { opacity: 0.85 },
   disabled: { opacity: 0.45 },

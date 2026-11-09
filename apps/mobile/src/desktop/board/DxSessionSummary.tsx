@@ -145,6 +145,7 @@ function Body({
             next: p.next,
             toNext: p.toNext,
             ratio: p.ratio,
+            levelMark: p.levelMark,
             up: false,
             down: false,
             guarded: false,
@@ -318,7 +319,7 @@ function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string;
             {t('summary.rating_from', { rating: o.ratingBefore })}
           </DText>
         </View>
-        <Bar value={o.guarded ? 0 : o.ratio} style={styles.mt12} />
+        <Bar value={o.guarded ? 0 : o.ratio} mark={o.guarded ? null : o.levelMark} style={styles.mt12} />
         <View style={styles.levelRow}>
           <DText size={12} color={dx.dust} tabular testID="summary-level">
             {t('summary.level', { level: o.level })}

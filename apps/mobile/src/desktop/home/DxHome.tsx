@@ -271,7 +271,7 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
           {delta ? <Pill tone={delta > 0 ? 'sage' : 'rose'} label={t('dx.home.since_visit', { delta: signed(delta) })} /> : null}
         </View>
         <View style={styles.heroBar}>
-          <Bar value={p.ratio} />
+          <Bar value={p.ratio} mark={p.levelMark} />
           <View style={styles.barFoot}>
             <DText size={12} color={dx.dust}>
               {t('play.level', { level })}

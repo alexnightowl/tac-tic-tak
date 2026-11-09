@@ -4,6 +4,7 @@
 import {
   DEMOTE_PEAK_BAND,
   DIFFICULTY_BANDS,
+  LEVEL_GUARD_GAP,
   LEVEL_STEP,
   UNLOCK_REWARD,
   bandFor,
@@ -100,14 +101,26 @@ export function summaryOutcome(s: FinishResponse, ceilingBefore: number | null):
   return out;
 }
 
-/** Where a rating sits between its level and the next mark (Play v2). */
-export function levelProgress(rating: number, level: number): { next: number; toNext: number; ratio: number } {
+const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+
+/**
+ * Where a rating sits on the way to the next mark (Play v2). At or over
+ * its level the bar spans level → next. Under it (a protected level, the
+ * rating between the guard line and the level) it spans guard line → next
+ * with `levelMark` at the level, so every point won or lost still moves
+ * the bar; null when the level sits at the bar's start.
+ */
+export function levelProgress(
+  rating: number,
+  level: number,
+): { next: number; toNext: number; ratio: number; levelMark: number | null } {
   const next = level + LEVEL_STEP;
-  return {
-    next,
-    toNext: Math.max(0, next - rating),
-    ratio: Math.min(1, Math.max(0, (rating - level) / LEVEL_STEP)),
-  };
+  if (rating < level) {
+    const from = level - LEVEL_GUARD_GAP;
+    const span = next - from;
+    return { next, toNext: next - rating, ratio: clamp01((rating - from) / span), levelMark: LEVEL_GUARD_GAP / span };
+  }
+  return { next, toNext: Math.max(0, next - rating), ratio: clamp01((rating - level) / LEVEL_STEP), levelMark: null };
 }
 
 /** The player's level for a progression; derived from the rating before the server sent one. */
@@ -125,6 +138,8 @@ export type LevelOutcome = {
   next: number;
   toNext: number;
   ratio: number;
+  /** The level's place on the bar when the rating is under it (levelProgress). */
+  levelMark: number | null;
   up: boolean;
   down: boolean;
   /** First session under the guard line: the level held, one more drops it. */
@@ -151,6 +166,7 @@ export function levelOutcomeOf(s: FinishResponse): LevelOutcome | null {
     next: p.next,
     toNext: p.toNext,
     ratio: p.ratio,
+    levelMark: p.levelMark,
     up: lv.up,
     down: lv.down,
     guarded: !s.early && !lv.down && lv.guardAfter > 0,

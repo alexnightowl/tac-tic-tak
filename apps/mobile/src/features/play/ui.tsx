@@ -75,7 +75,7 @@ const BAR_MS = 300;
 const barEase = Easing.bezier(0.4, 0, 0.2, 1);
 
 /** A 6 px bar on a faint track, min 2 % so empty still reads as a bar (web). */
-export function ProgressBar({ ratio, color, testID }: { ratio: number; color: string; testID?: string }) {
+export function ProgressBar({ ratio, color, mark, testID }: { ratio: number; color: string; mark?: number | null; testID?: string }) {
   const reduced = useReducedMotion();
   const target = Math.max(0.02, Math.min(1, Math.max(0, ratio)));
   const w = useSharedValue(0);
@@ -87,6 +87,7 @@ export function ProgressBar({ ratio, color, testID }: { ratio: number; color: st
   return (
     <View style={styles.track} testID={testID} onLayout={(e) => w.set(e.nativeEvent.layout.width)}>
       <Animated.View style={[styles.fill, { backgroundColor: color }, fill]} />
+      {mark != null ? <View style={[styles.mark, { left: `${mark * 100}%` }]} testID={testID ? `${testID}-mark` : undefined} /> : null}
     </View>
   );
 }
@@ -95,4 +96,6 @@ const styles = StyleSheet.create({
   note: { borderRadius: radii['2xl'], borderWidth: 1, padding: space[4], gap: space[1] },
   track: { height: space[1.5], borderRadius: radii.full, backgroundColor: semantic.borderSoft, overflow: 'hidden' },
   fill: { position: 'absolute', left: 0, top: 0, bottom: 0, borderRadius: radii.full },
+  /** The level's tick on a protected-level bar. */
+  mark: { position: 'absolute', top: 0, bottom: 0, width: 2, marginLeft: -1, backgroundColor: eos.bone },
 });

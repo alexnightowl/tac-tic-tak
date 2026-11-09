@@ -327,6 +327,7 @@ function ProgressCard({ s, prog, t }: { s: Model['s']; prog: Progression | null;
       </View>
       <View style={styles.bar}>
         <View style={[styles.barFill, { width: `${(ready ? 1 : p.ratio) * 100}%` }]} />
+        {!ready && p.levelMark != null ? <View style={[styles.barMark, { left: `${p.levelMark * 100}%` }]} /> : null}
       </View>
       {pace ? (
         <View style={[panelStyles.row, styles.mt8]} testID="runner-pace">
@@ -426,6 +427,7 @@ const styles = StyleSheet.create({
   timeFill: { height: '100%', borderRadius: 999, backgroundColor: eos.ash },
   bar: { height: 6, borderRadius: 999, backgroundColor: dx.track, overflow: 'hidden', marginTop: 10 },
   barFill: { height: '100%', borderRadius: 999, backgroundColor: dx.barTo },
+  barMark: { position: 'absolute', top: 0, bottom: 0, width: 2, marginLeft: -1, backgroundColor: eos.bone },
   paceBar: { flex: 1, marginTop: 0, marginHorizontal: 10 },
   paceFill: { backgroundColor: dx.sage },
   levelReady: { boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: alpha(eos.ember, 0.6), inset: true }] },

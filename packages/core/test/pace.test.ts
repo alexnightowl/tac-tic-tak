@@ -31,3 +31,12 @@ describe('pace (D37)', () => {
     expect(computeRatingStep(1500, solve(10_000))).toBe(9);
   });
 });
+
+describe('levelProgress (protected level)', () => {
+  it('spans guard line → next mark under the level, with the level marked', async () => {
+    const { levelProgress } = await import('../src/runner');
+    expect(levelProgress(1576, 1600)).toEqual({ next: 1650, toNext: 74, ratio: 0.26, levelMark: 0.5 });
+    expect(levelProgress(1625, 1600)).toEqual({ next: 1650, toNext: 25, ratio: 0.5, levelMark: null });
+    expect(levelProgress(1540, 1600).ratio).toBe(0);
+  });
+});

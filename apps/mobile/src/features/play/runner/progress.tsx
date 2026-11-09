@@ -55,7 +55,7 @@ export function LevelProgressBar({
           </AppText>
         </AppText>
       </View>
-      <ProgressBar ratio={ready ? 1 : p.ratio} color={ready ? eos.ember : tone.sageDeep} testID="runner-level-progress" />
+      <ProgressBar ratio={ready ? 1 : p.ratio} mark={ready ? null : p.levelMark} color={ready ? eos.ember : tone.sageDeep} testID="runner-level-progress" />
       {pace ? (
         <View style={styles.pace} testID="runner-pace">
           <AppText variant="label" style={styles.paceLabel}>

@@ -375,6 +375,7 @@ function RatedCard({ style, durationSec, t, bandLabels }: { style: TrainingStyle
         </View>
         <View style={styles.levelBar}>
           <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.levelFill, { width: `${p.ratio * 100}%` }]} />
+          {p.levelMark != null ? <View style={[styles.levelMark, { left: `${p.levelMark * 100}%` }]} /> : null}
         </View>
         <AppText variant="caption" color={tone.mist} style={styles.ratedHint}>
           {t('play.rated_hint', { next: p.next, pace: paceTarget(style, durationSec) })}
@@ -428,6 +429,7 @@ const styles = StyleSheet.create({
   levelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: space[2.5] },
   levelBar: { marginTop: space[1.5], height: 6, borderRadius: radii.full, backgroundColor: eos.well, overflow: 'hidden' },
   levelFill: { height: 6, borderRadius: radii.full },
+  levelMark: { position: 'absolute', top: 0, bottom: 0, width: 2, marginLeft: -1, backgroundColor: eos.bone },
   ratedHint: { marginTop: space[2] },
   // Casual / Themes difficulty.
   diff: { gap: space[3] },

@@ -180,7 +180,7 @@ function RatedCard({ s }: { s: PlaySetup }) {
             {t('dx.home.rated_line', { band: s.bandLabels[bandFor(s.rating).key], level: t('play.level', { level }) })}
           </DText>
         </View>
-        <Bar value={p.ratio} style={styles.mt10} />
+        <Bar value={p.ratio} mark={p.levelMark} style={styles.mt10} />
         <View style={styles.barFoot}>
           <DText size={12} color={dx.dust} numberOfLines={1} style={styles.shrink}>
             {t('dx.home.rated_hint', { next: p.next, pace: paceTarget(s.style, s.effectiveDuration) })}

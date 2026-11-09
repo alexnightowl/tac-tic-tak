@@ -218,6 +218,7 @@ function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string;
           end={{ x: 1, y: 0 }}
           style={[styles.heroFill, { width: `${(guarded ? 0 : o.ratio) * 100}%` }]}
         />
+        {!guarded && o.levelMark != null ? <View style={[styles.heroMark, { left: `${o.levelMark * 100}%` }]} /> : null}
       </View>
     </Card>
   );
@@ -275,6 +276,7 @@ const styles = StyleSheet.create({
   heroLevel: { flexDirection: 'row', justifyContent: 'space-between' },
   heroBar: { height: 6, borderRadius: radii.full, backgroundColor: eos.well, overflow: 'hidden' },
   heroFill: { height: 6, borderRadius: radii.full },
+  heroMark: { position: 'absolute', top: 0, bottom: 0, width: 2, marginLeft: -1, backgroundColor: eos.bone },
   review: {
     flexDirection: 'row',
     alignItems: 'center',
