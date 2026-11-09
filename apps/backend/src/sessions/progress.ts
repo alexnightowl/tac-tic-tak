@@ -1,13 +1,16 @@
 // Play v2 progression: levels that follow the rating, and experience.
 //
-// Level: the style rating in steps of LEVEL_STEP. It rises as soon as a
-// finished rated session ends above the next mark, and it is protected
+// Level: the style rating in steps of LEVEL_STEP. It rises when a finished
+// rated session ends above the next mark and solved the style's pace
+// target (paceTarget, D37: the time control's character), and it is protected
 // on the way down: it drops only after LEVEL_GUARD_SESSIONS rated
 // sessions in a row end more than LEVEL_GUARD_GAP under it.
 //
 // Experience (XP): effort, never lost. Earned for minutes trained (any
 // mode) and mistakes cleared from Review. XP levels grow on a curve,
 // XP ranks are chess pieces.
+
+import type { TrainingStyle } from './unlock';
 
 export const LEVEL_STEP = 50;
 export const LEVEL_GUARD_GAP = 50;
@@ -26,6 +29,31 @@ export function initialLevel(currentRating: number, norm: number): number {
   return Math.min(levelOf(currentRating), levelOf(norm));
 }
 
+// ---- Pace (D37) -----------------------------------------------------------
+//
+// A time control is a budget of thinking time per puzzle. A session of
+// `durationSec` fits durationSec / (PACE_SECONDS + PACE_TRANSITION_S)
+// attempts; at PACE_ACCURACY (puzzles come at the player's rating, so a
+// player due a level-up solves a bit over half) that many solves are
+// expected. The target sits PACE_Z standard deviations (binomial) under
+// that mean, so a player keeping the style's pace meets it in about 3 of 4
+// sessions: short bullet sessions are luckier or unluckier than long ones.
+
+export const PACE_SECONDS: Record<TrainingStyle, number> = { bullet: 5, blitz: 12, rapid: 30 };
+/** Clock time between puzzles (the reply delay and the opponent's set-up move). */
+export const PACE_TRANSITION_S = 1;
+export const PACE_ACCURACY = 0.6;
+const PACE_Z = 0.67;
+
+export function paceTarget(style: TrainingStyle, durationSec: number): number {
+  const attempts = durationSec / (PACE_SECONDS[style] + PACE_TRANSITION_S);
+  const mean = attempts * PACE_ACCURACY;
+  const sd = Math.sqrt(attempts * PACE_ACCURACY * (1 - PACE_ACCURACY));
+  return Math.max(1, Math.round(mean - PACE_Z * sd));
+}
+
+export type PaceCheck = { solved: number; target: number; met: boolean };
+
 export type LevelCheck = {
   before: number;
   after: number;
@@ -36,14 +64,24 @@ export type LevelCheck = {
   guardAfter: number;
   guardThreshold: number;
   next: number;
+  // The session's pace against its target (null: not checked).
+  pace: PaceCheck | null;
+  // The rating cleared the next mark but the pace fell short: no level-up.
+  paceHeld: boolean;
 };
 
-export function evaluateLevel(level: number, ratingAfter: number, guard: number): LevelCheck {
+export function evaluateLevel(
+  level: number,
+  ratingAfter: number,
+  guard: number,
+  pace?: { solved: number; target: number },
+): LevelCheck {
   const reached = levelOf(ratingAfter);
+  const paceCheck = pace ? { ...pace, met: pace.solved >= pace.target } : null;
   let after = level;
   let guardAfter = 0;
   if (reached > level) {
-    after = reached;
+    if (!paceCheck || paceCheck.met) after = reached;
   } else if (ratingAfter < level - LEVEL_GUARD_GAP) {
     guardAfter = guard + 1;
     if (guardAfter >= LEVEL_GUARD_SESSIONS) {
@@ -60,6 +98,8 @@ export function evaluateLevel(level: number, ratingAfter: number, guard: number)
     guardAfter,
     guardThreshold: LEVEL_GUARD_SESSIONS,
     next: after + LEVEL_STEP,
+    pace: paceCheck,
+    paceHeld: reached > level && after === level,
   };
 }
 

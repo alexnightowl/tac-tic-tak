@@ -25,6 +25,7 @@ import {
   LevelCheck,
   LEVEL_GUARD_SESSIONS,
   LEVEL_STEP,
+  paceTarget,
   trainingXp,
 } from './progress';
 import { ExperienceService } from '../experience/experience.service';
@@ -268,8 +269,11 @@ export class SessionsService {
     const step = computeRatingStep(
       progression.currentPuzzleRating,
       { correct: dto.correct, responseMs: dto.responseMs, puzzleRating: puzzle.rating },
-      // v2 "settling in": the first sessions move the rating faster.
-      { provisional: session.ruleset === 'v2' && progression.calibrationSessionsLeft > 0 },
+      // v2: "settling in" sessions move the rating faster, and "fast" is
+      // measured by the session's style (D37).
+      session.ruleset === 'v2'
+        ? { provisional: progression.calibrationSessionsLeft > 0, style }
+        : {},
     );
     const next = Math.max(MIN_RATING, Math.min(MAX_RATING, progression.currentPuzzleRating + step));
     await this.prisma.userStyleProgression.update({
@@ -432,6 +436,8 @@ export class SessionsService {
         progression.level ?? initialLevel(session.startRating, progression.unlockedStartRating),
         progression.currentPuzzleRating,
         progression.levelGuard,
+        // D37: the level-up also needs the style's pace.
+        { solved: stats.solved, target: paceTarget(style, session.durationSec) },
       );
       const settlingLeft = Math.max(0, progression.calibrationSessionsLeft - 1);
       await this.prisma.userStyleProgression.update({
@@ -863,6 +869,8 @@ function evaluateLevelHeld(
     guardAfter: row.levelGuard,
     guardThreshold: LEVEL_GUARD_SESSIONS,
     next: level + LEVEL_STEP,
+    pace: null,
+    paceHeld: false,
   };
 }
 
