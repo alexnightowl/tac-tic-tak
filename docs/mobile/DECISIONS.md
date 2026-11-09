@@ -426,3 +426,16 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
 - Play v2 sessions only (`ruleset: 'v2'`); the Next web's norm sessions and offline puzzles keep
   the old step. Backend `api/level-pace` on prod (ddfb9d6). PROVISIONAL knobs: thinking times,
   60 %, 0.67 sd; finish's `level.pace` lets us retune from real sessions later.
+
+### D38. The app's web build replaces the Next site on tactictak.online (owner, 2026-11-09)
+
+- Owner: "давай перенесемо все на прод". The apex serves the react-native-web export (static files in
+  `/opt/tactictak-web/prod`, uploaded by `tools/web/deploy-prod.sh`; CI does not build it yet, so a
+  web release is a manual upload after the app change is on `mobile`). `/api` and `/uploads` go to
+  the backend as before.
+- Landing page dropped (owner): signed-out visitors get the desktop login / register hero.
+- Admin kept on the old Next container at `/admin` (owner) until the app has one.
+- Old addresses: `/dashboard` → `/`, `/analytics` → `/stats`, `/leaderboard` → `/rivals`; the rest
+  share their paths. The token keeps its localStorage key (`taktic.token`), so signed-in users stay
+  signed in.
+- Rollback: revert the nginx commit on `main` (the Next container still runs).
