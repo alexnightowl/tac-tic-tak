@@ -711,7 +711,9 @@ export class SessionsService {
    * isn't punished for 15s.
    */
   async reviewItems(userId: string, sessionId: string) {
-    await this.ownedSession(userId, sessionId);
+    const session = await this.ownedSession(userId, sessionId);
+    // Blind misses stay out of Review (D40), here too.
+    if (session.variant === 'blind') return { items: [] };
     const attempts = await this.prisma.trainingAttempt.findMany({
       where: { sessionId },
       orderBy: { createdAt: 'asc' },
