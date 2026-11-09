@@ -78,7 +78,7 @@ export const woodpeckerEn: Dict = {
   'woodpecker.info': 'This set',
   'woodpecker.info.size': 'Puzzles',
   'woodpecker.info.difficulty': 'Difficulty',
-  'woodpecker.info.range': 'Puzzle rating',
+  'woodpecker.info.range': 'Puzzle difficulty',
   'woodpecker.info.style': 'Level from',
   'woodpecker.info.created': 'Created',
   'woodpecker.load_failed': 'Could not load your set.',

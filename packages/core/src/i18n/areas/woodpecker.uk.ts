@@ -78,7 +78,7 @@ export const woodpeckerUk: Dict = {
   'woodpecker.info': 'Набір',
   'woodpecker.info.size': 'Задач',
   'woodpecker.info.difficulty': 'Складність',
-  'woodpecker.info.range': 'Рейтинг задач',
+  'woodpecker.info.range': 'Складність задач',
   'woodpecker.info.style': 'Рівень від',
   'woodpecker.info.created': 'Створено',
   'woodpecker.load_failed': 'Не вдалося завантажити набір.',
