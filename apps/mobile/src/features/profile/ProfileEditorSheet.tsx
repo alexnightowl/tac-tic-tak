@@ -1,4 +1,3 @@
-import { queryKeys } from '@tac/core/api';
 import { eos, graphite, layout, radii, semantic, shadows, space } from '@tac/core/tokens';
 import { useEffect, useState } from 'react';
 import { Modal, Platform, StyleSheet, TextInput, View } from 'react-native';
@@ -6,25 +5,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 
-import { feel } from '@/feel';
-import { apiClient } from '@/platform/api';
-import { queryClient } from '@/platform/query';
-import { toast } from '@/shell/toast/store';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText, textStyle } from '@/ui/AppText';
-import { confirm } from '@/ui/ConfirmSheet';
 import { Input } from '@/ui/Input';
 import { useLang, useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
 import { Tap } from '@/ui/Tap';
 import { chooseAvatar, useAvatarUpload } from './avatarUpload';
 import { Avatar } from './Avatar';
+import { BIO_MAX, NAME_MAX, useProfileForm, type ProfileFields } from './useProfileForm';
 
-const NAME_MAX = 40;
-const BIO_MAX = 280;
-const COUNTRY_RE = /^[A-Za-z]{2}$/;
-
-export type ProfileFields = { displayName: string | null; bio: string | null; country: string | null };
+export type { ProfileFields } from './useProfileForm';
 
 /**
  * Profile editor (design v2 MobProfileEditor) as a native page sheet: ×,
@@ -74,64 +65,13 @@ function EditorBody({
   const user = useAuthStore((s) => s.user);
   const preview = useAvatarUpload((s) => s.previewUri);
   const uploading = useAvatarUpload((s) => s.uploading);
-  const [displayName, setDisplayName] = useState(initial.displayName ?? '');
-  const [bio, setBio] = useState(initial.bio ?? '');
-  const [country, setCountry] = useState((initial.country ?? '').toUpperCase());
-  const [saving, setSaving] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-
-  const nameValid = displayName.length <= NAME_MAX;
-  const bioValid = bio.length <= BIO_MAX;
-  const countryValid = country.length === 0 || COUNTRY_RE.test(country);
-  const dirty =
-    displayName !== (initial.displayName ?? '') ||
-    bio !== (initial.bio ?? '') ||
-    country.toLowerCase() !== (initial.country ?? '').toLowerCase();
+  const form = useProfileForm(initial, onClose);
+  const { displayName, setDisplayName, bio, setBio, country, setCountry, saving, err, nameValid, bioValid, countryValid, dirty, save } = form;
   useEffect(() => {
     onDirty(dirty);
   }, [dirty, onDirty]);
 
-  const close = () => {
-    if (!dirty) {
-      onClose();
-      return;
-    }
-    feel.emit('exitSheet');
-    confirm({
-      testID: 'profile-discard',
-      title: t('profile.discard_title'),
-      confirmLabel: t('profile.discard'),
-      cancelLabel: t('profile.keep_editing'),
-      onConfirm: onClose,
-    });
-  };
-
-  const save = async () => {
-    if (!nameValid || !bioValid || !countryValid) {
-      feel.emit('formError');
-      return;
-    }
-    setErr(null);
-    setSaving(true);
-    try {
-      const r = await apiClient.patch<ProfileFields & { achievementsUnlocked?: string[] }>('/users/me/profile', {
-        displayName,
-        bio,
-        country,
-      });
-      if (user) useAuthStore.getState().setUser({ ...user, displayName: r.displayName });
-      void queryClient.invalidateQueries({ queryKey: queryKeys.me() });
-      if (user) void queryClient.invalidateQueries({ queryKey: queryKeys.profile(user.nickname.toLowerCase()) });
-      toast.show({ title: t('profile.saved') });
-      toast.achievements(r.achievementsUnlocked, t);
-      onClose();
-    } catch {
-      feel.emit('formError');
-      setErr(t('profile.save_failed'));
-    } finally {
-      setSaving(false);
-    }
-  };
+  const close = () => form.requestClose(onClose);
 
   const counter = (n: number, max: number) => (
     <AppText variant="caption" color={n > max ? semantic.danger : eos.dust} style={styles.counter}>
@@ -234,7 +174,7 @@ function EditorBody({
             testID="profile-editor-country"
             accessibilityLabel={t('profile.country')}
             value={country}
-            onChangeText={(v) => setCountry(v.replace(/[^A-Za-z]/g, '').slice(0, 2).toUpperCase())}
+            onChangeText={setCountry}
             maxLength={2}
             placeholder="UA"
             autoCapitalize="characters"

@@ -15,19 +15,19 @@ import { SettingsPage } from './parts';
 // gaps.md "Outbound external links": the landing CTA credits move here),
 // and the privacy policy.
 
-const LINKS = {
+export const LINKS = {
   lichess: 'https://database.lichess.org/#puzzles',
   icons: 'https://game-icons.net',
   ofl: 'https://openfontlicense.org',
 } as const;
 
-function build(): string {
+export function build(): string {
   const cfg = Constants.expoConfig;
   const native = Platform.OS === 'ios' ? cfg?.ios?.buildNumber : cfg?.android?.versionCode;
   return `${native ?? '1'}${__DEV__ ? ' · dev' : ''}`;
 }
 
-function open(url: string) {
+export function open(url: string) {
   void WebBrowser.openBrowserAsync(url, { presentationStyle: WebBrowser.WebBrowserPresentationStyle.PAGE_SHEET });
 }
 

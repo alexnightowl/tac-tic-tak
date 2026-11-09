@@ -167,7 +167,7 @@ function ProfileCard() {
 }
 
 /** MobResetSheet: the web ResetProgressSection's two-step confirm as a destructive sheet. */
-function ResetSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function ResetSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const t = useT();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);

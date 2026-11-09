@@ -71,6 +71,14 @@ export const desk = {
   modal: '#232126',
   modalEdge: '#37343b',
   // ── end rivals ──
+  // ── account (profile, experience, friends, settings) ──
+  /** XP bar start (gold run to tone.gold): DXProfile, DXXP. */
+  xpFrom: '#8a6e3a',
+  /** The rank piece's ember tile (DXXP, DXProfile XP card). */
+  rankTile: '#5a2c2a',
+  /** Current rank card ground (DXXP). */
+  rankOn: '#2d2427',
+  // ── end account ──
   /** Text tones. */
   bone: eos.bone,
   ash: eos.ash,

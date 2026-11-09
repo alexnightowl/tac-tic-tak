@@ -1,5 +1,7 @@
 import { Stack } from 'expo-router';
 
+import { DxSettings } from '@/desktop/account';
+import { useDesktop } from '@/desktop/useDesktop';
 import { SettingsIndexScreen } from '@/features/settings/SettingsIndexScreen';
 import { useT } from '@/ui/lang';
 
@@ -7,10 +9,11 @@ import { useT } from '@/ui/lang';
 // Its sections push on the same stack.
 export default function SettingsRoute() {
   const t = useT();
+  const desktop = useDesktop();
   return (
     <>
-      <Stack.Screen options={{ title: t('settings.title') }} />
-      <SettingsIndexScreen />
+      <Stack.Screen options={{ title: t('settings.title'), headerShown: !desktop }} />
+      {desktop ? <DxSettings /> : <SettingsIndexScreen />}
     </>
   );
 }

@@ -103,7 +103,7 @@ export function GameplayScreen() {
  * the board's pan claims a touch at once, so a playable board would stop
  * the page from scrolling under a finger that lands on it.
  */
-function LiveBoard({
+export function LiveBoard({
   pieceSet,
   mirror,
   fixedColor,

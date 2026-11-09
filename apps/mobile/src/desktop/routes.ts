@@ -26,6 +26,10 @@ export const DESKTOP_ROUTES: readonly Entry[] = [
   { re: /^\/sessions$/, chrome: 'full' },
   { re: /^\/sessions\/[^/]+$/, chrome: 'full' },
   // ── profile, experience, friends, settings ──
+  { re: /^\/profile\/[^/]+$/, chrome: 'full' },
+  { re: /^\/experience$/, chrome: 'full' },
+  { re: /^\/friends$/, chrome: 'full' },
+  { re: /^\/settings(\/(profile|gameplay|sound|account|about))?$/, chrome: 'full' },
 ];
 
 /**

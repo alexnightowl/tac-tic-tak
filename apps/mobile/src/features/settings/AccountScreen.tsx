@@ -23,19 +23,15 @@ import {
   type PasswordInputProps,
 } from '@/ui';
 import { useT } from '@/ui/lang';
-import { changePassword, deleteAccount, formErrorKey, logoutAll } from './api';
+import { deleteAccount, formErrorKey, logoutAll } from './api';
 import { ACCOUNT_DELETE, ACCOUNT_LOGOUT_ALL } from './flags';
 import { SettingsPage } from './parts';
+import { usePasswordChange } from './usePasswordChange';
 
 // Settings › Account (design v2 MobAccount): change password (web ChangePasswordSection, with the
 // wrong-current-password fix: an inline error, never a logout), log out,
 // and the two server-pending actions behind flags (B4 logout-all, B10
 // delete account).
-
-/** Web rule set (register + change-password DTO). */
-function rules(next: string) {
-  return { len: next.length >= 8, letter: /[A-Za-z]/.test(next), digit: /[0-9]/.test(next) };
-}
 
 export function AccountScreen() {
   const t = useT();
@@ -100,46 +96,10 @@ export function AccountScreen() {
 
 function ChangePasswordForm() {
   const t = useT();
-  const [current, setCurrent] = useState('');
-  const [next, setNext] = useState('');
-  const [repeat, setRepeat] = useState('');
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [ok, setOk] = useState(false);
   const { style: shakeStyle, shake } = useShake();
-
-  const r = rules(next);
-  const matches = next.length > 0 && next === repeat;
-  const valid = current.length > 0 && r.len && r.letter && r.digit && matches && next !== current;
-
-  const submit = async () => {
-    if (!valid || saving) return;
-    setError(null);
-    setOk(false);
-    setSaving(true);
-    try {
-      await changePassword(current, next);
-      setCurrent('');
-      setNext('');
-      setRepeat('');
-      setOk(true);
-    } catch (e) {
-      feel.emit('formError');
-      shake();
-      setError(t(formErrorKey(e)));
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const edit = (set: (v: string) => void) => (v: string) => {
-    set(v);
-    if (error) setError(null);
-    if (ok) setOk(false);
-  };
+  const { current, next, repeat, setCurrent, setNext, setRepeat, rules: r, valid, mismatch, saving, error, ok, submit } = usePasswordChange(shake);
 
   const ruleText = [t('auth.rule_pw_len'), t('auth.rule_pw_letter'), t('auth.rule_pw_digit')].join(' · ');
-  const mismatch = repeat.length > 0 && next !== repeat ? t('auth.rule_pw_match') : null;
 
   return (
     <Animated.View style={[styles.form, shakeStyle]} testID="account-password-form">
@@ -148,7 +108,7 @@ function ChangePasswordForm() {
         accessibilityLabel={t('profile.current_password')}
         label={t('profile.current_password')}
         value={current}
-        onChangeText={edit(setCurrent)}
+        onChangeText={setCurrent}
         returnKeyType="next"
       />
       <AccountPasswordField
@@ -157,7 +117,7 @@ function ChangePasswordForm() {
         accessibilityLabel={t('profile.new_password')}
         label={t('profile.new_password')}
         value={next}
-        onChangeText={edit(setNext)}
+        onChangeText={setNext}
         returnKeyType="next"
       />
       <AccountPasswordField
@@ -166,7 +126,7 @@ function ChangePasswordForm() {
         accessibilityLabel={t('profile.repeat_new_password')}
         label={t('profile.repeat_new_password')}
         value={repeat}
-        onChangeText={edit(setRepeat)}
+        onChangeText={setRepeat}
         error={mismatch}
         returnKeyType="done"
         onSubmitEditing={() => void submit()}
@@ -197,7 +157,7 @@ function ChangePasswordForm() {
 }
 
 /** B4: logout-all (flagged off until the route exists). */
-function LogoutAllSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+export function LogoutAllSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const t = useT();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -241,7 +201,7 @@ function LogoutAllSheet({ visible, onClose }: { visible: boolean; onClose: () =>
 }
 
 /** B10: typed nickname + password, then resetAll (PLAN Phase 9). Flagged off until the route exists. */
-function DeleteSheet({ visible, nickname, onClose }: { visible: boolean; nickname: string; onClose: () => void }) {
+export function DeleteSheet({ visible, nickname, onClose }: { visible: boolean; nickname: string; onClose: () => void }) {
   const t = useT();
   const [typed, setTyped] = useState('');
   const [password, setPassword] = useState('');
@@ -317,7 +277,7 @@ function DeleteSheet({ visible, nickname, onClose }: { visible: boolean; nicknam
  * MobAccount `.field`: the shared PasswordInput with the account form's
  * eye (18 pt ash line icon, 6 pt in from the field's right edge).
  */
-function AccountPasswordField({ kind = 'current', testID, ...rest }: PasswordInputProps) {
+export function AccountPasswordField({ kind = 'current', testID, ...rest }: PasswordInputProps) {
   const t = useT();
   const [visible, setVisible] = useState(false);
   const Icon = visible ? EyeOff : Eye;

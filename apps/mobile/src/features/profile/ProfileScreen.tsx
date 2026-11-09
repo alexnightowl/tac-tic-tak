@@ -32,7 +32,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { AppText } from '@/ui/AppText';
 import { IconButton } from '@/ui/Buttons';
 import { fontFamily, scriptLang } from '@/ui/fonts';
-import { useLang, useT } from '@/ui/lang';
+import { useLang, useT, type TFn } from '@/ui/lang';
 import { stackHeader } from '@/ui/NavHeader';
 import { PlateButton } from '@/ui/PlateButton';
 import { Card, HeroCard } from '@/ui/Surfaces';
@@ -44,6 +44,16 @@ import { ProfileEditorSheet } from './ProfileEditorSheet';
 
 /** Public profile URL (universal links land in Phase 10; the web page exists today). */
 export const PROFILE_URL = (nickname: string) => `https://tactictak.online/profile/${encodeURIComponent(nickname)}`;
+
+/** Share a profile link (the system sheet; the web copies it when the browser has none). */
+export function shareProfile(nickname: string, name: string, t: TFn): void {
+  const url = PROFILE_URL(nickname);
+  void Share.share(
+    Platform.OS === 'ios'
+      ? { url, message: t('profile.share_title', { name }) }
+      : { message: t('profile.share_message', { name, url }), title: t('profile.share_title', { name }) },
+  );
+}
 
 /** Web's no-value mark (not copy). */
 const DASH = '—';
@@ -96,14 +106,7 @@ export function ProfileScreen({ nickname }: { nickname: string }) {
   const data = profile.data;
   const name = data ? data.displayName?.trim() || data.nickname : nickname;
 
-  const share = () => {
-    const url = PROFILE_URL(data?.nickname ?? nickname);
-    void Share.share(
-      Platform.OS === 'ios'
-        ? { url, message: t('profile.share_title', { name }) }
-        : { message: t('profile.share_message', { name, url }), title: t('profile.share_title', { name }) },
-    );
-  };
+  const share = () => shareProfile(data?.nickname ?? nickname, name, t);
 
   const header = (
     <Stack.Screen

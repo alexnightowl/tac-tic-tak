@@ -29,7 +29,8 @@ export type LeaderboardRow = {
   user: UserCard;
 };
 
-export type FriendRow = { friendshipId: string; since: string | null; user: UserCard };
+/** `online`: the server's presence flag (Redis), present on GET /friends. */
+export type FriendRow = { friendshipId: string; since: string | null; user: UserCard; online?: boolean };
 export type PendingRow = { id: string; createdAt: string; user: UserCard };
 export type Pending = { incoming: PendingRow[]; outgoing: PendingRow[] };
 

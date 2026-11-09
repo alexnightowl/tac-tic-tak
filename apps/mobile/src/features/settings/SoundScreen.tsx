@@ -37,13 +37,13 @@ const PAIRED: Record<SoundEvent, { event: FeelEvent; ctx?: FeelContext }> = {
   rankDown: { event: 'rankDown' },
 };
 
-function preview(ev: SoundEvent, variant?: string): void {
+export function preview(ev: SoundEvent, variant?: string): void {
   stopLongClip(0);
   const p = PAIRED[ev];
   feel.emit(p.event, { ...p.ctx, variant, force: true });
 }
 
-function variantLabel(v: SoundVariant): string {
+export function variantLabel(v: SoundVariant): string {
   return v.shinobi ? `${v.name} · shinobi` : v.name;
 }
 
@@ -154,7 +154,7 @@ function EventRow({ ev, pick, onPick }: { ev: SoundEvent; pick: string; onPick: 
 }
 
 /** web <select> for multi-variant events (only rankDown today): pick + preview. */
-function VariantSheet({ ev, pick, onClose }: { ev: SoundEvent | null; pick?: string; onClose: () => void }) {
+export function VariantSheet({ ev, pick, onClose }: { ev: SoundEvent | null; pick?: string; onClose: () => void }) {
   const t = useT();
   const prefs = useFeelPrefs();
   const name = ev ? t(`sound.ev.${ev}`) : '';
