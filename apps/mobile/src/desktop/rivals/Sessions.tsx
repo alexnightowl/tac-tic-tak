@@ -3,7 +3,6 @@ import { isTrainingStyle } from '@tac/core/rules';
 import { eos } from '@tac/core/tokens';
 import { router, Stack, type Href } from 'expo-router';
 import { ChevronRight, Trash2 } from 'lucide-react-native';
-import { Fragment } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { pct, responseTime, sessionThemeLabel } from '@/features/sessions/format';
@@ -17,7 +16,7 @@ import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
 import { useWidth } from './layout';
 
-/** Narrower tables drop the answer-time column. */
+/** Narrower tables tighten their columns and put the length under the theme. */
 const COMPACT_BELOW = 860;
 
 /**
@@ -57,19 +56,22 @@ export function DxSessions() {
     );
   } else {
     body = (
-      <Card testID="history-list">
+      <Card testID="history-list" style={styles.listCard}>
         <View onLayout={onLayout}>
           <HeadRow t={t} compact={compact} />
         </View>
         {groupSessionsByDay(rows, lang).map(([label, group]) => (
-          <Fragment key={label}>
-            <View style={styles.day} testID={`history-day-${label}`}>
+          // One box per day: its header sticks to the top of the page's
+          // scroll while the day's rows pass under it (the phone's sticky
+          // section headers), and the next day's box pushes it out.
+          <View key={label}>
+            <View style={[styles.day, sticky]} testID={`history-day-${label}`}>
               <Label size={10.5}>{label}</Label>
             </View>
             {group.map((r) => (
               <SessionLine key={r.id} row={r} lang={lang} t={t} compact={compact} onDelete={onDelete} />
             ))}
-          </Fragment>
+          </View>
         ))}
       </Card>
     );
@@ -98,26 +100,25 @@ export function DxSessions() {
 }
 
 function HeadRow({ t, compact }: { t: TFn; compact: boolean }) {
+  const c = cols(compact);
   return (
-    <View style={[styles.row, styles.head]}>
-      <Label size={10} style={styles.cTime}>
+    <View style={[c.row, styles.head]}>
+      <Label size={10} style={c.time}>
         {t('dx.rivals.sessions.time')}
       </Label>
       <Label size={10} style={styles.cTheme}>
         {t('dx.rivals.sessions.theme')}
       </Label>
-      <Label size={10} style={styles.cNum}>
+      <Label size={10} style={c.num}>
         {t('sessions.solved')}
       </Label>
-      <Label size={10} style={styles.cNum}>
+      <Label size={10} style={c.num}>
         {t('sessions.accuracy')}
       </Label>
-      {!compact ? (
-        <Label size={10} style={styles.cNum}>
-          {t('sessions.avg_response')}
-        </Label>
-      ) : null}
-      <Label size={10} style={styles.cRating}>
+      <Label size={10} style={c.num}>
+        {t('sessions.avg_response')}
+      </Label>
+      <Label size={10} style={c.rating}>
         {t('dx.rivals.sessions.rating')}
       </Label>
       <View style={styles.cActions} />
@@ -125,29 +126,50 @@ function HeadRow({ t, compact }: { t: TFn; compact: boolean }) {
   );
 }
 
+/** Column styles at the full or the compact width. */
+function cols(compact: boolean) {
+  return compact
+    ? { row: [styles.row, styles.rowC], time: styles.cTimeC, num: styles.cNumC, rating: styles.cRatingC }
+    : { row: styles.row, time: styles.cTime, num: styles.cNum, rating: styles.cRating };
+}
+
 function SessionLine({ row, lang, t, compact, onDelete }: { row: Row; lang: 'en' | 'uk'; t: TFn; compact: boolean; onDelete: (id: string) => void }) {
   const time = formatSessionTime(row.startedAt, lang);
   const style = row.style && isTrainingStyle(row.style) ? row.style : null;
   const delta = row.peakRating - row.startRating;
   const deltaColor = delta > 0 ? dx.sage : delta < 0 ? dx.rose : dx.ash;
+  const c = cols(compact);
+  const theme = sessionThemeLabel(row.theme, lang, t('sessions.mixed'));
+  const length = t('sessions.minutes', { n: Math.round(row.durationSec / 60) });
   return (
     <View style={styles.lineWrap} testID={`history-row-${row.id}`}>
       <Hover
         testID={`history-open-${row.id}`}
         accessibilityLabel={t('sessions.row_a11y', { time, solved: row.solved, start: row.startRating, peak: row.peakRating })}
         onPress={() => router.push(`/sessions/${encodeURIComponent(row.id)}` as Href)}
-        style={styles.row}
+        style={c.row}
       >
-        <DText size={13.5} weight={700} tabular style={styles.cTime}>
+        <DText size={13.5} weight={700} tabular style={c.time}>
           {time}
         </DText>
         <View style={[styles.cTheme, styles.themeCell]}>
           {style ? <StyleIcon style={style} size={14} color={dx.ash} /> : null}
-          <DText size={13.5} numberOfLines={1} style={styles.flex}>
-            {`${sessionThemeLabel(row.theme, lang, t('sessions.mixed'))} · ${t('sessions.minutes', { n: Math.round(row.durationSec / 60) })}`}
-          </DText>
+          {compact ? (
+            <View style={styles.flex}>
+              <DText size={13.5} numberOfLines={1}>
+                {theme}
+              </DText>
+              <DText size={12} color={dx.dust} numberOfLines={1}>
+                {length}
+              </DText>
+            </View>
+          ) : (
+            <DText size={13.5} numberOfLines={1} style={styles.flex}>
+              {`${theme} · ${length}`}
+            </DText>
+          )}
         </View>
-        <DText size={13.5} weight={800} tabular style={styles.cNum}>
+        <DText size={13.5} weight={800} tabular style={c.num}>
           <DText size={13.5} weight={800} color={dx.sage}>
             {String(row.solved)}
           </DText>
@@ -156,15 +178,13 @@ function SessionLine({ row, lang, t, compact, onDelete }: { row: Row; lang: 'en'
             {String(row.failed)}
           </DText>
         </DText>
-        <DText size={13.5} weight={700} tabular style={styles.cNum}>
+        <DText size={13.5} weight={700} tabular style={c.num}>
           {pct(row.accuracy)}
         </DText>
-        {!compact ? (
-          <DText size={13.5} tabular color={dx.ash} style={styles.cNum}>
-            {responseTime(row.avgResponseMs)}
-          </DText>
-        ) : null}
-        <View style={[styles.cRating, styles.ratingCell]}>
+        <DText size={13.5} tabular color={dx.ash} style={c.num} testID={`history-avg-${row.id}`}>
+          {responseTime(row.avgResponseMs)}
+        </DText>
+        <View style={[c.rating, styles.ratingCell]}>
           <DText size={13.5} tabular color={dx.ash}>
             {String(row.startRating)}
           </DText>
@@ -198,11 +218,16 @@ const NO_HEADER = { headerShown: false } as const;
 
 /** The undo bar floats over the page (react-native-web passes `fixed` through). */
 const fixed = { position: 'fixed' } as unknown as ViewStyle;
+/** Day headers stick inside the page's scroll (web `position: sticky`). */
+const sticky = { position: 'sticky', top: 0, zIndex: 2 } as unknown as ViewStyle;
 
 const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
   placeholder: { height: 320 },
   state: { padding: 28, alignItems: 'center', gap: 14 },
+  // `clip` keeps the rounded corners without making the card a scroll box,
+  // which would stop the sticky day headers.
+  listCard: { overflow: 'clip' } as unknown as ViewStyle,
   head: { paddingVertical: 12 },
   day: { paddingTop: 16, paddingBottom: 8, paddingHorizontal: 18, borderTopWidth: 1, borderTopColor: dx.rowRule, backgroundColor: dx.track },
   lineWrap: { borderTopWidth: 1, borderTopColor: dx.rowRule },
@@ -214,7 +239,11 @@ const styles = StyleSheet.create({
   cRating: { width: 150 },
   ratingCell: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   cActions: { width: 32 },
-  del: { position: 'absolute', right: 14, top: 9, width: 32, height: 32, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  rowC: { gap: 10 },
+  cTimeC: { width: 54 },
+  cNumC: { width: 72 },
+  cRatingC: { width: 128 },
+  del: { position: 'absolute', right: 14, top: '50%', marginTop: -16, width: 32, height: 32, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   delHover: { backgroundColor: dx.ghostHover },
   undoDock: { ...fixed, left: 0, right: 0, bottom: 28, alignItems: 'center', zIndex: 20 } as ViewStyle,
   undo: {

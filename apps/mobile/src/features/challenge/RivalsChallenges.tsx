@@ -5,17 +5,19 @@ import { Swords } from "lucide-react-native";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { feel } from "@/feel";
 import { displayNameOf } from "@/features/social/actions";
 import { SwipeRow } from "@/features/social/SwipeRow";
-import { toast } from "@/shell/toast/store";
-import { CardRow, confirm, IconTile, SectionLabel, TextLink } from "@/ui";
+import { CardRow, IconTile, SectionLabel, TextLink } from "@/ui";
 import { useT, type TFn } from "@/ui/lang";
-import { challengeApi, invalidateChallenges, useChallengeList } from "./api";
-import { leftShort, OutcomeChip, PresenceAvatar } from "./parts";
-
-/** Finished rows shown before "More". */
-const FINISHED_FIRST = 3;
+import { useChallengeList } from "./api";
+import { OutcomeChip, PresenceAvatar } from "./parts";
+import {
+  challengeRemoveLabel,
+  challengeRowText,
+  FINISHED_FIRST,
+  removeChallenge,
+  type ChallengeRowKind,
+} from "./rowModel";
 
 /**
  * Rivals' "Challenges" section (app-only; STORM.md "Where challenges
@@ -91,100 +93,12 @@ function Row({
 }: {
   c: ChallengeSummary;
   t: TFn;
-  kind: "incoming" | "outgoing" | "finished";
+  kind: ChallengeRowKind;
 }) {
   const name = displayNameOf(c.other);
-  const fmt = t(`challenge.format.${c.format}`);
-  const me = c.myScore ?? 0;
-  const them = c.theirScore ?? 0;
-  let subtitle: string;
-  let chip: {
-    label: string;
-    kind: "win" | "loss" | "draw" | "new" | "muted";
-  } | null = null;
-  if (kind === "incoming") {
-    subtitle = t("challenge.row.incoming", {
-      format: fmt,
-      left: leftShort(t, c.expiresAt),
-    });
-    chip = { label: t("challenge.chip.new"), kind: "new" };
-  } else if (kind === "outgoing") {
-    subtitle = t("challenge.row.outgoing", { format: fmt, n: me });
-  } else if (c.status === "finished") {
-    const v = c.verdict ?? "draw";
-    subtitle = t(
-      v === "win"
-        ? "challenge.row.won"
-        : v === "loss"
-          ? "challenge.row.lost"
-          : "challenge.row.drew",
-      { me, them },
-    );
-    chip = {
-      label: t(
-        v === "win"
-          ? "challenge.chip.w"
-          : v === "loss"
-            ? "challenge.chip.l"
-            : "challenge.chip.d",
-      ),
-      kind: v,
-    };
-  } else {
-    subtitle = t(
-      c.status === "declined"
-        ? "challenge.row.declined"
-        : "challenge.row.expired",
-    );
-    chip = { label: "–", kind: "muted" };
-  }
-  const remove = (): Promise<boolean> => {
-    const go = async () => {
-      try {
-        await challengeApi.remove(c.id);
-        feel.emit("discard");
-        invalidateChallenges();
-        return true;
-      } catch {
-        feel.emit("formError");
-        toast.show({ title: t("challenge.remove_error") });
-        return false;
-      }
-    };
-    if (kind === "finished") return go();
-    feel.emit("exitSheet");
-    return new Promise((resolve) => {
-      confirm({
-        testID:
-          kind === "incoming" ? "challenge-decline" : "challenge-withdraw",
-        title:
-          kind === "incoming"
-            ? t("challenge.decline_title")
-            : t("challenge.withdraw_title"),
-        body:
-          kind === "incoming"
-            ? t("challenge.decline_body", { name })
-            : t("challenge.withdraw_body", { name }),
-        confirmLabel:
-          kind === "incoming"
-            ? t("challenge.decline")
-            : t("challenge.withdraw"),
-        cancelLabel:
-          kind === "incoming"
-            ? t("challenge.decline_keep")
-            : t("challenge.withdraw_keep"),
-        onConfirm: () => void go().then(resolve),
-        onCancel: () => resolve(false),
-      });
-    });
-  };
-  const swipeLabel = t(
-    kind === "incoming"
-      ? "challenge.swipe.decline"
-      : kind === "outgoing"
-        ? "challenge.swipe.withdraw"
-        : "challenge.swipe.remove",
-  );
+  const { subtitle, chip } = challengeRowText(c, kind, t);
+  const remove = () => removeChallenge(c, kind, t);
+  const swipeLabel = challengeRemoveLabel(kind, t);
   return (
     <SwipeRow
       testID={`rivals-challenge-swipe-${c.id}`}

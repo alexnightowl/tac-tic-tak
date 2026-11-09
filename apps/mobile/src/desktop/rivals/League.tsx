@@ -1,24 +1,30 @@
+import { streakState } from '@tac/core/format';
 import type { TrainingStyle } from '@tac/core/rules';
+import type { ChallengeSummary } from '@tac/core/storm';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
-import { ChevronRight, Clock, Swords } from 'lucide-react-native';
+import { ChevronRight, Clock, Medal, Swords, X } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useChallengeList } from '@/features/challenge/api';
+import { OutcomeChip, PresenceAvatar } from '@/features/challenge/parts';
+import { challengeRemoveLabel, challengeRowText, FINISHED_FIRST, removeChallenge } from '@/features/challenge/rowModel';
 import { Avatar, VerifiedBadge } from '@/features/profile/Avatar';
 import { displayNameOf } from '@/features/social/actions';
 import { LEADERBOARD_LIMIT, leaderboardQuery, leagueQuery, type LeaderboardScope, type UserCard } from '@/features/social/api';
-import { weekLeft } from '@/features/social/LeaderboardView';
+import { MEDAL, weekLeft } from '@/features/social/LeaderboardView';
 import { readBoardScope, readBoardStyle, writeBoardScope, writeBoardStyle } from '@/features/social/prefs';
+import { StreakBadge } from '@/features/social/StreakBadge';
 import { openProfile } from '@/features/social/UserIdentity';
 import { groupInt } from '@/features/stats/CountUp';
 import { StyleIcon, STYLE_ORDER } from '@/features/stats/StyleIcon';
+import { useStormLaunch } from '@/features/storm/launch';
 import { useAppStore } from '@/stores/appStore';
 import { PlateButton } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
-import { Bar, Card, DText, Hover, IconSquare, Label, Num, Seg } from '../kit';
+import { Bar, Card, DText, GhostButton, Hover, IconSquare, Label, Num, Seg, TextButton } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
 import { TWO_COLUMN_MIN, useWidth } from './layout';
@@ -26,7 +32,7 @@ import { TWO_COLUMN_MIN, useWidth } from './layout';
 type Period = 'week' | 'all';
 
 /** One place on either board: weekly XP or the style rating. */
-type Entry = { rank: number | null; value: number; isSelf: boolean; user: UserCard };
+type Entry = { rank: number | null; value: number; isSelf: boolean; streakDays: number; streakLastDay: string | null; user: UserCard };
 
 const GOLD_BAR = [dx.goldFrom, tone.gold] as const;
 const ASIDE = 360;
@@ -64,13 +70,13 @@ export function DxLeague() {
   let loaded = false;
   let failed = false;
   if (period === 'week') {
-    rows = (league.data?.rows ?? []).map((r) => ({ rank: r.rank, value: r.xp, isSelf: r.isSelf, user: r.user }));
+    rows = (league.data?.rows ?? []).map((r) => ({ ...r, value: r.xp }));
     const s = league.data?.self;
-    self = rows.find((r) => r.isSelf) ?? (s ? { rank: s.rank, value: s.xp, isSelf: true, user: s.user } : null);
+    self = rows.find((r) => r.isSelf) ?? (s ? { ...s, value: s.xp, isSelf: true } : null);
     loaded = !!league.data;
     failed = league.isError && !league.data;
   } else {
-    rows = (board.data ?? []).map((r) => ({ rank: r.rank, value: r.rating, isSelf: r.isSelf, user: r.user }));
+    rows = (board.data ?? []).map((r) => ({ ...r, value: r.rating }));
     self = rows.find((r) => r.isSelf) ?? null;
     loaded = !!board.data;
     failed = board.isError && !board.data;
@@ -203,9 +209,11 @@ function PlaceRow({
   style: TrainingStyle;
   t: TFn;
 }) {
+  const showStreak = useAppStore((st) => st.settings.showStreak);
+  const streak = streakState(row.streakDays, row.streakLastDay);
   const name = displayNameOf(row.user);
   const place = row.rank != null ? String(row.rank) : '—';
-  const top = row.rank != null && row.rank <= 3;
+  const medal = row.rank != null && row.rank >= 1 && row.rank <= 3 ? MEDAL[row.rank - 1] : null;
   const label =
     period === 'week'
       ? t('league.rank_a11y', { rank: place, name, xp: row.value })
@@ -217,16 +225,33 @@ function PlaceRow({
       onPress={() => openProfile(row.user.nickname)}
       style={[styles.row, !first && styles.rowRule, row.isSelf && styles.rowSelf]}
     >
-      <DText size={14} weight={800} tabular color={top ? tone.gold : dx.dust} style={styles.place}>
-        {place}
-      </DText>
-      <Avatar nickname={row.user.nickname} avatarUrl={row.user.avatarUrl} size={34} />
-      <View style={styles.nameCell}>
-        <DText size={14.5} weight={700} numberOfLines={1} style={styles.shrink}>
-          {row.isSelf ? t('dx.rivals.you_name', { name }) : name}
-        </DText>
-        <VerifiedBadge verified={row.user.verified} size={13} />
+      <View style={styles.place}>
+        {medal ? (
+          <Medal size={18} color={medal} strokeWidth={1.8} testID={`dx-league-medal-${row.rank}`} />
+        ) : (
+          <DText size={14} weight={800} tabular color={dx.dust}>
+            {place}
+          </DText>
+        )}
       </View>
+      <Avatar nickname={row.user.nickname} avatarUrl={row.user.avatarUrl} size={34} />
+      <View style={styles.nameCol}>
+        <View style={styles.nameCell}>
+          <DText size={14.5} weight={700} numberOfLines={1} style={styles.shrink}>
+            {row.isSelf ? t('dx.rivals.you_name', { name }) : name}
+            {row.user.displayName ? (
+              <DText size={13} weight={500} color={dx.dust}>{`  @${row.user.nickname}`}</DText>
+            ) : null}
+          </DText>
+          <VerifiedBadge verified={row.user.verified} size={13} />
+        </View>
+        {row.user.country ? (
+          <DText size={10} weight={700} ls={1} color={dx.dust} style={styles.country}>
+            {row.user.country.toUpperCase()}
+          </DText>
+        ) : null}
+      </View>
+      {showStreak && (streak === 'secured' || streak === 'at_risk') ? <StreakBadge days={row.streakDays} size="sm" /> : null}
       <View style={styles.valueCell}>
         {period === 'all' ? <StyleIcon style={style} size={14} color={dx.ash} /> : null}
         <DText size={14} weight={800} tabular align="right">
@@ -288,10 +313,18 @@ function YourPlace({
   );
 }
 
-/** "Виклики": a new race, then the challenges waiting for my run. */
+/**
+ * "Виклики": a new race, then everything the phone's Rivals section lists
+ * (RivalsChallenges): incoming ones (format, time left, New, Accept & play
+ * or Decline), mine still waiting (Withdraw), the last finished / declined /
+ * expired with W/L/D and the score (Remove), "N more". A row opens
+ * /challenge/[id]; decline and withdraw ask first, as on the phone.
+ */
 function Challenges({ t }: { t: TFn }) {
   const q = useChallengeList();
-  const incoming = q.data?.incoming ?? [];
+  const [more, setMore] = useState(false);
+  const d = q.data;
+  const finished = d ? (more ? d.finished : d.finished.slice(0, FINISHED_FIRST)) : [];
   return (
     <Card style={styles.chal} testID="dx-league-challenges">
       <Label>{t('challenge.section')}</Label>
@@ -312,29 +345,115 @@ function Challenges({ t }: { t: TFn }) {
         </View>
         <ChevronRight size={16} color={dx.dust} strokeWidth={1.8} />
       </Hover>
-      {incoming.slice(0, 3).map((c) => {
-        const name = displayNameOf(c.other);
-        return (
-          <View key={c.id} style={styles.incoming} testID={`dx-league-incoming-${c.id}`}>
-            <Avatar nickname={c.other.nickname} avatarUrl={c.other.avatarUrl} size={30} />
-            <DText size={13} color={dx.ash} style={styles.flex} numberOfLines={2}>
-              <DText size={13} weight={800}>
-                {name}
-              </DText>
-              {` ${t('dx.rivals.waits_for_you')}`}
-            </DText>
-            <PlateButton
-              label={t('dx.rivals.accept')}
-              accessibilityLabel={`${t('challenge.accept')}: ${name}`}
-              testID={`dx-league-accept-${c.id}`}
-              variant="ember"
-              size="sm"
-              onPress={() => router.push(`/challenge/${c.id}` as Href)}
-            />
-          </View>
-        );
-      })}
+      {d?.incoming.map((c) => <Incoming key={c.id} c={c} t={t} />)}
+      {d && d.outgoing.length + finished.length > 0 ? (
+        <View style={styles.chalList}>
+          {d.outgoing.map((c) => (
+            <ChallengeLine key={c.id} c={c} kind="outgoing" t={t} />
+          ))}
+          {finished.map((c) => (
+            <ChallengeLine key={c.id} c={c} kind="finished" t={t} />
+          ))}
+        </View>
+      ) : null}
+      {d && !more && d.finished.length > FINISHED_FIRST ? (
+        <TextButton
+          label={t('challenge.more', { n: d.finished.length - FINISHED_FIRST })}
+          testID="dx-league-challenges-more"
+          accessibilityLabel={t('challenge.more', { n: d.finished.length - FINISHED_FIRST })}
+          onPress={() => setMore(true)}
+          style={styles.more}
+        />
+      ) : null}
     </Card>
+  );
+}
+
+/** An incoming challenge: who, format and time left, New; Accept & play / Decline. */
+function Incoming({ c, t }: { c: ChallengeSummary; t: TFn }) {
+  const { launching, launch } = useStormLaunch();
+  const name = displayNameOf(c.other);
+  const { subtitle, chip } = challengeRowText(c, 'incoming', t);
+  return (
+    <View style={styles.incoming} testID={`dx-league-incoming-${c.id}`}>
+      <Hover
+        testID={`dx-league-challenge-${c.id}`}
+        accessibilityLabel={`${name}, ${subtitle}`}
+        onPress={() => router.push(`/challenge/${c.id}` as Href)}
+        style={styles.incomingHead}
+        hoverStyle={styles.noHover}
+      >
+        <PresenceAvatar nickname={c.other.nickname} avatarUrl={c.other.avatarUrl} size={32} />
+        <View style={styles.flex}>
+          <DText size={13} color={dx.ash} numberOfLines={2}>
+            <DText size={13} weight={800}>
+              {name}
+            </DText>
+            {` ${t('dx.rivals.waits_for_you')}`}
+          </DText>
+          <DText size={12} color={dx.dust} numberOfLines={1} testID={`dx-league-challenge-${c.id}-sub`}>
+            {subtitle}
+          </DText>
+        </View>
+        {chip ? <OutcomeChip label={chip.label} kind={chip.kind} /> : null}
+      </Hover>
+      <View style={styles.incomingActions}>
+        <PlateButton
+          label={t('dx.rivals.accept')}
+          accessibilityLabel={`${t('challenge.accept')}: ${name}`}
+          testID={`dx-league-accept-${c.id}`}
+          variant="ember"
+          size="sm"
+          loading={launching}
+          style={styles.flex}
+          onPress={() => void launch({ challengeId: c.id, format: c.format })}
+        />
+        <GhostButton
+          label={challengeRemoveLabel('incoming', t)}
+          testID={`dx-league-decline-${c.id}`}
+          accessibilityLabel={`${challengeRemoveLabel('incoming', t)}: ${name}`}
+          height={36}
+          onPress={() => void removeChallenge(c, 'incoming', t)}
+        />
+      </View>
+    </View>
+  );
+}
+
+/** A sent challenge still waiting, or a closed one with W/L/D; × takes it off. */
+function ChallengeLine({ c, kind, t }: { c: ChallengeSummary; kind: 'outgoing' | 'finished'; t: TFn }) {
+  const name = displayNameOf(c.other);
+  const { subtitle, chip } = challengeRowText(c, kind, t);
+  const removeLabel = challengeRemoveLabel(kind, t);
+  return (
+    <View style={styles.line} testID={`dx-league-${kind}-${c.id}`}>
+      <Hover
+        testID={`dx-league-challenge-${c.id}`}
+        accessibilityLabel={`${name}, ${subtitle}`}
+        onPress={() => router.push(`/challenge/${c.id}` as Href)}
+        style={styles.lineOpen}
+      >
+        <PresenceAvatar nickname={c.other.nickname} avatarUrl={c.other.avatarUrl} size={30} />
+        <View style={styles.flex}>
+          <DText size={13} weight={800} numberOfLines={1}>
+            {name}
+          </DText>
+          <DText size={12} color={dx.ash} numberOfLines={1} testID={`dx-league-challenge-${c.id}-sub`}>
+            {subtitle}
+          </DText>
+        </View>
+        {chip ? <OutcomeChip label={chip.label} kind={chip.kind} /> : null}
+      </Hover>
+      <Hover
+        testID={`dx-league-remove-${c.id}`}
+        accessibilityLabel={`${removeLabel}: ${name}`}
+        onPress={() => void removeChallenge(c, kind, t)}
+        style={styles.remove}
+        hoverStyle={styles.removeHover}
+      >
+        <X size={15} color={dx.ash} strokeWidth={1.8} />
+      </Hover>
+    </View>
   );
 }
 
@@ -362,18 +481,26 @@ const styles = StyleSheet.create({
     backgroundColor: alpha(eos.ember, 0.14),
     boxShadow: [{ offsetX: 3, offsetY: 0, blurRadius: 0, spreadDistance: 0, color: eos.ember, inset: true }],
   },
-  place: { width: 26 },
-  nameCell: { flex: 1, minWidth: 0, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  place: { width: 26, alignItems: 'flex-start' },
+  nameCol: { flex: 1, minWidth: 0 },
+  nameCell: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  country: { marginTop: 1 },
   valueCell: { minWidth: 110, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 6 },
   gapRow: { paddingVertical: 6, paddingHorizontal: 18, alignItems: 'center', borderTopWidth: 1, borderTopColor: dx.rowRule, backgroundColor: dx.track },
   foot: { marginTop: 10 },
   place_card: { flex: 1, padding: 22, alignItems: 'center' },
   chal: { flex: 1, paddingVertical: 18, paddingHorizontal: 20 },
+  noHover: {},
+  chalList: { marginTop: 8, marginHorizontal: -8 },
+  more: { alignSelf: 'center', marginTop: 6 },
+  line: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  lineOpen: { flex: 1, minWidth: 0, flexDirection: 'row', alignItems: 'center', gap: 10, padding: 8, borderRadius: 10 },
+  remove: { width: 30, height: 30, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  removeHover: { backgroundColor: dx.ghostHover },
+  incomingHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  incomingActions: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 12 },
   chalRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 12, marginHorizontal: -8, padding: 8, borderRadius: 10 },
   incoming: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
     marginTop: 12,
     paddingVertical: 12,
     paddingHorizontal: 14,

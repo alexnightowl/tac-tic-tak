@@ -77,13 +77,13 @@ export function DxAchievementModal({ slug }: { slug: string }) {
             label={t('achv.share')}
             testID="achievement-share"
             variant="ember"
-            size="sm"
+            size="md"
             icon={<ShareIcon size={15} color={eos.bone} strokeWidth={2} />}
             onPress={() => shareAchievement(t('achv.share_message', { name }), me?.nickname)}
             style={styles.flex}
           />
         ) : null}
-        <GhostButton label={t('achv.close')} testID="achievement-close-btn" accessibilityLabel={t('achv.close')} onPress={close} style={styles.flex} />
+        <GhostButton label={t('achv.close')} testID="achievement-close-btn" accessibilityLabel={t('achv.close')} onPress={close} height={44} style={styles.flex} />
       </View>
     </Dialog>
   );
@@ -116,5 +116,5 @@ const styles = StyleSheet.create({
     boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: alpha(eos.bone, 0.05), inset: true }],
   },
   cell: { flex: 1, alignItems: 'center' },
-  actions: { marginTop: 20, alignSelf: 'stretch', flexDirection: 'row', gap: 10 },
+  actions: { marginTop: 20, alignSelf: 'stretch', flexDirection: 'row', alignItems: 'center', gap: 10 },
 });

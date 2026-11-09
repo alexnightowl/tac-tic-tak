@@ -33,7 +33,7 @@ import { StreakBadge } from './StreakBadge';
 import { openProfile, UserIdentity } from './UserIdentity';
 
 /** Web medal colours (gold, silver, bronze) from the nearest tokens. */
-const MEDAL = [rank.intermediate.color, graphite[300], rank.advanced.color];
+export const MEDAL = [rank.intermediate.color, graphite[300], rank.advanced.color];
 /** Own-row highlight (web: inset ember/55 ring on #2e262c). */
 const SELF_RING = semantic.accent;
 

@@ -50,9 +50,19 @@ export function DxAchievements({ switcher }: { switcher: ReactNode }) {
       {list.data ? (
         <Collection list={list.data} userId={userId} />
       ) : (
-        <DText size={14} color={dx.dust} testID="dx-achievements-loading">
-          {list.isError ? t('achv.error') : t('achv.loading')}
-        </DText>
+        <View style={styles.state} testID="dx-achievements-loading">
+          <DText size={14} color={dx.dust}>
+            {list.isError ? t('achv.error') : t('achv.loading')}
+          </DText>
+          {list.isError ? (
+            <GhostButton
+              label={t('stats.retry')}
+              testID="dx-achievements-retry"
+              accessibilityLabel={t('stats.retry')}
+              onPress={() => void list.refetch()}
+            />
+          ) : null}
+        </View>
       )}
     </DesktopPage>
   );
@@ -74,7 +84,7 @@ function Collection({ list, userId }: { list: Achievement[]; userId: string }) {
   const latest = list
     .filter((a) => a.unlocked && a.unlockedAt)
     .sort((a, b) => +new Date(b.unlockedAt!) - +new Date(a.unlockedAt!))[0];
-  const shown = groups.filter((g) => filter === 'all' || g.category === filter).flatMap((g) => g.items);
+  const shown = groups.filter((g) => filter === 'all' || g.category === filter);
 
   const cols = width > 0 ? Math.max(2, Math.min(6, Math.floor((width + GAP) / (CARD_MIN + GAP)))) : 6;
   const cardW = width > 0 ? Math.floor((width - GAP * (cols - 1)) / cols) : CARD_MIN;
@@ -154,9 +164,23 @@ function Collection({ list, userId }: { list: Achievement[]; userId: string }) {
             />
           </Card>
         ) : null}
-        <View style={styles.grid} onLayout={onLayout} testID="dx-achievements-grid">
-          {shown.map((a) => (
-            <MedalCard key={a.slug} a={a} fresh={fresh.has(a.slug)} width={cardW} />
+        <View onLayout={onLayout} testID="dx-achievements-grid">
+          {shown.map((g, i) => (
+            <View key={g.category} style={i > 0 && styles.section} testID={`dx-achievements-section-${g.category}`}>
+              <View style={styles.sectionHead}>
+                <DText size={11} weight={700} ls={1.3} upper color={dx.ash} accessibilityRole="header">
+                  {t(achievementCategoryKey(g.category))}
+                </DText>
+                <DText size={12} color={dx.dust} tabular>
+                  {`${g.items.filter((a) => a.unlocked).length} / ${g.items.length}`}
+                </DText>
+              </View>
+              <View style={styles.grid}>
+                {g.items.map((a) => (
+                  <MedalCard key={a.slug} a={a} fresh={fresh.has(a.slug)} width={cardW} />
+                ))}
+              </View>
+            </View>
           ))}
         </View>
       </View>
@@ -166,7 +190,11 @@ function Collection({ list, userId }: { list: Achievement[]; userId: string }) {
 
 function MedalCard({ a, fresh, width }: { a: Achievement; fresh: boolean; width: number }) {
   const t = useT();
+  const { lang } = useLang();
   const name = t(achievementNameKey(a.slug));
+  // The phone tile's line: the unlock date ("New · date" once), or Locked.
+  const date = a.unlockedAt ? formatUnlockDate(a.unlockedAt, lang, true) : '';
+  const sub = a.unlocked ? (fresh ? t('achv.new_on', { date }) : date) : t('achv.locked');
   return (
     <Hover
       testID={`dx-achievement-${a.slug}`}
@@ -179,9 +207,24 @@ function MedalCard({ a, fresh, width }: { a: Achievement; fresh: boolean; width:
       <DText size={13.5} weight={800} align="center" numberOfLines={2} color={a.unlocked ? dx.bone : dx.ash}>
         {name}
       </DText>
-      <DText size={11.5} lh={15} align="center" color={dx.dust} numberOfLines={3} testID={fresh ? `dx-achievement-${a.slug}-new` : undefined}>
-        {fresh ? t('achv.new') : t(achievementDescKey(a.slug))}
+      <DText size={11.5} lh={15} align="center" color={dx.dust} numberOfLines={3}>
+        {t(achievementDescKey(a.slug))}
       </DText>
+      {sub ? (
+        <DText
+          size={10.5}
+          weight={700}
+          ls={0.4}
+          upper={fresh}
+          tabular
+          align="center"
+          color={a.unlocked ? (fresh ? tone.gold : dx.ash) : dx.dust}
+          numberOfLines={1}
+          testID={fresh ? `dx-achievement-${a.slug}-new` : `dx-achievement-${a.slug}-date`}
+        >
+          {sub}
+        </DText>
+      ) : null}
     </Hover>
   );
 }
@@ -201,6 +244,9 @@ const styles = StyleSheet.create({
   latest: { flexDirection: 'row', alignItems: 'center', gap: 18, paddingVertical: 20, paddingHorizontal: 22 },
   latestOpen: { flex: 1, minWidth: 0, flexDirection: 'row', alignItems: 'center', gap: 18 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: GAP },
+  state: { alignItems: 'flex-start', gap: 12 },
+  section: { marginTop: 22 },
+  sectionHead: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', paddingHorizontal: 2, marginBottom: 12 },
   medal: {
     alignItems: 'center',
     gap: 10,

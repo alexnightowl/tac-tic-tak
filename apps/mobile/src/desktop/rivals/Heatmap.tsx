@@ -1,4 +1,4 @@
-import { buildGrid, type HeatmapDatum, type HeatmapGrid } from '@tac/core/charts';
+import { buildGrid, HEATMAP_DAY_LABELS, monthMarkers, type HeatmapDatum, type HeatmapGrid } from '@tac/core/charts';
 import { eos } from '@tac/core/tokens';
 import { StyleSheet, TextInput, View, type PointerEvent } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -9,9 +9,10 @@ import { useLang, useT, useTn } from '@/ui/lang';
 import { DText } from '../kit';
 import { dx } from '../tokens';
 
-// DXStats "Активність": GitHub-style grid, 15 px cells 4 apart, no month or
-// day labels; as many weeks as the card is wide (26 at 1440). Drawn as one
-// Svg with a path per level; the hover readout runs on a SharedValue.
+// DXStats "Активність": GitHub-style grid, 15 px cells 4 apart, with the
+// phone heatmap's month labels above and Mon / Wed / Fri down the left; as
+// many weeks as the card is wide. Drawn as one Svg with a path per level;
+// the hover readout runs on a SharedValue.
 
 const CELL = 15;
 const GAP = 4;
@@ -19,6 +20,10 @@ const PITCH = CELL + GAP;
 const R = 3;
 const TIP_W = 190;
 const TIP_H = 24;
+/** Month-label row above the cells, weekday column left of them. */
+const TOP = 18;
+const DAY_COL = 30;
+const MONTH_W = 30;
 const LEVELS = [dx.heat0, dx.heat1, dx.heat2, dx.heat3, dx.heat4];
 
 function rect(x: number, y: number, s: number, r: number): string {
@@ -36,9 +41,9 @@ function levelPaths(grid: HeatmapGrid): string[] {
   return out;
 }
 
-/** How many week columns fit in `width`. */
+/** How many week columns fit in `width` (the weekday column included). */
 export function weeksFor(width: number): number {
-  return Math.max(8, Math.min(52, Math.floor((width + GAP) / PITCH)));
+  return Math.max(8, Math.min(52, Math.floor((width - DAY_COL + GAP) / PITCH)));
 }
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -49,6 +54,8 @@ export function DxHeatmap({ data, weeks, testID }: { data: HeatmapDatum[]; weeks
   const { lang } = useLang();
   const grid = buildGrid(data, weeks);
   const paths = levelPaths(grid);
+  const marks = monthMarkers(grid, lang);
+  const days7 = HEATMAP_DAY_LABELS[lang] ?? HEATMAP_DAY_LABELS.en;
   const labels: string[] = [];
   let sessions = 0;
   let days = 0;
@@ -104,31 +111,54 @@ export function DxHeatmap({ data, weeks, testID }: { data: HeatmapDatum[]; weeks
   const daysText = tn('stats.active_days', days).split('{n}').join(String(days));
   return (
     <View testID={testID}>
-      <View style={{ width: w, height: h }}>
-        <Svg width={w} height={h}>
-          {paths.map((d, level) => (d ? <Path key={level} d={d} fill={LEVELS[level]} /> : null))}
-        </Svg>
-        <View
-          style={StyleSheet.absoluteFill}
-          onPointerMove={onMove}
-          onPointerLeave={() => sel.set(-1)}
-          accessible
-          accessibilityRole="image"
-          accessibilityLabel={t('stats.heatmap_a11y', { days: daysText, sessions, noun: tn('stats.session_word', sessions) })}
-          testID={`${testID}-grid`}
-        />
-        <Animated.View pointerEvents="none" style={[styles.ring, ring]} />
-        <Animated.View pointerEvents="none" style={[styles.tip, tip]}>
-          <AnimatedTextInput
-            editable={false}
-            pointerEvents="none"
-            animatedProps={tipText}
-            style={[textStyle('caption', lang), styles.tipText]}
-            testID={`${testID}-tooltip`}
-          />
-        </Animated.View>
+      <View style={styles.row}>
+        <View style={styles.dayCol} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+          {days7.map((d, i) => (
+            <DText key={i} size={10.5} color={dx.dust} style={styles.dayLabel} numberOfLines={1}>
+              {d}
+            </DText>
+          ))}
+        </View>
+        <View>
+          <View
+            style={[styles.months, { width: w }]}
+            importantForAccessibility="no-hide-descendants"
+            accessibilityElementsHidden
+            testID={`${testID}-months`}
+          >
+            {marks.map((m) => (
+              <DText key={m.col} size={10.5} color={dx.dust} numberOfLines={1} style={[styles.month, { left: Math.min(m.col * PITCH, w - MONTH_W) }]}>
+                {m.label}
+              </DText>
+            ))}
+          </View>
+          <View style={{ width: w, height: h }}>
+            <Svg width={w} height={h}>
+              {paths.map((d, level) => (d ? <Path key={level} d={d} fill={LEVELS[level]} /> : null))}
+            </Svg>
+            <View
+              style={StyleSheet.absoluteFill}
+              onPointerMove={onMove}
+              onPointerLeave={() => sel.set(-1)}
+              accessible
+              accessibilityRole="image"
+              accessibilityLabel={t('stats.heatmap_a11y', { days: daysText, sessions, noun: tn('stats.session_word', sessions) })}
+              testID={`${testID}-grid`}
+            />
+            <Animated.View pointerEvents="none" style={[styles.ring, ring]} />
+            <Animated.View pointerEvents="none" style={[styles.tip, tip]}>
+              <AnimatedTextInput
+                editable={false}
+                pointerEvents="none"
+                animatedProps={tipText}
+                style={[textStyle('caption', lang), styles.tipText]}
+                testID={`${testID}-tooltip`}
+              />
+            </Animated.View>
+          </View>
+        </View>
       </View>
-      <View style={[styles.legend, { width: w }]}>
+      <View style={[styles.legend, { width: w + DAY_COL }]}>
         <DText size={11.5} color={dx.dust} style={styles.flex} numberOfLines={1}>
           {daysText}
         </DText>
@@ -148,6 +178,11 @@ export function DxHeatmap({ data, weeks, testID }: { data: HeatmapDatum[]; weeks
 
 const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
+  row: { flexDirection: 'row' },
+  dayCol: { width: DAY_COL, paddingTop: TOP, gap: GAP },
+  dayLabel: { height: CELL, lineHeight: CELL },
+  months: { height: TOP },
+  month: { position: 'absolute', top: 0, width: MONTH_W },
   ring: {
     position: 'absolute',
     left: 0,

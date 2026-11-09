@@ -8,7 +8,7 @@ import { formatSessionTitle, pct, responseTime, sessionThemeLabel } from '@/feat
 import { useSessionDetail } from '@/features/sessions/useSessionDetail';
 import { PlateButton } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
-import { Card, DText, Hover, Label, StatTile, TextButton } from '../kit';
+import { Card, DText, Hover, Label, Num, StatTile, TextButton, Tile } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
 import { TWO_COLUMN_MIN, useWidth } from './layout';
@@ -85,8 +85,8 @@ export function DxSessionDetail({ id }: { id: string }) {
           <StatTile style={styles.tile} label={t('sessions.peak')} value={String(s.peakRating)} testID="session-peak" />
           <StatTile style={styles.tile} label={t('sessions.accuracy')} value={pct(s.accuracy)} testID="session-accuracy" />
           <StatTile style={styles.tile} label={t('sessions.avg_response')} value={responseTime(s.avgResponseMs)} testID="session-avg" />
-          <StatTile style={styles.tile} label={t('sessions.solved')} value={String(s.solved)} testID="session-solved" />
-          <StatTile style={styles.tile} label={t('sessions.failed')} value={String(s.failed)} testID="session-failed" />
+          <ColorTile label={t('sessions.solved')} value={String(s.solved)} color={dx.sage} testID="session-solved" />
+          <ColorTile label={t('sessions.failed')} value={String(s.failed)} color={dx.rose} testID="session-failed" />
         </View>
         <View style={two ? styles.cols : styles.stack}>
           {!two ? review : null}
@@ -110,6 +110,18 @@ export function DxSessionDetail({ id }: { id: string }) {
         </View>
       </View>
     </DesktopPage>
+  );
+}
+
+/** A headline tile whose number wears the phone's colour (Solved sage, Failed rose). */
+function ColorTile({ label, value, color, testID }: { label: string; value: string; color: string; testID: string }) {
+  return (
+    <Tile style={styles.tile} testID={testID}>
+      <Label size={10.5}>{label}</Label>
+      <Num color={color} style={styles.mt8}>
+        {value}
+      </Num>
+    </Tile>
   );
 }
 
@@ -150,6 +162,7 @@ function AttemptLine({ attempt: a, index, t }: { attempt: Attempt; index: number
 const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
   body: { gap: 16 },
+  mt8: { marginTop: 8 },
   placeholder: { height: 320 },
   state: { padding: 28, alignItems: 'center', gap: 14 },
   tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
