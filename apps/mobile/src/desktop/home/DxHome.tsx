@@ -1,6 +1,6 @@
 import { localeFor, streakState, type SessionRow } from '@tac/core/format';
 import { localized, suggestedCourse, type CourseSummary } from '@tac/core/library';
-import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, isTrainingStyle, levelOf, type TrainingStyle } from '@tac/core/rules';
 import type { Progression } from '@tac/core/api';
 import type { RunnerSnapshot } from '@tac/core/runner';
 import { levelFor, levelProgress } from '@tac/core/runner';
@@ -277,7 +277,7 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
               {t('play.level', { level })}
             </DText>
             <DText size={12} color={dx.dust}>
-              {t('dx.home.to_next', { n: p.toNext, next: p.next })}
+              {rating >= p.next ? t('level.full_session', { next: levelOf(rating) }) : t('dx.home.to_next', { n: p.toNext, next: p.next })}
             </DText>
           </View>
         </View>

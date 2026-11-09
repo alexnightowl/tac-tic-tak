@@ -1,4 +1,4 @@
-import { UI_STYLE_ORDER, bandFor, paceTarget } from '@tac/core/rules';
+import { UI_STYLE_ORDER, bandFor, levelOf, paceTarget } from '@tac/core/rules';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, rank, tone } from '@tac/core/tokens';
@@ -186,7 +186,7 @@ function RatedCard({ s }: { s: PlaySetup }) {
             {t('dx.home.rated_hint', { next: p.next, pace: paceTarget(s.style, s.effectiveDuration) })}
           </DText>
           <DText size={12} color={dx.dust} tabular testID="dx-play-rated-next">
-            {t('dx.home.to_next', { n: p.toNext, next: p.next })}
+            {s.rating >= p.next ? t('level.full_session', { next: levelOf(s.rating) }) : t('dx.home.to_next', { n: p.toNext, next: p.next })}
           </DText>
         </View>
       </View>

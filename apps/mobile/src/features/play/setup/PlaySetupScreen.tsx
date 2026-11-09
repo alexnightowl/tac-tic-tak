@@ -1,4 +1,4 @@
-import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, bandFor, paceTarget, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, bandFor, levelOf, paceTarget, type BandKey, type TrainingStyle } from '@tac/core/rules';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { control, eos, layout, mixed, radii, semantic, space, surface, tone } from '@tac/core/tokens';
@@ -370,7 +370,7 @@ function RatedCard({ style, durationSec, t, bandLabels }: { style: TrainingStyle
             {t('play.level', { level })}
           </AppText>
           <AppText variant="label" style={TABULAR} testID="setup-rated-next">
-            {t('play.to_next', { n: p.toNext, next: p.next })}
+            {rating >= p.next ? t('level.full_session', { next: levelOf(rating) }) : t('play.to_next', { n: p.toNext, next: p.next })}
           </AppText>
         </View>
         <View style={styles.levelBar}>
