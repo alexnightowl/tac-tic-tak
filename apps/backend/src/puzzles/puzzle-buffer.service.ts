@@ -53,16 +53,19 @@ export class PuzzleBufferService {
     userId: string;
     rating: number;
     theme?: string | null;
+    /** Several themes drawn evenly (the daily plan); wins over `theme`. */
+    themes?: string[] | null;
   }): Promise<CachedPuzzle | null> {
     try {
       return await this.getNextQueued(opts);
     } catch (e: unknown) {
       this.log.error(`queue unavailable, serving from Postgres: ${e instanceof Error ? e.message : String(e)}`);
-      const [id] = await this.pickIds({
+      const [id] = await this.pickMixed({
         min: opts.rating - 40,
         max: opts.rating + 60,
         count: 1,
         theme: opts.theme,
+        themes: opts.themes,
         exclude: new Set(),
       });
       return id ? ((await this.hydrate([id]))[0] ?? null) : null;
@@ -74,6 +77,8 @@ export class PuzzleBufferService {
     userId: string;
     rating: number;
     theme?: string | null;
+    /** Several themes drawn evenly (the daily plan); wins over `theme`. */
+    themes?: string[] | null;
   }): Promise<CachedPuzzle | null> {
     const { sessionId } = opts;
     let len = await this.redis.client.llen(this.queueKey(sessionId));
@@ -102,6 +107,8 @@ export class PuzzleBufferService {
     userId: string;
     rating: number;
     theme?: string | null;
+    /** Several themes drawn evenly (the daily plan); wins over `theme`. */
+    themes?: string[] | null;
   }): Promise<void> {
     await this.preload(opts);
   }
@@ -158,8 +165,10 @@ export class PuzzleBufferService {
     userId: string;
     rating: number;
     theme?: string | null;
+    /** Several themes drawn evenly (the daily plan); wins over `theme`. */
+    themes?: string[] | null;
   }) {
-    const { sessionId, userId, rating, theme } = opts;
+    const { sessionId, userId, rating, theme, themes } = opts;
     const normal = Math.round(this.TARGET_SIZE * 0.6);
     const easier = Math.round(this.TARGET_SIZE * 0.25);
     const harder = this.TARGET_SIZE - normal - easier;
@@ -171,9 +180,9 @@ export class PuzzleBufferService {
     const exclude = new Set<string>([...sessionSeen, ...recent]);
 
     const idGroups = await Promise.all([
-      this.pickIds({ min: rating - 40, max: rating + 60, count: normal, theme, exclude }),
-      this.pickIds({ min: rating - 120, max: rating - 40, count: easier, theme, exclude }),
-      this.pickIds({ min: rating + 60, max: rating + 180, count: harder, theme, exclude }),
+      this.pickMixed({ min: rating - 40, max: rating + 60, count: normal, theme, themes, exclude }),
+      this.pickMixed({ min: rating - 120, max: rating - 40, count: easier, theme, themes, exclude }),
+      this.pickMixed({ min: rating + 60, max: rating + 180, count: harder, theme, themes, exclude }),
     ]);
     const ids = idGroups.flat();
     if (ids.length === 0) return;
@@ -181,6 +190,35 @@ export class PuzzleBufferService {
     const payloads = (await this.hydrate(ids)).map((p) => JSON.stringify(p));
     if (payloads.length === 0) return;
     await this.redis.client.lpush(this.queueKey(sessionId), ...payloads);
+  }
+
+  /**
+   * pickIds over several themes: an even share from each (in random theme
+   * order), interleaved, so a small theme isn't drowned by a big one.
+   */
+  private async pickMixed(opts: {
+    min: number;
+    max: number;
+    count: number;
+    theme?: string | null;
+    themes?: string[] | null;
+    exclude: Set<string>;
+  }): Promise<string[]> {
+    const themes = opts.themes ?? [];
+    if (themes.length <= 1) {
+      return this.pickIds({ ...opts, theme: themes[0] ?? opts.theme });
+    }
+    const order = [...themes].sort(() => Math.random() - 0.5);
+    const share = Math.ceil(opts.count / order.length);
+    const groups: string[][] = [];
+    for (const theme of order) {
+      groups.push(await this.pickIds({ min: opts.min, max: opts.max, count: share, theme, exclude: opts.exclude }));
+    }
+    const out: string[] = [];
+    for (let i = 0; i < share && out.length < opts.count; i++) {
+      for (const g of groups) if (g[i] && out.length < opts.count) out.push(g[i]);
+    }
+    return out;
   }
 
   private async pickIds(opts: {

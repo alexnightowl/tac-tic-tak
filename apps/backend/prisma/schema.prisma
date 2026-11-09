@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(cuid())
-  nickname       String   @unique
-  passwordHash   String
-  displayName    String?
-  avatarUrl      String?
-  bio            String?
-  country        String?  // ISO-3166 alpha-2
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id           String   @id @default(cuid())
+  nickname     String   @unique
+  passwordHash String
+  displayName  String?
+  avatarUrl    String?
+  bio          String?
+  country      String? // ISO-3166 alpha-2
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // Daily-streak tracking. Updated on session finish using the
   // user's local 'YYYY-MM-DD' supplied by the client (no TZ stored
@@ -24,140 +24,141 @@ model User {
   // streakFreezes is auto-applied when the player misses exactly
   // one day; regenerates one week after consumption (see
   // sessions/streak.ts).
-  streakDays            Int     @default(0)
-  streakFreezes         Int     @default(1)
-  streakLastDay         String?
-  streakFreezeRegenAt   String?
+  streakDays          Int     @default(0)
+  streakFreezes       Int     @default(1)
+  streakLastDay       String?
+  streakFreezeRegenAt String?
 
   // Verified-checkmark flag, surfaced as a small icon next to the
   // nickname everywhere this user is displayed. No frontend admin
   // UI on purpose — flipped manually in the DB for users the
   // operator chooses to recognise.
-  verified              Boolean @default(false)
+  verified Boolean @default(false)
 
   // Gate for the /admin page. Flipped manually in the DB. The
   // route guard and AdminGuard on the backend both read this; no
   // UI to grant it from inside the app.
-  isAdmin               Boolean @default(false)
+  isAdmin Boolean @default(false)
 
   // Self-attested "I starred the repo" flag. Driven by a button
   // on the achievements page; trust-based since we don't have
   // GitHub OAuth set up.
-  starredRepo           Boolean @default(false)
+  starredRepo Boolean @default(false)
 
-  achievements          UserAchievement[]
-  experience            UserExperience?
-  xpEvents              XpEvent[]
+  achievements UserAchievement[]
+  experience   UserExperience?
+  xpEvents     XpEvent[]
 
-  settings       UserSetting?
-  progression    UserProgression?
-  styleProgressions UserStyleProgression[]
-  sessions       TrainingSession[]
-  attempts       TrainingAttempt[]
-  puzzleHistory  UserPuzzleHistory[]
-  reviewItems    ReviewItem[]
-  sentFriendRequests     Friendship[] @relation("FriendshipRequester")
-  receivedFriendRequests Friendship[] @relation("FriendshipAddressee")
+  settings               UserSetting?
+  progression            UserProgression?
+  styleProgressions      UserStyleProgression[]
+  sessions               TrainingSession[]
+  attempts               TrainingAttempt[]
+  puzzleHistory          UserPuzzleHistory[]
+  reviewItems            ReviewItem[]
+  sentFriendRequests     Friendship[]            @relation("FriendshipRequester")
+  receivedFriendRequests Friendship[]            @relation("FriendshipAddressee")
   offlineReceipts        OfflineAttemptReceipt[]
   libraryAttempts        LibraryAttempt[]
   courseExams            CourseExam[]
   stormStreams           StormStream[]
   stormRuns              StormRun[]
-  challengesSent         Challenge[] @relation("ChallengeChallenger")
-  challengesReceived     Challenge[] @relation("ChallengeOpponent")
+  challengesSent         Challenge[]             @relation("ChallengeChallenger")
+  challengesReceived     Challenge[]             @relation("ChallengeOpponent")
+  woodpeckerSets         WoodpeckerSet[]
 }
 
 model UserSetting {
-  userId          String  @id
-  focusMode       Boolean @default(false)
-  accentColor     String  @default("#22c55e")
-  boardTheme      String  @default("blue")
-  pieceSet        String  @default("maestro")
-  soundEnabled    Boolean @default(true)
-  soundPack       String  @default("wood")
-  language        String  @default("en")
-  fixedColor      String  @default("auto") // auto | white | black
-  animationSpeed  String  @default("normal") // instant | fast | normal | slow
-  knightArrow     String  @default("bent")  // bent | straight (right-click arrow shape for knight moves)
-  showStreak      Boolean @default(true)
+  userId              String  @id
+  focusMode           Boolean @default(false)
+  accentColor         String  @default("#22c55e")
+  boardTheme          String  @default("blue")
+  pieceSet            String  @default("maestro")
+  soundEnabled        Boolean @default(true)
+  soundPack           String  @default("wood")
+  language            String  @default("en")
+  fixedColor          String  @default("auto") // auto | white | black
+  animationSpeed      String  @default("normal") // instant | fast | normal | slow
+  knightArrow         String  @default("bent") // bent | straight (right-click arrow shape for knight moves)
+  showStreak          Boolean @default(true)
   // When false (default), review puzzles wait for the user to press
   // Next after solving. When true, the runner auto-advances to the
   // next puzzle a moment after the correct ring flashes.
-  reviewAutoAdvance Boolean @default(false)
+  reviewAutoAdvance   Boolean @default(false)
   // When true, the board renders flipped from the natural
   // perspective — the player's pieces appear at the top so they
   // see the position from the opponent's side. Training mode for
   // spotting opponent threats; all move logic stays the same.
-  mirrorView      Boolean @default(false)
+  mirrorView          Boolean @default(false)
   // Welcome slide-deck completion flag. False on a brand-new
   // account → onboarding modal fires on next login. Existing
   // users with prior session history get backfilled to true in
   // the migration so they're not re-onboarded.
   onboardingCompleted Boolean @default(false)
-  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UserStyleProgression {
-  userId              String
-  style               String   // bullet | blitz | rapid
-  startPuzzleRating   Int      @default(1200)
-  currentPuzzleRating Int      @default(1200)
-  unlockedStartRating Int      @default(1200)
+  userId                  String
+  style                   String // bullet | blitz | rapid
+  startPuzzleRating       Int       @default(1200)
+  currentPuzzleRating     Int       @default(1200)
+  unlockedStartRating     Int       @default(1200)
   // Consecutive sessions started within DEMOTE_PEAK_BAND of the unlock
   // ceiling that failed ≤1 of the 4 criteria. Resets on any non-weak
   // session at peak; ignored entirely for sessions in the comfort zone.
-  weakSessionStreak   Int      @default(0)
+  weakSessionStreak       Int       @default(0)
   // Provisional period: while > 0 the ceiling rides the observed
   // peakRating up freely and snaps down to peakRating when it lands
   // ≥100 below the current ceiling, so a brand-new player finds their
   // real level fast. Decremented per rated session; theme/unrated
   // sessions don't consume it. New rows start at 5; existing rows
   // were backfilled to 0 (already past calibration).
-  calibrationSessionsLeft Int  @default(5)
+  calibrationSessionsLeft Int       @default(5)
   // When the current calibration window opened (POST /users/me/recalibrate).
   // Null: every session of the style belongs to it (a new account).
-  calibrationStartedAt DateTime?
+  calibrationStartedAt    DateTime?
   // Play v2 level (sessions/progress.ts). Null until the first v2 session.
-  level               Int?
+  level                   Int?
   // v2 rated sessions in a row that ended under level - 50.
-  levelGuard          Int      @default(0)
-  updatedAt           DateTime @updatedAt
-  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  levelGuard              Int       @default(0)
+  updatedAt               DateTime  @updatedAt
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, style])
 }
 
 model UserProgression {
-  userId              String @id
-  startPuzzleRating   Int    @default(1200)
-  currentPuzzleRating Int    @default(1200)
-  unlockedStartRating Int    @default(1200)
+  userId              String   @id
+  startPuzzleRating   Int      @default(1200)
+  currentPuzzleRating Int      @default(1200)
+  unlockedStartRating Int      @default(1200)
   updatedAt           DateTime @updatedAt
-  user                User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Puzzle {
-  id               String  @id
-  fen              String
-  moves            String
-  rating           Int
-  ratingDeviation  Int
-  popularity       Int
-  nbPlays          Int
-  gameUrl          String?
-  themes           PuzzleTheme[]
-  attempts         TrainingAttempt[]
-  history          UserPuzzleHistory[]
-  reviewItems      ReviewItem[]
+  id              String              @id
+  fen             String
+  moves           String
+  rating          Int
+  ratingDeviation Int
+  popularity      Int
+  nbPlays         Int
+  gameUrl         String?
+  themes          PuzzleTheme[]
+  attempts        TrainingAttempt[]
+  history         UserPuzzleHistory[]
+  reviewItems     ReviewItem[]
 
   @@index([rating])
   @@index([rating, popularity])
 }
 
 model Theme {
-  id       Int           @id @default(autoincrement())
-  slug     String        @unique
-  puzzles  PuzzleTheme[]
+  id      Int           @id @default(autoincrement())
+  slug    String        @unique
+  puzzles PuzzleTheme[]
 }
 
 model PuzzleTheme {
@@ -171,42 +172,51 @@ model PuzzleTheme {
 }
 
 model TrainingSession {
-  id              String   @id @default(cuid())
-  userId          String
-  mode            String   // "mixed" | "theme" | "casual" | "offline"
+  id            String            @id @default(cuid())
+  userId        String
+  mode          String // "mixed" | "theme" | "casual" | "offline"
   // "v2": started by the Play v2 client (levels instead of the norm).
   // Null: the original rules.
-  ruleset         String?
-  style           String   @default("blitz") // bullet | blitz | rapid
-  theme           String?
-  startRating     Int
-  durationSec     Int
-  startedAt       DateTime @default(now())
-  endedAt         DateTime?
-  solvedCount     Int      @default(0)
-  failedCount     Int      @default(0)
-  peakRating      Int      @default(0)
-  accuracy        Float    @default(0)
-  avgResponseMs   Int      @default(0)
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  attempts        TrainingAttempt[]
+  ruleset       String?
+  style         String            @default("blitz") // bullet | blitz | rapid
+  theme         String?
+  // Mobile: several themes in one session (the daily plan); `theme` then
+  // holds the first. Empty for everything else.
+  themes        String[]          @default([])
+  // Mobile: "blind" (pieces hide after a look) or "plan" (the daily plan).
+  // Null: a plain session.
+  variant       String?
+  startRating   Int
+  durationSec   Int
+  startedAt     DateTime          @default(now())
+  endedAt       DateTime?
+  solvedCount   Int               @default(0)
+  failedCount   Int               @default(0)
+  peakRating    Int               @default(0)
+  accuracy      Float             @default(0)
+  avgResponseMs Int               @default(0)
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempts      TrainingAttempt[]
 
   @@index([userId, startedAt])
   @@index([userId, style, startedAt])
 }
 
 model TrainingAttempt {
-  id              String   @id @default(cuid())
-  sessionId       String
-  userId          String
-  puzzleId        String
-  puzzleRating    Int
-  correct         Boolean
-  responseMs      Int
-  createdAt       DateTime @default(now())
-  session         TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  puzzle          Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  id           String          @id @default(cuid())
+  sessionId    String
+  userId       String
+  puzzleId     String
+  puzzleRating Int
+  correct      Boolean
+  responseMs   Int
+  // Mobile: thinking time on the move that went wrong (from the moment it
+  // was the player's turn). Null on solved puzzles and older rows.
+  mistakeMs    Int?
+  createdAt    DateTime        @default(now())
+  session      TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle       Puzzle          @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
 
   @@index([sessionId])
   @@index([userId, createdAt])
@@ -225,14 +235,14 @@ model UserPuzzleHistory {
 }
 
 model Friendship {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   requesterId String
   addresseeId String
-  status      String   // "pending" | "accepted"
-  createdAt   DateTime @default(now())
+  status      String // "pending" | "accepted"
+  createdAt   DateTime  @default(now())
   acceptedAt  DateTime?
-  requester   User     @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
-  addressee   User     @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  requester   User      @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee   User      @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
 
   @@unique([requesterId, addresseeId])
   @@index([addresseeId, status])
@@ -254,13 +264,13 @@ model UserAchievement {
 }
 
 model ReviewItem {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   userId     String
   puzzleId   String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
   resolvedAt DateTime?
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  puzzle     Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle     Puzzle    @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
 
   @@unique([userId, puzzleId])
   @@index([userId, resolvedAt])
@@ -388,31 +398,51 @@ model StormRun {
 
 /// An async Race between two friends on one stream.
 model Challenge {
-  id              String    @id @default(cuid())
-  challengerId    String
-  opponentId      String
-  format          String
-  streamId        String
-  avgRating       Int
-  note            String?
+  id                 String    @id @default(cuid())
+  challengerId       String
+  opponentId         String
+  format             String
+  streamId           String
+  avgRating          Int
+  note               String?
   // "draft" (the challenger has not played yet) | "pending" | "declined" | "cancelled"
   // (withdrawn by the challenger) | "finished"; a pending one past expiresAt reads as "expired".
-  status          String    @default("draft")
+  status             String    @default("draft")
   // The runs (a dare's challenger run is a solo Storm run).
-  challengerRunId String?
-  opponentRunId   String?
-  sentAt          DateTime?
-  expiresAt       DateTime?
-  finishedAt      DateTime?
+  challengerRunId    String?
+  opponentRunId      String?
+  sentAt             DateTime?
+  expiresAt          DateTime?
+  finishedAt         DateTime?
   // Removed from that player's own list (POST /challenges/:id/remove).
   challengerHiddenAt DateTime?
   opponentHiddenAt   DateTime?
-  createdAt       DateTime  @default(now())
-  challenger      User      @relation("ChallengeChallenger", fields: [challengerId], references: [id], onDelete: Cascade)
-  opponent        User      @relation("ChallengeOpponent", fields: [opponentId], references: [id], onDelete: Cascade)
-  challengerRun   StormRun? @relation("ChallengeChallengerRun", fields: [challengerRunId], references: [id], onDelete: SetNull)
-  opponentRun     StormRun? @relation("ChallengeOpponentRun", fields: [opponentRunId], references: [id], onDelete: SetNull)
+  createdAt          DateTime  @default(now())
+  challenger         User      @relation("ChallengeChallenger", fields: [challengerId], references: [id], onDelete: Cascade)
+  opponent           User      @relation("ChallengeOpponent", fields: [opponentId], references: [id], onDelete: Cascade)
+  challengerRun      StormRun? @relation("ChallengeChallengerRun", fields: [challengerRunId], references: [id], onDelete: SetNull)
+  opponentRun        StormRun? @relation("ChallengeOpponentRun", fields: [opponentRunId], references: [id], onDelete: SetNull)
 
   @@index([challengerId, createdAt])
   @@index([opponentId, status])
+}
+
+/// Woodpecker set (mobile): a fixed list of puzzles the player solves
+/// again and again in cycles, each faster than the one before. Results are
+/// LibraryAttempt rows with bookId = this id ("wp_…").
+model WoodpeckerSet {
+  id         String    @id
+  userId     String
+  style      String
+  /// "easy" | "medium" | "hard": the offset from the style's level.
+  difficulty String
+  /// Centre of the rating window the puzzles were picked from.
+  rating     Int
+  /// In solving order (easiest first).
+  puzzleIds  String[]
+  createdAt  DateTime  @default(now())
+  archivedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }

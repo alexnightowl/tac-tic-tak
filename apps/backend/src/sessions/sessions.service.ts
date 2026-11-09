@@ -23,6 +23,7 @@ import {
   evaluateLevel,
   initialLevel,
   LevelCheck,
+  levelOf,
   LEVEL_GUARD_SESSIONS,
   LEVEL_STEP,
   paceTarget,
@@ -56,6 +57,14 @@ export class SessionsService {
   ) {}
 
   async create(userId: string, dto: CreateSessionDto) {
+    if (dto.variant === 'blind' && dto.mode === 'mixed') {
+      throw new BadRequestException('blind sessions are casual or theme');
+    }
+    if (dto.themes && dto.mode !== 'theme') {
+      throw new BadRequestException('themes need theme mode');
+    }
+    const themes = dto.themes ? [...new Set(dto.themes)] : [];
+    const theme = themes[0] ?? dto.theme ?? null;
     const styleRow = await this.styleProgression(userId, dto.style);
 
     // Calibration sessions ignore whatever startRating the client sent
@@ -73,6 +82,8 @@ export class SessionsService {
     let startRating = dto.startRating;
     if (v2 && !unrated) {
       startRating = styleRow.level ?? initialLevel(styleRow.currentPuzzleRating, styleRow.unlockedStartRating);
+    } else if (dto.variant === 'plan') {
+      startRating = planStartRating(styleRow);
     } else if (calibrating) {
       const win = await this.calibrationWindow(userId, dto.style, styleRow);
       startRating = calibrationProbe(win.attempts, win.anchor, win.lastStart);
@@ -94,7 +105,9 @@ export class SessionsService {
         userId,
         mode: dto.mode,
         style: dto.style,
-        theme: dto.theme ?? null,
+        theme,
+        themes,
+        variant: dto.variant ?? null,
         startRating,
         durationSec: dto.durationSec,
         ruleset: v2 ? 'v2' : null,
@@ -123,7 +136,8 @@ export class SessionsService {
         sessionId: session.id,
         userId,
         rating: servingRating,
-        theme: dto.theme ?? null,
+        theme,
+        themes,
       });
     } catch (e: unknown) {
       this.log.error(`initial preload failed: ${e instanceof Error ? e.message : String(e)}`);
@@ -193,6 +207,7 @@ export class SessionsService {
       userId,
       rating: servingRating,
       theme: session.theme,
+      themes: session.themes,
     });
     if (!puzzle) throw new NotFoundException('no puzzles available');
 
@@ -224,6 +239,7 @@ export class SessionsService {
         puzzleRating: puzzle.rating,
         correct: dto.correct,
         responseMs: dto.responseMs,
+        mistakeMs: dto.correct ? null : (dto.mistakeMs ?? null),
       },
     });
 
@@ -233,7 +249,9 @@ export class SessionsService {
       update: { lastSeenAt: new Date(), seenCount: { increment: 1 } },
     });
 
-    if (!dto.correct) {
+    // A miss with the pieces hidden says nothing about seeing the tactic
+    // on a normal board: blind misses stay out of Review.
+    if (!dto.correct && session.variant !== 'blind') {
       await this.prisma.reviewItem.upsert({
         where: { userId_puzzleId: { userId, puzzleId: dto.puzzleId } },
         create: { userId, puzzleId: dto.puzzleId },
@@ -756,7 +774,7 @@ export class SessionsService {
       orderBy: { createdAt: 'asc' },
       select: {
         id: true, puzzleId: true, puzzleRating: true,
-        correct: true, responseMs: true, createdAt: true,
+        correct: true, responseMs: true, mistakeMs: true, createdAt: true,
       },
     });
     const endRating = attempts.length > 0
@@ -768,6 +786,8 @@ export class SessionsService {
       endedAt: session.endedAt,
       mode: session.mode,
       theme: session.theme,
+      themes: session.themes,
+      variant: session.variant,
       durationSec: session.durationSec,
       startRating: session.startRating,
       endRating,
@@ -874,6 +894,19 @@ function evaluateLevelHeld(
     pace: null,
     paceHeld: false,
   };
+}
+
+/**
+ * Where the daily plan starts (D40): a step under the style's level, so a
+ * session of the player's weakest themes stays winnable.
+ */
+export function planStartRating(row: {
+  level: number | null;
+  currentPuzzleRating: number;
+  unlockedStartRating: number;
+}): number {
+  const level = row.level ?? initialLevel(row.currentPuzzleRating, row.unlockedStartRating);
+  return Math.max(MIN_RATING, levelOf(level - LEVEL_STEP));
 }
 
 function isUnrated(mode: string): boolean {
