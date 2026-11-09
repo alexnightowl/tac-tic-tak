@@ -1,4 +1,4 @@
-import { UI_STYLE_ORDER, bandFor } from '@tac/core/rules';
+import { UI_STYLE_ORDER, bandFor, paceTarget } from '@tac/core/rules';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, tone } from '@tac/core/tokens';
@@ -183,7 +183,7 @@ function RatedCard({ s }: { s: PlaySetup }) {
         <Bar value={p.ratio} style={styles.mt10} />
         <View style={styles.barFoot}>
           <DText size={12} color={dx.dust} numberOfLines={1} style={styles.shrink}>
-            {t('dx.home.rated_hint', { next: p.next })}
+            {t('dx.home.rated_hint', { next: p.next, pace: paceTarget(s.style, s.effectiveDuration) })}
           </DText>
           <DText size={12} color={dx.dust} tabular>{`${level} → ${p.next}`}</DText>
         </View>

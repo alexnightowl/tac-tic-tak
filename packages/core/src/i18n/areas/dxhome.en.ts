@@ -71,7 +71,7 @@ export const dxhomeEn: Dict = {
   'dx.home.mode.casual_desc': 'Any difficulty · unrated',
   'dx.home.mode.themes_desc': 'Train one motif · unrated',
   'dx.home.rated_line': '{band} · {level}',
-  'dx.home.rated_hint': 'Finish a session at {next}+ to level up',
+  'dx.home.rated_hint': 'Finish at {next}+ with {pace} solved to level up',
   'dx.home.other_modes': 'Other modes',
   'dx.home.storm_sub': '3 min · best {n}',
   'dx.home.summary': 'Summary',

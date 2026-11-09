@@ -2,8 +2,8 @@ import type { SessionDetail } from '@tac/core/api';
 import { normalizePieceSet } from '@tac/core/board';
 import { fmtResponseTime } from '@tac/core/format';
 import type { ServerPuzzle } from '@tac/core/puzzle';
-import { LEVEL_GUARD_GAP, type TrainingStyle } from '@tac/core/rules';
-import { levelFor, levelOutcomeOf, levelProgress, levelRankChangeOf, tacticalThemes, type FinishResponse, type LevelOutcome } from '@tac/core/runner';
+import { LEVEL_GUARD_GAP, levelOf, type TrainingStyle } from '@tac/core/rules';
+import { levelFor, levelNextNote, levelOutcomeOf, levelProgress, levelRankChangeOf, tacticalThemes, type FinishResponse, type LevelOutcome } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQueries, useQuery } from '@tanstack/react-query';
@@ -16,7 +16,7 @@ import { StyleSheet, View } from 'react-native';
 import { feel, stopLongClip } from '@/feel';
 import { RankTile } from '@/features/experience/XpCard';
 import { bandIcon } from '@/features/play/setup/bandIcons';
-import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, StreakOutcomeChip } from '@/features/play/runner/outcomeCards';
+import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, PaceHeldCard, StreakOutcomeChip } from '@/features/play/runner/outcomeCards';
 import { RankCeremony } from '@/features/play/runner/RankCeremony';
 import { puzzleApi, reviewKeys, sessionApi } from '@/features/review/api';
 import { useAppStore } from '@/stores/appStore';
@@ -145,7 +145,9 @@ function Body({
             down: false,
             guarded: false,
             early: false,
-          } as LevelOutcome;
+            paceHeld: false,
+            pace: null,
+          } satisfies LevelOutcome;
         })()
       : null);
 
@@ -167,6 +169,9 @@ function Body({
           {shownOutcome ? <RatingCard o={shownOutcome} styleLabel={styleLabel} t={t} /> : null}
           {outcome?.early && <EarlyExitNote t={t} />}
           {outcome?.up && <LevelUpCard level={outcome.level} styleName={styleLabel.toLowerCase()} t={t} />}
+          {outcome?.paceHeld && outcome.pace && (
+            <PaceHeldCard next={levelOf(outcome.ratingAfter)} solved={outcome.pace.solved} target={outcome.pace.target} t={t} />
+          )}
           {outcome?.guarded && <LevelGuardCard level={outcome.level} under={outcome.level - outcome.ratingAfter} t={t} />}
           {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
           {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
@@ -260,6 +265,7 @@ function SumTile({ id, label, value, caption }: { id: string; label: string; val
 /** DXSessionSummary hero: the band eye, the rating and its move, the way to the next mark. */
 function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: TFn }) {
   const up = o.delta >= 0;
+  const nextNote = levelNextNote(o);
   return (
     <Card texture style={styles.hero} testID="summary-rating">
       <Image source={bandIcon(o.ratingAfter)} style={styles.eye} contentFit="contain" transition={null} />
@@ -284,7 +290,7 @@ function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string;
             {t('summary.level', { level: o.level })}
           </DText>
           <DText size={12} color={o.guarded ? tone.gold : dx.dust} tabular testID="summary-level-next">
-            {o.guarded ? t('summary.protected', { n: 1, total: 2 }) : t('play.to_next', { n: o.toNext, next: o.next })}
+            {t(nextNote.key, nextNote.vars)}
           </DText>
         </View>
       </View>

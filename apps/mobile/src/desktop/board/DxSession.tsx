@@ -1,5 +1,5 @@
 import type { Progression } from '@tac/core/api';
-import { LEVEL_GUARD_GAP } from '@tac/core/rules';
+import { LEVEL_GUARD_GAP, isTrainingStyle, paceTarget } from '@tac/core/rules';
 import { levelFor, levelProgress, turnCardOf } from '@tac/core/runner';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { fmtDuration } from '@tac/core/format';
@@ -297,8 +297,13 @@ function ProgressCard({ s, prog, t }: { s: Model['s']; prog: Progression | null;
   const p = levelProgress(rating, level);
   const ready = rating >= p.next;
   const below = rating < level - LEVEL_GUARD_GAP;
+  // D37: a level-up also needs the style's pace of solves.
+  const pace = isTrainingStyle(s.style) && s.durationSec > 0 ? { solved: s.counters.solved, target: paceTarget(s.style, s.durationSec) } : null;
+  const paceMet = !pace || pace.solved >= pace.target;
   const note = ready
-    ? t('level.ready_note', { rating, next: p.next })
+    ? paceMet
+      ? t('level.ready_note', { rating, next: p.next })
+      : t('level.ready_pace_note', { rating, next: p.next, n: pace ? pace.target - pace.solved : 0 })
     : below
       ? t('level.below_note', { rating, line: level - LEVEL_GUARD_GAP })
       : t('level.bar_note', { rating, n: p.toNext, next: p.next });
@@ -315,6 +320,17 @@ function ProgressCard({ s, prog, t }: { s: Model['s']; prog: Progression | null;
       <View style={styles.bar}>
         <View style={[styles.barFill, { width: `${(ready ? 1 : p.ratio) * 100}%` }]} />
       </View>
+      {pace ? (
+        <View style={[panelStyles.row, styles.mt8]} testID="runner-pace">
+          <Label size={10}>{t('level.pace')}</Label>
+          <View style={[styles.bar, styles.paceBar]}>
+            <View style={[styles.barFill, { width: `${Math.min(1, pace.solved / Math.max(1, pace.target)) * 100}%` }, !paceMet && styles.paceFill]} />
+          </View>
+          <DText size={12} weight={700} color={paceMet ? eos.rose : dx.ash} tabular testID="runner-pace-count">
+            {`${pace.solved} / ${pace.target}`}
+          </DText>
+        </View>
+      ) : null}
       <DText size={12} color={dx.dust} style={styles.mt8} numberOfLines={2} testID="runner-level-note">
         {note}
       </DText>
@@ -402,6 +418,8 @@ const styles = StyleSheet.create({
   timeFill: { height: '100%', borderRadius: 999, backgroundColor: eos.ash },
   bar: { height: 6, borderRadius: 999, backgroundColor: dx.track, overflow: 'hidden', marginTop: 10 },
   barFill: { height: '100%', borderRadius: 999, backgroundColor: dx.barTo },
+  paceBar: { flex: 1, marginTop: 0, marginHorizontal: 10 },
+  paceFill: { backgroundColor: dx.sage },
   levelReady: { boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: alpha(eos.ember, 0.6), inset: true }] },
   wrong: {
     flexDirection: 'row',

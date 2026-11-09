@@ -1,7 +1,7 @@
 import { LEVEL_GUARD_GAP } from '@tac/core/rules';
 import type { FinishResponse } from '@tac/core/runner';
 import { alpha, countTo, easing, eos, keyframes, keyframeStops, radii, rank, space, tone, transitions } from '@tac/core/tokens';
-import { Coffee, ShieldAlert, Snowflake, Sparkles, TrendingDown } from 'lucide-react-native';
+import { Coffee, ShieldAlert, Snowflake, Sparkles, Timer, TrendingDown } from 'lucide-react-native';
 import { useEffect, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -144,6 +144,21 @@ export function LevelGuardCard({ level, under, t }: { level: number; under: numb
         <Title color={rank.intermediate.color}>{t('level.guard_title', { level })}</Title>
         <AppText variant="caption" color={eos.ash}>
           {t('level.guard_body', { n: under, line: level - LEVEL_GUARD_GAP })}
+        </AppText>
+      </View>
+    </NoteCard>
+  );
+}
+
+/** The rating cleared the next mark but the session missed the style's pace (D37). */
+export function PaceHeldCard({ next, solved, target, t }: { next: number; solved: number; target: number; t: PlayT }) {
+  return (
+    <NoteCard style={styles.rowCard} testID="summary-pace-held">
+      <Timer size={22} color={eos.ash} />
+      <View style={styles.flex}>
+        <Title testID="summary-pace-held-title">{t('level.pace_held_title', { next })}</Title>
+        <AppText variant="caption" color={eos.ash}>
+          {t('level.pace_held_body', { solved, target })}
         </AppText>
       </View>
     </NoteCard>

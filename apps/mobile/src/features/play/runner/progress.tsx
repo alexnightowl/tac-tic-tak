@@ -12,13 +12,30 @@ import { ProgressBar, STRONG, TABULAR } from '../ui';
 // level in a rated session, the casual note in a casual one. One shell, so
 // the slot keeps its shape between states.
 
-/** Rated: the live rating between the level and the next mark. */
-export function LevelProgressBar({ rating, level, t }: { rating: number; level: number; t: PlayT }) {
+/**
+ * Rated: the live rating between the level and the next mark, and the
+ * session's solves against the style's pace target (D37): a level-up needs
+ * both.
+ */
+export function LevelProgressBar({
+  rating,
+  level,
+  pace,
+  t,
+}: {
+  rating: number;
+  level: number;
+  pace?: { solved: number; target: number };
+  t: PlayT;
+}) {
   const p = levelProgress(rating, level);
+  const paceMet = !pace || pace.solved >= pace.target;
   const ready = rating >= p.next;
   const below = rating < level - LEVEL_GUARD_GAP;
   const note = ready
-    ? t('level.ready_note', { rating, next: p.next })
+    ? paceMet
+      ? t('level.ready_note', { rating, next: p.next })
+      : t('level.ready_pace_note', { rating, next: p.next, n: pace ? pace.target - pace.solved : 0 })
     : below
       ? t('level.below_note', { rating, line: level - LEVEL_GUARD_GAP })
       : t('level.bar_note', { rating, n: p.toNext, next: p.next });
@@ -39,6 +56,19 @@ export function LevelProgressBar({ rating, level, t }: { rating: number; level: 
         </AppText>
       </View>
       <ProgressBar ratio={ready ? 1 : p.ratio} color={ready ? eos.ember : tone.sageDeep} testID="runner-level-progress" />
+      {pace ? (
+        <View style={styles.pace} testID="runner-pace">
+          <AppText variant="label" style={styles.paceLabel}>
+            {t('level.pace')}
+          </AppText>
+          <View style={styles.paceBar}>
+            <ProgressBar ratio={Math.min(1, pace.solved / Math.max(1, pace.target))} color={paceMet ? eos.ember : tone.sageDeep} testID="runner-pace-progress" />
+          </View>
+          <AppText variant="caption" color={paceMet ? eos.ember : eos.ash} style={paceMet ? [TABULAR, STRONG] : TABULAR} testID="runner-pace-count">
+            {`${pace.solved} / ${pace.target}`}
+          </AppText>
+        </View>
+      ) : null}
       <AppText variant="caption" color={eos.dust} numberOfLines={2} testID="runner-level-note">
         {note}
       </AppText>
@@ -76,4 +106,7 @@ const styles = StyleSheet.create({
   shellMet: { borderColor: control.dangerBorder, backgroundColor: control.dangerPressBg },
   head: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: space[2] },
   label: { flexDirection: 'row', alignItems: 'center', gap: space[1.5], flexShrink: 1 },
+  pace: { flexDirection: 'row', alignItems: 'center', gap: space[2] },
+  paceLabel: { minWidth: space[10] },
+  paceBar: { flex: 1 },
 });

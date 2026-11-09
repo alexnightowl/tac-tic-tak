@@ -1,5 +1,6 @@
 import type { Progression } from '@tac/core/api';
 import { levelFor, turnCardOf } from '@tac/core/runner';
+import { isTrainingStyle, paceTarget } from '@tac/core/rules';
 import { eos, layout, space } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Pause, Play, X } from 'lucide-react-native';
@@ -160,7 +161,8 @@ function ProgressSlot({ s, prog, t }: { s: RunnerScreenState; prog: Progression 
   if (s.sessionMode === 'casual') {
     return <CasualBar difficulty={s.sessionStartRating ?? rating} rating={rating} level={level} t={t} />;
   }
-  return <LevelProgressBar rating={rating} level={level} t={t} />;
+  const pace = isTrainingStyle(s.style) && s.durationSec > 0 ? { solved: s.counters.solved, target: paceTarget(s.style, s.durationSec) } : undefined;
+  return <LevelProgressBar rating={rating} level={level} pace={pace} t={t} />;
 }
 
 type RunnerScreenState = ReturnType<typeof useRunnerScreen>['s'];

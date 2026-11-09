@@ -1,7 +1,7 @@
 import { queryKeys } from '@tac/core/api';
 import { fmtResponseTime } from '@tac/core/format';
-import { LEVEL_GUARD_GAP } from '@tac/core/rules';
-import { levelOutcomeOf, levelRankChangeOf, type FinishResponse, type LevelOutcome } from '@tac/core/runner';
+import { LEVEL_GUARD_GAP, levelOf } from '@tac/core/rules';
+import { levelNextNote, levelOutcomeOf, levelRankChangeOf, type FinishResponse, type LevelOutcome } from '@tac/core/runner';
 import { control, eos, layout, radii, semantic, space, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -20,7 +20,7 @@ import { Tap } from '@/ui/Tap';
 import type { PlayT } from '../strings';
 import { bandIcon } from '../setup/bandIcons';
 import { STRONG, TABULAR } from '../ui';
-import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, StreakOutcomeChip } from './outcomeCards';
+import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, PaceHeldCard, StreakOutcomeChip } from './outcomeCards';
 import { RankCeremony } from './RankCeremony';
 
 // Session summary (design PlayV2Sum*): the rank ceremony when the level
@@ -144,6 +144,9 @@ function SummaryBody({
       {outcome && <RatingCard o={outcome} styleLabel={styleLabel} t={t} />}
       {outcome?.early && <EarlyExitNote t={t} />}
       {outcome?.up && <LevelUpCard level={outcome.level} styleName={styleLabel.toLowerCase()} t={t} />}
+      {outcome?.paceHeld && outcome.pace && (
+        <PaceHeldCard next={levelOf(outcome.ratingAfter)} solved={outcome.pace.solved} target={outcome.pace.target} t={t} />
+      )}
       {outcome?.guarded && <LevelGuardCard level={outcome.level} under={outcome.level - outcome.ratingAfter} t={t} />}
       {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
       {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
@@ -178,6 +181,7 @@ function SummaryBody({
 function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: PlayT }) {
   const up = o.delta >= 0;
   const guarded = o.guarded;
+  const nextNote = levelNextNote(o);
   return (
     <Card style={styles.hero} testID="summary-rating">
       <View style={styles.heroHead}>
@@ -204,7 +208,7 @@ function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string;
           {t('summary.level', { level: o.level })}
         </AppText>
         <AppText variant="label" color={guarded ? tone.gold : eos.ash} style={TABULAR} testID="summary-level-next">
-          {guarded ? t('summary.protected', { n: 1, total: 2 }) : t('play.to_next', { n: o.toNext, next: o.next })}
+          {t(nextNote.key, nextNote.vars)}
         </AppText>
       </View>
       <View style={styles.heroBar}>

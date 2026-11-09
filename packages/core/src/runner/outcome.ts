@@ -131,6 +131,10 @@ export type LevelOutcome = {
   guarded: boolean;
   /** Ended early: the rating moved, the level waits for a full session. */
   early: boolean;
+  /** The rating cleared the next mark but the session missed the style's pace (D37). */
+  paceHeld: boolean;
+  /** Solved against the style's pace target; null when the server didn't check it. */
+  pace: { solved: number; target: number; met: boolean } | null;
 };
 
 export function levelOutcomeOf(s: FinishResponse): LevelOutcome | null {
@@ -151,7 +155,24 @@ export function levelOutcomeOf(s: FinishResponse): LevelOutcome | null {
     down: lv.down,
     guarded: !s.early && !lv.down && lv.guardAfter > 0,
     early: !!s.early,
+    paceHeld: !!lv.paceHeld,
+    pace: lv.pace ?? null,
   };
+}
+
+/**
+ * The summary's line about the next mark (i18n key + vars): the guard
+ * count, how far the next mark is, or — when the rating already cleared it
+ * and the level stayed — why: the pace fell short (D37), or the session
+ * ended early and the level waits for a full one.
+ */
+export function levelNextNote(o: LevelOutcome): { key: string; vars: Record<string, number> } {
+  if (o.guarded) return { key: 'summary.protected', vars: { n: 1, total: 2 } };
+  if (o.ratingAfter >= o.next) {
+    if (o.paceHeld && o.pace) return { key: 'level.pace_short', vars: { n: Math.max(1, o.pace.target - o.pace.solved) } };
+    return { key: 'level.full_session', vars: { next: levelOf(o.ratingAfter) } };
+  }
+  return { key: 'play.to_next', vars: { n: o.toNext, next: o.next } };
 }
 
 /** A v2 level move across a difficulty band: the RankCeremony. */

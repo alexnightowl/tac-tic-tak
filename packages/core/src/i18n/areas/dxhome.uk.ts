@@ -71,7 +71,7 @@ export const dxhomeUk: Dict = {
   'dx.home.mode.casual_desc': 'Будь-яка складність · без рейтингу',
   'dx.home.mode.themes_desc': 'Тренуй один мотив · без рейтингу',
   'dx.home.rated_line': '{band} · {level}',
-  'dx.home.rated_hint': 'Заверш сесію на {next}+, щоб піднятися',
+  'dx.home.rated_hint': 'Заверш на {next}+ і розв’яжи {pace}, щоб піднятися',
   'dx.home.other_modes': 'Інші режими',
   'dx.home.storm_sub': '3 хв · рекорд {n}',
   'dx.home.summary': 'Підсумок',

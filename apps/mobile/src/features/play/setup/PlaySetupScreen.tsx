@@ -1,4 +1,4 @@
-import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, bandFor, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, bandFor, paceTarget, type BandKey, type TrainingStyle } from '@tac/core/rules';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { control, eos, layout, mixed, radii, semantic, space, surface, tone } from '@tac/core/tokens';
@@ -56,6 +56,7 @@ export function PlaySetupScreen() {
     minMinutes,
     maxMinutes,
     presets,
+    effectiveDuration,
     customInvalid,
     mode,
     setMode,
@@ -105,7 +106,7 @@ export function PlaySetupScreen() {
 
           {/* 2. Rated: the rating and the level; Casual / Themes: the difficulty */}
           {rated ? (
-            <RatedCard style={style} t={t} bandLabels={bandLabels} />
+            <RatedCard style={style} durationSec={effectiveDuration} t={t} bandLabels={bandLabels} />
           ) : (
             <View style={styles.diff}>
               <View style={styles.diffHead}>
@@ -335,7 +336,7 @@ function TypeButton({
 }
 
 /** Rated: the eye, the rating and band, the level and the way to the next one. Opens "How levels work". */
-function RatedCard({ style, t, bandLabels }: { style: TrainingStyle; t: PlayT; bandLabels: Record<BandKey, string> }) {
+function RatedCard({ style, durationSec, t, bandLabels }: { style: TrainingStyle; durationSec: number; t: PlayT; bandLabels: Record<BandKey, string> }) {
   const prog = useAppStore((s) => s.progressions[style]);
   const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
@@ -376,7 +377,7 @@ function RatedCard({ style, t, bandLabels }: { style: TrainingStyle; t: PlayT; b
           <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.levelFill, { width: `${p.ratio * 100}%` }]} />
         </View>
         <AppText variant="caption" color={tone.mist} style={styles.ratedHint}>
-          {t('play.rated_hint', { next: p.next })}
+          {t('play.rated_hint', { next: p.next, pace: paceTarget(style, durationSec) })}
         </AppText>
         {settling > 0 && (
           <AppText variant="captionStrong" color={tone.gold} style={styles.ratedHint} testID="setup-settling">
