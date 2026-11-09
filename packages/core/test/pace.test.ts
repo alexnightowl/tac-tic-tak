@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { computeRatingStep, evaluateLevel, paceTarget } from '../src/rules';
+import { computeRatingStep, evaluateLevel, hasteMs, isHasty, paceTarget } from '../src/rules';
 
 describe('pace (D37)', () => {
   it('targets for the duration presets', () => {
@@ -54,5 +54,15 @@ describe('levelProgress (protected level)', () => {
     expect(levelProgress(1576, 1600)).toEqual({ next: 1650, toNext: 74, ratio: 0.26, levelMark: 0.5 });
     expect(levelProgress(1625, 1600)).toEqual({ next: 1650, toNext: 25, ratio: 0.5, levelMark: null });
     expect(levelProgress(1540, 1600).ratio).toBe(0);
+  });
+});
+
+describe('haste (mistake under 30% of the pace budget)', () => {
+  it('thresholds per style', () => {
+    expect(hasteMs('bullet')).toBe(1500);
+    expect(hasteMs('blitz')).toBe(3600);
+    expect(hasteMs('rapid')).toBe(9000);
+    expect(isHasty('blitz', 3599)).toBe(true);
+    expect(isHasty('blitz', 3600)).toBe(false);
   });
 });
