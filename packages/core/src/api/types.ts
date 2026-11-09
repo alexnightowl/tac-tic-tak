@@ -230,3 +230,37 @@ export type SessionDetail = {
     createdAt: string;
   }>;
 };
+
+// ---- woodpecker (D40, mobile): personal puzzle sets solved in cycles ----
+
+export type WoodpeckerDifficulty = 'easy' | 'medium' | 'hard';
+export type WoodpeckerSize = 50 | 100 | 150;
+
+/** GET /woodpecker/sets (active sets, newest first). */
+export type WoodpeckerSetSummary = {
+  /** 'wp_' + cuid; also the Library bookId of its results. */
+  id: string;
+  size: number;
+  difficulty: WoodpeckerDifficulty;
+  /** Whose level set the difficulty. */
+  style: TrainingStyle;
+  /** Centre of the puzzles' rating window. */
+  rating: number;
+  ratingMin: number;
+  ratingMax: number;
+  createdAt: string;
+};
+
+export type WoodpeckerPuzzle = {
+  id: string;
+  fen: string;
+  /** UCI, space-separated; the first is the opponent's setup move. */
+  moves: string;
+  rating: number;
+  themes: string[];
+};
+
+/** GET /woodpecker/sets/:id and POST /woodpecker/sets: puzzles in solving order (easiest first). */
+export type WoodpeckerSet = WoodpeckerSetSummary & { puzzles: WoodpeckerPuzzle[] };
+
+export type CreateWoodpeckerSetBody = { size: WoodpeckerSize; difficulty: WoodpeckerDifficulty; style: TrainingStyle };

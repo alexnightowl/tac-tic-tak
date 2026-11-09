@@ -16,6 +16,9 @@ import type {
   NextResponse,
   RegisterBody,
   SessionDetail,
+  CreateWoodpeckerSetBody,
+  WoodpeckerSet,
+  WoodpeckerSetSummary,
 } from './types';
 
 const sid = (id: string) => encodeURIComponent(id);
@@ -41,6 +44,13 @@ export function createEndpoints(client: ApiClient) {
           query: { save: q.save === false ? 'false' : undefined, localDate: q.localDate },
         }),
       detail: (id: string) => client.get<SessionDetail>(`/sessions/${sid(id)}`),
+    },
+    // Woodpecker sets (D40): results go through /library/sync with bookId = set id.
+    woodpecker: {
+      list: () => client.get<WoodpeckerSetSummary[]>('/woodpecker/sets'),
+      get: (id: string) => client.get<WoodpeckerSet>(`/woodpecker/sets/${sid(id)}`),
+      create: (body: CreateWoodpeckerSetBody) => client.post<WoodpeckerSet>('/woodpecker/sets', body, { timeoutMs: 30_000 }),
+      archive: (id: string) => client.del<{ ok: true }>(`/woodpecker/sets/${sid(id)}`),
     },
   };
 }
