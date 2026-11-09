@@ -30,4 +30,13 @@ export const dxshellUk: Dict = {
   'dx.shell.key.profile': 'Мій профіль',
   'dx.shell.key.settings': 'Налаштування',
   'dx.shell.key.modes': 'Обрати режим',
+  'dx.shell.keys.everywhere': 'Скрізь',
+  'dx.shell.keys.play': 'Головна, гра, шторм',
+  'dx.shell.keys.session': 'Сесія',
+  'dx.shell.keys.practice': 'Розбір, розділи, іспит',
+  'dx.shell.key.resume': 'Пауза / продовжити',
+  'dx.shell.key.moves': 'Ходи назад / вперед',
+  'dx.shell.key.solution': 'Показати рішення',
+  'dx.shell.key.close': 'Закрити',
+  'dx.shell.key.exam_skip': 'Пропустити (іспит)',
 };

@@ -30,4 +30,13 @@ export const dxshellEn: Dict = {
   'dx.shell.key.profile': 'My profile',
   'dx.shell.key.settings': 'Settings',
   'dx.shell.key.modes': 'Pick a mode',
+  'dx.shell.keys.everywhere': 'Everywhere',
+  'dx.shell.keys.play': 'Home, Play, Storm',
+  'dx.shell.keys.session': 'Session',
+  'dx.shell.keys.practice': 'Review, chapters, exam',
+  'dx.shell.key.resume': 'Pause / resume',
+  'dx.shell.key.moves': 'Moves back / forward',
+  'dx.shell.key.solution': 'Show the solution',
+  'dx.shell.key.close': 'Close',
+  'dx.shell.key.exam_skip': 'Skip (exam)',
 };

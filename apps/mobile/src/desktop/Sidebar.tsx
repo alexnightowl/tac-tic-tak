@@ -137,6 +137,7 @@ function StreakCard() {
   const t = useT();
   const tn = useTn();
   const streak = useAppStore((s) => s.streak);
+  const show = useAppStore((s) => s.settings.showStreak);
   const st = streakState(streak.days, streak.lastDay);
   const today = weekday(new Date());
   // The week's cells: the streak's days that fall in this week, ending today
@@ -144,8 +145,10 @@ function StreakCard() {
   const end = st === 'secured' ? today : st === 'at_risk' ? today - 1 : -1;
   const lit = end < 0 ? 0 : Math.min(streak.days, end + 1);
   const live = st === 'secured' || st === 'at_risk';
-  const caption = st === 'secured' ? t('dx.shell.streak_done') : st === 'at_risk' ? t('dx.shell.streak_today') : t('dx.shell.streak_none');
+  const caption = st === 'secured' ? t('dx.shell.streak_done') : t('dx.shell.streak_today');
   const days = live ? streak.days : 0;
+  // As the phone's Home streak: hidden when the player turned it off or has none.
+  if (!show || days <= 0) return null;
   return (
     <Hover
       testID="dx-streak"
