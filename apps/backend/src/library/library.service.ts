@@ -293,15 +293,6 @@ export class LibraryService implements OnModuleInit {
   }
 
   /**
-   * Results played on the phone (online or not). A re-sent result
-   * (same clientId) or a second result for a puzzle already played in
-   * that cycle is dropped; a puzzle that is not in the named book is
-   * skipped. Hint and missed results put the puzzle in Review. Time
-   * spent earns XP like any training, and the days played count for
-   * the streak (as offline days do: up to 3 days late); the rating never
-   * moves.
-   */
-  /**
    * The player's Woodpecker sets named in a batch (D40): their results
    * ride the Library pipeline with bookId = the set id. Archived sets
    * still take late results.
@@ -316,6 +307,15 @@ export class LibraryService implements OnModuleInit {
     return new Map(rows.map((r) => [r.id, new Set(r.puzzleIds)]));
   }
 
+  /**
+   * Results played on the phone (online or not). A re-sent result
+   * (same clientId) or a second result for a puzzle already played in
+   * that cycle is dropped; a puzzle that is not in the named book is
+   * skipped. Hint and missed results put the puzzle in Review. Time
+   * spent earns XP like any training, and the days played count for
+   * the streak (as offline days do: up to 3 days late); the rating never
+   * moves.
+   */
   async sync(userId: string, dto: LibrarySyncDto) {
     const now = Date.now();
     const seen = new Set<string>();

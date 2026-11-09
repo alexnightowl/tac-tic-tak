@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { randomBytes } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service';
+import { COURSE_PUZZLE_COURSE } from '../library/courses';
 import { MIN_PLAYS, MIN_POPULARITY } from '../puzzles/puzzle-buffer.service';
 import { initialLevel } from '../sessions/progress';
 import { CreateWoodpeckerSetDto, WoodpeckerDifficulty } from './dto';
@@ -10,6 +11,9 @@ import { CreateWoodpeckerSetDto, WoodpeckerDifficulty } from './dto';
 // Puzzles come from a window under the style's level, never seen by the
 // player before, and are solved easiest first. Results are Library
 // attempts with bookId = the set id (LibraryService.sync checks the set).
+// A Library result is unique per (player, puzzle, cycle) whatever the
+// book, so a set never takes a puzzle from a course, another set or any
+// Library result of the player: its results would be dropped as repeats.
 
 const OFFSET: Record<WoodpeckerDifficulty, number> = { easy: -300, medium: -150, hard: 0 };
 const HALF_WINDOW = 75;
@@ -36,9 +40,19 @@ export class WoodpeckerService {
     const level = row?.level ?? initialLevel(row?.currentPuzzleRating ?? 1200, row?.unlockedStartRating ?? 1200);
     const centre = Math.max(MIN_CENTRE, level + OFFSET[dto.difficulty]);
 
-    let ids = await this.pick(userId, centre - HALF_WINDOW, centre + HALF_WINDOW, dto.size, []);
+    const [sets, played] = await Promise.all([
+      this.prisma.woodpeckerSet.findMany({ where: { userId }, select: { puzzleIds: true } }),
+      this.prisma.libraryAttempt.findMany({ where: { userId }, distinct: ['puzzleId'], select: { puzzleId: true } }),
+    ]);
+    const taken = [...new Set([
+      ...COURSE_PUZZLE_COURSE.keys(),
+      ...sets.flatMap((s) => s.puzzleIds),
+      ...played.map((p) => p.puzzleId),
+    ])];
+
+    let ids = await this.pick(userId, centre - HALF_WINDOW, centre + HALF_WINDOW, dto.size, taken);
     if (ids.length < dto.size) {
-      ids = ids.concat(await this.pick(userId, centre - WIDE_WINDOW, centre + WIDE_WINDOW, dto.size - ids.length, ids));
+      ids = ids.concat(await this.pick(userId, centre - WIDE_WINDOW, centre + WIDE_WINDOW, dto.size - ids.length, [...taken, ...ids]));
     }
     if (ids.length < dto.size) throw new BadRequestException('not enough puzzles for this set');
 
