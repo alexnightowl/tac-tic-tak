@@ -14,6 +14,9 @@ type Entry = { re: RegExp; chrome: DesktopChrome };
 
 export const DESKTOP_ROUTES: readonly Entry[] = [
   // ── auth + onboarding ──
+  { re: /^\/login$/, chrome: 'bare' },
+  { re: /^\/register$/, chrome: 'bare' },
+  { re: /^\/onboarding$/, chrome: 'bare' },
   // ── home, play setup, storm intro/result, challenge ──
   // ── board screens (runner, storm run, drills, course/library solve) ──
   // ── review, learn, courses, books ──
