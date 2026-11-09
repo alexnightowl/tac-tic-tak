@@ -13,8 +13,8 @@ PARITY.md mark them "fix".
 **The web is the app itself** (owner, 2026-11-08, D35): `apps/mobile` runs in the browser through
 react-native-web (Expo web export), so one codebase serves iOS, Android and the web; its job is
 using the app from a computer. Since 2026-11-09 (D38) it is the site on tactictak.online (static
-export in `/opt/tactictak-web/prod`, `tools/web/deploy-prod.sh`; test copy on `:8443` via
-`tools/web/deploy-dev.sh`); the old Next web (`apps/frontend`) only serves `/admin`. The D31 Next
+export in `/opt/tactictak-web/prod`, `tools/web/deploy-prod.sh`; no test instance, owner
+2026-11-09: "ми вже працюємо чисто з продом"); the old Next web (`apps/frontend`) only serves `/admin`. The D31 Next
 plan (`docs/web/PLAN.md`, W3+) is superseded. Web-only code goes in `*.web.ts(x)` platform files; every app change must keep the web
 build working (`npx expo export --platform web`).
 
