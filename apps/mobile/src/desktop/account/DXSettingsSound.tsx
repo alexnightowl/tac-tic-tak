@@ -66,10 +66,12 @@ export function DxSettingsSound() {
           </SettingRow>
         ) : null}
       </RowsCard>
-      {/* The phone's section footer under the switch. */}
-      <DText size={12} color={dx.dust} style={styles.mt10} testID="settings-sound-footer">
-        {soundEnabled ? t('settings.silent_hint') : t('settings.sound_off_hint')}
-      </DText>
+      {/* The phone's section footer under the switch; the silent-switch line has no meaning in a browser. */}
+      {soundEnabled ? null : (
+        <DText size={12} color={dx.dust} style={styles.mt10} testID="settings-sound-footer">
+          {t('settings.sound_off_hint')}
+        </DText>
+      )}
 
       <Label style={styles.eventsLabel}>{t('settings.sound_section')}</Label>
       <Card style={styles.events} testID="settings-sound-events">

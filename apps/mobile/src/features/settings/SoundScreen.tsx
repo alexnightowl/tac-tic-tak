@@ -3,7 +3,7 @@ import { eos, radii, space } from '@tac/core/tokens';
 import { useFocusEffect } from 'expo-router';
 import { Check, ChevronDown, Play } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { HAS_HAPTICS } from '@/platform/capabilities';
 import { feel, setFeelPrefs, stopLongClip, useFeelPrefs, type FeelContext, type FeelEvent } from '@/feel';
@@ -61,7 +61,7 @@ export function SoundScreen() {
 
   return (
     <SettingsPage testID="screen-settings-sound" title={t('settings.sound_haptics')}>
-      <ListSection footer={soundEnabled ? t('settings.silent_hint') : t('settings.sound_off_hint')}>
+      <ListSection footer={soundEnabled ? (Platform.OS === 'web' ? undefined : t('settings.silent_hint')) : t('settings.sound_off_hint')}>
         <ToggleRow
           label={t('settings.sound')}
           hint={t('settings.sound_hint')}

@@ -58,7 +58,7 @@ export function DxBook({ bookId }: { bookId: string }) {
     if (progress.chapters[index].complete) router.push(`/library/done?book=${bookId}&chapter=${index}&cycle=${progress.cycle}` as Href);
     else openSolve(bookId, { chapter: index, cycle: progress.cycle });
   };
-  const leftW = winW < 1280 ? 240 : 300;
+  const leftW = winW < 1280 ? 260 : 320;
   const coverW = leftW - 20;
 
   return (
@@ -66,7 +66,7 @@ export function DxBook({ bookId }: { bookId: string }) {
       <View style={styles.cols}>
         <View style={[styles.left, { width: leftW }]}>
           <BookCover book={book} width={coverW} testID="dx-book-cover" />
-          <PlateButton testID="dx-book-cta" label={cta} size={leftW < 300 ? 'md' : 'lg'} block onPress={() => openSolve(bookId, continueTarget(progress))} />
+          <PlateButton testID="dx-book-cta" label={cta} size={leftW < 300 ? 'sm' : 'md'} block onPress={() => openSolve(bookId, continueTarget(progress))} />
         </View>
 
         <View style={styles.flex}>
