@@ -36,6 +36,13 @@ the owner's go-ahead.
 - **Skia (`react-native-skia` 2.15.x, not v3)** for glow effects or charts if Views/SVG hit a limit.
   (stack-research.md › board)
 
+- **"Why my move loses"** (parked by the owner 2026-11-10, D40): after a mistake show the engine's
+  refutation of the player's own move (Stockfish WASM or server-side), not just the solution.
+- **Defensive and "no tactic here" puzzles** (parked 2026-11-10, D40): "what does the opponent
+  threaten?" and quiet-move positions, so the trainer stops promising a blow in every position.
+- **Puzzles from the player's own games** (2026-11-10): import Lichess / chess.com games, find the
+  missed tactics with an engine, turn them into a personal deck.
+
 ## Social and sharing
 - **Rendered session result image** (react-native-view-shot) for the share sheet, beyond the link
   share in Phase 10. (gaps.md › share & invite)

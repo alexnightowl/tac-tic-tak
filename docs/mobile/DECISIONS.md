@@ -458,3 +458,29 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
 - Data: no migration; `currentPuzzleRating` stays as the internal session value (reset to the level at
   every rated start). Existing levels (50 grid) are valid 25-grid levels.
 - PROVISIONAL: weak session = ends under level − 50 (owner fixed only the −25 step).
+
+### D40. Trainers: Woodpecker cycles, blind mode, haste indicator, daily plan (owner, 2026-11-10)
+
+- Owner approved four of the proposed skill features ("вудпекер і режим наосліп апрувлю сразу …
+  індикатор поспіху супер класна ідея … 6 тоже топ, робим"); the engine refutation of a wrong move
+  and defensive / "no tactic here" puzzles are parked (IDEAS.md). Phone and desktop web, en + uk.
+- **Woodpecker:** a personal set of 50 / 100 / 150 unseen puzzles under the style's level
+  (easy −300, medium −150, hard ±0; window ±75, widened to ±200 if short), solved easiest first in
+  cycles. Results are Library attempts with bookId = the set id (`wp_…`), so cycles, the −30 %
+  per-cycle target, offline queue, XP, streak and Review all come from D26. Table `WoodpeckerSet`.
+- **Blind:** a switch on the Free and Themes setups (never rated). Pieces show for a 3 / 5 / 10 s
+  look when the turn starts, then hide; replies come as text; peek is allowed and counted. Blind
+  misses stay out of Review and out of the theme stats (a miss without sight says nothing about
+  seeing the tactic). `TrainingSession.variant = 'blind'`.
+- **Haste:** a mistake is hasty when the wrong move came in under 30 % of the style's pace budget
+  (PACE_SECONDS: bullet 1.5 s, blitz 3.6 s, rapid 9 s), timed from the moment that move became the
+  player's turn (`TrainingAttempt.mistakeMs`). Older rows use the whole-puzzle time (only ever
+  longer, so never a false "hasty"). Shown in the summary, as an in-session nudge after two hasty
+  mistakes in a row, and as a Stats card (`GET /analytics/haste`). Blind sessions are left out.
+- **Daily plan:** one short session (bullet 3 / blitz 5 / rapid 10 min) of the three weakest motif
+  themes by the stats weakness score (≥ 6 attempts; phases, lengths and outcome tags excluded),
+  topped up with the least-tried core motifs when history is thin. Starts at level − 50, unrated
+  (theme mode with `themes`, `variant = 'plan'`). Today's themes stick once a plan session started.
+  `GET /plan/today`.
+- PROVISIONAL: haste share 30 %; plan size 3, min 6 attempts, start level − 50; Woodpecker offsets
+  and sizes; blind look 5 s default.
