@@ -1,5 +1,5 @@
-import { bucketByLocalDay } from '@tac/core/charts';
-import { localeFor, streakState } from '@tac/core/format';
+import { bucketByLocalDay, radarBounds, RADAR_MIN_THEMES, selectRadarThemes } from '@tac/core/charts';
+import { fmtResponseTime, localeFor, streakState } from '@tac/core/format';
 import { isTrainingStyle } from '@tac/core/rules';
 import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, tone } from '@tac/core/tokens';
@@ -19,6 +19,7 @@ import {
   type TimelinePoint,
 } from '@/features/stats/api';
 import { groupInt } from '@/features/stats/CountUp';
+import { RadarChart } from '@/features/stats/RadarChart';
 import { startThemeDrill } from '@/features/stats/drill';
 import { RatingHistoryChart } from '@/features/stats/RatingHistoryChart';
 import { visibleThemes } from '@/features/stats/StatsView';
@@ -32,11 +33,10 @@ import { DxHeatmap, weeksFor } from './Heatmap';
 import { TWO_COLUMN_MIN, useWidth } from './layout';
 
 type Period = '7' | '30' | '365';
-type ThemesTab = 'weakest' | 'strongest';
+type ThemesTab = 'weakest' | 'strongest' | 'all';
 
 const DAY_MS = 86_400_000;
 const DASH = '—';
-const PROFILE_ROWS = 6;
 
 /** Theme accuracy bar colour: strong sage, middling ember, weak rose. */
 function accTone(acc: number): string {
@@ -149,17 +149,39 @@ export function DxStats({ switcher }: { switcher: ReactNode }) {
     </View>
   );
 
-  const profile = visibleThemes(themes.data ?? [], themesTab).slice(0, PROFILE_ROWS);
+  // The radar of the tactical themes (the phone's "By theme" card).
+  const radarData = themes.data ? selectRadarThemes(themes.data, lang) : [];
+  const radarCard = (
+    <Card style={[styles.card, two && styles.wide]} testID="dx-stats-radar-card">
+      <Label>{t('stats.by_theme')}</Label>
+      <View style={styles.mt16}>
+        {!themes.data ? (
+          <View style={styles.ph} />
+        ) : radarData.length < RADAR_MIN_THEMES ? (
+          <DText size={13.5} color={dx.dust} style={styles.empty} testID="dx-stats-radar-empty">
+            {t('stats.no_data')}
+          </DText>
+        ) : (
+          <RadarChart data={radarData} min={radarBounds(radarData).min} max={radarBounds(radarData).max} testID="dx-stats-radar" />
+        )}
+      </View>
+    </Card>
+  );
+
+  // Every tactical theme, as the phone lists them (weakest / strongest top
+  // 20, or all), with attempts, failure rate, average time and rating.
+  const profile = visibleThemes(themes.data ?? [], themesTab);
   const profileCard = (
-    <Card style={[styles.cardTight, two && styles.wide]} testID="dx-stats-themes">
+    <Card style={styles.cardTight} testID="dx-stats-themes">
       <View style={styles.row}>
-        <Label>{t('stats.by_theme')}</Label>
+        <Label>{t('stats.theme_list')}</Label>
         <View style={styles.flex} />
         <Seg
           small
           options={[
             { value: 'weakest' as const, label: t('stats.themes_tab_weakest') },
             { value: 'strongest' as const, label: t('stats.themes_tab_strongest') },
+            { value: 'all' as const, label: t('stats.themes_tab_all') },
           ]}
           value={themesTab}
           onChange={setThemesTab}
@@ -294,9 +316,10 @@ export function DxStats({ switcher }: { switcher: ReactNode }) {
           {activityCard}
         </View>
         <View style={two ? styles.pair : styles.stack}>
-          {profileCard}
+          {radarCard}
           {timeCard}
         </View>
+        {profileCard}
       </View>
     </DesktopPage>
   );
@@ -318,11 +341,16 @@ function ThemeLine({ row, first, t }: { row: ThemeRow; first: boolean; t: TFn })
       <View style={styles.themeIcon}>
         <ThemeIcon slug={row.slug} size={15} color={eos.bone} />
       </View>
-      <DText size={13.5} weight={700} numberOfLines={1} style={styles.flex}>
-        {label}
-      </DText>
-      <DText size={12} color={dx.dust} style={styles.themeN} numberOfLines={1}>
-        {tn('dx.rivals.stats.puzzles', row.attempts).split('{n}').join(String(row.attempts))}
+      <View style={styles.flex}>
+        <DText size={13.5} weight={700} numberOfLines={1}>
+          {label}
+        </DText>
+        <DText size={12} color={dx.dust} numberOfLines={1} style={styles.mt2}>
+          {`${tn('dx.rivals.stats.puzzles', row.attempts).split('{n}').join(String(row.attempts))} · ${t('stats.themes_fail', { pct: Math.round(row.failureRate * 100) })} · ${fmtResponseTime(row.avgResponseMs)}`}
+        </DText>
+      </View>
+      <DText size={13} weight={700} color={dx.ash} tabular align="right" style={styles.themeRating} testID={`dx-stats-theme-rating-${row.slug}`}>
+        {row.rating > 0 ? String(row.rating) : ''}
       </DText>
       <Bar value={acc} colors={[accTone(acc), accTone(acc)]} style={styles.themeBar} />
       <DText size={13} weight={800} tabular align="right" style={styles.themePct}>
@@ -345,7 +373,7 @@ const styles = StyleSheet.create({
   mt18: { marginTop: 18 },
   segFilter: { width: 360 },
   segPeriod: { width: 240 },
-  segThemes: { width: 240 },
+  segThemes: { width: 340 },
   kpis: { flexDirection: 'row', gap: 12 },
   kpi: { flex: 1, minWidth: 0 },
   pair: { flexDirection: 'row', alignItems: 'stretch', gap: 16 },
@@ -359,7 +387,8 @@ const styles = StyleSheet.create({
   themeRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, marginHorizontal: -6, paddingHorizontal: 6, borderRadius: 8 },
   rule: { borderTopWidth: 1, borderTopColor: dx.rowRule },
   themeIcon: { width: 30, height: 30, borderRadius: 8, backgroundColor: dx.ghost, alignItems: 'center', justifyContent: 'center' },
-  themeN: { width: 72 },
+  mt2: { marginTop: 2 },
+  themeRating: { width: 56 },
   themeBar: { width: 140 },
   themePct: { width: 40 },
   timeName: { width: 70 },
