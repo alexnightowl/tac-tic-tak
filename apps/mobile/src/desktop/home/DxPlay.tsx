@@ -4,7 +4,7 @@ import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, rank, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { router, type Href } from 'expo-router';
+import { router, useIsFocused, type Href } from 'expo-router';
 import { BarChart3, BookOpen, Info, MinusCircle, RefreshCcw, Repeat, Search, Swords, Target, XCircle } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -24,6 +24,8 @@ import { Bolt } from '@/features/storm/parts';
 import { feel } from '@/feel';
 import { PlateButton } from '@/ui';
 import { useLang, useT, useTn } from '@/ui/lang';
+import { useBlindPick } from '@/features/play/blind/store';
+import { DxBlindSetup } from '../blind/DxBlindSetup';
 import { useHotkeys } from '../hotkeys';
 import { Bar, Card, Chip, DText, Hover, KeyHints, Label, Num, Seg, TextButton } from '../kit';
 import { DesktopPage } from '../Page';
@@ -56,6 +58,7 @@ export function DxPlay({ levelsOpen = false, onLevelsClose }: { levelsOpen?: boo
     onLevelsClose?.();
   };
 
+  const focused = useIsFocused();
   useHotkeys(
     {
       ' ': () => void s.start(),
@@ -63,7 +66,8 @@ export function DxPlay({ levelsOpen = false, onLevelsClose }: { levelsOpen?: boo
       '2': () => s.setMode('casual'),
       '3': () => s.setMode('theme'),
     },
-    !levels,
+    // Tab screens stay mounted under the runner: Space there must not start another session.
+    !levels && focused,
   );
 
   const summary = <Summary s={s} onLevels={() => setLevels(true)} />;
@@ -145,6 +149,7 @@ export function DxPlay({ levelsOpen = false, onLevelsClose }: { levelsOpen?: boo
           </View>
 
           {s.rated ? <RatedCard s={s} /> : <DifficultyCard s={s} />}
+          {s.rated ? null : <DxBlindSetup />}
           {s.mode === 'theme' ? <ThemeGrid /> : null}
 
           {s.err ? (
@@ -450,6 +455,8 @@ function Summary({ s, onLevels }: { s: PlaySetup; onLevels: () => void }) {
   const minutes = Math.round(s.effectiveDuration / 60);
   const modeName = s.mode === 'theme' ? `${t('play.type.themes')} · ${themeLabel(s.theme, s.lang)}` : t(`play.type.${s.rated ? 'rated' : 'casual'}`);
   const settling = s.prog.calibrationSessionsLeft;
+  const blindOn = useBlindPick((b) => b.on);
+  const blindSec = useBlindPick((b) => b.previewSec);
   return (
     <Card style={styles.summary} testID="dx-play-summary">
       <Label>{t('dx.home.summary')}</Label>
@@ -458,6 +465,7 @@ function Summary({ s, onLevels }: { s: PlaySetup; onLevels: () => void }) {
         <SummaryRow label={t('dx.home.sum.style')} value={t(`style.${s.style}.name`)} />
         <SummaryRow label={t('dx.home.sum.duration')} value={`${minutes} ${t('play.minutes')}`} testID="dx-play-sum-duration" />
         <SummaryRow label={t('dx.home.sum.difficulty')} value={String(s.rated ? levelFor(s.prog) : s.difficulty)} testID="dx-play-sum-difficulty" />
+        {!s.rated && blindOn ? <SummaryRow label={t('blind.title')} value={t('blind.setup.sum_value', { n: blindSec })} testID="dx-play-sum-blind" /> : null}
         <SummaryRow label={t('dx.home.sum.rating')} value={s.rated ? t('dx.home.sum.changes') : t('dx.home.sum.unchanged')} last />
       </View>
       <PlateButton

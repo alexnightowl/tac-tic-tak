@@ -32,6 +32,7 @@ export const HOTKEY_SECTIONS = [
     rows: [
       { label: 'dx.shell.key.resume', keys: ['Esc'] },
       { label: 'dx.shell.key.flip', keys: ['F'] },
+      { label: 'blind.key.peek', keys: ['B', 'Space'] },
     ],
   },
   {

@@ -8,7 +8,7 @@ import { themeLabel } from '@tac/core/themes';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { router, useFocusEffect, type Href } from 'expo-router';
+import { router, useFocusEffect, useIsFocused, type Href } from 'expo-router';
 import { BarChart3, Check, ChevronRight, History, Target, Trophy, Zap } from 'lucide-react-native';
 import { useCallback, useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -157,7 +157,9 @@ export function DxHome() {
   );
   const quick = useQuickStart();
   const seen = useSeenRatings();
-  useHotkeys({ ' ': () => void quick.start() });
+  // Tab screens stay mounted under the runner: Space there must not start another session.
+  const focused = useIsFocused();
+  useHotkeys({ ' ': () => void quick.start() }, focused);
   const two = useTwoColumns(900);
 
   const name = user?.displayName?.trim() || user?.nickname || '';

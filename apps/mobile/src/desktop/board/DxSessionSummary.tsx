@@ -23,6 +23,7 @@ import { puzzleApi, reviewKeys, sessionApi } from '@/features/review/api';
 import { useAppStore } from '@/stores/appStore';
 import { PlateButton } from '@/ui';
 import { useLang, useT, type TFn } from '@/ui/lang';
+import { DxBlindSummary } from '../blind/DxBlindSummary';
 import { useDesktopChrome } from '../chrome';
 import { useHotkeys } from '../hotkeys';
 import { DesktopPage } from '../Page';
@@ -181,6 +182,7 @@ function Body({
           {outcome?.guarded && <LevelGuardCard level={outcome.level} under={outcome.level - outcome.ratingAfter} t={t} />}
           {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
           {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
+          <DxBlindSummary sessionId={summary.sessionId} />
 
           {/* The phone's five stats (solved, failed, accuracy, avg, peak) plus the hardest solve; they wrap on a narrow column. */}
           <View style={styles.tiles}>

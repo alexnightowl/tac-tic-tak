@@ -10,13 +10,13 @@ import {
 } from '@tac/core/board';
 import { moveFeelEvent, type FeelEvent } from '@tac/core/feel';
 import { SPARK_TOTAL_MS } from '@tac/core/board';
-import { ANIMATION_MS, easing as EASE, keyframeStops, keyframes, radii, shadows, timing } from '@tac/core/tokens';
+import { ANIMATION_MS, blindMotion, easing as EASE, keyframeStops, keyframes, radii, shadows, timing } from '@tac/core/tokens';
 import { Image } from 'expo-image';
 import { memo, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState, type Ref } from 'react';
 import { PixelRatio, StyleSheet, View, type HostInstance, type LayoutChangeEvent, type StyleProp, type ViewStyle } from 'react-native';
 import { GestureDetector, usePanGesture, useTapGesture, useExclusiveGestures } from 'react-native-gesture-handler';
-import {
-  cancelAnimation, Easing, useReducedMotion, withDelay, withRepeat, withSequence, withSpring, withTiming,
+import Animated, {
+  cancelAnimation, Easing, useAnimatedStyle, useReducedMotion, withDelay, withRepeat, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
 import { feel } from '@/feel';
@@ -107,6 +107,12 @@ export type BoardProps = {
   onBoardFrame?: (frame: { x: number; y: number; size: number }) => void;
   /** Dev (bench): timestamps of every slide that resolved promises. */
   onSlideTiming?: (t: SlideTiming) => void;
+  /**
+   * Blind mode (D40): every piece fades out (squares, coordinates and the
+   * last-move highlight stay) and a selection shows no legal dots. The
+   * pieces are still there: taps and drags move them as usual.
+   */
+  piecesHidden?: boolean;
   style?: StyleProp<ViewStyle>;
   ref?: Ref<BoardHandle>;
 };
@@ -193,6 +199,7 @@ function BoardImpl({
   onRenderCount,
   onBoardFrame,
   onSlideTiming,
+  piecesHidden = false,
   style,
   ref,
 }: BoardProps) {
@@ -283,10 +290,12 @@ function BoardImpl({
     const oHi = sv.occHi.get();
     sv.selLo.set(lo);
     sv.selHi.set(hi);
-    sv.dotLo.set((lo & ~oLo) | 0);
-    sv.dotHi.set((hi & ~oHi) | 0);
-    sv.ringLo.set((lo & oLo) | 0);
-    sv.ringHi.set((hi & oHi) | 0);
+    // Blind: the targets still work, but no dots (they would name the piece).
+    const shown = sv.blind.get() ? 0 : -1;
+    sv.dotLo.set(lo & ~oLo & shown);
+    sv.dotHi.set(hi & ~oHi & shown);
+    sv.ringLo.set(lo & oLo & shown);
+    sv.ringHi.set(hi & oHi & shown);
   };
   const isPromotion = (from: number, to: number) => {
     'worklet';
@@ -961,6 +970,20 @@ function BoardImpl({
     onRenderCount?.(renders);
   });
 
+  // Blind mode: fade every piece on the UI thread; re-run the selection so
+  // its dots follow (a piece picked before the fade loses them).
+  useEffect(() => {
+    scheduleOnUI((hidden: boolean) => {
+      'worklet';
+      sv.blind.set(hidden);
+      sv.piecesAlpha.set(withTiming(hidden ? 0 : 1, { duration: hidden ? blindMotion.hideMs : blindMotion.showMs, easing: slideEasing }));
+      const sel = sv.selected.get();
+      if (sel >= 0) select(sel);
+    }, piecesHidden);
+  }, [piecesHidden, sv]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const piecesLayer = useAnimatedStyle(() => ({ opacity: sv.piecesAlpha.get() }));
+
   const onLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
     setSize(boardSize(width, height, 1 / PixelRatio.get()));
@@ -984,23 +1007,26 @@ function BoardImpl({
               </View>
               {coordinates && <Coordinates {...g} />}
               <Highlights sv={sv} {...g} />
-              <CheckGlow sv={sv} square={view.checkSquare} {...g} />
-              {view.pieces.map((p) => (
-                <Piece
-                  key={p.id}
-                  id={p.id}
-                  code={p.code}
-                  sq={p.sq}
-                  dying={p.dying}
-                  set={pieceSet}
-                  registry={registry}
-                  {...g}
-                  dragSq={sv.dragSq}
-                  shakeSq={sv.shakeSq}
-                  shakeX={sv.shakeX}
-                />
-              ))}
-              <SlideCover sv={sv} size={size} set={pieceSet} />
+              {/* One layer for blind mode's fade: the check glow would name the king's square. */}
+              <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, piecesLayer]}>
+                <CheckGlow sv={sv} square={view.checkSquare} {...g} />
+                {view.pieces.map((p) => (
+                  <Piece
+                    key={p.id}
+                    id={p.id}
+                    code={p.code}
+                    sq={p.sq}
+                    dying={p.dying}
+                    set={pieceSet}
+                    registry={registry}
+                    {...g}
+                    dragSq={sv.dragSq}
+                    shakeSq={sv.shakeSq}
+                    shakeX={sv.shakeX}
+                  />
+                ))}
+                <SlideCover sv={sv} size={size} set={pieceSet} />
+              </Animated.View>
               {SQUARE_LIST.map((sq, i) => (
                 <SquareCell key={sq} sq={sq} idx={i} label={squareLabel(labels, sq, view.placement[i])} sv={sv} onA11yTap={onA11yTap} {...g} />
               ))}

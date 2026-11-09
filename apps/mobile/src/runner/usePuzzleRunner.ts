@@ -26,7 +26,7 @@ export type PuzzleRunner = {
 export function usePuzzleRunner(
   sessionId: string,
   takeStash: () => NextResponse | null,
-  opts: { finishOnStart?: boolean } = {},
+  opts: { finishOnStart?: boolean; revealMs?: number } = {},
 ): PuzzleRunner {
   const [controller] = useState(() => {
     const settings = appStore.getState().settings;
@@ -35,6 +35,7 @@ export function usePuzzleRunner(
       sessionId,
       animMs: ANIMATION_MS[settings.animationSpeed] ?? ANIMATION_MS.normal,
       fixedColor: settings.fixedColor,
+      revealMs: opts.revealMs,
     });
   });
   const [handlers] = useState(() => ({

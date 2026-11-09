@@ -18,6 +18,7 @@ import { apiClient } from '@/platform/api';
 import { AppText, Card, PlateButton } from '@/ui';
 import { Tap } from '@/ui/Tap';
 import type { PlayT } from '../strings';
+import { BlindSummaryLine } from '../blind/BlindSummary';
 import { bandIcon } from '../setup/bandIcons';
 import { STRONG, TABULAR } from '../ui';
 import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, PaceHeldCard, StreakOutcomeChip } from './outcomeCards';
@@ -150,6 +151,7 @@ function SummaryBody({
       {outcome?.guarded && <LevelGuardCard level={outcome.level} under={outcome.level - outcome.ratingAfter} t={t} />}
       {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
       {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
+      <BlindSummaryLine sessionId={summary.sessionId} />
       {summary.xp && <XpSummaryCard gained={summary.xp.gained} before={summary.xp.before} after={summary.xp.after} t={t} />}
 
       <View style={styles.grid}>

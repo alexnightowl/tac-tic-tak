@@ -103,6 +103,11 @@ export type BoardShared = {
   /** Bumped whenever the cover changes hands; a stale hold timer then does nothing. */
   coverToken: SharedValue<number>;
   coverHold: SharedValue<number>;
+  // blind mode (D40)
+  /** Opacity of every piece (pieces layer, slide cover, drag overlay); 0 = hidden. */
+  piecesAlpha: SharedValue<number>;
+  /** Pieces hidden: a selection shows no legal dots/rings (they would name the piece). */
+  blind: SharedValue<boolean>;
 };
 
 export function useBoardShared(
@@ -167,5 +172,7 @@ export function useBoardShared(
     coverSq: useSharedValue(-1),
     coverToken: useSharedValue(0),
     coverHold: useSharedValue(0),
+    piecesAlpha: useSharedValue(1),
+    blind: useSharedValue(false),
   };
 }

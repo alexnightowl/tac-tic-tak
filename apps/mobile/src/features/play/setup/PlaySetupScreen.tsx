@@ -19,6 +19,7 @@ import { fontFamily } from '@/ui/fonts';
 import { Tap } from '@/ui/Tap';
 import { DIFFICULTY_MAX, DIFFICULTY_MIN, DIFFICULTY_STEP, clampDifficulty, type SetupMode } from '../setupPrefs';
 import { type PlayT } from '../strings';
+import { BlindSetup } from '../blind/BlindSetup';
 import { ThemeIcon } from '../themes/ThemeIcon';
 import { STRONG, STYLE_ICON, TABULAR } from '../ui';
 import { bandIcon } from './bandIcons';
@@ -241,6 +242,9 @@ export function PlaySetupScreen() {
               </Tap>
             </View>
           )}
+
+          {/* 5. Free / Themes: blind mode (D40) */}
+          {!rated && <BlindSetup />}
 
           {err && (
             <AppText variant="caption" color={semantic.danger} testID="setup-error">

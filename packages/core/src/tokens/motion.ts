@@ -173,3 +173,23 @@ export const transitions = {
   /** Row / small-button press highlight. */
   press: { duration: 150, easing: easing.twDefault },
 } as const;
+
+// ─── Blind mode (D40, agent "blind") ────────────────────────────────────
+/** Blind mode: the pieces' fade on the board, a peek, the look after a resolve. */
+export const blindMotion = {
+  /** Pieces fade out when the preview ends. */
+  hideMs: 450,
+  /** Pieces fade back in (peek, puzzle resolved). */
+  showMs: 200,
+  /** A tap on Peek (or B / Space) shows the pieces this long. */
+  peekMs: 1500,
+  /** The resolved position stays on screen at least this long before the next puzzle. */
+  revealMs: 1300,
+} as const;
+
+// ─── Haste (D40, agent "haste-plan") ────────────────────────────────────
+/** The runner's one-time "slow down" nudge: on screen this long, fading in and out. */
+export const hasteMotion = {
+  nudgeMs: 3000,
+  fadeMs: 220,
+} as const;

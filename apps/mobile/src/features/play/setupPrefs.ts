@@ -92,6 +92,8 @@ export type SessionSetup = {
   mode: SetupMode;
   theme: string | null;
   startRating: number;
+  /** Blind mode (D40): the look time in seconds; absent = not blind. */
+  blindPreviewSec?: number | null;
 };
 
 export function readLastSetup(): SessionSetup | null {

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { usePuzzleRunner } from '@/runner';
 import { useAppStore } from '@/stores/appStore';
+import { blindRevealMs } from '../blind/director';
 import { takeFirstPuzzle } from '../pendingPuzzle';
 import { readLastSetup, repeatStartRating } from '../setupPrefs';
 import { startSession } from '../startSession';
@@ -21,7 +22,10 @@ const KEEP_AWAKE_TAG = 'runner';
 export function useRunnerScreen(sessionId: string, finishOnStart: boolean) {
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const mirror = useAppStore((s) => s.settings.mirrorView);
-  const { controller, view, boardRef, onMove } = usePuzzleRunner(sessionId, () => takeFirstPuzzle(sessionId), { finishOnStart });
+  const { controller, view, boardRef, onMove } = usePuzzleRunner(sessionId, () => takeFirstPuzzle(sessionId), {
+    finishOnStart,
+    revealMs: blindRevealMs(sessionId),
+  });
   const s = view.state;
   const runnerStyle = s.style;
   // web RatingPill: the store's live rating (patched after every attempt).

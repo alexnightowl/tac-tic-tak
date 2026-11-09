@@ -11,6 +11,8 @@ import { FocusStatusBar } from '@/shell/FocusStatusBar';
 import { Board } from '@/board';
 import { Countdown } from '@/runner';
 import { AppText } from '@/ui';
+import { BlindBar } from '../blind/BlindBar';
+import { useBlind } from '../blind/director';
 import { usePlayT } from '../strings';
 import { E2E, E2EStrip, onBoardRenderCount } from './E2EStrip';
 import { ExitSheet, PauseOverlay } from './overlays';
@@ -35,6 +37,7 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
     finishOnStart,
   );
   const runnerStyle = s.style;
+  const blind = useBlind(sessionId, controller);
 
   if (result?.kind === 'summary') {
     return (
@@ -99,6 +102,7 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
           pieceSet={pieceSet}
           mirror={mirror}
           onRenderCount={E2E ? onBoardRenderCount : undefined}
+          piecesHidden={blind.view?.hidden ?? false}
           style={styles.board}
         />
         {card.loading && (
@@ -109,6 +113,7 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
       </View>
 
       <View style={styles.bottom}>
+        {blind.view && blind.director && <BlindBar view={blind.view} director={blind.director} />}
         <StatPills
           solved={s.counters.solved}
           failed={s.counters.failed}

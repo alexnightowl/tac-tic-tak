@@ -87,7 +87,12 @@ type CommonConfig = {
 };
 
 export type RunnerConfig =
-  | (CommonConfig & { mode: 'session'; sessionId: string })
+  | (CommonConfig & {
+      mode: 'session';
+      sessionId: string;
+      /** Blind mode (D40): the resolved position stays this long before the next puzzle (0 = the usual delay). */
+      revealMs?: number;
+    })
   // Phase 6: drill / mistakes / viewer run on practiceReducer (./modes, PracticeConfig);
   // these variants only keep createRunner's mode field total.
   | (CommonConfig & { mode: 'drill'; puzzles: ServerPuzzle[] })
@@ -156,6 +161,8 @@ export type RunnerState = {
   pausedAt: number | null;
   animMs: number;
   fixedColor: FixedColor;
+  /** Blind mode (D40): minimum delay before the next puzzle (from the config; 0 = the usual delay). */
+  revealMs: number;
 
   // Session (from the server response, never from earlier state).
   durationSec: number;

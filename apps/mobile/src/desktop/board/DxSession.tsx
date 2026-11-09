@@ -14,6 +14,8 @@ import { useRunnerScreen } from '@/features/play/runner/useRunnerScreen';
 import { Countdown, type RunnerController } from '@/runner';
 import { PlateButton } from '@/ui';
 import { useT, type TFn } from '@/ui/lang';
+import { useBlind } from '@/features/play/blind/director';
+import { DxBlindPanel } from '../blind/DxBlindPanel';
 import { Dialog } from '../Dialog';
 import { Portal } from '../Portal';
 import { useHotkeys } from '../hotkeys';
@@ -60,6 +62,8 @@ type Model = ReturnType<typeof useRunnerScreen>;
 function Runner({ m, controller, view, t }: { m: Model; controller: RunnerController; view: Model['view']; t: TFn }) {
   const { s, storeRating, storeProg, pieceSet, mirror, boardRef, onMove } = m;
   const [flipped, setFlipped] = useState(false);
+  const blind = useBlind(s.sessionId, controller);
+  const peek = () => blind.director?.peekStart(false);
 
   // The move the player made last (the wrong card names it): one state
   // write per move, on the screen (never the board).
@@ -106,7 +110,8 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
     {
       f: () => !s.paused && flip(),
       Escape: () => (s.paused ? resume() : pause()),
-      ' ': () => s.paused && resume(),
+      ' ': () => (s.paused ? resume() : peek()),
+      b: () => !s.paused && peek(),
     },
     !view.exitOpen && s.phase !== 'finishing',
   );
@@ -151,6 +156,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
       ) : (
         <TurnCard side={s.playerColor} title={title} sub={sub} pill={pill} streak={card.streak} streakBroken={card.streakBroken} />
       )}
+      {blind.view && blind.director ? <DxBlindPanel view={blind.view} director={blind.director} /> : null}
       <ProgressCard s={s} prog={storeProg} t={t} />
 
       <View style={panelStyles.grid3}>
@@ -177,6 +183,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
         items={[
           { keys: ['F'], label: t('dx.board.key.flip') },
           { keys: ['Esc'], label: t('dx.board.key.pause') },
+          ...(blind.view ? [{ keys: ['B'], label: t('blind.key.peek_short') }] : []),
         ]}
         style={styles.hints}
       />
@@ -196,6 +203,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
               pieceSet={pieceSet}
               orientation={s.orientation}
               mirror={mirror !== flipped}
+              piecesHidden={blind.view?.hidden ?? false}
               style={styles.board}
             />
             {card.loading && (

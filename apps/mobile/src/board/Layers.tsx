@@ -310,7 +310,7 @@ function Sprites({ set, s, code }: { set: AppPieceSet; s: number; code: SharedVa
 export function DragOverlay({ sv, size, set }: { sv: BoardShared; size: number; set: AppPieceSet }) {
   const s = size / 8;
   const style = useAnimatedStyle(() => ({
-    opacity: sv.dragVisible.get(),
+    opacity: sv.dragVisible.get() * sv.piecesAlpha.get(),
     transform: [
       { translateX: sv.fingerX.get() + sv.offX.get() - s / 2 },
       { translateY: sv.fingerY.get() + sv.offY.get() - s / 2 },

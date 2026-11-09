@@ -97,6 +97,8 @@ export type CreateSessionBody = {
   theme?: string;
   /** Play v2: rated sessions start at the server's rating, levels instead of the norm. */
   ruleset?: 'v2';
+  /** D40 trainers: 'blind' (casual / theme only) or 'plan' (the daily plan). */
+  variant?: 'blind' | 'plan';
 };
 
 /** POST /sessions/:id/next, and `firstPuzzle` of POST /sessions. */

@@ -31,6 +31,7 @@ export function createRunner(config: RunnerConfig): RunnerState {
     pausedAt: null,
     animMs: config.animMs,
     fixedColor: config.fixedColor,
+    revealMs: config.mode === 'session' ? (config.revealMs ?? 0) : 0,
     durationSec: 0,
     style: null,
     sessionMode: 'mixed',
@@ -268,7 +269,8 @@ function afterAttempt(tx: Tx, correct: boolean) {
     beginFinish(tx, save);
     return;
   }
-  tx.schedule('next', correct ? NEXT_DELAY_MS.correct : NEXT_DELAY_MS.wrong);
+  // Blind mode (D40) holds the resolved position on screen a little longer.
+  tx.schedule('next', Math.max(s.revealMs, correct ? NEXT_DELAY_MS.correct : NEXT_DELAY_MS.wrong));
 }
 
 function requestNext(tx: Tx) {

@@ -17,6 +17,7 @@ import {
   writeLastStyle,
   type SetupMode,
 } from '../setupPrefs';
+import { blindPreviewFor } from '../blind/store';
 import { startSession, useThemePick } from '../startSession';
 import { startErrorKey, usePlayT, type PlayT } from '../strings';
 
@@ -127,6 +128,7 @@ export function usePlaySetup() {
         theme: mode === 'theme' ? theme : null,
         // Rated: the server starts it at the level whatever is sent.
         startRating: rated ? level : difficulty,
+        blindPreviewSec: blindPreviewFor(mode),
       });
       router.push(`/play/${id}` as Href);
     } catch (e) {

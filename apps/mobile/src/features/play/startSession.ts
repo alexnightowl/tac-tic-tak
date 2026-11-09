@@ -3,6 +3,7 @@ import { create } from 'zustand';
 
 import { syncBeforeOnlineSession } from '@/features/offline/sync';
 import { api } from '@/platform/api';
+import { markBlindSession } from './blind/store';
 import { stashFirstPuzzle } from './pendingPuzzle';
 import { readLastTheme, writeLastDuration, writeLastSetup, writeLastTheme, type SessionSetup } from './setupPrefs';
 
@@ -15,6 +16,8 @@ export async function startSession(setup: SessionSetup): Promise<string> {
   // Offline results first: a session that ticks today's streak can't
   // backfill an earlier offline day (OFFLINE.md). Bounded, never throws.
   await syncBeforeOnlineSession();
+  // Blind (D40): Free and Themes only; the server refuses it for rated.
+  const blind = setup.mode !== 'mixed' && setup.blindPreviewSec ? setup.blindPreviewSec : null;
   const r = await api.sessions.create({
     startRating: setup.startRating,
     durationSec: setup.durationSec,
@@ -23,7 +26,9 @@ export async function startSession(setup: SessionSetup): Promise<string> {
     ...(setup.mode === 'theme' && setup.theme ? { theme: setup.theme } : null),
     // Play v2: levels instead of the norm; rated sessions start at the server's rating.
     ruleset: 'v2',
+    ...(blind ? { variant: 'blind' as const } : null),
   });
+  if (blind) markBlindSession(r.sessionId, blind);
   writeLastDuration(setup.style, setup.durationSec);
   writeLastSetup(setup);
   if (r.firstPuzzle) stashFirstPuzzle(r.sessionId, r.firstPuzzle as unknown as NextResponse);
