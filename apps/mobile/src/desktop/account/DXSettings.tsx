@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     boxShadow: [{ offsetX: 3, offsetY: 0, blurRadius: 0, spreadDistance: 0, color: dx.ember, inset: true }],
   },
   navRule: { height: 1, backgroundColor: dx.rowRule, marginVertical: 10 },
-  pane: { flex: 1, minWidth: 0, maxWidth: 1000 },
+  pane: { flex: 1, minWidth: 0 },
   mt14: { marginTop: 14 },
   mt28: { marginTop: 28 },
   langSeg: { width: 260 },

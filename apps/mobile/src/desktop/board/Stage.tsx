@@ -8,13 +8,13 @@ import { dx, dxSize } from '../tokens';
 // The board screens' desktop stage (DXSession, DXStormRun, DXReviewDrill,
 // DXChapterSolve): the board on the left, a 400 px panel on the right,
 // both centred in the space beside the compact rail. The board's side comes
-// from the stage's own size (onLayout), so it fits 1024 × 768 without a
-// scroll and reaches the artboard's 720 px on 1440 × 900.
+// from the stage's own size (onLayout): it fills the height (fits 1024 × 768
+// without a scroll, the artboard's ~720 px on 1440 × 900, more on a bigger
+// screen), and the panel widens with the window up to PANEL_MAX.
 
-/** Artboard board side (1440 × 900). */
-const BOARD_MAX = 720;
 const PANEL = 400;
 const PANEL_NARROW = 340;
+const PANEL_MAX = 520;
 const GAP = 36;
 const PAD_X = 40;
 /** Space kept above and below the board. */
@@ -23,8 +23,8 @@ const PAD_Y = 40;
 export type StageSize = { board: number; panel: number };
 
 function fit(w: number, h: number): StageSize {
-  const panel = w >= 1180 ? PANEL : PANEL_NARROW;
-  const side = Math.min(BOARD_MAX, h - PAD_Y * 2, w - PAD_X * 2 - GAP - panel);
+  const panel = w >= 1180 ? Math.min(PANEL_MAX, Math.max(PANEL, Math.round(w * 0.28))) : PANEL_NARROW;
+  const side = Math.min(h - PAD_Y * 2, w - PAD_X * 2 - GAP - panel);
   // Whole-pixel squares: a multiple of 8.
   return { board: Math.max(240, Math.floor(side / 8) * 8), panel };
 }
