@@ -4,6 +4,7 @@ import { isTrainingStyle, paceTarget } from '@tac/core/rules';
 import { eos, layout, space } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Pause, Play, X } from 'lucide-react-native';
+import { useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,6 +12,11 @@ import { FocusStatusBar } from '@/shell/FocusStatusBar';
 import { Board } from '@/board';
 import { Countdown } from '@/runner';
 import { AppText } from '@/ui';
+import { HasteNudge } from '@/features/haste/HasteNudge';
+import { blindSessionOf } from '../blind/store';
+import { HasteSummaryCard } from '@/features/haste/HasteSummaryCard';
+import { PlanRunnerBar } from '@/features/plan/PlanRunnerBar';
+import { PlanSummaryCard } from '@/features/plan/PlanSummaryCard';
 import { BlindBar } from '../blind/BlindBar';
 import { useBlind } from '../blind/director';
 import { usePlayT } from '../strings';
@@ -32,12 +38,14 @@ const HOME = '/' as Href;
 export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: string; finishOnStart?: boolean }) {
   const t = usePlayT();
   const insets = useSafeAreaInsets();
-  const { pieceSet, mirror, controller, view, boardRef, onMove, s, storeRating, storeProg, againLoading, playAgain, result } = useRunnerScreen(
+  const { pieceSet, mirror, controller, view, boardRef, onMove, s, storeRating, storeProg, againLoading, playAgain, result, plan } = useRunnerScreen(
     sessionId,
     finishOnStart,
   );
   const runnerStyle = s.style;
   const blind = useBlind(sessionId, controller);
+  // D40: blind sessions keep no haste (the preview is part of each move's time).
+  const [noHaste] = useState(() => blindSessionOf(sessionId) != null);
 
   if (result?.kind === 'summary') {
     return (
@@ -52,6 +60,15 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
           onHome={() => router.dismissTo(HOME)}
           onPlayAgain={() => void playAgain()}
           playAgainLoading={againLoading}
+          extras={
+            <>
+              {plan ? <PlanSummaryCard plan={plan} /> : null}
+              {/* D40: the client counters (a boot-time summary has none); blind sessions have no haste. */}
+              {result.source !== 'detail' && runnerStyle && !noHaste ? (
+                <HasteSummaryCard hasty={s.counters.hasty} mistakes={s.counters.failed} style={runnerStyle} />
+              ) : null}
+            </>
+          }
         />
       </View>
     );
@@ -91,7 +108,7 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
           pieceSet={pieceSet}
           t={t}
         />
-        <ProgressSlot s={s} prog={storeProg} t={t} />
+        {plan ? <PlanRunnerBar plan={plan} /> : <ProgressSlot s={s} prog={storeProg} t={t} />}
       </View>
 
       <View style={styles.boardSlot}>
@@ -122,6 +139,8 @@ export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: 
           t={t}
         />
         {E2E && <E2EStrip controller={controller} view={view} />}
+        {/* D40: over the stat pills, never over the board. */}
+        <HasteNudge nudge={noHaste ? null : s.hasteNudge} style={styles.nudge} />
       </View>
 
       {s.paused && (
@@ -184,6 +203,7 @@ const styles = StyleSheet.create({
   // Top-aligned so the board sits at the same y whatever the screen height.
   board: { flex: 1, alignSelf: 'stretch', justifyContent: 'flex-start' },
   spinner: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
+  nudge: { position: 'absolute', top: space[2], left: space[2], right: space[2] },
   bottom: { paddingHorizontal: space[2], paddingTop: space[2], gap: space[1] },
   finishing: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', zIndex: 20 },
 });

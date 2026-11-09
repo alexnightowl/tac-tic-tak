@@ -29,6 +29,7 @@ import { Bar, Card, DText, GhostButton, Hover, Label, Seg, StatTile } from '../k
 import { DesktopPage } from '../Page';
 import { toLevelPoints } from '../level';
 import { dx } from '../tokens';
+import { DxHasteCard } from '../haste/DxHasteCard';
 import { DxHeatmap, weeksFor } from './Heatmap';
 import { TWO_COLUMN_MIN, useWidth } from './layout';
 
@@ -320,6 +321,7 @@ export function DxStats({ switcher }: { switcher: ReactNode }) {
           {radarCard}
           {timeCard}
         </View>
+        <DxHasteCard />
         {profileCard}
       </View>
     </DesktopPage>

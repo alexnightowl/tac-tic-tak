@@ -3,6 +3,8 @@ import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { router, usePreventRemove, type Href } from 'expo-router';
 import { useEffect, useState } from 'react';
 
+import { readPlanRecord, startPlanSession } from '@/features/plan/model';
+import { usePlanSession } from '@/features/plan/usePlanSession';
 import { usePuzzleRunner } from '@/runner';
 import { useAppStore } from '@/stores/appStore';
 import { blindRevealMs } from '../blind/director';
@@ -32,6 +34,8 @@ export function useRunnerScreen(sessionId: string, finishOnStart: boolean) {
   const storeRating = useAppStore((st) => (runnerStyle ? st.progressions[runnerStyle].currentPuzzleRating : null));
   const storeProg = useAppStore((st) => (runnerStyle ? st.progressions[runnerStyle] : null));
   const [againLoading, setAgainLoading] = useState(false);
+  // D40: a daily-plan session (label, per-theme results); null otherwise.
+  const plan = usePlanSession(sessionId, controller);
   const result = s.result;
   const running = s.phase !== 'summary';
 
@@ -61,6 +65,20 @@ export function useRunnerScreen(sessionId: string, finishOnStart: boolean) {
   // "Play again with the same settings": the last setup straight into a
   // new session (the web went back to /play); on failure, the setup.
   const playAgain = async () => {
+    // D40: a plan session repeats today's plan (same themes and length).
+    const rec = readPlanRecord(sessionId);
+    if (rec) {
+      setAgainLoading(true);
+      try {
+        const prog = useAppStore.getState().progressions[rec.style];
+        const id = await startPlanSession({ style: rec.style, themes: rec.themes, durationSec: rec.durationSec, startRating: prog.currentPuzzleRating });
+        router.replace(`/play/${id}` as Href);
+      } catch {
+        setAgainLoading(false);
+        router.dismissTo(HOME);
+      }
+      return;
+    }
     const setup = readLastSetup();
     const prog = setup ? useAppStore.getState().progressions[setup.style] : null;
     if (!setup || !prog) {
@@ -77,7 +95,7 @@ export function useRunnerScreen(sessionId: string, finishOnStart: boolean) {
     }
   };
 
-  return { pieceSet, mirror, controller, view, boardRef, onMove, s, storeRating, storeProg, againLoading, playAgain, result, running };
+  return { pieceSet, mirror, controller, view, boardRef, onMove, s, storeRating, storeProg, againLoading, playAgain, result, running, plan };
 }
 
 export type RunnerScreenModel = ReturnType<typeof useRunnerScreen>;

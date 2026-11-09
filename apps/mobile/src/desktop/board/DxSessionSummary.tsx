@@ -10,7 +10,7 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { router, type Href } from 'expo-router';
 import { Check, RefreshCw, X } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { feel, stopLongClip } from '@/feel';
@@ -53,6 +53,10 @@ type Props = {
   difficulty: number | null;
   onPlayAgain: () => void;
   playAgainLoading: boolean;
+  /** D40 trainer cards (daily plan, haste), after the outcome cards. */
+  extras?: ReactNode;
+  /** D40: the subtitle's mode word for a trainer session ("Today's plan"). */
+  modeLabel?: string;
 };
 
 export function DxSessionSummary(p: Props) {
@@ -87,6 +91,8 @@ function Body({
   difficulty,
   onPlayAgain,
   playAgainLoading,
+  extras,
+  modeLabel,
   styleLabel,
   gate,
 }: Props & { styleLabel: string; gate: 'up' | 'down' | null }) {
@@ -157,7 +163,7 @@ function Body({
         })()
       : null);
 
-  const mode = t(sessionMode === 'mixed' ? 'dx.board.mode_mixed' : sessionMode === 'casual' ? 'dx.board.mode_casual' : 'dx.board.mode_theme');
+  const mode = modeLabel ?? t(sessionMode === 'mixed' ? 'dx.board.mode_mixed' : sessionMode === 'casual' ? 'dx.board.mode_casual' : 'dx.board.mode_theme');
   const subtitle = [mode, styleLabel, durationSec ? t('dx.board.minutes', { n: Math.round(durationSec / 60) }) : null].filter(Boolean).join(' · ');
 
   // The page beside the full sidebar: two columns from ~1100 px of content
@@ -183,6 +189,7 @@ function Body({
           {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
           {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
           <DxBlindSummary sessionId={summary.sessionId} />
+          {extras}
 
           {/* The phone's five stats (solved, failed, accuracy, avg, peak) plus the hardest solve; they wrap on a narrow column. */}
           <View style={styles.tiles}>

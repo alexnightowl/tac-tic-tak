@@ -9,7 +9,8 @@ import { useCallback, useState } from 'react';
 import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { meQuery } from '@/features/auth/session';
-import { readLastSetup, repeatStartRating, type SessionSetup } from '@/features/play/setupPrefs';
+import { PlanCard } from '@/features/plan/PlanCard';
+import { readLastSetup, readLastStyle, repeatStartRating, type SessionSetup } from '@/features/play/setupPrefs';
 import { startSession } from '@/features/play/startSession';
 import { startErrorKey } from '@/features/play/strings';
 import { StyleIcon } from '@/features/play/ui';
@@ -154,6 +155,9 @@ export function HomeScreen() {
             </Tap>
           )}
         </HeroCard>
+
+        {/* D40: today's plan for the Play setup's style. */}
+        <PlanCard style={readLastStyle()} />
 
         <View style={styles.ratings}>
           {UI_STYLE_ORDER.map((s) => (

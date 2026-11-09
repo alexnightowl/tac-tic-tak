@@ -42,6 +42,7 @@ import { levelDelta, toLevelPoints } from '../level';
 import { Bar, Card, DText, GhostButton, Hover, Label, Pill, Seg, StatTile, TextButton } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
+import { DxPlanCard } from '../plan/DxPlanCard';
 import { MiniBoard } from './MiniBoard';
 import { RatingHistoryChart } from '@/features/stats/RatingHistoryChart';
 import { STYLE_GLYPH } from './styleGlyph';
@@ -196,6 +197,8 @@ export function DxHome() {
       <Col>
         {resume}
         <Hero quick={quick} seen={seen} />
+        {/* D40: today's plan for the Play setup's style. */}
+        <DxPlanCard style={readLastStyle()} />
         <StyleTiles seen={seen} data={data} />
         <ChartCard />
         <RecentCard rows={recent} error={overview.isError && !data} retry={() => void overview.refetch()} />

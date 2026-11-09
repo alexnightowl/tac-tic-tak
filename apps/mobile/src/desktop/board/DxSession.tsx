@@ -16,6 +16,9 @@ import { PlateButton } from '@/ui';
 import { useT, type TFn } from '@/ui/lang';
 import { useBlind } from '@/features/play/blind/director';
 import { DxBlindPanel } from '../blind/DxBlindPanel';
+import { HasteNudge } from '@/features/haste/HasteNudge';
+import { blindSessionOf } from '@/features/play/blind/store';
+import { DxHasteNudgeCard, DxHasteSummary, DxPlanRunnerCard, DxPlanSummary } from '../plan/DxPlanParts';
 import { Dialog } from '../Dialog';
 import { Portal } from '../Portal';
 import { useHotkeys } from '../hotkeys';
@@ -39,6 +42,8 @@ export function DxSession({ sessionId, finishOnStart = false }: { sessionId: str
   const t = useT();
   const m = useRunnerScreen(sessionId, finishOnStart);
   const { controller, view, s, result } = m;
+  // D40: blind sessions keep no haste (the preview is part of each move's time).
+  const [noHaste] = useState(() => blindSessionOf(sessionId) != null);
 
   if (result?.kind === 'summary') {
     return (
@@ -51,6 +56,15 @@ export function DxSession({ sessionId, finishOnStart = false }: { sessionId: str
         difficulty={s.sessionMode === 'mixed' ? null : s.sessionStartRating}
         onPlayAgain={() => void m.playAgain()}
         playAgainLoading={m.againLoading}
+        modeLabel={m.plan ? t('plan.title') : undefined}
+        extras={
+          <>
+            {m.plan ? <DxPlanSummary plan={m.plan} /> : null}
+            {result.source !== 'detail' && s.style && !noHaste ? (
+              <DxHasteSummary hasty={s.counters.hasty} mistakes={s.counters.failed} style={s.style} />
+            ) : null}
+          </>
+        }
       />
     );
   }
@@ -157,7 +171,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
         <TurnCard side={s.playerColor} title={title} sub={sub} pill={pill} streak={card.streak} streakBroken={card.streakBroken} />
       )}
       {blind.view && blind.director ? <DxBlindPanel view={blind.view} director={blind.director} /> : null}
-      <ProgressCard s={s} prog={storeProg} t={t} />
+      {m.plan ? <DxPlanRunnerCard plan={m.plan} /> : <ProgressCard s={s} prog={storeProg} t={t} />}
 
       <View style={panelStyles.grid3}>
         <SmallTile label={t('play.solved')} value={String(solved)} color={eos.sage} testID="dx-runner-solved" />
@@ -176,6 +190,8 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
         <Dots marks={marks} label={t('dx.board.dots_a11y', { solved, failed })} testID="dx-runner-dots" />
       </View>
 
+      {/* D40: the one-time haste nudge, in the panel's free space (nothing above it moves). */}
+      <HasteNudge nudge={blindSessionOf(s.sessionId) ? null : s.hasteNudge} render={(ms) => <DxHasteNudgeCard mistakeMs={ms} />} />
       <Spacer />
       {E2E && <E2EStrip controller={controller} view={view} />}
       <GhostButton testID="dx-runner-flip" label={t('dx.board.flip')} accessibilityLabel={t('dx.board.flip')} icon={ArrowUpDown} height={46} onPress={flip} />

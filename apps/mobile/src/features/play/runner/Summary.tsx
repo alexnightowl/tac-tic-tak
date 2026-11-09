@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -52,6 +52,7 @@ export function Summary({
   onHome,
   onPlayAgain,
   playAgainLoading,
+  extras,
   t,
 }: {
   summary: FinishResponse;
@@ -64,6 +65,8 @@ export function Summary({
   onHome: () => void;
   onPlayAgain: () => void;
   playAgainLoading: boolean;
+  /** D40 trainer cards (daily plan, haste), after the outcome cards. */
+  extras?: ReactNode;
   t: PlayT;
 }) {
   const rankChange = levelRankChangeOf(summary);
@@ -93,6 +96,7 @@ export function Summary({
       onHome={onHome}
       onPlayAgain={onPlayAgain}
       playAgainLoading={playAgainLoading}
+      extras={extras}
       t={t}
     />
   );
@@ -108,6 +112,7 @@ function SummaryBody({
   onHome,
   onPlayAgain,
   playAgainLoading,
+  extras,
   t,
 }: {
   summary: FinishResponse;
@@ -119,6 +124,7 @@ function SummaryBody({
   onHome: () => void;
   onPlayAgain: () => void;
   playAgainLoading: boolean;
+  extras?: ReactNode;
   t: PlayT;
 }) {
   const insets = useSafeAreaInsets();
@@ -152,6 +158,7 @@ function SummaryBody({
       {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
       {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
       <BlindSummaryLine sessionId={summary.sessionId} />
+      {extras}
       {summary.xp && <XpSummaryCard gained={summary.xp.gained} before={summary.xp.before} after={summary.xp.after} t={t} />}
 
       <View style={styles.grid}>

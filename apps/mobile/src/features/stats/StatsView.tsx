@@ -10,6 +10,7 @@ import { RefreshControl, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { feel } from '@/feel';
+import { HasteCard } from '@/features/haste/HasteCard';
 import { ThemeIcon } from '@/features/review/ThemeIcon';
 import { AppText, textStyle } from '@/ui/AppText';
 import { fontFamily } from '@/ui/fonts';
@@ -147,6 +148,8 @@ export function StatsView() {
       </Card>
 
       {overview.data?.lifetime ? <Lifetime key={filter} lifetime={overview.data.lifetime} /> : null}
+
+      <HasteCard />
 
       <Recommendation theme={rec.data?.theme ?? null} reason={rec.data?.reason ?? ''} rows={themes.data ?? []} />
 
