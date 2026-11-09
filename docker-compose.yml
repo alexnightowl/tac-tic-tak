@@ -76,8 +76,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      # The app's web build under test (D35), see deploy/nginx.conf.
-      - "8443:8443"
     volumes:
       - ./deploy/nginx.conf:/etc/nginx/nginx.conf:ro
       # Read-only mount of the host's Let's Encrypt directory so the
@@ -85,8 +83,8 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       # Webroot path for certbot's HTTP-01 challenges during renewal.
       - /var/www/certbot:/var/www/certbot:ro
-      # The app's web build (tools/web/deploy-dev.sh swaps
-      # /opt/tactictak-web/dev; mounting the parent picks that up live).
+      # The app's web build (tools/web/deploy-prod.sh swaps
+      # /opt/tactictak-web/prod; mounting the parent picks that up live).
       - /opt/tactictak-web:/usr/share/nginx/web:ro
     depends_on:
       - backend
