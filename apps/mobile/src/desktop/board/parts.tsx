@@ -1,8 +1,9 @@
-import { alpha, eos, graphite, tone } from '@tac/core/tokens';
+import { alpha, control, eos, graphite, tone } from '@tac/core/tokens';
 import { Clock, type LucideIcon } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type ColorValue, type StyleProp, type ViewStyle } from 'react-native';
 
+import { FlameGlyph } from '@/features/play/ui';
 import { DText, Hover, Label } from '../kit';
 import { dx } from '../tokens';
 
@@ -21,6 +22,8 @@ export function TurnCard({
   title,
   sub,
   pill,
+  streak,
+  streakBroken,
   titleColor,
   testID = 'dx-turn-card',
   style,
@@ -30,6 +33,10 @@ export function TurnCard({
   title: string;
   sub?: string | null;
   pill?: string | null;
+  /** The runner's win streak: the chip shows from 2 in a row (as on the phone). */
+  streak?: number;
+  /** The streak a miss just broke: the chip shows it crossed out. */
+  streakBroken?: number | null;
   titleColor?: ColorValue;
   testID?: string;
   style?: StyleProp<ViewStyle>;
@@ -48,8 +55,27 @@ export function TurnCard({
           </DText>
         ) : null}
       </View>
+      {streakBroken != null ? (
+        // The key remounts the chip on every change (phone runner/parts.tsx).
+        <StreakChip key={`broken-${streakBroken}`} n={streakBroken} broken />
+      ) : streak != null && streak >= 2 ? (
+        <StreakChip key={`alive-${streak}`} n={streak} />
+      ) : null}
       {pill ? <PillTag label={pill} /> : null}
       {children}
+    </View>
+  );
+}
+
+/** The win-streak chip: a flame and the count, crossed out in rose once broken. */
+export function StreakChip({ n, broken = false }: { n: number; broken?: boolean }) {
+  const color = broken ? eos.rose : control.streakChipText;
+  return (
+    <View style={styles.streak} testID="streak-chip">
+      <FlameGlyph size={13} color={color} />
+      <DText size={12.5} weight={800} color={color} tabular style={broken ? styles.strike : undefined} testID={broken ? 'streak-broken' : 'streak-value'}>
+        {String(n)}
+      </DText>
     </View>
   );
 }
@@ -187,6 +213,8 @@ const styles = StyleSheet.create({
   },
   card2Pad: { paddingVertical: 14, paddingHorizontal: 16 },
   turn: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 16, paddingHorizontal: 18 },
+  streak: { height: 24, flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 9, borderRadius: 999, backgroundColor: control.streakChipBg },
+  strike: { textDecorationLine: 'line-through' },
   pill: { height: 24, paddingHorizontal: 9, borderRadius: 999, backgroundColor: dx.ghost, justifyContent: 'center' },
   tile: {
     flex: 1,

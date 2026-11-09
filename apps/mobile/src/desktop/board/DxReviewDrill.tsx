@@ -57,6 +57,7 @@ export function DxReviewDrill({ puzzleId, theme }: { puzzleId: string; theme?: s
             ? { label: t('review.back_to_themes'), testID: 'drill-back', onPress: close }
             : { label: t('review.retry_load'), testID: 'drill-retry', onPress: () => void puzzleQ.refetch() }
         }
+        close={{ label: t('review.close'), a11y: t('review.back_to_themes'), testID: 'screen-drill-close', onPress: close }}
       />
     );
   }
@@ -72,6 +73,7 @@ export function DxReviewDrill({ puzzleId, theme }: { puzzleId: string; theme?: s
         body={theme ? t('review.theme_done_hint', { theme: themeLabel(theme, lang), n: total, noun }) : t('review.done_hint', { n: total, noun })}
         primary={{ label: t('review.back_to_themes'), testID: 'drill-done-back', onPress: close }}
         secondary={{ label: t('review.new_session'), testID: 'drill-done-play', onPress: () => router.dismissTo(PLAY) }}
+        close={{ label: t('review.close'), a11y: t('review.back_to_themes'), testID: 'screen-drill-close', onPress: close }}
       />
     );
   }
@@ -106,6 +108,7 @@ export function DxMistakes({ sessionId }: { sessionId: string }) {
   const tn = useTn();
   const { lang } = useLang();
   const { controller, s, onMove, boardRef, q, close } = useMistakes(sessionId);
+  const mistakesClose = { label: t('review.close'), a11y: t('review.back_to_session'), testID: 'screen-session-review-close', onPress: close };
 
   if (q.isError && !q.data) {
     return (
@@ -114,6 +117,7 @@ export function DxMistakes({ sessionId }: { sessionId: string }) {
         title={t('sessions.error')}
         primary={{ label: t('sessions.retry'), testID: 'mistakes-retry', onPress: () => void q.refetch() }}
         icon={<CloudOff size={24} color={eos.ash} />}
+        close={mistakesClose}
       />
     );
   }
@@ -127,6 +131,7 @@ export function DxMistakes({ sessionId }: { sessionId: string }) {
         title={t('review.nothing_title')}
         body={t('review.nothing_hint')}
         primary={{ label: t('review.back'), testID: 'mistakes-back', onPress: close }}
+        close={mistakesClose}
       />
     ) : (
       <Message
@@ -136,6 +141,7 @@ export function DxMistakes({ sessionId }: { sessionId: string }) {
         body={t('review.done_hint', { n: s.total, noun: tn('review.puzzle_word', s.total) })}
         primary={{ label: t('review.back_to_session'), testID: 'mistakes-done-back', onPress: close }}
         secondary={{ label: t('review.new_session'), testID: 'mistakes-done-play', onPress: () => router.dismissTo(PLAY) }}
+        close={mistakesClose}
       />
     );
   }
@@ -279,7 +285,7 @@ function DrillStage({
         <PlateButton testID="drill-retry-next" label={t('review.retry_load')} variant="slate" size="md" block onPress={retry} />
       ) : (
         <View style={styles.row}>
-          <SquareButton icon={ChevronLeft} testID="practice-back" accessibilityLabel={t('puzzle.prev')} disabled={!b.back} onPress={() => browse(-1)} />
+          <SquareButton icon={ChevronLeft} testID="practice-back" accessibilityLabel={t('puzzle.prev')} disabled={!b.back} size={44} onPress={() => browse(-1)} />
           <View style={styles.flex}>
             {solved ? (
               <View style={styles.solved} testID="practice-solved" accessible accessibilityLabel={t('review.solved')}>
@@ -302,7 +308,7 @@ function DrillStage({
               />
             )}
           </View>
-          <SquareButton icon={ChevronRight} testID="practice-forward" accessibilityLabel={t('puzzle.next')} disabled={!b.forward} onPress={() => browse(1)} />
+          <SquareButton icon={ChevronRight} testID="practice-forward" accessibilityLabel={t('puzzle.next')} disabled={!b.forward} size={44} onPress={() => browse(1)} />
         </View>
       )}
       <KeyHints
@@ -334,8 +340,9 @@ function turnTitle(title: PracticeTitle, side: 'w' | 'b', t: TFn): string {
 }
 
 type Action = { label: string; testID: string; onPress: () => void };
+type CloseAction = Action & { a11y: string };
 
-/** Errors and the finished drill, centred in the stage. */
+/** Errors and the finished drill, centred in the stage; Close (top left) and Esc leave, as the phone's close button does. */
 function Message({
   testID,
   title,
@@ -344,6 +351,7 @@ function Message({
   secondary,
   done,
   icon,
+  close,
 }: {
   testID: string;
   title: string;
@@ -352,9 +360,14 @@ function Message({
   secondary?: Action;
   done?: boolean;
   icon?: ReactNode;
+  close: CloseAction;
 }) {
+  useHotkeys({ Escape: close.onPress });
   return (
     <StageMessage testID={testID}>
+      <View style={styles.messageClose}>
+        <GhostButton testID={close.testID} label={close.label} accessibilityLabel={close.a11y} icon={X} onPress={close.onPress} />
+      </View>
       {done ? (
         <View style={styles.doneIcon}>
           <Check size={28} color={eos.sage} />
@@ -391,7 +404,7 @@ const styles = StyleSheet.create({
   },
   hintHead: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   solved: {
-    height: 46,
+    height: 44,
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
@@ -402,5 +415,6 @@ const styles = StyleSheet.create({
   hints: { gap: 14 },
   doneIcon: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center', backgroundColor: alpha(tone.sageDeep, 0.16) },
   body: { maxWidth: 440 },
+  messageClose: { position: 'absolute', top: 28, left: 40 },
   actions: { width: 320, gap: 12, marginTop: 12 },
 });

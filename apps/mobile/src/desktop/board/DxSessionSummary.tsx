@@ -9,12 +9,13 @@ import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { router, type Href } from 'expo-router';
-import { Check, RefreshCw, Star, X } from 'lucide-react-native';
+import { Check, RefreshCw, X } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { feel, stopLongClip } from '@/feel';
 import { RankTile } from '@/features/experience/XpCard';
+import { fmtXp } from '@/features/experience/xp';
 import { bandIcon } from '@/features/play/setup/bandIcons';
 import { CasualNote, EarlyExitNote, LevelDownCard, LevelGuardCard, LevelUpCard, PaceHeldCard, StreakOutcomeChip } from '@/features/play/runner/outcomeCards';
 import { RankCeremony } from '@/features/play/runner/RankCeremony';
@@ -109,7 +110,10 @@ function Body({
     queryFn: () => sessionApi.reviewItems(sessionId),
     enabled: serverSummary,
   });
-  const mistakes = review.data?.items.length ?? 0;
+  const reviewItems = review.data?.items ?? [];
+  const mistakes = reviewItems.length;
+  const missed = reviewItems.filter((i) => i.reason === 'failed').length;
+  const slow = reviewItems.filter((i) => i.reason === 'slow').length;
   const goHome = () => router.dismissTo(HOME);
   const repeat = () => router.push(`/sessions/${sessionId}/review` as Href);
 
@@ -160,6 +164,7 @@ function Body({
   const avail = useRawWindow().width - dxSize.sidebar - dxSize.padX * 2;
   const cols = avail >= 1080 ? 3 : 2;
   const stacked = avail < 900;
+  const puzzlesCols = stacked ? 4 : cols;
 
   return (
     <DesktopPage title={t('play.session_complete')} subtitle={subtitle} testID="summary-screen" right={null}>
@@ -176,13 +181,16 @@ function Body({
           {outcome?.down && <LevelDownCard level={outcome.level} line={outcome.levelBefore - LEVEL_GUARD_GAP} t={t} />}
           {sessionMode === 'casual' && difficulty != null && <CasualNote difficulty={difficulty} t={t} />}
 
+          {/* The phone's five stats (solved, failed, accuracy, avg, peak) plus the hardest solve; they wrap on a narrow column. */}
           <View style={styles.tiles}>
             <SumTile
               id="solved"
               label={t('play.solved')}
               value={total ? `${summary.solved} / ${total}` : String(summary.solved)}
               caption={t('dx.board.accuracy_n', { n: Math.round(summary.accuracy * 100) })}
+              captionTestID="summary-accuracy"
             />
+            <SumTile id="failed" label={t('play.failed')} value={String(summary.failed)} color={summary.failed ? tone.roseSoft : undefined} />
             <SumTile id="avg" label={t('dx.board.avg_time')} value={fmtResponseTime(summary.avgResponseMs)} />
             <SumTile id="peak" label={t('dx.board.session_peak')} value={String(summary.peakRating)} />
             <SumTile
@@ -193,17 +201,31 @@ function Body({
             />
           </View>
 
-          {summary.xp ? <XpCard gained={summary.xp.gained} after={summary.xp.after} rankBefore={summary.xp.before.rank} t={t} /> : null}
+          {summary.xp ? <XpCard gained={summary.xp.gained} after={summary.xp.after} rankBefore={summary.xp.before.rank} t={t} lang={lang} /> : null}
+
+          {/* The phone's "Review this session" card: what went wrong (N missed, M slow); Repeat mistakes below opens its review runner. */}
+          {mistakes > 0 ? (
+            <View style={styles.review} testID="summary-review-card">
+              <RefreshCw size={16} color={dx.ash} strokeWidth={1.8} />
+              <View style={styles.flex}>
+                <DText size={14} weight={800}>
+                  {t('review.session_heading')}
+                </DText>
+                <DText size={12.5} color={dx.ash} style={styles.mt2} testID="summary-review-hint">
+                  {t('review.session_hint', { failed: missed, slow })}
+                </DText>
+              </View>
+            </View>
+          ) : null}
 
           <View style={styles.actions}>
+            {/* One height (44) and one centre line for the three; natural widths, as in the artboard. */}
             <PlateButton
               testID="summary-play-again"
               label={playAgainLoading ? t('play.starting') : t('play.play_again')}
               loading={playAgainLoading}
               onPress={onPlayAgain}
-              size="lg"
-              block
-              style={styles.flex}
+              size="md"
             />
             {mistakes > 0 ? (
               <PlateButton
@@ -211,18 +233,16 @@ function Body({
                 label={t('dx.board.repeat_mistakes')}
                 variant="slate"
                 size="md"
-                block
                 icon={<RefreshCw size={16} color={eos.bone} strokeWidth={1.8} />}
                 onPress={repeat}
-                style={styles.repeat}
               />
             ) : null}
-            <GhostButton testID="summary-home" label={t('dx.board.to_home')} accessibilityLabel={t('dx.board.to_home')} height={46} onPress={goHome} />
+            <GhostButton testID="summary-home" label={t('dx.board.to_home')} accessibilityLabel={t('dx.board.to_home')} height={44} onPress={goHome} />
           </View>
         </View>
 
         {serverSummary ? (
-          <PuzzlesCard detail={detail.data} loading={detail.isPending} puzzles={puzzles} cols={stacked ? 4 : cols} t={t} lang={lang} />
+          <PuzzlesCard detail={detail.data} loading={detail.isPending} puzzles={puzzles} cols={puzzlesCols} t={t} lang={lang} />
         ) : null}
       </View>
     </DesktopPage>
@@ -246,15 +266,29 @@ function usePuzzles(ids: string[]): Map<string, ServerPuzzle> {
   return map;
 }
 
-function SumTile({ id, label, value, caption }: { id: string; label: string; value: string; caption?: string }) {
+function SumTile({
+  id,
+  label,
+  value,
+  caption,
+  captionTestID,
+  color,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  caption?: string;
+  captionTestID?: string;
+  color?: string;
+}) {
   return (
     <Tile style={styles.tile}>
       <Label size={10}>{label}</Label>
-      <DText size={26} weight={800} ls={-0.3} tabular style={styles.mt6} testID={`summary-${id}`}>
+      <DText size={26} weight={800} ls={-0.3} tabular color={color} style={styles.mt6} testID={`summary-${id}`}>
         {value}
       </DText>
       {caption ? (
-        <DText size={12} color={dx.dust} numberOfLines={2}>
+        <DText size={12} color={dx.dust} numberOfLines={2} testID={captionTestID}>
           {caption}
         </DText>
       ) : null}
@@ -298,33 +332,40 @@ function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string;
   );
 }
 
+/** The XP this session earned (phone XpSummaryCard): the rank's piece, the level bar, total XP and the way to the next level. */
 function XpCard({
   gained,
   after,
   rankBefore,
   t,
+  lang,
 }: {
   gained: number;
   after: NonNullable<FinishResponse['xp']>['after'];
   rankBefore: string;
   t: TFn;
+  lang: 'en' | 'uk';
 }) {
   const ratio = (after.xp - after.levelXp) / Math.max(1, after.nextLevelXp - after.levelXp);
   const rankUp = after.rank !== rankBefore;
   return (
-    <Card style={styles.xp} testID="summary-xp">
-      {rankUp ? <RankTile rank={after.rank} size={44} /> : (
-        <View style={styles.xpTile}>
-          <Star size={20} color={tone.gold} strokeWidth={1.8} />
-        </View>
-      )}
+    <Card style={[styles.xp, rankUp && styles.xpRankUp]} testID="summary-xp">
+      <RankTile rank={after.rank} size={44} />
       <View style={styles.flex}>
         <Label size={10} color={rankUp ? tone.amberLight : dx.ash}>
           {`${rankUp ? t('xp.new_rank') : t('xp.label')} · ${t('xp.rank_level', { rank: t(`xp.rank.${after.rank}`), level: after.level })}`}
         </Label>
         <Bar value={ratio} colors={[dx.xpBarFrom, tone.gold]} style={styles.mt8} />
+        <View style={styles.xpFoot}>
+          <DText size={12} color={dx.dust} tabular testID="summary-xp-total">
+            {t('xp.total', { n: fmtXp(after.xp, lang) })}
+          </DText>
+          <DText size={12} color={dx.dust} tabular testID="summary-xp-to-level">
+            {t('xp.to_level', { n: fmtXp(after.nextLevelXp - after.xp, lang), level: after.level + 1 })}
+          </DText>
+        </View>
       </View>
-      <DText size={14} weight={800} color={tone.gold} tabular>
+      <DText size={14} weight={800} color={tone.gold} tabular testID="summary-xp-gain">
         {t('xp.gain', { n: gained })}
       </DText>
     </Card>
@@ -419,12 +460,23 @@ const styles = StyleSheet.create({
   heroRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 4, flexWrap: 'wrap' },
   delta: { height: 28, paddingHorizontal: 9, borderRadius: 999, justifyContent: 'center' },
   levelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
-  tiles: { flexDirection: 'row', gap: 12 },
-  tile: { flex: 1, minWidth: 0 },
+  mt2: { marginTop: 2 },
+  tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
+  tile: { flexGrow: 1, flexBasis: 150, minWidth: 0 },
   xp: { paddingVertical: 18, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', gap: 16 },
-  xpTile: { width: 44, height: 44, borderRadius: 11, backgroundColor: dx.xpTile, alignItems: 'center', justifyContent: 'center' },
-  repeat: { flex: 1.6, minWidth: 0 },
-  actions: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 6 },
+  xpRankUp: { boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1.5, color: alpha(tone.copper, 0.55), inset: true }] },
+  xpFoot: { flexDirection: 'row', justifyContent: 'space-between', gap: 12, marginTop: 6 },
+  review: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+    backgroundColor: dx.card2,
+    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: alpha(eos.bone, 0.05), inset: true }],
+  },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 12, marginTop: 6 },
   puzzles: { paddingVertical: 18, paddingHorizontal: 20 },
   puzzlesHead: { flexDirection: 'row', alignItems: 'center' },
   seg: { width: 220 },

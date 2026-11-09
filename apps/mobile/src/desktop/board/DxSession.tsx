@@ -19,7 +19,7 @@ import { Portal } from '../Portal';
 import { useHotkeys } from '../hotkeys';
 import { DText, GhostButton, Kbd, KeyHints, Label } from '../kit';
 import { dx } from '../tokens';
-import { Card2, ClockText, Dots, panelStyles, SmallTile, Spacer, TurnCard, type Mark } from './parts';
+import { Card2, ClockText, Dots, panelStyles, SmallTile, Spacer, StreakChip, TurnCard, type Mark } from './parts';
 import { BoardStage } from './Stage';
 import { DxSessionSummary } from './DxSessionSummary';
 
@@ -141,9 +141,14 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
       <TimeBar controller={controller} />
 
       {wrongNow ? (
-        <WrongCard san={wrongNow.san} delta={!unrated && wrongNow.base != null && rating != null ? rating - wrongNow.base : 0} t={t} />
+        <WrongCard
+          san={wrongNow.san}
+          delta={!unrated && wrongNow.base != null && rating != null ? rating - wrongNow.base : 0}
+          streakBroken={card.streakBroken}
+          t={t}
+        />
       ) : (
-        <TurnCard side={s.playerColor} title={title} sub={sub} pill={pill} />
+        <TurnCard side={s.playerColor} title={title} sub={sub} pill={pill} streak={card.streak} streakBroken={card.streakBroken} />
       )}
       <ProgressCard s={s} prog={storeProg} t={t} />
 
@@ -219,7 +224,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
             <PlateButton
               testID="exit-save"
               label={t('play.exit_save')}
-              size="sm"
+              size="md"
               block
               style={styles.save}
               onPress={() => {
@@ -232,13 +237,14 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
               label={t('play.exit_discard')}
               accessibilityLabel={t('play.exit_discard')}
               danger
+              height={44}
               style={styles.flex}
               onPress={() => {
                 controller.closeExit();
                 controller.dispatch({ type: 'finish', save: false });
               }}
             />
-            <GhostButton testID="exit-keep" label={t('play.exit_keep')} accessibilityLabel={t('play.exit_keep')} style={styles.flex} onPress={controller.closeExit} />
+            <GhostButton testID="exit-keep" label={t('play.exit_keep')} accessibilityLabel={t('play.exit_keep')} height={44} style={styles.flex} onPress={controller.closeExit} />
           </View>
         </Dialog>
       )}
@@ -254,7 +260,7 @@ function Runner({ m, controller, view, t }: { m: Model; controller: RunnerContro
 }
 
 /** DXSessionWrong: the miss, where it went, and what it cost. */
-function WrongCard({ san, delta, t }: { san: string | null; delta: number; t: TFn }) {
+function WrongCard({ san, delta, streakBroken, t }: { san: string | null; delta: number; streakBroken: number | null; t: TFn }) {
   return (
     <View style={styles.wrong} testID="dx-runner-wrong">
       <View style={styles.wrongDisc}>
@@ -268,6 +274,8 @@ function WrongCard({ san, delta, t }: { san: string | null; delta: number; t: TF
           {delta < 0 ? `${t('dx.board.wrong_review')} · ${t('dx.board.wrong_rating', { n: `−${Math.abs(delta)}` })}` : t('dx.board.wrong_review')}
         </DText>
       </View>
+      {/* The miss broke a streak: the chip shows it crossed out while the runner holds it. */}
+      {streakBroken != null ? <StreakChip key={`broken-${streakBroken}`} n={streakBroken} broken /> : null}
     </View>
   );
 }

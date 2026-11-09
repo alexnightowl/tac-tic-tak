@@ -418,7 +418,7 @@ function SolveFooter({
         testID={`${prefix}-show-solution`}
         label={t('library.show_solution')}
         accessibilityLabel={t('library.show_solution')}
-        height={46}
+        height={44}
         disabled={s.phase !== 'playerTurn' && s.phase !== 'rewinding'}
         onPress={() => controller.dispatch({ type: 'showSolution' })}
       />
@@ -432,7 +432,7 @@ function ExamSkip({ note, noteTestID, testID, disabled, onSkip, t }: { note: str
       <DText size={12.5} color={dx.ash} style={styles.flex} testID={noteTestID}>
         {note}
       </DText>
-      <GhostButton testID={testID} label={t('library.skip')} accessibilityLabel={t('library.skip_a11y')} height={46} disabled={disabled} onPress={onSkip} />
+      <GhostButton testID={testID} label={t('library.skip')} accessibilityLabel={t('library.skip_a11y')} height={44} disabled={disabled} onPress={onSkip} />
     </View>
   );
 }
