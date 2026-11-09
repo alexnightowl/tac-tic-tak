@@ -119,4 +119,8 @@ export const dxhomeEn: Dict = {
   'dx.home.beat': 'beat {n}',
   'dx.home.reply_window': '{name} has 24 h to answer',
   'dx.home.vs': 'VS',
+  'dx.home.next_session': 'Next session',
+  'dx.home.start_at': 'Starts at difficulty {n}',
+  'dx.home.level_guard_short': 'One more weak session: −25',
+  'dx.home.chart_title_all': 'Level · {range}',
 };

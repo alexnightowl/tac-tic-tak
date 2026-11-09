@@ -119,4 +119,8 @@ export const dxhomeUk: Dict = {
   'dx.home.beat': 'побити {n}',
   'dx.home.reply_window': '{name} має 24 год на відповідь',
   'dx.home.vs': 'VS',
+  'dx.home.next_session': 'Наступна сесія',
+  'dx.home.start_at': 'Старт зі складності {n}',
+  'dx.home.level_guard_short': 'Ще одна слабка сесія: −25',
+  'dx.home.chart_title_all': 'Рівень · {range}',
 };

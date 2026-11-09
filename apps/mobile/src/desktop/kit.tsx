@@ -131,6 +131,7 @@ export function StatTile({
   icon: Icon,
   delta,
   deltaColor,
+  captionColor,
   picked,
   testID,
   style,
@@ -141,6 +142,8 @@ export function StatTile({
   icon?: LucideIcon;
   delta?: string;
   deltaColor?: ColorValue;
+  /** Caption ink (e.g. rose for a warning); dust by default. */
+  captionColor?: ColorValue;
   picked?: boolean;
   testID?: string;
   style?: StyleProp<ViewStyle>;
@@ -159,7 +162,7 @@ export function StatTile({
       </View>
       <Num style={styles.mt8}>{value}</Num>
       {caption ? (
-        <DText size={12} color={dx.dust} style={styles.mt2}>
+        <DText size={12} color={captionColor ?? dx.dust} style={styles.mt2}>
           {caption}
         </DText>
       ) : null}

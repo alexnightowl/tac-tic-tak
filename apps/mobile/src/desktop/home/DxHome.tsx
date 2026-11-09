@@ -1,6 +1,6 @@
 import { localeFor, streakState, type SessionRow } from '@tac/core/format';
 import { localized, suggestedCourse, type CourseSummary } from '@tac/core/library';
-import { CALIBRATION_SESSIONS, LEVEL_STEP, UI_STYLE_ORDER, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, LEVEL_STEP, UI_STYLE_ORDER, isTrainingStyle } from '@tac/core/rules';
 import type { Progression } from '@tac/core/api';
 import type { RunnerSnapshot } from '@tac/core/runner';
 import { levelFor } from '@tac/core/runner';
@@ -21,7 +21,6 @@ import { lastPlayedIn } from '@/features/library/model';
 import { lessonTotals, useCourseProgressMap, useLearnCourses } from '@/features/learn/data';
 import { openOnboarding } from '@/features/onboarding/gate';
 import { plural } from '@/features/offline/format';
-import { bandIcon } from '@/features/play/setup/bandIcons';
 import { clampMinutes, readLastSetup, readLastStyle, repeatStartRating, resolveDurationFor, type SessionSetup } from '@/features/play/setupPrefs';
 import { startSession } from '@/features/play/startSession';
 import { startErrorKey } from '@/features/play/strings';
@@ -40,11 +39,11 @@ import { PlateButton } from '@/ui';
 import { useLang, useT, useTn, type TFn } from '@/ui/lang';
 import { useHotkeys } from '../hotkeys';
 import { levelDelta, toLevelPoints } from '../level';
-import { Bar, Card, DText, GhostButton, Hover, Label, Num, Pill, Seg, StatTile, TextButton } from '../kit';
+import { Bar, Card, DText, GhostButton, Hover, Label, Pill, Seg, StatTile, TextButton } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
 import { MiniBoard } from './MiniBoard';
-import { RatingLine } from './RatingChart';
+import { RatingHistoryChart } from '@/features/stats/RatingHistoryChart';
 import { STYLE_GLYPH } from './styleGlyph';
 import { Col } from './parts';
 import { useTwoColumns } from './useTwoColumns';
@@ -195,8 +194,8 @@ export function DxHome() {
       <Col>
         {resume}
         <Hero quick={quick} seen={seen} />
-        <StyleTiles selected={quick.style} seen={seen} data={data} />
-        <ChartCard style={quick.style} />
+        <StyleTiles seen={seen} data={data} />
+        <ChartCard />
         <RecentCard rows={recent} error={overview.isError && !data} retry={() => void overview.refetch()} />
         {two ? null : <View style={styles.stacked}>{aside}</View>}
       </Col>
@@ -231,9 +230,6 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
   const { setup } = quick;
   const prog = useAppStore((s) => s.progressions[setup.style]);
   const level = levelFor(prog);
-  const delta = levelDelta(seen, setup.style, level);
-  // Two sessions in a row under level − 50 drop it; after the first one the hero warns.
-  const guarded = (prog.levelGuard ?? 0) > 0;
   const styleName = t(`style.${setup.style}.name`);
   const minutes = `${Math.round(setup.durationSec / 60)} ${t('play.minutes')}`;
   const Glyph = STYLE_GLYPH[setup.style];
@@ -257,23 +253,19 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
           <Circle cx={170} cy={170} r={170} fill="url(#dx-home-glow)" />
         </Svg>
       </View>
-      <Image source={bandIcon(level)} style={styles.heroEye} contentFit="contain" transition={null} />
+      {/* The session the plate starts (owner: no one style's stats up here;
+          the three levels sit side by side in the tiles below). */}
+      <View style={styles.heroIcon}>
+        <Glyph size={30} color={tone.rose} strokeWidth={1.8} />
+      </View>
       <View style={styles.flex}>
-        <Label color={tone.rose}>{t('dx.home.level_label', { style: styleName })}</Label>
-        <View style={styles.heroRating}>
-          <Num size={44} style={styles.lh50}>
-            {String(level)}
-          </Num>
-          {delta ? <Pill tone={delta > 0 ? 'sage' : 'rose'} label={t('dx.home.since_visit', { delta: signed(delta) })} /> : null}
-        </View>
-        <View style={[styles.heroBar, styles.heroFoot]}>
-          <DText size={12.5} color={dx.ash} numberOfLines={2}>
-            {t('dx.home.level_start', { level })}
-          </DText>
-          <DText size={12.5} color={guarded ? tone.rose : dx.dust} numberOfLines={2} testID="dx-home-level-next">
-            {guarded ? t('dx.home.level_guard') : t('dx.home.next_mark', { next: level + LEVEL_STEP })}
-          </DText>
-        </View>
+        <Label color={tone.rose}>{t('dx.home.next_session')}</Label>
+        <DText serif weight={700} size={26} style={styles.heroTitle} numberOfLines={2} testID="dx-home-setup">
+          {setupLabel}
+        </DText>
+        <DText size={13} color={dx.ash} style={styles.heroSub} numberOfLines={2} testID="dx-home-level-next">
+          {startRating != null ? t('dx.home.start_at', { n: startRating }) : t('dx.home.level_start', { level })}
+        </DText>
       </View>
       <View style={narrow ? styles.heroCtasNarrow : styles.heroCtas}>
         <PlateButton
@@ -323,7 +315,7 @@ function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
 }
 
 /** The three style levels (with the change since the last visit), then the phone's Peak and Sessions tiles. */
-function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; seen: SeenRatings; data: Overview | undefined; empty?: boolean }) {
+function StyleTiles({ seen, data, empty }: { seen: SeenRatings; data: Overview | undefined; empty?: boolean }) {
   const t = useT();
   const tn = useTn();
   const progressions = useAppStore((s) => s.progressions);
@@ -335,6 +327,8 @@ function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; 
         const level = levelFor(prog);
         const delta = levelDelta(seen, st, level);
         const settling = prog.calibrationSessionsLeft;
+        // Two sessions in a row under level − 50 drop it; after the first one its tile warns.
+        const guarded = (prog.levelGuard ?? 0) > 0;
         return (
           <StatTile
             key={st}
@@ -342,11 +336,17 @@ function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; 
             label={t(`style.${st}.name`)}
             value={String(level)}
             icon={STYLE_GLYPH[st]}
-            caption={empty && settling > 0 ? plural(tn, 'dx.home.settling', settling) : t('dx.home.next_mark', { next: level + LEVEL_STEP })}
+            caption={
+              empty && settling > 0
+                ? plural(tn, 'dx.home.settling', settling)
+                : guarded
+                  ? t('dx.home.level_guard_short')
+                  : t('dx.home.next_mark', { next: level + LEVEL_STEP })
+            }
+            captionColor={guarded ? tone.rose : undefined}
             // A blank keeps the label rows of all the tiles the same height.
             delta={delta ? signed(delta) : ' '}
             deltaColor={delta < 0 ? tone.rose : dx.sage}
-            picked={st === selected}
             style={styles.tile}
           />
         );
@@ -357,18 +357,18 @@ function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; 
   );
 }
 
-function ChartCard({ style }: { style: TrainingStyle }) {
+/** Every style's level over time, one line each (owner: all modes at once, none picked). */
+function ChartCard() {
   const t = useT();
   const [range, setRange] = useState<Range>('30d');
   const timeline = useQuery(timelineQuery());
   const days = RANGE_DAYS[range];
   const since = rangeStart(days);
-  const points = toLevelPoints(timeline.data).filter((p) => p.style === style && +new Date(p.endedAt) >= since);
-  const styleName = t(`style.${style}.name`);
+  const points = toLevelPoints(timeline.data).filter((p) => +new Date(p.endedAt) >= since);
   return (
     <Card style={styles.chart} testID="dx-home-chart">
       <View style={styles.rowCenter}>
-        <Label>{t('dx.home.chart_title', { style: styleName, range: t(`dx.home.range_long.${range}`) })}</Label>
+        <Label>{t('dx.home.chart_title_all', { range: t(`dx.home.range_long.${range}`) })}</Label>
         <View style={styles.flex} />
         <Seg
           small
@@ -388,11 +388,9 @@ function ChartCard({ style }: { style: TrainingStyle }) {
             {t('dx.home.chart_empty')}
           </DText>
         ) : (
-          <RatingLine
-            points={points}
-            testID="dx-home-chart-line"
-            accessibilityLabel={t('dx.home.chart_a11y', { style: styleName, from: points[0].rating, to: points[points.length - 1].rating, n: points.length })}
-          />
+          <View style={styles.chartFill}>
+            <RatingHistoryChart data={points} testID="dx-home-chart-line" />
+          </View>
         )}
       </View>
     </Card>
@@ -716,7 +714,7 @@ function DxHomeEmpty({
           </View>
           {roomy ? <MiniBoard fen={HERO_FEN} size={260} shadow /> : null}
         </Card>
-        <StyleTiles selected={quick.style} seen={seen} data={data} empty />
+        <StyleTiles seen={seen} data={data} empty />
         <Card style={styles.soon} testID="dx-home-chart-soon">
           <BarChart3 size={22} color={dx.dust} strokeWidth={1.8} />
           <DText size={15} weight={700} style={styles.mt10}>
@@ -857,10 +855,6 @@ const styles = StyleSheet.create({
     width: 340,
     height: 340,
   },
-  heroEye: { width: 92, height: 92 },
-  heroRating: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 6 },
-  heroBar: { maxWidth: 420, marginTop: 12 },
-  heroFoot: { flexDirection: 'row', alignItems: 'baseline', gap: 16 },
   heroCtas: { width: 280, gap: 10 },
   heroNarrow: { flexWrap: 'wrap', rowGap: 20 },
   heroCtasNarrow: { width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10 },
@@ -869,6 +863,10 @@ const styles = StyleSheet.create({
   chart: { paddingVertical: 20, paddingHorizontal: 22 },
   range: { width: 220 },
   chartBody: { marginTop: 18, minHeight: 160, justifyContent: 'center' },
+  chartFill: { alignSelf: 'stretch' },
+  heroIcon: { width: 64, height: 64, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: dx.ghost },
+  heroTitle: { marginTop: 6 },
+  heroSub: { marginTop: 6 },
   recent: { paddingVertical: 18, paddingHorizontal: 22 },
   allLink: { flexDirection: 'row', alignItems: 'center', gap: 4, borderRadius: 6, paddingHorizontal: 4, height: 24 },
   recentState: { paddingVertical: 14, gap: 8, alignItems: 'flex-start' },
