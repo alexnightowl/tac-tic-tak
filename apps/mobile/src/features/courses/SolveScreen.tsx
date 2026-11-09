@@ -64,11 +64,11 @@ export function CourseSolveScreen({ courseId, chapter, cycle, replay = false }: 
   return <Runner course={course} chapterIndex={chapter} cycle={cycle} replay={replay} />;
 }
 
-function Runner({ course, chapterIndex, cycle, replay }: { course: Course; chapterIndex: number; cycle: number; replay: boolean }) {
+/** A course chapter on the book runner: shared by the phone Runner and the desktop web layout. */
+export function useCourseRunner(course: Course, chapterIndex: number, cycle: number, replay: boolean) {
   const t = useT();
   const tn = useTn();
   const { lang } = useLang();
-  const insets = useSafeAreaInsets();
   const chapter = course.chapters[chapterIndex];
   const tones = courseTones(course.color);
   // A replay walks the whole chapter and shows this run's own results.
@@ -138,6 +138,13 @@ function Runner({ course, chapterIndex, cycle, replay }: { course: Course; chapt
   const noteText = note === 'missed' ? t('library.missed_note') : note === 'hint' ? t('library.hint_note') : note === 'solution' ? t('library.solution_note') : null;
   const looks: SegmentLook[] = chapter.puzzles.map((p) => (done.has(p.id) ? 'right' : p.id === puzzleId ? 'now' : 'rest'));
   const doneCount = chapter.puzzles.filter((p) => done.has(p.id)).length;
+
+  return { t, tn, lang, chapter, tones, controller, s, onMove, boardRef, tracker, intro, setIntro, close, target, puzzleId, pIndex, puzzle, title, side, solved, step, note, noteText, looks, doneCount };
+}
+
+function Runner({ course, chapterIndex, cycle, replay }: { course: Course; chapterIndex: number; cycle: number; replay: boolean }) {
+  const insets = useSafeAreaInsets();
+  const { t, tn, lang, chapter, tones, controller, s, onMove, boardRef, tracker, intro, setIntro, close, target, pIndex, puzzle, title, side, solved, step, noteText, looks, doneCount } = useCourseRunner(course, chapterIndex, cycle, replay);
 
   return (
     <View style={[styles.root, { paddingTop: insets.top, paddingBottom: Math.max(space[6], insets.bottom) }]} testID="course-solve">

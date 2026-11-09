@@ -34,9 +34,8 @@ import { useAppStore } from '@/stores/appStore';
 // saved after every puzzle; on its end it is queued and posted, then the
 // screen replaces itself with the result (solo) or the challenge (race).
 
-export function RunScreen({ challengeId, format }: { challengeId: string | null; format: StormFormat }) {
-  const t = useT();
-  const insets = useSafeAreaInsets();
+/** The run's puzzle stream: taken from the Start button's prefetch, else fetched (retry re-fetches). */
+export function useStormStream(challengeId: string | null) {
   const [load, setLoad] = useState<{ status: 'loading' } | { status: 'error' } | { status: 'ready'; stream: StormStreamResponse }>(() => {
     // Normally the Start button already loaded the stream (launch.ts).
     const stream = takeStream(challengeId);
@@ -56,6 +55,18 @@ export function RunScreen({ challengeId, format }: { challengeId: string | null;
     };
   }, [challengeId, attempt]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const retry = () => {
+    setLoad({ status: 'loading' });
+    setAttempt((n) => n + 1);
+  };
+  return { load, retry };
+}
+
+export function RunScreen({ challengeId, format }: { challengeId: string | null; format: StormFormat }) {
+  const t = useT();
+  const insets = useSafeAreaInsets();
+  const { load, retry } = useStormStream(challengeId);
+
   if (load.status === 'ready') return <Run stream={load.stream} format={format} challengeId={challengeId} />;
   return (
     <View style={[styles.root, styles.center, { paddingTop: insets.top }]} testID="storm-run-loading">
@@ -73,10 +84,7 @@ export function RunScreen({ challengeId, format }: { challengeId: string | null;
             {t('storm.run.error')}
           </AppText>
           <View style={styles.errorActions}>
-            <PlateButton testID="storm-run-retry" label={t('storm.run.retry')} size="md" block onPress={() => {
-                setLoad({ status: 'loading' });
-                setAttempt((n) => n + 1);
-              }} />
+            <PlateButton testID="storm-run-retry" label={t('storm.run.retry')} size="md" block onPress={retry} />
             <PlateButton testID="storm-run-close" label={t('storm.run.close')} variant="slate" size="md" block onPress={() => router.back()} />
           </View>
         </>
@@ -85,9 +93,13 @@ export function RunScreen({ challengeId, format }: { challengeId: string | null;
   );
 }
 
-function Run({ stream, format, challengeId }: { stream: StormStreamResponse; format: StormFormat; challengeId: string | null }) {
+/**
+ * One mounted Storm / Race run: the engine, the practice runner it watches,
+ * the quit guard and the hand-off to the result. Shared by the phone Run and
+ * the desktop web layout (src/desktop/board).
+ */
+export function useStormRunScreen(stream: StormStreamResponse, format: StormFormat, challengeId: string | null) {
   const t = useT();
-  const insets = useSafeAreaInsets();
   const [run] = useState(() => new StormRun(stream, format, challengeId));
   const { controller, state: p, onMove, boardRef } = usePractice('storm', { advance: run.advance });
   const [ref] = useState(() => (h: BoardHandle | null) => {
@@ -145,6 +157,14 @@ function Run({ stream, format, challengeId }: { stream: StormStreamResponse; for
   const pieceSet = useAppStore((st) => normalizePieceSet(st.settings.pieceSet));
   const shown = stream.puzzles[snap.shown];
   const solved = s.results.filter((r) => r.ok).length;
+
+  return { run, controller, p, onMove, ref, snap, s, timed, confirmQuit, pieceSet, shown, solved };
+}
+
+function Run({ stream, format, challengeId }: { stream: StormStreamResponse; format: StormFormat; challengeId: string | null }) {
+  const t = useT();
+  const insets = useSafeAreaInsets();
+  const { run, controller, p, onMove, ref, snap, s, timed, confirmQuit, pieceSet, shown, solved } = useStormRunScreen(stream, format, challengeId);
 
   return (
     <View style={[styles.root, { paddingTop: insets.top, paddingBottom: Math.max(space[4], insets.bottom) }]} testID="storm-run">
@@ -234,7 +254,12 @@ const History = memo(function History({ results, current, label }: { results: re
  * the deadline, re-aimed when a bonus or a penalty moves it). At 0:00 it
  * nudges the engine with a tick; a bonus floats a "+3 s" chip by the clock.
  */
-function StormClock({ run, total }: { run: StormRun; total: number }) {
+/**
+ * The Storm clock's state: m:ss re-rendered once a second (aligned to the
+ * displayed second), the bar fraction drained on the UI thread, the bonus
+ * float. Shared by the phone StormClock and the desktop timer card.
+ */
+export function useStormClock(run: StormRun, total: number) {
   const t = useT();
   const reduced = useReducedMotion();
   const [ms, setMs] = useState(total);
@@ -311,6 +336,13 @@ function StormClock({ run, total }: { run: StormRun; total: number }) {
   const fill = useAnimatedStyle(() => ({ width: `${Math.max(0, Math.min(1, frac.get())) * 100}%` }));
   const float = useAnimatedStyle(() => ({ opacity: bonusOpacity.get(), transform: [{ translateY: bonusY.get() }] }));
   const text = clockText(ms);
+
+  return { ms, low, fill, float, text, bonusText };
+}
+
+function StormClock({ run, total }: { run: StormRun; total: number }) {
+  const t = useT();
+  const { ms, low, fill, float, text, bonusText } = useStormClock(run, total);
 
   return (
     <>

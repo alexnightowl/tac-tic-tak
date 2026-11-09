@@ -1,7 +1,7 @@
 import { fmtDuration } from '@tac/core/format';
 import { warnThresholdSec } from '@tac/core/runner';
 import { control, eos, keyframes, radii, semantic, space, surface, feedback } from '@tac/core/tokens';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
@@ -32,7 +32,16 @@ const same = (a: Display, b: Display) =>
  * render on a tick. When the clock reaches 0 it nudges the runner with a
  * `tick` (a safety net for timers delayed by the OS).
  */
-export function Countdown({ controller, accessibilityLabel }: { controller: RunnerController; accessibilityLabel: string }) {
+export function Countdown({
+  controller,
+  accessibilityLabel,
+  render,
+}: {
+  controller: RunnerController;
+  accessibilityLabel: string;
+  /** Desktop web: draw the time itself (no pill); same 1 Hz clock and feel. */
+  render?: (d: { text: string; warn: boolean; paused: boolean }) => ReactNode;
+}) {
   const [display, setDisplay] = useState<Display>(() => read(controller));
 
   useEffect(() => {
@@ -77,6 +86,14 @@ export function Countdown({ controller, accessibilityLabel }: { controller: Runn
   }, [controller]);
 
   const { sec, warn, paused, loading } = display;
+  if (render) {
+    const text = loading ? '--:--' : fmtDuration(sec);
+    return (
+      <View accessible accessibilityRole="timer" accessibilityLabel={accessibilityLabel} accessibilityValue={{ text: loading ? '' : text }}>
+        {render({ text, warn, paused })}
+      </View>
+    );
+  }
   return (
     <View
       style={[styles.pill, warn && styles.pillWarn]}

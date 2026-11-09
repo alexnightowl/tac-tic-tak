@@ -1,32 +1,24 @@
 import type { Progression } from '@tac/core/api';
-import { normalizePieceSet } from '@tac/core/board';
 import { levelFor, turnCardOf } from '@tac/core/runner';
 import { eos, layout, space } from '@tac/core/tokens';
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { router, usePreventRemove, type Href } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { Pause, Play, X } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FocusStatusBar } from '@/shell/FocusStatusBar';
 import { Board } from '@/board';
-import { Countdown, usePuzzleRunner } from '@/runner';
-import { useAppStore } from '@/stores/appStore';
+import { Countdown } from '@/runner';
 import { AppText } from '@/ui';
-import { takeFirstPuzzle } from '../pendingPuzzle';
-import { readLastSetup, repeatStartRating } from '../setupPrefs';
-import { startSession } from '../startSession';
 import { usePlayT } from '../strings';
 import { E2E, E2EStrip, onBoardRenderCount } from './E2EStrip';
 import { ExitSheet, PauseOverlay } from './overlays';
 import { GlassButton, StatPills, TurnCard } from './parts';
 import { CasualBar, LevelProgressBar } from './progress';
 import { Summary } from './Summary';
+import { useRunnerScreen } from './useRunnerScreen';
 
 const HOME = '/' as Href;
-const SETUP = '/play' as Href;
-const KEEP_AWAKE_TAG = 'runner';
 
 /**
  * /play/[id]: the session runner, then its summary in the same screen
@@ -37,59 +29,11 @@ const KEEP_AWAKE_TAG = 'runner';
 export function RunnerScreen({ sessionId, finishOnStart = false }: { sessionId: string; finishOnStart?: boolean }) {
   const t = usePlayT();
   const insets = useSafeAreaInsets();
-  const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
-  const mirror = useAppStore((s) => s.settings.mirrorView);
-  const { controller, view, boardRef, onMove } = usePuzzleRunner(sessionId, () => takeFirstPuzzle(sessionId), { finishOnStart });
-  const s = view.state;
+  const { pieceSet, mirror, controller, view, boardRef, onMove, s, storeRating, storeProg, againLoading, playAgain, result } = useRunnerScreen(
+    sessionId,
+    finishOnStart,
+  );
   const runnerStyle = s.style;
-  // web RatingPill: the store's live rating (patched after every attempt).
-  const storeRating = useAppStore((st) => (runnerStyle ? st.progressions[runnerStyle].currentPuzzleRating : null));
-  const storeProg = useAppStore((st) => (runnerStyle ? st.progressions[runnerStyle] : null));
-  const [againLoading, setAgainLoading] = useState(false);
-  const result = s.result;
-  const running = s.phase !== 'summary';
-
-  // Back gesture / hardware back go into the exit flow while the session
-  // runs (iOS: react-native-screens cancels the swipe natively).
-  const disablePrevention = usePreventRemove(running, () => {
-    if (controller.view.exitOpen) controller.closeExit();
-    else controller.dispatch({ type: 'requestExit' });
-  });
-
-  // Discard (or 0-attempt exit): leave for Home without tripping the guard.
-  useEffect(() => {
-    return controller.setOnExit(() => {
-      disablePrevention();
-      router.dismissTo(HOME);
-    });
-  }, [controller, disablePrevention]);
-
-  useEffect(() => {
-    if (!running) return;
-    void activateKeepAwakeAsync(KEEP_AWAKE_TAG);
-    return () => {
-      void deactivateKeepAwake(KEEP_AWAKE_TAG);
-    };
-  }, [running]);
-
-  // "Play again with the same settings": the last setup straight into a
-  // new session (the web went back to /play); on failure, the setup.
-  const playAgain = async () => {
-    const setup = readLastSetup();
-    const prog = setup ? useAppStore.getState().progressions[setup.style] : null;
-    if (!setup || !prog) {
-      router.dismissTo(SETUP);
-      return;
-    }
-    setAgainLoading(true);
-    try {
-      const id = await startSession({ ...setup, startRating: repeatStartRating(setup, prog) });
-      router.replace(`/play/${id}` as Href);
-    } catch {
-      setAgainLoading(false);
-      router.dismissTo(SETUP);
-    }
-  };
 
   if (result?.kind === 'summary') {
     return (
@@ -219,7 +163,7 @@ function ProgressSlot({ s, prog, t }: { s: RunnerScreenState; prog: Progression 
   return <LevelProgressBar rating={rating} level={level} t={t} />;
 }
 
-type RunnerScreenState = ReturnType<typeof usePuzzleRunner>['view']['state'];
+type RunnerScreenState = ReturnType<typeof useRunnerScreen>['s'];
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },

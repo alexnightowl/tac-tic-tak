@@ -177,11 +177,11 @@ export function LibrarySolveScreen({ bookId, chapter, cycle }: { bookId: string;
   return <Runner book={book} chapterIndex={chapter} cycle={cycle} />;
 }
 
-function Runner({ book, chapterIndex, cycle }: { book: LibraryBook; chapterIndex: number; cycle: number }) {
+/** A book chapter on the practice runner: shared by the phone Runner and the desktop web layout. */
+export function useLibraryRunner(book: LibraryBook, chapterIndex: number, cycle: number) {
   const t = useT();
   const tn = useTn();
   const { lang } = useLang();
-  const insets = useSafeAreaInsets();
   const chapter = book.chapters[chapterIndex];
   const [tracker] = useState(() => new ResultTracker(book.id, cycle));
   const hooks = useMemo<PracticeHooks>(
@@ -247,6 +247,13 @@ function Runner({ book, chapterIndex, cycle }: { book: LibraryBook; chapterIndex
   const solved = s.phase === 'solved' || s.phase === 'advancing';
   const step = solutionStepOf(s);
   const noteText = note === 'missed' ? t('library.missed_note') : note === 'hint' ? t('library.hint_note') : note === 'solution' ? t('library.solution_note') : null;
+
+  return { t, tn, lang, chapter, controller, s, onMove, boardRef, tracker, target, results, puzzleId, pIndex, puzzle, before, total, ch, close, side, goal, solved, step, note, noteText };
+}
+
+function Runner({ book, chapterIndex, cycle }: { book: LibraryBook; chapterIndex: number; cycle: number }) {
+  const insets = useSafeAreaInsets();
+  const { t, lang, chapter, controller, s, onMove, boardRef, tracker, target, results, puzzleId, pIndex, puzzle, before, total, ch, close, side, goal, solved, step, noteText } = useLibraryRunner(book, chapterIndex, cycle);
 
   return (
     <View style={[styles.root, { paddingTop: insets.top, paddingBottom: Math.max(space[6], insets.bottom) }]} testID="library-solve">
@@ -395,9 +402,8 @@ function GameCard({ puzzle, lang }: { puzzle: LibraryPuzzle; lang: 'en' | 'uk' }
 
 export const fmt = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 
-/** "0:14 / 0:25": this puzzle's time against the cycle target. Re-renders only itself, at 1 Hz. */
-export function PuzzleClock({ tracker, target }: { tracker: ResultTracker; target: number | null }) {
-  const t = useT();
+/** This puzzle's time (1 Hz while it runs) against the cycle target: PuzzleClock and the desktop clock. */
+export function usePuzzleClock(tracker: ResultTracker, target: number | null) {
   const { startedAt, endedAt } = useSyncExternalStore(tracker.subscribe, tracker.getSnap);
   const [now, setNow] = useState(() => Date.now());
   const running = startedAt > 0 && endedAt === 0;
@@ -410,6 +416,13 @@ export function PuzzleClock({ tracker, target }: { tracker: ResultTracker; targe
   const sec = startedAt ? Math.max(0, Math.floor((end - startedAt) / 1000)) : 0;
   const over = target != null && sec > target;
   const time = fmt(sec);
+  return { time, over };
+}
+
+/** "0:14 / 0:25": this puzzle's time against the cycle target. Re-renders only itself, at 1 Hz. */
+export function PuzzleClock({ tracker, target }: { tracker: ResultTracker; target: number | null }) {
+  const t = useT();
+  const { time, over } = usePuzzleClock(tracker, target);
   return (
     <View
       style={[styles.chip, styles.clock]}

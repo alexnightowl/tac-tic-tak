@@ -79,6 +79,17 @@ export const desk = {
   /** Current rank card ground (DXXP). */
   rankOn: '#2d2427',
   // ── end account ──
+  // ── board screens (runner, storm run, drills, chapter solve) ──
+  /** Solved mark: session dots, summary marks, chapter dashes. */
+  dotOk: '#5f7458',
+  /** Pause veil over the board (DXSessionPaused). */
+  pauseScrim: 'rgba(12,10,14,0.78)',
+  /** Course theme glyph tile (DXChapterSolve). */
+  themeTile: '#3a2628',
+  /** Summary XP card: icon tile and the bar's deep end (DXSessionSummary). */
+  xpTile: '#5a2c2a',
+  xpBarFrom: '#8a6e3a',
+  // ── end board ──
   /** Text tones. */
   bone: eos.bone,
   ash: eos.ash,

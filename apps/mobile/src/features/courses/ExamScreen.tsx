@@ -71,10 +71,10 @@ function Closed({ text }: { text: string }) {
   );
 }
 
-function Exam({ course, cycle }: { course: Course; cycle: number }) {
+/** One exam try on the runner: shared by the phone Exam and the desktop web layout. */
+export function useExamRunner(course: Course, cycle: number) {
   const t = useT();
   const { lang } = useLang();
-  const insets = useSafeAreaInsets();
   const exam = course.exam;
   const [results, setResults] = useState<Record<string, LibraryResult>>({});
   // This try's own tally (a retake's attempts may be dropped by the server's first-wins rule).
@@ -150,6 +150,13 @@ function Exam({ course, cycle }: { course: Course; cycle: number }) {
     return r === 'clean' ? 'right' : r ? 'wrong' : p.id === puzzleId ? 'now' : 'rest';
   });
   const side = s.playerColor;
+
+  return { t, lang, exam, controller, s, onMove, boardRef, tracker, note, leave, puzzleId, pIndex, answered, right, looks, side };
+}
+
+function Exam({ course, cycle }: { course: Course; cycle: number }) {
+  const insets = useSafeAreaInsets();
+  const { t, lang, exam, controller, s, onMove, boardRef, tracker, note, leave, pIndex, answered, right, looks, side } = useExamRunner(course, cycle);
 
   return (
     <View style={[solveStyles.root, { paddingTop: insets.top, paddingBottom: Math.max(space[6], insets.bottom) }]} testID="course-exam">

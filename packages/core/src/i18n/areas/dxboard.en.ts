@@ -2,4 +2,56 @@
 // artboards). Keys start with 'dx.board.'; reuse existing keys first.
 import type { Dict } from '../types';
 
-export const dxboardEn: Dict = {};
+export const dxboardEn: Dict = {
+  // Runner (DXSession*)
+  'dx.board.white_moves': 'White to move',
+  'dx.board.black_moves': 'Black to move',
+  'dx.board.find_best': 'Find the best move',
+  'dx.board.puzzle_pill': 'Puzzle {n} · {rating}',
+  'dx.board.mistakes': 'Mistakes',
+  'dx.board.session_puzzles': 'Session puzzles',
+  'dx.board.dots_a11y': '{solved} solved, {failed} missed',
+  'dx.board.flip': 'Flip the board',
+  'dx.board.or': 'or',
+  'dx.board.wrong': 'Wrong move',
+  'dx.board.wrong_san': 'Wrong move · {san}',
+  'dx.board.wrong_review': 'Added to Review',
+  'dx.board.wrong_rating': '{n} rating',
+  'dx.board.key.flip': 'flip',
+  'dx.board.key.pause': 'pause',
+  'dx.board.key.hint': 'hint',
+  'dx.board.key.solution': 'solution',
+  'dx.board.key.back': 'back',
+  'dx.board.key.close': 'close',
+  'dx.board.key.browse': 'moves',
+  'dx.board.key.skip': 'skip',
+  // Summary (DXSessionSummary)
+  'dx.board.mode_mixed': 'Rated',
+  'dx.board.mode_casual': 'Casual',
+  'dx.board.mode_theme': 'Theme drill',
+  'dx.board.minutes': '{n} min',
+  'dx.board.accuracy_n': '{n}% accuracy',
+  'dx.board.avg_time': 'Avg time',
+  'dx.board.session_peak': 'Session peak',
+  'dx.board.hardest': 'Hardest solved',
+  'dx.board.repeat_mistakes': 'Repeat mistakes',
+  'dx.board.to_home': 'Home',
+  'dx.board.all_n': 'All {n}',
+  'dx.board.mistakes_n': 'Mistakes {n}',
+  'dx.board.tap_puzzle': 'Click a puzzle to see its solution',
+  'dx.board.no_puzzles': 'No puzzles here',
+  // Storm (DXStormRun)
+  'dx.board.combo': 'Combo',
+  'dx.board.storm_solved': 'Solved',
+  // Drills (DXReviewDrill, DXReviewHint)
+  'dx.board.drill_counter': '{title} · {n} / {total}',
+  'dx.board.mistakes_title': 'Session mistakes',
+  'dx.board.hint_n': 'Hint {n} of 2',
+  'dx.board.hint_1': 'The piece to move is lit on the board.',
+  'dx.board.hint_2': 'The arrow shows the move.',
+  'dx.board.hint_plate': 'Hint · {n}/2',
+  'dx.board.origin': 'Where the mistake came from',
+  'dx.board.origin_failed': 'Missed in a session',
+  'dx.board.origin_slow': 'Solved too slowly in a session',
+  'dx.board.origin_queue': 'From your review queue',
+};

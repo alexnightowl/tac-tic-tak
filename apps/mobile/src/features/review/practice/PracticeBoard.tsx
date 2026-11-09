@@ -22,12 +22,15 @@ export function PracticeBoard({
   onMove,
   loading,
   overlay,
+  size,
 }: {
   controller: PracticeController;
   boardRef: (h: BoardHandle | null) => void;
   onMove: (m: BoardMove) => boolean;
   loading: boolean;
   overlay?: ReactNode;
+  /** Desktop web: a fixed square side (px) instead of the window width. */
+  size?: number;
 }) {
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const mirror = useAppStore((s) => s.settings.mirrorView);
@@ -51,7 +54,7 @@ export function PracticeBoard({
   const fade = useAnimatedStyle(() => ({ opacity: opacity.get() }));
 
   return (
-    <View style={[styles.slot, { height: width }]}>
+    <View style={[styles.slot, size != null ? { width: size, height: size } : { height: width }]}>
       <Animated.View style={[styles.fill, fade]}>
         <Board
           ref={boardRef}

@@ -25,6 +25,11 @@ export const DESKTOP_ROUTES: readonly Entry[] = [
   { re: /^\/storm\/result$/, chrome: 'full' },
   { re: /^\/challenge\/new$/, chrome: 'full' },
   // ── board screens (runner, storm run, drills, course/library solve) ──
+  { re: /^\/play\/(?!levels$|theme-picker)[^/]+$/, chrome: 'compact' },
+  { re: /^\/storm\/run$/, chrome: 'compact' },
+  { re: /^\/review\/[^/]+$/, chrome: 'compact' },
+  { re: /^\/sessions\/[^/]+\/review$/, chrome: 'compact' },
+  { re: /^\/(course\/(solve|exam)|library\/solve)$/, chrome: 'compact' },
   // ── review, learn, courses, books ──
   // ── league, stats, achievements ──
   { re: /^\/rivals$/, chrome: 'full' },

@@ -2,4 +2,56 @@
 // artboards). Keys start with 'dx.board.'; reuse existing keys first.
 import type { Dict } from '../types';
 
-export const dxboardUk: Dict = {};
+export const dxboardUk: Dict = {
+  // Runner (DXSession*)
+  'dx.board.white_moves': 'Білі ходять',
+  'dx.board.black_moves': 'Чорні ходять',
+  'dx.board.find_best': 'Знайди найкращий хід',
+  'dx.board.puzzle_pill': 'Задача {n} · {rating}',
+  'dx.board.mistakes': 'Помилки',
+  'dx.board.session_puzzles': 'Задачі сесії',
+  'dx.board.dots_a11y': 'Розвʼязано {solved}, помилок {failed}',
+  'dx.board.flip': 'Перевернути дошку',
+  'dx.board.or': 'або',
+  'dx.board.wrong': 'Не той хід',
+  'dx.board.wrong_san': 'Не той хід · {san}',
+  'dx.board.wrong_review': 'Задачу додано в Рев’ю',
+  'dx.board.wrong_rating': '{n} рейтингу',
+  'dx.board.key.flip': 'перевернути',
+  'dx.board.key.pause': 'пауза',
+  'dx.board.key.hint': 'підказка',
+  'dx.board.key.solution': 'рішення',
+  'dx.board.key.back': 'назад',
+  'dx.board.key.close': 'закрити',
+  'dx.board.key.browse': 'ходи',
+  'dx.board.key.skip': 'пропустити',
+  // Summary (DXSessionSummary)
+  'dx.board.mode_mixed': 'Рейтингова',
+  'dx.board.mode_casual': 'Без рейтингу',
+  'dx.board.mode_theme': 'Тема',
+  'dx.board.minutes': '{n} хв',
+  'dx.board.accuracy_n': '{n}% точність',
+  'dx.board.avg_time': 'Сер. час',
+  'dx.board.session_peak': 'Пік сесії',
+  'dx.board.hardest': 'Найважча',
+  'dx.board.repeat_mistakes': 'Повторити помилки',
+  'dx.board.to_home': 'На головну',
+  'dx.board.all_n': 'Усі {n}',
+  'dx.board.mistakes_n': 'Помилки {n}',
+  'dx.board.tap_puzzle': 'Натисни задачу, щоб переглянути рішення',
+  'dx.board.no_puzzles': 'Тут задач немає',
+  // Storm (DXStormRun)
+  'dx.board.combo': 'Комбо',
+  'dx.board.storm_solved': 'Розвʼязані',
+  // Drills (DXReviewDrill, DXReviewHint)
+  'dx.board.drill_counter': '{title} · {n} / {total}',
+  'dx.board.mistakes_title': 'Помилки сесії',
+  'dx.board.hint_n': 'Підказка {n} з 2',
+  'dx.board.hint_1': 'Фігуру, якою треба ходити, підсвічено на дошці.',
+  'dx.board.hint_2': 'Стрілка показує хід.',
+  'dx.board.hint_plate': 'Підказка · {n}/2',
+  'dx.board.origin': 'Звідки помилка',
+  'dx.board.origin_failed': 'Помилка в сесії',
+  'dx.board.origin_slow': 'Задовго в сесії',
+  'dx.board.origin_queue': 'З твоєї черги Рев’ю',
+};

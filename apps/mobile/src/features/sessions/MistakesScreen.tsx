@@ -37,15 +37,8 @@ const mistakesHooks: PracticeHooks = {
   },
 };
 
-/**
- * /sessions/[id]/review (fullScreenModal): the session's missed and slow
- * puzzles, a local FIFO with no timer. Nothing affects the rating.
- */
-export function MistakesScreen({ sessionId }: { sessionId: string }) {
-  const t = useT();
-  const tn = useTn();
-  const { lang } = useLang();
-  const insets = useSafeAreaInsets();
+/** The mistakes runner, its items query and close: shared by MistakesScreen and the desktop web layout. */
+export function useMistakes(sessionId: string) {
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const { controller, state: s, onMove, boardRef } = usePractice('mistakes', mistakesHooks);
   const q = useQuery({
@@ -60,6 +53,24 @@ export function MistakesScreen({ sessionId }: { sessionId: string }) {
     controller.dispatch({ type: 'start', items: items.map(sessionItemToPractice) });
   }, [controller, items]);
 
+  const close = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace(`/sessions/${encodeURIComponent(sessionId)}` as Href);
+  };
+  return { pieceSet, controller, s, onMove, boardRef, q, close };
+}
+
+/**
+ * /sessions/[id]/review (fullScreenModal): the session's missed and slow
+ * puzzles, a local FIFO with no timer. Nothing affects the rating.
+ */
+export function MistakesScreen({ sessionId }: { sessionId: string }) {
+  const t = useT();
+  const tn = useTn();
+  const { lang } = useLang();
+  const insets = useSafeAreaInsets();
+  const { pieceSet, controller, s, onMove, boardRef, q, close } = useMistakes(sessionId);
+
   const progress = useSharedValue(0);
   const ratio = mistakesProgressOf(s);
   useEffect(() => {
@@ -67,10 +78,6 @@ export function MistakesScreen({ sessionId }: { sessionId: string }) {
   }, [progress, ratio]);
   const bar = useAnimatedStyle(() => ({ width: `${progress.get() * 100}%` }));
 
-  const close = () => {
-    if (router.canGoBack()) router.back();
-    else router.replace(`/sessions/${encodeURIComponent(sessionId)}` as Href);
-  };
   const closeButton = (
     <RoundButton testID="screen-session-review-close" label={t('review.back_to_session')} onPress={close}>
       <X size={20} color={eos.bone} />

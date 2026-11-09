@@ -85,16 +85,8 @@ function drillHooks(theme: string | undefined): PracticeHooks {
   };
 }
 
-/**
- * /review/[puzzleId]?theme= (fullScreenModal): the theme drill on the
- * shared practice runner. The next puzzle cross-fades in place, so the
- * stack never grows (the web router.replace'd a route per puzzle).
- */
-export function DrillScreen({ puzzleId, theme }: { puzzleId: string; theme?: string }) {
-  const t = useT();
-  const tn = useTn();
-  const { lang } = useLang();
-  const insets = useSafeAreaInsets();
+/** The drill's runner, queries and close: shared by DrillScreen and the desktop web layout. */
+export function useDrill(puzzleId: string, theme: string | undefined) {
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const { controller, state: s, onMove, boardRef } = usePractice('drill', drillHooks(theme));
 
@@ -117,6 +109,20 @@ export function DrillScreen({ puzzleId, theme }: { puzzleId: string; theme?: str
     if (router.canGoBack()) router.back();
     else router.replace(REVIEW);
   };
+  return { pieceSet, controller, s, onMove, boardRef, puzzleQ, listQ, close };
+}
+
+/**
+ * /review/[puzzleId]?theme= (fullScreenModal): the theme drill on the
+ * shared practice runner. The next puzzle cross-fades in place, so the
+ * stack never grows (the web router.replace'd a route per puzzle).
+ */
+export function DrillScreen({ puzzleId, theme }: { puzzleId: string; theme?: string }) {
+  const t = useT();
+  const tn = useTn();
+  const { lang } = useLang();
+  const insets = useSafeAreaInsets();
+  const { pieceSet, controller, s, onMove, boardRef, puzzleQ, close } = useDrill(puzzleId, theme);
   const closeButton = (
     <RoundButton testID="screen-drill-close" label={t('review.back_to_themes')} onPress={close}>
       <X size={20} color={eos.bone} />
