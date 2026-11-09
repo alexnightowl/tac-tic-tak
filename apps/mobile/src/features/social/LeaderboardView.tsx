@@ -1,5 +1,6 @@
 import { streakState } from '@tac/core/format';
 import type { TrainingStyle } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 import { eos, graphite, layout, radii, rank, semantic, shadows, space } from '@tac/core/tokens';
 import { FlashList, type FlashListRef, type ViewToken } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
@@ -37,7 +38,7 @@ export const MEDAL = [rank.intermediate.color, graphite[300], rank.advanced.colo
 /** Own-row highlight (web: inset ember/55 ring on #2e262c). */
 const SELF_RING = semantic.accent;
 
-/** One place on either board: the rating board's rating or the league's weekly XP. */
+/** One place on either board: the all-time board's level (D39) or the league's weekly XP. */
 type Entry = {
   rank: number | null;
   value: number;
@@ -47,17 +48,17 @@ type Entry = {
   user: UserCard;
 };
 
-/** How a board draws its number: the style icon + rating, or a bolt + XP. */
+/** How a board draws its number: the style icon + level, or a bolt + XP. */
 type Metric = {
   icon: (size: number) => ReactNode;
   a11y: (rank: number | string, name: string, value: number) => string;
 };
 
-const fromBoard = (r: LeaderboardRow): Entry => ({ ...r, value: r.rating });
+const fromBoard = (r: LeaderboardRow): Entry => ({ ...r, value: r.level ?? r.rating });
 const fromLeague = (r: LeagueRow): Entry => ({ ...r, value: r.xp });
 
 /**
- * The all-time rating board (web /leaderboard): style + scope switches
+ * The all-time board (web /leaderboard; ranked by level since D39): style + scope switches
  * (remembered on the device), a top-3 podium, then a virtualised list.
  * `top` scrolls above the switches (Rivals' Challenges, the period switch).
  */
@@ -68,15 +69,15 @@ export function LeaderboardView({ top }: { top?: ReactNode } = {}) {
   const q = useQuery(leaderboardQuery(style, scope));
   const rows = (q.data ?? []).map(fromBoard);
 
-  // Outside the top N on the global board (B13 pending) only the rating is known.
-  const myRating = useAppStore((s) => s.progressions[style].currentPuzzleRating);
+  // Outside the top N on the global board (B13 pending) only the level is known.
+  const myLevel = useAppStore((s) => levelFor(s.progressions[style]));
   const me = useAuthStore((s) => s.user);
   const outside =
     !rows.some((r) => r.isSelf) && !LEADERBOARD_ME_ROW && q.data && scope === 'global' && rows.length >= LEADERBOARD_LIMIT && me
       ? {
           entry: {
             rank: null,
-            value: myRating,
+            value: myLevel,
             isSelf: true,
             streakDays: 0,
             streakLastDay: null,

@@ -23,7 +23,7 @@ import {
   recommendationQuery,
   themesQuery,
   timelineQuery,
-  toRatingPoints,
+  toLevelPoints,
   type StyleFilter,
   type ThemeRow,
 } from './api';
@@ -137,7 +137,7 @@ export function StatsView() {
         </AppText>
         {timeline.data ? (
           <RatingHistoryChart
-            data={toRatingPoints(timeline.data)}
+            data={toLevelPoints(timeline.data)}
             highlightStyle={filter === 'all' ? null : filter}
             testID="stats-rating"
           />

@@ -1,5 +1,5 @@
 import { UI_STYLE_ORDER } from '@tac/core/rules';
-import type { RunnerSnapshot } from '@tac/core/runner';
+import { levelFor, type RunnerSnapshot } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { eos, fontSize, layout, radii, semantic, space } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -30,7 +30,7 @@ import { StyleRatingCard } from './StyleRatingCard';
 
 // Home tab (web /dashboard): greeting, streak, the resume card for a
 // killed session, the hero Start (+ quick start with the last setup),
-// the three style ratings with their change since the last visit, the
+// the three style levels with their change since the last visit, the
 // lifetime tiles and the recent sessions.
 
 // Cinzel has no Cyrillic: the display face follows the nickname's script, not the UI language.
@@ -54,7 +54,7 @@ export function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   // Each visit: the resume card and quick start re-read the device, and
-  // the rating deltas compare against what the previous visit showed.
+  // the level deltas compare against what the previous visit showed.
   useFocusEffect(
     useCallback(() => {
       setSnap(readActiveSnapshot());
@@ -62,7 +62,7 @@ export function HomeScreen() {
       const uid = useAuthStore.getState().user?.id ?? '';
       const now = useAppStore.getState().progressions;
       setSeen(readLastSeenRatings(uid));
-      writeLastSeenRatings(uid, { bullet: now.bullet.currentPuzzleRating, blitz: now.blitz.currentPuzzleRating, rapid: now.rapid.currentPuzzleRating });
+      writeLastSeenRatings(uid, { bullet: levelFor(now.bullet), blitz: levelFor(now.blitz), rapid: levelFor(now.rapid) });
     }, []),
   );
 

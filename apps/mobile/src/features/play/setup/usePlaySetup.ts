@@ -1,4 +1,5 @@
 import { STYLE_FORMULAS, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -23,10 +24,10 @@ import { startErrorKey, usePlayT, type PlayT } from '../strings';
 // Start), shared by the phone screen (PlaySetupScreen) and the desktop page
 // (desktop/home DxPlay) so both start sessions the same way.
 
-/** A difficulty pick is tied to the rating it was made against. */
-type Pick = { value: number; rating: number };
+/** A difficulty pick is tied to the level it was made against. */
+type Pick = { value: number; level: number };
 
-/** Casual / Themes presets: this far either side of the rating. */
+/** Casual / Themes presets: this far either side of the level. */
 export const PRESET_SPAN = 200;
 
 export function usePlaySetup() {
@@ -56,11 +57,14 @@ export function usePlaySetup() {
   const [focusCustom, setFocusCustom] = useState(false);
 
   const prog = progressions[style];
+  // D39: the level is the player's only number; rated sessions start at it.
+  const level = levelFor(prog);
+  /** @deprecated D39: the internal in-session value; show `level` instead. */
   const rating = prog.currentPuzzleRating;
   const rated = mode === 'mixed';
-  // The difficulty follows the rating until the player picks one.
-  const difficulty = clampDifficulty(pick && pick.rating === rating ? pick.value : rating);
-  const setDifficulty = (v: number) => setPick({ value: clampDifficulty(v), rating });
+  // The difficulty follows the level until the player picks one.
+  const difficulty = clampDifficulty(pick && pick.level === level ? pick.value : level);
+  const setDifficulty = (v: number) => setPick({ value: clampDifficulty(v), level });
 
   const live = useSharedValue(difficulty);
   useEffect(() => {
@@ -121,7 +125,8 @@ export function usePlaySetup() {
         durationSec: effectiveDuration,
         mode,
         theme: mode === 'theme' ? theme : null,
-        startRating: rated ? rating : difficulty,
+        // Rated: the server starts it at the level whatever is sent.
+        startRating: rated ? level : difficulty,
       });
       router.push(`/play/${id}` as Href);
     } catch (e) {
@@ -156,6 +161,7 @@ export function usePlaySetup() {
     setMode,
     rated,
     prog,
+    level,
     rating,
     difficulty,
     setDifficulty,
@@ -171,7 +177,7 @@ export function usePlaySetup() {
 
 export type PlaySetup = ReturnType<typeof usePlaySetup>;
 
-/** "+120 above your rating" / "Your current level" (Casual / Themes note). */
+/** "+120 above your level" / "Your current level" (Casual / Themes note). */
 export function diffDelta(delta: number, t: PlayT): string {
   if (delta === 0) return t('play.diff_same');
   return delta > 0 ? t('play.diff_above', { n: delta }) : t('play.diff_below', { n: -delta });

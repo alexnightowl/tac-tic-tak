@@ -25,7 +25,7 @@ import { RankCeremony } from './RankCeremony';
 
 // Session summary (design PlayV2Sum*): the rank ceremony when the level
 // crosses a band, else the gate / level-down sound with the card; the
-// rating card with the level, the outcome card, the stats grid,
+// level card (D39), the outcome card, the stats grid,
 // ReviewThisSession, then Play again / Home. Rendered by the runner route
 // in place of the board (PLAN §2.3).
 
@@ -141,7 +141,7 @@ function SummaryBody({
 
       {summary.streak && <StreakOutcomeChip streak={summary.streak} t={t} />}
 
-      {outcome && <RatingCard o={outcome} styleLabel={styleLabel} t={t} />}
+      {outcome && <LevelCard o={outcome} styleLabel={styleLabel} t={t} />}
       {outcome?.early && <EarlyExitNote t={t} />}
       {outcome?.up && <LevelUpCard level={outcome.level} styleName={styleLabel.toLowerCase()} t={t} />}
       {outcome?.paceHeld && outcome.pace && (
@@ -177,35 +177,47 @@ function SummaryBody({
   );
 }
 
-/** The rating move and the level, with the way to the next mark (design PlayV2Sum* hero). */
-function RatingCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: PlayT }) {
-  const up = o.delta >= 0;
+/**
+ * The level card (design PlayV2Sum* hero, D39): the level after, its move
+ * when it changed, the session's difficulty start → end, and the way to
+ * the next mark (levelNextNote).
+ */
+function LevelCard({ o, styleLabel, t }: { o: LevelOutcome; styleLabel: string; t: PlayT }) {
+  const moved = o.level - o.levelBefore;
   const guarded = o.guarded;
   const nextNote = levelNextNote(o);
+  const sign = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n)}`;
   return (
     <Card style={styles.hero} testID="summary-rating">
       <View style={styles.heroHead}>
-        <Image source={bandIcon(o.ratingAfter)} style={styles.heroEye} contentFit="contain" transition={null} />
+        <Image source={bandIcon(o.level)} style={styles.heroEye} contentFit="contain" transition={null} />
         <View style={styles.flex}>
           <AppText variant="label">{t('play.your_rating', { style: styleLabel.toLowerCase() })}</AppText>
           <View style={styles.heroRow}>
             <AppText variant="value" style={styles.heroValue} testID="summary-rating-after">
-              {String(o.ratingAfter)}
+              {String(o.level)}
             </AppText>
-            <View style={[styles.delta, { backgroundColor: up ? control.sageTint16 : control.emberTint16 }]}>
-              <AppText variant="captionStrong" color={up ? eos.sage : eos.rose} style={TABULAR} testID="summary-rating-delta">
-                {`${up ? '+' : '−'}${Math.abs(o.delta)}`}
-              </AppText>
-            </View>
-            <AppText variant="caption" color={eos.dust} style={TABULAR}>
-              {t('summary.rating_from', { rating: o.ratingBefore })}
-            </AppText>
+            {moved !== 0 ? (
+              <>
+                <View style={[styles.delta, { backgroundColor: moved > 0 ? control.sageTint16 : control.emberTint16 }]}>
+                  <AppText variant="captionStrong" color={moved > 0 ? eos.sage : eos.rose} style={TABULAR} testID="summary-rating-delta">
+                    {sign(moved)}
+                  </AppText>
+                </View>
+                <AppText variant="caption" color={eos.dust} style={TABULAR}>
+                  {t('summary.rating_from', { rating: o.levelBefore })}
+                </AppText>
+              </>
+            ) : null}
           </View>
         </View>
       </View>
+      <AppText variant="caption" color={eos.ash} style={TABULAR} testID="summary-session-line">
+        {t('summary.session_line', { from: o.ratingBefore, to: o.ratingAfter, delta: sign(o.delta) })}
+      </AppText>
       <View style={styles.heroLevel}>
         <AppText variant="label" style={TABULAR} testID="summary-level">
-          {t('summary.level', { level: o.level })}
+          {t('level.next')}
         </AppText>
         <AppText variant="label" color={guarded ? tone.gold : eos.ash} style={TABULAR} testID="summary-level-next">
           {t(nextNote.key, nextNote.vars)}

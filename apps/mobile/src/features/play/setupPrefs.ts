@@ -1,5 +1,6 @@
 import type { Progression } from '@tac/core/api';
 import { DEFAULT_STYLE, STYLE_FORMULAS, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 
 import { appKV, readJSON, writeJSON } from '@/platform/storage';
 
@@ -106,10 +107,10 @@ export function writeLastSetup(s: SessionSetup): void {
 
 /**
  * The rating a repeat of `setup` starts at with today's progression: a
- * rated session starts at the current rating (the server decides anyway),
+ * rated session starts at the level (D39; the server decides anyway),
  * casual and theme keep the picked difficulty.
  */
 export function repeatStartRating(setup: SessionSetup, p: Progression): number {
-  if (setup.mode === 'mixed') return p.currentPuzzleRating;
+  if (setup.mode === 'mixed') return levelFor(p);
   return clampDifficulty(setup.startRating);
 }

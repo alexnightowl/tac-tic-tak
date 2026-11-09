@@ -54,7 +54,8 @@ for c in "${CASES[@]}"; do
   esac
   level=$(psql "select level from \"UserStyleProgression\" where \"userId\"='$uid' and style='bullet'")
   rating=$(psql "select \"currentPuzzleRating\" from \"UserStyleProgression\" where \"userId\"='$uid' and style='bullet'")
-  push=$((rating + 200))
+  # D39: the Casual presets sit around the level (not the rating).
+  push=$((level + 200))
   OUT=$(mktemp -d)
   echo "── $c ($nick)"
   if maestro "${DEVICE[@]}" test --test-output-dir "$OUT" -e E2E_USER="$nick" -e E2E_PASSWORD="$E2E_PASSWORD" \
@@ -65,7 +66,9 @@ for c in "${CASES[@]}"; do
     read -r r l g <<<"$got"
     ok=0
     case $c in
-      levelup) [[ $l -gt 1450 && $l -eq $(( r / 50 * 50 )) ]] && ok=1 ;;
+      # D39: the session starts at the level (1450, not the seeded 1490) and a
+      # level-up lands on the 25-grid mark the session ended at.
+      levelup) [[ $l -gt 1450 && $l -eq $(( r / 25 * 25 )) ]] && ok=1 ;;
       guard)   [[ $l -eq 1500 && $g -eq 1 && $r -lt 1450 ]] && ok=1 ;;
       down)    [[ $l -lt 1500 && $g -eq 0 ]] && ok=1 ;;
       casual)  [[ $r -eq 1510 && $l -eq 1500 ]] && ok=1 ;;

@@ -16,7 +16,7 @@ import { STRONG, TABULAR } from '../ui';
 
 // play/levels (fullScreenModal), opened from the rated card: design
 // PlayV2LevelSheet "How your level works". The bar shows the player's own
-// level, the marks around it and their rating.
+// level and the marks around it (D39: the level is the only number).
 
 /** Marks drawn on the bar: two levels each side of the player's. */
 const MARKS = [-2, -1, 0, 1, 2];
@@ -27,7 +27,6 @@ export function LevelSheet() {
   const params = useLocalSearchParams<{ style?: string }>();
   const style = isTrainingStyle(params.style) ? params.style : readLastStyle();
   const prog = useAppStore((s) => s.progressions[style]);
-  const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
   const lo = level - 2 * LEVEL_STEP;
   const span = 4 * LEVEL_STEP;
@@ -55,18 +54,18 @@ export function LevelSheet() {
           </AppText>
         </View>
 
-        <View style={styles.barCard} accessible accessibilityLabel={`${t('levels.bar_label', { style: t(`style.${style}.name`), level })}, ${rating}`}>
+        <View style={styles.barCard} accessible accessibilityLabel={`${t('levels.bar_label', { style: t(`style.${style}.name`), level })}, ${t('level.next')} ${level + LEVEL_STEP}`}>
           <AppText variant="label">{t('levels.bar_label', { style: t(`style.${style}.name`), level })}</AppText>
           <View style={styles.track}>
             <View style={styles.bar} />
-            <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.fill, { width: at(rating) }]} />
+            <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.fill, { width: at(level) }]} />
             {MARKS.slice(1, -1).map((m) => (
               <View key={m} style={[styles.mark, { left: at(level + m * LEVEL_STEP) }, m === 0 && styles.markOwn]} />
             ))}
-            <View style={[styles.you, { left: at(rating) }]} />
-            <View style={[styles.youLabelWrap, { left: at(rating) }]}>
+            <View style={[styles.you, { left: at(level) }]} />
+            <View style={[styles.youLabelWrap, { left: at(level) }]}>
               <AppText variant="captionStrong" color={tone.gold} style={[styles.youLabel, TABULAR]} testID="level-sheet-rating">
-                {t('play.you_marker', { rating })}
+                {t('play.you_marker', { rating: level })}
               </AppText>
             </View>
           </View>

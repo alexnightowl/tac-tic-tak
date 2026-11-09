@@ -1,4 +1,4 @@
-import type { TrainingStyle } from '@tac/core/rules';
+import { LEVEL_GRID, bandFor, type TrainingStyle } from '@tac/core/rules';
 import { levelFor } from '@tac/core/runner';
 import { eos, space } from '@tac/core/tokens';
 import { StyleSheet, View } from 'react-native';
@@ -10,14 +10,15 @@ import { AppText, Card } from '@/ui';
 import type { TFn } from '@/ui/lang';
 
 /**
- * web dashboard StyleRatingCard: style, rating, level. Mobile adds the
- * change since Home last showed it: the number counts up from the old
- * value and a +N / −N chip says by how much.
+ * A style's level (D39: the only number a player sees at rest) and its
+ * rank band. Mobile adds the change since Home last showed it: the number
+ * counts up from the old level and a +N / −N chip says by how much. A
+ * stored value off the level grid is a rating saved before D39: no delta.
  */
 export function StyleRatingCard({ style, seen, t }: { style: TrainingStyle; seen: number | undefined; t: TFn }) {
   const prog = useAppStore((s) => s.progressions[style]);
-  const rating = prog.currentPuzzleRating;
-  const delta = seen == null ? 0 : rating - seen;
+  const level = levelFor(prog);
+  const delta = seen == null || seen % LEVEL_GRID !== 0 ? 0 : level - seen;
   return (
     <Card style={styles.card} testID={`home-style-${style}`}>
       <View style={styles.head}>
@@ -28,10 +29,10 @@ export function StyleRatingCard({ style, seen, t }: { style: TrainingStyle; seen
       </View>
       <View style={styles.valueRow}>
         {delta !== 0 ? (
-          <CountTo from={seen!} to={rating} variant="value" testID={`home-rating-${style}`} />
+          <CountTo from={seen!} to={level} variant="value" testID={`home-rating-${style}`} />
         ) : (
           <AppText variant="value" testID={`home-rating-${style}`}>
-            {String(rating)}
+            {String(level)}
           </AppText>
         )}
         {delta !== 0 && (
@@ -46,8 +47,8 @@ export function StyleRatingCard({ style, seen, t }: { style: TrainingStyle; seen
           </AppText>
         )}
       </View>
-      <AppText variant="label" color={eos.dust} style={[styles.norm, TABULAR]} numberOfLines={1} testID={`home-level-${style}`}>
-        {t('play.level', { level: levelFor(prog) })}
+      <AppText variant="caption" color={eos.dust} style={styles.norm} numberOfLines={1} testID={`home-level-${style}`}>
+        {t(`levels.${bandFor(level).key}`)}
       </AppText>
     </Card>
   );

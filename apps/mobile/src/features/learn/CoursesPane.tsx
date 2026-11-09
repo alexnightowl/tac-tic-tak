@@ -1,5 +1,6 @@
 import { localized, suggestedCourse, type CourseProgress, type CourseSummary } from '@tac/core/library';
 import { alpha, eos, space, tone } from '@tac/core/tokens';
+import { levelFor } from '@tac/core/runner';
 import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, StyleSheet, useWindowDimensions, View } from 'react-native';
@@ -29,8 +30,11 @@ export function CoursesPane({ width }: { width: number }) {
   const progress = useCourseProgressMap(data);
   const stored = useLibraryStore((s) => s.courses);
   const [filter, setFilter] = useState<LearnFilter>('all');
-  // The rating of the style the player trains in (Play remembers it).
-  const rating = useAppStore((s) => s.progressions[readLastStyle()]?.currentPuzzleRating ?? null);
+  // The level of the style the player trains in (Play remembers it; D39).
+  const rating = useAppStore((s) => {
+    const p = s.progressions[readLastStyle()];
+    return p ? levelFor(p) : null;
+  });
 
   const courses = data.courses ?? [];
   const lastId = lastPlayedIn(data.attempts, new Set(courses.map((c) => c.id)));

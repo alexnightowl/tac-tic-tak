@@ -1,11 +1,12 @@
-# Play v2 (design "Play — simplified"): Rated / Casual / Themes, levels from
-# the rating. One CASE per run, against a bullet progression that
-# 12-play-v2.sh seeds with psql first (local DB only):
+# Play v2 (design "Play — simplified"): Rated / Casual / Themes; the level
+# is the only number and every rated session starts at it (D39). One CASE
+# per run, against a bullet progression that 12-play-v2.sh seeds with
+# psql first (local DB only):
 #   levelup  rated, strong session       → level bar, "Level up!" card
 #   guard    rated, weak session         → "Level protected" card
 #   down     rated, weak again (guard 1) → "Level down" card
 #   casual   casual, Push preset, early  → casual bar, casual note
-#   early    rated, Exit → Save          → rating card + early note
+#   early    rated, Exit → Save          → level card + early note
 # Bullet 1 min, so a time-up case takes ~70 s.
 appId: online.tactictak.app
 ---
@@ -25,7 +26,7 @@ appId: online.tactictak.app
     commands:
       - tapOn: { id: setup-type-rated, retryTapIfNoChange: false, waitToSettleTimeoutMs: 500 }
       - assertVisible: { id: setup-rated }
-      - assertVisible: { id: setup-rated-level, text: ".*${LEVEL}.*" }
+      - assertVisible: { id: setup-rated-level, text: "${LEVEL}" }
       - takeScreenshot: ${SHOTS}/setup-rated
 - runFlow:
     when: { true: "${CASE == 'levelup'}" }
@@ -62,6 +63,8 @@ appId: online.tactictak.app
     when: { true: "${CASE != 'casual'}" }
     commands:
       - assertVisible: { id: runner-level-bar }
+      # D39: the session starts at the level, not the seeded rating.
+      - assertVisible: { id: runner-rating, text: "${LEVEL}" }
       - takeScreenshot: ${SHOTS}/runner-${CASE}
 
 # What happens in the session.

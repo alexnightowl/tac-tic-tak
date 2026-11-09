@@ -1,5 +1,5 @@
-import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, bandFor, levelOf, paceTarget, type BandKey, type TrainingStyle } from '@tac/core/rules';
-import { levelFor, levelProgress } from '@tac/core/runner';
+import { CALIBRATION_SESSIONS, LEVEL_GUARD_SESSIONS, LEVEL_STEP, UI_STYLE_ORDER, bandFor, paceTarget, type BandKey, type TrainingStyle } from '@tac/core/rules';
+import { levelFor } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { control, eos, layout, mixed, radii, semantic, space, surface, tone } from '@tac/core/tokens';
 import { Image } from 'expo-image';
@@ -27,9 +27,9 @@ import { ReviewEntry } from './ReviewEntry';
 import { PRESET_SPAN, diffDelta, usePlaySetup } from './usePlaySetup';
 
 // /play (Play tab), design "Play — simplified" (PlayV2*): Rated / Casual /
-// Themes. Rated has no slider: it starts at the player's rating and shows
-// the level with the way to the next one. Casual and Themes pick any
-// difficulty and never touch the rating. Then the duration, the theme for
+// Themes. Rated has no slider: it starts at the player's level (D39) and
+// shows the next mark. Casual and Themes pick any difficulty and never
+// touch the level. Then the duration, the theme for
 // Themes, and the Start dock above the tab bar.
 
 const DOCK_H = layout.plateHeight.lg + space[5] + space[3];
@@ -61,7 +61,7 @@ export function PlaySetupScreen() {
     mode,
     setMode,
     rated,
-    rating,
+    level,
     difficulty,
     setDifficulty,
     live,
@@ -104,7 +104,7 @@ export function PlaySetupScreen() {
             />
           </View>
 
-          {/* 2. Rated: the rating and the level; Casual / Themes: the difficulty */}
+          {/* 2. Rated: the level and the next mark; Casual / Themes: the difficulty */}
           {rated ? (
             <RatedCard style={style} durationSec={effectiveDuration} t={t} bandLabels={bandLabels} />
           ) : (
@@ -119,20 +119,20 @@ export function PlaySetupScreen() {
                 value={difficulty}
                 live={live}
                 onChange={setDifficulty}
-                me={rating}
+                me={level}
                 min={DIFFICULTY_MIN}
                 max={DIFFICULTY_MAX}
                 step={DIFFICULTY_STEP}
-                youLabel={t('play.you_marker', { rating })}
+                youLabel={t('play.you_marker', { rating: level })}
                 easierLabel={t('play.easier')}
                 harderLabel={t('play.harder')}
               />
               <View style={styles.presets}>
                 {(
                   [
-                    ['warmup', rating - PRESET_SPAN],
-                    ['level', rating],
-                    ['push', rating + PRESET_SPAN],
+                    ['warmup', level - PRESET_SPAN],
+                    ['level', level],
+                    ['push', level + PRESET_SPAN],
                   ] as const
                 ).map(([key, v]) => {
                   const value = clampDifficulty(v);
@@ -159,7 +159,7 @@ export function PlaySetupScreen() {
               <View style={styles.diffNote}>
                 <MinusCircle size={14} color={tone.mist} />
                 <AppText variant="caption" color={tone.mist} style={styles.flex} testID="setup-diff-note">
-                  {`${diffDelta(difficulty - rating, t)} · ${mode === 'theme' ? t('play.diff_themes') : t('play.diff_casual')}`}
+                  {`${diffDelta(difficulty - level, t)} · ${mode === 'theme' ? t('play.diff_themes') : t('play.diff_casual')}`}
                 </AppText>
               </View>
             </View>
@@ -335,50 +335,50 @@ function TypeButton({
   );
 }
 
-/** Rated: the eye, the rating and band, the level and the way to the next one. Opens "How levels work". */
+/**
+ * Rated: the eye, the level and its band, the next mark and the pace a
+ * level-up needs (D39: every rated session starts at the level, so the way
+ * to the next mark starts empty). Opens "How levels work".
+ */
 function RatedCard({ style, durationSec, t, bandLabels }: { style: TrainingStyle; durationSec: number; t: PlayT; bandLabels: Record<BandKey, string> }) {
   const prog = useAppStore((s) => s.progressions[style]);
-  const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
-  const p = levelProgress(rating, level);
+  const next = level + LEVEL_STEP;
   const settling = prog.calibrationSessionsLeft;
+  const guard = prog.levelGuard ?? 0;
   const styleName = t(`style.${style}.name`);
   return (
     <Tap
       testID="setup-rated"
       accessibilityRole="button"
-      accessibilityLabel={`${t('play.your_rating', { style: styleName })} ${rating}, ${t('play.level', { level })}. ${t('play.level_help')}`}
+      accessibilityLabel={`${t('play.your_rating', { style: styleName })} ${level}, ${t('level.next')} ${next}. ${t('play.level_help')}`}
       onPress={() => router.push(`/play/levels?style=${style}` as Href)}
       pressFeel="segmented"
       style={styles.rated}
     >
       <View style={styles.eyeBox}>
-        <Image source={bandIcon(rating)} style={styles.eye} contentFit="contain" transition={null} />
+        <Image source={bandIcon(level)} style={styles.eye} contentFit="contain" transition={null} />
       </View>
       <View style={styles.flex}>
         <AppText variant="label">{t('play.your_rating', { style: styleName })}</AppText>
         <View style={styles.ratingRow}>
-          <AppText variant="value" style={styles.ratingValue} testID="setup-rated-rating">
-            {String(rating)}
+          <AppText variant="value" style={styles.ratingValue} testID="setup-rated-level">
+            {String(level)}
           </AppText>
           <AppText variant="captionStrong" color={eos.ash} numberOfLines={1} style={styles.shrink}>
-            {bandLabels[bandFor(rating).key]}
+            {bandLabels[bandFor(level).key]}
           </AppText>
         </View>
         <View style={styles.levelRow}>
-          <AppText variant="label" style={TABULAR} testID="setup-rated-level">
-            {t('play.level', { level })}
+          <AppText variant="label" color={guard > 0 ? tone.gold : undefined} style={TABULAR} testID="setup-rated-guard">
+            {guard > 0 ? t('summary.protected', { n: guard, total: LEVEL_GUARD_SESSIONS }) : t('level.next')}
           </AppText>
-          <AppText variant="label" style={TABULAR} testID="setup-rated-next">
-            {rating >= p.next ? t('level.full_session', { next: levelOf(rating) }) : t('play.to_next', { n: p.toNext, next: p.next })}
+          <AppText variant="label" color={eos.bone} style={TABULAR} testID="setup-rated-next">
+            {String(next)}
           </AppText>
-        </View>
-        <View style={styles.levelBar}>
-          <LinearGradient colors={control.rankProgress} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.levelFill, { width: `${p.ratio * 100}%` }]} />
-          {p.levelMark != null ? <View style={[styles.levelMark, { left: `${p.levelMark * 100}%` }]} /> : null}
         </View>
         <AppText variant="caption" color={tone.mist} style={styles.ratedHint}>
-          {t('play.rated_hint', { next: p.next, pace: paceTarget(style, durationSec) })}
+          {t('play.rated_hint', { next, pace: paceTarget(style, durationSec) })}
         </AppText>
         {settling > 0 && (
           <AppText variant="captionStrong" color={tone.gold} style={styles.ratedHint} testID="setup-settling">
@@ -427,9 +427,6 @@ const styles = StyleSheet.create({
   ratingRow: { flexDirection: 'row', alignItems: 'baseline', gap: space[2] },
   ratingValue: { fontSize: 30, lineHeight: 36 },
   levelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: space[2.5] },
-  levelBar: { marginTop: space[1.5], height: 6, borderRadius: radii.full, backgroundColor: eos.well, overflow: 'hidden' },
-  levelFill: { height: 6, borderRadius: radii.full },
-  levelMark: { position: 'absolute', top: 0, bottom: 0, width: 2, marginLeft: -1, backgroundColor: eos.bone },
   ratedHint: { marginTop: space[2] },
   // Casual / Themes difficulty.
   diff: { gap: space[3] },

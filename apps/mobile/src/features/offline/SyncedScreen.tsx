@@ -1,12 +1,12 @@
 import { OFFLINE_PACK_KINDS, TOP_UP_TARGET, type OfflineSyncSummary } from '@tac/core/offline';
-import { alpha, control, eos, layout, radii, space, tone } from '@tac/core/tokens';
+import { control, eos, layout, radii, space, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
-import { ArrowRight, Check, Flame, X } from 'lucide-react-native';
+import { Check, Flame, X } from 'lucide-react-native';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AppText, HeroCard, IconButton, PlateButton, SectionLabel } from '@/ui';
+import { AppText, IconButton, PlateButton } from '@/ui';
 import { useT, useTn, type TFn } from '@/ui/lang';
 import { plural } from './format';
 import { unplayedOf, useOfflineStore, type PackKey } from './store';
@@ -83,37 +83,7 @@ function Synced({ summary }: { summary: OfflineSyncSummary }) {
           </AppText>
         </View>
 
-        {summary.ratings.map((r) => {
-          const up = r.delta >= 0;
-          const style = t(`style.${r.style}.name`);
-          return (
-            <HeroCard key={r.style} style={styles.hero} testID={`offline-rating-${r.style}`}>
-              <SectionLabel size="section">{t('offline.rating_caught_up')}</SectionLabel>
-              <View
-                style={styles.ratingRow}
-                accessible
-                accessibilityLabel={t('offline.rating_delta_a11y', { style, before: r.before, after: r.after })}
-              >
-                <AppText variant="valueSm" color={eos.dust} style={styles.strike}>
-                  {String(r.before)}
-                </AppText>
-                <ArrowRight size={16} color={eos.ash} strokeWidth={1.8} />
-                <AppText variant="sectionTitle" style={styles.tabular} testID="offline-rating-after">
-                  {String(r.after)}
-                </AppText>
-                <View style={[styles.delta, { backgroundColor: up ? control.sageTint16 : alpha(tone.rose, 0.16) }]}>
-                  <AppText variant="captionStrong" color={up ? tone.sage : tone.rose} testID="offline-rating-delta">
-                    {up ? `+${r.delta}` : `−${Math.abs(r.delta)}`}
-                  </AppText>
-                </View>
-              </View>
-              <AppText variant="caption" style={styles.ratingSub}>
-                {t('offline.rating_order', { style })}
-              </AppText>
-            </HeroCard>
-          );
-        })}
-
+        {/* D39: offline results move only the internal rating, never the level: no rating card. */}
         {summary.total > 0 ? (
           <View style={styles.stats}>
             <Stat label={t('offline.stat_solved')} value={`${summary.solved} / ${summary.total}`} testID="offline-stat-solved" />
@@ -197,11 +167,6 @@ const styles = StyleSheet.create({
   centerText: { textAlign: 'center', marginTop: space[1.5] },
   disc: { width: space[16], height: space[16], borderRadius: radii.full, backgroundColor: control.sageTint16, alignItems: 'center', justifyContent: 'center' },
   title: { marginTop: space[3.5], textAlign: 'center' },
-  hero: { padding: space[4] },
-  ratingRow: { marginTop: space[2], flexDirection: 'row', alignItems: 'center', gap: space[2.5] },
-  strike: { textDecorationLine: 'line-through', fontVariant: ['tabular-nums'] },
-  delta: { height: space[6], paddingHorizontal: 9, borderRadius: radii.full, justifyContent: 'center' },
-  ratingSub: { marginTop: space[1] },
   stats: { flexDirection: 'row', gap: space[2.5] },
   stat: { flex: 1, minWidth: 0, padding: space[3], borderRadius: radii.xl, backgroundColor: eos.slate, gap: space[0.5] },
   streak: {

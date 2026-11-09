@@ -1,5 +1,6 @@
 import { bucketByLocalDay, selectRadarThemes, RADAR_MIN_THEMES, type RadarDatum } from '@tac/core/charts';
 import { levelFor } from '@tac/core/runner';
+import { bandFor } from '@tac/core/rules';
 import { localeFor, streakState } from '@tac/core/format';
 import { eos, fontSize, graphite, layout, radii, space, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -23,7 +24,7 @@ import { profileQuery, type PublicProfile } from '@/features/social/api';
 import { FriendActionButton } from '@/features/social/FriendActionButton';
 import { FlameGlyph } from '@/features/social/glyphs';
 import { ActivityHeatmap } from '@/features/stats/ActivityHeatmap';
-import { profileThemesQuery, profileTimelineQuery, toRatingPoints } from '@/features/stats/api';
+import { profileThemesQuery, profileTimelineQuery, toLevelPoints } from '@/features/stats/api';
 import { RadarChart } from '@/features/stats/RadarChart';
 import { RatingHistoryChart } from '@/features/stats/RatingHistoryChart';
 import { StyleIcon, STYLE_ORDER } from '@/features/stats/StyleIcon';
@@ -160,7 +161,7 @@ export function ProfileScreen({ nickname }: { nickname: string }) {
     );
   }
 
-  const ratingPoints = toRatingPoints(timeline.data);
+  const ratingPoints = toLevelPoints(timeline.data);
   const heat = timeline.data ? bucketByLocalDay(timeline.data) : [];
   const radar = selectRadarThemes(themes.data ?? [], lang);
   const bounds = profileRadarBounds(radar);
@@ -255,6 +256,8 @@ function Hero({
 }) {
   const t = useT();
   const { lang } = useLang();
+  const levels = Object.values(data.progressions).flatMap((p) => (p ? [levelFor(p)] : []));
+  const bestLevel = levels.length ? Math.max(...levels) : null;
   const showStreak = useAppStore((s) => s.settings.showStreak);
   const preview = useAvatarUpload((s) => s.previewUri);
   const name = data.displayName?.trim() || data.nickname;
@@ -314,8 +317,9 @@ function Hero({
       ) : null}
       <View style={styles.meta}>
         <Meta icon={<Calendar size={12} color={eos.dust} strokeWidth={2} />} text={`${t('profile.joined')} ${joined}`} />
-        {data.allTimePeak != null ? (
-          <Meta icon={<Trophy size={12} color={eos.dust} strokeWidth={2} />} text={`${t('profile.peak')} ${data.allTimePeak}`} testID="profile-peak" />
+        {/* D39: the best level across styles (was the all-time peak rating). */}
+        {bestLevel != null ? (
+          <Meta icon={<Trophy size={12} color={eos.dust} strokeWidth={2} />} text={t('profile.best_level', { level: bestLevel })} testID="profile-peak" />
         ) : null}
         {streakLive ? (
           <Meta
@@ -369,9 +373,12 @@ function Ratings({ data }: { data: PublicProfile }) {
                   {t(`style.${s}.name`)}
                 </AppText>
               </View>
-              <AppText variant="value">{p ? String(p.currentPuzzleRating) : DASH}</AppText>
+              {/* D39: the level is the only number; the caption is its rank band. */}
+              <AppText variant="value" testID={`profile-level-${s}`}>
+                {p ? String(levelFor(p)) : DASH}
+              </AppText>
               <AppText variant="caption" color={eos.dust}>
-                {p ? t('play.level', { level: levelFor(p) }) : DASH}
+                {p ? t(`levels.${bandFor(levelFor(p)).key}`) : DASH}
               </AppText>
             </Card>
           );

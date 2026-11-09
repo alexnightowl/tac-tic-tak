@@ -22,7 +22,7 @@ export const overviewQuery = {
   queryFn: () => apiClient.get<Overview>('/analytics'),
 };
 
-/** Mobile-only device pref: ratings as Home last showed them (count-up deltas). */
+/** Mobile-only device pref: the levels as Home last showed them (count-up deltas; ratings before D39). */
 const LAST_SEEN_KEY = 'taktic.lastSeenRatings';
 
 export type SeenRatings = Partial<Record<TrainingStyle, number>>;

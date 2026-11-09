@@ -21,7 +21,9 @@ export type LeaderboardScope = 'global' | 'friends';
 
 export type LeaderboardRow = {
   rank: number;
+  /** The level since D39 (the field kept its name); `level` repeats it. */
   rating: number;
+  level?: number;
   unlocked: number;
   isSelf: boolean;
   streakDays: number;

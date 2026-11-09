@@ -1,7 +1,7 @@
 import { formatLocalDate } from '@tac/core/format';
 import type { OfflinePuzzle } from '@tac/core/offline';
 import type { TrainingStyle } from '@tac/core/rules';
-import { canHint, type PracticeItem, type PracticeState } from '@tac/core/runner';
+import { canHint, levelFor, type PracticeItem, type PracticeState } from '@tac/core/runner';
 import { alpha, eos, layout, radii, space, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Lightbulb, Plane, RefreshCw, X } from 'lucide-react-native';
@@ -24,8 +24,8 @@ import { offlineStore, packOf, unplayedOf, useOfflineStore, type PackKey } from 
 import { requestSync } from './sync';
 
 // /offline/solve?pack= (OfflineSolve artboard): the theme-drill practice
-// runner fed from a pack on the phone. Rated, but the rating is frozen
-// until sync: each puzzle's first outcome is queued (a wrong move, a hint
+// runner fed from a pack on the phone. The level shows but never moves
+// here (D39: only rated sessions move it); results reach the server at sync: each puzzle's first outcome is queued (a wrong move, a hint
 // or Skip = missed; a clean solve = correct). After a miss the player may
 // keep trying (practice) or skip; the result is already in the queue.
 
@@ -128,7 +128,7 @@ export function SolveScreen({ pack: key }: { pack: PackKey }) {
   const [tracker] = useState(() => new ResultTracker(key, style));
   const { controller, state: s, onMove, boardRef } = usePractice('drill', packHooks(key, tracker));
   const note = useSyncExternalStore(tracker.subscribe, tracker.getNote);
-  const rating = useAppStore((st) => st.progressions[style].currentPuzzleRating);
+  const level = useAppStore((st) => levelFor(st.progressions[style]));
   const pending = useOfflineStore((st) => st.queue.length);
   const pack = useOfflineStore((st) => packOf(st, key));
   const left = useOfflineStore((st) => unplayedOf(st, key).length);
@@ -211,12 +211,12 @@ export function SolveScreen({ pack: key }: { pack: PackKey }) {
             {t('offline.progress', { pack: packShort(key, t), n: Math.max(1, position), total })}
           </AppText>
         </View>
-        <View style={styles.rating} accessible accessibilityLabel={t('offline.rating_a11y', { rating })}>
+        <View style={styles.rating} accessible accessibilityLabel={t('offline.rating_a11y', { rating: level })}>
           <AppText variant="tabLabel" color={eos.dust} style={styles.caps}>
             {t('offline.rating')}
           </AppText>
           <AppText variant="bodyStrong" color={eos.ash} style={styles.tabular} testID="offline-rating">
-            {`${rating}*`}
+            {String(level)}
           </AppText>
         </View>
       </View>

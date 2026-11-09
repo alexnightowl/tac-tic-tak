@@ -78,7 +78,8 @@ appId: online.tactictak.app
     visible: { id: runner-phase, text: playerTurn }
     timeout: 10000
 - assertVisible: { id: offline-chip }
-- assertVisible: { id: offline-rating, text: "\\d+\\*" }
+# D39: the level shows (it never moves offline), no frozen-rating asterisk.
+- assertVisible: { id: offline-rating, text: "\\d+" }
 - takeScreenshot: 11-offline-solve
 
 # Solve one: the result is queued.
@@ -107,7 +108,8 @@ appId: online.tactictak.app
     timeout: 30000
 - assertVisible: { id: offline-stat-solved, text: "1 / 2" }
 - assertVisible: { id: offline-stat-accuracy, text: "50%" }
-- assertVisible: { id: offline-rating-after }
+# D39: no rating card (offline results never move the level).
+- assertNotVisible: { id: offline-rating-after }
 - takeScreenshot: 11-offline-synced
 - tapOn: { id: offline-synced-close }
 - extendedWaitUntil:

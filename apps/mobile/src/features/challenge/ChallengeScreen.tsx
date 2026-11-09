@@ -1,3 +1,4 @@
+import { levelOf } from '@tac/core/rules';
 import type { ChallengeDetail, ChallengeRun, StormFormat } from '@tac/core/storm';
 import { eos, layout, radii, space, surface, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
@@ -227,7 +228,8 @@ function Duelist({ nickname, avatarUrl, name, rating, ring = false, t }: { nickn
         {name}
       </AppText>
       <AppText variant="caption" color={eos.ash} style={styles.tabular}>
-        {t('challenge.rating', { n: rating })}
+        {/* D39: the server still sends the internal rating here; shown as its grid mark (~ the level). */}
+        {t('challenge.rating', { n: levelOf(rating) })}
       </AppText>
     </View>
   );

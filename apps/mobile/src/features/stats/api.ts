@@ -1,5 +1,6 @@
 import { queryKeys } from '@tac/core/api';
-import { isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
+import { levelPoints, type RatingPoint } from '@tac/core/charts';
+import type { TrainingStyle } from '@tac/core/rules';
 import { queryOptions } from '@tanstack/react-query';
 
 import { apiClient } from '@/platform/api';
@@ -36,6 +37,10 @@ export type TimelinePoint = {
   peakRating: number;
   solved: number;
   durationSec: number;
+  /** 'mixed' | 'casual' | 'theme' (older servers don't send it). */
+  mode?: string | null;
+  /** 'v2' for Play v2 sessions, null for the old norm rules (older servers don't send it). */
+  ruleset?: string | null;
 };
 
 const styleQuery = (f: StyleFilter) => (f === 'all' ? undefined : { style: f });
@@ -82,10 +87,13 @@ export const profileTimelineQuery = (nickname: string) =>
       apiClient.get<TimelinePoint[]>(`/users/by-nickname/${nick(nickname)}/timeline`, { signal }),
   });
 
-/** Web ratingPoints: training-style sessions, peak rating per session. */
-export function toRatingPoints(timeline: TimelinePoint[] | undefined) {
-  if (!timeline) return [];
-  return timeline
-    .filter((p) => isTrainingStyle(p.style))
-    .map((p) => ({ endedAt: p.endedAt, style: p.style as TrainingStyle, rating: p.peakRating }));
+/**
+ * D39 "Level over time": each rated v2 session at the level it started at
+ * (core levelPoints). The chart component keeps its RatingPoint shape.
+ */
+export function toLevelPoints(timeline: TimelinePoint[] | undefined): RatingPoint[] {
+  return levelPoints(timeline);
 }
+
+/** @deprecated D39: the rating is gone; same as toLevelPoints (the web plotted the peak rating). */
+export const toRatingPoints = toLevelPoints;
