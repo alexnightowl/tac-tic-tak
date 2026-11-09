@@ -18,14 +18,17 @@ export type PageBack = { label: string; onPress?: () => void };
  * page's own control (a Курси / Книги switch) or the default search chip
  * (⌘K) + bell.
  */
-export function PageHeader({ title, subtitle, back, right }: { title: string; subtitle?: string; back?: PageBack; right?: ReactNode }) {
+export function PageHeader({ title, titleAfter, subtitle, back, right }: { title: string; titleAfter?: ReactNode; subtitle?: string; back?: PageBack; right?: ReactNode }) {
   const t = useT();
   return (
     <View style={styles.header}>
       <View style={styles.titles}>
-        <DText serif weight={700} size={24} numberOfLines={1} accessibilityRole="header" testID="dx-page-title">
-          {title}
-        </DText>
+        <View style={styles.titleRow}>
+          <DText serif weight={700} size={24} numberOfLines={1} accessibilityRole="header" testID="dx-page-title" style={styles.shrink}>
+            {title}
+          </DText>
+          {titleAfter}
+        </View>
         {back ? (
           <Hover
             testID="dx-page-back"
@@ -90,6 +93,7 @@ export function HeaderTools() {
  */
 export function DesktopPage({
   title,
+  titleAfter,
   subtitle,
   back,
   right,
@@ -101,6 +105,8 @@ export function DesktopPage({
   bodyStyle,
 }: {
   title: string;
+  /** Beside the title (e.g. the verified badge after the player's name). */
+  titleAfter?: ReactNode;
   subtitle?: string;
   back?: PageBack;
   right?: ReactNode;
@@ -121,7 +127,7 @@ export function DesktopPage({
   );
   return (
     <View style={styles.page} testID={testID}>
-      <PageHeader title={title} subtitle={subtitle} back={back} right={right} />
+      <PageHeader title={title} titleAfter={titleAfter} subtitle={subtitle} back={back} right={right} />
       {scroll ? (
         <ScrollView style={styles.flex} contentContainerStyle={[styles.body, bodyStyle]}>
           <View style={styles.cap}>{body}</View>
@@ -148,6 +154,8 @@ const styles = StyleSheet.create({
     borderBottomColor: dx.headerRule,
   },
   titles: { flex: 1, minWidth: 0 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  shrink: { flexShrink: 1 },
   sub: { marginTop: 2 },
   back: { alignSelf: 'flex-start', marginTop: 2, borderRadius: 6 },
   backHover: { opacity: 0.8 },

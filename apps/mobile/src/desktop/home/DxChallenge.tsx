@@ -75,7 +75,7 @@ export function DxChallenge(params: CreateParams) {
   return (
     <DesktopPage
       title={t('challenge.create.title')}
-      subtitle={t('challenge.entry.hint')}
+      back={{ label: t('challenge.back'), onPress: () => (router.canGoBack() ? router.back() : router.replace('/play' as Href)) }}
       aside={two ? preview : undefined}
       asideWidth={400}
       testID="dx-challenge"

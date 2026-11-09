@@ -1,11 +1,11 @@
 import { UI_STYLE_ORDER, bandFor, paceTarget } from '@tac/core/rules';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
-import { alpha, eos, tone } from '@tac/core/tokens';
+import { alpha, eos, rank, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { router, type Href } from 'expo-router';
-import { BarChart3, BookOpen, Info, MinusCircle, RefreshCcw, Search, Swords, Target } from 'lucide-react-native';
+import { BarChart3, BookOpen, Info, MinusCircle, RefreshCcw, Repeat, Search, Swords, Target, XCircle } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
@@ -185,7 +185,9 @@ function RatedCard({ s }: { s: PlaySetup }) {
           <DText size={12} color={dx.dust} numberOfLines={1} style={styles.shrink}>
             {t('dx.home.rated_hint', { next: p.next, pace: paceTarget(s.style, s.effectiveDuration) })}
           </DText>
-          <DText size={12} color={dx.dust} tabular>{`${level} → ${p.next}`}</DText>
+          <DText size={12} color={dx.dust} tabular testID="dx-play-rated-next">
+            {t('dx.home.to_next', { n: p.toNext, next: p.next })}
+          </DText>
         </View>
       </View>
     </Card>
@@ -286,7 +288,13 @@ function ThemeGrid() {
 
   let body: ReactNode;
   if (needsStats && stats.isPending) body = <ActivityIndicator color={dx.ash} style={styles.state} />;
-  else if (needsStats && stats.isError) body = <StateText text={t('play.themes_error')} />;
+  else if (needsStats && stats.isError)
+    body = (
+      <View style={styles.errorState}>
+        <StateText text={t('play.themes_error')} />
+        <TextButton testID="dx-play-themes-retry" accessibilityLabel={t('home.retry')} label={t('home.retry')} onPress={() => void stats.refetch()} />
+      </View>
+    );
   else if (needsStats && stats.isSuccess && tactical.length === 0) {
     // Nothing played yet: say so, and still offer every theme (the phone's All tab).
     body = (
@@ -341,27 +349,24 @@ function ThemeTile({ item, tab, on, maxAttempts, onPress }: { item: ThemeItem; t
   const { t, lang } = usePlaySetupT();
   const label = themeLabel(item.slug, lang);
   const r = item.row;
-  let stat: string | null = null;
-  let aria: string | null = null;
+  // One number per lens, as on the phone's picker: fail rate (coloured by
+  // how often it fails), volume, or rating; Popular keeps its volume bar.
+  let stat: { text: string; aria: string; color: string; Icon: typeof XCircle } | null = null;
   let bar: { value: number; color: string } | null = null;
   if (r && tab === 'weakest') {
-    const pct = Math.round((1 - r.failureRate) * 100);
-    stat = `${pct}%`;
-    aria = t('dx.home.theme_acc_aria', { pct });
-    bar = { value: pct / 100, color: pct < 50 ? tone.emberGlow : pct < 65 ? dx.barTo : tone.sageDeep };
+    const pct = Math.round(r.failureRate * 100);
+    stat = { text: `${pct}%`, aria: t('play.theme_fail_aria', { pct }), color: pct >= 50 ? eos.rose : pct >= 25 ? rank.intermediate.color : eos.sage, Icon: XCircle };
   } else if (r && tab === 'popular') {
-    stat = String(r.attempts);
-    aria = t('play.theme_attempts_aria', { n: r.attempts });
+    stat = { text: String(r.attempts), aria: t('play.theme_attempts_aria', { n: r.attempts }), color: eos.ash, Icon: Repeat };
     bar = { value: r.attempts / maxAttempts, color: dx.barTo };
   } else if (r && tab === 'all' && r.rating > 0) {
-    stat = String(Math.round(r.rating));
-    aria = t('play.theme_rating_aria', { n: Math.round(r.rating) });
+    stat = { text: String(Math.round(r.rating)), aria: t('play.theme_rating_aria', { n: Math.round(r.rating) }), color: eos.ash, Icon: Target };
   }
   return (
     <Hover
       testID={`dx-play-theme-${item.slug}`}
       accessibilityRole="radio"
-      accessibilityLabel={aria ? `${label}, ${aria}` : label}
+      accessibilityLabel={stat ? `${label}, ${stat.aria}` : label}
       selected={on}
       onPress={onPress}
       style={[styles.tile, on && styles.tileOn]}
@@ -374,13 +379,17 @@ function ThemeTile({ item, tab, on, maxAttempts, onPress }: { item: ThemeItem; t
         <DText size={13.5} weight={700} numberOfLines={2} lh={17}>
           {label}
         </DText>
-        {bar ? <Bar value={bar.value} height={4} colors={[bar.color, bar.color]} style={styles.mt6} /> : null}
+        {/* The stat sits under the name so long names keep the tile's width. */}
+        {stat ? (
+          <View style={styles.statLine}>
+            <stat.Icon size={12} color={stat.color} strokeWidth={2} />
+            <DText size={11.5} weight={800} color={stat.color} tabular>
+              {stat.text}
+            </DText>
+            {bar ? <Bar value={bar.value} height={4} colors={[bar.color, bar.color]} style={styles.flex} /> : null}
+          </View>
+        ) : null}
       </View>
-      {stat ? (
-        <DText size={11.5} weight={800} color={dx.dust} tabular>
-          {stat}
-        </DText>
-      ) : null}
     </Hover>
   );
 }
@@ -531,8 +540,10 @@ const styles = StyleSheet.create({
   },
   tileOn: { backgroundColor: dx.pickedBg, boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1.5, color: dx.ember, inset: true }] },
   tileHover: { backgroundColor: dx.ghostHover },
+  statLine: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 5 },
   tileIcon: { width: 34, height: 34, borderRadius: 9, alignItems: 'center', justifyContent: 'center', backgroundColor: eos.rise },
   state: { paddingTop: 16, paddingBottom: 2 },
+  errorState: { alignItems: 'flex-start', gap: 8 },
   othersLabel: { marginTop: 6 },
   others: { flexDirection: 'row', gap: 12 },
   stackedAside: { marginTop: 8 },

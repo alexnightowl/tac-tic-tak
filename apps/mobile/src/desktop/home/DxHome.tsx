@@ -1,6 +1,7 @@
 import { localeFor, streakState, type SessionRow } from '@tac/core/format';
 import { localized, suggestedCourse, type CourseSummary } from '@tac/core/library';
 import { CALIBRATION_SESSIONS, UI_STYLE_ORDER, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
+import type { Progression } from '@tac/core/api';
 import type { RunnerSnapshot } from '@tac/core/runner';
 import { levelFor, levelProgress } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
@@ -8,24 +9,25 @@ import { alpha, eos, tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { router, useFocusEffect, type Href } from 'expo-router';
-import { BarChart3, Check, ChevronRight, Target } from 'lucide-react-native';
+import { BarChart3, Check, ChevronRight, History, Target, Trophy, Zap } from 'lucide-react-native';
 import { useCallback, useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 
 import { meQuery } from '@/features/auth/session';
-import { overviewQuery } from '@/features/home/api';
+import { overviewQuery, readLastSeenRatings, writeLastSeenRatings, type Overview, type SeenRatings } from '@/features/home/api';
 import { ResumeCard } from '@/features/home/ResumeCard';
 import { lastPlayedIn } from '@/features/library/model';
 import { lessonTotals, useCourseProgressMap, useLearnCourses } from '@/features/learn/data';
 import { openOnboarding } from '@/features/onboarding/gate';
 import { plural } from '@/features/offline/format';
 import { bandIcon } from '@/features/play/setup/bandIcons';
-import { clampMinutes, readLastStyle, resolveDurationFor } from '@/features/play/setupPrefs';
+import { clampMinutes, readLastSetup, readLastStyle, repeatStartRating, resolveDurationFor, type SessionSetup } from '@/features/play/setupPrefs';
 import { startSession } from '@/features/play/startSession';
 import { startErrorKey } from '@/features/play/strings';
 import { ThemeIcon } from '@/features/play/themes/ThemeIcon';
-import { Avatar } from '@/features/profile/Avatar';
+import { Avatar, VerifiedBadge } from '@/features/profile/Avatar';
+import { pct, responseTime } from '@/features/sessions/format';
 import { reviewApi, reviewKeys } from '@/features/review/api';
 import { friendsQuery, leagueQuery, type LeagueRow } from '@/features/social/api';
 import { readBoardScope } from '@/features/social/prefs';
@@ -51,7 +53,8 @@ import { useTwoColumns } from './useTwoColumns';
 // overview), plus the Stats timeline for the chart, the Review themes, the
 // weekly league and the course store for the right column.
 
-const RECENT = 4;
+/** The phone Home lists five. */
+const RECENT = 5;
 const LEAGUE_ROWS = 4;
 type Range = '7d' | '30d' | 'all';
 const RANGE_DAYS: Record<Range, number | null> = { '7d': 7, '30d': 30, all: null };
@@ -68,19 +71,32 @@ const PIECES = {
 /** The empty hero's picture: a quiet middlegame (decorative). */
 const HERO_FEN = 'r1b2rk1/pp3ppp/2n1pq2/3p4/3P4/2PBPN2/PPQ2PPP/R3K2R w KQ - 0 12';
 
-/** Rated start with the remembered style and its duration (Play's Rated with the last picks). */
-function useRatedStart() {
+/**
+ * The phone Home's quick start: repeats the whole last setup (rated,
+ * casual or a theme drill, with its duration and start rating). Before the
+ * first session there is none, so it is a rated start with the remembered
+ * style and its duration (Play's Rated with the last picks).
+ */
+function useQuickStart() {
   const t = useT();
   const progressions = useAppStore((s) => s.progressions);
   const [starting, setStarting] = useState(false);
-  const style = readLastStyle();
-  const d = resolveDurationFor(style);
-  const durationSec = d.custom ? clampMinutes(style, d.customMinutes) * 60 : d.duration;
-  const start = async () => {
+  const last = readLastSetup();
+  const lastStyle = readLastStyle();
+  const d = resolveDurationFor(lastStyle);
+  const ratedSetup: SessionSetup = {
+    style: lastStyle,
+    durationSec: d.custom ? clampMinutes(lastStyle, d.customMinutes) * 60 : d.duration,
+    mode: 'mixed',
+    theme: null,
+    startRating: progressions[lastStyle].currentPuzzleRating,
+  };
+  const setup = last ?? ratedSetup;
+  const run = async (s: SessionSetup) => {
     if (starting) return;
     setStarting(true);
     try {
-      const id = await startSession({ style, durationSec, mode: 'mixed', theme: null, startRating: progressions[style].currentPuzzleRating });
+      const id = await startSession({ ...s, startRating: repeatStartRating(s, progressions[s.style]) });
       router.push(`/play/${id}` as Href);
     } catch (e) {
       toast.show({ title: t(startErrorKey(e)) });
@@ -88,7 +104,36 @@ function useRatedStart() {
       setStarting(false);
     }
   };
-  return { style, durationSec, starting, start };
+  return {
+    setup,
+    /** True when `setup` is the device's last setup (the phone shows Quick start only then). */
+    repeat: !!last,
+    style: setup.style,
+    durationSec: setup.durationSec,
+    starting,
+    start: () => run(setup),
+    /** A rated start with the last style (the first-run card's calibration session). */
+    startRated: () => run(last?.mode === 'mixed' ? last : ratedSetup),
+    ratedMinutes: Math.round((last?.mode === 'mixed' ? last : ratedSetup).durationSec / 60),
+  };
+}
+type QuickStart = ReturnType<typeof useQuickStart>;
+
+/**
+ * The phone Home's rating deltas: each visit compares the ratings with what
+ * the previous visit showed (the same device record the phone keeps).
+ */
+function useSeenRatings(): SeenRatings {
+  const [seen, setSeen] = useState<SeenRatings>({});
+  useFocusEffect(
+    useCallback(() => {
+      const uid = useAuthStore.getState().user?.id ?? '';
+      const now = useAppStore.getState().progressions;
+      setSeen(readLastSeenRatings(uid));
+      writeLastSeenRatings(uid, { bullet: now.bullet.currentPuzzleRating, blitz: now.blitz.currentPuzzleRating, rapid: now.rapid.currentPuzzleRating });
+    }, []),
+  );
+  return seen;
 }
 
 export function DxHome() {
@@ -109,23 +154,26 @@ export function DxHome() {
       setVisit((n) => n + 1);
     }, []),
   );
-  const rated = useRatedStart();
-  useHotkeys({ ' ': () => void rated.start() });
+  const quick = useQuickStart();
+  const seen = useSeenRatings();
+  useHotkeys({ ' ': () => void quick.start() });
   const two = useTwoColumns(900);
 
   const name = user?.displayName?.trim() || user?.nickname || '';
+  const badge = <VerifiedBadge verified={user?.verified} size={20} />;
   const data = overview.data;
   const empty = !!data && (data.lifetime?.sessions ?? data.recentSessions.length) === 0;
+  const resume = snap ? <ResumeCard snap={snap} onGone={() => setSnap(null)} t={t} /> : null;
 
   if (overview.isPending && !data) {
     return (
-      <DesktopPage title={greeting(t, name)} testID="dx-home">
+      <DesktopPage title={greeting(t, name)} titleAfter={badge} testID="dx-home">
         <ActivityIndicator color={dx.ash} style={styles.loading} />
       </DesktopPage>
     );
   }
 
-  if (empty) return <DxHomeEmpty name={name} rated={rated} two={two} />;
+  if (empty) return <DxHomeEmpty name={name} badge={badge} resume={resume} quick={quick} seen={seen} data={data} two={two} />;
 
   const date = new Date().toLocaleDateString(localeFor(lang), { weekday: 'long', day: 'numeric', month: 'long' });
   const days = showStreak && streak.days > 0 && streakState(streak.days, streak.lastDay) !== 'broken' ? streak.days : 0;
@@ -141,12 +189,12 @@ export function DxHome() {
   );
 
   return (
-    <DesktopPage title={greeting(t, name)} subtitle={subtitle} aside={two ? aside : undefined} testID="dx-home">
+    <DesktopPage title={greeting(t, name)} titleAfter={badge} subtitle={subtitle} aside={two ? aside : undefined} testID="dx-home">
       <Col>
-        {snap ? <ResumeCard snap={snap} onGone={() => setSnap(null)} t={t} /> : null}
-        <Hero rated={rated} recent={recent} />
-        <StyleTiles selected={rated.style} recent={recent} />
-        <ChartCard style={rated.style} />
+        {resume}
+        <Hero quick={quick} seen={seen} />
+        <StyleTiles selected={quick.style} seen={seen} data={data} />
+        <ChartCard style={quick.style} />
         <RecentCard rows={recent} error={overview.isError && !data} retry={() => void overview.refetch()} />
         {two ? null : <View style={styles.stacked}>{aside}</View>}
       </Col>
@@ -156,32 +204,49 @@ export function DxHome() {
 
 // ── Data rich ───────────────────────────────────────────────────────────
 
-/** Rating now minus the start of today's first rated session of the style (null: none today). */
-function todayDelta(rows: readonly SessionRow[], style: TrainingStyle, rating: number): number | null {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const firsts = rows.filter((r) => r.mode === 'mixed' && r.style === style && new Date(r.startedAt) >= today);
-  if (firsts.length === 0) return null;
-  const first = firsts.reduce((a, b) => (a.startedAt < b.startedAt ? a : b));
-  return rating - first.startRating;
+/** The quick start's plate label and its one-line setup (the phone's "Blitz · 5 min · Fork"). */
+function describeSetup(t: TFn, lang: 'en' | 'uk', setup: SessionSetup, prog: Progression) {
+  const themeName = setup.mode === 'theme' && setup.theme ? themeLabel(setup.theme, lang) : null;
+  // Casual and theme drills repeat their picked difficulty (the phone's repeatStartRating).
+  const startRating = setup.mode === 'mixed' ? null : repeatStartRating(setup, prog);
+  const plate = setup.mode === 'mixed' ? t('play.start_rated') : themeName ? t('play.start_drill', { theme: themeName }) : t('play.start_casual');
+  const label = [
+    t(`style.${setup.style}.name`),
+    `${Math.round(setup.durationSec / 60)} ${t('play.minutes')}`,
+    themeName ?? t(setup.mode === 'casual' ? 'play.type.casual' : 'play.mode.mixed'),
+    startRating != null ? String(startRating) : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+  return { startRating, plate, label };
+}
+
+/** Rating now minus what Home showed on the previous visit (0: unchanged or first visit). */
+function seenDelta(seen: SeenRatings, style: TrainingStyle, rating: number): number {
+  const was = seen[style];
+  return was == null ? 0 : rating - was;
 }
 
 const signed = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : '0');
 
-function Hero({ rated, recent }: { rated: ReturnType<typeof useRatedStart>; recent: readonly SessionRow[] }) {
+function Hero({ quick, seen }: { quick: QuickStart; seen: SeenRatings }) {
   const t = useT();
-  const prog = useAppStore((s) => s.progressions[rated.style]);
+  const { lang } = useLang();
+  const { setup } = quick;
+  const prog = useAppStore((s) => s.progressions[setup.style]);
   const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
   const p = levelProgress(rating, level);
-  const delta = todayDelta(recent, rated.style, rating);
-  const styleName = t(`style.${rated.style}.name`);
-  const minutes = `${Math.round(rated.durationSec / 60)} ${t('play.minutes')}`;
-  const Glyph = STYLE_GLYPH[rated.style];
+  const delta = seenDelta(seen, setup.style, rating);
+  const styleName = t(`style.${setup.style}.name`);
+  const minutes = `${Math.round(setup.durationSec / 60)} ${t('play.minutes')}`;
+  const Glyph = STYLE_GLYPH[setup.style];
+  const { startRating, plate, label: setupLabel } = describeSetup(t, lang, setup, prog);
   // Below ~760 px (a 1280 window with the right column, or a 1024 one) the
   // Start group leaves the row and runs full width under the rating.
   const [w, setW] = useState(0);
   const narrow = w > 0 && w < 760;
+  const ghostH = narrow ? 44 : 40;
   return (
     <Card texture style={[styles.hero, narrow && styles.heroNarrow]} testID="dx-home-hero">
       <View style={StyleSheet.absoluteFill} onLayout={(e) => setW(e.nativeEvent.layout.width)} pointerEvents="none" />
@@ -203,7 +268,7 @@ function Hero({ rated, recent }: { rated: ReturnType<typeof useRatedStart>; rece
           <Num size={44} style={styles.lh50}>
             {String(rating)}
           </Num>
-          {delta ? <Pill tone={delta > 0 ? 'sage' : 'rose'} label={t('dx.home.today', { delta: signed(delta) })} /> : null}
+          {delta ? <Pill tone={delta > 0 ? 'sage' : 'rose'} label={t('dx.home.since_visit', { delta: signed(delta) })} /> : null}
         </View>
         <View style={styles.heroBar}>
           <Bar value={p.ratio} />
@@ -218,10 +283,21 @@ function Hero({ rated, recent }: { rated: ReturnType<typeof useRatedStart>; rece
         </View>
       </View>
       <View style={narrow ? styles.heroCtasNarrow : styles.heroCtas}>
-        <PlateButton testID="dx-home-play" label={t('play.start_rated')} size="lg" block={!narrow} loading={rated.starting} onPress={() => void rated.start()} style={narrow ? styles.flex : undefined} />
+        <PlateButton
+          testID="dx-home-play"
+          label={plate}
+          accessibilityLabel={quick.repeat ? t('home.quick_start_aria', { setup: setupLabel }) : plate}
+          // One row with the ghosts when narrow: one height (44) and one centre line.
+          size={narrow ? 'md' : 'lg'}
+          block={!narrow}
+          loading={quick.starting}
+          onPress={() => void quick.start()}
+          style={narrow ? styles.flex : undefined}
+        />
         <View style={[styles.row8, narrow && styles.flex]}>
           <GhostButton
             testID="dx-home-duration"
+            height={ghostH}
             accessibilityLabel={t('dx.home.change_setup', { value: minutes })}
             label={minutes}
             onPress={() => router.navigate('/play' as Href)}
@@ -229,28 +305,42 @@ function Hero({ rated, recent }: { rated: ReturnType<typeof useRatedStart>; rece
           />
           <GhostButton
             testID="dx-home-style"
+            height={ghostH}
             accessibilityLabel={t('dx.home.change_setup', { value: styleName })}
             label={styleName}
             icon={Glyph}
             onPress={() => router.navigate('/play' as Href)}
             style={styles.flex}
           />
+          {startRating != null ? (
+            <GhostButton
+              testID="dx-home-start-rating"
+            height={ghostH}
+              accessibilityLabel={t('dx.home.change_setup', { value: `${t('play.start_rating')} ${startRating}` })}
+              label={String(startRating)}
+              icon={Target}
+              onPress={() => router.navigate('/play' as Href)}
+              style={styles.flex}
+            />
+          ) : null}
         </View>
       </View>
     </Card>
   );
 }
 
-function StyleTiles({ selected, recent, empty }: { selected: TrainingStyle; recent?: readonly SessionRow[]; empty?: boolean }) {
+/** The three style ratings (with the change since the last visit), then the phone's Peak and Sessions tiles. */
+function StyleTiles({ selected, seen, data, empty }: { selected: TrainingStyle; seen: SeenRatings; data: Overview | undefined; empty?: boolean }) {
   const t = useT();
   const tn = useTn();
   const progressions = useAppStore((s) => s.progressions);
+  const sessions = data?.lifetime?.sessions ?? data?.recentSessions.length ?? 0;
   return (
     <View style={styles.tiles}>
       {UI_STYLE_ORDER.map((st) => {
         const prog = progressions[st];
         const rating = prog.currentPuzzleRating;
-        const delta = recent ? todayDelta(recent, st, rating) : null;
+        const delta = seenDelta(seen, st, rating);
         const settling = prog.calibrationSessionsLeft;
         return (
           <StatTile
@@ -260,14 +350,16 @@ function StyleTiles({ selected, recent, empty }: { selected: TrainingStyle; rece
             value={String(rating)}
             icon={STYLE_GLYPH[st]}
             caption={empty && settling > 0 ? plural(tn, 'dx.home.settling', settling) : t('play.level', { level: levelFor(prog) })}
-            // A blank keeps the label rows of all three tiles the same height.
+            // A blank keeps the label rows of all the tiles the same height.
             delta={delta ? signed(delta) : ' '}
-            deltaColor={delta && delta < 0 ? tone.rose : dx.sage}
+            deltaColor={delta < 0 ? tone.rose : dx.sage}
             picked={st === selected}
-            style={styles.flex}
+            style={styles.tile}
           />
         );
       })}
+      <StatTile testID="dx-home-peak" label={t('profile.peak')} value={data?.allTimePeak ? String(data.allTimePeak) : '—'} icon={Trophy} delta=" " style={styles.tile} />
+      <StatTile testID="dx-home-sessions" label={t('dashboard.sessions')} value={String(sessions)} icon={History} delta=" " style={styles.tile} />
     </View>
   );
 }
@@ -353,6 +445,7 @@ function RecentCard({ rows, error, retry }: { rows: readonly SessionRow[]; error
   );
 }
 
+/** A recent session: the phone's SessionRow data (start → peak, accuracy, avg time, duration) as a table row. */
 function SessionLine({ row, first }: { row: SessionRow; first: boolean }) {
   const t = useT();
   const { lang } = useLang();
@@ -364,14 +457,17 @@ function SessionLine({ row, first }: { row: SessionRow; first: boolean }) {
       : [t(row.mode === 'casual' ? 'play.type.casual' : 'play.type.rated'), styleName].filter(Boolean).join(' · ');
   const when = whenLabel(row.startedAt, lang, t);
   const total = row.solved + row.failed;
-  const acc = `${Math.round((row.accuracy ?? 0) * 100)}%`;
-  const delta = row.mode === 'mixed' ? row.peakRating - row.startRating : null;
+  const acc = pct(row.accuracy);
+  const avg = responseTime(row.avgResponseMs);
+  const duration = t('sessions.minutes', { n: Math.round(row.durationSec / 60) });
+  const delta = row.peakRating - row.startRating;
+  const deltaColor = delta > 0 ? dx.sage : delta < 0 ? tone.rose : tone.mist;
   const Glyph = row.mode === 'theme' ? Target : style ? STYLE_GLYPH[style] : Target;
   return (
     <Hover
       testID={`dx-home-session-${row.id}`}
       accessibilityRole="link"
-      accessibilityLabel={t('dx.home.row_a11y', { title, when, solved: row.solved, total, acc })}
+      accessibilityLabel={t('dx.home.row_a11y', { title, when, solved: row.solved, total, acc, start: row.startRating, peak: row.peakRating, avg, duration })}
       onPress={() => router.push(`/sessions/${encodeURIComponent(row.id)}` as Href)}
       style={[styles.session, !first && styles.sessionRule]}
       hoverStyle={styles.sessionHover}
@@ -383,16 +479,25 @@ function SessionLine({ row, first }: { row: SessionRow; first: boolean }) {
         <DText size={14} weight={700} numberOfLines={1}>
           {title}
         </DText>
-        <DText size={12} color={dx.dust}>
-          {when}
+        <DText size={12} color={dx.dust} numberOfLines={1}>
+          {[when, duration, avg].join(' · ')}
         </DText>
       </View>
       <DText size={13} color={dx.ash} tabular style={styles.colSolved}>{`${row.solved}/${total}`}</DText>
       <DText size={13} color={dx.ash} tabular style={styles.colAcc}>
         {acc}
       </DText>
-      <DText size={13.5} weight={800} tabular color={delta == null || delta === 0 ? tone.mist : delta > 0 ? dx.sage : tone.rose} style={styles.colDelta}>
-        {delta == null || delta === 0 ? '—' : signed(delta)}
+      <View style={styles.colRating}>
+        <DText size={13} color={dx.ash} tabular>
+          {String(row.startRating)}
+        </DText>
+        <ChevronRight size={12} color={dx.dust} strokeWidth={1.8} />
+        <DText size={13} weight={700} color={delta === 0 ? dx.bone : deltaColor} tabular>
+          {String(row.peakRating)}
+        </DText>
+      </View>
+      <DText size={13.5} weight={800} tabular color={deltaColor} style={styles.colDelta}>
+        {delta === 0 ? '—' : signed(delta)}
       </DText>
     </Hover>
   );
@@ -570,7 +675,23 @@ function SuggestCard({ course, rating }: { course: CourseSummary; rating: number
 
 // ── New account (DXHomeEmpty) ───────────────────────────────────────────
 
-function DxHomeEmpty({ name, rated, two }: { name: string; rated: ReturnType<typeof useRatedStart>; two: boolean }) {
+function DxHomeEmpty({
+  name,
+  badge,
+  resume,
+  quick,
+  seen,
+  data,
+  two,
+}: {
+  name: string;
+  badge: ReactNode;
+  resume: ReactNode;
+  quick: QuickStart;
+  seen: SeenRatings;
+  data: Overview | undefined;
+  two: boolean;
+}) {
   const t = useT();
   // The board picture needs the text column beside it to stay readable.
   const roomy = useTwoColumns(1100);
@@ -581,25 +702,27 @@ function DxHomeEmpty({ name, rated, two }: { name: string; rated: ReturnType<typ
     </>
   );
   return (
-    <DesktopPage title={t('dx.home.welcome', { name })} subtitle={t('dx.home.welcome_sub')} aside={two ? aside : undefined} testID="dx-home-empty">
+    <DesktopPage title={t('dx.home.welcome', { name })} titleAfter={badge} subtitle={t('dx.home.welcome_sub')} aside={two ? aside : undefined} testID="dx-home-empty">
       <Col>
+        {resume}
         <Card texture style={styles.first} testID="dx-home-first">
           <View style={styles.flex}>
             <Label color={tone.rose}>{t('dx.home.first_session')}</Label>
             <DText serif weight={700} size={32} lh={40} style={styles.mt8}>
-              {t('dx.home.first_title', { n: Math.round(rated.durationSec / 60) })}
+              {t('dx.home.first_title', { n: quick.ratedMinutes })}
             </DText>
             <DText size={15} lh={23} color={dx.ash} style={styles.firstBody}>
               {t('dx.home.first_body', { n: CALIBRATION_SESSIONS })}
             </DText>
             <View style={styles.firstCtas}>
-              <PlateButton testID="dx-home-first-start" label={t('dashboard.start')} size="lg" loading={rated.starting} onPress={() => void rated.start()} style={styles.firstPlate} />
-              <GhostButton testID="dx-home-first-levels" accessibilityLabel={t('play.level_help')} label={t('play.level_help')} onPress={() => router.push('/play/levels' as Href)} />
+              <PlateButton testID="dx-home-first-start" label={t('dashboard.start')} size="md" loading={quick.starting} onPress={() => void quick.startRated()} style={styles.firstPlate} />
+              <GhostButton testID="dx-home-first-levels" height={44} accessibilityLabel={t('play.level_help')} label={t('play.level_help')} onPress={() => router.push('/play/levels' as Href)} />
             </View>
+            {quick.repeat && quick.setup.mode !== 'mixed' ? <QuickStartButton quick={quick} /> : null}
           </View>
           {roomy ? <MiniBoard fen={HERO_FEN} size={260} shadow /> : null}
         </Card>
-        <StyleTiles selected={rated.style} empty />
+        <StyleTiles selected={quick.style} seen={seen} data={data} empty />
         <Card style={styles.soon} testID="dx-home-chart-soon">
           <BarChart3 size={22} color={dx.dust} strokeWidth={1.8} />
           <DText size={15} weight={700} style={styles.mt10}>
@@ -612,6 +735,25 @@ function DxHomeEmpty({ name, rated, two }: { name: string; rated: ReturnType<typ
         {two ? null : <View style={styles.stacked}>{aside}</View>}
       </Col>
     </DesktopPage>
+  );
+}
+
+/** First run after a casual or theme session: the phone's Quick start repeats it. */
+function QuickStartButton({ quick }: { quick: QuickStart }) {
+  const t = useT();
+  const { lang } = useLang();
+  const prog = useAppStore((s) => s.progressions[quick.setup.style]);
+  const { label } = describeSetup(t, lang, quick.setup, prog);
+  return (
+    <GhostButton
+      testID="dx-home-quick-start"
+      height={44}
+      accessibilityLabel={t('home.quick_start_aria', { setup: label })}
+      label={`${t('home.quick_start')} · ${label}`}
+      icon={Zap}
+      onPress={() => void quick.start()}
+      style={styles.quickRow}
+    />
   );
 }
 
@@ -728,7 +870,8 @@ const styles = StyleSheet.create({
   heroCtas: { width: 280, gap: 10 },
   heroNarrow: { flexWrap: 'wrap', rowGap: 20 },
   heroCtasNarrow: { width: '100%', flexDirection: 'row', alignItems: 'center', gap: 10 },
-  tiles: { flexDirection: 'row', gap: 14 },
+  tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: 14 },
+  tile: { flexGrow: 1, flexBasis: 128, minWidth: 0 },
   chart: { paddingVertical: 20, paddingHorizontal: 22 },
   range: { width: 220 },
   chartBody: { marginTop: 18, minHeight: 160, justifyContent: 'center' },
@@ -741,7 +884,8 @@ const styles = StyleSheet.create({
   sessionIcon: { width: 34, height: 34, borderRadius: 9, alignItems: 'center', justifyContent: 'center', backgroundColor: dx.ghost },
   colSolved: { width: 70 },
   colAcc: { width: 56 },
-  colDelta: { width: 60, textAlign: 'right' },
+  colRating: { width: 104, flexDirection: 'row', alignItems: 'center', gap: 3 },
+  colDelta: { width: 52, textAlign: 'right' },
   side: { paddingVertical: 18, paddingHorizontal: 20 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 },
   themeChip: {
@@ -765,6 +909,7 @@ const styles = StyleSheet.create({
   firstBody: { marginTop: 12, maxWidth: 440 },
   firstCtas: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 24, flexWrap: 'wrap' },
   firstPlate: { minWidth: 200 },
+  quickRow: { alignSelf: 'flex-start', maxWidth: '100%', marginTop: 12 },
   soon: { padding: 40, alignItems: 'center' },
   checklist: { padding: 20 },
   step: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 14, borderRadius: 8 },

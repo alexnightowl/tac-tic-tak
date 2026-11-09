@@ -139,7 +139,7 @@ export function DxStormIntro() {
 
 function WeekLine({ row, pos, first }: { row: StormWeekRow; pos: number; first: boolean }) {
   const t = useT();
-  const name = row.me ? t('dx.home.you') : nameOf(row.user);
+  const name = row.me ? t('storm.you', { name: nameOf(row.user) }) : nameOf(row.user);
   return (
     <View
       style={[styles.weekRow, !first && styles.ruleSeam, row.me && styles.weekMe]}
@@ -237,7 +237,16 @@ function Result({ run }: { run: StormLocalRun }) {
     ) : null;
 
   return (
-    <DesktopPage title={t('dx.home.storm_result')} subtitle={subtitle} right={null} testID="dx-storm-result">
+    <DesktopPage
+      title={t('dx.home.storm_result')}
+      back={{ label: t('storm.result.back'), onPress: () => (router.canGoBack() ? router.back() : router.replace('/storm' as Href)) }}
+      right={
+        <DText size={13.5} color={dx.ash} testID="dx-storm-result-date">
+          {subtitle}
+        </DText>
+      }
+      testID="dx-storm-result"
+    >
       <View style={[styles.resultCols, !two && styles.resultStack]}>
         <View style={two ? styles.flex : undefined}>
           <Card texture style={styles.score} testID="dx-storm-result-card">
@@ -269,7 +278,7 @@ function Result({ run }: { run: StormLocalRun }) {
               testID="dx-storm-result-again"
               label={t('storm.result.play_again')}
               icon={<Bolt size={18} color={tone.plateInk} />}
-              size="lg"
+              size="md"
               loading={launching}
               onPress={() => void launch({ replace: true })}
               style={styles.again}

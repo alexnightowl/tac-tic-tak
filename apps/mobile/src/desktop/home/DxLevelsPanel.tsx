@@ -1,10 +1,12 @@
-import { CALIBRATION_SESSIONS, LEVEL_STEP, type TrainingStyle } from '@tac/core/rules';
+import { CALIBRATION_SESSIONS, LEVEL_STEP, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
 import { levelFor } from '@tac/core/runner';
 import { alpha, black, eos, tone } from '@tac/core/tokens';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useAppStore } from '@/stores/appStore';
+import { PlateButton } from '@/ui';
 import { useT } from '@/ui/lang';
 import { CloseButton, Dialog } from '../Dialog';
 import { DText, Label, Pill } from '../kit';
@@ -15,19 +17,26 @@ import { Card2 } from './parts';
 // right of the Play page (the phone opens play/levels as a full-screen
 // modal). Same copy and rules as the phone's LevelSheet.
 
-/** The bar spans two levels below the player's and three above (1500–1750 around 1600). */
-const BELOW = 2;
-const ABOVE = 3;
+/** Marks on the bar: two levels each side of the player's (the phone's LevelSheet). */
+const MARKS = [-2, -1, 0, 1, 2] as const;
 
-export function DxLevelsPanel({ style, onClose }: { style: TrainingStyle; onClose: () => void }) {
+export function DxLevelsPanel({ style: pageStyle, onClose }: { style: TrainingStyle; onClose: () => void }) {
   const t = useT();
+  // /play/levels?style=… (the phone's link) shows that style; opened from the page, the page's.
+  const params = useLocalSearchParams<{ style?: string }>();
+  const style = isTrainingStyle(params.style) ? params.style : pageStyle;
   const prog = useAppStore((s) => s.progressions[style]);
   const rating = prog.currentPuzzleRating;
   const level = levelFor(prog);
-  const lo = level - BELOW * LEVEL_STEP;
-  const hi = level + ABOVE * LEVEL_STEP;
-  const pct = (v: number) => `${(Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo) * 100}%` as const;
-  const ticks = Array.from({ length: BELOW + ABOVE - 1 }, (_, i) => lo + (i + 1) * LEVEL_STEP);
+  const lo = level + MARKS[0] * LEVEL_STEP;
+  const hi = level + MARKS[MARKS.length - 1] * LEVEL_STEP;
+  const ratio = (v: number) => (Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo);
+  const pct = (v: number) => `${ratio(v) * 100}%` as const;
+  // Near an end the "you" pill hugs that edge instead of spilling out of the card.
+  const edge = ratio(rating) > 0.85 ? 'end' : ratio(rating) < 0.15 ? 'start' : null;
+  const tipBox = edge === 'end' ? styles.tipEnd : edge === 'start' ? styles.tipStart : { left: pct(rating) };
+  const tipSelf = { alignSelf: edge === 'end' ? 'flex-end' : edge === 'start' ? 'flex-start' : 'center' } as const;
+  const ticks = MARKS.slice(1, -1).map((m) => level + m * LEVEL_STEP);
   const styleName = t(`style.${style}.name`);
 
   const rules: { title: string; body: string; bar: string; ink: string }[] = [
@@ -58,20 +67,26 @@ export function DxLevelsPanel({ style, onClose }: { style: TrainingStyle; onClos
           <View style={styles.track}>
             <LinearGradient colors={[dx.barOff, dx.ember]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.line} />
             {ticks.map((v) => (
-              <View key={v} style={[styles.tick, { left: pct(v) }]} />
+              <View key={v} style={[styles.tick, { left: pct(v) }, v === level && styles.tickOwn]} />
             ))}
             <View style={[styles.thumb, { left: pct(rating) }]} />
-            <View style={[styles.tip, { left: pct(rating) }]}>
-              <Pill tone="ash" label={t('play.you_marker', { rating })} style={styles.tipPill} />
+            <View style={[styles.tip, tipBox]}>
+              <Pill tone="ash" label={t('play.you_marker', { rating })} style={[styles.tipPill, tipSelf]} />
             </View>
           </View>
           <View style={styles.ends}>
-            <DText size={12} color={dx.dust} tabular>
-              {String(lo)}
-            </DText>
-            <DText size={12} color={dx.dust} tabular>
-              {String(hi)}
-            </DText>
+            {MARKS.map((m) => (
+              <DText
+                key={m}
+                size={12}
+                weight={m === 0 ? 800 : 400}
+                color={m === 0 ? dx.bone : dx.dust}
+                tabular
+                testID={m === 0 ? 'dx-levels-level' : undefined}
+              >
+                {String(level + m * LEVEL_STEP)}
+              </DText>
+            ))}
           </View>
         </View>
 
@@ -85,6 +100,8 @@ export function DxLevelsPanel({ style, onClose }: { style: TrainingStyle; onClos
             </DText>
           </Card2>
         ))}
+
+        <PlateButton testID="dx-levels-got-it" label={t('levels.got_it')} onPress={onClose} size="lg" block style={styles.cta} />
       </ScrollView>
     </Dialog>
   );
@@ -106,6 +123,7 @@ const styles = StyleSheet.create({
   track: { height: 44, marginTop: 6 },
   line: { position: 'absolute', left: 0, right: 0, top: 24, height: 6, borderRadius: 3 },
   tick: { position: 'absolute', top: 21, width: 1.5, height: 12, backgroundColor: tone.iron },
+  tickOwn: { width: 2, top: 19, height: 16, backgroundColor: dx.ash },
   thumb: {
     position: 'absolute',
     top: 16,
@@ -120,7 +138,10 @@ const styles = StyleSheet.create({
     ],
   },
   tip: { position: 'absolute', top: -10, width: 140, marginLeft: -70, alignItems: 'center' },
-  tipPill: { alignSelf: 'center', backgroundColor: dx.ghost },
+  tipEnd: { right: -8, marginLeft: 0 },
+  tipStart: { left: -8, marginLeft: 0 },
+  tipPill: { backgroundColor: dx.ghost },
   ends: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 2 },
   rule: { paddingVertical: 14, paddingHorizontal: 16 },
+  cta: { marginTop: 6 },
 });
