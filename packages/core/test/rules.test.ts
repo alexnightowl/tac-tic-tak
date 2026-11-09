@@ -128,17 +128,17 @@ describe('levels and experience', () => {
     expect(evaluateLevel(1600, 1712, 1)).toMatchObject({ after: 1700, up: true, guardAfter: 0 });
   });
 
-  it('drops a level only after two sessions in a row end 50+ under it', () => {
+  it('drops 25 only after two sessions in a row end 50+ under it (D39)', () => {
     const first = evaluateLevel(1600, 1543, 0);
     expect(first).toMatchObject({ after: 1600, down: false, guardAfter: 1 });
-    expect(evaluateLevel(1600, 1531, first.guardAfter)).toMatchObject({ after: 1500, down: true, guardAfter: 0 });
+    expect(evaluateLevel(1600, 1531, first.guardAfter)).toMatchObject({ after: 1575, down: true, guardAfter: 0 });
     // Ending within 50 of the level clears the guard.
     expect(evaluateLevel(1600, 1560, 1)).toMatchObject({ after: 1600, guardAfter: 0 });
   });
 
   it('starts from the earned norm when the rating drifted above it', () => {
     expect(initialLevel(1612, 1450)).toBe(1450);
-    expect(initialLevel(1180, 1450)).toBe(1150);
+    expect(initialLevel(1180, 1450)).toBe(1175);
   });
 
   it('ranks and levels experience', () => {

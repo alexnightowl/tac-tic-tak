@@ -1,13 +1,15 @@
 // Verbatim copy of apps/backend/src/sessions/progress.ts. Do not edit here
 // without editing the backend too: test/parity.test.ts fails on drift.
 
-// Play v2 progression: levels that follow the rating, and experience.
+// Play v2 progression: the level ("norm") and experience.
 //
-// Level: the style rating in steps of LEVEL_STEP. It rises when a finished
-// rated session ends above the next mark and solved the style's pace
-// target (paceTarget, D37: the time control's character), and it is protected
-// on the way down: it drops only after LEVEL_GUARD_SESSIONS rated
-// sessions in a row end more than LEVEL_GUARD_GAP under it.
+// Level (D39): the only number a player has per style, on a LEVEL_GRID
+// (25) grid. Every rated session starts at it; within the session the
+// difficulty moves with each puzzle (the Elo step in rating.ts). A full
+// session that ends LEVEL_STEP (50) or more above it and solved the
+// style's pace target (paceTarget, D37) lifts it to the grid mark it
+// reached (it can jump several); LEVEL_GUARD_SESSIONS sessions in a row
+// that end more than LEVEL_GUARD_GAP under it drop it by LEVEL_DOWN_STEP.
 //
 // Experience (XP): effort, never lost. Earned for minutes trained (any
 // mode) and mistakes cleared from Review. XP levels grow on a curve,
@@ -15,12 +17,15 @@
 
 import type { TrainingStyle } from './unlock';
 
+export const LEVEL_GRID = 25;
+/** How far above the level a session must end to raise it (the next mark). */
 export const LEVEL_STEP = 50;
+export const LEVEL_DOWN_STEP = 25;
 export const LEVEL_GUARD_GAP = 50;
 export const LEVEL_GUARD_SESSIONS = 2;
 
 export function levelOf(rating: number): number {
-  return Math.floor(rating / LEVEL_STEP) * LEVEL_STEP;
+  return Math.floor(rating / LEVEL_GRID) * LEVEL_GRID;
 }
 
 /**
@@ -79,16 +84,16 @@ export function evaluateLevel(
   guard: number,
   pace?: { solved: number; target: number },
 ): LevelCheck {
-  const reached = levelOf(ratingAfter);
+  const cleared = ratingAfter >= level + LEVEL_STEP;
   const paceCheck = pace ? { ...pace, met: pace.solved >= pace.target } : null;
   let after = level;
   let guardAfter = 0;
-  if (reached > level) {
-    if (!paceCheck || paceCheck.met) after = reached;
+  if (cleared) {
+    if (!paceCheck || paceCheck.met) after = levelOf(ratingAfter);
   } else if (ratingAfter < level - LEVEL_GUARD_GAP) {
     guardAfter = guard + 1;
     if (guardAfter >= LEVEL_GUARD_SESSIONS) {
-      after = reached;
+      after = level - LEVEL_DOWN_STEP;
       guardAfter = 0;
     }
   }
@@ -102,7 +107,7 @@ export function evaluateLevel(
     guardThreshold: LEVEL_GUARD_SESSIONS,
     next: after + LEVEL_STEP,
     pace: paceCheck,
-    paceHeld: reached > level && after === level,
+    paceHeld: cleared && after === level,
   };
 }
 

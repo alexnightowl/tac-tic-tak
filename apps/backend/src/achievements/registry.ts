@@ -31,7 +31,7 @@ export type AchievementState = {
   totalSolved: number;
   /** Distinct training styles the user has finished a session in. */
   styleSet: Set<string>;
-  /** Best peak rating across all styles' finished sessions. */
+  /** Best level across all styles (D39; was the best in-session peak). */
   bestPeakRating: number;
   /** Per-style progressions — used to detect "calibration finished". */
   progressions: Array<{
