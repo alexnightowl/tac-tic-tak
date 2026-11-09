@@ -156,6 +156,9 @@ describe('backend rating.ts parity', () => {
       expect(core.paceTarget(style, duration)).toBe(beProgress.paceTarget(style, duration));
       expect(core.evaluateLevel(level, rating, guard, pace)).toEqual(beProgress.evaluateLevel(level, rating, guard, pace));
       expect(core.initialLevel(rating, level)).toBe(beProgress.initialLevel(rating, level));
+      expect(core.hasteMs(style)).toBe(beProgress.hasteMs(style));
+      const ms = r.int(0, 12_000);
+      expect(core.isHasty(style, ms)).toBe(beProgress.isHasty(style, ms));
       const xp = r.int(0, 80_000);
       expect(core.xpStanding(xp)).toEqual(beProgress.xpStanding(xp));
       expect(core.trainingXp(xp * 100)).toBe(beProgress.trainingXp(xp * 100));

@@ -60,6 +60,23 @@ export function paceTarget(style: TrainingStyle, durationSec: number): number {
   return Math.max(1, Math.round(mean - PACE_Z * sd));
 }
 
+// ---- Haste --------------------------------------------------------------
+//
+// A mistake is hasty when the wrong move came in under HASTE_SHARE of the
+// style's per-puzzle budget (PACE_SECONDS): bullet 1.5 s, blitz 3.6 s,
+// rapid 9 s. Measured on the move that went wrong (from the moment it was
+// the player's turn), not on the whole puzzle.
+
+export const HASTE_SHARE = 0.3;
+
+export function hasteMs(style: TrainingStyle): number {
+  return Math.round(PACE_SECONDS[style] * HASTE_SHARE * 1000);
+}
+
+export function isHasty(style: TrainingStyle, mistakeMs: number): boolean {
+  return mistakeMs < hasteMs(style);
+}
+
 export type PaceCheck = { solved: number; target: number; met: boolean };
 
 export type LevelCheck = {
