@@ -5,14 +5,18 @@ import { planStartRating } from '../sessions/sessions.service';
 import { isTrainingStyle, TrainingStyle } from '../sessions/unlock';
 
 // The daily plan (D40): one short session of the player's weakest motif
-// themes. Themes come from the same weakness score as the stats page
-// (failure rate and slowness, blind sessions left out); a theme needs a few
-// attempts before it counts as weak. When the history is thin, the plan
-// is topped up with core motifs the player has tried least ("new").
-// Once a plan session started today, today's plan keeps its themes.
+// themes, per style. Themes come from the same weakness score as the stats
+// page for that style (failure rate and slowness, blind sessions left out);
+// a theme needs a few attempts before it counts as weak. When the history
+// is thin, the plan is topped up with core motifs the player has tried
+// least ("new"). Once a plan session started today, today's plan keeps its
+// themes. It is done once a plan session ran (nearly) its whole clock: an
+// early exit doesn't count.
 
 const PLAN_SIZE = 3;
 const MIN_ATTEMPTS = 6;
+/** Share of the clock a plan session must have run to count as done. */
+const DONE_SHARE = 0.9;
 
 /** Motif themes a plan may hold (no phases, lengths or outcome tags). */
 const PLAN_THEMES = new Set([
@@ -46,11 +50,14 @@ export class PlanService {
     const [progression, sessions, stats] = await Promise.all([
       this.prisma.userStyleProgression.findUnique({ where: { userId_style: { userId, style } } }),
       this.prisma.trainingSession.findMany({
-        where: { userId, variant: 'plan', startedAt: { gte: since } },
+        where: { userId, style, variant: 'plan', startedAt: { gte: since } },
         orderBy: { startedAt: 'desc' },
-        select: { id: true, themes: true, endedAt: true, solvedCount: true, failedCount: true, accuracy: true },
+        select: {
+          id: true, themes: true, startedAt: true, endedAt: true, durationSec: true,
+          solvedCount: true, failedCount: true, accuracy: true,
+        },
       }),
-      this.analytics.themes(userId),
+      this.analytics.themes(userId, style),
     ]);
 
     const bySlug = new Map(stats.map((t) => [t.slug, t]));
@@ -81,7 +88,9 @@ export class PlanService {
       themes = [...weak, ...fill];
     }
 
-    const finished = sessions.find((s) => s.endedAt);
+    const finished = sessions.find(
+      (s) => s.endedAt && s.endedAt.getTime() - s.startedAt.getTime() >= s.durationSec * 1000 * DONE_SHARE,
+    );
     return {
       style,
       themes,

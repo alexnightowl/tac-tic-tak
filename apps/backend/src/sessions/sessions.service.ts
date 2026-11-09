@@ -60,8 +60,8 @@ export class SessionsService {
     if (dto.variant === 'blind' && dto.mode === 'mixed') {
       throw new BadRequestException('blind sessions are casual or theme');
     }
-    if (dto.themes && dto.mode !== 'theme') {
-      throw new BadRequestException('themes need theme mode');
+    if ((dto.themes || dto.variant === 'plan') && dto.mode !== 'theme') {
+      throw new BadRequestException('themes and the plan need theme mode');
     }
     const themes = dto.themes ? [...new Set(dto.themes)] : [];
     const theme = themes[0] ?? dto.theme ?? null;

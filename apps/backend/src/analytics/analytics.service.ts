@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { hasteMs } from '../sessions/progress';
+import { hasteMs, isHasty } from '../sessions/progress';
 import { isTrainingStyle, TrainingStyle, TRAINING_STYLES } from '../sessions/unlock';
 
 type ThemeRow = {
@@ -258,7 +258,7 @@ export class AnalyticsService {
     };
     for (const r of rows) {
       const style = isTrainingStyle(r.session.style) ? r.session.style : 'blitz';
-      const hasty = (r.mistakeMs ?? r.responseMs) < hasteMs(style);
+      const hasty = isHasty(style, r.mistakeMs ?? r.responseMs);
       const at = r.createdAt.getTime();
       if (at >= now - days * DAY) {
         add(total, hasty);
