@@ -56,6 +56,14 @@ import { dxrivalsEn } from './dxrivals.en';
 import { dxrivalsUk } from './dxrivals.uk';
 import { dxaccountEn } from './dxaccount.en';
 import { dxaccountUk } from './dxaccount.uk';
+import { blindEn } from './blind.en';
+import { blindUk } from './blind.uk';
+import { hasteEn } from './haste.en';
+import { hasteUk } from './haste.uk';
+import { planEn } from './plan.en';
+import { planUk } from './plan.uk';
+import { woodpeckerEn } from './woodpecker.en';
+import { woodpeckerUk } from './woodpecker.uk';
 
 export const AREAS = [
   'common',
@@ -84,6 +92,10 @@ export const AREAS = [
   'dxlearn',
   'dxrivals',
   'dxaccount',
+  'blind',
+  'haste',
+  'plan',
+  'woodpecker',
 ] as const;
 
 export type Area = (typeof AREAS)[number];
@@ -115,6 +127,10 @@ export const AREA_DICTS: Record<Area, Record<Language, Dict>> = {
   dxlearn: { en: dxlearnEn, uk: dxlearnUk },
   dxrivals: { en: dxrivalsEn, uk: dxrivalsUk },
   dxaccount: { en: dxaccountEn, uk: dxaccountUk },
+  blind: { en: blindEn, uk: blindUk },
+  haste: { en: hasteEn, uk: hasteUk },
+  plan: { en: planEn, uk: planUk },
+  woodpecker: { en: woodpeckerEn, uk: woodpeckerUk },
 };
 
 /** All areas of one language merged into a flat dict (the web shape). */
