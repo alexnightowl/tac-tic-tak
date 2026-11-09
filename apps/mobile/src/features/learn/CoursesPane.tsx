@@ -12,7 +12,7 @@ import { useAppStore } from '@/stores/appStore';
 import { AppText, HeroCard, PlateButton, ProgressBar, Tap, useLang } from '@/ui';
 import { useT } from '@/ui/lang';
 import { CourseCardFace, CourseTile } from './CourseCard';
-import { lessonTotals, useCourseProgressMap, useLearnCourses } from './data';
+import { courseInFilter, lessonTotals, useCourseProgressMap, useLearnCourses } from './data';
 import { FilterChips, GRID_GAP, type LearnFilter } from './parts';
 
 // Learn → Courses (canvas LearnHome): the course played last with
@@ -37,19 +37,7 @@ export function CoursesPane({ width }: { width: number }) {
   const current = courses.find((c) => c.id === lastId) ?? null;
   const suggest = suggestedCourse(courses, rating);
 
-  const shown = courses.filter((c) => {
-    const p = progress.get(c.id);
-    switch (filter) {
-      case 'progress':
-        return p?.emblem === 'progress';
-      case 'downloaded':
-        return !!stored[c.id];
-      case 'finished':
-        return !!p?.passedExam;
-      default:
-        return true;
-    }
-  });
+  const shown = courses.filter((c) => courseInFilter(filter, progress.get(c.id), !!stored[c.id]));
   const cardW = Math.floor(((width || screenW) - GRID_GAP) / 2);
 
   if (!data.courses) {

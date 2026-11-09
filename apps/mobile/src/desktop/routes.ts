@@ -21,6 +21,10 @@ export const DESKTOP_ROUTES: readonly Entry[] = [
   // ── board screens (runner, storm run, drills, course/library solve) ──
   // ── review, learn, courses, books ──
   // ── league, stats, achievements ──
+  { re: /^\/rivals$/, chrome: 'full' },
+  { re: /^\/stats$/, chrome: 'full' },
+  { re: /^\/sessions$/, chrome: 'full' },
+  { re: /^\/sessions\/[^/]+$/, chrome: 'full' },
   // ── profile, experience, friends, settings ──
 ];
 

@@ -11,6 +11,7 @@ import { plural } from '@/features/offline/format';
 import { useIsOffline } from '@/shell/OfflineBanner';
 import { AppText, HeroCard, PlateButton, ProgressBar, Tap, useLang } from '@/ui';
 import { useT, useTn } from '@/ui/lang';
+import { bookInFilter } from './data';
 import { Footnote, FilterChips, GRID_GAP, StatusIcon, TileMeta, type LearnFilter } from './parts';
 
 // Learn → Books (canvas LearnBooks; the old /library shelf): the book read
@@ -34,19 +35,7 @@ export function BooksPane({ width, onOpen }: { width: number; onOpen: OpenBook }
   const lastId = lastPlayedIn(attempts, new Set(shelf.map((b) => b.id)));
   const current = shelf.find((b) => b.id === lastId) ?? null;
 
-  const shown = shelf.filter((b) => {
-    const p = progress.get(b.id);
-    switch (filter) {
-      case 'progress':
-        return !!p && p.started && !(p.cycleComplete && p.cycle === 1);
-      case 'downloaded':
-        return !!stored[b.id];
-      case 'finished':
-        return !!p?.finishedOnce;
-      default:
-        return true;
-    }
-  });
+  const shown = shelf.filter((b) => bookInFilter(filter, progress.get(b.id), !!stored[b.id]));
   const cardW = Math.floor((width - GRID_GAP) / 2);
 
   return (

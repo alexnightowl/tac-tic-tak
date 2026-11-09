@@ -110,15 +110,15 @@ export function ChapterIntro({
   );
 }
 
-/** The real Board, view-only, with the intro's arrows drawn over it. */
-function Diagram({ fen, arrows, size }: { fen: string; arrows: readonly CourseArrow[]; size: number }) {
+/** The real Board, view-only, with the intro's arrows drawn over it (also the desktop intro). */
+export function Diagram({ fen, arrows, size, coordinates = false }: { fen: string; arrows: readonly CourseArrow[]; size: number; coordinates?: boolean }) {
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));
   const mirror = useAppStore((s) => s.settings.mirrorView);
   const orientation: Orientation = fen.split(' ')[1] === 'b' ? 'black' : 'white';
   const sq = size / 8;
   return (
     <View style={[styles.board, { width: size, height: size }]} pointerEvents="none" importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-      <Board key={fen} initialFen={fen} orientation={orientation} mirror={mirror} pieceSet={pieceSet} moveFeel="board" coordinates={false} style={styles.fill} />
+      <Board key={fen} initialFen={fen} orientation={orientation} mirror={mirror} pieceSet={pieceSet} moveFeel="board" coordinates={coordinates} style={styles.fill} />
       <Svg width={size} height={size} style={styles.arrows}>
         {arrows.map((a, i) => {
           const g = arrowGeometry(a.from, a.to, size, orientation, mirror, 'straight');

@@ -13,7 +13,7 @@ import { useT } from '@/ui/lang';
 
 export type LearnFilter = 'all' | 'progress' | 'downloaded' | 'finished';
 // The web has no offline copies, so no "on this device" filter there.
-const FILTERS: readonly LearnFilter[] = HAS_OFFLINE ? ['all', 'progress', 'downloaded', 'finished'] : ['all', 'progress', 'finished'];
+export const FILTERS: readonly LearnFilter[] = HAS_OFFLINE ? ['all', 'progress', 'downloaded', 'finished'] : ['all', 'progress', 'finished'];
 
 export const GRID_GAP = space[4];
 

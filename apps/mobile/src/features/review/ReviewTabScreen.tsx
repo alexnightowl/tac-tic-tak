@@ -1,56 +1,33 @@
-import type { ReviewThemeRow } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
 import { eos, layout, radii, space } from '@tac/core/tokens';
 import { FlashList } from '@shopify/flash-list';
-import { useQuery } from '@tanstack/react-query';
-import { router, useFocusEffect, type Href } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { ChevronRight, CloudOff, History, PartyPopper } from 'lucide-react-native';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { feel } from '@/feel';
-import { queryClient } from '@/platform/query';
 import { AppText, Card } from '@/ui';
 import { useLang, useT, useTn } from '@/ui/lang';
 import { platePressTiming } from '@/ui/motion';
 import { Tap } from '@/ui/Tap';
-import { reviewApi, reviewKeys } from './api';
 import { Skeleton, StateView } from './states';
 import { ThemeIcon } from './ThemeIcon';
-
-/** B9 adds firstPuzzleId to /review/themes; until then the tap fetches the theme's list. */
-type ThemeRow = ReviewThemeRow & { firstPuzzleId?: string };
+import { useReviewThemes, type ThemeRow } from './useReviewThemes';
 
 const SKELETONS = [0, 1, 2, 3, 4];
 
 /**
- * Review tab (web /review): theme cards, most-failed first. fix: the web
- * fired GET /review?theme= for every card on mount (N+1) and a tap before
- * it resolved went nowhere; here the list is fetched on tap (and reused by
- * the drill's counter), or skipped once B9 sends firstPuzzleId.
+ * Review tab (web /review): theme cards, most-failed first. The list and
+ * the card tap live in useReviewThemes (shared with the desktop page).
  */
 export function ReviewTabScreen() {
   const t = useT();
   const tn = useTn();
   const { lang } = useLang();
-  const q = useQuery({
-    queryKey: reviewKeys.themes(),
-    queryFn: () => reviewApi.themes() as Promise<ThemeRow[]>,
-  });
+  const { q, opening, open } = useReviewThemes();
   const [refreshing, setRefreshing] = useState(false);
-  const [opening, setOpening] = useState<string | null>(null);
-
-  // Tabs stay mounted, so a mount refetch never runs again: a session that
-  // just added misses would leave this list stale. Refetch on focus once
-  // the cached list is past its staleTime (the web remounted the page).
-  useFocusEffect(
-    useCallback(() => {
-      const key = reviewKeys.themes();
-      if (queryClient.getQueryState(key)?.status !== 'success') return;
-      void queryClient.refetchQueries({ queryKey: key, stale: true, type: 'active' });
-    }, []),
-  );
 
   const onRefresh = async () => {
     feel.emit('refresh');
@@ -60,28 +37,6 @@ export function ReviewTabScreen() {
     } finally {
       setRefreshing(false);
     }
-  };
-
-  const open = async (row: ThemeRow) => {
-    if (opening) return;
-    let id = row.firstPuzzleId ?? null;
-    if (!id) {
-      setOpening(row.slug);
-      try {
-        const list = await queryClient.fetchQuery({
-          queryKey: reviewKeys.list(row.slug),
-          queryFn: () => reviewApi.list(row.slug),
-          staleTime: 30_000,
-        });
-        id = list[0]?.puzzleId ?? null;
-      } catch {
-        id = null;
-      } finally {
-        setOpening(null);
-      }
-    }
-    if (id) router.push(`/review/${encodeURIComponent(id)}?theme=${encodeURIComponent(row.slug)}` as Href);
-    else void q.refetch();
   };
 
   const header = (

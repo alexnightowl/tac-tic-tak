@@ -1,5 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 
+import { DxChapterIntro } from '@/desktop/learn';
+import { useDesktop } from '@/desktop/useDesktop';
 import { IntroScreen } from '@/features/courses/IntroScreen';
 import { intParam } from '@/features/courses/model';
 
@@ -8,5 +10,7 @@ export default function CourseIntroRoute() {
   const p = useLocalSearchParams<{ course?: string; chapter?: string }>();
   const course = p.course ?? '';
   const chapter = intParam(p.chapter, 0);
+  const desktop = useDesktop();
+  if (desktop) return <DxChapterIntro key={`${course}|${chapter}`} courseId={course} chapter={chapter} />;
   return <IntroScreen key={`${course}|${chapter}`} courseId={course} chapter={chapter} />;
 }

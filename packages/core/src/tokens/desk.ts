@@ -54,6 +54,23 @@ export const desk = {
   sideCardHover: '#262329',
   /** Popover / dialog drop shadow. */
   popShadow: 'rgba(8,6,10,0.6)',
+  // ── rivals: league, stats, achievements (DXLeague, DXStats, DXAchievements) ──
+  /** Gold progress bar: deep end (the light end is tone.gold). */
+  goldFrom: '#8a6e3a',
+  /** Activity heatmap levels 0..4. */
+  heat0: '#2a282d',
+  heat1: '#4a2a2b',
+  heat2: '#6d3434',
+  heat3: '#8e4542',
+  heat4: '#c26a5f',
+  /** Theme accuracy bars: strong / middling / weak. */
+  accHigh: '#5f7458',
+  accMid: '#a8524d',
+  accLow: '#c9514a',
+  /** Modal card ground and edge (DXAchievementModal). */
+  modal: '#232126',
+  modalEdge: '#37343b',
+  // ── end rivals ──
   /** Text tones. */
   bone: eos.bone,
   ash: eos.ash,

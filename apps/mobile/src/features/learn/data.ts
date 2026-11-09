@@ -1,8 +1,16 @@
-import { courseProgress, type CourseExamRecord, type CourseProgress, type CourseSummary, type LibraryAttemptRecord } from '@tac/core/library';
+import {
+  courseProgress,
+  type BookProgress,
+  type CourseExamRecord,
+  type CourseProgress,
+  type CourseSummary,
+  type LibraryAttemptRecord,
+} from '@tac/core/library';
 import { useMemo } from 'react';
 
 import { useCourses, type DownloadView, type ShelfLoad } from '@/features/library/model';
 import { useAttempts, useExams, useLibraryStore } from '@/features/library/store';
+import type { LearnFilter } from './parts';
 
 // The Learn tab's course data: the Library store's course list, results
 // and exam tries.
@@ -39,4 +47,32 @@ export function useCourseDownloadView(id: string): DownloadView {
 export function lessonTotals(p: CourseProgress): { done: number; total: number } {
   const lessons = p.chapters.slice(0, -1);
   return { done: lessons.reduce((n, c) => n + c.done, 0), total: lessons.reduce((n, c) => n + c.total, 0) };
+}
+
+/** The Courses filter chips (phone pane and desktop page). */
+export function courseInFilter(filter: LearnFilter, p: CourseProgress | undefined, downloaded: boolean): boolean {
+  switch (filter) {
+    case 'progress':
+      return p?.emblem === 'progress';
+    case 'downloaded':
+      return downloaded;
+    case 'finished':
+      return !!p?.passedExam;
+    default:
+      return true;
+  }
+}
+
+/** The Books filter chips (phone pane and desktop page). */
+export function bookInFilter(filter: LearnFilter, p: BookProgress | undefined, downloaded: boolean): boolean {
+  switch (filter) {
+    case 'progress':
+      return !!p && p.started && !(p.cycleComplete && p.cycle === 1);
+    case 'downloaded':
+      return downloaded;
+    case 'finished':
+      return !!p?.finishedOnce;
+    default:
+      return true;
+  }
 }
