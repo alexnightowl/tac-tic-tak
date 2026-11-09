@@ -1,109 +1,31 @@
-import { CALIBRATION_SESSIONS } from '@tac/core/rules';
 import { eos, layout, space, tone } from '@tac/core/tokens';
-import { router, type Href } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
-import { BackHandler, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
-import { feel } from '@/feel';
-import { recalibrate } from '@/features/settings/api';
-import { patchSettings } from '@/shell/settings';
-import { useAppStore } from '@/stores/appStore';
 import { AppText } from '@/ui/AppText';
 import { useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
 import { Tap } from '@/ui/Tap';
-import { markOnboardingDismissed, setOnboardingOpen } from './gate';
 import { HabitArt } from './Habit';
 import { RankPath } from './RankPath';
 import { Rise, StepBar, StepCopy } from './parts';
 import { TrainingBoard } from './TrainingBoard';
+import { ONBOARDING_LAST, ONBOARDING_STEPS, START_RATING, useOnboardingFlow } from './useOnboardingFlow';
 import { WelcomeArt } from './Welcome';
 
 // Design v2 onboarding (MobOnboarding1–4): Welcome → The training → Your
-// path → The habit. Each step mounts fresh so its entrance keyframes play;
-// the top bar's Skip, Android back on step 1, "Skip — start at 1200" and
-// "Find my level" all mark onboardingCompleted (optimistic; the web ignored
-// a failed save the same way). Placement does not exist on the backend:
-// "Find my level" opens the Play tab, where the first five sessions in a
-// style calibrate the rating; "Skip — start at 1200" lands on Home.
-// Replayed by a player who already finished calibration in some style, the
-// last step offers "Recalibrate my level" (POST /users/me/recalibrate, then
-// Play) and "Keep my level" (Home) instead.
+// path → The habit. Each step mounts fresh so its entrance keyframes play.
+// The flow (finish paths, replay/recalibrate branch, Android back) lives in
+// useOnboardingFlow, shared with the desktop web layout.
 
-const STEPS = ['welcome', 'training', 'path', 'habit'] as const;
-const LAST = STEPS.length - 1;
-/** The backend's starting puzzle rating (Rating.startPuzzleRating default). */
-const START_RATING = 1200;
-
-type Finish = 'close' | 'play' | 'home';
+const STEPS = ONBOARDING_STEPS;
+const LAST = ONBOARDING_LAST;
 
 export function OnboardingScreen() {
   const t = useT();
   const insets = useSafeAreaInsets();
-  const [step, setStep] = useState(0);
-  const finished = useRef(false);
-  // Mirrors `step` for the Android back handler registered once on mount.
-  const stepRef = useRef(0);
-  // Read once: recalibrating flips it mid-screen.
-  const [veteran] = useState(() =>
-    Object.values(useAppStore.getState().progressions).some((p) => p.calibrationSessionsLeft < CALIBRATION_SESSIONS),
-  );
-  const [recalState, setRecalState] = useState<'idle' | 'busy' | 'error'>('idle');
-
-  const onRecalibrate = async () => {
-    setRecalState('busy');
-    try {
-      await recalibrate();
-      finish('play');
-    } catch {
-      setRecalState('error');
-    }
-  };
-
-  const finish = (to: Finish) => {
-    if (finished.current) return;
-    finished.current = true;
-    markOnboardingDismissed();
-    void patchSettings({ onboardingCompleted: true });
-    router.back();
-    if (to === 'play') router.navigate('/play' as Href);
-    else if (to === 'home') router.navigate('/' as Href);
-  };
-
-  const goTo = (i: number) => {
-    const next = Math.max(0, Math.min(LAST, i));
-    if (next === stepRef.current) return;
-    feel.emit('tabChange');
-    stepRef.current = next;
-    setStep(next);
-  };
-
-  useEffect(() => {
-    setOnboardingOpen(true);
-    // Android back: one step back; on the first step it skips (web: X = done).
-    // No hardware back on the web.
-    const sub =
-      Platform.OS === 'web'
-        ? null
-        : BackHandler.addEventListener('hardwareBackPress', () => {
-            if (stepRef.current > 0) goTo(stepRef.current - 1);
-            else finish('close');
-            return true;
-          });
-    return () => {
-      sub?.remove();
-      setOnboardingOpen(false);
-      // Dismissed some other way (a deep link replaced it): still done, or
-      // the gate would bring it straight back.
-      if (!finished.current) {
-        finished.current = true;
-        markOnboardingDismissed();
-        void patchSettings({ onboardingCompleted: true });
-      }
-    };
-  }, []);
+  const { step, goTo, finish, veteran, recalState, onRecalibrate } = useOnboardingFlow();
 
   const id = STEPS[step];
   return (

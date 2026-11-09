@@ -1,19 +1,13 @@
 import { eos, layout, space } from '@tac/core/tokens';
-import { useRef, useState, type ComponentRef } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, type TextInput } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { feel } from '@/feel';
 import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton } from '@/ui';
 import { AuthSwitch } from './AuthSwitch';
 import { DevMenuButton } from './DevMenuButton';
-import { login } from './session';
-import { loginErrorKey, useAuthT } from './strings';
-import { useShake } from './useShake';
-
-type TextInputHandle = ComponentRef<typeof TextInput>;
+import { useLoginForm } from './useLoginForm';
 
 /**
  * Minimal Phase 2 login (inventory "Login screen"). The welcome pager and
@@ -21,39 +15,11 @@ type TextInputHandle = ComponentRef<typeof TextInput>;
  * swaps the stack to (app); this screen never navigates itself.
  */
 export function LoginScreen() {
-  const t = useAuthT();
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const passwordRef = useRef<TextInputHandle>(null);
+  const { t, nickname, setNickname, password, setPassword, error, loading, submit, passwordRef, shakeStyle } = useLoginForm();
   // React 19 passes `ref` as a plain prop and Input spreads its rest props
   // onto the TextInput, so this reaches it; InputProps just doesn't declare
   // `ref` yet (reported to the src/ui owner).
   const passwordRefProp = { ref: passwordRef } as object;
-  const { style: shakeStyle, shake } = useShake();
-
-  const fail = (key: string) => {
-    setError(t(key));
-    feel.emit('formError');
-    shake();
-  };
-
-  const submit = async () => {
-    if (loading) return;
-    if (!nickname || !password) {
-      fail('auth.err_required');
-      return;
-    }
-    setError(null);
-    setLoading(true);
-    try {
-      await login(nickname, password);
-    } catch (e) {
-      fail(loginErrorKey(e));
-      setLoading(false);
-    }
-  };
 
   return (
     <SafeAreaView style={styles.root} testID="login-screen">
@@ -76,10 +42,7 @@ export function LoginScreen() {
                 accessibilityLabel={t('auth.nickname')}
                 label={t('auth.nickname')}
                 value={nickname}
-                onChangeText={(v) => {
-                  setNickname(v);
-                  if (error) setError(null);
-                }}
+                onChangeText={setNickname}
                 textContentType="username"
                 autoComplete="username"
                 autoCapitalize="none"
@@ -96,10 +59,7 @@ export function LoginScreen() {
                 accessibilityLabel={t('auth.password')}
                 label={t('auth.password')}
                 value={password}
-                onChangeText={(v) => {
-                  setPassword(v);
-                  if (error) setError(null);
-                }}
+                onChangeText={setPassword}
                 returnKeyType="go"
                 onSubmitEditing={() => void submit()}
                 error={error}

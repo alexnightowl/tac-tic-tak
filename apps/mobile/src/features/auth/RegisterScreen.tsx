@@ -1,20 +1,14 @@
-import { nicknameRules, passwordRules, registerFormValid, type RuleRow } from '@tac/core/validation';
+import type { RuleRow } from '@tac/core/validation';
 import { eos, layout, space } from '@tac/core/tokens';
-import { useEffect, useRef, useState, type ComponentRef } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, type TextInput } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
-import { feel } from '@/feel';
-import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton, useLang } from '@/ui';
+import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton } from '@/ui';
 import { AuthSwitch } from './AuthSwitch';
 import { DevMenuButton } from './DevMenuButton';
-import { register } from './session';
-import { loginErrorKey, useAuthT } from './strings';
-import { useShake } from './useShake';
-
-type TextInputHandle = ComponentRef<typeof TextInput>;
+import { useRegisterForm } from './useRegisterForm';
 
 /**
  * Register (web /register): nickname + password + repeat with the live rule
@@ -22,50 +16,8 @@ type TextInputHandle = ComponentRef<typeof TextInput>;
  * rule is met, like the web. Success signs in and the guard swaps to (app).
  */
 export function RegisterScreen() {
-  const t = useAuthT();
-  const { lang } = useLang();
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeat, setRepeat] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const passwordRef = useRef<TextInputHandle>(null);
-  const repeatRef = useRef<TextInputHandle>(null);
-  const { style: shakeStyle, shake } = useShake();
-
-  const nickRows = nicknameRules(nickname);
-  const pwRows: RuleRow<string>[] = [
-    ...passwordRules(password),
-    { id: 'match', met: repeat.length > 0 && repeat === password, labelKey: 'auth.rule_pw_match' },
-  ];
-  const valid = registerFormValid({ nickname, password, repeat });
-
-  // One light tick each time another rule turns green (PLAN Phase 4).
-  const metCount = [...nickRows, ...pwRows].filter((r) => r.met && (r.id !== 'chars' && r.id !== 'doubles' || nickname.length > 0)).length;
-  const lastMet = useRef(metCount);
-  useEffect(() => {
-    if (metCount > lastMet.current) feel.emit('toggle');
-    lastMet.current = metCount;
-  }, [metCount]);
-
-  const edit = (set: (v: string) => void) => (v: string) => {
-    set(v);
-    if (error) setError(null);
-  };
-
-  const submit = async () => {
-    if (loading || !valid) return;
-    setError(null);
-    setLoading(true);
-    try {
-      await register(nickname, password, repeat, lang);
-    } catch (e) {
-      setError(t(loginErrorKey(e)));
-      feel.emit('formError');
-      shake();
-      setLoading(false);
-    }
-  };
+  const { t, nickname, setNickname, password, setPassword, repeat, setRepeat, nickRows, pwRows, valid, error, loading, submit, passwordRef, repeatRef, shakeStyle } =
+    useRegisterForm();
 
   return (
     <SafeAreaView style={styles.root} testID="register-screen">
@@ -88,7 +40,7 @@ export function RegisterScreen() {
                 accessibilityLabel={t('auth.nickname')}
                 label={t('auth.nickname')}
                 value={nickname}
-                onChangeText={edit(setNickname)}
+                onChangeText={setNickname}
                 textContentType="username"
                 autoComplete="username-new"
                 autoCapitalize="none"
@@ -106,7 +58,7 @@ export function RegisterScreen() {
                 accessibilityLabel={t('auth.password')}
                 label={t('auth.password')}
                 value={password}
-                onChangeText={edit(setPassword)}
+                onChangeText={setPassword}
                 kind="new"
                 returnKeyType="next"
                 onSubmitEditing={() => repeatRef.current?.focus()}
@@ -118,7 +70,7 @@ export function RegisterScreen() {
                 accessibilityLabel={t('auth.repeat')}
                 label={t('auth.repeat')}
                 value={repeat}
-                onChangeText={edit(setRepeat)}
+                onChangeText={setRepeat}
                 kind="new"
                 returnKeyType="go"
                 onSubmitEditing={() => void submit()}
