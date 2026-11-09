@@ -27,4 +27,9 @@ export const queryKeys = {
   friendshipWith: (nickname: string) => ['friendship-with', nickname] as const,
   achievements: () => ['achievements'] as const,
   experience: () => ['experience'] as const,
+  /** D40 haste card; under ['analytics'] so a finished session refreshes it. */
+  haste: (days: number) => ['analytics', 'haste', days] as const,
+  /** D40 daily plan for a style since the player's local midnight. */
+  planToday: (style: TrainingStyle, since: string) => ['plan-today', style, since] as const,
+  planTodayAll: () => ['plan-today'] as const,
 } as const;

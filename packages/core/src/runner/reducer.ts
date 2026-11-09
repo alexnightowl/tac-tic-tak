@@ -5,9 +5,9 @@ import { Chess } from 'chess.js';
 import type { Square } from '../board';
 import { initPuzzle, parseUci, uciFromMove, type ServerPuzzle } from '../puzzle';
 import { moveFeelEvent } from '../feel';
-import { isTrainingStyle, type TrainingStyle } from '../rules';
+import { isHasty, isTrainingStyle, type TrainingStyle } from '../rules';
 import type {
-  ApiEffect, AttemptResponse, FinishResponse, LastMove, MoveFeel, NextResponse, PendingAnim,
+  ApiEffect, AttemptResponse, FinishResponse, LastMove, MoveFeel, NextResponse, PendingAnim, PendingAttempt,
   RunnerConfig, RunnerEffect, RunnerEvent, RunnerState, SessionAggregates, TimerId, Transition,
 } from './types';
 
@@ -46,10 +46,13 @@ export function createRunner(config: RunnerConfig): RunnerState {
     lastMove: null,
     remaining: [],
     turnStartedAt: null,
+    moveStartedAt: null,
     anim: null,
-    counters: { solved: 0, failed: 0, totalResponseMs: 0, peakRating: 0 },
+    counters: { solved: 0, failed: 0, totalResponseMs: 0, peakRating: 0, hasty: 0 },
     streak: 0,
     streakBroken: null,
+    hastyRun: 0,
+    hasteNudge: null,
     timers: {},
     seq: 0,
     pendingAttempt: null,
@@ -172,6 +175,7 @@ function loadPuzzle(tx: Tx, r: NextResponse): boolean {
   s.remaining = init.remaining;
   s.lastMove = null;
   s.turnStartedAt = null;
+  s.moveStartedAt = null;
   s.pendingAttempt = null;
   s.attemptDone = false;
   s.nextReqId = null;
@@ -208,6 +212,7 @@ type RunnerEffectPromotion = Extract<RunnerEffect, { type: 'animate' }>['promoti
 function startTurn(tx: Tx) {
   tx.s.phase = 'playerTurn';
   tx.s.turnStartedAt = tx.at;
+  tx.s.moveStartedAt = tx.at;
   if (!tx.s.paused) tx.interactive(true);
 }
 
@@ -224,17 +229,40 @@ function applyFirst(tx: Tx, r: NextResponse) {
 
 // ─── Attempt ────────────────────────────────────────────────────────────
 
+const clampMs = (ms: number) => Math.min(MAX_RESPONSE_MS, Math.max(0, Math.round(ms)));
+
+/** Haste (D40): hasty mistakes in a row that trigger the one-time nudge. */
+export const HASTE_NUDGE_RUN = 2;
+
+/** The /attempt body of a pending attempt (mistakeMs only on a wrong one). */
+function attemptPayload(s: RunnerState, a: Pick<PendingAttempt, 'puzzleId' | 'correct' | 'responseMs' | 'mistakeMs'>) {
+  return {
+    sessionId: s.sessionId,
+    puzzleId: a.puzzleId,
+    correct: a.correct,
+    responseMs: a.responseMs,
+    ...(a.mistakeMs != null ? { mistakeMs: a.mistakeMs } : null),
+  };
+}
+
 /** web afterAttempt(): counters, feel, optimistic streak, POST /attempt. */
 function resolve(tx: Tx, correct: boolean, square: Square) {
   const s = tx.s;
   const p = s.puzzle!;
-  const responseMs = Math.min(MAX_RESPONSE_MS, Math.max(0, Math.round(tx.at - (s.turnStartedAt ?? tx.at))));
+  const responseMs = clampMs(tx.at - (s.turnStartedAt ?? tx.at));
+  // Haste (D40): the thinking time on the move that went wrong.
+  const mistakeMs = correct ? undefined : clampMs(tx.at - (s.moveStartedAt ?? s.turnStartedAt ?? tx.at));
+  const hasty = mistakeMs != null && s.style != null && isHasty(s.style, mistakeMs);
   s.counters = {
     solved: s.counters.solved + (correct ? 1 : 0),
     failed: s.counters.failed + (correct ? 0 : 1),
     totalResponseMs: s.counters.totalResponseMs + responseMs,
     peakRating: correct ? Math.max(s.counters.peakRating, p.rating) : s.counters.peakRating,
+    hasty: (s.counters.hasty ?? 0) + (hasty ? 1 : 0),
   };
+  s.hastyRun = hasty ? s.hastyRun + 1 : 0;
+  if (hasty && s.hastyRun >= HASTE_NUDGE_RUN && !s.hasteNudge) s.hasteNudge = { mistakeMs: mistakeMs!, at: tx.at };
+  s.moveStartedAt = null;
   s.phase = 'resolving';
   tx.interactive(false);
   if (correct) {
@@ -253,8 +281,9 @@ function resolve(tx: Tx, correct: boolean, square: Square) {
   }
   s.streak = correct ? s.streak + 1 : 0;
   if (correct && s.streak >= 2) tx.feel('streakUp', { streak: s.streak });
-  const reqId = tx.api('attempt', { sessionId: s.sessionId, puzzleId: p.id, correct, responseMs });
-  s.pendingAttempt = { puzzleId: p.id, correct, responseMs, square, reqId };
+  const attempt = { puzzleId: p.id, correct, responseMs, ...(mistakeMs != null ? { mistakeMs } : null) };
+  const reqId = tx.api('attempt', attemptPayload(s, attempt));
+  s.pendingAttempt = { ...attempt, square, reqId };
   s.attemptDone = false;
 }
 
@@ -293,7 +322,7 @@ function beginFinish(tx: Tx, save: boolean) {
   if (save && s.pendingAttempt) {
     const a = s.pendingAttempt;
     if (a.reqId == null) {
-      s.pendingAttempt = { ...a, reqId: tx.api('attempt', { sessionId: s.sessionId, puzzleId: a.puzzleId, correct: a.correct, responseMs: a.responseMs }) };
+      s.pendingAttempt = { ...a, reqId: tx.api('attempt', attemptPayload(s, a)) };
     }
     s.finishQueued = { save };
     // The clock is over: drop the overlay so a resume can't restart it.
@@ -369,6 +398,7 @@ function resume(tx: Tx, source: 'user' | 'foreground') {
   s.pausedAt = null;
   // Thinking time counts active time only (web resume()).
   if (s.turnStartedAt != null) s.turnStartedAt += pausedFor;
+  if (s.moveStartedAt != null) s.moveStartedAt += pausedFor;
   s.endsAt = tx.at + (s.pausedRemainingMs ?? 0);
   s.pausedRemainingMs = null;
   for (const id of Object.keys(s.timers) as TimerId[]) {
@@ -388,7 +418,7 @@ function resume(tx: Tx, source: 'user' | 'foreground') {
   } else if (s.pendingAttempt && s.pendingAttempt.reqId == null) {
     // Restored from a snapshot before its /attempt landed: send it again.
     const a = s.pendingAttempt;
-    s.pendingAttempt = { ...a, reqId: tx.api('attempt', { sessionId: s.sessionId, puzzleId: a.puzzleId, correct: a.correct, responseMs: a.responseMs }) };
+    s.pendingAttempt = { ...a, reqId: tx.api('attempt', attemptPayload(s, a)) };
   } else if (s.phase === 'loadingNext' && s.nextReqId == null && !s.timers.nextRetry) {
     requestNext(tx);
   } else if (s.phase === 'playerTurn') {
@@ -411,8 +441,10 @@ function land(tx: Tx, a: PendingAnim) {
     // (the web waited forever on an empty `remaining`).
     resolve(tx, true, a.lastMove.to);
   } else {
-    // The thinking-time anchor stays at the setup landing (web attemptStart).
+    // The thinking-time anchor stays at the setup landing (web attemptStart);
+    // the haste clock restarts: this move's turn begins now.
     s.phase = 'playerTurn';
+    s.moveStartedAt = tx.at;
     tx.interactive(true);
   }
 }

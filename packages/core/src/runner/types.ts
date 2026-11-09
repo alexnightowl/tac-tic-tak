@@ -136,6 +136,8 @@ export type PendingAttempt = {
   puzzleId: string;
   correct: boolean;
   responseMs: number;
+  /** Haste (D40): a wrong attempt's thinking time on the move that went wrong. */
+  mistakeMs?: number;
   square: Square;
   /** In-flight request id; null when restored from a snapshot and not yet re-sent. */
   reqId: number | null;
@@ -146,6 +148,8 @@ export type RunnerCounters = {
   failed: number;
   totalResponseMs: number;
   peakRating: number;
+  /** Haste (D40): wrong attempts made faster than hasteMs(style). */
+  hasty: number;
 };
 
 export type RunnerResult =
@@ -186,12 +190,24 @@ export type RunnerState = {
   remaining: string[];
   /** When the player's turn on this puzzle started (thinking time anchor). */
   turnStartedAt: number | null;
+  /**
+   * Haste (D40): when the player's turn on the current MOVE started (the
+   * setup landing, then each opponent reply landing). Shifted on resume.
+   */
+  moveStartedAt: number | null;
   anim: PendingAnim | null;
 
   counters: RunnerCounters;
   streak: number;
   /** Length of a just-broken streak (≥ 2), shown ~700 ms. */
   streakBroken: number | null;
+  /** Haste (D40): hasty mistakes in a row (a solve or a calm mistake resets it). */
+  hastyRun: number;
+  /**
+   * Haste (D40): the one-time "slow down" nudge, set on the second hasty
+   * mistake in a row (its mistakeMs and when). Stays set: once per session.
+   */
+  hasteNudge: { mistakeMs: number; at: number } | null;
 
   // Flow.
   timers: Partial<Record<TimerId, TimerSlot>>;
@@ -254,7 +270,7 @@ export type RunnerEvent = RunnerEventInput & At;
 
 export type ApiEffect =
   | { type: 'api'; call: 'next'; reqId: number; payload: { sessionId: string } }
-  | { type: 'api'; call: 'attempt'; reqId: number; payload: { sessionId: string; puzzleId: string; correct: boolean; responseMs: number } }
+  | { type: 'api'; call: 'attempt'; reqId: number; payload: { sessionId: string; puzzleId: string; correct: boolean; responseMs: number; mistakeMs?: number } }
   /** The interpreter appends localDate = formatLocalDate(new Date()) at send time. */
   | { type: 'api'; call: 'finish'; reqId: number; payload: { sessionId: string; save: boolean } }
   | { type: 'api'; call: 'detail'; reqId: number; payload: { sessionId: string } };

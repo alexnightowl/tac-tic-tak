@@ -31,9 +31,15 @@ export type RunnerSnapshot = {
   remaining: string[];
   /** Thinking time already spent on this puzzle. */
   turnElapsedMs: number;
+  /** Haste (D40): thinking time already spent on the current move (absent in older snapshots). */
+  moveElapsedMs?: number;
+  /** Older snapshots have no `hasty` counter. */
   counters: RunnerCounters;
   streak: number;
-  pendingAttempt: { puzzleId: string; correct: boolean; responseMs: number; square: Square } | null;
+  /** Haste (D40): hasty mistakes in a row, and whether the nudge was shown (absent in older snapshots). */
+  hastyRun?: number;
+  hasteNudged?: boolean;
+  pendingAttempt: { puzzleId: string; correct: boolean; responseMs: number; mistakeMs?: number; square: Square } | null;
   savedAt: number;
 };
 
@@ -86,10 +92,19 @@ export function toSnapshot(s: RunnerState, at: number): RunnerSnapshot | null {
     lastMove,
     remaining,
     turnElapsedMs: s.turnStartedAt != null ? Math.max(0, clock - s.turnStartedAt) : 0,
+    moveElapsedMs: s.moveStartedAt != null ? Math.max(0, clock - s.moveStartedAt) : 0,
     counters: s.counters,
     streak: s.streak,
+    hastyRun: s.hastyRun,
+    hasteNudged: s.hasteNudge != null,
     pendingAttempt: s.pendingAttempt
-      ? { puzzleId: s.pendingAttempt.puzzleId, correct: s.pendingAttempt.correct, responseMs: s.pendingAttempt.responseMs, square: s.pendingAttempt.square }
+      ? {
+          puzzleId: s.pendingAttempt.puzzleId,
+          correct: s.pendingAttempt.correct,
+          responseMs: s.pendingAttempt.responseMs,
+          ...(s.pendingAttempt.mistakeMs != null ? { mistakeMs: s.pendingAttempt.mistakeMs } : null),
+          square: s.pendingAttempt.square,
+        }
       : null,
     savedAt: at,
   };
@@ -126,8 +141,12 @@ export function restoreRunner(snap: RunnerSnapshot, config: Extract<RunnerConfig
     lastMove: snap.lastMove,
     remaining: snap.remaining,
     turnStartedAt: snap.stage === 'turn' ? at - snap.turnElapsedMs : null,
-    counters: snap.counters,
+    moveStartedAt: snap.stage === 'turn' ? at - (snap.moveElapsedMs ?? snap.turnElapsedMs) : null,
+    counters: { ...snap.counters, hasty: snap.counters.hasty ?? 0 },
     streak: snap.streak,
+    hastyRun: snap.hastyRun ?? 0,
+    // Already shown before the kill (once per session): `at` 0 never shows again.
+    hasteNudge: snap.hasteNudged ? { mistakeMs: 0, at: 0 } : null,
     timers: { timeUp: { ms: snap.remainingMs, dueAt: null } },
     pendingAttempt: snap.pendingAttempt ? { ...snap.pendingAttempt, reqId: null } : null,
     attemptDone: snap.stage === 'next',

@@ -99,6 +99,8 @@ export type CreateSessionBody = {
   ruleset?: 'v2';
   /** D40 trainers: 'blind' (casual / theme only) or 'plan' (the daily plan). */
   variant?: 'blind' | 'plan';
+  /** D40: 1–3 theme slugs (mode 'theme'); puzzles come from any of them. */
+  themes?: string[];
 };
 
 /** POST /sessions/:id/next, and `firstPuzzle` of POST /sessions. */
@@ -123,7 +125,13 @@ export type CreateSessionResponse = {
   firstPuzzle: NextResponse | null;
 };
 
-export type AttemptBody = { puzzleId: string; correct: boolean; responseMs: number };
+export type AttemptBody = {
+  puzzleId: string;
+  correct: boolean;
+  responseMs: number;
+  /** Haste (D40): on a wrong attempt, the thinking time on the move that went wrong. */
+  mistakeMs?: number;
+};
 export type AttemptResponse = { newRating: number; step: number; streak: number };
 
 export type FinishQuery = {
@@ -264,3 +272,49 @@ export type WoodpeckerPuzzle = {
 export type WoodpeckerSet = WoodpeckerSetSummary & { puzzles: WoodpeckerPuzzle[] };
 
 export type CreateWoodpeckerSetBody = { size: WoodpeckerSize; difficulty: WoodpeckerDifficulty; style: TrainingStyle };
+
+// ---- haste (D40): GET /analytics/haste ----
+
+export type HasteCounts = {
+  mistakes: number;
+  hasty: number;
+  /** 0..1; 0 when there were no mistakes. */
+  share: number;
+};
+
+export type HasteResponse = {
+  /** Per style: a mistake faster than this is hasty (bullet 1500, blitz 3600, rapid 9000). */
+  thresholdsMs: Record<TrainingStyle, number>;
+  days: number;
+  /** The last `days`. */
+  total: HasteCounts;
+  /** The `days` before that (the trend). */
+  previous: HasteCounts;
+  /** Only styles with mistakes. */
+  byStyle: Array<{ style: TrainingStyle } & HasteCounts>;
+  /** The last 8 weeks, oldest first, zeros included (weekStart: Monday, 'YYYY-MM-DD', UTC). */
+  weeks: Array<{ weekStart: string } & HasteCounts>;
+};
+
+// ---- daily plan (D40): GET /plan/today ----
+
+export type PlanTheme = {
+  slug: string;
+  attempts: number;
+  /** 0..1; null when never played. */
+  accuracy: number | null;
+  reason: 'weak' | 'new';
+};
+
+export type PlanToday = {
+  style: TrainingStyle;
+  /** 3 (the weakest motif themes; 'new' ones fill a thin history). Fixed for the day once started. */
+  themes: PlanTheme[];
+  durationSec: number;
+  /** The style's level − 50: what the session starts at. */
+  startRating: number;
+  /** A finished plan session started since `since`. */
+  done: boolean;
+  /** Today's latest plan session. */
+  session: { id: string; solved: number; failed: number; accuracy: number } | null;
+};
