@@ -31,6 +31,11 @@ export const DESKTOP_ROUTES: readonly Entry[] = [
   { re: /^\/sessions\/[^/]+\/review$/, chrome: 'compact' },
   { re: /^\/(course\/(solve|exam)|library\/solve)$/, chrome: 'compact' },
   // ── review, learn, courses, books ──
+  { re: /^\/learn$/, chrome: 'full' },
+  { re: /^\/review$/, chrome: 'full' },
+  { re: /^\/course\/intro$/, chrome: 'full' },
+  { re: /^\/course\/(?!solve$|exam$|done$|result$|certificate$)[^/]+$/, chrome: 'full' },
+  { re: /^\/library\/(?!solve$|done$)[^/]+$/, chrome: 'full' },
   // ── league, stats, achievements ──
   { re: /^\/rivals$/, chrome: 'full' },
   { re: /^\/stats$/, chrome: 'full' },
