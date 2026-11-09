@@ -115,9 +115,16 @@ export class WoodpeckerService {
     return new Map(rows.map((r) => [r.id, r.rating]));
   }
 
-  /** Random good puzzles in [min, max] the player has never been shown. */
+  /**
+   * Random good puzzles in [min, max] the player has never been shown.
+   * Without parallel workers: a one-off scan of ~60k rows doesn't need
+   * them, and their shared-memory segments are what runs out first in the
+   * docker Postgres when sessions preload at the same time.
+   */
   private async pick(userId: string, min: number, max: number, count: number, taken: string[]): Promise<string[]> {
-    const rows = await this.prisma.$queryRaw<{ id: string }[]>`
+    const [, rows] = await this.prisma.$transaction([
+      this.prisma.$executeRaw`SET LOCAL max_parallel_workers_per_gather = 0`,
+      this.prisma.$queryRaw<{ id: string }[]>`
       SELECT p."id"
       FROM "Puzzle" p
       WHERE p."rating" BETWEEN ${min} AND ${max}
@@ -129,7 +136,8 @@ export class WoodpeckerService {
         AND NOT (p."id" = ANY(${taken}::text[]))
       ORDER BY random()
       LIMIT ${count}
-    `;
+    `,
+    ]);
     return rows.map((r) => r.id);
   }
 }
