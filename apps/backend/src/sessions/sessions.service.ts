@@ -64,14 +64,15 @@ export class SessionsService {
     // call calibration "done" at a rating that doesn't reflect their
     // real strength. UI hides the picker during calibration too — this
     // is the belt to that suspenders.
-    // Play v2 rated sessions always start at the player's rating (no
-    // slider, no norm cap); casual and theme sessions are unrated.
+    // Play v2 rated sessions always start at the player's level (D39:
+    // the level is the only number; the in-session difficulty starts
+    // from it every time); casual and theme sessions are unrated.
     const unrated = isUnrated(dto.mode);
     const v2 = dto.ruleset === 'v2';
     const calibrating = !unrated && !v2 && styleRow.calibrationSessionsLeft > 0;
     let startRating = dto.startRating;
     if (v2 && !unrated) {
-      startRating = styleRow.currentPuzzleRating;
+      startRating = styleRow.level ?? initialLevel(styleRow.currentPuzzleRating, styleRow.unlockedStartRating);
     } else if (calibrating) {
       const win = await this.calibrationWindow(userId, dto.style, styleRow);
       startRating = calibrationProbe(win.attempts, win.anchor, win.lastStart);

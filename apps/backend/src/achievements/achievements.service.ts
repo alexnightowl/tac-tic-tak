@@ -35,7 +35,7 @@ export class AchievementsService {
       }),
       this.prisma.trainingSession.findMany({
         where: { userId, endedAt: { not: null } },
-        select: { style: true, peakRating: true },
+        select: { style: true },
       }),
       this.prisma.trainingAttempt.count({ where: { userId, correct: true } }),
       this.prisma.userStyleProgression.findMany({
@@ -45,6 +45,7 @@ export class AchievementsService {
           calibrationSessionsLeft: true,
           unlockedStartRating: true,
           startPuzzleRating: true,
+          level: true,
         },
       }),
       this.prisma.friendship.count({
@@ -60,11 +61,11 @@ export class AchievementsService {
     }
 
     const styleSet = new Set<string>();
+    for (const s of sessions) styleSet.add(s.style);
+    // D39: the level is the player's only number, so the "peak" achievements
+    // follow the best level reached in any style, not an in-session peak.
     let bestPeak = 0;
-    for (const s of sessions) {
-      styleSet.add(s.style);
-      if (s.peakRating > bestPeak) bestPeak = s.peakRating;
-    }
+    for (const p of progressions) if (p.level != null && p.level > bestPeak) bestPeak = p.level;
 
     return {
       settings: user.settings

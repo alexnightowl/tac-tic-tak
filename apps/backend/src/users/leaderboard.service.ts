@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { TRAINING_STYLES, TrainingStyle } from '../sessions/unlock';
+import { initialLevel } from '../sessions/progress';
 
 const DEFAULT_LIMIT = 100;
 /** The weekly league's clock: weeks start Monday 00:00 Kyiv time ('Europe/Kiev' is in every tzdata). */
@@ -40,14 +41,18 @@ export class LeaderboardService {
         style,
         ...(userIds ? { userId: { in: userIds } } : {}),
       },
-      orderBy: [{ currentPuzzleRating: 'desc' }, { updatedAt: 'asc' }],
+      // D39: players are ranked by their level; a progression that never
+      // finished a v2 session has none yet and sorts by its rating after.
+      orderBy: [{ level: { sort: 'desc', nulls: 'last' } }, { currentPuzzleRating: 'desc' }, { updatedAt: 'asc' }],
       take: limit,
       include: { user: { select: USER_SELECT } },
     });
 
     return rows.map((r, i) => ({
       rank: i + 1,
-      rating: r.currentPuzzleRating,
+      // The level (D39); the field keeps its name for the clients.
+      rating: r.level ?? initialLevel(r.currentPuzzleRating, r.unlockedStartRating),
+      level: r.level ?? initialLevel(r.currentPuzzleRating, r.unlockedStartRating),
       unlocked: r.unlockedStartRating,
       isSelf: r.userId === opts.viewerId,
       streakDays: r.user.streakDays,

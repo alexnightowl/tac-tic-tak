@@ -18,7 +18,23 @@ describe('pace (D37)', () => {
 
   it('never blocks the guard or a level-down', () => {
     const r = evaluateLevel(1600, 1520, 1, { solved: 0, target: 16 });
-    expect(r).toMatchObject({ after: 1500, down: true, paceHeld: false });
+    expect(r).toMatchObject({ after: 1575, down: true, paceHeld: false });
+  });
+});
+
+describe('level norm (D39)', () => {
+  it('rises only from +50, to the 25-grid mark reached (jumps allowed)', () => {
+    expect(evaluateLevel(1600, 1649, 0).after).toBe(1600);
+    expect(evaluateLevel(1600, 1650, 0).after).toBe(1650);
+    expect(evaluateLevel(1600, 1712, 0).after).toBe(1700);
+    expect(evaluateLevel(1600, 1712, 0).next).toBe(1750);
+  });
+
+  it('drops 25 after two sessions in a row under level − 50', () => {
+    const first = evaluateLevel(1600, 1540, 0);
+    expect(first).toMatchObject({ after: 1600, guardAfter: 1, down: false });
+    expect(evaluateLevel(1600, 1400, 1)).toMatchObject({ after: 1575, guardAfter: 0, down: true });
+    expect(evaluateLevel(1600, 1560, 1)).toMatchObject({ after: 1600, guardAfter: 0 });
   });
 
   it('measures the speed bonus by style', () => {
