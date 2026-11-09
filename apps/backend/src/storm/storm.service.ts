@@ -14,8 +14,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ExperienceService } from '../experience/experience.service';
 import { OfflineService } from '../offline/offline.service';
 import { PuzzleBufferService } from '../puzzles/puzzle-buffer.service';
-import { trainingXp } from '../sessions/progress';
-import { initialLevel } from '../sessions/progress';
+import { initialLevel, trainingXp } from '../sessions/progress';
 import {
   ChallengeCreateDto,
   STORM_LIVES,
