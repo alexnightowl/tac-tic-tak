@@ -287,7 +287,8 @@ function ExamRunner({ course, cycle }: { course: Course; cycle: number }) {
 
 // ── Shared stage ────────────────────────────────────────────────────────
 
-function ChapterStage({
+/** The chapter board screen's frame (also the Woodpecker solve board). */
+export function ChapterStage({
   testID,
   board,
   back,
@@ -373,7 +374,7 @@ function Clock({ tracker, target }: { tracker: ResultTracker; target: number | n
 }
 
 /** Hint + "show solution", or the solution stepper + Next once the solution is up. */
-function SolveFooter({
+export function SolveFooter({
   controller,
   s,
   step,
@@ -383,7 +384,7 @@ function SolveFooter({
   controller: PracticeController;
   s: PracticeState;
   step: { ply: number; maxPly: number } | null;
-  prefix: 'course' | 'library';
+  prefix: 'course' | 'library' | 'woodpecker';
   t: TFn;
 }) {
   if (step) {
@@ -437,19 +438,19 @@ function ExamSkip({ note, noteTestID, testID, disabled, onSkip, t }: { note: str
   );
 }
 
-const solveKeys = (t: TFn) => [
+export const solveKeys = (t: TFn) => [
   { keys: ['H'], label: t('dx.board.key.hint') },
   { keys: ['R'], label: t('dx.board.key.solution') },
   { keys: ['Esc'], label: t('dx.board.key.back') },
 ];
 
-const stepKeys = (t: TFn) => [
+export const stepKeys = (t: TFn) => [
   { keys: ['←', '→'], label: t('dx.board.key.browse') },
   { keys: ['Enter'], label: t('library.next') },
   { keys: ['Esc'], label: t('dx.board.key.back') },
 ];
 
-function solveHotkeys(controller: PracticeController, s: PracticeState, stepping: boolean, close: () => void): HotkeyMap {
+export function solveHotkeys(controller: PracticeController, s: PracticeState, stepping: boolean, close: () => void): HotkeyMap {
   if (stepping) {
     return {
       ArrowLeft: () => controller.dispatch({ type: 'step', delta: -1, source: 'tap' }),
@@ -466,7 +467,7 @@ function solveHotkeys(controller: PracticeController, s: PracticeState, stepping
 }
 
 /** The content isn't on this device (or still loading). */
-function Missing({ loading, text, back, testID, textTestID }: { loading: boolean; text: string; back: string; testID: string; textTestID?: string }) {
+export function Missing({ loading, text, back, testID, textTestID }: { loading: boolean; text: string; back: string; testID: string; textTestID?: string }) {
   return (
     <StageMessage testID={testID}>
       {loading ? (

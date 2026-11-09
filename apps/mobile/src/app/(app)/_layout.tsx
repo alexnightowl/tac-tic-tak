@@ -67,6 +67,7 @@ export default function AppLayout() {
         <Stack.Screen name="offline/synced" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen name="library/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="library/done" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
+        <Stack.Screen name="woodpecker/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="course/solve" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen name="course/exam" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen name="course/done" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
@@ -87,6 +88,7 @@ export default function AppLayout() {
         <Stack.Screen name="offline/index" options={{ headerShown: false }} />
         <Stack.Screen name="library/index" options={{ headerShown: false }} />
         <Stack.Screen name="library/[bookId]" options={{ headerShown: false }} />
+        <Stack.Screen name="woodpecker/index" options={{ headerShown: false }} />
         <Stack.Screen name="course/[courseId]" options={{ headerShown: false }} />
         <Stack.Screen name="course/intro" options={{ headerShown: false }} />
         <Stack.Screen name="storm/index" options={{ headerShown: false }} />

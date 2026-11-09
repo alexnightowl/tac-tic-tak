@@ -13,6 +13,7 @@ import { HAS_OFFLINE } from '@/platform/capabilities';
 import { ChallengeEntry } from '@/features/challenge/ChallengeEntry';
 import { OfflineEntry } from '@/features/offline/OfflineEntry';
 import { StormEntry } from '@/features/storm/StormEntry';
+import { WoodpeckerEntry } from '@/features/woodpecker/WoodpeckerEntry';
 import { useAppStore } from '@/stores/appStore';
 import { AppText, Card, Input, PlateButton, Segmented } from '@/ui';
 import { fontFamily } from '@/ui/fonts';
@@ -268,6 +269,7 @@ export function PlaySetupScreen() {
           )}
         </Card>
 
+        <WoodpeckerEntry />
         <StormEntry />
         <ChallengeEntry />
         <ReviewEntry />

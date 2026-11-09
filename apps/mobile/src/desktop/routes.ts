@@ -46,6 +46,9 @@ export const DESKTOP_ROUTES: readonly Entry[] = [
   { re: /^\/experience$/, chrome: 'full' },
   { re: /^\/friends$/, chrome: 'full' },
   { re: /^\/settings(\/(profile|gameplay|sound|account|about))?$/, chrome: 'full' },
+  // ── woodpecker cycles (D40): set page, solve board ──
+  { re: /^\/woodpecker$/, chrome: 'full' },
+  { re: /^\/woodpecker\/solve$/, chrome: 'compact' },
 ];
 
 /**

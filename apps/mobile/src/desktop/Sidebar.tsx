@@ -41,7 +41,7 @@ const HREF: Record<ShellTabId, string> = { home: '/', play: '/play', learn: '/le
  * Home in the artboards.
  */
 function activeTab(path: string): ShellTabId {
-  if (/^\/(play|storm|challenge|review|sessions|puzzles)(\/|$)/.test(path)) return 'play';
+  if (/^\/(play|storm|challenge|review|sessions|puzzles|woodpecker)(\/|$)/.test(path)) return 'play';
   if (/^\/(learn|course|library|offline)(\/|$)/.test(path)) return 'learn';
   if (/^\/rivals(\/|$)/.test(path)) return 'rivals';
   if (/^\/(stats|achievement)(\/|$)/.test(path)) return 'stats';

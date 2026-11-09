@@ -30,6 +30,7 @@ import { useHotkeys } from '../hotkeys';
 import { Bar, Card, Chip, DText, Hover, KeyHints, Label, Num, Seg, TextButton } from '../kit';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
+import { DxWoodpeckerCard } from '../woodpecker';
 import { DxLevelsPanel } from './DxLevelsPanel';
 import { STYLE_GLYPH } from './styleGlyph';
 import { Card2, Col, DInput, ModeLink, OptionCard, SummaryRow } from './parts';
@@ -157,6 +158,8 @@ export function DxPlay({ levelsOpen = false, onLevelsClose }: { levelsOpen?: boo
               {s.err}
             </DText>
           ) : null}
+
+          <DxWoodpeckerCard />
 
           <Label style={styles.othersLabel}>{t('dx.home.other_modes')}</Label>
           <OtherModes />

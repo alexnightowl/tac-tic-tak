@@ -45,6 +45,13 @@ export const HOTKEY_SECTIONS = [
       { label: 'dx.shell.key.close', keys: ['Esc'] },
     ],
   },
+  {
+    title: 'woodpecker.title',
+    rows: [
+      { label: 'woodpecker.key.continue_row', keys: ['Space'] },
+      { label: 'woodpecker.key.new_row', keys: ['N'] },
+    ],
+  },
 ] as const;
 
 /** The shortcut table by section, two sections a row; reused by the settings page. */
