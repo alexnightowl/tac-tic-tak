@@ -1,21 +1,10 @@
-import type { RatingPoint } from '@tac/core/charts';
-import { LEVEL_GRID, isTrainingStyle, type TrainingStyle } from '@tac/core/rules';
-
-import type { TimelinePoint } from '@/features/stats/api';
+import { LEVEL_GRID, type TrainingStyle } from '@tac/core/rules';
 
 // D39: the level is the only number a player sees at rest. Desktop helpers
 // for the screens that used to show the rating.
 
-/**
- * "Level over time": each training-style session at the difficulty it
- * started at. Rated sessions start at the level, so the line is the level.
- */
-export function toLevelPoints(timeline: TimelinePoint[] | undefined): RatingPoint[] {
-  if (!timeline) return [];
-  return timeline
-    .filter((p) => isTrainingStyle(p.style))
-    .map((p) => ({ endedAt: p.endedAt, style: p.style as TrainingStyle, rating: p.startRating }));
-}
+/** "Level over time": the shared helper (rated v2 session starts only). */
+export { toLevelPoints } from '@/features/stats/api';
 
 /**
  * Level now minus the level Home showed on the previous visit (0: unchanged
