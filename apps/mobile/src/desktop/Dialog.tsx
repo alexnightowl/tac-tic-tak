@@ -1,13 +1,20 @@
-import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { X } from 'lucide-react-native';
+import type { ReactNode } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from "react-native";
+import { X } from "lucide-react-native";
 
-import { useT } from '@/ui/lang';
-import { useHotkeys } from './hotkeys';
-import { DText, Hover } from './kit';
-import { dx } from './tokens';
+import { useT } from "@/ui/lang";
+import { useHotkeys } from "./hotkeys";
+import { Portal } from "./Portal";
+import { DText, Hover } from "./kit";
+import { dx } from "./tokens";
 
-const fixed = { position: 'fixed' } as unknown as ViewStyle;
+const fixed = { position: "fixed" } as unknown as ViewStyle;
 
 /**
  * A centred desktop dialog over the blurred scrim (DXSessionExit,
@@ -36,28 +43,50 @@ export function Dialog({
   const t = useT();
   useHotkeys({ Escape: onClose });
   return (
-    <View style={styles.root} testID={testID}>
-      <Pressable style={styles.scrim} onPress={onClose} accessibilityLabel={t('shell.menu.close')} testID={`${testID}-scrim`} />
-      <View style={[side ? styles.side : styles.card, { width }, style]} accessibilityViewIsModal>
-        {title ? (
-          <View style={styles.head}>
-            <DText serif weight={700} size={20} style={styles.flex}>
-              {title}
-            </DText>
-            <CloseButton onPress={onClose} testID={`${testID}-close`} />
-          </View>
-        ) : null}
-        {children}
+    <Portal>
+      <View style={styles.root} testID={testID}>
+        <Pressable
+          style={styles.scrim}
+          onPress={onClose}
+          accessibilityLabel={t("shell.menu.close")}
+          testID={`${testID}-scrim`}
+        />
+        <View
+          style={[side ? styles.side : styles.card, { width }, style]}
+          accessibilityViewIsModal
+        >
+          {title ? (
+            <View style={styles.head}>
+              <DText serif weight={700} size={20} style={styles.flex}>
+                {title}
+              </DText>
+              <CloseButton onPress={onClose} testID={`${testID}-close`} />
+            </View>
+          ) : null}
+          {children}
+        </View>
       </View>
-    </View>
+    </Portal>
   );
 }
 
 /** The 32 px square × in a dialog's corner. */
-export function CloseButton({ onPress, testID }: { onPress: () => void; testID: string }) {
+export function CloseButton({
+  onPress,
+  testID,
+}: {
+  onPress: () => void;
+  testID: string;
+}) {
   const t = useT();
   return (
-    <Hover testID={testID} accessibilityLabel={t('shell.menu.close')} onPress={onPress} style={styles.close} hoverStyle={styles.closeHover}>
+    <Hover
+      testID={testID}
+      accessibilityLabel={t("shell.menu.close")}
+      onPress={onPress}
+      style={styles.close}
+      hoverStyle={styles.closeHover}
+    >
       <X size={16} color={dx.ash} strokeWidth={2} />
     </Hover>
   );
@@ -65,20 +94,50 @@ export function CloseButton({ onPress, testID }: { onPress: () => void; testID: 
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  root: { ...fixed, top: 0, left: 0, right: 0, bottom: 0, zIndex: 30, alignItems: 'center', justifyContent: 'center' } as ViewStyle,
-  scrim: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: dx.scrim, backdropFilter: 'blur(3px)' } as ViewStyle,
+  root: {
+    ...fixed,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  } as ViewStyle,
+  scrim: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: dx.scrim,
+    backdropFilter: "blur(3px)",
+  } as ViewStyle,
   card: {
-    maxWidth: '92%',
+    maxWidth: "92%",
     padding: 22,
     borderRadius: 16,
     backgroundColor: dx.card,
     boxShadow: [
-      { offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: dx.cardEdge, inset: true },
-      { offsetX: 0, offsetY: 24, blurRadius: 60, spreadDistance: 0, color: dx.popShadow },
+      {
+        offsetX: 0,
+        offsetY: 0,
+        blurRadius: 0,
+        spreadDistance: 1,
+        color: dx.cardEdge,
+        inset: true,
+      },
+      {
+        offsetX: 0,
+        offsetY: 24,
+        blurRadius: 60,
+        spreadDistance: 0,
+        color: dx.popShadow,
+      },
     ],
   },
   side: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     bottom: 0,
@@ -87,13 +146,18 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderLeftColor: dx.cardEdge,
   },
-  head: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 18 },
+  head: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 18,
+  },
   close: {
     width: 32,
     height: 32,
     borderRadius: 9,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: dx.ghost,
   },
   closeHover: { backgroundColor: dx.ghostHover },
