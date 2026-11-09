@@ -439,3 +439,22 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   share their paths. The token keeps its localStorage key (`taktic.token`), so signed-in users stay
   signed in.
 - Rollback: revert the nginx commit on `main` (the Next container still runs).
+
+### D39. The level (norm) is the only number; sessions start at it (owner, 2026-11-09)
+
+- Owner: "мене не цікавить мій рейтинг взагалі, мене цікавиться тільки норма … ми в принципі повинні
+  видалити таке поняття як рейтинг … якщо юзер знаходиться на певному рівні то він як в грі повинен
+  стартувати з одного і того ж самого рівня складності"; "крок не 50 а 25, бо підняти можна на 50 а
+  опустити на 25"; "всім гравцям просто видали рейтинг, хай лишається чисто норма". Supersedes the
+  rating parts of D25.
+- Per style one level on a 25 grid. Every rated v2 session starts at it; the difficulty moves with each
+  puzzle inside the session (the Elo step) and resets to the level next session.
+- Up: a full session ending ≥ level + 50 with the style's pace (D37) → the 25-grid mark reached (jumps
+  allowed). Down: two sessions in a row ending under level − 50 → level − 25. Free play and themes
+  never touch it.
+- The UI never shows a rating for the player: the level everywhere, "Складність" for the live
+  in-session difficulty, "Пік складності" for the hardest solved puzzle, "Рівень у часі" charts.
+  The all-time board ranks by level. Peak achievements follow the best level.
+- Data: no migration; `currentPuzzleRating` stays as the internal session value (reset to the level at
+  every rated start). Existing levels (50 grid) are valid 25-grid levels.
+- PROVISIONAL: weak session = ends under level − 50 (owner fixed only the −25 step).
