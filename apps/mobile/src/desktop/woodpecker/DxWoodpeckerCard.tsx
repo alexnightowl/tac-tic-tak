@@ -39,7 +39,7 @@ export function DxWoodpeckerCard() {
       </Hover>
       {view ? (
         cycle != null ? (
-          <PlateButton testID="dx-play-woodpecker-cta" label={ctaLabel(view, t)} variant="slate" size="sm" onPress={() => openSolve(view.set.id, cycle)} />
+          <PlateButton testID="dx-play-woodpecker-cta" label={ctaLabel(view, t)} variant="slate" size="sm" onPress={() => openSolve(view.set.id, cycle)} style={styles.cta} />
         ) : null
       ) : !summary && !loading ? (
         <PlateButton
@@ -49,6 +49,7 @@ export function DxWoodpeckerCard() {
           variant="slate"
           size="sm"
           onPress={start.start}
+          style={styles.cta}
         />
       ) : null}
     </Card>
@@ -62,4 +63,6 @@ const styles = StyleSheet.create({
   main: { flex: 1, minWidth: 0, flexDirection: 'row', alignItems: 'center', gap: 14, padding: 6, borderRadius: 10 },
   mainHover: { backgroundColor: dx.ghostHover },
   bar: { marginTop: 8, maxWidth: 360 },
+  // PlateButton is inline (flex-start) by default: centre it on the row.
+  cta: { alignSelf: 'center' },
 });
