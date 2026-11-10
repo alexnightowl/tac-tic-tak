@@ -3,7 +3,7 @@
 export function DxWoodpecker(_: { setId?: string }) {
   return null;
 }
-export function DxWoodpeckerSolve(_: { setId: string; cycle: number; start: number }) {
+export function DxWoodpeckerSolve(_: { setId: string; cycle: number }) {
   return null;
 }
 export function DxWoodpeckerCard() {

@@ -4,8 +4,8 @@ import { DxWoodpecker } from '@/desktop/woodpecker';
 import { useDesktop } from '@/desktop/useDesktop';
 import { WoodpeckerScreen } from '@/features/woodpecker/SetScreen';
 
-// /woodpecker?set: a Woodpecker set (D40): the cycle, the cycles chart,
-// the blocks; without a set, the method and the create form.
+// /woodpecker?set: the Woodpecker method (D41): the set's phase, today's
+// portion, the cycles chart; without a set, the method and Start.
 export default function WoodpeckerRoute() {
   const { set } = useLocalSearchParams<{ set?: string }>();
   const desktop = useDesktop();

@@ -5,18 +5,19 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, CardRow, IconTile, ProgressBar } from '@/ui';
 import { useT } from '@/ui/lang';
-import { stateLine, useActiveSet } from './model';
+import { stateLine, stateProgress, useActiveSet } from './model';
 
 /**
- * Play's "Woodpecker cycles" row (D40; no artboard, same row as Storm and
- * Review): the active set's cycle, progress and target, or an invite to
- * make one. Opens /woodpecker.
+ * Play's "Woodpecker method" row (D41; no artboard, same row as Storm and
+ * Review): the active set's phase and today's portion, or an invite to
+ * start. Opens /woodpecker.
  */
 export function WoodpeckerEntry() {
   const t = useT();
   const { view, summary, loading } = useActiveSet();
   const title = t('woodpecker.title');
   const subtitle = view ? stateLine(view, t) : summary || loading ? ' ' : t('woodpecker.entry.invite');
+  const progress = view ? stateProgress(view) : null;
   return (
     <CardRow
       testID="play-woodpecker"
@@ -35,7 +36,7 @@ export function WoodpeckerEntry() {
         <AppText variant="caption" numberOfLines={1} style={styles.tabular} testID="play-woodpecker-state">
           {subtitle}
         </AppText>
-        {view && view.done > 0 && !view.complete ? <ProgressBar value={view.done / view.total} height={3} style={styles.bar} /> : null}
+        {progress != null ? <ProgressBar value={progress} height={3} style={styles.bar} /> : null}
       </View>
     </CardRow>
   );

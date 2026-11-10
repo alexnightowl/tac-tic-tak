@@ -1,57 +1,62 @@
 import type { WoodpeckerSet } from '@tac/core/api';
-import { WOODPECKER_DIFFICULTIES, WOODPECKER_SIZES } from '@tac/core/library';
+import { WOODPECKER_FIRST_CYCLE_DAYS, WOODPECKER_MIN_SET } from '@tac/core/library';
 import { alpha, eos, graphite, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
-import { Archive, Check, Plus } from 'lucide-react-native';
+import { Archive, BookOpen, Check, CircleHelp, ExternalLink, Flag, Plus } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { formatLocalDate } from '@tac/core/format';
-import { feel } from '@/feel';
-import { useArchiveSet } from '@/features/woodpecker/api';
-import { useCreateForm, type CreateForm } from '@/features/woodpecker/create';
+import { HOW_STEPS, openBook } from '@/features/woodpecker/About';
+import { useArchiveSet, useCloseFirstCycle } from '@/features/woodpecker/api';
+import { useStartMethod, type StartMethod } from '@/features/woodpecker/create';
 import { CycleChart } from '@/features/woodpecker/CycleChart';
-import { clock, ctaLabel, difficultyLabel, openSolve, useActiveSet, type BlockRow, type SetView } from '@/features/woodpecker/model';
+import { ctaLabel, cycleToSolve, daysText, deadlineLine, openSolve, restLine, restResult, setLine, useActiveSet, type SetView } from '@/features/woodpecker/model';
 import { toast } from '@/shell/toast/store';
 import { PlateButton } from '@/ui';
-import { useT, type TFn } from '@/ui/lang';
+import { useLang, useT, useTn } from '@/ui/lang';
 import { Dialog } from '../Dialog';
 import { useHotkeys } from '../hotkeys';
-import { Bar, Card, DText, GhostButton, Hover, KeyHints, Label, Num, Seg, StatTile, TextButton, Title } from '../kit';
-import { Card2, OptionCard, SummaryRow } from '../home/parts';
-import { colWidth, usePageWidth } from '../learn/parts';
+import { Bar, Card, DText, GhostButton, Hover, KeyHints, Label, Num, StatTile, TextButton, Title } from '../kit';
+import { SummaryRow } from '../home/parts';
 import { useTwoColumns } from '../home/useTwoColumns';
 import { DesktopPage } from '../Page';
 import { dx } from '../tokens';
 
-// /woodpecker on a desktop window (D40, no artboard; built like DXBook and
-// DXPlay): the current cycle as the hero card with Continue, the cycles
-// chart, the blocks as a grid; the right column explains the method and
-// holds the set's facts, New set and Archive. Without a set: the create
-// form in the page. Space continues, N opens New set.
+// /woodpecker on a desktop window (D41, no artboard; built like DXBook and
+// DXPlay): the method's phase as the hero card with the main button and
+// today's portion, the cycles chart; the right column has the rules, the
+// book, and the set's facts with New set and Archive. Without a set: the
+// method and Start. Space runs the main button, N starts a new set.
 
 const ASIDE = 320;
+
+type DialogKind = 'new' | 'archive' | 'close' | 'about' | null;
 
 export function DxWoodpecker({ setId }: { setId?: string }) {
   const t = useT();
   const { view, summary, loading, error, retry } = useActiveSet(setId);
-  const [dialog, setDialog] = useState<'new' | 'archive' | null>(null);
+  const [dialog, setDialog] = useState<DialogKind>(null);
+  const start = useStartMethod(view?.set.id ?? null, (set) => {
+    setDialog(null);
+    router.setParams({ set: set.id });
+  });
   // Narrow desktop windows (1024–1227) stack the right column under the page.
   const two = useTwoColumns(900);
   const back = { label: t('woodpecker.back_play'), onPress: () => (router.canGoBack() ? router.back() : router.navigate('/play' as Href)) };
+  const cycle = view ? cycleToSolve(view.status) : null;
+  const main = () => {
+    if (!view) return start.start();
+    if (cycle != null) openSolve(view.set.id, cycle);
+    else setDialog('new');
+  };
 
-  useHotkeys(
-    {
-      ' ': () => view && openSolve(view.set.id, view.next),
-      n: () => view && setDialog('new'),
-    },
-    !!view && dialog === null,
-  );
+  useHotkeys({ ' ': main, n: () => view && setDialog('new') }, !loading && dialog === null && !start.busy);
 
-  let main: ReactNode;
-  if (loading) main = <ActivityIndicator color={eos.ash} style={styles.loading} />;
+  let body: ReactNode;
+  if (loading) body = <ActivityIndicator color={eos.ash} style={styles.loading} />;
   else if (error && !view)
-    main = (
+    body = (
       <Card style={styles.state}>
         <DText size={14} color={dx.ash}>
           {t('woodpecker.load_failed')}
@@ -59,13 +64,13 @@ export function DxWoodpecker({ setId }: { setId?: string }) {
         <PlateButton testID="dx-woodpecker-retry" label={t('woodpecker.retry')} variant="slate" size="sm" onPress={retry} />
       </Card>
     );
-  else if (!summary || !view) main = <EmptyMain />;
-  else main = <SetMain view={view} two={two} />;
+  else if (!summary || !view) body = <Intro start={start} />;
+  else body = <SetMain view={view} onMain={main} onClose={() => setDialog('close')} />;
 
   const aside = (
     <>
-      <HowCard style={two ? undefined : styles.flex} />
-      {view ? <InfoCard set={view.set} onNew={() => setDialog('new')} onArchive={() => setDialog('archive')} style={two ? undefined : styles.flex} /> : null}
+      <HowCard onAbout={() => setDialog('about')} style={two ? undefined : styles.flex} />
+      {view ? <InfoCard view={view} onNew={() => setDialog('new')} onArchive={() => setDialog('archive')} style={two ? undefined : styles.flex} /> : null}
     </>
   );
 
@@ -73,76 +78,121 @@ export function DxWoodpecker({ setId }: { setId?: string }) {
     <>
       <DesktopPage title={t('woodpecker.title')} back={back} aside={two ? aside : undefined} asideWidth={ASIDE} testID="dx-woodpecker">
         <View style={styles.col}>
-          {main}
+          {body}
           {two ? null : <View style={styles.stacked}>{aside}</View>}
         </View>
       </DesktopPage>
-      {dialog === 'new' && view ? <NewSetDialog replace={view.set.id} onClose={() => setDialog(null)} /> : null}
+      {dialog === 'new' && view ? <NewDialog start={start} onClose={() => setDialog(null)} /> : null}
       {dialog === 'archive' && view ? <ArchiveDialog set={view.set} onClose={() => setDialog(null)} /> : null}
+      {dialog === 'close' && view && view.status.phase === 'first' ? <CloseDialog set={view.set} solved={view.status.solved} onClose={() => setDialog(null)} /> : null}
+      {dialog === 'about' ? <AboutDialog onClose={() => setDialog(null)} /> : null}
     </>
   );
 }
 
 // ── With a set ──────────────────────────────────────────────────────────
 
-function SetMain({ view: v, two }: { view: SetView; two: boolean }) {
+function SetMain({ view: v, onMain, onClose }: { view: SetView; onMain: () => void; onClose: () => void }) {
   const t = useT();
-  const set = v.set;
-  const avg = v.current?.avgSec ?? null;
-  const over = v.target != null && avg != null && avg > v.target;
-  const shown = v.complete ? v.nextTarget : v.target;
-  const note = v.complete
-    ? `${v.nextTarget != null ? t('woodpecker.done_note', { avg: clock(avg ?? 0), clean: v.cleanPct ?? 0, target: clock(v.nextTarget) }) : t('woodpecker.done_note_free', { avg: clock(avg ?? 0), clean: v.cleanPct ?? 0 })} ${t('woodpecker.done_rest')}`
-    : v.target != null
-      ? t('woodpecker.target_note', { target: clock(v.target) })
-      : t('woodpecker.first_note');
-  const last = v.history.filter((h) => h.complete).at(-1);
+  const tn = useTn();
+  const { lang } = useLang();
+  const s = v.status;
+  const current = v.cycles[v.cycles.length - 1];
+  let label: string;
+  let labelColor: string = dx.rose;
+  let big: ReactNode;
+  let note: string;
+  let noteColor: string = dx.ash;
+  let progress: number | null = null;
+  if (s.phase === 'first') {
+    label = t('woodpecker.first.label', { day: Math.min(s.day, WOODPECKER_FIRST_CYCLE_DAYS), of: WOODPECKER_FIRST_CYCLE_DAYS });
+    big = <BigNumber value={String(s.solved)} unit={t('woodpecker.first.solved')} />;
+    note = s.due ? t('woodpecker.first.due') : t('woodpecker.first.note');
+    progress = Math.min(1, s.day / WOODPECKER_FIRST_CYCLE_DAYS);
+  } else if (s.phase === 'cycle') {
+    label = t('woodpecker.cycle', { n: s.cycle });
+    big = <BigNumber value={String(s.done)} unit={`/ ${s.total}`} />;
+    note = deadlineLine(s, t, tn, lang);
+    if (s.daysLeft != null && s.daysLeft <= 0) noteColor = dx.rose;
+    progress = s.total ? s.done / s.total : 0;
+  } else if (s.phase === 'rest') {
+    const r = restResult(v, s, t, tn);
+    label = t('woodpecker.cycle_done', { n: s.cycle });
+    labelColor = dx.sage;
+    big = (
+      <View>
+        <Num size={40} style={styles.big}>
+          {daysText(tn, s.days)}
+        </Num>
+        <DText size={14.5} weight={700} color={r.good ? dx.sage : dx.rose} testID="dx-woodpecker-rest-result">
+          {r.text}
+        </DText>
+      </View>
+    );
+    note = restLine(s, t, tn);
+  } else {
+    label = t('woodpecker.complete.title');
+    labelColor = dx.sage;
+    big = <Flag size={34} color={dx.sage} strokeWidth={1.6} />;
+    note = `${s.days <= 1 && s.cycles >= 2 ? t('woodpecker.complete.day', { days: daysText(tn, s.days), n: s.cycles }) : t('woodpecker.complete.seven')} ${t('woodpecker.complete.next')}`;
+  }
+  const today = s.phase === 'first' || s.phase === 'cycle' ? s.today : null;
   return (
     <>
       <Card texture style={styles.hero} testID="dx-woodpecker-current">
         <View style={styles.heroTop}>
           <View style={styles.flex}>
-            <Label color={v.complete ? dx.sage : dx.rose}>{v.complete ? t('woodpecker.cycle_done', { n: v.cycle }) : t('woodpecker.cycle', { n: v.cycle })}</Label>
-            <View style={styles.bigRow}>
-              <Num size={44} style={styles.big}>{`${v.done}`}</Num>
-              <DText size={20} weight={700} color={dx.ash} tabular>{`/ ${v.total}`}</DText>
-            </View>
+            <Label color={labelColor}>{label}</Label>
+            <View style={styles.bigWrap}>{big}</View>
             <DText size={13.5} color={dx.ash} testID="dx-woodpecker-set-line">
-              {t('woodpecker.set_line', {
-                size: set.size,
-                difficulty: difficultyLabel(set.difficulty, t),
-                window: t('woodpecker.window', { min: set.ratingMin, max: set.ratingMax }),
-              })}
+              {setLine(v, t, tn)}
             </DText>
           </View>
           <View style={styles.heroCta}>
-            <PlateButton testID="dx-woodpecker-cta" label={ctaLabel(v, t, true)} size="lg" block onPress={() => openSolve(set.id, v.next)} />
+            <PlateButton
+              testID="dx-woodpecker-cta"
+              label={ctaLabel(v, t)}
+              variant={s.phase === 'rest' && s.rested === 0 ? 'slate' : undefined}
+              size="lg"
+              block
+              onPress={onMain}
+            />
             <KeyHints style={styles.hints} items={[{ keys: ['Space'], label: t('woodpecker.key.continue') }, { keys: ['N'], label: t('woodpecker.key.new') }]} />
           </View>
         </View>
-        <Bar value={v.total ? v.done / v.total : 0} style={styles.heroBar} />
-        <View style={styles.tiles}>
-          <StatTile label={t('woodpecker.stat.clean')} value={v.cleanPct != null ? `${v.cleanPct}%` : '—'} style={styles.tile} testID="dx-woodpecker-clean" />
-          <StatTile
-            label={t('woodpecker.stat.avg')}
-            value={avg != null ? clock(avg) : '—'}
-            caption={last?.speedup != null && last.cycle === v.cycle ? speedText(last.speedup, t) : undefined}
-            captionColor={last?.speedup != null && last.speedup >= 0 ? dx.sage : dx.rose}
-            style={styles.tile}
-            testID="dx-woodpecker-avg"
-          />
-          <StatTile
-            label={v.complete ? t('woodpecker.stat.next_target') : t('woodpecker.stat.target')}
-            value={shown != null ? clock(shown) : t('woodpecker.no_target')}
-            delta={!v.complete && v.target != null && avg != null ? (over ? '▲' : '✓') : undefined}
-            deltaColor={over ? dx.rose : dx.sage}
-            style={styles.tile}
-            testID="dx-woodpecker-target"
-          />
-        </View>
-        <DText size={13} lh={19} color={v.complete ? dx.sage : dx.ash} style={styles.note} testID="dx-woodpecker-note">
+        {progress != null ? <Bar value={progress} style={styles.heroBar} /> : null}
+        {today ? (
+          <View style={styles.tiles}>
+            <StatTile
+              label={s.phase === 'first' ? `${t('woodpecker.today')} · ${t('woodpecker.today.suggested')}` : t('woodpecker.today')}
+              value={`${today.done} / ${today.goal ?? 0}`}
+              delta={today.met ? '✓' : undefined}
+              deltaColor={dx.sage}
+              caption={today.met ? t('woodpecker.today.met') : undefined}
+              captionColor={dx.sage}
+              style={styles.tile}
+              testID="dx-woodpecker-today"
+            />
+            <StatTile label={t('woodpecker.stat.clean')} value={current?.cleanPct != null ? `${current.cleanPct}%` : '—'} style={styles.tile} testID="dx-woodpecker-clean" />
+          </View>
+        ) : null}
+        <DText size={13} lh={19} color={noteColor} style={styles.note} testID="dx-woodpecker-note">
           {note}
         </DText>
+        {today?.met ? (
+          <DText size={12.5} lh={18} color={dx.dust} style={styles.mt6}>
+            {t('woodpecker.today.met_sub')}
+          </DText>
+        ) : null}
+        {s.phase === 'first' ? (
+          s.canClose ? (
+            <TextButton testID="dx-woodpecker-close" label={t('woodpecker.first.close')} accessibilityLabel={t('woodpecker.first.close')} icon={Flag} size={12.5} onPress={onClose} style={styles.closeBtn} />
+          ) : (
+            <DText size={12.5} color={dx.dust} style={styles.mt10} testID="dx-woodpecker-close-min">
+              {t('woodpecker.first.close_min', { n: WOODPECKER_MIN_SET })}
+            </DText>
+          )
+        ) : null}
       </Card>
 
       <Card style={styles.pad} testID="dx-woodpecker-history">
@@ -154,110 +204,71 @@ function SetMain({ view: v, two }: { view: SetView; two: boolean }) {
           </DText>
         </View>
         <View style={styles.chart}>
-          <CycleChart bars={v.history} height={170} testID="dx-woodpecker-chart" />
+          <CycleChart cycles={v.cycles} height={170} testID="dx-woodpecker-chart" />
         </View>
       </Card>
-
-      <View style={styles.head}>
-        <Label>{t('woodpecker.blocks')}</Label>
-        <View style={styles.flex} />
-        <DText size={12.5} color={dx.dust} testID="dx-woodpecker-blocks-hint">
-          {t('woodpecker.blocks_hint', { done: v.blocks.filter((b) => b.complete).length, total: v.blocks.length })}
-        </DText>
-      </View>
-      <Blocks view={v} two={two} />
     </>
   );
 }
 
-const speedText = (pct: number, t: TFn) => (pct >= 0 ? t('woodpecker.faster', { pct }) : t('woodpecker.slower', { pct: -pct }));
-
-function Blocks({ view: v, two }: { view: SetView; two: boolean }) {
-  const w = usePageWidth(two ? ASIDE : 0);
-  const cols = w >= 760 ? 3 : 2;
-  const cw = colWidth(w, cols, 12);
+function BigNumber({ value, unit }: { value: string; unit: string }) {
   return (
-    <View style={styles.grid}>
-      {v.blocks.map((b) => (
-        <BlockTile key={b.index} b={b} width={cw} onPress={() => openSolve(v.set.id, { cycle: v.cycle, start: b.start })} />
-      ))}
+    <View style={styles.bigRow}>
+      <Num size={44} style={styles.big}>
+        {value}
+      </Num>
+      <DText size={20} weight={700} color={dx.ash} tabular>
+        {unit}
+      </DText>
     </View>
-  );
-}
-
-function BlockTile({ b, width, onPress }: { b: BlockRow; width: number; onPress: () => void }) {
-  const t = useT();
-  return (
-    <Hover
-      testID={`dx-woodpecker-block-${b.index}`}
-      accessibilityLabel={t('woodpecker.block_a11y', { n: b.index + 1, done: b.done, total: b.total })}
-      disabled={b.complete}
-      onPress={onPress}
-      style={[styles.block, { width }, b.current && styles.blockNow]}
-      hoverStyle={styles.blockHover}
-    >
-      <View style={styles.blockHead}>
-        <View style={[styles.badge, b.complete ? styles.badgeDone : b.current ? styles.badgeNow : styles.badgeLater]}>
-          {b.complete ? (
-            <Check size={14} color={dx.sage} strokeWidth={2.4} />
-          ) : (
-            <DText size={12.5} weight={800} color={b.current ? eos.bone : dx.dust}>
-              {String(b.index + 1)}
-            </DText>
-          )}
-        </View>
-        <View style={styles.flex}>
-          <DText size={14.5} weight={800}>
-            {t('woodpecker.block', { n: b.index + 1 })}
-          </DText>
-          <DText size={12} color={dx.dust}>
-            {t('woodpecker.block_range', { from: b.from, to: b.to })}
-          </DText>
-        </View>
-        <DText size={13} weight={800} tabular color={b.complete ? dx.sage : b.done > 0 ? dx.ash : dx.dust} testID={`dx-woodpecker-block-${b.index}-count`}>
-          {`${b.done}/${b.total}`}
-        </DText>
-      </View>
-      <Bar value={b.done / b.total} height={3} colors={b.complete ? [dx.dotOk, dx.sage] : undefined} style={styles.blockBar} />
-    </Hover>
   );
 }
 
 // ── Aside ───────────────────────────────────────────────────────────────
 
-function HowCard({ style }: { style?: StyleProp<ViewStyle> }) {
+function Steps() {
+  const t = useT();
+  return (
+    <View style={styles.steps}>
+      {HOW_STEPS.map((n) => (
+        <View key={n} style={styles.step}>
+          <View style={styles.stepNum}>
+            <DText size={12} weight={800} color={tone.roseSoft}>
+              {n}
+            </DText>
+          </View>
+          <DText size={13} lh={19} color={graphite[300]} style={styles.flex}>
+            {t(`woodpecker.how.${n}`)}
+          </DText>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function HowCard({ onAbout, style }: { onAbout: () => void; style?: StyleProp<ViewStyle> }) {
   const t = useT();
   return (
     <Card style={[styles.pad, style]} testID="dx-woodpecker-how">
       <Label>{t('woodpecker.how')}</Label>
-      <View style={styles.steps}>
-        {(['1', '2', '3'] as const).map((n) => (
-          <View key={n} style={styles.step}>
-            <View style={styles.stepNum}>
-              <DText size={12} weight={800} color={tone.roseSoft}>
-                {n}
-              </DText>
-            </View>
-            <DText size={13} lh={19} color={graphite[300]} style={styles.flex}>
-              {t(`woodpecker.how.${n}`)}
-            </DText>
-          </View>
-        ))}
+      <View style={styles.mt14}>
+        <Steps />
       </View>
+      <TextButton testID="dx-woodpecker-about" label={t('woodpecker.about')} accessibilityLabel={t('woodpecker.about')} icon={CircleHelp} size={12.5} onPress={onAbout} style={styles.aboutBtn} />
     </Card>
   );
 }
 
-function InfoCard({ set, onNew, onArchive, style }: { set: WoodpeckerSet; onNew: () => void; onArchive: () => void; style?: StyleProp<ViewStyle> }) {
+function InfoCard({ view: v, onNew, onArchive, style }: { view: SetView; onNew: () => void; onArchive: () => void; style?: StyleProp<ViewStyle> }) {
   const t = useT();
+  const set = v.set;
   return (
     <Card style={[styles.pad, style]} testID="dx-woodpecker-info">
       <Label>{t('woodpecker.info')}</Label>
       <View style={styles.mt6}>
-        <SummaryRow label={t('woodpecker.info.size')} value={String(set.size)} />
-        <SummaryRow label={t('woodpecker.info.difficulty')} value={difficultyLabel(set.difficulty, t)} />
+        <SummaryRow label={v.open ? t('woodpecker.info.pool') : t('woodpecker.info.size')} value={String(set.size)} />
         <SummaryRow label={t('woodpecker.info.range')} value={`${set.ratingMin}–${set.ratingMax}`} />
-        <SummaryRow label={t('woodpecker.info.style')} value={t(`style.${set.style}.name`)} />
+        <SummaryRow label={t('woodpecker.info.style')} value={`${t(`style.${set.style}.name`)} · ${set.rating}`} />
         <SummaryRow label={t('woodpecker.info.created')} value={formatLocalDate(new Date(set.createdAt))} last />
       </View>
       <GhostButton testID="dx-woodpecker-new" label={t('woodpecker.new_set')} accessibilityLabel={t('woodpecker.new_set')} icon={Plus} onPress={onNew} style={styles.mt16} />
@@ -266,102 +277,94 @@ function InfoCard({ set, onNew, onArchive, style }: { set: WoodpeckerSet; onNew:
   );
 }
 
-// ── Create ──────────────────────────────────────────────────────────────
+// ── Start ───────────────────────────────────────────────────────────────
 
-function EmptyMain() {
-  const f = useCreateForm(null, () => undefined);
-  const { t } = f;
+function Intro({ start }: { start: StartMethod }) {
+  const t = useT();
   return (
     <Card texture style={styles.pad} testID="dx-woodpecker-empty">
-      <Label color={dx.rose}>{t('woodpecker.new_set')}</Label>
+      <Label color={dx.rose}>{t('woodpecker.how')}</Label>
       <Title size={28} style={styles.mt6}>
         {t('woodpecker.title')}
       </Title>
       <DText size={14.5} lh={23} color={graphite[300]} style={styles.method}>
-        {t('woodpecker.method')}
+        {t('woodpecker.lead')}
       </DText>
-      <View style={styles.formWrap}>
-        <DxCreateForm f={f} replacing={false} />
+      <DText size={13} color={dx.dust} style={styles.mt16} testID="dx-woodpecker-from-level">
+        {`${t('woodpecker.start_note')} ${start.levelLine}`}
+      </DText>
+      {start.failed ? (
+        <DText size={13} color={tone.danger} style={styles.mt10} testID="dx-woodpecker-start-error">
+          {t('woodpecker.start_failed')}
+        </DText>
+      ) : null}
+      <View style={styles.startRow}>
+        <PlateButton
+          testID="dx-woodpecker-start"
+          label={start.busy ? t('woodpecker.starting') : t('woodpecker.start')}
+          loading={start.busy}
+          size="lg"
+          onPress={start.start}
+          style={styles.submit}
+        />
+        <KeyHints items={[{ keys: ['Space'], label: t('woodpecker.entry.start') }]} />
       </View>
     </Card>
   );
 }
 
-function DxCreateForm({ f, replacing }: { f: CreateForm; replacing: boolean }) {
-  const { t } = f;
+// ── Dialogs ─────────────────────────────────────────────────────────────
+
+function ConfirmRow({ confirm, onCancel, busy, onConfirm, testID }: { confirm: string; onCancel: () => void; busy?: boolean; onConfirm: () => void; testID: string }) {
+  const t = useT();
   return (
-    <View style={styles.form} testID="dx-woodpecker-create">
-      <View>
-        <Label style={styles.lblGap}>{t('woodpecker.size')}</Label>
-        <Seg
-          testID="dx-woodpecker-size"
-          accessibilityLabel={t('woodpecker.size')}
-          value={`${f.size}`}
-          onChange={(v) => {
-            feel.emit('segmented');
-            f.setSize(Number(v) as typeof f.size);
-          }}
-          options={WOODPECKER_SIZES.map((n) => ({ value: `${n}`, label: String(n) }))}
-          style={styles.sizeSeg}
-        />
-      </View>
-      <View>
-        <Label style={styles.lblGap}>{t('woodpecker.difficulty')}</Label>
-        <View style={styles.diffs} accessibilityRole="radiogroup" accessibilityLabel={t('woodpecker.difficulty')}>
-          {WOODPECKER_DIFFICULTIES.map((d) => (
-            <OptionCard
-              key={d}
-              testID={`dx-woodpecker-diff-${d}`}
-              title={t(`woodpecker.diff.${d}`)}
-              desc={f.windowText(d)}
-              on={f.difficulty === d}
-              onPress={() => {
-                if (f.difficulty !== d) feel.emit('segmented');
-                f.setDifficulty(d);
-              }}
-              style={styles.flex}
-            />
-          ))}
-        </View>
-        <DText size={12.5} color={dx.dust} style={styles.mt10} testID="dx-woodpecker-from-level">
-          {t('woodpecker.from_level', { style: f.styleName, level: f.level })}
-        </DText>
-      </View>
-      {replacing ? (
-        <Card2 style={styles.replace}>
-          <DText size={12.5} lh={18} color={tone.goldInk} testID="dx-woodpecker-replace-note">
-            {t('woodpecker.replace_note')}
-          </DText>
-        </Card2>
-      ) : null}
-      {f.failed ? (
-        <DText size={13} color={tone.danger} testID="dx-woodpecker-create-error">
-          {t('woodpecker.create_failed')}
-        </DText>
-      ) : null}
-      <PlateButton
-        testID="dx-woodpecker-create-submit"
-        label={f.busy ? t('woodpecker.creating') : t('woodpecker.create')}
-        loading={f.busy}
-        size="lg"
-        onPress={f.submit}
-        style={styles.submit}
-      />
+    <View style={styles.dialogRow}>
+      <GhostButton testID={`${testID}-cancel`} label={t('woodpecker.cancel')} accessibilityLabel={t('woodpecker.cancel')} height={44} onPress={onCancel} style={styles.flex} />
+      <PlateButton testID={`${testID}-confirm`} label={confirm} size="md" loading={busy} onPress={onConfirm} style={styles.flex} />
     </View>
   );
 }
 
-function NewSetDialog({ replace, onClose }: { replace: string; onClose: () => void }) {
-  const f = useCreateForm(replace, (set) => {
-    onClose();
-    router.setParams({ set: set.id });
-  });
+function NewDialog({ start, onClose }: { start: StartMethod; onClose: () => void }) {
+  const t = useT();
   return (
-    <Dialog title={f.t('woodpecker.new_set')} onClose={() => (f.busy ? undefined : onClose())} width={560} testID="dx-woodpecker-new-dialog">
-      <DText size={13.5} lh={20} color={dx.ash} style={styles.dialogText}>
-        {f.t('woodpecker.method')}
+    <Dialog title={t('woodpecker.new_title')} onClose={() => (start.busy ? undefined : onClose())} width={440} testID="dx-woodpecker-new-dialog">
+      <DText size={13.5} lh={20} color={dx.ash}>
+        {t('woodpecker.new_body')}
       </DText>
-      <DxCreateForm f={f} replacing />
+      <DText size={12.5} color={dx.dust} style={styles.mt10}>
+        {start.levelLine}
+      </DText>
+      {start.failed ? (
+        <DText size={13} color={tone.danger} style={styles.mt10}>
+          {t('woodpecker.start_failed')}
+        </DText>
+      ) : null}
+      <ConfirmRow testID="dx-woodpecker-new" confirm={start.busy ? t('woodpecker.starting') : t('woodpecker.new_set')} busy={start.busy} onCancel={onClose} onConfirm={start.start} />
+    </Dialog>
+  );
+}
+
+function CloseDialog({ set, solved, onClose }: { set: WoodpeckerSet; solved: number; onClose: () => void }) {
+  const t = useT();
+  const close = useCloseFirstCycle();
+  return (
+    <Dialog title={t('woodpecker.first.close_title')} onClose={onClose} width={440} testID="dx-woodpecker-close-dialog">
+      <DText size={13.5} lh={20} color={dx.ash}>
+        {t('woodpecker.first.close_body', { n: solved })}
+      </DText>
+      {close.isError ? (
+        <DText size={13} color={tone.danger} style={styles.mt10}>
+          {t('woodpecker.first.close_failed')}
+        </DText>
+      ) : null}
+      <ConfirmRow
+        testID="dx-woodpecker-close"
+        confirm={t('woodpecker.first.close_confirm')}
+        busy={close.isPending}
+        onCancel={onClose}
+        onConfirm={() => close.mutate(set.id, { onSuccess: onClose })}
+      />
     </Dialog>
   );
 }
@@ -374,23 +377,45 @@ function ArchiveDialog({ set, onClose }: { set: WoodpeckerSet; onClose: () => vo
       <DText size={13.5} lh={20} color={dx.ash}>
         {t('woodpecker.archive_body')}
       </DText>
+      <ConfirmRow
+        testID="dx-woodpecker-archive"
+        confirm={t('woodpecker.archive_confirm')}
+        busy={archive.isPending}
+        onCancel={onClose}
+        onConfirm={() =>
+          archive.mutate(set.id, {
+            onSuccess: () => {
+              onClose();
+              toast.show({ title: t('woodpecker.archived'), icon: Archive });
+            },
+          })
+        }
+      />
+    </Dialog>
+  );
+}
+
+function AboutDialog({ onClose }: { onClose: () => void }) {
+  const t = useT();
+  return (
+    <Dialog title={t('woodpecker.about.title')} onClose={onClose} width={560} testID="dx-woodpecker-about-dialog">
+      <View style={styles.aboutText}>
+        {(['p1', 'p2', 'p3', 'p4'] as const).map((p) => (
+          <DText key={p} size={13.5} lh={21} color={graphite[300]}>
+            {t(`woodpecker.about.${p}`)}
+          </DText>
+        ))}
+      </View>
+      <Label style={styles.mt16}>{t('woodpecker.about.book')}</Label>
+      <Hover testID="dx-woodpecker-about-book" accessibilityRole="link" accessibilityLabel={t('woodpecker.about.link_a11y')} onPress={openBook} style={styles.book} hoverStyle={styles.bookHover}>
+        <BookOpen size={18} color={tone.roseSoft} strokeWidth={1.8} />
+        <DText size={14} weight={700} style={styles.flex}>
+          {t('woodpecker.about.link')}
+        </DText>
+        <ExternalLink size={16} color={dx.ash} strokeWidth={1.8} />
+      </Hover>
       <View style={styles.dialogRow}>
-        <GhostButton testID="dx-woodpecker-archive-cancel" label={t('woodpecker.cancel')} accessibilityLabel={t('woodpecker.cancel')} height={44} onPress={onClose} style={styles.flex} />
-        <PlateButton
-          testID="dx-woodpecker-archive-confirm"
-          label={t('woodpecker.archive_confirm')}
-          size="md"
-          loading={archive.isPending}
-          onPress={() =>
-            archive.mutate(set.id, {
-              onSuccess: () => {
-                onClose();
-                toast.show({ title: t('woodpecker.archived'), icon: Archive });
-              },
-            })
-          }
-          style={styles.flex}
-        />
+        <PlateButton testID="dx-woodpecker-about-close" label={t('woodpecker.about.close')} variant="slate" size="md" icon={<Check size={16} color={eos.bone} strokeWidth={2} />} onPress={onClose} style={styles.flex} />
       </View>
     </Dialog>
   );
@@ -400,6 +425,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
   mt6: { marginTop: 6 },
   mt10: { marginTop: 10 },
+  mt14: { marginTop: 14 },
   mt16: { marginTop: 16 },
   loading: { marginTop: 80 },
   col: { gap: 16 },
@@ -408,7 +434,8 @@ const styles = StyleSheet.create({
   pad: { paddingVertical: 20, paddingHorizontal: 22 },
   hero: { paddingVertical: 22, paddingHorizontal: 24 },
   heroTop: { flexDirection: 'row', alignItems: 'flex-start', gap: 24 },
-  bigRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8, marginTop: 4, marginBottom: 2 },
+  bigWrap: { marginTop: 4, marginBottom: 4 },
+  bigRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8 },
   big: { lineHeight: 52 },
   heroCta: { width: 280, gap: 12, paddingTop: 4 },
   hints: { justifyContent: 'center' },
@@ -416,37 +443,19 @@ const styles = StyleSheet.create({
   tiles: { flexDirection: 'row', gap: 12, marginTop: 16 },
   tile: { flex: 1, minWidth: 0 },
   note: { marginTop: 14 },
+  closeBtn: { alignSelf: 'flex-start', marginTop: 10 },
   head: { flexDirection: 'row', alignItems: 'baseline', gap: 12, marginTop: 4 },
   chart: { marginTop: 28 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
-  block: {
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 14,
-    backgroundColor: dx.card,
-    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: dx.cardEdge, inset: true }],
-  },
-  blockNow: { backgroundColor: dx.pickedBg, boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1.5, color: dx.ember, inset: true }] },
-  blockHover: { backgroundColor: dx.ghostHover },
-  blockHead: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  blockBar: { marginTop: 12 },
-  badge: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
-  badgeDone: { backgroundColor: alpha(dx.sage, 0.16) },
-  badgeNow: { borderWidth: 1.5, borderColor: eos.ember },
-  badgeLater: { borderWidth: 1.5, borderColor: eos.seam },
-  steps: { gap: 12, marginTop: 14 },
+  steps: { gap: 12 },
   step: { flexDirection: 'row', gap: 12, alignItems: 'flex-start' },
   stepNum: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: alpha(eos.ember, 0.22) },
+  aboutBtn: { alignSelf: 'flex-start', marginTop: 14 },
   archive: { alignSelf: 'center', marginTop: 8 },
   method: { marginTop: 10, maxWidth: 620 },
-  formWrap: { marginTop: 24, maxWidth: 680 },
-  form: { gap: 22 },
-  lblGap: { marginBottom: 10 },
-  sizeSeg: { maxWidth: 320 },
-  diffs: { flexDirection: 'row', gap: 12 },
-  replace: { paddingVertical: 12, paddingHorizontal: 14, backgroundColor: alpha(tone.gold, 0.07) },
-  submit: { alignSelf: 'flex-start', minWidth: 240 },
-  dialogText: { marginBottom: 18 },
+  startRow: { flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 22 },
+  submit: { minWidth: 240 },
   dialogRow: { flexDirection: 'row', gap: 12, marginTop: 20 },
+  aboutText: { gap: 12 },
+  book: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 12, paddingHorizontal: 12, marginTop: 8, marginHorizontal: -12, borderRadius: 10 },
+  bookHover: { backgroundColor: dx.ghostHover },
 });
-

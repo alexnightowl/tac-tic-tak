@@ -304,6 +304,7 @@ export function ChapterStage({
   keys,
   hotkeys,
   hotkeysOn = true,
+  status,
 }: {
   testID: string;
   board: Board;
@@ -320,6 +321,8 @@ export function ChapterStage({
   keys: readonly { keys: readonly string[]; label: string }[];
   hotkeys: HotkeyMap;
   hotkeysOn?: boolean;
+  /** In place of this puzzle's clock (the Woodpecker's day portion). */
+  status?: ReactNode;
 }) {
   useHotkeys(hotkeys, hotkeysOn);
   const { controller, s, onMove, boardRef } = board;
@@ -333,7 +336,7 @@ export function ChapterStage({
             {chip.label}
           </DText>
         </View>
-        <Clock tracker={tracker} target={target} />
+        {status ?? <Clock tracker={tracker} target={target} />}
       </View>
       <Dashes looks={dashes.looks} label={dashes.label} testID={dashes.testID} />
       <TurnCard side={turn.side} title={turn.title} titleColor={turn.solved ? eos.sage : undefined} sub={turn.sub} />
@@ -380,12 +383,15 @@ export function SolveFooter({
   step,
   prefix,
   t,
+  hint = true,
 }: {
   controller: PracticeController;
   s: PracticeState;
   step: { ply: number; maxPly: number } | null;
   prefix: 'course' | 'library' | 'woodpecker';
   t: TFn;
+  /** False: "show solution" only (the Woodpecker gives no hints). */
+  hint?: boolean;
 }) {
   if (step) {
     return (
@@ -398,6 +404,21 @@ export function SolveFooter({
           t={t}
         />
         <PlateButton testID={`${prefix}-next`} label={t('library.next')} size="md" block onPress={() => controller.dispatch({ type: 'skip' })} />
+      </View>
+    );
+  }
+  if (!hint) {
+    return (
+      <View style={styles.row}>
+        <GhostButton
+          testID={`${prefix}-show-solution`}
+          label={t('library.show_solution')}
+          accessibilityLabel={t('library.show_solution')}
+          height={44}
+          disabled={s.phase !== 'playerTurn' && s.phase !== 'rewinding'}
+          onPress={() => controller.dispatch({ type: 'showSolution' })}
+          style={styles.flex}
+        />
       </View>
     );
   }
@@ -438,8 +459,8 @@ function ExamSkip({ note, noteTestID, testID, disabled, onSkip, t }: { note: str
   );
 }
 
-export const solveKeys = (t: TFn) => [
-  { keys: ['H'], label: t('dx.board.key.hint') },
+export const solveKeys = (t: TFn, hint = true) => [
+  ...(hint ? [{ keys: ['H'], label: t('dx.board.key.hint') }] : []),
   { keys: ['R'], label: t('dx.board.key.solution') },
   { keys: ['Esc'], label: t('dx.board.key.back') },
 ];
@@ -450,7 +471,7 @@ export const stepKeys = (t: TFn) => [
   { keys: ['Esc'], label: t('dx.board.key.back') },
 ];
 
-export function solveHotkeys(controller: PracticeController, s: PracticeState, stepping: boolean, close: () => void): HotkeyMap {
+export function solveHotkeys(controller: PracticeController, s: PracticeState, stepping: boolean, close: () => void, hint = true): HotkeyMap {
   if (stepping) {
     return {
       ArrowLeft: () => controller.dispatch({ type: 'step', delta: -1, source: 'tap' }),
@@ -460,7 +481,7 @@ export function solveHotkeys(controller: PracticeController, s: PracticeState, s
     };
   }
   return {
-    h: () => canHint(s) && controller.dispatch({ type: 'hint' }),
+    ...(hint ? { h: () => canHint(s) && controller.dispatch({ type: 'hint' }) } : {}),
     r: () => (s.phase === 'playerTurn' || s.phase === 'rewinding') && controller.dispatch({ type: 'showSolution' }),
     Escape: close,
   };

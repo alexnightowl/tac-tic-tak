@@ -1,47 +1,31 @@
-import type { WoodpeckerDifficulty, WoodpeckerSet, WoodpeckerSize } from '@tac/core/api';
-import { WOODPECKER_DEFAULT_DIFFICULTY, WOODPECKER_DEFAULT_SIZE, woodpeckerWindow } from '@tac/core/library';
+import type { WoodpeckerSet } from '@tac/core/api';
 import { levelFor } from '@tac/core/runner';
 import { useState } from 'react';
 
 import { readLastStyle } from '@/features/play/setupPrefs';
 import { useAppStore } from '@/stores/appStore';
 import { useT } from '@/ui/lang';
-import { useCreateSet } from './api';
+import { useStartSet } from './api';
 
-// The create form's state (phone sheet / empty state, desktop dialog):
-// size, difficulty, and the style the Play setup has picked; the window
-// shown is the one the server draws from (woodpeckerWindow in core).
+// Starting the method (phone empty state, desktop page, New set): no
+// choices (D41). The style is the one the Play setup last used; its level
+// places the pool.
 
-export function useCreateForm(replace: string | null, onCreated: (set: WoodpeckerSet) => void) {
+export function useStartMethod(replace: string | null, onStarted?: (set: WoodpeckerSet) => void) {
   const t = useT();
   const [style] = useState(readLastStyle);
   const level = levelFor(useAppStore((s) => s.progressions[style]));
-  const [size, setSize] = useState<WoodpeckerSize>(WOODPECKER_DEFAULT_SIZE);
-  const [difficulty, setDifficulty] = useState<WoodpeckerDifficulty>(WOODPECKER_DEFAULT_DIFFICULTY);
-  const create = useCreateSet();
-  const windowOf = (d: WoodpeckerDifficulty) => woodpeckerWindow(level, d);
-  const submit = () => {
-    if (create.isPending) return;
-    create.mutate({ body: { size, difficulty, style }, replace }, { onSuccess: onCreated });
-  };
+  const start = useStartSet();
   return {
-    t,
     style,
-    styleName: t(`style.${style}.name`),
     level,
-    size,
-    setSize,
-    difficulty,
-    setDifficulty,
-    windowOf,
-    windowText: (d: WoodpeckerDifficulty) => {
-      const w = windowOf(d);
-      return t('woodpecker.window', { min: w.min, max: w.max });
+    levelLine: t('woodpecker.from_level', { style: t(`style.${style}.name`), level }),
+    start: () => {
+      if (!start.isPending) start.mutate({ style, replace }, { onSuccess: onStarted });
     },
-    submit,
-    busy: create.isPending,
-    failed: create.isError,
+    busy: start.isPending,
+    failed: start.isError,
   };
 }
 
-export type CreateForm = ReturnType<typeof useCreateForm>;
+export type StartMethod = ReturnType<typeof useStartMethod>;

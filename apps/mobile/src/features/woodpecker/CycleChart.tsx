@@ -1,24 +1,26 @@
+import type { WoodpeckerCycle } from '@tac/core/library';
 import { alpha, eos, radii, tone } from '@tac/core/tokens';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/ui';
-import { useT } from '@/ui/lang';
-import { clock, type CycleBar } from './model';
+import { useT, useTn } from '@/ui/lang';
+import { daysText } from './model';
 
 /** The last cycles shown (older ones fall off the left). */
 const MAX_BARS = 8;
 
 /**
- * Average seconds a puzzle per cycle (one series, so no legend box): a
- * bar per cycle anchored at the baseline, its own target as a bone tick
- * across the bar's slot, the time above and the clean share below. The
- * cycle in progress is a paler bar. Phone set page and desktop
+ * Days a cycle (one series, so no legend box): a bar per cycle anchored
+ * at the baseline, its own target (half the days of the one before) as a
+ * bone tick across the bar's slot, the days above and the clean share
+ * below. The cycle in progress is a paler bar. Phone set page and desktop
  * DxWoodpecker (`height` differs).
  */
-export function CycleChart({ bars, height = 132, testID }: { bars: readonly CycleBar[]; height?: number; testID: string }) {
+export function CycleChart({ cycles, height = 132, testID }: { cycles: readonly WoodpeckerCycle[]; height?: number; testID: string }) {
   const t = useT();
-  const shown = bars.filter((b) => b.avgSec != null).slice(-MAX_BARS);
+  const tn = useTn();
+  const shown = cycles.slice(-MAX_BARS);
   if (shown.length === 0) {
     return (
       <AppText variant="caption" color={eos.dust} style={styles.empty} testID={`${testID}-empty`}>
@@ -26,50 +28,49 @@ export function CycleChart({ bars, height = 132, testID }: { bars: readonly Cycl
       </AppText>
     );
   }
-  const top = Math.max(1, ...shown.map((b) => Math.max(b.avgSec ?? 0, b.target ?? 0))) * 1.12;
-  const y = (sec: number) => Math.round((sec / top) * height);
+  const top = Math.max(1, ...shown.map((c) => Math.max(c.days, c.target ?? 0))) * 1.15;
+  const y = (days: number) => Math.round((days / top) * height);
   return (
     <View testID={testID}>
       <View style={[styles.plot, { height }]}>
-        {shown.map((b) => {
-          const avg = b.avgSec ?? 0;
-          const met = b.target != null && avg <= b.target;
-          // The time sits over the bar, or over the target tick when the two would touch.
-          const tick = b.target != null ? y(b.target) : null;
-          const labelAt = tick != null && tick >= y(avg) - 6 && tick - y(avg) < 22 ? tick + 4 : y(avg) + 4;
+        {shown.map((c) => {
+          const met = c.target != null && c.days <= c.target;
+          // The days sit over the bar, or over the target tick when the two would touch.
+          const tick = c.target != null ? y(c.target) : null;
+          const labelAt = tick != null && tick >= y(c.days) - 6 && tick - y(c.days) < 22 ? tick + 4 : y(c.days) + 4;
           return (
             <View
-              key={b.cycle}
+              key={c.cycle}
               style={styles.slot}
               accessible
-              accessibilityLabel={t('woodpecker.history_a11y', { n: b.cycle, avg: clock(avg), clean: b.cleanPct ?? 0 })}
-              testID={`${testID}-bar-${b.cycle}`}
+              accessibilityLabel={t('woodpecker.history_a11y', { n: c.cycle, days: daysText(tn, c.days), clean: c.cleanPct ?? 0 })}
+              testID={`${testID}-bar-${c.cycle}`}
             >
               <AppText variant="captionStrong" color={met ? tone.sage : eos.bone} style={[styles.value, { bottom: labelAt }]} numberOfLines={1}>
-                {clock(avg)}
+                {String(c.days)}
               </AppText>
-              <View style={[styles.bar, { height: Math.max(4, y(avg)) }, !b.complete && styles.barNow]}>
-                {b.complete ? <LinearGradient colors={[tone.sealTop, tone.emberDeep]} style={StyleSheet.absoluteFill} /> : null}
+              <View style={[styles.bar, { height: Math.max(4, y(c.days)) }, !c.complete && styles.barNow]}>
+                {c.complete ? <LinearGradient colors={[tone.sealTop, tone.emberDeep]} style={StyleSheet.absoluteFill} /> : null}
               </View>
-              {b.target != null ? <View style={[styles.target, { bottom: y(b.target) }]} /> : null}
+              {c.target != null ? <View style={[styles.target, { bottom: y(c.target) }]} /> : null}
             </View>
           );
         })}
       </View>
       <View style={styles.axis} />
       <View style={styles.labels}>
-        {shown.map((b) => (
-          <View key={b.cycle} style={styles.slot}>
-            <AppText variant="captionStrong" color={b.complete ? eos.bone : eos.ash} numberOfLines={1} style={styles.center}>
-              {t('woodpecker.cycle', { n: b.cycle })}
+        {shown.map((c) => (
+          <View key={c.cycle} style={styles.slot}>
+            <AppText variant="captionStrong" color={c.complete ? eos.bone : eos.ash} numberOfLines={1} style={styles.center}>
+              {t('woodpecker.cycle', { n: c.cycle })}
             </AppText>
             <AppText variant="caption" color={eos.dust} numberOfLines={1} style={[styles.center, styles.small]}>
-              {b.complete ? t('woodpecker.history_clean', { pct: b.cleanPct ?? 0 }) : t('woodpecker.history_now')}
+              {c.complete ? t('woodpecker.history_clean', { pct: c.cleanPct ?? 0 }) : t('woodpecker.history_now')}
             </AppText>
           </View>
         ))}
       </View>
-      {shown.some((b) => b.target != null) ? (
+      {shown.some((c) => c.target != null) ? (
         <View style={styles.legend}>
           <View style={styles.legendTick} />
           <AppText variant="caption" color={eos.ash}>

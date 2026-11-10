@@ -2,22 +2,26 @@ import { router, type Href } from 'expo-router';
 import { Bird } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 
-import { ctaLabel, openSolve, stateLine, useActiveSet } from '@/features/woodpecker/model';
+import { useStartMethod } from '@/features/woodpecker/create';
+import { ctaLabel, cycleToSolve, openSolve, stateLine, stateProgress, useActiveSet } from '@/features/woodpecker/model';
 import { PlateButton } from '@/ui';
 import { useT } from '@/ui/lang';
 import { Bar, Card, DText, Hover, IconSquare } from '../kit';
 import { dx } from '../tokens';
 
 /**
- * DXPlay's "Woodpecker cycles" card (D40, under the setup): the active
- * set's cycle, progress and target, and the Continue plate; with no set,
- * the invite and Create. The text side opens /woodpecker.
+ * DXPlay's "Woodpecker method" card (D41, under the setup): the active
+ * set's phase and today's portion, and the Continue plate; with no set,
+ * the invite and Start. The text side opens /woodpecker.
  */
 export function DxWoodpeckerCard() {
   const t = useT();
   const { view, summary, loading } = useActiveSet();
+  const start = useStartMethod(null, () => router.push('/woodpecker' as Href));
   const title = t('woodpecker.title');
   const sub = view ? stateLine(view, t) : summary || loading ? ' ' : t('woodpecker.entry.invite');
+  const progress = view ? stateProgress(view) : null;
+  const cycle = view ? cycleToSolve(view.status) : null;
   const open = () => router.push('/woodpecker' as Href);
   return (
     <Card style={styles.card} testID="dx-play-woodpecker">
@@ -30,13 +34,22 @@ export function DxWoodpeckerCard() {
           <DText size={12.5} color={dx.ash} tabular numberOfLines={1} style={styles.mt2} testID="dx-play-woodpecker-state">
             {sub}
           </DText>
-          {view && view.done > 0 && !view.complete ? <Bar value={view.done / view.total} height={4} style={styles.bar} /> : null}
+          {progress != null ? <Bar value={progress} height={4} style={styles.bar} /> : null}
         </View>
       </Hover>
       {view ? (
-        <PlateButton testID="dx-play-woodpecker-cta" label={ctaLabel(view, t, true)} variant="slate" size="sm" onPress={() => openSolve(view.set.id, view.next)} />
+        cycle != null ? (
+          <PlateButton testID="dx-play-woodpecker-cta" label={ctaLabel(view, t)} variant="slate" size="sm" onPress={() => openSolve(view.set.id, cycle)} />
+        ) : null
       ) : !summary && !loading ? (
-        <PlateButton testID="dx-play-woodpecker-create" label={t('woodpecker.entry.create')} variant="slate" size="sm" onPress={open} />
+        <PlateButton
+          testID="dx-play-woodpecker-create"
+          label={start.busy ? t('woodpecker.starting') : t('woodpecker.entry.start')}
+          loading={start.busy}
+          variant="slate"
+          size="sm"
+          onPress={start.start}
+        />
       ) : null}
     </Card>
   );

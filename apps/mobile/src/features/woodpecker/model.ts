@@ -1,106 +1,32 @@
 import type { WoodpeckerSet, WoodpeckerSetSummary } from '@tac/core/api';
-import {
-  bookProgress,
-  cycleTargetSec,
-  speedupPct,
-  woodpeckerShape,
-  WOODPECKER_BLOCK,
-  type BookProgress,
-  type CycleStats,
-} from '@tac/core/library';
+import { localeFor } from '@tac/core/format';
+import { woodpeckerPlan, WOODPECKER_FIRST_CYCLE_DAYS, type WoodpeckerPlan, type WoodpeckerStatus, type WoodpeckerToday } from '@tac/core/library';
 import { router, type Href } from 'expo-router';
 import { useMemo } from 'react';
 
 import { useAttempts } from '@/features/library/store';
-import type { TFn } from '@/ui/lang';
+import { plural } from '@/features/offline/format';
+import type { TFn, TnFn } from '@/ui/lang';
 import { useWoodpeckerSet, useWoodpeckerSets } from './api';
 
-// The Woodpecker set page's numbers (phone SetScreen, desktop
-// DxWoodpecker, the Play cards): the Library's bookProgress over the set's
-// blocks, plus the per-cycle history the method is about.
+// The Woodpecker page's numbers (phone SetScreen, desktop DxWoodpecker,
+// the Play cards, the solve chips): the method's phase from core's
+// woodpeckerPlan over the device's results, and the lines that say it.
 
-/** "1:12" (a puzzle's seconds). */
-export const clock = (sec: number) => `${Math.floor(sec / 60)}:${String(Math.round(sec) % 60).padStart(2, '0')}`;
+type Tn = TnFn;
 
-export type CycleBar = {
-  cycle: number;
-  avgSec: number | null;
-  /** That cycle's own target (null for cycle 1). */
-  target: number | null;
-  cleanPct: number | null;
-  complete: boolean;
-  /** Against the cycle before (positive = faster). */
-  speedup: number | null;
-};
-
-export type BlockRow = { index: number; from: number; to: number; done: number; total: number; complete: boolean; current: boolean; start: number };
-
-export type SetView = {
+export type SetView = WoodpeckerPlan & {
   set: WoodpeckerSet;
-  progress: BookProgress;
-  /** The cycle being solved (or just finished). */
-  cycle: number;
-  complete: boolean;
-  done: number;
-  total: number;
-  current: CycleStats | undefined;
-  cleanPct: number | null;
-  /** This cycle's target, or, once it is complete, the next one's. */
-  target: number | null;
-  nextTarget: number | null;
-  history: CycleBar[];
-  blocks: BlockRow[];
-  /** Where Continue goes. */
-  next: { cycle: number; start: number };
+  /** A "book" set whose first cycle still draws from its pool. */
+  open: boolean;
 };
-
-const pct = (part: number, whole: number) => (whole > 0 ? Math.round((part / whole) * 100) : null);
-
-export function setView(set: WoodpeckerSet, progress: BookProgress): SetView {
-  const cycle = progress.cycle;
-  const current = progress.cycles.find((c) => c.cycle === cycle);
-  const history: CycleBar[] = progress.cycles.map((c, i) => ({
-    cycle: c.cycle,
-    avgSec: c.avgSec,
-    target: cycleTargetSec(progress.cycles, c.cycle),
-    cleanPct: pct(c.clean, c.done),
-    complete: c.complete,
-    speedup: i > 0 ? speedupPct(progress.cycles[i - 1].avgSec, c.avgSec) : null,
-  }));
-  const blocks: BlockRow[] = progress.chapters.map((c) => {
-    const from = c.index * WOODPECKER_BLOCK;
-    return {
-      index: c.index,
-      from: from + 1,
-      to: from + c.total,
-      done: c.done,
-      total: c.total,
-      complete: c.complete,
-      current: !progress.cycleComplete && progress.next?.chapterIndex === c.index,
-      start: from,
-    };
-  });
-  const nextIndex = progress.next ? progress.next.chapterIndex * WOODPECKER_BLOCK + progress.next.puzzleIndex : 0;
-  return {
-    set,
-    progress,
-    cycle,
-    complete: progress.cycleComplete,
-    done: progress.done,
-    total: progress.total,
-    current,
-    cleanPct: current ? pct(current.clean, current.done) : null,
-    target: cycleTargetSec(progress.cycles, cycle),
-    nextTarget: cycleTargetSec(progress.cycles, cycle + 1),
-    history,
-    blocks,
-    next: progress.cycleComplete ? { cycle: cycle + 1, start: 0 } : { cycle, start: nextIndex },
-  };
-}
 
 export function useSetView(set: WoodpeckerSet | null | undefined): SetView | null {
   const attempts = useAttempts();
-  return useMemo(() => (set ? setView(set, bookProgress(woodpeckerShape(set), attempts)) : null), [set, attempts]);
+  return useMemo(
+    () => (set ? { set, open: set.method === 'book' && set.closed === false, ...woodpeckerPlan(set, attempts, new Date()) } : null),
+    [set, attempts],
+  );
 }
 
 /**
@@ -129,26 +55,88 @@ export function useActiveSet(id?: string | null) {
   };
 }
 
-export function solveHref(setId: string, to: { cycle: number; start: number }): Href {
-  return `/woodpecker/solve?set=${setId}&cycle=${to.cycle}&start=${to.start}` as Href;
+/** The cycle Continue opens (null: the method is complete). */
+export function cycleToSolve(s: WoodpeckerStatus): number | null {
+  if (s.phase === 'first') return 1;
+  if (s.phase === 'cycle') return s.cycle;
+  if (s.phase === 'rest') return s.next;
+  return null;
 }
 
-export function openSolve(setId: string, to: { cycle: number; start: number }) {
-  router.push(solveHref(setId, to));
+export function solveHref(setId: string, cycle: number): Href {
+  return `/woodpecker/solve?set=${setId}&cycle=${cycle}` as Href;
 }
 
-/** The Continue label for the set's state. */
-export function ctaLabel(v: SetView, t: TFn, short = false): string {
-  if (v.complete) return t('woodpecker.cta_new_cycle', { n: v.cycle + 1 });
-  if (v.done === 0 && v.cycle === 1) return t('woodpecker.cta_start');
-  return short ? t('woodpecker.cta_continue_short') : t('woodpecker.cta_continue', { n: v.next.start + 1 });
+export function openSolve(setId: string, cycle: number) {
+  router.push(solveHref(setId, cycle));
 }
 
-/** The Play cards' one-line state: "Cycle 2 · 34/100 · target 1:12 a puzzle". */
+export const daysText = (tn: Tn, n: number) => plural(tn, 'woodpecker.days', n);
+
+/** The main button's label for the phase. */
+export function ctaLabel(v: SetView, t: TFn): string {
+  const s = v.status;
+  if (s.phase === 'first') return v.cycles.length === 0 ? t('woodpecker.cta.start') : t('woodpecker.cta.continue');
+  if (s.phase === 'cycle') return s.done === 0 && s.cycle === 1 ? t('woodpecker.cta.start') : t('woodpecker.cta.continue');
+  // Rest day: the same label on a slate plate (the advice says to wait).
+  if (s.phase === 'rest') return t('woodpecker.cta.next', { n: s.next });
+  return t('woodpecker.cta.new');
+}
+
+const todayText = (today: WoodpeckerToday, t: TFn) =>
+  today.met ? t('woodpecker.entry.today_met') : t('woodpecker.entry.today', { done: today.done, goal: today.goal ?? 0 });
+
+/** The Play cards' one line: "Cycle 2 · 34/100 · today 12/40". */
 export function stateLine(v: SetView, t: TFn): string {
-  if (v.complete) return t('woodpecker.entry.complete', { n: v.cycle, next: v.cycle + 1 });
-  const head = t('woodpecker.entry.state', { n: v.cycle, done: v.done, total: v.total });
-  return v.target != null ? `${head} · ${t('woodpecker.entry.target', { time: clock(v.target) })}` : head;
+  const s = v.status;
+  if (s.phase === 'first') return `${t('woodpecker.entry.first', { day: Math.min(s.day, WOODPECKER_FIRST_CYCLE_DAYS), of: WOODPECKER_FIRST_CYCLE_DAYS, solved: s.solved })}`;
+  if (s.phase === 'cycle') return `${t('woodpecker.entry.cycle', { n: s.cycle, done: s.done, total: s.total })} · ${todayText(s.today, t)}`;
+  if (s.phase === 'rest') return t('woodpecker.entry.rest', { n: s.cycle, next: s.next });
+  return t('woodpecker.entry.complete');
 }
 
-export const difficultyLabel = (d: WoodpeckerSetSummary['difficulty'], t: TFn) => t(`woodpecker.diff.${d}`);
+/** Progress for the Play cards' bar (null: no bar). */
+export function stateProgress(v: SetView): number | null {
+  const s = v.status;
+  if (s.phase === 'first') return Math.min(1, s.day / WOODPECKER_FIRST_CYCLE_DAYS);
+  if (s.phase === 'cycle' && s.done > 0) return s.done / Math.max(1, s.total);
+  return null;
+}
+
+/** "Target 7 days · by 24 Nov", or how far over it the cycle is. */
+export function deadlineLine(s: Extract<WoodpeckerStatus, { phase: 'cycle' }>, t: TFn, tn: Tn, lang: string): string {
+  if (s.target == null) return t('woodpecker.cycle.no_target');
+  if (s.daysLeft != null && s.daysLeft <= 0) return t('woodpecker.cycle.over', { days: daysText(tn, 1 - s.daysLeft) });
+  const date = s.deadline ? shortDate(s.deadline, lang) : '';
+  const head = t('woodpecker.cycle.deadline', { days: daysText(tn, s.target), date });
+  return s.daysLeft != null && s.deadline ? `${head} · ${plural(tn, 'woodpecker.left', s.daysLeft)}` : head;
+}
+
+/** The rest phase's advice line. */
+export function restLine(s: Extract<WoodpeckerStatus, { phase: 'rest' }>, t: TFn, tn: Tn): string {
+  const days = daysText(tn, s.nextTarget);
+  if (s.rested === 0) return t('woodpecker.rest.today', { n: s.next, days });
+  const rested = daysText(tn, s.rested);
+  return s.rested > 7 ? t('woodpecker.rest.long', { n: s.next, days, rested }) : t('woodpecker.rest.ready', { n: s.next, days, rested });
+}
+
+/** "Within the target of 7 days" / "2 days over the target" / "74% clean". */
+export function restResult(v: SetView, s: Extract<WoodpeckerStatus, { phase: 'rest' }>, t: TFn, tn: Tn): { text: string; good: boolean } {
+  const c = v.cycles.find((x) => x.cycle === s.cycle);
+  if (s.met == null || c?.target == null) return { text: t('woodpecker.rest.clean', { pct: c?.cleanPct ?? 0 }), good: true };
+  return s.met
+    ? { text: t('woodpecker.rest.met', { days: daysText(tn, c.target) }), good: true }
+    : { text: t('woodpecker.rest.missed', { days: daysText(tn, s.days - c.target) }), good: false };
+}
+
+/** "174 puzzles · Blitz · level 1200", or the pool while the first cycle is open. */
+export function setLine(v: SetView, t: TFn, tn: Tn): string {
+  const vars = { puzzles: plural(tn, 'library.puzzles', v.set.size), style: t(`style.${v.set.style}.name`), level: v.set.rating };
+  return v.open ? t('woodpecker.pool_line', vars) : t('woodpecker.set_line', vars);
+}
+
+/** "24 Nov" in the app's language. */
+export function shortDate(day: string, lang: string): string {
+  const [y, m, d] = day.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(localeFor(lang), { day: 'numeric', month: 'short' });
+}
