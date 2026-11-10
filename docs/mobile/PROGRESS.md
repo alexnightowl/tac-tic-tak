@@ -5,6 +5,28 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-10 — Trainers: Woodpecker, blind mode, haste indicator, daily plan (D40)
+
+- **Backend** `api/trainers` (additive): migration `20261110010000_trainers` (session `themes`,
+  `variant`; attempt `mistakeMs`; table `WoodpeckerSet`), `GET /analytics/haste`,
+  `GET /plan/today`, `/woodpecker/sets` CRUD, multi-theme sessions, Woodpecker results through the
+  Library sync, blind misses kept out of Review and theme stats. Core mirrors `hasteMs`/`isHasty`.
+- **Woodpecker:** Play-tab entry, `/woodpecker` set page (cycle stats, per-cycle chart with the
+  target, blocks of 25), create sheet/dialog, solving on the practice runner (`/woodpecker/solve`),
+  phone + desktop.
+- **Blind:** switch + look time (3/5/10 s) on the Free and Themes setups; the board's new
+  `piecesHidden` prop fades the pieces (Reanimated); countdown, reply in text, peek (B / Space),
+  summary line; Home/Play Space hotkeys now only fire on their own tab.
+- **Haste:** runner tracks per-move thinking time, sends `mistakeMs`, nudges once after two hasty
+  mistakes in a row; summary card; Stats "Поспіх" card (30-day share, trend, per style, 8 weeks).
+- **Daily plan:** Home card (phone + desktop) with the three weakest themes, plan session label in
+  the runner, per-theme summary, done state; history rows name plan and blind sessions.
+- **Verified:** `pnpm -r run typecheck`, core tests 286, mobile eslint 0 errors, local API smoke
+  (`scratchpad/smoke/trainers.mjs`), Maestro on an iOS sim: `01-board-tap/drag/promotion/check`,
+  `12-play-v2` (levelup, casual), `13-library`, `14-learn`; web screenshots at 390 / 1024 / 1280 /
+  1440 en + uk for every new screen. No Maestro flows for the new features yet; blind mode on a
+  real device untested.
+
 ## 2026-11-09 — Desktop parity pass (owner: "урізали функціонал?")
 
 - Owner rule: the desktop offers everything the phone does; only the layout differs. An audit of
