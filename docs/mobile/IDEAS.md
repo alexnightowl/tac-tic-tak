@@ -72,3 +72,9 @@ the owner's go-ahead.
   (stack-research.md › i18n)
 
 - **Tiered leagues** (from D32, 2026-11-04): Bronze → Diamond groups of ~30 by weekly XP, top 7 promoted and bottom 5 relegated every Monday, like Duolingo. Today the League is one weekly XP board.
+- **Woodpecker: the whole line first** (D41, 2026-11-10): the book asks to calculate the full
+  variation before checking; the runner checks move by move. A "write the line, then play it"
+  mode would be closer.
+- **Woodpecker refresh before a tournament** (D41): Tikkanen repeats one finished set before a
+  serious event; a "one more cycle" button on a completed set.
+

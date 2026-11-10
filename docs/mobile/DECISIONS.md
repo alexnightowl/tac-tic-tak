@@ -484,3 +484,34 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
   `GET /plan/today`.
 - PROVISIONAL: haste share 30 %; plan size 3, min 6 attempts, start level − 50; Woodpecker offsets
   and sizes; blind look 5 s default.
+
+### D41. Woodpecker method as the book has it (owner, 2026-11-10)
+
+- Owner: fix the D40 Woodpecker where it strays from Smith & Tikkanen (cycle time, set size, motif
+  selection, difficulty, Review), "the most effective and clear strategy, automate everything".
+  Sources: the book's introduction (New in Chess excerpt), the schedule as retold by USCF Sales /
+  Peck Chess / Chessable.
+- **Start:** one button, no choices. The style is the Play setup's last one; its level places a
+  pool of 1000 unseen puzzles: Easy 22 % (level −300…−150) then Intermediate 78 % (−150…+50, at
+  least two moves of the player), as the book's 222 / 762 (its Advanced part left out, as the
+  authors advise). Motif quotas, mate in one ≤ 5 %, never the same motif twice in a row.
+- **Cycle 1:** up to four weeks at the player's pace; the set is what it got through (closes by
+  itself 28 days after its first result with ≥ 50 puzzles, when the pool runs out, or by hand
+  from 50). After 30 results the rest of the pool moves ±150 once if they were ≥ 90 % or ≤ 50 %
+  clean.
+- **Next cycles:** the same puzzles in the same order, each in half the calendar days of the one
+  before, rounded up; the app shows the deadline and the day's portion (what is left ÷ days left,
+  fixed at the day's start). The method ends when a cycle fits in one day, or after cycle 7.
+- **Rest:** advice, not a lock: rest today, next cycle tomorrow or later (1–7 days); the next
+  cycle's clock starts at its first result.
+- **Solving:** no clock, no hint, no motif or "mate in N" named (only whose move it is); a wrong
+  move shows the solution at once. Results are no longer added to Review (the next cycle is the
+  review). "What is the Woodpecker method?" explains it and links the book.
+- D40 sets keep working under the new timing (their size is their list; no first-cycle phase).
+- Backend: `WoodpeckerSet.method/size/closedAt/calibratedAt`, POST `/woodpecker/sets/:id/close`,
+  optional size/difficulty on create (older builds still make D40 sets).
+- Not done: calculating the whole line before moving (the book's way; the runner checks move by
+  move), a forced rest. See IDEAS.md.
+- PROVISIONAL: pool 1000; shares 22/78; bands; calibration at 30 results ±150 at 90 % / 50 %;
+  minimum set 50; first-cycle suggested portion 25 a day.
+

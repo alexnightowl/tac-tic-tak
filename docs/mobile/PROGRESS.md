@@ -5,6 +5,26 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-10 — Woodpecker method as the book has it (D41)
+
+- **What:** the Woodpecker now follows Smith & Tikkanen: one-button start, a 1000-puzzle pool
+  (Easy then Intermediate under the level, motif quotas), cycle 1 up to four weeks and the set is
+  what it got through, each next cycle in half the days with a deadline and a day's portion, rest
+  advice between cycles, the end at one day or 7 cycles. Solving names only whose move it is (no
+  clock, hint or mate-in); a wrong move shows the solution; set results stay out of Review.
+  "What is the Woodpecker method?" links the book. Also today: dates under the level chart (time
+  axis) and right-click arrows / square marks on the web board.
+- **Backend:** `api/woodpecker-method` (afd8d02): migration `woodpecker_method` (nullable columns,
+  D40 sets backfilled with their size), pool composition in `woodpecker/compose.ts`, first-cycle
+  close and one-time calibration on read, POST `/woodpecker/sets/:id/close`, Review skip.
+- **Verified:** typechecks, core tests 290 (woodpeckerPlan phases, days, deadline, portion, end),
+  local API smoke (`scratchpad/smoke/woodpecker-method.mjs`: 1000-puzzle pool in ~1 s, quotas,
+  mate-in-one cap, no repeats in a row, calibration 1154 → 1308, close by hand and after 28 days,
+  set results not in Review, D40 create), desktop web at 1440 in uk (first cycle, rest, cycle 2
+  with deadline and portion), phone layout at 390, new Maestro `19-woodpecker` (en) and
+  `14-learn` on an iOS sim. Screenshots: `screens/woodpecker-d41/en`.
+- **Next:** the owner tries a real first cycle; uk Maestro run.
+
 ## 2026-11-10 — Trainers: Woodpecker, blind mode, haste indicator, daily plan (D40)
 
 - **Backend** `api/trainers` (additive): migration `20261110010000_trainers` (session `themes`,
