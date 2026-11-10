@@ -515,3 +515,17 @@ STORM.md. Mobile-only; backend `api/storm` (57d9b7a).
 - PROVISIONAL: pool 1000; shares 22/78; bands; calibration at 30 results ±150 at 90 % / 50 %;
   minimum set 50; first-cycle suggested portion 25 a day.
 
+### D42. Russian and Spanish (owner, 2026-11-10)
+
+- Owner: "добав російську та іспанську локалізацію повністю". The app speaks en / uk / ru / es:
+  every i18n area, the landing copy, puzzle theme names, the library books and courses (870
+  content strings, served as ru / es next to en / uk; content versions +1 so packs refresh).
+- Pickers list English, Українська, Русский, Español (native names everywhere); the device
+  language picks ru / es on first launch (before D42 a Russian device got uk).
+- Address is informal (ты / tú) in ru / es, including the few older uk strings that use «ви».
+  Terms: docs live in the translators' glossary (Review = Повторение / Repaso, Woodpecker =
+  Метод дятла / Método Woodpecker, Rated / Casual = Рейтинг / Вольная, Puntuada / Libre).
+- Russian plurals use the Ukrainian one / few / many rule; Russian takes the Cyrillic display
+  face (Cinzel has no Cyrillic).
+- PROVISIONAL: the ru / es copy is machine-assisted and has not been read by a native speaker.
+

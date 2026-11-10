@@ -5,6 +5,18 @@ is next, blockers. Link screenshots under `docs/mobile/screens/<phase>/`.
 
 ---
 
+## 2026-11-10 — Russian and Spanish (D42)
+
+- **What:** ru and es for every screen (30 areas + landing + theme names), the library books and
+  courses (backend content, `api/i18n-ru-es` 9ca0587), four-language pickers on phone and
+  desktop, dates / numbers / plurals per language. Fixes on the way: the woodpecker cycles chart
+  stretched on native (label slot had the bar slot's 100% height), the desktop language switches
+  were too narrow for four names.
+- **Verified:** typechecks (all packages), core tests 301 incl. ru / es parity (keys, tokens,
+  plural forms), desktop web in ru and es (settings, home, woodpecker, sidebar menu), phone
+  layout at 390 in ru and es, Maestro `14-learn` and `19-woodpecker` on an iOS sim.
+- **Next:** a native speaker read of ru / es.
+
 ## 2026-11-10 — Woodpecker method as the book has it (D41)
 
 - **What:** the Woodpecker now follows Smith & Tikkanen: one-button start, a 1000-puzzle pool
