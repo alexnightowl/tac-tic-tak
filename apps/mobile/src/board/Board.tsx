@@ -28,6 +28,7 @@ import {
   CAPTURE_END_SCALE, CAPTURE_FADE_MS, DRAG_LIFT_SQ, DRAG_SCALE, DRAG_THRESHOLD, DROP_SETTLE_MS, HOVER_THROTTLE_MS,
   LIFT_SPRING, RECONCILE_IDLE_MS, SECONDARY_MOVE_MS, SNAP_BACK_SPRING, TAP_MOVE_MS,
 } from './constants';
+import { createDrawing, UserArrows, UserMarks } from './drawing';
 import { Arrows, CheckGlow, Coordinates, DragOverlay, Feedback, Highlights, SlideCover, Sparks, SquareCell, type ArrowSpec } from './Layers';
 import { Piece } from './Piece';
 import {
@@ -36,6 +37,7 @@ import {
 } from './position';
 import { PromotionPicker } from './PromotionPicker';
 import { useBoardShared, type PieceHandle, type PieceRegistry } from './shared';
+import { useMouseDrawing } from './useMouseDrawing';
 
 export type LastMove = { from: Square; to: Square };
 
@@ -207,6 +209,7 @@ function BoardImpl({
   // The initial position seeds the SVs, so the first touch already has legal moves.
   const [initial] = useState(() => initialModel(initialFen));
   const [registry] = useState<PieceRegistry>(() => new Map());
+  const [drawing] = useState(createDrawing);
   const sv = useBoardShared(
     codeIndices(initial.model.placement),
     legalTableOf(initial.chess),
@@ -598,6 +601,7 @@ function BoardImpl({
       promoOnRef.current = false;
       setPromo(null);
     }
+    drawing.clear();
     onPositionChange?.(fen, last);
     if (id === 0) return Promise.resolve();
     return new Promise((resolve) => {
@@ -995,6 +999,7 @@ function BoardImpl({
   const { orientation, mirror } = geo;
   const g = { size, orientation, mirror };
   const allArrows = hintArrow ? [...arrows, hintArrow] : arrows;
+  useMouseDrawing(innerRef, drawing, g);
 
   return (
     <View style={[styles.root, style]} onLayout={onLayout}>
@@ -1007,6 +1012,7 @@ function BoardImpl({
               </View>
               {coordinates && <Coordinates {...g} />}
               <Highlights sv={sv} {...g} />
+              <UserMarks drawing={drawing} {...g} />
               {/* One layer for blind mode's fade: the check glow would name the king's square. */}
               <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, piecesLayer]}>
                 <CheckGlow sv={sv} square={view.checkSquare} {...g} />
@@ -1032,6 +1038,7 @@ function BoardImpl({
               ))}
               <Feedback sv={sv} {...g} />
               <Arrows arrows={allArrows} knightArrow={knightArrow} {...g} />
+              <UserArrows drawing={drawing} knightArrow={knightArrow} {...g} />
               <Sparks sv={sv} {...g} />
               <DragOverlay sv={sv} size={size} set={pieceSet} />
             </View>

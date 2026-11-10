@@ -55,7 +55,7 @@ DECISIONS.md, or `D#`). When a web fix lands on `main`, add or update the row he
 | Drag-and-drop | 1 | partial | `01-board-drag`, `01-board-drag-capture` (iOS, zero board renders during drag). Android drag not automated (iOS-coordinate flows); 120 Hz feel needs the owner's phone (Q29) |
 | Promotion picker | 1 | partial | `01-board-promotion` (iOS only, coordinates) |
 | Arrows: hint and solution arrows | 1 | done | Drill hint 2 draws the arrow (`06-review`) |
-| Arrows: user-drawn arrows and highlights, knightArrow | — | deferred | Behind a flag (Q6) |
+| Arrows: user-drawn arrows and highlights, knightArrow | web | done (web) | Right-click drag draws / removes an arrow, right-click marks a square, left click or a move clears (owner 2026-11-10); `board/useMouseDrawing.web.ts`. Phones: still deferred (Q6) |
 | Last-move highlight, check indicator | 1 | partial | `01-board-check` passes on iOS; on Android the 01-board-* flows assert iOS frame coordinates |
 | animateMove slide, extended to all moves | 1 | done | Every runner, viewer stepping (`06-viewer`) |
 | Hint squares and arrow | 1 (API), 6 (drill) | done | `06-review` |

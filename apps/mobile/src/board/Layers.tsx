@@ -351,10 +351,17 @@ export function SlideCover({ sv, size, set }: { sv: BoardShared; size: number; s
 
 export type ArrowSpec = { from: Square; to: Square };
 
-export function Arrows({ arrows, size, orientation, mirror, knightArrow }: Geo & { arrows: readonly ArrowSpec[]; knightArrow: KnightArrowMode }) {
+export function Arrows({
+  arrows,
+  size,
+  orientation,
+  mirror,
+  knightArrow,
+  testID = 'board-arrows',
+}: Geo & { arrows: readonly ArrowSpec[]; knightArrow: KnightArrowMode; testID?: string }) {
   if (arrows.length === 0) return null;
   return (
-    <Svg pointerEvents="none" width={size} height={size} style={StyleSheet.absoluteFill} testID="board-arrows">
+    <Svg pointerEvents="none" width={size} height={size} style={StyleSheet.absoluteFill} testID={testID}>
       {arrows.map((a, i) => {
         const g = arrowGeometry(a.from, a.to, size, orientation, mirror, knightArrow);
         return [
