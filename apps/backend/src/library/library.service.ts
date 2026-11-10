@@ -302,16 +302,18 @@ export class LibraryService implements OnModuleInit {
     if (ids.length === 0) return new Map();
     const rows = await this.prisma.woodpeckerSet.findMany({
       where: { id: { in: ids }, userId },
-      select: { id: true, puzzleIds: true },
+      select: { id: true, puzzleIds: true, size: true },
     });
-    return new Map(rows.map((r) => [r.id, new Set(r.puzzleIds)]));
+    // A closed set is its first `size` puzzles; an open one its whole pool.
+    return new Map(rows.map((r) => [r.id, new Set(r.size == null ? r.puzzleIds : r.puzzleIds.slice(0, r.size))]));
   }
 
   /**
    * Results played on the phone (online or not). A re-sent result
    * (same clientId) or a second result for a puzzle already played in
    * that cycle is dropped; a puzzle that is not in the named book is
-   * skipped. Hint and missed results put the puzzle in Review. Time
+   * skipped. Hint and missed results put the puzzle in Review, except a
+   * Woodpecker set's (D41: the next cycle is the method's review). Time
    * spent earns XP like any training, and the days played count for
    * the streak (as offline days do: up to 3 days late); the rating never
    * moves.
@@ -360,7 +362,7 @@ export class LibraryService implements OnModuleInit {
       const fresh = new Set(inserted.map((r) => r.clientId));
       const added = valid.filter((a) => fresh.has(a.clientId));
 
-      const toReview = [...new Set(added.filter((a) => a.result !== 'clean').map((a) => a.puzzleId))];
+      const toReview = [...new Set(added.filter((a) => a.result !== 'clean' && !isWoodpeckerId(a.bookId)).map((a) => a.puzzleId))];
       const rows = toReview.length === 0
         ? []
         : await tx.puzzle.findMany({ where: { id: { in: toReview } }, select: { id: true } });

@@ -438,8 +438,18 @@ model WoodpeckerSet {
   difficulty String
   /// Centre of the rating window the puzzles were picked from.
   rating     Int
-  /// In solving order (easiest first).
+  /// In solving order (easiest first). A "book" set's first cycle draws
+  /// from this pool; `size` then cuts it to what that cycle got through.
   puzzleIds  String[]
+  /// "book" (D41: the canonical method, a pool cut by the first cycle);
+  /// null for the D40 sets of a fixed size.
+  method       String?
+  /// The set: the first `size` puzzles. Null while the first cycle of a
+  /// "book" set is still drawing from the pool.
+  size         Int?
+  closedAt     DateTime?
+  /// When the first results re-aimed the rest of the pool (once per set).
+  calibratedAt DateTime?
   createdAt  DateTime  @default(now())
   archivedAt DateTime?
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)

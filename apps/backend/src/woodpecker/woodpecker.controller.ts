@@ -24,6 +24,12 @@ export class WoodpeckerController {
     return this.woodpecker.get(u.id, id);
   }
 
+  /** Ends a "book" set's first cycle now: the set is what it got through. */
+  @Post('sets/:id/close')
+  close(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
+    return this.woodpecker.close(u.id, id);
+  }
+
   @Delete('sets/:id')
   archive(@CurrentUser() u: AuthedUser, @Param('id') id: string) {
     return this.woodpecker.archive(u.id, id);
