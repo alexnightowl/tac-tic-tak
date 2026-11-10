@@ -54,6 +54,8 @@ export function createEndpoints(client: ApiClient) {
       get: (id: string) => client.get<WoodpeckerSet>(`/woodpecker/sets/${sid(id)}`),
       create: (body: CreateWoodpeckerSetBody) => client.post<WoodpeckerSet>('/woodpecker/sets', body, { timeoutMs: 30_000 }),
       archive: (id: string) => client.del<{ ok: true }>(`/woodpecker/sets/${sid(id)}`),
+      /** D41: ends a "book" set's first cycle now (the set is what it got through). */
+      close: (id: string) => client.post<WoodpeckerSet>(`/woodpecker/sets/${sid(id)}/close`),
     },
     // Haste indicator (D40): hasty mistakes over the last `days`, the trend and 8 weeks.
     haste: (days = 30) => client.get<HasteResponse>('/analytics/haste', { query: { days } }),

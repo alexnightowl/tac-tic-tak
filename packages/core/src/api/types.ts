@@ -250,8 +250,15 @@ export type WoodpeckerSize = 50 | 100 | 150;
 export type WoodpeckerSetSummary = {
   /** 'wp_' + cuid; also the Library bookId of its results. */
   id: string;
+  /** The set's puzzles; while a "book" set's first cycle is open, the pool's. */
   size: number;
-  difficulty: WoodpeckerDifficulty;
+  /** 'book' for D41 sets (no difficulty choice). */
+  difficulty: WoodpeckerDifficulty | 'book';
+  /** 'book' (D41, the method as written); null or absent for D40 sets. */
+  method?: 'book' | null;
+  /** False while a "book" set's first cycle still draws from its pool (older servers: absent = closed). */
+  closed?: boolean;
+  closedAt?: string | null;
   /** Whose level set the difficulty. */
   style: TrainingStyle;
   /** Centre of the puzzles' rating window. */
@@ -273,7 +280,8 @@ export type WoodpeckerPuzzle = {
 /** GET /woodpecker/sets/:id and POST /woodpecker/sets: puzzles in solving order (easiest first). */
 export type WoodpeckerSet = WoodpeckerSetSummary & { puzzles: WoodpeckerPuzzle[] };
 
-export type CreateWoodpeckerSetBody = { size: WoodpeckerSize; difficulty: WoodpeckerDifficulty; style: TrainingStyle };
+/** D41: only `style` (a "book" set); D40 sets also sent size + difficulty. */
+export type CreateWoodpeckerSetBody = { style: TrainingStyle; size?: WoodpeckerSize; difficulty?: WoodpeckerDifficulty };
 
 // ---- haste (D40): GET /analytics/haste ----
 
