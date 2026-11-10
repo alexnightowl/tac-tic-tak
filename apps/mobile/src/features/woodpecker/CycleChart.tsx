@@ -60,7 +60,7 @@ export function CycleChart({ cycles, height = 132, testID }: { cycles: readonly 
       <View style={styles.axis} />
       <View style={styles.labels}>
         {shown.map((c) => (
-          <View key={c.cycle} style={styles.slot}>
+          <View key={c.cycle} style={styles.labelSlot}>
             <AppText variant="captionStrong" color={c.complete ? eos.bone : eos.ash} numberOfLines={1} style={styles.center}>
               {t('woodpecker.cycle', { n: c.cycle })}
             </AppText>
@@ -86,6 +86,8 @@ const styles = StyleSheet.create({
   empty: { paddingVertical: 12 },
   plot: { flexDirection: 'row', alignItems: 'flex-end', gap: 2 },
   slot: { flex: 1, minWidth: 0, alignItems: 'center', justifyContent: 'flex-end', height: '100%' },
+  // Labels size to their text: the bar slot's 100% height would fill the screen on native.
+  labelSlot: { flex: 1, minWidth: 0, alignItems: 'center' },
   value: { position: 'absolute', fontVariant: ['tabular-nums'] },
   bar: { width: '62%', maxWidth: 44, borderTopLeftRadius: 4, borderTopRightRadius: 4, overflow: 'hidden' },
   barNow: { backgroundColor: alpha(eos.ember, 0.45) },
