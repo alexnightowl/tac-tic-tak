@@ -126,13 +126,56 @@ export type RatingChartLayout = {
   baseY: number;
   /** In RATING_STYLE_ORDER; styles with no points are omitted. */
   series: RatingSeries[];
+  /** Date labels under the plot (time axis only; empty on the ordinal one). */
+  xTicks: DateTick[];
 };
 
+/** A date label on the time axis: local midnight `at`, `unit` says how to print it. */
+export type DateTick = { x: number; at: number; unit: 'day' | 'month' };
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 /**
- * Lays the chart out in a width × height box. The time axis is ordinal
- * across all sessions (a 2-week break opens no gap; cadence belongs to
- * the heatmap). Returns null for empty data (the web shows its "not
- * enough sessions" text).
+ * Nice date ticks over [t0, t1] (ms): every 1/2/7/14 days (weeks on
+ * Mondays) or every 1/2/3/6/12 months (on the 1st), the finest step that
+ * keeps at most `max` ticks. Local midnights, so the labels match the
+ * player's calendar.
+ */
+export function dateTicks(t0: number, t1: number, max: number): Array<{ at: number; unit: 'day' | 'month' }> {
+  if (!(t1 > t0) || max < 1) return [];
+  const span = (t1 - t0) / DAY_MS;
+  const midnight = (ms: number) => {
+    const d = new Date(ms);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  };
+  for (const days of [1, 2, 7, 14]) {
+    if (span / days > max) continue;
+    const d = midnight(t0);
+    if (d.getTime() < t0) d.setDate(d.getDate() + 1);
+    if (days >= 7) d.setDate(d.getDate() + ((8 - d.getDay()) % 7));
+    const out: Array<{ at: number; unit: 'day' }> = [];
+    for (; d.getTime() <= t1; d.setDate(d.getDate() + days)) out.push({ at: d.getTime(), unit: 'day' });
+    return out;
+  }
+  for (const months of [1, 2, 3, 6, 12]) {
+    if (span / (months * 30.4) > max) continue;
+    const s = midnight(t0);
+    const d = new Date(s.getFullYear(), s.getMonth(), 1);
+    if (d.getTime() < t0) d.setMonth(d.getMonth() + 1);
+    while (d.getMonth() % months !== 0) d.setMonth(d.getMonth() + 1);
+    const out: Array<{ at: number; unit: 'month' }> = [];
+    for (; d.getTime() <= t1; d.setMonth(d.getMonth() + months)) out.push({ at: d.getTime(), unit: 'month' });
+    return out;
+  }
+  return [];
+}
+
+/**
+ * Lays the chart out in a width × height box. By default the x axis is
+ * ordinal across all sessions (a 2-week break opens no gap; cadence
+ * belongs to the heatmap); `xAxis: 'time'` places points by date instead
+ * and adds date ticks (at most one per `tickGap` px). Returns null for
+ * empty data (the web shows its "not enough sessions" text).
  */
 export function ratingChartLayout(
   data: RatingPoint[],
@@ -145,10 +188,13 @@ export function ratingChartLayout(
     padB?: number;
     /** 'smooth' = the web's cardinal spline; 'linear' = the design v2 polyline. */
     curve?: 'smooth' | 'linear';
+    xAxis?: 'ordinal' | 'time';
+    /** Time axis: the minimum spacing between date ticks, px. */
+    tickGap?: number;
   },
 ): RatingChartLayout | null {
   if (data.length === 0) return null;
-  const { width: W, height: H, padL = 0, padR = 12, padT = 10, padB = 14, curve = 'smooth' } = box;
+  const { width: W, height: H, padL = 0, padR = 12, padT = 10, padB = 14, curve = 'smooth', xAxis = 'ordinal', tickGap = 90 } = box;
   const { yMin, yMax, gridStops } = ratingScale(data.map((p) => p.rating));
 
   const ordered = [...data].sort((a, b) => +new Date(a.endedAt) - +new Date(b.endedAt));
@@ -161,7 +207,11 @@ export function ratingChartLayout(
   const innerW = W - padL - padR;
   const innerH = H - padT - padB;
   const xMax = Math.max(1, ordered.length - 1);
-  const xFor = (i: number) => padL + (i / xMax) * innerW;
+  const t0 = +new Date(ordered[0].endedAt);
+  const t1 = +new Date(ordered[ordered.length - 1].endedAt);
+  const xForTime = (t: number) => padL + ((t - t0) / Math.max(1, t1 - t0)) * innerW;
+  const xForPoint = (p: RatingPoint) =>
+    xAxis === 'time' ? xForTime(+new Date(p.endedAt)) : padL + (xIndex.get(p)! / xMax) * innerW;
   const yFor = (rating: number) =>
     padT + innerH - ((rating - yMin) / Math.max(1, yMax - yMin)) * innerH;
   const baseY = padT + innerH;
@@ -176,7 +226,7 @@ export function ratingChartLayout(
     const pts = byStyle[style];
     if (pts.length === 0) continue;
     const points = pts.map((p) => ({
-      x: xFor(xIndex.get(p)!),
+      x: xForPoint(p),
       y: yFor(p.rating),
       rating: p.rating,
       endedAt: p.endedAt,
@@ -200,5 +250,9 @@ export function ratingChartLayout(
     grid: gridStops.map((value) => ({ value, y: yFor(value) })),
     baseY,
     series,
+    xTicks:
+      xAxis === 'time'
+        ? dateTicks(t0, t1, Math.max(1, Math.floor(innerW / tickGap))).map((tk) => ({ ...tk, x: xForTime(tk.at) }))
+        : [],
   };
 }

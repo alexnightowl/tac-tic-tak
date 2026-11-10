@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   bucketByLocalDay, buildGrid, heatmapTooltip, levelFor, monthMarkers, niceStep, radarBounds,
-  linearPath, radarGeometry, ratingChartLayout, ratingScale, selectRadarThemes, smoothPath, wrapLabel,
+  dateTicks, linearPath, radarGeometry, ratingChartLayout, ratingScale, selectRadarThemes, smoothPath, wrapLabel,
   type RatingPoint,
 } from '../src/charts';
 
@@ -113,6 +113,33 @@ describe('rating history', () => {
     const dup: RatingPoint[] = [pts[0], { ...pts[0] }, pts[2]];
     const xs = ratingChartLayout(dup, { width: 112, height: 124 })!.series[0].points.map((p) => p.x);
     expect(xs).toEqual([0, 50, 100]);
+  });
+
+  it('time axis places points by date and adds date ticks', () => {
+    const spaced: RatingPoint[] = [pts[0], pts[1], { ...pts[2], endedAt: '2026-10-11T10:00:00Z' }];
+    const l = ratingChartLayout(spaced, { width: 1012, height: 124, xAxis: 'time' })!;
+    expect(l.series[0].points[0].x).toBe(100);
+    expect(l.series[1].points.map((p) => p.x)).toEqual([0, 1000]);
+    expect(l.xTicks.length).toBeGreaterThan(0);
+    for (const tk of l.xTicks) {
+      expect(tk.unit).toBe('day');
+      expect(tk.x).toBeGreaterThanOrEqual(0);
+      expect(tk.x).toBeLessThanOrEqual(1000);
+    }
+    expect(ratingChartLayout(pts, { width: 112, height: 124 })!.xTicks).toEqual([]);
+  });
+
+  it('dateTicks picks the finest step under the cap', () => {
+    const t0 = new Date(2026, 0, 1, 12).getTime();
+    const day = 24 * 60 * 60 * 1000;
+    const daily = dateTicks(t0, t0 + 5 * day, 10);
+    expect(daily.map((t) => new Date(t.at).getDate())).toEqual([2, 3, 4, 5, 6]);
+    const weekly = dateTicks(t0, t0 + 40 * day, 8);
+    expect(weekly.every((t) => new Date(t.at).getDay() === 1)).toBe(true);
+    const monthly = dateTicks(t0, t0 + 300 * day, 6);
+    expect(monthly.every((t) => t.unit === 'month' && new Date(t.at).getDate() === 1)).toBe(true);
+    expect(monthly.length).toBeLessThanOrEqual(6);
+    expect(dateTicks(t0, t0, 5)).toEqual([]);
   });
 });
 
