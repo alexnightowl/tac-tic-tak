@@ -283,8 +283,7 @@ function Intro({ start }: { start: StartMethod }) {
   const t = useT();
   return (
     <Card texture style={styles.pad} testID="dx-woodpecker-empty">
-      <Label color={dx.rose}>{t('woodpecker.how')}</Label>
-      <Title size={28} style={styles.mt6}>
+      <Title size={28}>
         {t('woodpecker.title')}
       </Title>
       <DText size={14.5} lh={23} color={graphite[300]} style={styles.method}>
