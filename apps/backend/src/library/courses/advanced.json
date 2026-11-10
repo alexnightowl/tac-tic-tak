@@ -1,22 +1,28 @@
 {
   "id": "advanced",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "advanced-quiet",
       "theme": "quietMove",
       "title": {
         "en": "Quiet move",
-        "uk": "Тихий хід"
+        "uk": "Тихий хід",
+        "ru": "Тихий ход",
+        "es": "Jugada tranquila"
       },
       "tip": {
         "en": "No check, no capture — just a move they cannot answer.",
-        "uk": "Без шаху й без взяття — просто хід, на який немає відповіді."
+        "uk": "Без шаху й без взяття — просто хід, на який немає відповіді.",
+        "ru": "Без шаха и без взятия — просто ход, на который нет ответа.",
+        "es": "Sin jaque ni captura: solo una jugada que no tiene respuesta."
       },
       "intro": {
         "text": {
           "en": "A quiet move gives no check and captures nothing, which is why it is so easy to miss. It prepares a threat the opponent cannot parry, or takes away their last defensive resource. When the forcing moves fail, look for the calm one.",
-          "uk": "Тихий хід не дає шаху й нічого не б’є — тому його так легко пропустити. Він готує загрозу, від якої немає захисту, або забирає в суперника останній ресурс. Коли форсовані ходи не працюють, пошукай спокійний."
+          "uk": "Тихий хід не дає шаху й нічого не б’є — тому його так легко пропустити. Він готує загрозу, від якої немає захисту, або забирає в суперника останній ресурс. Коли форсовані ходи не працюють, пошукай спокійний.",
+          "ru": "Тихий ход не дает шаха и ничего не бьет — поэтому его так легко пропустить. Он готовит угрозу, от которой нет защиты, или отнимает у соперника последний ресурс. Когда форсированные ходы не работают, поищи спокойный.",
+          "es": "Una jugada tranquila no da jaque ni captura nada, y por eso es tan fácil pasarla por alto. Prepara una amenaza que el rival no puede parar o le quita su último recurso defensivo. Cuando las jugadas forzadas no funcionan, busca la jugada tranquila."
         },
         "fen": "r5k1/p4p1p/5Bp1/8/8/8/P2Q1PPP/6K1 w - - 0 1",
         "arrows": [
@@ -33,7 +39,9 @@
         ],
         "caption": {
           "en": "Qh6 gives no check and takes nothing, but mate on g7 cannot be stopped.",
-          "uk": "Qh6 не шахує й нічого не б’є, але мат на g7 не зупинити."
+          "uk": "Qh6 не шахує й нічого не б’є, але мат на g7 не зупинити.",
+          "ru": "Qh6 не дает шаха и ничего не берет, но мат на g7 уже не остановить.",
+          "es": "Qh6 no da jaque ni captura nada, pero el mate en g7 ya no se puede parar."
         }
       },
       "puzzles": [
@@ -322,16 +330,22 @@
       "theme": "xRayAttack",
       "title": {
         "en": "X-ray",
-        "uk": "Рентген"
+        "uk": "Рентген",
+        "ru": "Рентген",
+        "es": "Rayos X"
       },
       "tip": {
         "en": "A piece can attack — or defend — through another piece.",
-        "uk": "Фігура може атакувати чи захищати крізь іншу фігуру."
+        "uk": "Фігура може атакувати чи захищати крізь іншу фігуру.",
+        "ru": "Фигура может нападать — или защищать — сквозь другую фигуру.",
+        "es": "Una pieza puede atacar, o defender, a través de otra."
       },
       "intro": {
         "text": {
           "en": "An x-ray works through a piece standing in the way. A rook or bishop behind an enemy piece still controls the squares beyond it: the moment that piece moves or is exchanged, the line opens. When you count attackers and defenders, include the ones hiding behind others.",
-          "uk": "Рентген діє крізь фігуру, що стоїть на шляху. Тура чи слон за фігурою суперника все одно контролюють поля позаду неї: щойно вона рушить чи розміняється, лінія відкривається. Рахуючи нападників і захисників поля, враховуй і тих, що сховалися за іншими."
+          "uk": "Рентген діє крізь фігуру, що стоїть на шляху. Тура чи слон за фігурою суперника все одно контролюють поля позаду неї: щойно вона рушить чи розміняється, лінія відкривається. Рахуючи нападників і захисників поля, враховуй і тих, що сховалися за іншими.",
+          "ru": "Рентген действует сквозь фигуру, стоящую на пути. Ладья или слон за фигурой соперника все равно контролируют поля за ней: как только эта фигура уходит или разменивается, линия открывается. Считая нападающих и защитников, учитывай и тех, кто прячется за другими.",
+          "es": "Los rayos X actúan a través de una pieza que está en medio. Una torre o un alfil detrás de una pieza enemiga siguen controlando las casillas de más allá: en cuanto esa pieza se mueve o se cambia, la línea se abre. Al contar atacantes y defensores, incluye también los que se esconden detrás de otros."
         },
         "fen": "3r2k1/5ppp/8/Q7/3r4/8/5PPP/3R2K1 w - - 0 1",
         "arrows": [
@@ -348,7 +362,9 @@
         ],
         "caption": {
           "en": "Qxd8+: the rook on d1 backs up the queen through the black rook on d4 — after the recapture, the rook mates on d8.",
-          "uk": "Qxd8+: тура d1 підтримує ферзя крізь чорну туру на d4 — після взяття у відповідь тура ставить мат на d8."
+          "uk": "Qxd8+: тура d1 підтримує ферзя крізь чорну туру на d4 — після взяття у відповідь тура ставить мат на d8.",
+          "ru": "Qxd8+: ладья d1 поддерживает ферзя сквозь черную ладью на d4 — после взятия ладья ставит мат на d8.",
+          "es": "Qxd8+: la torre de d1 respalda a la dama a través de la torre negra de d4; tras la recaptura, la torre da mate en d8."
         }
       },
       "puzzles": [
@@ -633,16 +649,22 @@
       "theme": "kingsideAttack",
       "title": {
         "en": "Attack on the king",
-        "uk": "Атака на короля"
+        "uk": "Атака на короля",
+        "ru": "Атака на короля",
+        "es": "Ataque al rey"
       },
       "tip": {
         "en": "Count your attackers near the king before you sacrifice.",
-        "uk": "Перед жертвою порахуй, скільки твоїх фігур атакує короля."
+        "uk": "Перед жертвою порахуй, скільки твоїх фігур атакує короля.",
+        "ru": "Перед жертвой посчитай свои фигуры у короля.",
+        "es": "Cuenta tus atacantes cerca del rey antes de sacrificar."
       },
       "intro": {
         "text": {
           "en": "When your pieces outnumber the defenders around the enemy king, a sacrifice can tear its shelter apart. The classic is the bishop on h7, but rooks and knights go in too. What matters is what comes next: every move after the sacrifice must keep the attack going.",
-          "uk": "Коли біля ворожого короля твоїх фігур більше, ніж захисників, жертва може зруйнувати його укриття. Класика — слон на h7, але в хід ідуть і тури, і коні. Головне — що далі: кожен хід після жертви має підтримувати атаку."
+          "uk": "Коли біля ворожого короля твоїх фігур більше, ніж захисників, жертва може зруйнувати його укриття. Класика — слон на h7, але в хід ідуть і тури, і коні. Головне — що далі: кожен хід після жертви має підтримувати атаку.",
+          "ru": "Когда твоих фигур у короля соперника больше, чем защитников, жертва может разрушить его укрытие. Классика — слон на h7, но в ход идут и ладьи, и кони. Главное — что дальше: каждый ход после жертвы должен продолжать атаку.",
+          "es": "Cuando tus piezas superan en número a los defensores del rey enemigo, un sacrificio puede destrozar su refugio. El clásico es el alfil en h7, pero también entran torres y caballos. Lo importante es lo que viene después: cada jugada tras el sacrificio debe mantener el ataque."
         },
         "fen": "3q1rk1/pp3ppp/4p3/3pP3/1b1P4/2PB1N2/PP3PPP/3Q1RK1 w - - 0 1",
         "arrows": [
@@ -664,7 +686,9 @@
         ],
         "caption": {
           "en": "Bxh7+: the bishop is sacrificed to strip the king; the knight and the queen follow.",
-          "uk": "Bxh7+: слона жертвують, щоб оголити короля; слідом вриваються кінь і ферзь."
+          "uk": "Bxh7+: слона жертвують, щоб оголити короля; слідом вриваються кінь і ферзь.",
+          "ru": "Bxh7+: слона жертвуют, чтобы оголить короля; за ним идут конь и ферзь.",
+          "es": "Bxh7+: se sacrifica el alfil para dejar al rey al descubierto; le siguen el caballo y la dama."
         }
       },
       "puzzles": [
@@ -972,16 +996,22 @@
       "theme": "veryLong",
       "title": {
         "en": "Long combinations",
-        "uk": "Довгі комбінації"
+        "uk": "Довгі комбінації",
+        "ru": "Длинные комбинации",
+        "es": "Combinaciones largas"
       },
       "tip": {
         "en": "Keep every move forcing, and check the best reply each time.",
-        "uk": "Нехай кожен хід буде форсованим, і щоразу перевіряй найкращу відповідь."
+        "uk": "Нехай кожен хід буде форсованим, і щоразу перевіряй найкращу відповідь.",
+        "ru": "Каждый ход — форсированный, и каждый раз проверяй лучший ответ.",
+        "es": "Que cada jugada sea forzada, y comprueba cada vez la mejor respuesta."
       },
       "intro": {
         "text": {
           "en": "Long combinations are chains of forcing moves — checks, captures and threats, each leaving the opponent few choices. You do not need to see every branch at once: find a forcing first move, then the best defence, then your next blow. Patience in calculation pays off here.",
-          "uk": "Довгі комбінації — це ланцюжки форсованих ходів: шахів, взять і загроз, кожен із яких залишає суперникові мало вибору. Не обов’язково бачити всі розгалуження одразу: знайди форсований перший хід, потім найкращий захист, потім наступний удар. Тут терпіння в розрахунку окупається."
+          "uk": "Довгі комбінації — це ланцюжки форсованих ходів: шахів, взять і загроз, кожен із яких залишає суперникові мало вибору. Не обов’язково бачити всі розгалуження одразу: знайди форсований перший хід, потім найкращий захист, потім наступний удар. Тут терпіння в розрахунку окупається.",
+          "ru": "Длинные комбинации — это цепочки форсированных ходов: шахов, взятий и угроз, каждая из которых оставляет сопернику мало выбора. Не нужно видеть все варианты сразу: найди форсированный первый ход, затем лучшую защиту, затем свой следующий удар. Терпение в расчете здесь окупается.",
+          "es": "Las combinaciones largas son cadenas de jugadas forzadas: jaques, capturas y amenazas, cada una de las cuales deja al rival pocas opciones. No necesitas ver todas las ramas a la vez: encuentra una primera jugada forzada, luego la mejor defensa y luego tu siguiente golpe. Aquí la paciencia en el cálculo da sus frutos."
         },
         "fen": "5r1k/pp3pR1/5B1p/8/8/8/PPP5/2K5 w - - 0 1",
         "arrows": [
@@ -998,7 +1028,9 @@
         ],
         "caption": {
           "en": "Rxf7+ starts a windmill: the bishop gives check, the rook returns to g7 and takes the next piece.",
-          "uk": "Rxf7+ запускає «млин»: шахує слон, тура повертається на g7 і забирає наступну фігуру."
+          "uk": "Rxf7+ запускає «млин»: шахує слон, тура повертається на g7 і забирає наступну фігуру.",
+          "ru": "Rxf7+ запускает мельницу: слон дает шах, ладья возвращается на g7 и берет следующую фигуру.",
+          "es": "Rxf7+ pone en marcha un molino: el alfil da jaque, la torre vuelve a g7 y captura la siguiente pieza."
         }
       },
       "puzzles": [
@@ -1267,16 +1299,22 @@
       "theme": "defensiveMove",
       "title": {
         "en": "Only defence",
-        "uk": "Єдиний захист"
+        "uk": "Єдиний захист",
+        "ru": "Единственная защита",
+        "es": "Única defensa"
       },
       "tip": {
         "en": "Find their threat first, then the one move that meets it.",
-        "uk": "Спершу знайди загрозу суперника, потім — хід, що її відбиває."
+        "uk": "Спершу знайди загрозу суперника, потім — хід, що її відбиває.",
+        "ru": "Сначала найди угрозу соперника, а потом единственный ход против нее.",
+        "es": "Primero encuentra su amenaza y luego la única jugada que la neutraliza."
       },
       "intro": {
         "text": {
           "en": "At this level, defence is calculation too. The opponent has a real threat, and most moves lose; one holds. The best defensive moves often come with a counter-threat, so that the opponent has to answer you.",
-          "uk": "На цьому рівні захист — це теж розрахунок. У суперника реальна загроза, і більшість ходів програє; рятує лише один. Найкращі захисні ходи часто несуть зустрічну загрозу, і тоді вже суперникові доводиться відповідати тобі."
+          "uk": "На цьому рівні захист — це теж розрахунок. У суперника реальна загроза, і більшість ходів програє; рятує лише один. Найкращі захисні ходи часто несуть зустрічну загрозу, і тоді вже суперникові доводиться відповідати тобі.",
+          "ru": "На этом уровне защита — тоже расчет. У соперника реальная угроза, и большинство ходов проигрывает; держит только один. Лучшие защитные ходы часто несут контругрозу, чтобы соперник был вынужден отвечать тебе.",
+          "es": "A este nivel, defender también es calcular. El rival tiene una amenaza real y la mayoría de las jugadas pierden; solo una aguanta. Las mejores jugadas defensivas suelen llevar una contraamenaza, para que sea el rival quien tenga que responderte."
         },
         "fen": "5rk1/pp3ppp/3b4/8/7q/8/PP1N1PPP/3Q1RK1 w - - 0 1",
         "arrows": [
@@ -1298,7 +1336,9 @@
         ],
         "caption": {
           "en": "Nf3 guards h2 and hits the queen: the mate threat is gone, with tempo.",
-          "uk": "Nf3 захищає h2 й нападає на ферзя: загрозу мату знято з темпом."
+          "uk": "Nf3 захищає h2 й нападає на ферзя: загрозу мату знято з темпом.",
+          "ru": "Nf3 защищает h2 и нападает на ферзя: угроза мата снята с темпом.",
+          "es": "Nf3 defiende h2 y ataca a la dama: la amenaza de mate desaparece, y con tempo."
         }
       },
       "puzzles": [
@@ -1580,16 +1620,22 @@
       "theme": "intermezzo",
       "title": {
         "en": "In-between move",
-        "uk": "Проміжний хід"
+        "uk": "Проміжний хід",
+        "ru": "Промежуточный ход",
+        "es": "Jugada intermedia"
       },
       "tip": {
         "en": "The recapture can wait. Is there a check or a capture first?",
-        "uk": "Взяття у відповідь почекає. Чи немає спершу шаху чи взяття?"
+        "uk": "Взяття у відповідь почекає. Чи немає спершу шаху чи взяття?",
+        "ru": "Взятие назад может подождать. Нет ли сначала шаха или взятия?",
+        "es": "La recaptura puede esperar. ¿Hay antes un jaque o una captura?"
       },
       "intro": {
         "text": {
           "en": "Strong players do not recapture on autopilot. An in-between move — a check, a capture or a threat that must be answered — can come first and change the balance of the whole exchange. It works for the defender too: the opponent’s expected recapture is a moment to look for your own move.",
-          "uk": "Сильні шахісти не беруть назад машинально. Спершу може бути проміжний хід — шах, взяття чи загроза, на яку треба відповісти, — і він змінює баланс усього розміну. Це працює й для того, хто захищається: момент очікуваного взяття — привід пошукати свій хід."
+          "uk": "Сильні шахісти не беруть назад машинально. Спершу може бути проміжний хід — шах, взяття чи загроза, на яку треба відповісти, — і він змінює баланс усього розміну. Це працює й для того, хто захищається: момент очікуваного взяття — привід пошукати свій хід.",
+          "ru": "Сильные шахматисты не берут назад машинально. Сначала может быть промежуточный ход — шах, взятие или угроза, на которую нужно ответить, — и он меняет баланс всего размена. Это работает и для защищающейся стороны: момент ожидаемого взятия — повод поискать свой ход.",
+          "es": "Los jugadores fuertes no recapturan en piloto automático. Antes puede venir una jugada intermedia (un jaque, una captura o una amenaza que hay que atender) y cambiar el balance de todo el cambio. También sirve para el que defiende: la recaptura que el rival espera es el momento de buscar tu propia jugada."
         },
         "fen": "5rk1/pp2bppp/8/3N4/8/8/PP3PPP/R2q1RK1 w - - 0 1",
         "arrows": [
@@ -1611,7 +1657,9 @@
         ],
         "caption": {
           "en": "Nxe7+ first, then the rook takes back on d1: White wins a whole bishop.",
-          "uk": "Спершу Nxe7+, а потім тура відбирає на d1: білі виграють цілого слона."
+          "uk": "Спершу Nxe7+, а потім тура відбирає на d1: білі виграють цілого слона.",
+          "ru": "Сначала Nxe7+, затем ладья берет назад на d1: белые выигрывают целого слона.",
+          "es": "Primero Nxe7+, y luego la torre recaptura en d1: las blancas ganan un alfil entero."
         }
       },
       "puzzles": [
@@ -1897,16 +1945,22 @@
       "theme": "mateIn4",
       "title": {
         "en": "Mate in 4 and more",
-        "uk": "Мат у 4+ ходи"
+        "uk": "Мат у 4+ ходи",
+        "ru": "Мат в 4 хода и больше",
+        "es": "Mate en 4 o más"
       },
       "tip": {
         "en": "Picture the final mate first, then find the checks that lead there.",
-        "uk": "Спершу уяви фінальний мат, потім знайди шахи, що ведуть до нього."
+        "uk": "Спершу уяви фінальний мат, потім знайди шахи, що ведуть до нього.",
+        "ru": "Сначала представь финальный мат, потом найди шахи, которые к нему ведут.",
+        "es": "Imagina primero el mate final y luego busca los jaques que llevan a él."
       },
       "intro": {
         "text": {
           "en": "Long mates are built backwards: picture the final mating position, then find the forcing moves that drive the king into it. Checks keep the opponent’s choices to a minimum, and a queen sacrifice is often the key that locks the door.",
-          "uk": "Довгі мати будують із кінця: уяви фінальну матову позицію, а потім знайди форсовані ходи, що заженуть туди короля. Шахи зводять вибір суперника до мінімуму, а жертва ферзя часто стає ключем, що замикає двері."
+          "uk": "Довгі мати будують із кінця: уяви фінальну матову позицію, а потім знайди форсовані ходи, що заженуть туди короля. Шахи зводять вибір суперника до мінімуму, а жертва ферзя часто стає ключем, що замикає двері.",
+          "ru": "Длинные маты строятся с конца: представь финальную матовую позицию, затем найди форсированные ходы, которые загоняют туда короля. Шахи сводят выбор соперника к минимуму, а жертва ферзя часто становится ключом, который запирает дверь.",
+          "es": "Los mates largos se construyen al revés: imagina la posición final de mate y luego busca las jugadas forzadas que llevan al rey hasta ella. Los jaques reducen al mínimo las opciones del rival, y un sacrificio de dama suele ser la llave que cierra la puerta."
         },
         "fen": "4r2k/pp4pp/8/6N1/2Q5/3b4/6PP/5RK1 w - - 0 1",
         "arrows": [
@@ -1928,7 +1982,9 @@
         ],
         "caption": {
           "en": "Nf7+ starts a mate in four: two knight checks, a queen sacrifice on g8, then a smothered mate.",
-          "uk": "Nf7+ починає мат у 4 ходи: два шахи конем, жертва ферзя на g8 — і спертий мат."
+          "uk": "Nf7+ починає мат у 4 ходи: два шахи конем, жертва ферзя на g8 — і спертий мат.",
+          "ru": "Nf7+ начинает мат в четыре хода: два шаха конем, жертва ферзя на g8 и спертый мат.",
+          "es": "Nf7+ inicia un mate en cuatro: dos jaques de caballo, un sacrificio de dama en g8 y luego un mate de la coz."
         }
       },
       "puzzles": [

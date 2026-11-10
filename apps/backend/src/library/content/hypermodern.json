@@ -1,16 +1,20 @@
 {
   "id": "hypermodern",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "hypermodern-1",
       "title": {
         "en": "Réti's New Ideas",
-        "uk": "Нові ідеї Реті"
+        "uk": "Нові ідеї Реті",
+        "ru": "Новые идеи Рети",
+        "es": "Las nuevas ideas de Réti"
       },
       "subtitle": {
         "en": "Richard Réti, 1919–1928",
-        "uk": "Ріхард Реті, 1919–1928"
+        "uk": "Ріхард Реті, 1919–1928",
+        "ru": "Рихард Рети, 1919–1928",
+        "es": "Richard Réti, 1919–1928"
       },
       "puzzles": [
         {
@@ -38,7 +42,9 @@
           },
           "note": {
             "en": "Haarlem, August 1919, a blindfold display on 24 boards.",
-            "uk": "Гарлем, серпень 1919, сеанс наосліп на 24 дошках."
+            "uk": "Гарлем, серпень 1919, сеанс наосліп на 24 дошках.",
+            "ru": "Харлем, август 1919 года, сеанс вслепую на 24 досках.",
+            "es": "Haarlem, agosto de 1919, una sesión a ciegas en 24 tableros."
           }
         },
         {
@@ -66,7 +72,9 @@
           },
           "note": {
             "en": "Amsterdam, September 1919, blindfold on ten boards, a French Defence.",
-            "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, французький захист."
+            "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, французький захист.",
+            "ru": "Амстердам, сентябрь 1919 года, вслепую на десяти досках, французская защита.",
+            "es": "Ámsterdam, septiembre de 1919, a ciegas en diez tableros, una Defensa Francesa."
           }
         },
         {
@@ -93,7 +101,9 @@
           },
           "note": {
             "en": "Stockholm, November 1919, round six of the Schultz Memorial, a Petroff Defence.",
-            "uk": "Стокгольм, листопад 1919, шостий тур Меморіалу Шульца, захист Петрова."
+            "uk": "Стокгольм, листопад 1919, шостий тур Меморіалу Шульца, захист Петрова.",
+            "ru": "Стокгольм, ноябрь 1919 года, шестой тур Мемориала Шульца, защита Петрова.",
+            "es": "Estocolmo, noviembre de 1919, sexta ronda del Memorial Schultz, una Defensa Petrov."
           }
         },
         {
@@ -120,7 +130,9 @@
           },
           "note": {
             "en": "Bad Pistyan, April 1922, round eight. Bogoljubov won the tournament.",
-            "uk": "Пʼєштяни, квітень 1922, восьмий тур. Турнір виграв Боголюбов."
+            "uk": "Пʼєштяни, квітень 1922, восьмий тур. Турнір виграв Боголюбов.",
+            "ru": "Пиштьян, апрель 1922 года, восьмой тур. Боголюбов выиграл турнир.",
+            "es": "Bad Pistyan, abril de 1922, octava ronda. Bogoljubov ganó el torneo."
           }
         },
         {
@@ -146,7 +158,9 @@
           },
           "note": {
             "en": "Bad Pistyan, April 1922, round 14; Tarrasch defends with his own defence.",
-            "uk": "Пʼєштяни, квітень 1922, 14-й тур; Тарраш захищається власним захистом."
+            "uk": "Пʼєштяни, квітень 1922, 14-й тур; Тарраш захищається власним захистом.",
+            "ru": "Пиштьян, апрель 1922 года, 14-й тур; Тарраш защищается собственной защитой.",
+            "es": "Bad Pistyan, abril de 1922, ronda 14; Tarrasch se defiende con su propia defensa."
           }
         },
         {
@@ -173,7 +187,9 @@
           },
           "note": {
             "en": "London, August 1922, round 12. Capablanca won the tournament.",
-            "uk": "Лондон, серпень 1922, 12-й тур. Турнір виграв Капабланка."
+            "uk": "Лондон, серпень 1922, 12-й тур. Турнір виграв Капабланка.",
+            "ru": "Лондон, август 1922 года, 12-й тур. Капабланка выиграл турнир.",
+            "es": "Londres, agosto de 1922, ronda 12. Capablanca ganó el torneo."
           }
         },
         {
@@ -200,7 +216,9 @@
           },
           "note": {
             "en": "Hastings, New Year 1923, round six, a King's Indian.",
-            "uk": "Гастінгс, Новий 1923 рік, шостий тур, староіндійський захист."
+            "uk": "Гастінгс, Новий 1923 рік, шостий тур, староіндійський захист.",
+            "ru": "Гастингс, Новый год 1923, шестой тур, староиндийская защита.",
+            "es": "Hastings, Año Nuevo de 1923, sexta ronda, una India de Rey."
           }
         },
         {
@@ -227,7 +245,9 @@
           },
           "note": {
             "en": "Karlsbad, April 1923, round two, a Réti Opening.",
-            "uk": "Карлсбад, квітень 1923, другий тур, дебют Реті."
+            "uk": "Карлсбад, квітень 1923, другий тур, дебют Реті.",
+            "ru": "Карлсбад, апрель 1923 года, второй тур, дебют Рети.",
+            "es": "Karlsbad, abril de 1923, segunda ronda, una Apertura Réti."
           }
         },
         {
@@ -254,7 +274,9 @@
           },
           "note": {
             "en": "Buenos Aires, October 1924, game one of a match with Damián Reca.",
-            "uk": "Буенос-Айрес, жовтень 1924, перша партія матчу з Даміаном Рекою."
+            "uk": "Буенос-Айрес, жовтень 1924, перша партія матчу з Даміаном Рекою.",
+            "ru": "Буэнос-Айрес, октябрь 1924 года, первая партия матча с Дамианом Река.",
+            "es": "Buenos Aires, octubre de 1924, primera partida de un match con Damián Reca."
           }
         },
         {
@@ -281,7 +303,9 @@
           },
           "note": {
             "en": "Moscow, November 1925, round eight. Bogoljubov won the tournament.",
-            "uk": "Москва, листопад 1925, восьмий тур. Турнір виграв Боголюбов."
+            "uk": "Москва, листопад 1925, восьмий тур. Турнір виграв Боголюбов.",
+            "ru": "Москва, ноябрь 1925 года, восьмой тур. Боголюбов выиграл турнир.",
+            "es": "Moscú, noviembre de 1925, octava ronda. Bogoljubov ganó el torneo."
           }
         },
         {
@@ -309,7 +333,9 @@
           },
           "note": {
             "en": "Hastings, January 1927, round six, an English Opening.",
-            "uk": "Гастінгс, січень 1927, шостий тур, англійський початок."
+            "uk": "Гастінгс, січень 1927, шостий тур, англійський початок.",
+            "ru": "Гастингс, январь 1927 года, шестой тур, английское начало.",
+            "es": "Hastings, enero de 1927, sexta ronda, una Apertura Inglesa."
           }
         },
         {
@@ -337,7 +363,9 @@
           },
           "note": {
             "en": "Amsterdam, September 1919, blindfold on ten boards, a Caro-Kann.",
-            "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, захист Каро-Канн."
+            "uk": "Амстердам, вересень 1919, гра наосліп на десяти дошках, захист Каро-Канн.",
+            "ru": "Амстердам, сентябрь 1919 года, вслепую на десяти досках, защита Каро — Канн.",
+            "es": "Ámsterdam, septiembre de 1919, a ciegas en diez tableros, una Caro-Kann."
           }
         },
         {
@@ -364,7 +392,9 @@
           },
           "note": {
             "en": "Amsterdam, May 1920, game one of a match with the young Euwe, a Two Knights Defence.",
-            "uk": "Амстердам, травень 1920, перша партія матчу з молодим Ейве, захист двох коней."
+            "uk": "Амстердам, травень 1920, перша партія матчу з молодим Ейве, захист двох коней.",
+            "ru": "Амстердам, май 1920 года, первая партия матча с юным Эйве, защита двух коней.",
+            "es": "Ámsterdam, mayo de 1920, primera partida de un match con el joven Euwe, una Defensa de los Dos Caballos."
           }
         },
         {
@@ -390,7 +420,9 @@
           },
           "note": {
             "en": "Bratislava, June 1920, game one of a match with Breyer, a fellow pioneer of the new ideas.",
-            "uk": "Братислава, червень 1920, перша партія матчу з Брейєром — ще одним піонером нових ідей."
+            "uk": "Братислава, червень 1920, перша партія матчу з Брейєром — ще одним піонером нових ідей.",
+            "ru": "Братислава, июнь 1920 года, первая партия матча с Брейером, еще одним первопроходцем новых идей.",
+            "es": "Bratislava, junio de 1920, primera partida de un match con Breyer, otro pionero de las nuevas ideas."
           }
         },
         {
@@ -417,7 +449,9 @@
           },
           "note": {
             "en": "Vienna, November 1922, round 12, deep in the ending.",
-            "uk": "Відень, листопад 1922, 12-й тур, глибокий ендшпіль."
+            "uk": "Відень, листопад 1922, 12-й тур, глибокий ендшпіль.",
+            "ru": "Вена, ноябрь 1922 года, 12-й тур, глубоко в эндшпиле.",
+            "es": "Viena, noviembre de 1922, ronda 12, muy avanzado el final."
           }
         },
         {
@@ -445,7 +479,9 @@
           },
           "note": {
             "en": "Marienbad, June 1925, round ten, an English Opening.",
-            "uk": "Марієнбад, червень 1925, десятий тур, англійський початок."
+            "uk": "Марієнбад, червень 1925, десятий тур, англійський початок.",
+            "ru": "Мариенбад, июнь 1925 года, десятый тур, английское начало.",
+            "es": "Marienbad, junio de 1925, décima ronda, una Apertura Inglesa."
           }
         },
         {
@@ -473,7 +509,9 @@
           },
           "note": {
             "en": "Dortmund, July 1928, round two, a Vienna Game.",
-            "uk": "Дортмунд, липень 1928, другий тур, віденська партія."
+            "uk": "Дортмунд, липень 1928, другий тур, віденська партія.",
+            "ru": "Дортмунд, июль 1928 года, второй тур, венская партия.",
+            "es": "Dortmund, julio de 1928, segunda ronda, una Partida Vienesa."
           }
         },
         {
@@ -500,7 +538,9 @@
           },
           "note": {
             "en": "Berlin, December 1920, round six, a French Defence.",
-            "uk": "Берлін, грудень 1920, шостий тур, французький захист."
+            "uk": "Берлін, грудень 1920, шостий тур, французький захист.",
+            "ru": "Берлин, декабрь 1920 года, шестой тур, французская защита.",
+            "es": "Berlín, diciembre de 1920, sexta ronda, una Defensa Francesa."
           }
         },
         {
@@ -529,7 +569,9 @@
           },
           "note": {
             "en": "Hastings, January 1927, round seven.",
-            "uk": "Гастінгс, січень 1927, сьомий тур."
+            "uk": "Гастінгс, січень 1927, сьомий тур.",
+            "ru": "Гастингс, январь 1927 года, седьмой тур.",
+            "es": "Hastings, enero de 1927, séptima ronda."
           }
         },
         {
@@ -557,7 +599,9 @@
           },
           "note": {
             "en": "New York, March 1924, round seven. At this tournament Réti handed Capablanca his first loss in eight years.",
-            "uk": "Нью-Йорк, березень 1924, сьомий тур. На цьому турнірі Реті завдав Капабланці першої за вісім років поразки."
+            "uk": "Нью-Йорк, березень 1924, сьомий тур. На цьому турнірі Реті завдав Капабланці першої за вісім років поразки.",
+            "ru": "Нью-Йорк, март 1924 года, седьмой тур. На этом турнире Рети нанес Капабланке первое за восемь лет поражение.",
+            "es": "Nueva York, marzo de 1924, séptima ronda. En este torneo Réti le infligió a Capablanca su primera derrota en ocho años."
           }
         }
       ]
@@ -566,11 +610,15 @@
       "id": "hypermodern-2",
       "title": {
         "en": "My System",
-        "uk": "Моя система"
+        "uk": "Моя система",
+        "ru": "Моя система",
+        "es": "Mi sistema"
       },
       "subtitle": {
         "en": "Aron Nimzowitsch, 1915–1929",
-        "uk": "Арон Німцович, 1915–1929"
+        "uk": "Арон Німцович, 1915–1929",
+        "ru": "Арон Нимцович, 1915–1929",
+        "es": "Aron Nimzowitsch, 1915–1929"
       },
       "puzzles": [
         {
@@ -598,7 +646,9 @@
           },
           "note": {
             "en": "Karlsbad, May 1923, round six: two hypermoderns face to face.",
-            "uk": "Карлсбад, травень 1923, шостий тур: зустріч двох гіпермодерністів."
+            "uk": "Карлсбад, травень 1923, шостий тур: зустріч двох гіпермодерністів.",
+            "ru": "Карлсбад, май 1923 года, шестой тур: два гипермодерниста лицом к лицу.",
+            "es": "Karlsbad, mayo de 1923, sexta ronda: dos hipermodernos cara a cara."
           }
         },
         {
@@ -626,7 +676,9 @@
           },
           "note": {
             "en": "Riga, December 1915, an offhand game in Nimzowitsch's home city.",
-            "uk": "Рига, грудень 1915, товариська партія в рідному місті Німцовича."
+            "uk": "Рига, грудень 1915, товариська партія в рідному місті Німцовича.",
+            "ru": "Рига, декабрь 1915 года, товарищеская партия в родном городе Нимцовича.",
+            "es": "Riga, diciembre de 1915, una partida informal en la ciudad natal de Nimzowitsch."
           }
         },
         {
@@ -654,7 +706,9 @@
           },
           "note": {
             "en": "London, November 1927, a casual game.",
-            "uk": "Лондон, листопад 1927, товариська партія."
+            "uk": "Лондон, листопад 1927, товариська партія.",
+            "ru": "Лондон, ноябрь 1927 года, товарищеская партия.",
+            "es": "Londres, noviembre de 1927, una partida amistosa."
           }
         },
         {
@@ -682,7 +736,9 @@
           },
           "note": {
             "en": "Semmering, March 1926, round one: an Alekhine Defence against Alekhine himself.",
-            "uk": "Земмерінг, березень 1926, перший тур: захист Алехіна проти самого Алехіна."
+            "uk": "Земмерінг, березень 1926, перший тур: захист Алехіна проти самого Алехіна.",
+            "ru": "Земмеринг, март 1926 года, первый тур: защита Алехина против самого Алехина.",
+            "es": "Semmering, marzo de 1926, primera ronda: una Defensa Alekhine contra el propio Alekhine."
           }
         },
         {
@@ -708,7 +764,9 @@
           },
           "note": {
             "en": "Dresden, April 1926, round four, a Réti Opening.",
-            "uk": "Дрезден, квітень 1926, четвертий тур, дебют Реті."
+            "uk": "Дрезден, квітень 1926, четвертий тур, дебют Реті.",
+            "ru": "Дрезден, апрель 1926 года, четвертый тур, дебют Рети.",
+            "es": "Dresde, abril de 1926, cuarta ronda, una Apertura Réti."
           }
         },
         {
@@ -734,7 +792,9 @@
           },
           "note": {
             "en": "Dresden, April 1926, round five, an English Opening.",
-            "uk": "Дрезден, квітень 1926, пʼятий тур, англійський початок."
+            "uk": "Дрезден, квітень 1926, пʼятий тур, англійський початок.",
+            "ru": "Дрезден, апрель 1926 года, пятый тур, английское начало.",
+            "es": "Dresde, abril de 1926, quinta ronda, una Apertura Inglesa."
           }
         },
         {
@@ -761,7 +821,9 @@
           },
           "note": {
             "en": "London, October 1927, round three. Nimzowitsch and Tartakower shared first place.",
-            "uk": "Лондон, жовтень 1927, третій тур. Німцович і Тартаковер поділили перше місце."
+            "uk": "Лондон, жовтень 1927, третій тур. Німцович і Тартаковер поділили перше місце.",
+            "ru": "Лондон, октябрь 1927 года, третий тур. Нимцович и Тартаковер поделили первое место.",
+            "es": "Londres, octubre de 1927, tercera ronda. Nimzowitsch y Tartakower compartieron el primer puesto."
           }
         },
         {
@@ -789,7 +851,9 @@
           },
           "note": {
             "en": "Bergen, January 1922, from a blindfold display.",
-            "uk": "Берген, січень 1922, сеанс наосліп."
+            "uk": "Берген, січень 1922, сеанс наосліп.",
+            "ru": "Берген, январь 1922 года, из сеанса вслепую.",
+            "es": "Bergen, enero de 1922, de una sesión a ciegas."
           }
         },
         {
@@ -818,7 +882,9 @@
           },
           "note": {
             "en": "Copenhagen, March 1924, from a simul.",
-            "uk": "Копенгаген, березень 1924, сеанс одночасної гри."
+            "uk": "Копенгаген, березень 1924, сеанс одночасної гри.",
+            "ru": "Копенгаген, март 1924 года, из сеанса одновременной игры.",
+            "es": "Copenhague, marzo de 1924, de una simultánea."
           }
         },
         {
@@ -845,7 +911,9 @@
           },
           "note": {
             "en": "Kolding, January 1923, game two of a match with Brinckmann.",
-            "uk": "Колдінг, січень 1923, друга партія матчу з Брінкманом."
+            "uk": "Колдінг, січень 1923, друга партія матчу з Брінкманом.",
+            "ru": "Колдинг, январь 1923 года, вторая партия матча с Бринкманом.",
+            "es": "Kolding, enero de 1923, segunda partida de un match con Brinckmann."
           }
         },
         {
@@ -871,7 +939,9 @@
           },
           "note": {
             "en": "Stockholm, October 1920, round one of a jubilee tournament.",
-            "uk": "Стокгольм, жовтень 1920, перший тур ювілейного турніру."
+            "uk": "Стокгольм, жовтень 1920, перший тур ювілейного турніру.",
+            "ru": "Стокгольм, октябрь 1920 года, первый тур юбилейного турнира.",
+            "es": "Estocolmo, octubre de 1920, primera ronda de un torneo conmemorativo."
           }
         },
         {
@@ -898,7 +968,9 @@
           },
           "note": {
             "en": "Copenhagen, August 1924, round four of the Nordic Congress.",
-            "uk": "Копенгаген, серпень 1924, четвертий тур Північного конгресу."
+            "uk": "Копенгаген, серпень 1924, четвертий тур Північного конгресу.",
+            "ru": "Копенгаген, август 1924 года, четвертый тур Северного конгресса.",
+            "es": "Copenhague, agosto de 1924, cuarta ronda del Congreso Nórdico."
           }
         },
         {
@@ -926,7 +998,9 @@
           },
           "note": {
             "en": "Marienbad, June 1925, round 12. Nimzowitsch and Rubinstein shared first place.",
-            "uk": "Марієнбад, червень 1925, 12-й тур. Німцович і Рубінштейн поділили перше місце."
+            "uk": "Марієнбад, червень 1925, 12-й тур. Німцович і Рубінштейн поділили перше місце.",
+            "ru": "Мариенбад, июнь 1925 года, 12-й тур. Нимцович и Рубинштейн поделили первое место.",
+            "es": "Marienbad, junio de 1925, ronda 12. Nimzowitsch y Rubinstein compartieron el primer puesto."
           }
         },
         {
@@ -952,7 +1026,9 @@
           },
           "note": {
             "en": "Dresden, April 1926, round six, a Sicilian Defence.",
-            "uk": "Дрезден, квітень 1926, шостий тур, сицилійський захист."
+            "uk": "Дрезден, квітень 1926, шостий тур, сицилійський захист.",
+            "ru": "Дрезден, апрель 1926 года, шестой тур, сицилианская защита.",
+            "es": "Dresde, abril de 1926, sexta ronda, una Defensa Siciliana."
           }
         },
         {
@@ -980,7 +1056,9 @@
           },
           "note": {
             "en": "Karlsbad, August 1929, round eight. Nimzowitsch won the tournament ahead of Capablanca.",
-            "uk": "Карлсбад, серпень 1929, восьмий тур. Німцович виграв турнір, випередивши Капабланку."
+            "uk": "Карлсбад, серпень 1929, восьмий тур. Німцович виграв турнір, випередивши Капабланку.",
+            "ru": "Карлсбад, август 1929 года, восьмой тур. Нимцович выиграл турнир, опередив Капабланку.",
+            "es": "Karlsbad, agosto de 1929, octava ronda. Nimzowitsch ganó el torneo por delante de Capablanca."
           }
         },
         {
@@ -1007,7 +1085,9 @@
           },
           "note": {
             "en": "Copenhagen, December 1922, round two. Nimzowitsch had settled in Denmark.",
-            "uk": "Копенгаген, грудень 1922, другий тур. Німцович тоді вже оселився в Данії."
+            "uk": "Копенгаген, грудень 1922, другий тур. Німцович тоді вже оселився в Данії.",
+            "ru": "Копенгаген, декабрь 1922 года, второй тур. Нимцович к тому времени обосновался в Дании.",
+            "es": "Copenhague, diciembre de 1922, segunda ronda. Nimzowitsch se había establecido en Dinamarca."
           }
         },
         {
@@ -1036,7 +1116,9 @@
           },
           "note": {
             "en": "Kristiania (Oslo), 1921, a consultation game against a team of allies.",
-            "uk": "Християнія (Осло), 1921, консультаційна партія проти команди союзників."
+            "uk": "Християнія (Осло), 1921, консультаційна партія проти команди союзників.",
+            "ru": "Кристиания (Осло), 1921 год, консультационная партия против команды союзников.",
+            "es": "Kristiania (Oslo), 1921, una partida en consulta contra un equipo de aliados."
           }
         },
         {
@@ -1063,7 +1145,9 @@
           },
           "note": {
             "en": "Dresden, April 1926, round one, a year after My System appeared. Nimzowitsch won the tournament.",
-            "uk": "Дрезден, квітень 1926, перший тур, через рік після виходу «Моєї системи». Німцович виграв турнір."
+            "uk": "Дрезден, квітень 1926, перший тур, через рік після виходу «Моєї системи». Німцович виграв турнір.",
+            "ru": "Дрезден, апрель 1926 года, первый тур, через год после выхода «Моей системы». Нимцович выиграл турнир.",
+            "es": "Dresde, abril de 1926, primera ronda, un año después de la publicación de «Mi sistema». Nimzowitsch ganó el torneo."
           }
         },
         {
@@ -1090,7 +1174,9 @@
           },
           "note": {
             "en": "Leipzig, 1926, from a simul; two allies had White.",
-            "uk": "Лейпциг, 1926, сеанс; білими грали двоє союзників."
+            "uk": "Лейпциг, 1926, сеанс; білими грали двоє союзників.",
+            "ru": "Лейпциг, 1926 год, из сеанса одновременной игры; белыми играли двое союзников.",
+            "es": "Leipzig, 1926, de una simultánea; dos aliados llevaban las blancas."
           }
         },
         {
@@ -1118,7 +1204,9 @@
           },
           "note": {
             "en": "Næstved, May 1922, deep in the ending.",
-            "uk": "Нествед, травень 1922, глибокий ендшпіль."
+            "uk": "Нествед, травень 1922, глибокий ендшпіль.",
+            "ru": "Нествед, май 1922 года, глубоко в эндшпиле.",
+            "es": "Næstved, mayo de 1922, muy avanzado el final."
           }
         }
       ]
@@ -1127,11 +1215,15 @@
       "id": "hypermodern-3",
       "title": {
         "en": "Tartakower and Company",
-        "uk": "Тартаковер і компанія"
+        "uk": "Тартаковер і компанія",
+        "ru": "Тартаковер и компания",
+        "es": "Tartakower y compañía"
       },
       "subtitle": {
         "en": "Tartakower, Bogoljubov, Breyer",
-        "uk": "Тартаковер, Боголюбов, Брейєр"
+        "uk": "Тартаковер, Боголюбов, Брейєр",
+        "ru": "Тартаковер, Боголюбов, Брейер",
+        "es": "Tartakower, Bogoljubov, Breyer"
       },
       "puzzles": [
         {
@@ -1159,7 +1251,9 @@
           },
           "note": {
             "en": "Vienna, April 1921, from a match with Spielmann.",
-            "uk": "Відень, квітень 1921, матч зі Шпільманом."
+            "uk": "Відень, квітень 1921, матч зі Шпільманом.",
+            "ru": "Вена, апрель 1921 года, из матча со Шпильманом.",
+            "es": "Viena, abril de 1921, de un match con Spielmann."
           }
         },
         {
@@ -1187,7 +1281,9 @@
           },
           "note": {
             "en": "Košice, January 1921: blindfold on 25 boards, a world record at the time.",
-            "uk": "Кошице, січень 1921: гра наосліп на 25 дошках — тодішній світовий рекорд."
+            "uk": "Кошице, січень 1921: гра наосліп на 25 дошках — тодішній світовий рекорд.",
+            "ru": "Кошице, январь 1921 года: вслепую на 25 досках, мировой рекорд на тот момент.",
+            "es": "Košice, enero de 1921: a ciegas en 25 tableros, récord mundial en aquel momento."
           }
         },
         {
@@ -1214,7 +1310,9 @@
           },
           "note": {
             "en": "Berlin, December 1920, round nine, a Sicilian Defence.",
-            "uk": "Берлін, грудень 1920, девʼятий тур, сицилійський захист."
+            "uk": "Берлін, грудень 1920, девʼятий тур, сицилійський захист.",
+            "ru": "Берлин, декабрь 1920 года, девятый тур, сицилианская защита.",
+            "es": "Berlín, diciembre de 1920, novena ronda, una Defensa Siciliana."
           }
         },
         {
@@ -1243,7 +1341,9 @@
           },
           "note": {
             "en": "Copenhagen, January 1923, a Queen's Gambit Declined.",
-            "uk": "Копенгаген, січень 1923, відхилений ферзевий гамбіт."
+            "uk": "Копенгаген, січень 1923, відхилений ферзевий гамбіт.",
+            "ru": "Копенгаген, январь 1923 года, отказанный ферзевый гамбит.",
+            "es": "Copenhague, enero de 1923, un Gambito de Dama Rehusado."
           }
         },
         {
@@ -1269,7 +1369,9 @@
           },
           "note": {
             "en": "Budapest, September 1921, round seven, a closed Ruy Lopez.",
-            "uk": "Будапешт, вересень 1921, сьомий тур, закрита іспанська партія."
+            "uk": "Будапешт, вересень 1921, сьомий тур, закрита іспанська партія.",
+            "ru": "Будапешт, сентябрь 1921 года, седьмой тур, закрытый вариант испанской партии.",
+            "es": "Budapest, septiembre de 1921, séptima ronda, una Española cerrada."
           }
         },
         {
@@ -1296,7 +1398,9 @@
           },
           "note": {
             "en": "Semmering, March 1926, round nine.",
-            "uk": "Земмерінг, березень 1926, девʼятий тур."
+            "uk": "Земмерінг, березень 1926, девʼятий тур.",
+            "ru": "Земмеринг, март 1926 года, девятый тур.",
+            "es": "Semmering, marzo de 1926, novena ronda."
           }
         },
         {
@@ -1322,7 +1426,9 @@
           },
           "note": {
             "en": "Paris, June 1929, round five. Menchik had become the first women's world champion in 1927.",
-            "uk": "Париж, червень 1929, пʼятий тур. 1927 року Менчик стала першою чемпіонкою світу серед жінок."
+            "uk": "Париж, червень 1929, пʼятий тур. 1927 року Менчик стала першою чемпіонкою світу серед жінок.",
+            "ru": "Париж, июнь 1929 года, пятый тур. В 1927 году Менчик стала первой чемпионкой мира среди женщин.",
+            "es": "París, junio de 1929, quinta ronda. Menchik se había convertido en 1927 en la primera campeona mundial femenina."
           }
         },
         {
@@ -1350,7 +1456,9 @@
           },
           "note": {
             "en": "Budapest, July 1917. Breyer's name lives on in a main line of the Ruy Lopez.",
-            "uk": "Будапешт, липень 1917. Імʼя Брейєра носить один із головних варіантів іспанської партії."
+            "uk": "Будапешт, липень 1917. Імʼя Брейєра носить один із головних варіантів іспанської партії.",
+            "ru": "Будапешт, июль 1917 года. Имя Брейера живет в одном из главных вариантов испанской партии.",
+            "es": "Budapest, julio de 1917. El nombre de Breyer sigue vivo en una línea principal de la Apertura Española."
           }
         },
         {
@@ -1378,7 +1486,9 @@
           },
           "note": {
             "en": "Triberg, July 1921, round two. Bogoljubov made his home in this town after the war.",
-            "uk": "Трайберг, липень 1921, другий тур. Після війни Боголюбов залишився жити в цьому містечку."
+            "uk": "Трайберг, липень 1921, другий тур. Після війни Боголюбов залишився жити в цьому містечку.",
+            "ru": "Триберг, июль 1921 года, второй тур. После войны Боголюбов поселился в этом городе.",
+            "es": "Triberg, julio de 1921, segunda ronda. Bogoljubov se instaló en esta ciudad después de la guerra."
           }
         },
         {
@@ -1406,7 +1516,9 @@
           },
           "note": {
             "en": "Hastings, December 1926, round one of the Christmas congress.",
-            "uk": "Гастінгс, грудень 1926, перший тур різдвяного конгресу."
+            "uk": "Гастінгс, грудень 1926, перший тур різдвяного конгресу.",
+            "ru": "Гастингс, декабрь 1926 года, первый тур рождественского конгресса.",
+            "es": "Hastings, diciembre de 1926, primera ronda del congreso navideño."
           }
         },
         {
@@ -1433,7 +1545,9 @@
           },
           "note": {
             "en": "Karlsbad, May 1923, round nine.",
-            "uk": "Карлсбад, травень 1923, девʼятий тур."
+            "uk": "Карлсбад, травень 1923, девʼятий тур.",
+            "ru": "Карлсбад, май 1923 года, девятый тур.",
+            "es": "Karlsbad, mayo de 1923, novena ronda."
           }
         },
         {
@@ -1460,7 +1574,9 @@
           },
           "note": {
             "en": "Berlin, October 1929, game 13 of Bogoljubov's first world title match against Alekhine.",
-            "uk": "Берлін, жовтень 1929, 13-та партія першого матчу Боголюбова з Алехіним за звання чемпіона світу."
+            "uk": "Берлін, жовтень 1929, 13-та партія першого матчу Боголюбова з Алехіним за звання чемпіона світу.",
+            "ru": "Берлин, октябрь 1929 года, 13-я партия первого матча Боголюбова с Алехиным на первенство мира.",
+            "es": "Berlín, octubre de 1929, partida 13 del primer match de Bogoljubov contra Alekhine por el título mundial."
           }
         },
         {
@@ -1488,7 +1604,9 @@
           },
           "note": {
             "en": "Bad Pistyan, April 1922, round four.",
-            "uk": "Пʼєштяни, квітень 1922, четвертий тур."
+            "uk": "Пʼєштяни, квітень 1922, четвертий тур.",
+            "ru": "Пиштьян, апрель 1922 года, четвертый тур.",
+            "es": "Bad Pistyan, abril de 1922, cuarta ronda."
           }
         },
         {
@@ -1515,7 +1633,9 @@
           },
           "note": {
             "en": "Scarborough, May 1929, round three.",
-            "uk": "Скарборо, травень 1929, третій тур."
+            "uk": "Скарборо, травень 1929, третій тур.",
+            "ru": "Скарборо, май 1929 года, третий тур.",
+            "es": "Scarborough, mayo de 1929, tercera ronda."
           }
         },
         {
@@ -1543,7 +1663,9 @@
           },
           "note": {
             "en": "Triberg, 1916. Bogoljubov and other Russian players were interned here during the war.",
-            "uk": "Трайберг, 1916. Боголюбова та інших російських шахістів інтернували тут під час війни."
+            "uk": "Трайберг, 1916. Боголюбова та інших російських шахістів інтернували тут під час війни.",
+            "ru": "Триберг, 1916 год. Во время войны Боголюбов и другие русские шахматисты были здесь интернированы.",
+            "es": "Triberg, 1916. Bogoljubov y otros jugadores rusos estuvieron internados aquí durante la guerra."
           }
         },
         {
@@ -1569,7 +1691,9 @@
           },
           "note": {
             "en": "Vienna, November 1923, round one of the Schlechter Memorial.",
-            "uk": "Відень, листопад 1923, перший тур Меморіалу Шлехтера."
+            "uk": "Відень, листопад 1923, перший тур Меморіалу Шлехтера.",
+            "ru": "Вена, ноябрь 1923 года, первый тур Мемориала Шлехтера.",
+            "es": "Viena, noviembre de 1923, primera ronda del Memorial Schlechter."
           }
         },
         {
@@ -1596,7 +1720,9 @@
           },
           "note": {
             "en": "Moscow, September 1924, round 13 of the USSR Championship, which Bogoljubov won.",
-            "uk": "Москва, вересень 1924, 13-й тур чемпіонату СРСР, який виграв Боголюбов."
+            "uk": "Москва, вересень 1924, 13-й тур чемпіонату СРСР, який виграв Боголюбов.",
+            "ru": "Москва, сентябрь 1924 года, 13-й тур чемпионата СССР, который выиграл Боголюбов.",
+            "es": "Moscú, septiembre de 1924, ronda 13 del Campeonato de la URSS, que ganó Bogoljubov."
           }
         },
         {
@@ -1624,7 +1750,9 @@
           },
           "note": {
             "en": "Barcelona, October 1929, round seven, a Dutch Defence.",
-            "uk": "Барселона, жовтень 1929, сьомий тур, голландський захист."
+            "uk": "Барселона, жовтень 1929, сьомий тур, голландський захист.",
+            "ru": "Барселона, октябрь 1929 года, седьмой тур, голландская защита.",
+            "es": "Barcelona, octubre de 1929, séptima ronda, una Defensa Holandesa."
           }
         },
         {
@@ -1653,7 +1781,9 @@
           },
           "note": {
             "en": "Ghent, October 1926, round one.",
-            "uk": "Гент, жовтень 1926, перший тур."
+            "uk": "Гент, жовтень 1926, перший тур.",
+            "ru": "Гент, октябрь 1926 года, первый тур.",
+            "es": "Gante, octubre de 1926, primera ronda."
           }
         },
         {
@@ -1681,7 +1811,9 @@
           },
           "note": {
             "en": "Margate, April 1923, round seven.",
-            "uk": "Маргейт, квітень 1923, сьомий тур."
+            "uk": "Маргейт, квітень 1923, сьомий тур.",
+            "ru": "Маргейт, апрель 1923 года, седьмой тур.",
+            "es": "Margate, abril de 1923, séptima ronda."
           }
         }
       ]

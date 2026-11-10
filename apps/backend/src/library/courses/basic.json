@@ -1,22 +1,28 @@
 {
   "id": "basic",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "basic-hanging",
       "theme": "hangingPiece",
       "title": {
         "en": "Hanging piece",
-        "uk": "Висяча фігура"
+        "uk": "Висяча фігура",
+        "ru": "Висячая фигура",
+        "es": "Pieza colgada"
       },
       "tip": {
         "en": "First the simple check: what is left undefended?",
-        "uk": "Спершу проста перевірка: що стоїть без захисту?"
+        "uk": "Спершу проста перевірка: що стоїть без захисту?",
+        "ru": "Сначала простая проверка: что осталось без защиты?",
+        "es": "Primero lo sencillo: ¿qué ha quedado sin defensa?"
       },
       "intro": {
         "text": {
           "en": "A hanging piece is one that nobody defends. Before you look for anything clever, check every enemy piece: can you simply take one for free? And before your own move, make sure you are not leaving anything of yours unprotected.",
-          "uk": "Висяча фігура — та, яку ніхто не захищає. Перш ніж шукати щось хитре, переглянь усі фігури суперника: чи не можна якусь просто забрати задарма? А перед власним ходом переконайся, що сам нічого не залишаєш без захисту."
+          "uk": "Висяча фігура — та, яку ніхто не захищає. Перш ніж шукати щось хитре, переглянь усі фігури суперника: чи не можна якусь просто забрати задарма? А перед власним ходом переконайся, що сам нічого не залишаєш без захисту.",
+          "ru": "Висячая фигура — та, которую никто не защищает. Прежде чем искать что-то хитрое, проверь каждую фигуру соперника: нельзя ли просто взять одну даром? А перед своим ходом убедись, что не оставляешь без защиты ничего своего.",
+          "es": "Una pieza colgada es una que nadie defiende. Antes de buscar algo ingenioso, revisa cada pieza enemiga: ¿puedes simplemente capturar una gratis? Y antes de tu jugada, asegúrate de no dejar nada tuyo sin protección."
         },
         "fen": "6k1/5ppp/8/3n4/8/8/5PPP/3R2K1 w - - 0 1",
         "arrows": [
@@ -28,7 +34,9 @@
         ],
         "caption": {
           "en": "Rxd5: the knight on d5 had no defender — a free piece.",
-          "uk": "Rxd5: кінь на d5 без захисту — фігура дістається задарма."
+          "uk": "Rxd5: кінь на d5 без захисту — фігура дістається задарма.",
+          "ru": "Rxd5: у коня на d5 не было защиты — бесплатная фигура.",
+          "es": "Rxd5: el caballo de d5 no tenía defensor; una pieza gratis."
         }
       },
       "puzzles": [
@@ -321,16 +329,22 @@
       "theme": "mateIn1",
       "title": {
         "en": "Mate in 1",
-        "uk": "Мат в 1 хід"
+        "uk": "Мат в 1 хід",
+        "ru": "Мат в 1 ход",
+        "es": "Mate en 1"
       },
       "tip": {
         "en": "Try every check: one of them ends the game.",
-        "uk": "Перебери всі шахи — один із них закінчує партію."
+        "uk": "Перебери всі шахи — один із них закінчує партію.",
+        "ru": "Попробуй каждый шах: один из них заканчивает партию.",
+        "es": "Prueba cada jaque: uno de ellos termina la partida."
       },
       "intro": {
         "text": {
           "en": "Checkmate is a check with no way out: the king cannot step away, block or capture the checking piece. Here one move is enough. Look at every check you have and ask where the king could go.",
-          "uk": "Мат — це шах, від якого немає порятунку: король не може відійти, закритися чи побити фігуру, що шахує. Тут вистачає одного ходу. Переглянь усі свої шахи й подивися, куди може піти король."
+          "uk": "Мат — це шах, від якого немає порятунку: король не може відійти, закритися чи побити фігуру, що шахує. Тут вистачає одного ходу. Переглянь усі свої шахи й подивися, куди може піти король.",
+          "ru": "Мат — это шах, от которого нет спасения: король не может уйти, закрыться или взять шахующую фигуру. Здесь хватит одного хода. Посмотри на все свои шахи и спроси себя, куда может пойти король.",
+          "es": "El jaque mate es un jaque sin salida: el rey no puede apartarse, tapar ni capturar la pieza que da jaque. Aquí basta una jugada. Mira todos tus jaques y pregúntate adónde podría ir el rey."
         },
         "fen": "r5k1/5p1p/6pQ/8/8/8/1B3PPP/6K1 w - - 0 1",
         "arrows": [
@@ -347,7 +361,9 @@
         ],
         "caption": {
           "en": "Qg7#: the bishop on b2 guards the queen, and the king has nowhere to go.",
-          "uk": "Qg7#: слон з b2 захищає ферзя, а королю нікуди відступити."
+          "uk": "Qg7#: слон з b2 захищає ферзя, а королю нікуди відступити.",
+          "ru": "Qg7#: слон b2 защищает ферзя, и королю некуда идти.",
+          "es": "Qg7#: el alfil de b2 protege a la dama y el rey no tiene adónde ir."
         }
       },
       "puzzles": [
@@ -631,16 +647,22 @@
       "theme": "fork",
       "title": {
         "en": "Fork",
-        "uk": "Вилка"
+        "uk": "Вилка",
+        "ru": "Вилка",
+        "es": "Ataque doble"
       },
       "tip": {
         "en": "One piece, two targets. Look for checks first.",
-        "uk": "Одна фігура — дві цілі. Почни з шахів."
+        "uk": "Одна фігура — дві цілі. Почни з шахів.",
+        "ru": "Одна фигура, две цели. Сначала ищи шахи.",
+        "es": "Una pieza, dos objetivos. Busca primero los jaques."
       },
       "intro": {
         "text": {
           "en": "One piece attacks two targets at once. Your opponent can save only one — the other is yours. Knights are the classic forkers, but any piece can do it.",
-          "uk": "Одна фігура нападає одразу на дві цілі. Суперник встигне врятувати лише одну — друга дістанеться тобі. Класичні майстри вилки — коні, але її може зробити будь-яка фігура."
+          "uk": "Одна фігура нападає одразу на дві цілі. Суперник встигне врятувати лише одну — друга дістанеться тобі. Класичні майстри вилки — коні, але її може зробити будь-яка фігура.",
+          "ru": "Одна фигура нападает сразу на две цели. Соперник может спасти только одну — вторая твоя. Классические мастера вилок — кони, но вилку может сделать любая фигура.",
+          "es": "Una pieza ataca dos objetivos a la vez. El rival solo puede salvar uno; el otro es tuyo. Los caballos son los clásicos del ataque doble, pero cualquier pieza puede hacerlo."
         },
         "fen": "r3k3/7p/8/3N4/8/8/6PP/4K3 w - - 0 1",
         "arrows": [
@@ -662,7 +684,9 @@
         ],
         "caption": {
           "en": "Nc7+ hits the king and the rook — Black must move the king, and the rook falls.",
-          "uk": "Nc7+ нападає на короля й туру — чорні мусять відійти королем, і тура гине."
+          "uk": "Nc7+ нападає на короля й туру — чорні мусять відійти королем, і тура гине.",
+          "ru": "Nc7+ нападает на короля и ладью — черные должны уйти королем, и ладья падает.",
+          "es": "Nc7+ ataca al rey y a la torre: las negras tienen que mover el rey, y la torre cae."
         }
       },
       "puzzles": [
@@ -949,16 +973,22 @@
       "theme": "pin",
       "title": {
         "en": "Pin",
-        "uk": "Зв’язка"
+        "uk": "Зв’язка",
+        "ru": "Связка",
+        "es": "Clavada"
       },
       "tip": {
         "en": "A pinned piece cannot run. Attack it again.",
-        "uk": "Зв’язана фігура не може втекти — атакуй її ще раз."
+        "uk": "Зв’язана фігура не може втекти — атакуй її ще раз.",
+        "ru": "Связанная фигура не может убежать. Нападай на нее еще раз.",
+        "es": "Una pieza clavada no puede huir. Atácala otra vez."
       },
       "intro": {
         "text": {
           "en": "A pin holds a piece in place: if it moves, a more valuable piece behind it is exposed. When the piece behind is the king, the pinned piece may not move off the line at all. Pin it, then attack it again.",
-          "uk": "Зв’язка прикуває фігуру до місця: якщо вона зрушить, відкриється цінніша фігура позаду. Коли позаду король, зв’язаній фігурі взагалі не можна зійти з лінії. Зв’яжи її — і атакуй ще раз."
+          "uk": "Зв’язка прикуває фігуру до місця: якщо вона зрушить, відкриється цінніша фігура позаду. Коли позаду король, зв’язаній фігурі взагалі не можна зійти з лінії. Зв’яжи її — і атакуй ще раз.",
+          "ru": "Связка удерживает фигуру на месте: если она уйдет, откроется более ценная фигура за ней. Если за ней стоит король, связанная фигура вообще не может сойти с линии. Свяжи ее, а потом нападай еще раз.",
+          "es": "Una clavada inmoviliza una pieza: si se mueve, deja expuesta otra más valiosa que está detrás. Si detrás está el rey, la pieza clavada no puede salir de la línea en absoluto. Clávala y luego atácala otra vez."
         },
         "fen": "6k1/pb4pp/8/3q4/8/1P6/6PP/2Q2BK1 w - - 0 1",
         "arrows": [
@@ -975,7 +1005,9 @@
         ],
         "caption": {
           "en": "Bc4 pins the queen to the king: it cannot leave the diagonal, and Black loses the queen for a bishop.",
-          "uk": "Bc4 зв’язує ферзя з королем: зійти з діагоналі він не може, і чорні віддають ферзя за слона."
+          "uk": "Bc4 зв’язує ферзя з королем: зійти з діагоналі він не може, і чорні віддають ферзя за слона.",
+          "ru": "Bc4 связывает ферзя с королем: он не может уйти с диагонали, и черные отдают ферзя за слона.",
+          "es": "Bc4 clava a la dama contra el rey: no puede salir de la diagonal, y las negras pierden la dama por un alfil."
         }
       },
       "puzzles": [
@@ -1263,16 +1295,22 @@
       "theme": "skewer",
       "title": {
         "en": "Skewer",
-        "uk": "Лінійний удар"
+        "uk": "Лінійний удар",
+        "ru": "Сквозной удар",
+        "es": "Enfilada"
       },
       "tip": {
         "en": "Attack the bigger piece; collect the one behind it.",
-        "uk": "Атакуй цінну фігуру — і забирай ту, що за нею."
+        "uk": "Атакуй цінну фігуру — і забирай ту, що за нею.",
+        "ru": "Нападай на более ценную фигуру — забирай ту, что за ней.",
+        "es": "Ataca la pieza más valiosa y llévate la que está detrás."
       },
       "intro": {
         "text": {
           "en": "A skewer is a pin turned around: you attack a valuable piece, it steps aside, and you take the piece standing behind it. It works best with a check, because the king has to move.",
-          "uk": "Лінійний удар — це зв’язка навпаки: ти нападаєш на цінну фігуру, вона відходить, а ти забираєш ту, що стояла позаду. Найкраще він працює з шахом, бо король мусить піти."
+          "uk": "Лінійний удар — це зв’язка навпаки: ти нападаєш на цінну фігуру, вона відходить, а ти забираєш ту, що стояла позаду. Найкраще він працює з шахом, бо король мусить піти.",
+          "ru": "Сквозной удар — это связка наоборот: ты нападаешь на ценную фигуру, она отходит, и ты берешь фигуру, стоящую за ней. Лучше всего это работает с шахом, ведь король обязан уйти.",
+          "es": "Una enfilada es una clavada al revés: atacas una pieza valiosa, se aparta y capturas la pieza que está detrás. Funciona mejor con jaque, porque el rey tiene que moverse."
         },
         "fen": "r7/8/2k5/7p/8/8/5P1P/4KB2 w - - 0 1",
         "arrows": [
@@ -1289,7 +1327,9 @@
         ],
         "caption": {
           "en": "Bg2+: the king has to step off the diagonal, and the rook on a8 falls.",
-          "uk": "Bg2+: король мусить зійти з діагоналі — і тура на a8 гине."
+          "uk": "Bg2+: король мусить зійти з діагоналі — і тура на a8 гине.",
+          "ru": "Bg2+: король должен уйти с диагонали, и ладья на a8 падает.",
+          "es": "Bg2+: el rey tiene que salir de la diagonal, y la torre de a8 cae."
         }
       },
       "puzzles": [
@@ -1572,16 +1612,22 @@
       "theme": "discoveredAttack",
       "title": {
         "en": "Discovered attack",
-        "uk": "Відкритий напад"
+        "uk": "Відкритий напад",
+        "ru": "Вскрытое нападение",
+        "es": "Ataque a la descubierta"
       },
       "tip": {
         "en": "Move one piece, and the one behind it strikes.",
-        "uk": "Зрушиш одну фігуру — вдарить та, що позаду."
+        "uk": "Зрушиш одну фігуру — вдарить та, що позаду.",
+        "ru": "Сходи одной фигурой — и ударит та, что за ней.",
+        "es": "Mueve una pieza y golpea la que está detrás."
       },
       "intro": {
         "text": {
           "en": "In a discovered attack you move one piece out of the way and uncover an attack by another. Now two threats land at once: the piece that moved can attack or give check, and the one behind it strikes too. The opponent can rarely meet both.",
-          "uk": "У відкритому нападі ти відводиш одну фігуру з лінії й відкриваєш атаку іншої. Тепер загроз дві одночасно: фігура, що зробила хід, може напасти чи дати шах, а та, що позаду, б’є теж. Відбити обидві суперникові рідко вдається."
+          "uk": "У відкритому нападі ти відводиш одну фігуру з лінії й відкриваєш атаку іншої. Тепер загроз дві одночасно: фігура, що зробила хід, може напасти чи дати шах, а та, що позаду, б’є теж. Відбити обидві суперникові рідко вдається.",
+          "ru": "При вскрытом нападении ты убираешь одну фигуру с пути и открываешь атаку другой. Теперь сразу две угрозы: ушедшая фигура может напасть или дать шах, а та, что за ней, тоже бьет. Соперник редко может отразить обе.",
+          "es": "En un ataque a la descubierta apartas una pieza y destapas el ataque de otra. Ahora caen dos amenazas a la vez: la pieza que se movió puede atacar o dar jaque, y la que estaba detrás también golpea. El rival rara vez puede atender ambas."
         },
         "fen": "6k1/4qppp/8/8/4B3/8/5PPP/4R1K1 w - - 0 1",
         "arrows": [
@@ -1603,7 +1649,9 @@
         ],
         "caption": {
           "en": "Bxh7+ checks the king and opens the e-file: the queen on e7 falls.",
-          "uk": "Bxh7+ шахує короля й відкриває вертикаль e: ферзь на e7 гине."
+          "uk": "Bxh7+ шахує короля й відкриває вертикаль e: ферзь на e7 гине.",
+          "ru": "Bxh7+ шахует короля и открывает вертикаль e: ферзь на e7 падает.",
+          "es": "Bxh7+ da jaque al rey y abre la columna e: la dama de e7 cae."
         }
       },
       "puzzles": [
@@ -1885,16 +1933,22 @@
       "theme": "backRankMate",
       "title": {
         "en": "Back-rank mate",
-        "uk": "Мат на останній горизонталі"
+        "uk": "Мат на останній горизонталі",
+        "ru": "Мат на последней горизонтали",
+        "es": "Mate del pasillo"
       },
       "tip": {
         "en": "King boxed in by its own pawns? Check the back rank.",
-        "uk": "Король замкнений власними пішаками? Перевір останню горизонталь."
+        "uk": "Король замкнений власними пішаками? Перевір останню горизонталь.",
+        "ru": "Король заперт своими пешками? Проверь последнюю горизонталь.",
+        "es": "¿Rey encerrado por sus propios peones? Revisa la última fila."
       },
       "intro": {
         "text": {
           "en": "A king behind an unmoved row of pawns has no way out. A rook or queen landing on the back rank gives mate unless something guards it. Look for checks on the last rank, and remove the defender first if you have to.",
-          "uk": "Король за нерухомим рядом пішаків не має куди відступити. Тура чи ферзь, що вриваються на останню горизонталь, ставлять мат, якщо її ніхто не захищає. Шукай шахи по останній горизонталі, а коли треба — спершу прибери захисника."
+          "uk": "Король за нерухомим рядом пішаків не має куди відступити. Тура чи ферзь, що вриваються на останню горизонталь, ставлять мат, якщо її ніхто не захищає. Шукай шахи по останній горизонталі, а коли треба — спершу прибери захисника.",
+          "ru": "Королю за нетронутым рядом пешек некуда деться. Ладья или ферзь на последней горизонтали ставят мат, если ее ничто не защищает. Ищи шахи по последней горизонтали, а если нужно — сначала убери защитника.",
+          "es": "Un rey detrás de una fila de peones sin mover no tiene salida. Una torre o una dama que llega a la última fila da mate si nada la defiende. Busca jaques en la última fila y, si hace falta, elimina antes al defensor."
         },
         "fen": "6k1/5ppp/8/8/8/8/5PPP/3R2K1 w - - 0 1",
         "arrows": [
@@ -1906,7 +1960,9 @@
         ],
         "caption": {
           "en": "Rd8#: the pawns on f7, g7 and h7 lock their own king in.",
-          "uk": "Rd8#: пішаки f7, g7 і h7 замикають власного короля."
+          "uk": "Rd8#: пішаки f7, g7 і h7 замикають власного короля.",
+          "ru": "Rd8#: пешки f7, g7 и h7 запирают собственного короля.",
+          "es": "Rd8#: los peones de f7, g7 y h7 encierran a su propio rey."
         }
       },
       "puzzles": [
@@ -2202,16 +2258,22 @@
       "theme": "trappedPiece",
       "title": {
         "en": "Trapped piece",
-        "uk": "Ловля фігури"
+        "uk": "Ловля фігури",
+        "ru": "Пойманная фигура",
+        "es": "Pieza atrapada"
       },
       "tip": {
         "en": "No safe squares? Attack it, and it is yours.",
-        "uk": "Фігурі нікуди йти? Атакуй — і вона твоя."
+        "uk": "Фігурі нікуди йти? Атакуй — і вона твоя.",
+        "ru": "Нет безопасных полей? Нападай — и она твоя.",
+        "es": "¿No tiene casillas seguras? Atácala y es tuya."
       },
       "intro": {
         "text": {
           "en": "A piece is trapped when every square it can go to is covered. Then you do not have to chase it: take away its last exits and win it next move. Pieces that wander deep into enemy territory are the usual victims.",
-          "uk": "Фігура спіймана, коли всі поля, куди вона може піти, під боєм. Ганятися за нею не треба: забери останні виходи, і наступним ходом вона твоя. Найчастіше в пастку потрапляють фігури, що забралися глибоко в табір суперника."
+          "uk": "Фігура спіймана, коли всі поля, куди вона може піти, під боєм. Ганятися за нею не треба: забери останні виходи, і наступним ходом вона твоя. Найчастіше в пастку потрапляють фігури, що забралися глибоко в табір суперника.",
+          "ru": "Фигура поймана, когда все поля, куда она может пойти, под боем. Тогда не нужно за ней гоняться: отними последние выходы и выиграй ее следующим ходом. Обычные жертвы — фигуры, забравшиеся глубоко в лагерь соперника.",
+          "es": "Una pieza está atrapada cuando todas las casillas a las que puede ir están controladas. Entonces no hace falta perseguirla: quítale sus últimas salidas y gánala en la jugada siguiente. Las víctimas habituales son las piezas que se adentran en territorio enemigo."
         },
         "fen": "6k1/5pp1/7p/8/8/8/bPP2PPP/3R2K1 w - - 0 1",
         "arrows": [
@@ -2228,7 +2290,9 @@
         ],
         "caption": {
           "en": "b3 shuts the bishop in: b1 is covered by the rook, and the bishop on a2 will be lost.",
-          "uk": "b3 замикає слона: поле b1 б’є тура, і слон на a2 пропаде."
+          "uk": "b3 замикає слона: поле b1 б’є тура, і слон на a2 пропаде.",
+          "ru": "b3 запирает слона: b1 под боем ладьи, и слон на a2 пропадет.",
+          "es": "b3 encierra al alfil: b1 está controlada por la torre, y el alfil de a2 se perderá."
         }
       },
       "puzzles": [
@@ -2510,16 +2574,22 @@
       "theme": "capturingDefender",
       "title": {
         "en": "Remove the defender",
-        "uk": "Знищення захисника"
+        "uk": "Знищення захисника",
+        "ru": "Уничтожение защитника",
+        "es": "Eliminación del defensor"
       },
       "tip": {
         "en": "What holds the position together? Take that piece first.",
-        "uk": "Що тримає позицію? Спершу знищ цю фігуру."
+        "uk": "Що тримає позицію? Спершу знищ цю фігуру.",
+        "ru": "На чем держится позиция? Сначала возьми эту фигуру.",
+        "es": "¿Qué sostiene la posición? Captura primero esa pieza."
       },
       "intro": {
         "text": {
           "en": "Sometimes the target is protected, but only once. Capture the defender — even if it costs you something — and the target is left hanging. Ask yourself what each enemy piece is guarding.",
-          "uk": "Буває, що ціль захищена, але лише одним захисником. Побий його, навіть якщо це чогось коштує, — і ціль залишиться беззахисною. Питай себе, що саме охороняє кожна фігура суперника."
+          "uk": "Буває, що ціль захищена, але лише одним захисником. Побий його, навіть якщо це чогось коштує, — і ціль залишиться беззахисною. Питай себе, що саме охороняє кожна фігура суперника.",
+          "ru": "Иногда цель защищена, но только один раз. Возьми защитника — даже если это чего-то стоит, — и цель останется висеть. Спроси себя, что охраняет каждая фигура соперника.",
+          "es": "A veces el objetivo está defendido, pero solo una vez. Captura al defensor, aunque te cueste algo, y el objetivo queda colgado. Pregúntate qué protege cada pieza enemiga."
         },
         "fen": "6k1/5ppp/5n2/3b2B1/8/8/5PPP/3R2K1 w - - 0 1",
         "arrows": [
@@ -2536,7 +2606,9 @@
         ],
         "caption": {
           "en": "Bxf6 removes the knight that guarded d5 — the bishop there is lost.",
-          "uk": "Bxf6 знищує коня, що захищав d5, — слон на d5 пропадає."
+          "uk": "Bxf6 знищує коня, що захищав d5, — слон на d5 пропадає.",
+          "ru": "Bxf6 уничтожает коня, который защищал d5, — слон там пропадает.",
+          "es": "Bxf6 elimina el caballo que defendía d5; el alfil de esa casilla se pierde."
         }
       },
       "puzzles": [
@@ -2818,16 +2890,22 @@
       "theme": "mateIn2",
       "title": {
         "en": "Mate in 2",
-        "uk": "Мат у 2 ходи"
+        "uk": "Мат у 2 ходи",
+        "ru": "Мат в 2 хода",
+        "es": "Mate en 2"
       },
       "tip": {
         "en": "Find the move after which mate cannot be stopped. Checks first, then quiet moves.",
-        "uk": "Знайди хід, після якого мат неминучий. Спершу шахи, потім тихі ходи."
+        "uk": "Знайди хід, після якого мат неминучий. Спершу шахи, потім тихі ходи.",
+        "ru": "Найди ход, после которого мат не остановить. Сначала шахи, потом тихие ходы.",
+        "es": "Busca la jugada tras la cual el mate es imparable. Primero los jaques, luego las jugadas tranquilas."
       },
       "intro": {
         "text": {
           "en": "Mate in two: after your first move the opponent can no longer stop the mate. Often that first move is a check that drives the king into a net; sometimes it is a quiet move that takes away its last escape. Check every reply before you play.",
-          "uk": "Мат у 2 ходи: після першого ходу суперник уже не може захиститися від мату. Часто перший хід — шах, що заганяє короля в сітку, а часом — тихий хід, який забирає останню втечу. Перш ніж ходити, перевір усі відповіді суперника."
+          "uk": "Мат у 2 ходи: після першого ходу суперник уже не може захиститися від мату. Часто перший хід — шах, що заганяє короля в сітку, а часом — тихий хід, який забирає останню втечу. Перш ніж ходити, перевір усі відповіді суперника.",
+          "ru": "Мат в два хода: после твоего первого хода соперник уже не может остановить мат. Часто этот первый ход — шах, загоняющий короля в сеть; иногда — тихий ход, отнимающий последнее поле. Перед ходом проверь каждый ответ.",
+          "es": "Mate en dos: después de tu primera jugada, el rival ya no puede impedir el mate. A menudo esa primera jugada es un jaque que mete al rey en una red; a veces es una jugada tranquila que le quita su última escapatoria. Comprueba cada respuesta antes de jugar."
         },
         "fen": "6k1/8/8/8/8/8/8/RR4K1 w - - 0 1",
         "arrows": [
@@ -2844,7 +2922,9 @@
         ],
         "caption": {
           "en": "Ra7 locks the king on the back rank; next move the other rook mates on b8.",
-          "uk": "Ra7 замикає короля на останній горизонталі; наступним ходом друга тура ставить мат на b8."
+          "uk": "Ra7 замикає короля на останній горизонталі; наступним ходом друга тура ставить мат на b8.",
+          "ru": "Ra7 запирает короля на последней горизонтали; следующим ходом другая ладья ставит мат на b8.",
+          "es": "Ra7 encierra al rey en la última fila; en la jugada siguiente, la otra torre da mate en b8."
         }
       },
       "puzzles": [

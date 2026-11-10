@@ -1,16 +1,20 @@
 {
   "id": "romantic",
-  "version": 2,
+  "version": 3,
   "chapters": [
     {
       "id": "romantic-1",
       "title": {
         "en": "The Immortal and Friends",
-        "uk": "Безсмертна і друзі"
+        "uk": "Безсмертна і друзі",
+        "ru": "Бессмертная и компания",
+        "es": "La Inmortal y compañía"
       },
       "subtitle": {
         "en": "London and Berlin, 1851–1852",
-        "uk": "Лондон і Берлін, 1851–1852"
+        "uk": "Лондон і Берлін, 1851–1852",
+        "ru": "Лондон и Берлин, 1851–1852",
+        "es": "Londres y Berlín, 1851–1852"
       },
       "puzzles": [
         {
@@ -38,7 +42,9 @@
           },
           "note": {
             "en": "Casual game, London 1851, the year of the first international tournament.",
-            "uk": "Товариська партія, Лондон, 1851 — рік першого міжнародного турніру."
+            "uk": "Товариська партія, Лондон, 1851 — рік першого міжнародного турніру.",
+            "ru": "Товарищеская партия, Лондон, 1851 — год первого международного турнира.",
+            "es": "Partida amistosa, Londres, 1851, el año del primer torneo internacional."
           }
         },
         {
@@ -66,7 +72,9 @@
           },
           "note": {
             "en": "London, 21 June 1851: a casual game later named the Immortal Game.",
-            "uk": "Лондон, 21 червня 1851: товариська партія, яку згодом назвали Безсмертною."
+            "uk": "Лондон, 21 червня 1851: товариська партія, яку згодом назвали Безсмертною.",
+            "ru": "Лондон, 21 июня 1851: товарищеская партия, которую позже назвали Бессмертной.",
+            "es": "Londres, 21 de junio de 1851: una partida amistosa que después se llamó la Inmortal."
           }
         },
         {
@@ -94,7 +102,9 @@
           },
           "note": {
             "en": "Casual game, Berlin 1851. Falkbeer gave his name to a counter-gambit against 2.f4.",
-            "uk": "Товариська партія, Берлін, 1851. Імʼям Фалькбеєра названо контргамбіт проти 2.f4."
+            "uk": "Товариська партія, Берлін, 1851. Імʼям Фалькбеєра названо контргамбіт проти 2.f4.",
+            "ru": "Товарищеская партия, Берлин, 1851. Фалькбеер дал свое имя контргамбиту против 2.f4.",
+            "es": "Partida amistosa, Berlín, 1851. Falkbeer dio su nombre a un contragambito contra 2.f4."
           }
         },
         {
@@ -122,7 +132,9 @@
           },
           "note": {
             "en": "Berlin 1852: the Evergreen Game, a name later given to it by Steinitz.",
-            "uk": "Берлін, 1852: «Вічнозелена партія» — таку назву їй згодом дав Стейніц."
+            "uk": "Берлін, 1852: «Вічнозелена партія» — таку назву їй згодом дав Стейніц.",
+            "ru": "Берлин, 1852: «Вечнозеленая партия» — такое название ей позже дал Стейниц.",
+            "es": "Berlín, 1852: la «Siempreviva», nombre que Steinitz le dio más tarde."
           }
         },
         {
@@ -152,7 +164,9 @@
           },
           "note": {
             "en": "Casual game, Paris, October 1851. Kieseritzky has Black.",
-            "uk": "Товариська партія, Париж, жовтень 1851. Кізерицький грає чорними."
+            "uk": "Товариська партія, Париж, жовтень 1851. Кізерицький грає чорними.",
+            "ru": "Товарищеская партия, Париж, октябрь 1851. Кизерицкий играет черными.",
+            "es": "Partida amistosa, París, octubre de 1851. Kieseritzky juega con negras."
           }
         },
         {
@@ -180,7 +194,9 @@
           },
           "note": {
             "en": "Paris, April 1851, from a blindfold display on four boards.",
-            "uk": "Париж, квітень 1851, із сеансу гри наосліп на чотирьох дошках."
+            "uk": "Париж, квітень 1851, із сеансу гри наосліп на чотирьох дошках.",
+            "ru": "Париж, апрель 1851, из сеанса вслепую на четырех досках.",
+            "es": "París, abril de 1851, de una simultánea a ciegas en cuatro tableros."
           }
         },
         {
@@ -208,7 +224,9 @@
           },
           "note": {
             "en": "London 1851 tournament, semi-final. Anderssen went on to win the event.",
-            "uk": "Турнір у Лондоні 1851, півфінал. Андерсен зрештою виграв турнір."
+            "uk": "Турнір у Лондоні 1851, півфінал. Андерсен зрештою виграв турнір.",
+            "ru": "Лондон, турнир 1851 года, полуфинал. В итоге Андерсен выиграл турнир.",
+            "es": "Torneo de Londres de 1851, semifinal. Anderssen acabó ganando el torneo."
           }
         },
         {
@@ -236,7 +254,9 @@
           },
           "note": {
             "en": "Casual game, Berlin 1851, published in the Schachzeitung that year.",
-            "uk": "Товариська партія, Берлін, 1851; того ж року її надрукувала «Schachzeitung»."
+            "uk": "Товариська партія, Берлін, 1851; того ж року її надрукувала «Schachzeitung».",
+            "ru": "Товарищеская партия, Берлин, 1851, опубликована в Schachzeitung в том же году.",
+            "es": "Partida amistosa, Berlín, 1851, publicada en la Schachzeitung ese mismo año."
           }
         },
         {
@@ -263,7 +283,9 @@
           },
           "note": {
             "en": "London 1851, the first international chess tournament. Anderssen has Black.",
-            "uk": "Лондон, 1851, перший міжнародний шаховий турнір. Андерсен грає чорними."
+            "uk": "Лондон, 1851, перший міжнародний шаховий турнір. Андерсен грає чорними.",
+            "ru": "Лондон, 1851, первый международный шахматный турнир. Андерсен играет черными.",
+            "es": "Londres, 1851, el primer torneo internacional de ajedrez. Anderssen juega con negras."
           }
         },
         {
@@ -290,7 +312,9 @@
           },
           "note": {
             "en": "London, 21 June 1851: another casual game from the day of the Immortal.",
-            "uk": "Лондон, 21 червня 1851: ще одна товариська партія того дня, коли зіграли Безсмертну."
+            "uk": "Лондон, 21 червня 1851: ще одна товариська партія того дня, коли зіграли Безсмертну.",
+            "ru": "Лондон, 21 июня 1851: еще одна товарищеская партия, сыгранная в день Бессмертной.",
+            "es": "Londres, 21 de junio de 1851: otra partida amistosa del mismo día que la Inmortal."
           }
         },
         {
@@ -317,7 +341,9 @@
           },
           "note": {
             "en": "London 1851. Anderssen has Black.",
-            "uk": "Лондон, 1851. Андерсен грає чорними."
+            "uk": "Лондон, 1851. Андерсен грає чорними.",
+            "ru": "Лондон, 1851. Андерсен играет черными.",
+            "es": "Londres, 1851. Anderssen juega con negras."
           }
         },
         {
@@ -345,7 +371,9 @@
           },
           "note": {
             "en": "Casual game, London, June 1851. Anderssen has Black.",
-            "uk": "Товариська партія, Лондон, червень 1851. Андерсен грає чорними."
+            "uk": "Товариська партія, Лондон, червень 1851. Андерсен грає чорними.",
+            "ru": "Товарищеская партия, Лондон, июнь 1851. Андерсен играет черными.",
+            "es": "Partida amistosa, Londres, junio de 1851. Anderssen juega con negras."
           }
         },
         {
@@ -373,7 +401,9 @@
           },
           "note": {
             "en": "Casual game, London 1851. Anderssen has Black.",
-            "uk": "Товариська партія, Лондон, 1851. Андерсен грає чорними."
+            "uk": "Товариська партія, Лондон, 1851. Андерсен грає чорними.",
+            "ru": "Товарищеская партия, Лондон, 1851. Андерсен играет черными.",
+            "es": "Partida amistosa, Londres, 1851. Anderssen juega con negras."
           }
         },
         {
@@ -400,7 +430,9 @@
           },
           "note": {
             "en": "London 1851 tournament. Staunton had organised the event.",
-            "uk": "Турнір у Лондоні 1851. Саме Стаунтон організував цей турнір."
+            "uk": "Турнір у Лондоні 1851. Саме Стаунтон організував цей турнір.",
+            "ru": "Лондон, турнир 1851 года. Организатором турнира был Стаунтон.",
+            "es": "Torneo de Londres de 1851. Staunton había organizado el torneo."
           }
         },
         {
@@ -427,7 +459,9 @@
           },
           "note": {
             "en": "Casual game, Berlin 1851, printed in the Schachzeitung that March.",
-            "uk": "Товариська партія, Берлін, 1851; у березні її надрукувала «Schachzeitung»."
+            "uk": "Товариська партія, Берлін, 1851; у березні її надрукувала «Schachzeitung».",
+            "ru": "Товарищеская партия, Берлин, 1851, напечатана в Schachzeitung в марте того же года.",
+            "es": "Partida amistosa, Berlín, 1851, publicada en la Schachzeitung en marzo de ese año."
           }
         },
         {
@@ -455,7 +489,9 @@
           },
           "note": {
             "en": "London 1851: a game from the final of the first international tournament.",
-            "uk": "Лондон, 1851: партія з фіналу першого міжнародного турніру."
+            "uk": "Лондон, 1851: партія з фіналу першого міжнародного турніру.",
+            "ru": "Лондон, 1851: партия из финала первого международного турнира.",
+            "es": "Londres, 1851: una partida de la final del primer torneo internacional."
           }
         },
         {
@@ -483,7 +519,9 @@
           },
           "note": {
             "en": "Casual game, London 1851, King's Gambit Accepted.",
-            "uk": "Товариська партія, Лондон, 1851, прийнятий королівський гамбіт."
+            "uk": "Товариська партія, Лондон, 1851, прийнятий королівський гамбіт.",
+            "ru": "Товарищеская партия, Лондон, 1851, принятый королевский гамбит.",
+            "es": "Partida amistosa, Londres, 1851, Gambito de Rey aceptado."
           }
         },
         {
@@ -511,7 +549,9 @@
           },
           "note": {
             "en": "Casual game, London, 14 June 1851: an Evans Gambit.",
-            "uk": "Товариська партія, Лондон, 14 червня 1851: гамбіт Еванса."
+            "uk": "Товариська партія, Лондон, 14 червня 1851: гамбіт Еванса.",
+            "ru": "Товарищеская партия, Лондон, 14 июня 1851: гамбит Эванса.",
+            "es": "Partida amistosa, Londres, 14 de junio de 1851: un Gambito Evans."
           }
         },
         {
@@ -539,7 +579,9 @@
           },
           "note": {
             "en": "Casual game, London, June 1851, an Evans Gambit.",
-            "uk": "Товариська партія, Лондон, червень 1851, гамбіт Еванса."
+            "uk": "Товариська партія, Лондон, червень 1851, гамбіт Еванса.",
+            "ru": "Товарищеская партия, Лондон, июнь 1851, гамбит Эванса.",
+            "es": "Partida amistosa, Londres, junio de 1851, un Gambito Evans."
           }
         },
         {
@@ -568,7 +610,9 @@
           },
           "note": {
             "en": "Casual game, Berlin 1851. A year later the two played the Evergreen Game.",
-            "uk": "Товариська партія, Берлін, 1851. Через рік вони зіграли «Вічнозелену партію»."
+            "uk": "Товариська партія, Берлін, 1851. Через рік вони зіграли «Вічнозелену партію».",
+            "ru": "Товарищеская партия, Берлин, 1851. Через год они сыграли «Вечнозеленую партию».",
+            "es": "Partida amistosa, Berlín, 1851. Un año después, los dos jugaron la «Siempreviva»."
           }
         }
       ]
@@ -577,11 +621,15 @@
       "id": "romantic-2",
       "title": {
         "en": "Morphy at the Opera",
-        "uk": "Морфі в опері"
+        "uk": "Морфі в опері",
+        "ru": "Морфи в опере",
+        "es": "Morphy en la ópera"
       },
       "subtitle": {
         "en": "Paul Morphy, 1857–1859",
-        "uk": "Пол Морфі, 1857–1859"
+        "uk": "Пол Морфі, 1857–1859",
+        "ru": "Пол Морфи, 1857–1859",
+        "es": "Paul Morphy, 1857–1859"
       },
       "puzzles": [
         {
@@ -610,7 +658,9 @@
           },
           "note": {
             "en": "Casual game, New Orleans, January 1857, an Evans Gambit.",
-            "uk": "Товариська партія, Новий Орлеан, січень 1857, гамбіт Еванса."
+            "uk": "Товариська партія, Новий Орлеан, січень 1857, гамбіт Еванса.",
+            "ru": "Товарищеская партия, Новый Орлеан, январь 1857, гамбит Эванса.",
+            "es": "Partida amistosa, Nueva Orleans, enero de 1857, un Gambito Evans."
           }
         },
         {
@@ -638,7 +688,9 @@
           },
           "note": {
             "en": "Paris 1858: Morphy against two allies, played in the Duke of Brunswick's box at the opera.",
-            "uk": "Париж, 1858: Морфі проти двох союзників; партію грали в ложі герцога Брауншвейзького в опері."
+            "uk": "Париж, 1858: Морфі проти двох союзників; партію грали в ложі герцога Брауншвейзького в опері.",
+            "ru": "Париж, 1858: Морфи против двух союзников; партию играли в ложе герцога Брауншвейгского в опере.",
+            "es": "París, 1858: Morphy contra dos aliados, en el palco del duque de Brunswick en la ópera."
           }
         },
         {
@@ -667,7 +719,9 @@
           },
           "note": {
             "en": "New York 1859. Morphy gave knight odds.",
-            "uk": "Нью-Йорк, 1859. Морфі дав фору коня."
+            "uk": "Нью-Йорк, 1859. Морфі дав фору коня.",
+            "ru": "Нью-Йорк, 1859. Морфи дал фору коня.",
+            "es": "Nueva York, 1859. Morphy dio ventaja de caballo."
           }
         },
         {
@@ -696,7 +750,9 @@
           },
           "note": {
             "en": "Paris, March 1859, a Two Knights Defence.",
-            "uk": "Париж, березень 1859, захист двох коней."
+            "uk": "Париж, березень 1859, захист двох коней.",
+            "ru": "Париж, март 1859, защита двух коней.",
+            "es": "París, marzo de 1859, una Defensa de los dos caballos."
           }
         },
         {
@@ -724,7 +780,9 @@
           },
           "note": {
             "en": "New York, November 1857; Morphy played blindfold.",
-            "uk": "Нью-Йорк, листопад 1857; Морфі грав наосліп."
+            "uk": "Нью-Йорк, листопад 1857; Морфі грав наосліп.",
+            "ru": "Нью-Йорк, ноябрь 1857; Морфи играл вслепую.",
+            "es": "Nueva York, noviembre de 1857; Morphy jugó a ciegas."
           }
         },
         {
@@ -752,7 +810,9 @@
           },
           "note": {
             "en": "London 1858, from a match in which Morphy gave pawn and move. Morphy has Black.",
-            "uk": "Лондон, 1858, з матчу, де Морфі давав фору пішака й ходу. Морфі грає чорними."
+            "uk": "Лондон, 1858, з матчу, де Морфі давав фору пішака й ходу. Морфі грає чорними.",
+            "ru": "Лондон, 1858, из матча, в котором Морфи давал фору пешки и хода. Морфи играет черными.",
+            "es": "Londres, 1858, de un match en el que Morphy dio ventaja de peón y salida. Morphy juega con negras."
           }
         },
         {
@@ -781,7 +841,9 @@
           },
           "note": {
             "en": "Casual game, London, June 1858, an Evans Gambit.",
-            "uk": "Товариська партія, Лондон, червень 1858, гамбіт Еванса."
+            "uk": "Товариська партія, Лондон, червень 1858, гамбіт Еванса.",
+            "ru": "Товарищеская партия, Лондон, июнь 1858, гамбит Эванса.",
+            "es": "Partida amistosa, Londres, junio de 1858, un Gambito Evans."
           }
         },
         {
@@ -809,7 +871,9 @@
           },
           "note": {
             "en": "New Orleans, April 1858. Morphy gave odds of his queen's knight.",
-            "uk": "Новий Орлеан, квітень 1858. Морфі дав фору ферзевого коня."
+            "uk": "Новий Орлеан, квітень 1858. Морфі дав фору ферзевого коня.",
+            "ru": "Новый Орлеан, апрель 1858. Морфи дал фору ферзевого коня.",
+            "es": "Nueva Orleans, abril de 1858. Morphy dio ventaja de su caballo de dama."
           }
         },
         {
@@ -836,7 +900,9 @@
           },
           "note": {
             "en": "Paris, February 1859, from a blindfold display on two boards.",
-            "uk": "Париж, лютий 1859, із сеансу гри наосліп на двох дошках."
+            "uk": "Париж, лютий 1859, із сеансу гри наосліп на двох дошках.",
+            "ru": "Париж, февраль 1859, из сеанса вслепую на двух досках.",
+            "es": "París, febrero de 1859, de una simultánea a ciegas en dos tableros."
           }
         },
         {
@@ -863,7 +929,9 @@
           },
           "note": {
             "en": "Casual game, London 1858. Boden gave his name to Boden's mate. Morphy has Black.",
-            "uk": "Товариська партія, Лондон, 1858. Боден дав імʼя мату Бодена. Морфі грає чорними."
+            "uk": "Товариська партія, Лондон, 1858. Боден дав імʼя мату Бодена. Морфі грає чорними.",
+            "ru": "Товарищеская партия, Лондон, 1858. В честь Бодена назван мат Бодена. Морфи играет черными.",
+            "es": "Partida amistosa, Londres, 1858. Boden dio su nombre al mate de Boden. Morphy juega con negras."
           }
         },
         {
@@ -890,7 +958,9 @@
           },
           "note": {
             "en": "Paris, December 1858, from their match, which Morphy won.",
-            "uk": "Париж, грудень 1858, з їхнього матчу, який виграв Морфі."
+            "uk": "Париж, грудень 1858, з їхнього матчу, який виграв Морфі.",
+            "ru": "Париж, декабрь 1858, из их матча, который выиграл Морфи.",
+            "es": "París, diciembre de 1858, de su match, que ganó Morphy."
           }
         },
         {
@@ -917,7 +987,9 @@
           },
           "note": {
             "en": "New Orleans 1858. Morphy gave odds of his queen's rook.",
-            "uk": "Новий Орлеан, 1858. Морфі дав фору ферзевої тури."
+            "uk": "Новий Орлеан, 1858. Морфі дав фору ферзевої тури.",
+            "ru": "Новый Орлеан, 1858. Морфи дал фору ферзевой ладьи.",
+            "es": "Nueva Orleans, 1858. Morphy dio ventaja de su torre de dama."
           }
         },
         {
@@ -944,7 +1016,9 @@
           },
           "note": {
             "en": "Casual game, Paris, 29 December 1858, a King's Gambit. Morphy has Black.",
-            "uk": "Товариська партія, Париж, 29 грудня 1858, королівський гамбіт. Морфі грає чорними."
+            "uk": "Товариська партія, Париж, 29 грудня 1858, королівський гамбіт. Морфі грає чорними.",
+            "ru": "Товарищеская партия, Париж, 29 декабря 1858, королевский гамбит. Морфи играет черными.",
+            "es": "Partida amistosa, París, 29 de diciembre de 1858, un Gambito de Rey. Morphy juega con negras."
           }
         },
         {
@@ -971,7 +1045,9 @@
           },
           "note": {
             "en": "Casual game, London 1858, a Vienna Game.",
-            "uk": "Товариська партія, Лондон, 1858, віденська партія."
+            "uk": "Товариська партія, Лондон, 1858, віденська партія.",
+            "ru": "Товарищеская партия, Лондон, 1858, венская партия.",
+            "es": "Partida amistosa, Londres, 1858, una Partida vienesa."
           }
         },
         {
@@ -998,7 +1074,9 @@
           },
           "note": {
             "en": "Paris, November 1858: Saint-Amant and de Basterot played as a consulting pair. Morphy has Black.",
-            "uk": "Париж, листопад 1858: Сент-Аман і де Бастеро грали удвох, радячись. Морфі грає чорними."
+            "uk": "Париж, листопад 1858: Сент-Аман і де Бастеро грали удвох, радячись. Морфі грає чорними.",
+            "ru": "Париж, ноябрь 1858: Сент-Аман и де Бастеро играли в консультации. Морфи играет черными.",
+            "es": "París, noviembre de 1858: Saint-Amant y de Basterot jugaron en consulta. Morphy juega con negras."
           }
         },
         {
@@ -1026,7 +1104,9 @@
           },
           "note": {
             "en": "Casual game, New York, November 1857, an Evans Gambit.",
-            "uk": "Товариська партія, Нью-Йорк, листопад 1857, гамбіт Еванса."
+            "uk": "Товариська партія, Нью-Йорк, листопад 1857, гамбіт Еванса.",
+            "ru": "Товарищеская партия, Нью-Йорк, ноябрь 1857, гамбит Эванса.",
+            "es": "Partida amistosa, Nueva York, noviembre de 1857, un Gambito Evans."
           }
         },
         {
@@ -1054,7 +1134,9 @@
           },
           "note": {
             "en": "New York 1857. Morphy gave odds of his queen's knight.",
-            "uk": "Нью-Йорк, 1857. Морфі дав фору ферзевого коня."
+            "uk": "Нью-Йорк, 1857. Морфі дав фору ферзевого коня.",
+            "ru": "Нью-Йорк, 1857. Морфи дал фору ферзевого коня.",
+            "es": "Nueva York, 1857. Morphy dio ventaja de su caballo de dama."
           }
         },
         {
@@ -1082,7 +1164,9 @@
           },
           "note": {
             "en": "New York, July 1859. Morphy gave knight odds.",
-            "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня."
+            "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня.",
+            "ru": "Нью-Йорк, июль 1859. Морфи дал фору коня.",
+            "es": "Nueva York, julio de 1859. Morphy dio ventaja de caballo."
           }
         },
         {
@@ -1110,7 +1194,9 @@
           },
           "note": {
             "en": "New York, July 1859. Morphy gave knight odds.",
-            "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня."
+            "uk": "Нью-Йорк, липень 1859. Морфі дав фору коня.",
+            "ru": "Нью-Йорк, июль 1859. Морфи дал фору коня.",
+            "es": "Nueva York, julio de 1859. Morphy dio ventaja de caballo."
           }
         },
         {
@@ -1138,7 +1224,9 @@
           },
           "note": {
             "en": "New York 1857, the year Morphy won the First American Chess Congress. Knight odds.",
-            "uk": "Нью-Йорк, 1857, коли Морфі виграв Перший американський шаховий конгрес. Фора коня."
+            "uk": "Нью-Йорк, 1857, коли Морфі виграв Перший американський шаховий конгрес. Фора коня.",
+            "ru": "Нью-Йорк, 1857 — год, когда Морфи выиграл Первый американский шахматный конгресс. Фора коня.",
+            "es": "Nueva York, 1857, el año en que Morphy ganó el Primer Congreso Americano de Ajedrez. Ventaja de caballo."
           }
         }
       ]
@@ -1147,11 +1235,15 @@
       "id": "romantic-3",
       "title": {
         "en": "Kings in the Open",
-        "uk": "Королі без укриття"
+        "uk": "Королі без укриття",
+        "ru": "Короли без укрытия",
+        "es": "Reyes a la intemperie"
       },
       "subtitle": {
         "en": "Anderssen and rivals, 1860–1870",
-        "uk": "Андерсен і суперники, 1860–1870"
+        "uk": "Андерсен і суперники, 1860–1870",
+        "ru": "Андерсен и соперники, 1860–1870",
+        "es": "Anderssen y sus rivales, 1860–1870"
       },
       "puzzles": [
         {
@@ -1179,7 +1271,9 @@
           },
           "note": {
             "en": "Berlin 1864, King's Gambit Declined.",
-            "uk": "Берлін, 1864, відхилений королівський гамбіт."
+            "uk": "Берлін, 1864, відхилений королівський гамбіт.",
+            "ru": "Берлин, 1864, отказанный королевский гамбит.",
+            "es": "Berlín, 1864, Gambito de Rey rehusado."
           }
         },
         {
@@ -1207,7 +1301,9 @@
           },
           "note": {
             "en": "Casual game, London 1863. Steinitz had moved to London from Vienna the year before.",
-            "uk": "Товариська партія, Лондон, 1863. Стейніц переїхав до Лондона з Відня роком раніше."
+            "uk": "Товариська партія, Лондон, 1863. Стейніц переїхав до Лондона з Відня роком раніше.",
+            "ru": "Товарищеская партия, Лондон, 1863. Стейниц переехал в Лондон из Вены годом раньше.",
+            "es": "Partida amistosa, Londres, 1863. Steinitz se había mudado de Viena a Londres el año anterior."
           }
         },
         {
@@ -1237,7 +1333,9 @@
           },
           "note": {
             "en": "Casual game, Breslau 1867. Breslau was Anderssen's home city.",
-            "uk": "Товариська партія, Бреслау, 1867. Бреслау — рідне місто Андерсена."
+            "uk": "Товариська партія, Бреслау, 1867. Бреслау — рідне місто Андерсена.",
+            "ru": "Товарищеская партия, Бреслау, 1867. Бреслау — родной город Андерсена.",
+            "es": "Partida amistosa, Breslau, 1867. Breslau era la ciudad natal de Anderssen."
           }
         },
         {
@@ -1265,7 +1363,9 @@
           },
           "note": {
             "en": "Hamburg 1869, at the second congress of the North German Chess Federation.",
-            "uk": "Гамбург, 1869, другий конгрес Північнонімецького шахового союзу."
+            "uk": "Гамбург, 1869, другий конгрес Північнонімецького шахового союзу.",
+            "ru": "Гамбург, 1869, на втором конгрессе Северогерманского шахматного союза.",
+            "es": "Hamburgo, 1869, en el segundo congreso de la Federación de Ajedrez del Norte de Alemania."
           }
         },
         {
@@ -1293,7 +1393,9 @@
           },
           "note": {
             "en": "Casual game, City of London Chess Club, 1870, an Evans Gambit.",
-            "uk": "Товариська партія, шаховий клуб лондонського Сіті, 1870, гамбіт Еванса."
+            "uk": "Товариська партія, шаховий клуб лондонського Сіті, 1870, гамбіт Еванса.",
+            "ru": "Товарищеская партия, шахматный клуб «Сити оф Лондон», 1870, гамбит Эванса.",
+            "es": "Partida amistosa, City of London Chess Club, 1870, un Gambito Evans."
           }
         },
         {
@@ -1321,7 +1423,9 @@
           },
           "note": {
             "en": "Paris 1860. Kolisch would later win the great Paris tournament of 1867.",
-            "uk": "Париж, 1860. Згодом Коліш виграв великий паризький турнір 1867 року."
+            "uk": "Париж, 1860. Згодом Коліш виграв великий паризький турнір 1867 року.",
+            "ru": "Париж, 1860. Позже Колиш выиграет большой парижский турнир 1867 года.",
+            "es": "París, 1860. Kolisch ganaría más tarde el gran torneo de París de 1867."
           }
         },
         {
@@ -1349,7 +1453,9 @@
           },
           "note": {
             "en": "London 1861, an Evans Gambit.",
-            "uk": "Лондон, 1861, гамбіт Еванса."
+            "uk": "Лондон, 1861, гамбіт Еванса.",
+            "ru": "Лондон, 1861, гамбит Эванса.",
+            "es": "Londres, 1861, un Gambito Evans."
           }
         },
         {
@@ -1376,7 +1482,9 @@
           },
           "note": {
             "en": "Baden-Baden 1870, a tournament Anderssen won ahead of Steinitz.",
-            "uk": "Баден-Баден, 1870; цей турнір Андерсен виграв попереду Стейніца."
+            "uk": "Баден-Баден, 1870; цей турнір Андерсен виграв попереду Стейніца.",
+            "ru": "Баден-Баден, 1870 — турнир, который Андерсен выиграл, опередив Стейница.",
+            "es": "Baden-Baden, 1870, un torneo que Anderssen ganó por delante de Steinitz."
           }
         },
         {
@@ -1403,7 +1511,9 @@
           },
           "note": {
             "en": "Casual game, Berlin 1866, an Evans Gambit.",
-            "uk": "Товариська партія, Берлін, 1866, гамбіт Еванса."
+            "uk": "Товариська партія, Берлін, 1866, гамбіт Еванса.",
+            "ru": "Товарищеская партия, Берлин, 1866, гамбит Эванса.",
+            "es": "Partida amistosa, Berlín, 1866, un Gambito Evans."
           }
         },
         {
@@ -1430,7 +1540,9 @@
           },
           "note": {
             "en": "Berlin, April 1868, from a match between the two. Anderssen has Black.",
-            "uk": "Берлін, квітень 1868, з їхнього матчу. Андерсен грає чорними."
+            "uk": "Берлін, квітень 1868, з їхнього матчу. Андерсен грає чорними.",
+            "ru": "Берлин, апрель 1868, из матча между ними. Андерсен играет черными.",
+            "es": "Berlín, abril de 1868, de un match entre los dos. Anderssen juega con negras."
           }
         },
         {
@@ -1460,7 +1572,9 @@
           },
           "note": {
             "en": "Breslau 1863. Like Anderssen, Rosanes was a mathematician. Anderssen has Black.",
-            "uk": "Бреслау, 1863. Розанес, як і Андерсен, був математиком. Андерсен грає чорними."
+            "uk": "Бреслау, 1863. Розанес, як і Андерсен, був математиком. Андерсен грає чорними.",
+            "ru": "Бреслау, 1863. Как и Андерсен, Розанес был математиком. Андерсен играет черными.",
+            "es": "Breslau, 1863. Como Anderssen, Rosanes era matemático. Anderssen juega con negras."
           }
         },
         {
@@ -1487,7 +1601,9 @@
           },
           "note": {
             "en": "Casual game, Berlin 1865, a Ruy Lopez. Anderssen has Black.",
-            "uk": "Товариська партія, Берлін, 1865, іспанська партія. Андерсен грає чорними."
+            "uk": "Товариська партія, Берлін, 1865, іспанська партія. Андерсен грає чорними.",
+            "ru": "Товарищеская партия, Берлин, 1865, испанская партия. Андерсен играет черными.",
+            "es": "Partida amistosa, Berlín, 1865, una Apertura española. Anderssen juega con negras."
           }
         },
         {
@@ -1515,7 +1631,9 @@
           },
           "note": {
             "en": "Rotterdam 1861, a Giuoco Piano. Anderssen has Black.",
-            "uk": "Роттердам, 1861, італійська партія. Андерсен грає чорними."
+            "uk": "Роттердам, 1861, італійська партія. Андерсен грає чорними.",
+            "ru": "Роттердам, 1861, джуоко пиано. Андерсен играет черными.",
+            "es": "Róterdam, 1861, un Giuoco Piano. Anderssen juega con negras."
           }
         },
         {
@@ -1542,7 +1660,9 @@
           },
           "note": {
             "en": "New York, September 1860. Morphy gave knight odds.",
-            "uk": "Нью-Йорк, вересень 1860. Морфі дав фору коня."
+            "uk": "Нью-Йорк, вересень 1860. Морфі дав фору коня.",
+            "ru": "Нью-Йорк, сентябрь 1860. Морфи дал фору коня.",
+            "es": "Nueva York, septiembre de 1860. Morphy dio ventaja de caballo."
           }
         },
         {
@@ -1570,7 +1690,9 @@
           },
           "note": {
             "en": "Casual game, London 1863, a King's Gambit.",
-            "uk": "Товариська партія, Лондон, 1863, королівський гамбіт."
+            "uk": "Товариська партія, Лондон, 1863, королівський гамбіт.",
+            "ru": "Товарищеская партия, Лондон, 1863, королевский гамбит.",
+            "es": "Partida amistosa, Londres, 1863, un Gambito de Rey."
           }
         },
         {
@@ -1598,7 +1720,9 @@
           },
           "note": {
             "en": "Amsterdam 1861, a French Defence.",
-            "uk": "Амстердам, 1861, французький захист."
+            "uk": "Амстердам, 1861, французький захист.",
+            "ru": "Амстердам, 1861, французская защита.",
+            "es": "Ámsterdam, 1861, una Defensa francesa."
           }
         },
         {
@@ -1627,7 +1751,9 @@
           },
           "note": {
             "en": "Breslau 1862, King's Gambit Declined. Anderssen has Black.",
-            "uk": "Бреслау, 1862, відхилений королівський гамбіт. Андерсен грає чорними."
+            "uk": "Бреслау, 1862, відхилений королівський гамбіт. Андерсен грає чорними.",
+            "ru": "Бреслау, 1862, отказанный королевский гамбит. Андерсен играет черными.",
+            "es": "Breslau, 1862, Gambito de Rey rehusado. Anderssen juega con negras."
           }
         },
         {
@@ -1654,7 +1780,9 @@
           },
           "note": {
             "en": "Berlin, April 1868, an Evans Gambit from their match.",
-            "uk": "Берлін, квітень 1868, гамбіт Еванса з їхнього матчу."
+            "uk": "Берлін, квітень 1868, гамбіт Еванса з їхнього матчу.",
+            "ru": "Берлин, апрель 1868, гамбит Эванса из их матча.",
+            "es": "Berlín, abril de 1868, un Gambito Evans de su match."
           }
         },
         {
@@ -1683,7 +1811,9 @@
           },
           "note": {
             "en": "Frankfurt am Main 1868, a King's Gambit. A year earlier Kolisch had won the Paris tournament.",
-            "uk": "Франкфурт-на-Майні, 1868, королівський гамбіт. Роком раніше Коліш виграв паризький турнір."
+            "uk": "Франкфурт-на-Майні, 1868, королівський гамбіт. Роком раніше Коліш виграв паризький турнір.",
+            "ru": "Франкфурт-на-Майне, 1868, королевский гамбит. Годом раньше Колиш выиграл парижский турнир.",
+            "es": "Fráncfort del Meno, 1868, un Gambito de Rey. Un año antes, Kolisch había ganado el torneo de París."
           }
         },
         {
@@ -1713,7 +1843,9 @@
           },
           "note": {
             "en": "Breslau 1860, an Evans Gambit.",
-            "uk": "Бреслау, 1860, гамбіт Еванса."
+            "uk": "Бреслау, 1860, гамбіт Еванса.",
+            "ru": "Бреслау, 1860, гамбит Эванса.",
+            "es": "Breslau, 1860, un Gambito Evans."
           }
         }
       ]
@@ -1722,11 +1854,15 @@
       "id": "romantic-4",
       "title": {
         "en": "Morphy at Odds",
-        "uk": "Морфі з форою"
+        "uk": "Морфі з форою",
+        "ru": "Морфи дает фору",
+        "es": "Morphy da ventaja"
       },
       "subtitle": {
         "en": "Odds and blindfold games, 1854–1869",
-        "uk": "Партії з форою і наосліп, 1854–1869"
+        "uk": "Партії з форою і наосліп, 1854–1869",
+        "ru": "Партии с форой и вслепую, 1854–1869",
+        "es": "Partidas con ventaja y a ciegas, 1854–1869"
       },
       "puzzles": [
         {
@@ -1754,7 +1890,9 @@
           },
           "note": {
             "en": "New Orleans 1858, blindfold display on 6 boards, a Two Knights Defence.",
-            "uk": "Новий Орлеан, 1858, сеанс наосліп на 6 дошках, захист двох коней."
+            "uk": "Новий Орлеан, 1858, сеанс наосліп на 6 дошках, захист двох коней.",
+            "ru": "Новый Орлеан, 1858, сеанс вслепую на 6 досках, защита двух коней.",
+            "es": "Nueva Orleans, 1858, simultánea a ciegas en 6 tableros, una Defensa de los dos caballos."
           }
         },
         {
@@ -1782,7 +1920,9 @@
           },
           "note": {
             "en": "Paris 1858, blindfold display on 8 boards, a Philidor Defence. Played at the Café de la Régence.",
-            "uk": "Париж, 1858, сеанс наосліп на 8 дошках, захист Філідора. Сеанс відбувся в кафе «Регентство»."
+            "uk": "Париж, 1858, сеанс наосліп на 8 дошках, захист Філідора. Сеанс відбувся в кафе «Регентство».",
+            "ru": "Париж, 1858, сеанс вслепую на 8 досках, защита Филидора. Партия сыграна в кафе «Де ла Регенс».",
+            "es": "París, 1858, simultánea a ciegas en 8 tableros, una Defensa Philidor. Se jugó en el Café de la Régence."
           }
         },
         {
@@ -1811,7 +1951,9 @@
           },
           "note": {
             "en": "New Orleans 1858, blindfold display on 3 boards, an Evans Gambit.",
-            "uk": "Новий Орлеан, 1858, сеанс наосліп на 3 дошках, гамбіт Еванса."
+            "uk": "Новий Орлеан, 1858, сеанс наосліп на 3 дошках, гамбіт Еванса.",
+            "ru": "Новый Орлеан, 1858, сеанс вслепую на 3 досках, гамбит Эванса.",
+            "es": "Nueva Orleans, 1858, simultánea a ciegas en 3 tableros, un Gambito Evans."
           }
         },
         {
@@ -1839,7 +1981,9 @@
           },
           "note": {
             "en": "Philadelphia 1859, blindfold display on 4 boards, a French Defence.",
-            "uk": "Філадельфія, 1859, сеанс наосліп на 4 дошках, французький захист."
+            "uk": "Філадельфія, 1859, сеанс наосліп на 4 дошках, французький захист.",
+            "ru": "Филадельфия, 1859, сеанс вслепую на 4 досках, французская защита.",
+            "es": "Filadelfia, 1859, simultánea a ciegas en 4 tableros, una Defensa francesa."
           }
         },
         {
@@ -1867,7 +2011,9 @@
           },
           "note": {
             "en": "New York 1859, odds game. Morphy gave rook odds.",
-            "uk": "Нью-Йорк, 1859, партія з форою. Морфі дав фору тури."
+            "uk": "Нью-Йорк, 1859, партія з форою. Морфі дав фору тури.",
+            "ru": "Нью-Йорк, 1859, партия с форой. Морфи дал фору ладьи.",
+            "es": "Nueva York, 1859, partida con ventaja. Morphy dio ventaja de torre."
           }
         },
         {
@@ -1895,7 +2041,9 @@
           },
           "note": {
             "en": "Boston 1859, odds game. Morphy gave knight odds.",
-            "uk": "Бостон, 1859, партія з форою. Морфі дав фору коня."
+            "uk": "Бостон, 1859, партія з форою. Морфі дав фору коня.",
+            "ru": "Бостон, 1859, партия с форой. Морфи дал фору коня.",
+            "es": "Boston, 1859, partida con ventaja. Morphy dio ventaja de caballo."
           }
         },
         {
@@ -1922,7 +2070,9 @@
           },
           "note": {
             "en": "New Orleans 1854, odds game. Morphy gave odds of a rook and a knight.",
-            "uk": "Новий Орлеан, 1854, партія з форою. Морфі дав фору тури й коня."
+            "uk": "Новий Орлеан, 1854, партія з форою. Морфі дав фору тури й коня.",
+            "ru": "Новый Орлеан, 1854, партия с форой. Морфи дал фору ладьи и коня.",
+            "es": "Nueva Orleans, 1854, partida con ventaja. Morphy dio ventaja de torre y caballo."
           }
         },
         {
@@ -1949,7 +2099,9 @@
           },
           "note": {
             "en": "New Orleans 1869, odds game. By then Morphy rarely played in public.",
-            "uk": "Новий Орлеан, 1869, партія з форою. На той час Морфі вже рідко грав на публіці."
+            "uk": "Новий Орлеан, 1869, партія з форою. На той час Морфі вже рідко грав на публіці.",
+            "ru": "Новый Орлеан, 1869, партия с форой. К тому времени Морфи редко играл на публике.",
+            "es": "Nueva Orleans, 1869, partida con ventaja. Para entonces Morphy rara vez jugaba en público."
           }
         },
         {
@@ -1975,7 +2127,9 @@
           },
           "note": {
             "en": "New Orleans 1869, odds game.",
-            "uk": "Новий Орлеан, 1869, партія з форою."
+            "uk": "Новий Орлеан, 1869, партія з форою.",
+            "ru": "Новый Орлеан, 1869, партия с форой.",
+            "es": "Nueva Orleans, 1869, partida con ventaja."
           }
         },
         {
@@ -2002,7 +2156,9 @@
           },
           "note": {
             "en": "New Orleans 1858, odds game. Morphy gave odds of his queen's rook.",
-            "uk": "Новий Орлеан, 1858, партія з форою. Морфі дав фору ферзевої тури."
+            "uk": "Новий Орлеан, 1858, партія з форою. Морфі дав фору ферзевої тури.",
+            "ru": "Новый Орлеан, 1858, партия с форой. Морфи дал фору ферзевой ладьи.",
+            "es": "Nueva Orleans, 1858, partida con ventaja. Morphy dio ventaja de su torre de dama."
           }
         },
         {
@@ -2029,7 +2185,9 @@
           },
           "note": {
             "en": "New Orleans 1858, odds game. Morphy gave odds of his queen's knight.",
-            "uk": "Новий Орлеан, 1858, партія з форою. Морфі дав фору ферзевого коня."
+            "uk": "Новий Орлеан, 1858, партія з форою. Морфі дав фору ферзевого коня.",
+            "ru": "Новый Орлеан, 1858, партия с форой. Морфи дал фору ферзевого коня.",
+            "es": "Nueva Orleans, 1858, partida con ventaja. Morphy dio ventaja de su caballo de dama."
           }
         },
         {
@@ -2057,7 +2215,9 @@
           },
           "note": {
             "en": "New Orleans 1858, blindfold display on 6 boards, an Evans Gambit.",
-            "uk": "Новий Орлеан, 1858, сеанс наосліп на 6 дошках, гамбіт Еванса."
+            "uk": "Новий Орлеан, 1858, сеанс наосліп на 6 дошках, гамбіт Еванса.",
+            "ru": "Новый Орлеан, 1858, сеанс вслепую на 6 досках, гамбит Эванса.",
+            "es": "Nueva Orleans, 1858, simultánea a ciegas en 6 tableros, un Gambito Evans."
           }
         },
         {
@@ -2084,7 +2244,9 @@
           },
           "note": {
             "en": "Paris 1859, match game, an Evans Gambit.",
-            "uk": "Париж, 1859, матчева партія, гамбіт Еванса."
+            "uk": "Париж, 1859, матчева партія, гамбіт Еванса.",
+            "ru": "Париж, 1859, матчевая партия, гамбит Эванса.",
+            "es": "París, 1859, partida de match, un Gambito Evans."
           }
         },
         {
@@ -2112,7 +2274,9 @@
           },
           "note": {
             "en": "1856, odds game. Morphy gave odds of his queen's rook.",
-            "uk": "1856, партія з форою. Морфі дав фору ферзевої тури."
+            "uk": "1856, партія з форою. Морфі дав фору ферзевої тури.",
+            "ru": "1856, партия с форой. Морфи дал фору ферзевой ладьи.",
+            "es": "1856, partida con ventaja. Morphy dio ventaja de su torre de dama."
           }
         },
         {
@@ -2139,7 +2303,9 @@
           },
           "note": {
             "en": "London 1859, an Evans Gambit.",
-            "uk": "Лондон, 1859, гамбіт Еванса."
+            "uk": "Лондон, 1859, гамбіт Еванса.",
+            "ru": "Лондон, 1859, гамбит Эванса.",
+            "es": "Londres, 1859, un Gambito Evans."
           }
         },
         {
@@ -2166,7 +2332,9 @@
           },
           "note": {
             "en": "New York 1859, odds game.",
-            "uk": "Нью-Йорк, 1859, партія з форою."
+            "uk": "Нью-Йорк, 1859, партія з форою.",
+            "ru": "Нью-Йорк, 1859, партия с форой.",
+            "es": "Nueva York, 1859, partida con ventaja."
           }
         },
         {
@@ -2193,7 +2361,9 @@
           },
           "note": {
             "en": "New York 1859, odds game. Morphy gave knight odds.",
-            "uk": "Нью-Йорк, 1859, партія з форою. Морфі дав фору коня."
+            "uk": "Нью-Йорк, 1859, партія з форою. Морфі дав фору коня.",
+            "ru": "Нью-Йорк, 1859, партия с форой. Морфи дал фору коня.",
+            "es": "Nueva York, 1859, partida con ventaja. Morphy dio ventaja de caballo."
           }
         },
         {
@@ -2220,7 +2390,9 @@
           },
           "note": {
             "en": "New York 1857, odds game. Morphy gave odds of his queen's knight.",
-            "uk": "Нью-Йорк, 1857, партія з форою. Морфі дав фору ферзевого коня."
+            "uk": "Нью-Йорк, 1857, партія з форою. Морфі дав фору ферзевого коня.",
+            "ru": "Нью-Йорк, 1857, партия с форой. Морфи дал фору ферзевого коня.",
+            "es": "Nueva York, 1857, partida con ventaja. Morphy dio ventaja de su caballo de dama."
           }
         },
         {
@@ -2247,7 +2419,9 @@
           },
           "note": {
             "en": "New Orleans 1856, odds game. Morphy gave odds of his queen's rook.",
-            "uk": "Новий Орлеан, 1856, партія з форою. Морфі дав фору ферзевої тури."
+            "uk": "Новий Орлеан, 1856, партія з форою. Морфі дав фору ферзевої тури.",
+            "ru": "Новый Орлеан, 1856, партия с форой. Морфи дал фору ферзевой ладьи.",
+            "es": "Nueva Orleans, 1856, partida con ventaja. Morphy dio ventaja de su torre de dama."
           }
         },
         {
@@ -2273,7 +2447,9 @@
           },
           "note": {
             "en": "Paris 1858, a King's Pawn game.",
-            "uk": "Париж, 1858, дебют королівського пішака."
+            "uk": "Париж, 1858, дебют королівського пішака.",
+            "ru": "Париж, 1858, дебют королевской пешки.",
+            "es": "París, 1858, una apertura de peón de rey."
           }
         }
       ]
@@ -2282,11 +2458,15 @@
       "id": "romantic-5",
       "title": {
         "en": "Steinitz and Kolisch",
-        "uk": "Стейніц і Коліш"
+        "uk": "Стейніц і Коліш",
+        "ru": "Стейниц и Колиш",
+        "es": "Steinitz y Kolisch"
       },
       "subtitle": {
         "en": "The new generation, 1860–1870",
-        "uk": "Нове покоління, 1860–1870"
+        "uk": "Нове покоління, 1860–1870",
+        "ru": "Новое поколение, 1860–1870",
+        "es": "La nueva generación, 1860–1870"
       },
       "puzzles": [
         {
@@ -2314,7 +2494,9 @@
           },
           "note": {
             "en": "Baden-Baden 1870, a Vienna Game. Anderssen won the tournament; Steinitz was second.",
-            "uk": "Баден-Баден, 1870, віденська партія. Турнір виграв Андерсен; Стейніц став другим."
+            "uk": "Баден-Баден, 1870, віденська партія. Турнір виграв Андерсен; Стейніц став другим.",
+            "ru": "Баден-Баден, 1870, венская партия. Андерсен выиграл турнир, Стейниц был вторым.",
+            "es": "Baden-Baden, 1870, una Partida vienesa. Anderssen ganó el torneo; Steinitz fue segundo."
           }
         },
         {
@@ -2342,7 +2524,9 @@
           },
           "note": {
             "en": "Paris 1860, casual game, a King's Gambit Declined.",
-            "uk": "Париж, 1860, товариська партія, відхилений королівський гамбіт."
+            "uk": "Париж, 1860, товариська партія, відхилений королівський гамбіт.",
+            "ru": "Париж, 1860, товарищеская партия, отказанный королевский гамбит.",
+            "es": "París, 1860, partida amistosa, un Gambito de Rey rehusado."
           }
         },
         {
@@ -2372,7 +2556,9 @@
           },
           "note": {
             "en": "London 1866, a Bishop's Opening.",
-            "uk": "Лондон, 1866, дебют слона."
+            "uk": "Лондон, 1866, дебют слона.",
+            "ru": "Лондон, 1866, дебют слона.",
+            "es": "Londres, 1866, una Apertura de alfil."
           }
         },
         {
@@ -2398,7 +2584,9 @@
           },
           "note": {
             "en": "Paris 1864, match game, an Evans Gambit.",
-            "uk": "Париж, 1864, матчева партія, гамбіт Еванса."
+            "uk": "Париж, 1864, матчева партія, гамбіт Еванса.",
+            "ru": "Париж, 1864, матчевая партия, гамбит Эванса.",
+            "es": "París, 1864, partida de match, un Gambito Evans."
           }
         },
         {
@@ -2425,7 +2613,9 @@
           },
           "note": {
             "en": "Paris 1867, a Ruy Lopez. Kolisch won this tournament.",
-            "uk": "Париж, 1867, іспанська партія. Цей турнір виграв Коліш."
+            "uk": "Париж, 1867, іспанська партія. Цей турнір виграв Коліш.",
+            "ru": "Париж, 1867, испанская партия. Этот турнир выиграл Колиш.",
+            "es": "París, 1867, una Apertura española. Kolisch ganó este torneo."
           }
         },
         {
@@ -2451,7 +2641,9 @@
           },
           "note": {
             "en": "Dundee 1867, blindfold display on 6 boards, a French Defence. Steinitz had settled in London in 1862.",
-            "uk": "Данді, 1867, сеанс наосліп на 6 дошках, французький захист. Стейніц оселився в Лондоні 1862 року."
+            "uk": "Данді, 1867, сеанс наосліп на 6 дошках, французький захист. Стейніц оселився в Лондоні 1862 року.",
+            "ru": "Данди, 1867, сеанс вслепую на 6 досках, французская защита. Стейниц обосновался в Лондоне в 1862 году.",
+            "es": "Dundee, 1867, simultánea a ciegas en 6 tableros, una Defensa francesa. Steinitz se había establecido en Londres en 1862."
           }
         },
         {
@@ -2478,7 +2670,9 @@
           },
           "note": {
             "en": "London 1867, odds game.",
-            "uk": "Лондон, 1867, партія з форою."
+            "uk": "Лондон, 1867, партія з форою.",
+            "ru": "Лондон, 1867, партия с форой.",
+            "es": "Londres, 1867, partida con ventaja."
           }
         },
         {
@@ -2504,7 +2698,9 @@
           },
           "note": {
             "en": "London 1863, odds game.",
-            "uk": "Лондон, 1863, партія з форою."
+            "uk": "Лондон, 1863, партія з форою.",
+            "ru": "Лондон, 1863, партия с форой.",
+            "es": "Londres, 1863, partida con ventaja."
           }
         },
         {
@@ -2532,7 +2728,9 @@
           },
           "note": {
             "en": "London 1860, casual game, an Evans Gambit.",
-            "uk": "Лондон, 1860, товариська партія, гамбіт Еванса."
+            "uk": "Лондон, 1860, товариська партія, гамбіт Еванса.",
+            "ru": "Лондон, 1860, товарищеская партия, гамбит Эванса.",
+            "es": "Londres, 1860, partida amistosa, un Gambito Evans."
           }
         },
         {
@@ -2560,7 +2758,9 @@
           },
           "note": {
             "en": "London 1860, odds game.",
-            "uk": "Лондон, 1860, партія з форою."
+            "uk": "Лондон, 1860, партія з форою.",
+            "ru": "Лондон, 1860, партия с форой.",
+            "es": "Londres, 1860, partida con ventaja."
           }
         },
         {
@@ -2587,7 +2787,9 @@
           },
           "note": {
             "en": "London 1860, from a series of games, an Evans Gambit.",
-            "uk": "Лондон, 1860, з серії партій, гамбіт Еванса."
+            "uk": "Лондон, 1860, з серії партій, гамбіт Еванса.",
+            "ru": "Лондон, 1860, из серии партий, гамбит Эванса.",
+            "es": "Londres, 1860, de una serie de partidas, un Gambito Evans."
           }
         },
         {
@@ -2613,7 +2815,9 @@
           },
           "note": {
             "en": "Paris 1864, match game, a Giuoco Piano.",
-            "uk": "Париж, 1864, матчева партія, італійська партія."
+            "uk": "Париж, 1864, матчева партія, італійська партія.",
+            "ru": "Париж, 1864, матчевая партия, джуоко пиано.",
+            "es": "París, 1864, partida de match, un Giuoco Piano."
           }
         },
         {
@@ -2640,7 +2844,9 @@
           },
           "note": {
             "en": "London 1865, casual game, a Vienna Game.",
-            "uk": "Лондон, 1865, товариська партія, віденська партія."
+            "uk": "Лондон, 1865, товариська партія, віденська партія.",
+            "ru": "Лондон, 1865, товарищеская партия, венская партия.",
+            "es": "Londres, 1865, partida amistosa, una Partida vienesa."
           }
         },
         {
@@ -2667,7 +2873,9 @@
           },
           "note": {
             "en": "1865, odds game.",
-            "uk": "1865, партія з форою."
+            "uk": "1865, партія з форою.",
+            "ru": "1865, партия с форой.",
+            "es": "1865, partida con ventaja."
           }
         },
         {
@@ -2693,7 +2901,9 @@
           },
           "note": {
             "en": "1860, a Scotch Game.",
-            "uk": "1860, шотландська партія."
+            "uk": "1860, шотландська партія.",
+            "ru": "1860, шотландская партия.",
+            "es": "1860, una Apertura escocesa."
           }
         },
         {
@@ -2720,7 +2930,9 @@
           },
           "note": {
             "en": "Paris 1860, casual game at the Café de la Régence, a French Defence. The Régence was Paris's main chess café.",
-            "uk": "Париж, 1860, товариська партія в кафе «Регентство», французький захист. «Регентство» — головне шахове кафе Парижа."
+            "uk": "Париж, 1860, товариська партія в кафе «Регентство», французький захист. «Регентство» — головне шахове кафе Парижа.",
+            "ru": "Париж, 1860, товарищеская партия в кафе «Де ла Регенс», французская защита. «Регенс» было главным шахматным кафе Парижа.",
+            "es": "París, 1860, partida amistosa en el Café de la Régence, una Defensa francesa. La Régence era el principal café de ajedrez de París."
           }
         },
         {
@@ -2747,7 +2959,9 @@
           },
           "note": {
             "en": "London 1865, casual game, an Evans Gambit.",
-            "uk": "Лондон, 1865, товариська партія, гамбіт Еванса."
+            "uk": "Лондон, 1865, товариська партія, гамбіт Еванса.",
+            "ru": "Лондон, 1865, товарищеская партия, гамбит Эванса.",
+            "es": "Londres, 1865, partida amistosa, un Gambito Evans."
           }
         },
         {
@@ -2775,7 +2989,9 @@
           },
           "note": {
             "en": "London 1863, odds game.",
-            "uk": "Лондон, 1863, партія з форою."
+            "uk": "Лондон, 1863, партія з форою.",
+            "ru": "Лондон, 1863, партия с форой.",
+            "es": "Londres, 1863, partida con ventaja."
           }
         },
         {
@@ -2805,7 +3021,9 @@
           },
           "note": {
             "en": "London 1863, odds game.",
-            "uk": "Лондон, 1863, партія з форою."
+            "uk": "Лондон, 1863, партія з форою.",
+            "ru": "Лондон, 1863, партия с форой.",
+            "es": "Londres, 1863, partida con ventaja."
           }
         },
         {
@@ -2835,7 +3053,9 @@
           },
           "note": {
             "en": "London 1869, casual game, an Italian Game.",
-            "uk": "Лондон, 1869, товариська партія, італійська партія."
+            "uk": "Лондон, 1869, товариська партія, італійська партія.",
+            "ru": "Лондон, 1869, товарищеская партия, итальянская партия.",
+            "es": "Londres, 1869, partida amistosa, una Apertura italiana."
           }
         }
       ]
@@ -2844,11 +3064,15 @@
       "id": "romantic-6",
       "title": {
         "en": "Final Examination",
-        "uk": "Фінальний іспит"
+        "uk": "Фінальний іспит",
+        "ru": "Выпускной экзамен",
+        "es": "Examen final"
       },
       "subtitle": {
         "en": "No hints, no solutions",
-        "uk": "Без підказок і розвʼязків"
+        "uk": "Без підказок і розвʼязків",
+        "ru": "Без подсказок и решений",
+        "es": "Sin pistas ni soluciones"
       },
       "exam": true,
       "puzzles": [
@@ -2877,7 +3101,9 @@
           },
           "note": {
             "en": "London 1862, a Ruy Lopez. Anderssen won this tournament.",
-            "uk": "Лондон, 1862, іспанська партія. Цей турнір виграв Андерсен."
+            "uk": "Лондон, 1862, іспанська партія. Цей турнір виграв Андерсен.",
+            "ru": "Лондон, 1862, испанская партия. Этот турнир выиграл Андерсен.",
+            "es": "Londres, 1862, una Apertura española. Anderssen ganó este torneo."
           }
         },
         {
@@ -2905,7 +3131,9 @@
           },
           "note": {
             "en": "Berlin 1855, casual game, a King's Gambit.",
-            "uk": "Берлін, 1855, товариська партія, королівський гамбіт."
+            "uk": "Берлін, 1855, товариська партія, королівський гамбіт.",
+            "ru": "Берлин, 1855, товарищеская партия, королевский гамбит.",
+            "es": "Berlín, 1855, partida amistosa, un Gambito de Rey."
           }
         },
         {
@@ -2932,7 +3160,9 @@
           },
           "note": {
             "en": "London 1862, a King's Gambit.",
-            "uk": "Лондон, 1862, королівський гамбіт."
+            "uk": "Лондон, 1862, королівський гамбіт.",
+            "ru": "Лондон, 1862, королевский гамбит.",
+            "es": "Londres, 1862, un Gambito de Rey."
           }
         },
         {
@@ -2959,7 +3189,9 @@
           },
           "note": {
             "en": "Paris 1864, a Giuoco Piano.",
-            "uk": "Париж, 1864, італійська партія."
+            "uk": "Париж, 1864, італійська партія.",
+            "ru": "Париж, 1864, джуоко пиано.",
+            "es": "París, 1864, un Giuoco Piano."
           }
         },
         {
@@ -2987,7 +3219,9 @@
           },
           "note": {
             "en": "Leipzig 1855, casual game, a King's Gambit Declined.",
-            "uk": "Лейпциг, 1855, товариська партія, відхилений королівський гамбіт."
+            "uk": "Лейпциг, 1855, товариська партія, відхилений королівський гамбіт.",
+            "ru": "Лейпциг, 1855, товарищеская партия, отказанный королевский гамбит.",
+            "es": "Leipzig, 1855, partida amistosa, un Gambito de Rey rehusado."
           }
         },
         {
@@ -3014,7 +3248,9 @@
           },
           "note": {
             "en": "Cologne 1859, a Sicilian Defence.",
-            "uk": "Кельн, 1859, сицилійський захист."
+            "uk": "Кельн, 1859, сицилійський захист.",
+            "ru": "Кельн, 1859, сицилианская защита.",
+            "es": "Colonia, 1859, una Defensa siciliana."
           }
         },
         {
@@ -3041,7 +3277,9 @@
           },
           "note": {
             "en": "Berlin 1866, a Ruy Lopez.",
-            "uk": "Берлін, 1866, іспанська партія."
+            "uk": "Берлін, 1866, іспанська партія.",
+            "ru": "Берлин, 1866, испанская партия.",
+            "es": "Berlín, 1866, una Apertura española."
           }
         },
         {
@@ -3068,7 +3306,9 @@
           },
           "note": {
             "en": "Amsterdam 1861, a Ruy Lopez.",
-            "uk": "Амстердам, 1861, іспанська партія."
+            "uk": "Амстердам, 1861, іспанська партія.",
+            "ru": "Амстердам, 1861, испанская партия.",
+            "es": "Ámsterdam, 1861, una Apertura española."
           }
         },
         {
@@ -3095,7 +3335,9 @@
           },
           "note": {
             "en": "Breslau 1865, casual game, a Giuoco Piano.",
-            "uk": "Бреслау, 1865, товариська партія, італійська партія."
+            "uk": "Бреслау, 1865, товариська партія, італійська партія.",
+            "ru": "Бреслау, 1865, товарищеская партия, джуоко пиано.",
+            "es": "Breslau, 1865, partida amistosa, un Giuoco Piano."
           }
         },
         {
@@ -3121,7 +3363,9 @@
           },
           "note": {
             "en": "Berlin 1865, a Ruy Lopez.",
-            "uk": "Берлін, 1865, іспанська партія."
+            "uk": "Берлін, 1865, іспанська партія.",
+            "ru": "Берлин, 1865, испанская партия.",
+            "es": "Berlín, 1865, una Apertura española."
           }
         },
         {
@@ -3147,7 +3391,9 @@
           },
           "note": {
             "en": "Berlin 1851, casual game, an Evans Gambit.",
-            "uk": "Берлін, 1851, товариська партія, гамбіт Еванса."
+            "uk": "Берлін, 1851, товариська партія, гамбіт Еванса.",
+            "ru": "Берлин, 1851, товарищеская партия, гамбит Эванса.",
+            "es": "Berlín, 1851, partida amistosa, un Gambito Evans."
           }
         },
         {
@@ -3173,7 +3419,9 @@
           },
           "note": {
             "en": "London 1851, casual game, a Two Knights Defence.",
-            "uk": "Лондон, 1851, товариська партія, захист двох коней."
+            "uk": "Лондон, 1851, товариська партія, захист двох коней.",
+            "ru": "Лондон, 1851, товарищеская партия, защита двух коней.",
+            "es": "Londres, 1851, partida amistosa, una Defensa de los dos caballos."
           }
         },
         {
@@ -3199,7 +3447,9 @@
           },
           "note": {
             "en": "Breslau 1867, casual game, an Evans Gambit.",
-            "uk": "Бреслау, 1867, товариська партія, гамбіт Еванса."
+            "uk": "Бреслау, 1867, товариська партія, гамбіт Еванса.",
+            "ru": "Бреслау, 1867, товарищеская партия, гамбит Эванса.",
+            "es": "Breslau, 1867, partida amistosa, un Gambito Evans."
           }
         },
         {
@@ -3226,7 +3476,9 @@
           },
           "note": {
             "en": "Berlin 1865, casual game, an Evans Gambit.",
-            "uk": "Берлін, 1865, товариська партія, гамбіт Еванса."
+            "uk": "Берлін, 1865, товариська партія, гамбіт Еванса.",
+            "ru": "Берлин, 1865, товарищеская партия, гамбит Эванса.",
+            "es": "Berlín, 1865, partida amistosa, un Gambito Evans."
           }
         },
         {
@@ -3254,7 +3506,9 @@
           },
           "note": {
             "en": "London 1862, simultaneous display at knight odds on 8 boards.",
-            "uk": "Лондон, 1862, сеанс на 8 дошках із форою коня."
+            "uk": "Лондон, 1862, сеанс на 8 дошках із форою коня.",
+            "ru": "Лондон, 1862, сеанс одновременной игры с форой коня на 8 досках.",
+            "es": "Londres, 1862, simultánea con ventaja de caballo en 8 tableros."
           }
         },
         {
@@ -3281,7 +3535,9 @@
           },
           "note": {
             "en": "Breslau 1865, casual game, a King's Gambit.",
-            "uk": "Бреслау, 1865, товариська партія, королівський гамбіт."
+            "uk": "Бреслау, 1865, товариська партія, королівський гамбіт.",
+            "ru": "Бреслау, 1865, товарищеская партия, королевский гамбит.",
+            "es": "Breslau, 1865, partida amistosa, un Gambito de Rey."
           }
         },
         {
@@ -3309,7 +3565,9 @@
           },
           "note": {
             "en": "London 1862, an Italian Game. Anderssen won this tournament.",
-            "uk": "Лондон, 1862, італійська партія. Цей турнір виграв Андерсен."
+            "uk": "Лондон, 1862, італійська партія. Цей турнір виграв Андерсен.",
+            "ru": "Лондон, 1862, итальянская партия. Этот турнир выиграл Андерсен.",
+            "es": "Londres, 1862, una Apertura italiana. Anderssen ganó este torneo."
           }
         },
         {
@@ -3339,7 +3597,9 @@
           },
           "note": {
             "en": "Rotterdam 1861, an Evans Gambit.",
-            "uk": "Роттердам, 1861, гамбіт Еванса."
+            "uk": "Роттердам, 1861, гамбіт Еванса.",
+            "ru": "Роттердам, 1861, гамбит Эванса.",
+            "es": "Róterdam, 1861, un Gambito Evans."
           }
         },
         {
@@ -3367,7 +3627,9 @@
           },
           "note": {
             "en": "Berlin 1864, casual match game, a King's Gambit.",
-            "uk": "Берлін, 1864, партія товариського матчу, королівський гамбіт."
+            "uk": "Берлін, 1864, партія товариського матчу, королівський гамбіт.",
+            "ru": "Берлин, 1864, партия из товарищеского матча, королевский гамбит.",
+            "es": "Berlín, 1864, partida de un match amistoso, un Gambito de Rey."
           }
         },
         {
@@ -3395,7 +3657,9 @@
           },
           "note": {
             "en": "Leipzig 1855, casual game, a King's Gambit.",
-            "uk": "Лейпциг, 1855, товариська партія, королівський гамбіт."
+            "uk": "Лейпциг, 1855, товариська партія, королівський гамбіт.",
+            "ru": "Лейпциг, 1855, товарищеская партия, королевский гамбит.",
+            "es": "Leipzig, 1855, partida amistosa, un Gambito de Rey."
           }
         }
       ]

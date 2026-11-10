@@ -1,16 +1,20 @@
 {
   "id": "capablanca",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "capablanca-1",
       "title": {
         "en": "The Prodigy",
-        "uk": "Вундеркінд"
+        "uk": "Вундеркінд",
+        "ru": "Вундеркинд",
+        "es": "El niño prodigio"
       },
       "subtitle": {
         "en": "Havana and New York, 1901–1910",
-        "uk": "Гавана і Нью-Йорк, 1901–1910"
+        "uk": "Гавана і Нью-Йорк, 1901–1910",
+        "ru": "Гавана и Нью-Йорк, 1901–1910",
+        "es": "La Habana y Nueva York, 1901–1910"
       },
       "puzzles": [
         {
@@ -38,7 +42,9 @@
           },
           "note": {
             "en": "New York, 1906, a Ruy Lopez.",
-            "uk": "Нью-Йорк, 1906, іспанська партія."
+            "uk": "Нью-Йорк, 1906, іспанська партія.",
+            "ru": "Нью-Йорк, 1906 год, испанская партия.",
+            "es": "Nueva York, 1906, una Apertura Española."
           }
         },
         {
@@ -67,7 +73,9 @@
           },
           "note": {
             "en": "New York, September 1906, a casual game. Capablanca was then a student at Columbia University.",
-            "uk": "Нью-Йорк, вересень 1906, товариська партія. Капабланка тоді навчався в Колумбійському університеті."
+            "uk": "Нью-Йорк, вересень 1906, товариська партія. Капабланка тоді навчався в Колумбійському університеті.",
+            "ru": "Нью-Йорк, сентябрь 1906 года, товарищеская партия. Капабланка тогда учился в Колумбийском университете.",
+            "es": "Nueva York, septiembre de 1906, una partida amistosa. Capablanca estudiaba entonces en la Universidad de Columbia."
           }
         },
         {
@@ -95,7 +103,9 @@
           },
           "note": {
             "en": "St. Louis, February 1909, a casual game, a Four Knights.",
-            "uk": "Сент-Луїс, лютий 1909, товариська партія, дебют чотирьох коней."
+            "uk": "Сент-Луїс, лютий 1909, товариська партія, дебют чотирьох коней.",
+            "ru": "Сент-Луис, февраль 1909 года, товарищеская партия, дебют четырех коней.",
+            "es": "San Luis, febrero de 1909, una partida amistosa, una Cuatro Caballos."
           }
         },
         {
@@ -123,7 +133,9 @@
           },
           "note": {
             "en": "New York State Chess Association championship, February 1910, round two.",
-            "uk": "Чемпіонат шахової асоціації штату Нью-Йорк, лютий 1910, другий тур."
+            "uk": "Чемпіонат шахової асоціації штату Нью-Йорк, лютий 1910, другий тур.",
+            "ru": "Чемпионат Шахматной ассоциации штата Нью-Йорк, февраль 1910 года, второй тур.",
+            "es": "Campeonato de la Asociación de Ajedrez del Estado de Nueva York, febrero de 1910, segunda ronda."
           }
         },
         {
@@ -149,7 +161,9 @@
           },
           "note": {
             "en": "Havana, September 1901, when Capablanca was twelve.",
-            "uk": "Гавана, вересень 1901: Капабланці було дванадцять."
+            "uk": "Гавана, вересень 1901: Капабланці було дванадцять.",
+            "ru": "Гавана, сентябрь 1901 года, когда Капабланке было двенадцать.",
+            "es": "La Habana, septiembre de 1901, cuando Capablanca tenía doce años."
           }
         },
         {
@@ -175,7 +189,9 @@
           },
           "note": {
             "en": "Manhattan Chess Club, New York, December 1907, a King's Gambit.",
-            "uk": "Манхеттенський шаховий клуб, Нью-Йорк, грудень 1907, королівський гамбіт."
+            "uk": "Манхеттенський шаховий клуб, Нью-Йорк, грудень 1907, королівський гамбіт.",
+            "ru": "Манхэттенский шахматный клуб, Нью-Йорк, декабрь 1907 года, королевский гамбит.",
+            "es": "Club de Ajedrez de Manhattan, Nueva York, diciembre de 1907, un Gambito de Rey."
           }
         },
         {
@@ -202,7 +218,9 @@
           },
           "note": {
             "en": "New York, April 1909, game two of the match with Marshall, which Capablanca won with eight wins and one loss.",
-            "uk": "Нью-Йорк, квітень 1909, друга партія матчу з Маршаллом, який Капабланка виграв із вісьмома перемогами при одній поразці."
+            "uk": "Нью-Йорк, квітень 1909, друга партія матчу з Маршаллом, який Капабланка виграв із вісьмома перемогами при одній поразці.",
+            "ru": "Нью-Йорк, апрель 1909 года, вторая партия матча с Маршаллом, который Капабланка выиграл с восемью победами и одним поражением.",
+            "es": "Nueva York, abril de 1909, segunda partida del match con Marshall, que Capablanca ganó con ocho victorias y una derrota."
           }
         },
         {
@@ -229,7 +247,9 @@
           },
           "note": {
             "en": "New York, June 1909, game 23, the last game of the match with Marshall.",
-            "uk": "Нью-Йорк, червень 1909, 23-тя, остання партія матчу з Маршаллом."
+            "uk": "Нью-Йорк, червень 1909, 23-тя, остання партія матчу з Маршаллом.",
+            "ru": "Нью-Йорк, июнь 1909 года, 23-я партия, последняя в матче с Маршаллом.",
+            "es": "Nueva York, junio de 1909, partida 23, la última del match con Marshall."
           }
         },
         {
@@ -256,7 +276,9 @@
           },
           "note": {
             "en": "Manhattan Chess Club, November 1910, from a simul on 28 boards.",
-            "uk": "Манхеттенський шаховий клуб, листопад 1910, сеанс на 28 дошках."
+            "uk": "Манхеттенський шаховий клуб, листопад 1910, сеанс на 28 дошках.",
+            "ru": "Манхэттенский шахматный клуб, ноябрь 1910 года, из сеанса одновременной игры на 28 досках.",
+            "es": "Club de Ajedrez de Manhattan, noviembre de 1910, de una simultánea en 28 tableros."
           }
         },
         {
@@ -283,7 +305,9 @@
           },
           "note": {
             "en": "Havana, October 1901, a French Defence. Later that year Capablanca beat the Cuban champion Corzo in a match.",
-            "uk": "Гавана, жовтень 1901, французький захист. Того ж року Капабланка виграв матч у чемпіона Куби Корсо."
+            "uk": "Гавана, жовтень 1901, французький захист. Того ж року Капабланка виграв матч у чемпіона Куби Корсо.",
+            "ru": "Гавана, октябрь 1901 года, французская защита. Позже в том же году Капабланка выиграл матч у чемпиона Кубы Корсо.",
+            "es": "La Habana, octubre de 1901, una Defensa Francesa. Ese mismo año Capablanca venció en un match al campeón cubano Corzo."
           }
         },
         {
@@ -310,7 +334,9 @@
           },
           "note": {
             "en": "Detroit, January 1909, from a simul on 15 boards.",
-            "uk": "Детройт, січень 1909, сеанс на 15 дошках."
+            "uk": "Детройт, січень 1909, сеанс на 15 дошках.",
+            "ru": "Детройт, январь 1909 года, из сеанса одновременной игры на 15 досках.",
+            "es": "Detroit, enero de 1909, de una simultánea en 15 tableros."
           }
         },
         {
@@ -337,7 +363,9 @@
           },
           "note": {
             "en": "St. Louis, February 1909, a casual game, an Evans Gambit.",
-            "uk": "Сент-Луїс, лютий 1909, товариська партія, гамбіт Еванса."
+            "uk": "Сент-Луїс, лютий 1909, товариська партія, гамбіт Еванса.",
+            "ru": "Сент-Луис, февраль 1909 года, товарищеская партия, гамбит Эванса.",
+            "es": "San Luis, febrero de 1909, una partida amistosa, un Gambito Evans."
           }
         },
         {
@@ -363,7 +391,9 @@
           },
           "note": {
             "en": "Havana, July 1909, a casual game at home after the match with Marshall.",
-            "uk": "Гавана, липень 1909, товариська партія вдома після матчу з Маршаллом."
+            "uk": "Гавана, липень 1909, товариська партія вдома після матчу з Маршаллом.",
+            "ru": "Гавана, июль 1909 года, товарищеская партия дома после матча с Маршаллом.",
+            "es": "La Habana, julio de 1909, una partida amistosa en casa tras el match con Marshall."
           }
         },
         {
@@ -389,7 +419,9 @@
           },
           "note": {
             "en": "New York, May 1910, a club match between the Manhattan and Franklin chess clubs.",
-            "uk": "Нью-Йорк, травень 1910, матч Манхеттенського шахового клубу проти клубу Франкліна."
+            "uk": "Нью-Йорк, травень 1910, матч Манхеттенського шахового клубу проти клубу Франкліна.",
+            "ru": "Нью-Йорк, май 1910 года, клубный матч между шахматными клубами «Манхэттен» и «Франклин».",
+            "es": "Nueva York, mayo de 1910, un match entre los clubes de ajedrez Manhattan y Franklin."
           }
         },
         {
@@ -418,7 +450,9 @@
           },
           "note": {
             "en": "New York, March 1909, from a rapid-transit match, an early form of fast chess.",
-            "uk": "Нью-Йорк, березень 1909, матч у «рапід-транзит» — ранній різновид швидких шахів."
+            "uk": "Нью-Йорк, березень 1909, матч у «рапід-транзит» — ранній різновид швидких шахів.",
+            "ru": "Нью-Йорк, март 1909 года, из матча в «рапид-транзит», ранней форме быстрых шахмат.",
+            "es": "Nueva York, marzo de 1909, de un match de «rapid transit», una forma temprana de ajedrez rápido."
           }
         },
         {
@@ -445,7 +479,9 @@
           },
           "note": {
             "en": "New York, April 1910, from a match in which Capablanca gave odds.",
-            "uk": "Нью-Йорк, квітень 1910, з матчу, у якому Капабланка давав фору."
+            "uk": "Нью-Йорк, квітень 1910, з матчу, у якому Капабланка давав фору.",
+            "ru": "Нью-Йорк, апрель 1910 года, из матча, в котором Капабланка давал фору.",
+            "es": "Nueva York, abril de 1910, de un match en el que Capablanca daba ventaja."
           }
         },
         {
@@ -474,7 +510,9 @@
           },
           "note": {
             "en": "New York, December 1907, a casual game, a Ruy Lopez.",
-            "uk": "Нью-Йорк, грудень 1907, товариська гра, іспанська партія."
+            "uk": "Нью-Йорк, грудень 1907, товариська гра, іспанська партія.",
+            "ru": "Нью-Йорк, декабрь 1907 года, товарищеская партия, испанская партия.",
+            "es": "Nueva York, diciembre de 1907, una partida amistosa, una Apertura Española."
           }
         },
         {
@@ -501,7 +539,9 @@
           },
           "note": {
             "en": "Manhattan Chess Club, March 1909, a handicap tournament.",
-            "uk": "Манхеттенський шаховий клуб, березень 1909, турнір із форою."
+            "uk": "Манхеттенський шаховий клуб, березень 1909, турнір із форою.",
+            "ru": "Манхэттенский шахматный клуб, март 1909 года, гандикап-турнир.",
+            "es": "Club de Ajedrez de Manhattan, marzo de 1909, un torneo con hándicap."
           }
         },
         {
@@ -530,7 +570,9 @@
           },
           "note": {
             "en": "New York, September 1906, a casual game in the Berlin Defence.",
-            "uk": "Нью-Йорк, вересень 1906, товариська партія, берлінський захист."
+            "uk": "Нью-Йорк, вересень 1906, товариська партія, берлінський захист.",
+            "ru": "Нью-Йорк, сентябрь 1906 года, товарищеская партия в берлинской защите.",
+            "es": "Nueva York, septiembre de 1906, una partida amistosa con la Defensa Berlinesa."
           }
         },
         {
@@ -560,7 +602,9 @@
           },
           "note": {
             "en": "St. Louis, December 1909, from a simul on 22 boards, a King's Gambit.",
-            "uk": "Сент-Луїс, грудень 1909, сеанс на 22 дошках, королівський гамбіт."
+            "uk": "Сент-Луїс, грудень 1909, сеанс на 22 дошках, королівський гамбіт.",
+            "ru": "Сент-Луис, декабрь 1909 года, из сеанса одновременной игры на 22 досках, королевский гамбит.",
+            "es": "San Luis, diciembre de 1909, de una simultánea en 22 tableros, un Gambito de Rey."
           }
         }
       ]
@@ -569,11 +613,15 @@
       "id": "capablanca-2",
       "title": {
         "en": "The Rising Star",
-        "uk": "Висхідна зірка"
+        "uk": "Висхідна зірка",
+        "ru": "Восходящая звезда",
+        "es": "La estrella en ascenso"
       },
       "subtitle": {
         "en": "Tours and tournaments, 1911–1913",
-        "uk": "Турне й турніри, 1911–1913"
+        "uk": "Турне й турніри, 1911–1913",
+        "ru": "Турне и турниры, 1911–1913",
+        "es": "Giras y torneos, 1911–1913"
       },
       "puzzles": [
         {
@@ -601,7 +649,9 @@
           },
           "note": {
             "en": "City of London Chess Club, November 1911, from a simul on 28 boards.",
-            "uk": "Шаховий клуб лондонського Сіті, листопад 1911, сеанс на 28 дошках."
+            "uk": "Шаховий клуб лондонського Сіті, листопад 1911, сеанс на 28 дошках.",
+            "ru": "Шахматный клуб лондонского Сити, ноябрь 1911 года, из сеанса одновременной игры на 28 досках.",
+            "es": "City of London Chess Club, noviembre de 1911, de una simultánea en 28 tableros."
           }
         },
         {
@@ -628,7 +678,9 @@
           },
           "note": {
             "en": "Havana, February 1913, round one. Corzo was the Cuban champion Capablanca had beaten as a boy.",
-            "uk": "Гавана, лютий 1913, перший тур. Корсо — чемпіон Куби, якого Капабланка переміг ще хлопчиком."
+            "uk": "Гавана, лютий 1913, перший тур. Корсо — чемпіон Куби, якого Капабланка переміг ще хлопчиком.",
+            "ru": "Гавана, февраль 1913 года, первый тур. Корсо был тем самым чемпионом Кубы, которого Капабланка обыграл еще мальчиком.",
+            "es": "La Habana, febrero de 1913, primera ronda. Corzo era el campeón cubano al que Capablanca había vencido de niño."
           }
         },
         {
@@ -655,7 +707,9 @@
           },
           "note": {
             "en": "New Orleans, January 1911, a consultation game against two local players.",
-            "uk": "Новий Орлеан, січень 1911, консультаційна партія проти двох місцевих шахістів."
+            "uk": "Новий Орлеан, січень 1911, консультаційна партія проти двох місцевих шахістів.",
+            "ru": "Новый Орлеан, январь 1911 года, консультационная партия против двух местных шахматистов.",
+            "es": "Nueva Orleans, enero de 1911, una partida en consulta contra dos jugadores locales."
           }
         },
         {
@@ -681,7 +735,9 @@
           },
           "note": {
             "en": "Buenos Aires, June 1911, from a simul on 40 boards.",
-            "uk": "Буенос-Айрес, червень 1911, сеанс на 40 дошках."
+            "uk": "Буенос-Айрес, червень 1911, сеанс на 40 дошках.",
+            "ru": "Буэнос-Айрес, июнь 1911 года, из сеанса одновременной игры на 40 досках.",
+            "es": "Buenos Aires, junio de 1911, de una simultánea en 40 tableros."
           }
         },
         {
@@ -707,7 +763,9 @@
           },
           "note": {
             "en": "Birmingham, November 1911, from a simul on 28 boards.",
-            "uk": "Бірмінгем, листопад 1911, сеанс на 28 дошках."
+            "uk": "Бірмінгем, листопад 1911, сеанс на 28 дошках.",
+            "ru": "Бирмингем, ноябрь 1911 года, из сеанса одновременной игры на 28 досках.",
+            "es": "Birmingham, noviembre de 1911, de una simultánea en 28 tableros."
           }
         },
         {
@@ -733,7 +791,9 @@
           },
           "note": {
             "en": "City of London Chess Club, October 1913, a 28-board simul, a Queen's Gambit Declined.",
-            "uk": "Шаховий клуб лондонського Сіті, жовтень 1913, сеанс на 28 дошках, відхилений ферзевий гамбіт."
+            "uk": "Шаховий клуб лондонського Сіті, жовтень 1913, сеанс на 28 дошках, відхилений ферзевий гамбіт.",
+            "ru": "Шахматный клуб лондонского Сити, октябрь 1913 года, сеанс на 28 досках, отказанный ферзевый гамбит.",
+            "es": "City of London Chess Club, octubre de 1913, una simultánea en 28 tableros, un Gambito de Dama Rehusado."
           }
         },
         {
@@ -760,7 +820,9 @@
           },
           "note": {
             "en": "New York, January 1913, round nine of the American National tournament.",
-            "uk": "Нью-Йорк, січень 1913, девʼятий тур Американського національного турніру."
+            "uk": "Нью-Йорк, січень 1913, девʼятий тур Американського національного турніру.",
+            "ru": "Нью-Йорк, январь 1913 года, девятый тур Американского национального турнира.",
+            "es": "Nueva York, enero de 1913, novena ronda del Torneo Nacional Estadounidense."
           }
         },
         {
@@ -786,7 +848,9 @@
           },
           "note": {
             "en": "Buenos Aires, June 1911, an exhibition game, a French Defence.",
-            "uk": "Буенос-Айрес, червень 1911, показова партія, французький захист."
+            "uk": "Буенос-Айрес, червень 1911, показова партія, французький захист.",
+            "ru": "Буэнос-Айрес, июнь 1911 года, показательная партия, французская защита.",
+            "es": "Buenos Aires, junio de 1911, una partida de exhibición, una Defensa Francesa."
           }
         },
         {
@@ -813,7 +877,9 @@
           },
           "note": {
             "en": "Middelburg, September 1911, from a simul on 25 boards.",
-            "uk": "Мідделбург, вересень 1911, сеанс на 25 дошках."
+            "uk": "Мідделбург, вересень 1911, сеанс на 25 дошках.",
+            "ru": "Мидделбург, сентябрь 1911 года, из сеанса одновременной игры на 25 досках.",
+            "es": "Middelburg, septiembre de 1911, de una simultánea en 25 tableros."
           }
         },
         {
@@ -840,7 +906,9 @@
           },
           "note": {
             "en": "Minneapolis, May 1912, from a simul on 15 boards, deep in an ending.",
-            "uk": "Міннеаполіс, травень 1912, сеанс на 15 дошках, глибокий ендшпіль."
+            "uk": "Міннеаполіс, травень 1912, сеанс на 15 дошках, глибокий ендшпіль.",
+            "ru": "Миннеаполис, май 1912 года, из сеанса одновременной игры на 15 досках, глубоко в эндшпиле.",
+            "es": "Mineápolis, mayo de 1912, de una simultánea en 15 tableros, muy avanzado el final."
           }
         },
         {
@@ -866,7 +934,9 @@
           },
           "note": {
             "en": "Łódź, November 1913, a consultation game against a team of local players.",
-            "uk": "Лодзь, листопад 1913, консультаційна партія проти команди місцевих шахістів."
+            "uk": "Лодзь, листопад 1913, консультаційна партія проти команди місцевих шахістів.",
+            "ru": "Лодзь, ноябрь 1913 года, консультационная партия против команды местных шахматистов.",
+            "es": "Łódź, noviembre de 1913, una partida en consulta contra un equipo de jugadores locales."
           }
         },
         {
@@ -893,7 +963,9 @@
           },
           "note": {
             "en": "New York, January 1911, round six of a masters' tournament. Hodges was a former US champion.",
-            "uk": "Нью-Йорк, січень 1911, шостий тур турніру майстрів. Ходжес колись був чемпіоном США."
+            "uk": "Нью-Йорк, січень 1911, шостий тур турніру майстрів. Ходжес колись був чемпіоном США.",
+            "ru": "Нью-Йорк, январь 1911 года, шестой тур турнира мастеров. Ходжес в прошлом был чемпионом США.",
+            "es": "Nueva York, enero de 1911, sexta ronda de un torneo de maestros. Hodges había sido campeón de EE. UU."
           }
         },
         {
@@ -920,7 +992,9 @@
           },
           "note": {
             "en": "Amsterdam, September 1911, from a simul on 25 boards. Arnold van Foreest had been Dutch champion.",
-            "uk": "Амстердам, вересень 1911, сеанс на 25 дошках. Арнольд ван Форест був чемпіоном Нідерландів."
+            "uk": "Амстердам, вересень 1911, сеанс на 25 дошках. Арнольд ван Форест був чемпіоном Нідерландів.",
+            "ru": "Амстердам, сентябрь 1911 года, из сеанса одновременной игры на 25 досках. Арнольд ван Форест был чемпионом Нидерландов.",
+            "es": "Ámsterdam, septiembre de 1911, de una simultánea en 25 tableros. Arnold van Foreest había sido campeón de los Países Bajos."
           }
         },
         {
@@ -947,7 +1021,9 @@
           },
           "note": {
             "en": "Havana, September 1913, from a clock simul on three boards.",
-            "uk": "Гавана, вересень 1913, сеанс із годинником на трьох дошках."
+            "uk": "Гавана, вересень 1913, сеанс із годинником на трьох дошках.",
+            "ru": "Гавана, сентябрь 1913 года, из сеанса с часами на трех досках.",
+            "es": "La Habana, septiembre de 1913, de una simultánea con reloj en tres tableros."
           }
         },
         {
@@ -975,7 +1051,9 @@
           },
           "note": {
             "en": "St Petersburg, December 1913, game one of a short match.",
-            "uk": "Санкт-Петербург, грудень 1913, перша партія короткого матчу."
+            "uk": "Санкт-Петербург, грудень 1913, перша партія короткого матчу.",
+            "ru": "Санкт-Петербург, декабрь 1913 года, первая партия короткого матча.",
+            "es": "San Petersburgo, diciembre de 1913, primera partida de un match corto."
           }
         },
         {
@@ -1004,7 +1082,9 @@
           },
           "note": {
             "en": "New York, December 1911, from a simul on 26 boards.",
-            "uk": "Нью-Йорк, грудень 1911, сеанс на 26 дошках."
+            "uk": "Нью-Йорк, грудень 1911, сеанс на 26 дошках.",
+            "ru": "Нью-Йорк, декабрь 1911 года, из сеанса одновременной игры на 26 досках.",
+            "es": "Nueva York, diciembre de 1911, de una simultánea en 26 tableros."
           }
         },
         {
@@ -1032,7 +1112,9 @@
           },
           "note": {
             "en": "City of London Chess Club, October 1913, from a simul on 28 boards, a French Defence.",
-            "uk": "Шаховий клуб лондонського Сіті, жовтень 1913, сеанс на 28 дошках, французький захист."
+            "uk": "Шаховий клуб лондонського Сіті, жовтень 1913, сеанс на 28 дошках, французький захист.",
+            "ru": "Шахматный клуб лондонского Сити, октябрь 1913 года, из сеанса одновременной игры на 28 досках, французская защита.",
+            "es": "City of London Chess Club, octubre de 1913, de una simultánea en 28 tableros, una Defensa Francesa."
           }
         },
         {
@@ -1059,7 +1141,9 @@
           },
           "note": {
             "en": "Leiden, September 1911, from a simul on 25 boards, a King's Gambit.",
-            "uk": "Лейден, вересень 1911, сеанс на 25 дошках, королівський гамбіт."
+            "uk": "Лейден, вересень 1911, сеанс на 25 дошках, королівський гамбіт.",
+            "ru": "Лейден, сентябрь 1911 года, из сеанса одновременной игры на 25 досках, королевский гамбит.",
+            "es": "Leiden, septiembre de 1911, de una simultánea en 25 tableros, un Gambito de Rey."
           }
         },
         {
@@ -1086,7 +1170,9 @@
           },
           "note": {
             "en": "London, October 1913, from a simul on seven boards; Edward Lasker was a strong master himself.",
-            "uk": "Лондон, жовтень 1913, сеанс на семи дошках; Едвард Ласкер і сам був сильним майстром."
+            "uk": "Лондон, жовтень 1913, сеанс на семи дошках; Едвард Ласкер і сам був сильним майстром.",
+            "ru": "Лондон, октябрь 1913 года, из сеанса одновременной игры на семи досках; Эдвард Ласкер и сам был сильным мастером.",
+            "es": "Londres, octubre de 1913, de una simultánea en siete tableros; Edward Lasker era también un maestro fuerte."
           }
         },
         {
@@ -1113,7 +1199,9 @@
           },
           "note": {
             "en": "Havana, September 1913, a clock simul on three boards, a Scandinavian Defence.",
-            "uk": "Гавана, вересень 1913, сеанс із годинником на трьох дошках, скандинавський захист."
+            "uk": "Гавана, вересень 1913, сеанс із годинником на трьох дошках, скандинавський захист.",
+            "ru": "Гавана, сентябрь 1913 года, сеанс с часами на трех досках, скандинавская защита.",
+            "es": "La Habana, septiembre de 1913, una simultánea con reloj en tres tableros, una Defensa Escandinava."
           }
         }
       ]
@@ -1122,11 +1210,15 @@
       "id": "capablanca-3",
       "title": {
         "en": "The Contender",
-        "uk": "Претендент"
+        "uk": "Претендент",
+        "ru": "Претендент",
+        "es": "El aspirante"
       },
       "subtitle": {
         "en": "St Petersburg to Hastings, 1914–1919",
-        "uk": "Від Петербурга до Гастінгса, 1914–1919"
+        "uk": "Від Петербурга до Гастінгса, 1914–1919",
+        "ru": "От Санкт-Петербурга до Гастингса, 1914–1919",
+        "es": "De San Petersburgo a Hastings, 1914–1919"
       },
       "puzzles": [
         {
@@ -1154,7 +1246,9 @@
           },
           "note": {
             "en": "New Orleans, April 1915, a 19-board simul, a Ruy Lopez.",
-            "uk": "Новий Орлеан, квітень 1915, сеанс на 19 дошках, іспанська партія."
+            "uk": "Новий Орлеан, квітень 1915, сеанс на 19 дошках, іспанська партія.",
+            "ru": "Новый Орлеан, апрель 1915 года, сеанс на 19 досках, испанская партия.",
+            "es": "Nueva Orleans, abril de 1915, una simultánea en 19 tableros, una Apertura Española."
           }
         },
         {
@@ -1182,7 +1276,9 @@
           },
           "note": {
             "en": "Sheffield, October 1919, from a simul on 40 boards.",
-            "uk": "Шеффілд, жовтень 1919, сеанс на 40 дошках."
+            "uk": "Шеффілд, жовтень 1919, сеанс на 40 дошках.",
+            "ru": "Шеффилд, октябрь 1919 года, из сеанса одновременной игры на 40 досках.",
+            "es": "Sheffield, octubre de 1919, de una simultánea en 40 tableros."
           }
         },
         {
@@ -1209,7 +1305,9 @@
           },
           "note": {
             "en": "New York, February 1916, round three of the Rice Memorial, which Capablanca won.",
-            "uk": "Нью-Йорк, лютий 1916, третій тур Меморіалу Райса, який виграв Капабланка."
+            "uk": "Нью-Йорк, лютий 1916, третій тур Меморіалу Райса, який виграв Капабланка.",
+            "ru": "Нью-Йорк, февраль 1916 года, третий тур Мемориала Райса, который выиграл Капабланка.",
+            "es": "Nueva York, febrero de 1916, tercera ronda del Memorial Rice, que ganó Capablanca."
           }
         },
         {
@@ -1235,7 +1333,9 @@
           },
           "note": {
             "en": "House of Commons, London, December 1919, from a simul on 38 boards.",
-            "uk": "Палата громад, Лондон, грудень 1919, сеанс на 38 дошках."
+            "uk": "Палата громад, Лондон, грудень 1919, сеанс на 38 дошках.",
+            "ru": "Палата общин, Лондон, декабрь 1919 года, из сеанса одновременной игры на 38 досках.",
+            "es": "Cámara de los Comunes, Londres, diciembre de 1919, de una simultánea en 38 tableros."
           }
         },
         {
@@ -1262,7 +1362,9 @@
           },
           "note": {
             "en": "St Petersburg, April 1914, round six. Thirteen years later Alekhine took the world title from Capablanca.",
-            "uk": "Санкт-Петербург, квітень 1914, шостий тур. Через тринадцять років Алехін відібрав у Капабланки звання чемпіона світу."
+            "uk": "Санкт-Петербург, квітень 1914, шостий тур. Через тринадцять років Алехін відібрав у Капабланки звання чемпіона світу.",
+            "ru": "Санкт-Петербург, апрель 1914 года, шестой тур. Через тринадцать лет Алехин отнимет у Капабланки звание чемпиона мира.",
+            "es": "San Petersburgo, abril de 1914, sexta ronda. Trece años después Alekhine le arrebataría el título mundial a Capablanca."
           }
         },
         {
@@ -1289,7 +1391,9 @@
           },
           "note": {
             "en": "Paris, March 1914, from a clock simul.",
-            "uk": "Париж, березень 1914, сеанс із годинником."
+            "uk": "Париж, березень 1914, сеанс із годинником.",
+            "ru": "Париж, март 1914 года, из сеанса с часами.",
+            "es": "París, marzo de 1914, de una simultánea con reloj."
           }
         },
         {
@@ -1316,7 +1420,9 @@
           },
           "note": {
             "en": "St Petersburg, May 1914, round nine. Lasker won the tournament, Capablanca was second.",
-            "uk": "Санкт-Петербург, травень 1914, девʼятий тур. Турнір виграв Ласкер, Капабланка був другим."
+            "uk": "Санкт-Петербург, травень 1914, девʼятий тур. Турнір виграв Ласкер, Капабланка був другим.",
+            "ru": "Санкт-Петербург, май 1914 года, девятый тур. Турнир выиграл Ласкер, Капабланка был вторым.",
+            "es": "San Petersburgo, mayo de 1914, novena ronda. Lasker ganó el torneo y Capablanca fue segundo."
           }
         },
         {
@@ -1343,7 +1449,9 @@
           },
           "note": {
             "en": "Buenos Aires, 1914, an exhibition game, a French Defence.",
-            "uk": "Буенос-Айрес, 1914, показова партія, французький захист."
+            "uk": "Буенос-Айрес, 1914, показова партія, французький захист.",
+            "ru": "Буэнос-Айрес, 1914 год, показательная партия, французская защита.",
+            "es": "Buenos Aires, 1914, una partida de exhibición, una Defensa Francesa."
           }
         },
         {
@@ -1370,7 +1478,9 @@
           },
           "note": {
             "en": "New York, February 1915, from a simul on 65 boards.",
-            "uk": "Нью-Йорк, лютий 1915, сеанс на 65 дошках."
+            "uk": "Нью-Йорк, лютий 1915, сеанс на 65 дошках.",
+            "ru": "Нью-Йорк, февраль 1915 года, из сеанса одновременной игры на 65 досках.",
+            "es": "Nueva York, febrero de 1915, de una simultánea en 65 tableros."
           }
         },
         {
@@ -1396,7 +1506,9 @@
           },
           "note": {
             "en": "New York, October 1918, round one: the debut of the Marshall Attack.",
-            "uk": "Нью-Йорк, жовтень 1918, перший тур: дебют атаки Маршалла."
+            "uk": "Нью-Йорк, жовтень 1918, перший тур: дебют атаки Маршалла.",
+            "ru": "Нью-Йорк, октябрь 1918 года, первый тур: дебют атаки Маршалла.",
+            "es": "Nueva York, octubre de 1918, primera ronda: el estreno del Ataque Marshall."
           }
         },
         {
@@ -1423,7 +1535,9 @@
           },
           "note": {
             "en": "Hastings, August 1919, round 11. Capablanca won the tournament.",
-            "uk": "Гастінгс, серпень 1919, 11-й тур. Капабланка виграв турнір."
+            "uk": "Гастінгс, серпень 1919, 11-й тур. Капабланка виграв турнір.",
+            "ru": "Гастингс, август 1919 года, 11-й тур. Капабланка выиграл турнир.",
+            "es": "Hastings, agosto de 1919, ronda 11. Capablanca ganó el torneo."
           }
         },
         {
@@ -1450,7 +1564,9 @@
           },
           "note": {
             "en": "Philadelphia, November 1915, an exhibition game, a French Defence.",
-            "uk": "Філадельфія, листопад 1915, показова партія, французький захист."
+            "uk": "Філадельфія, листопад 1915, показова партія, французький захист.",
+            "ru": "Филадельфия, ноябрь 1915 года, показательная партия, французская защита.",
+            "es": "Filadelfia, noviembre de 1915, una partida de exhibición, una Defensa Francesa."
           }
         },
         {
@@ -1478,7 +1594,9 @@
           },
           "note": {
             "en": "Vienna, March 1914, an exhibition match game, a Scotch.",
-            "uk": "Відень, березень 1914, партія показового матчу, шотландська партія."
+            "uk": "Відень, березень 1914, партія показового матчу, шотландська партія.",
+            "ru": "Вена, март 1914 года, партия показательного матча, шотландская партия.",
+            "es": "Viena, marzo de 1914, partida de un match de exhibición, una Escocesa."
           }
         },
         {
@@ -1508,7 +1626,9 @@
           },
           "note": {
             "en": "New York, 1918, an Italian Game.",
-            "uk": "Нью-Йорк, 1918, італійська партія."
+            "uk": "Нью-Йорк, 1918, італійська партія.",
+            "ru": "Нью-Йорк, 1918 год, итальянская партия.",
+            "es": "Nueva York, 1918, una Partida Italiana."
           }
         },
         {
@@ -1537,7 +1657,9 @@
           },
           "note": {
             "en": "New York, January 1916, from a simul on 33 boards, a Queen's Gambit Declined.",
-            "uk": "Нью-Йорк, січень 1916, сеанс на 33 дошках, відхилений ферзевий гамбіт."
+            "uk": "Нью-Йорк, січень 1916, сеанс на 33 дошках, відхилений ферзевий гамбіт.",
+            "ru": "Нью-Йорк, январь 1916 года, из сеанса одновременной игры на 33 досках, отказанный ферзевый гамбит.",
+            "es": "Nueva York, enero de 1916, de una simultánea en 33 tableros, un Gambito de Dama Rehusado."
           }
         },
         {
@@ -1564,7 +1686,9 @@
           },
           "note": {
             "en": "Vienna, March 1914, an exhibition game against the young Réti, a Berlin Defence.",
-            "uk": "Відень, березень 1914, показова партія проти молодого Реті, берлінський захист."
+            "uk": "Відень, березень 1914, показова партія проти молодого Реті, берлінський захист.",
+            "ru": "Вена, март 1914 года, показательная партия против юного Рети, берлинская защита.",
+            "es": "Viena, marzo de 1914, una partida de exhibición contra el joven Réti, una Defensa Berlinesa."
           }
         },
         {
@@ -1593,7 +1717,9 @@
           },
           "note": {
             "en": "New York, June 1918, a casual game, a Ruy Lopez.",
-            "uk": "Нью-Йорк, червень 1918, товариська гра, іспанська партія."
+            "uk": "Нью-Йорк, червень 1918, товариська гра, іспанська партія.",
+            "ru": "Нью-Йорк, июнь 1918 года, товарищеская партия, испанская партия.",
+            "es": "Nueva York, junio de 1918, una partida amistosa, una Apertura Española."
           }
         },
         {
@@ -1622,7 +1748,9 @@
           },
           "note": {
             "en": "St Petersburg, May 1914, the final stage, a French Defence.",
-            "uk": "Санкт-Петербург, травень 1914, фінальний етап, французький захист."
+            "uk": "Санкт-Петербург, травень 1914, фінальний етап, французький захист.",
+            "ru": "Санкт-Петербург, май 1914 года, финальный этап, французская защита.",
+            "es": "San Petersburgo, mayo de 1914, la fase final, una Defensa Francesa."
           }
         },
         {
@@ -1650,7 +1778,9 @@
           },
           "note": {
             "en": "New Orleans, April 1915, from a simul on 19 boards.",
-            "uk": "Новий Орлеан, квітень 1915, сеанс на 19 дошках."
+            "uk": "Новий Орлеан, квітень 1915, сеанс на 19 дошках.",
+            "ru": "Новый Орлеан, апрель 1915 года, из сеанса одновременной игры на 19 досках.",
+            "es": "Nueva Orleans, abril de 1915, de una simultánea en 19 tableros."
           }
         },
         {
@@ -1678,7 +1808,9 @@
           },
           "note": {
             "en": "Havana, March 1919, game three of a match Capablanca won five games to nil.",
-            "uk": "Гавана, березень 1919, третя партія матчу, який Капабланка виграв із рахунком 5:0."
+            "uk": "Гавана, березень 1919, третя партія матчу, який Капабланка виграв із рахунком 5:0.",
+            "ru": "Гавана, март 1919 года, третья партия матча, который Капабланка выиграл со счетом 5:0.",
+            "es": "La Habana, marzo de 1919, tercera partida de un match que Capablanca ganó por cinco a cero."
           }
         }
       ]
@@ -1687,11 +1819,15 @@
       "id": "capablanca-4",
       "title": {
         "en": "The Champion",
-        "uk": "Чемпіон"
+        "uk": "Чемпіон",
+        "ru": "Чемпион",
+        "es": "El campeón"
       },
       "subtitle": {
         "en": "Years at the top, 1920–1929",
-        "uk": "Роки на вершині, 1920–1929"
+        "uk": "Роки на вершині, 1920–1929",
+        "ru": "Годы на вершине, 1920–1929",
+        "es": "Años en la cima, 1920–1929"
       },
       "puzzles": [
         {
@@ -1719,7 +1855,9 @@
           },
           "note": {
             "en": "Rotherham, October 1922, from a simul on 36 boards.",
-            "uk": "Ротергем, жовтень 1922, сеанс на 36 дошках."
+            "uk": "Ротергем, жовтень 1922, сеанс на 36 дошках.",
+            "ru": "Ротерем, октябрь 1922 года, из сеанса одновременной игры на 36 досках.",
+            "es": "Rotherham, octubre de 1922, de una simultánea en 36 tableros."
           }
         },
         {
@@ -1748,7 +1886,9 @@
           },
           "note": {
             "en": "Barcelona, February 1920, from a simul on 32 boards.",
-            "uk": "Барселона, лютий 1920, сеанс на 32 дошках."
+            "uk": "Барселона, лютий 1920, сеанс на 32 дошках.",
+            "ru": "Барселона, февраль 1920 года, из сеанса одновременной игры на 32 досках.",
+            "es": "Barcelona, febrero de 1920, de una simultánea en 32 tableros."
           }
         },
         {
@@ -1776,7 +1916,9 @@
           },
           "note": {
             "en": "New York, March 1927, a casual game, a Dutch Defence.",
-            "uk": "Нью-Йорк, березень 1927, товариська партія, голландський захист."
+            "uk": "Нью-Йорк, березень 1927, товариська партія, голландський захист.",
+            "ru": "Нью-Йорк, март 1927 года, товарищеская партия, голландская защита.",
+            "es": "Nueva York, marzo de 1927, una partida amistosa, una Defensa Holandesa."
           }
         },
         {
@@ -1805,7 +1947,9 @@
           },
           "note": {
             "en": "Ramsgate, March 1929, a living chess exhibition with people as the pieces.",
-            "uk": "Рамсгейт, березень 1929, показ живих шахів, де фігурами були люди."
+            "uk": "Рамсгейт, березень 1929, показ живих шахів, де фігурами були люди.",
+            "ru": "Рамсгит, март 1929 года, показательная партия в живые шахматы, где фигурами были люди.",
+            "es": "Ramsgate, marzo de 1929, una exhibición de ajedrez viviente con personas como piezas."
           }
         },
         {
@@ -1831,7 +1975,9 @@
           },
           "note": {
             "en": "New York, March 1924, round nine. Lasker won the tournament, Capablanca was second.",
-            "uk": "Нью-Йорк, березень 1924, девʼятий тур. Турнір виграв Ласкер, Капабланка був другим."
+            "uk": "Нью-Йорк, березень 1924, девʼятий тур. Турнір виграв Ласкер, Капабланка був другим.",
+            "ru": "Нью-Йорк, март 1924 года, девятый тур. Турнир выиграл Ласкер, Капабланка был вторым.",
+            "es": "Nueva York, marzo de 1924, novena ronda. Lasker ganó el torneo y Capablanca fue segundo."
           }
         },
         {
@@ -1857,7 +2003,9 @@
           },
           "note": {
             "en": "New York, April 1924, round 15.",
-            "uk": "Нью-Йорк, квітень 1924, 15-й тур."
+            "uk": "Нью-Йорк, квітень 1924, 15-й тур.",
+            "ru": "Нью-Йорк, апрель 1924 года, 15-й тур.",
+            "es": "Nueva York, abril de 1924, ronda 15."
           }
         },
         {
@@ -1884,7 +2032,9 @@
           },
           "note": {
             "en": "Buenos Aires, September 1927, game three of the world title match. Alekhine won the match and the title.",
-            "uk": "Буенос-Айрес, вересень 1927, третя партія матчу за звання чемпіона світу. Матч і титул виграв Алехін."
+            "uk": "Буенос-Айрес, вересень 1927, третя партія матчу за звання чемпіона світу. Матч і титул виграв Алехін.",
+            "ru": "Буэнос-Айрес, сентябрь 1927 года, третья партия матча на первенство мира. Алехин выиграл матч и титул.",
+            "es": "Buenos Aires, septiembre de 1927, tercera partida del match por el título mundial. Alekhine ganó el match y el título."
           }
         },
         {
@@ -1912,7 +2062,9 @@
           },
           "note": {
             "en": "São Paulo, August 1927, from a simul on ten boards, a French Defence.",
-            "uk": "Сан-Паулу, серпень 1927, сеанс на десяти дошках, французький захист."
+            "uk": "Сан-Паулу, серпень 1927, сеанс на десяти дошках, французький захист.",
+            "ru": "Сан-Паулу, август 1927 года, из сеанса одновременной игры на десяти досках, французская защита.",
+            "es": "São Paulo, agosto de 1927, de una simultánea en diez tableros, una Defensa Francesa."
           }
         },
         {
@@ -1939,7 +2091,9 @@
           },
           "note": {
             "en": "Berlin, October 1928, round 14. Capablanca won the tournament.",
-            "uk": "Берлін, жовтень 1928, 14-й тур. Капабланка виграв турнір."
+            "uk": "Берлін, жовтень 1928, 14-й тур. Капабланка виграв турнір.",
+            "ru": "Берлин, октябрь 1928 года, 14-й тур. Капабланка выиграл турнир.",
+            "es": "Berlín, octubre de 1928, ronda 14. Capablanca ganó el torneo."
           }
         },
         {
@@ -1966,7 +2120,9 @@
           },
           "note": {
             "en": "New York, April 1924, round 13, a closed Ruy Lopez.",
-            "uk": "Нью-Йорк, квітень 1924, 13-й тур, закрита іспанська партія."
+            "uk": "Нью-Йорк, квітень 1924, 13-й тур, закрита іспанська партія.",
+            "ru": "Нью-Йорк, апрель 1924 года, 13-й тур, закрытый вариант испанской партии.",
+            "es": "Nueva York, abril de 1924, ronda 13, una Española cerrada."
           }
         },
         {
@@ -1995,7 +2151,9 @@
           },
           "note": {
             "en": "Moscow, November 1925, round eight. Capablanca appeared in the film Chess Fever, shot during this tournament.",
-            "uk": "Москва, листопад 1925, восьмий тур. Під час цього турніру зняли фільм «Шахова гарячка», де знявся Капабланка."
+            "uk": "Москва, листопад 1925, восьмий тур. Під час цього турніру зняли фільм «Шахова гарячка», де знявся Капабланка.",
+            "ru": "Москва, ноябрь 1925 года, восьмой тур. Капабланка снялся в фильме «Шахматная горячка», снятом во время этого турнира.",
+            "es": "Moscú, noviembre de 1925, octava ronda. Capablanca apareció en la película «La fiebre del ajedrez», rodada durante este torneo."
           }
         },
         {
@@ -2022,7 +2180,9 @@
           },
           "note": {
             "en": "Moscow, December 1925, round 17. Bogoljubov won the tournament ahead of Lasker and Capablanca.",
-            "uk": "Москва, грудень 1925, 17-й тур. Турнір виграв Боголюбов, випередивши Ласкера й Капабланку."
+            "uk": "Москва, грудень 1925, 17-й тур. Турнір виграв Боголюбов, випередивши Ласкера й Капабланку.",
+            "ru": "Москва, декабрь 1925 года, 17-й тур. Боголюбов выиграл турнир, опередив Ласкера и Капабланку.",
+            "es": "Moscú, diciembre de 1925, ronda 17. Bogoljubov ganó el torneo por delante de Lasker y Capablanca."
           }
         },
         {
@@ -2049,7 +2209,9 @@
           },
           "note": {
             "en": "São Paulo, August 1927, from a simul on 23 boards, weeks before the title match with Alekhine.",
-            "uk": "Сан-Паулу, серпень 1927, сеанс на 23 дошках — за кілька тижнів до матчу за титул з Алехіним."
+            "uk": "Сан-Паулу, серпень 1927, сеанс на 23 дошках — за кілька тижнів до матчу за титул з Алехіним.",
+            "ru": "Сан-Паулу, август 1927 года, из сеанса одновременной игры на 23 досках, за несколько недель до матча на первенство мира с Алехиным.",
+            "es": "São Paulo, agosto de 1927, de una simultánea en 23 tableros, semanas antes del match por el título con Alekhine."
           }
         },
         {
@@ -2076,7 +2238,9 @@
           },
           "note": {
             "en": "Bad Kissingen, August 1928, round eight. Bogoljubov won, Capablanca was second.",
-            "uk": "Бад-Кіссінген, серпень 1928, восьмий тур. Переміг Боголюбов, Капабланка був другим."
+            "uk": "Бад-Кіссінген, серпень 1928, восьмий тур. Переміг Боголюбов, Капабланка був другим.",
+            "ru": "Бад-Киссинген, август 1928 года, восьмой тур. Победил Боголюбов, Капабланка был вторым.",
+            "es": "Bad Kissingen, agosto de 1928, octava ronda. Ganó Bogoljubov y Capablanca fue segundo."
           }
         },
         {
@@ -2103,7 +2267,9 @@
           },
           "note": {
             "en": "Barcelona, October 1929, round 12. Capablanca won the tournament.",
-            "uk": "Барселона, жовтень 1929, 12-й тур. Капабланка виграв турнір."
+            "uk": "Барселона, жовтень 1929, 12-й тур. Капабланка виграв турнір.",
+            "ru": "Барселона, октябрь 1929 года, 12-й тур. Капабланка выиграл турнир.",
+            "es": "Barcelona, octubre de 1929, ronda 12. Capablanca ganó el torneo."
           }
         },
         {
@@ -2131,7 +2297,9 @@
           },
           "note": {
             "en": "London, August 1922, round 13: Capablanca's first tournament as world champion, and he won it.",
-            "uk": "Лондон, серпень 1922, 13-й тур — перший турнір Капабланки в статусі чемпіона світу, і він його виграв."
+            "uk": "Лондон, серпень 1922, 13-й тур — перший турнір Капабланки в статусі чемпіона світу, і він його виграв.",
+            "ru": "Лондон, август 1922 года, 13-й тур: первый турнир Капабланки в статусе чемпиона мира, и он его выиграл.",
+            "es": "Londres, agosto de 1922, ronda 13: el primer torneo de Capablanca como campeón del mundo, y lo ganó."
           }
         },
         {
@@ -2160,7 +2328,9 @@
           },
           "note": {
             "en": "London, October 1922, from a simul on 33 boards, a Dutch Defence.",
-            "uk": "Лондон, жовтень 1922, сеанс на 33 дошках, голландський захист."
+            "uk": "Лондон, жовтень 1922, сеанс на 33 дошках, голландський захист.",
+            "ru": "Лондон, октябрь 1922 года, из сеанса одновременной игры на 33 досках, голландская защита.",
+            "es": "Londres, octubre de 1922, de una simultánea en 33 tableros, una Defensa Holandesa."
           }
         },
         {
@@ -2188,7 +2358,9 @@
           },
           "note": {
             "en": "Budapest, September 1928, round one, a Queen's Gambit Accepted.",
-            "uk": "Будапешт, вересень 1928, перший тур, прийнятий ферзевий гамбіт."
+            "uk": "Будапешт, вересень 1928, перший тур, прийнятий ферзевий гамбіт.",
+            "ru": "Будапешт, сентябрь 1928 года, первый тур, принятый ферзевый гамбит.",
+            "es": "Budapest, septiembre de 1928, primera ronda, un Gambito de Dama Aceptado."
           }
         },
         {
@@ -2216,7 +2388,9 @@
           },
           "note": {
             "en": "Bristol, October 1920, from a simul on 40 boards, a Queen's Gambit Declined.",
-            "uk": "Бристоль, жовтень 1920, сеанс на 40 дошках, відхилений ферзевий гамбіт."
+            "uk": "Бристоль, жовтень 1920, сеанс на 40 дошках, відхилений ферзевий гамбіт.",
+            "ru": "Бристоль, октябрь 1920 года, из сеанса одновременной игры на 40 досках, отказанный ферзевый гамбит.",
+            "es": "Bristol, octubre de 1920, de una simultánea en 40 tableros, un Gambito de Dama Rehusado."
           }
         },
         {
@@ -2243,7 +2417,9 @@
           },
           "note": {
             "en": "Brooklyn Chess Club, March 1924, from a simul on 33 boards, a Ruy Lopez.",
-            "uk": "Бруклінський шаховий клуб, березень 1924, сеанс на 33 дошках, іспанська партія."
+            "uk": "Бруклінський шаховий клуб, березень 1924, сеанс на 33 дошках, іспанська партія.",
+            "ru": "Бруклинский шахматный клуб, март 1924 года, из сеанса одновременной игры на 33 досках, испанская партия.",
+            "es": "Club de Ajedrez de Brooklyn, marzo de 1924, de una simultánea en 33 tableros, una Apertura Española."
           }
         }
       ]

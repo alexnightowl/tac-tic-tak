@@ -64,10 +64,12 @@ export type Course = CourseMeta & { version: number; chapters: CourseChapterCont
 const META: CourseMeta[] = [
   {
     id: 'basic',
-    title: { en: 'Basic', uk: 'Базовий' },
+    title: { en: 'Basic', uk: 'Базовий', ru: 'Базовый', es: 'Básico' },
     description: {
       en: 'Hanging pieces, forks, pins and the first mates.',
       uk: 'Висячі фігури, вилки, зв’язки й перші мати.',
+      ru: 'Висячие фигуры, вилки, связки и первые маты.',
+      es: 'Piezas colgadas, ataques dobles, clavadas y los primeros mates.',
     },
     color: '#8e4542',
     piece: 'pawn',
@@ -77,10 +79,12 @@ const META: CourseMeta[] = [
   },
   {
     id: 'intermediate',
-    title: { en: 'Intermediate', uk: 'Середній' },
+    title: { en: 'Intermediate', uk: 'Середній', ru: 'Средний', es: 'Intermedio' },
     description: {
       en: 'Attraction, deflection, in-between moves and the classic mating patterns.',
       uk: 'Заманювання, відволікання, проміжні ходи й класичні матові візерунки.',
+      ru: 'Завлечение, отвлечение, промежуточные ходы и классические матовые схемы.',
+      es: 'Atracción, desviación, jugadas intermedias y los patrones de mate clásicos.',
     },
     color: '#c98c55',
     piece: 'knight',
@@ -90,10 +94,12 @@ const META: CourseMeta[] = [
   },
   {
     id: 'advanced',
-    title: { en: 'Advanced', uk: 'Просунутий' },
+    title: { en: 'Advanced', uk: 'Просунутий', ru: 'Продвинутый', es: 'Avanzado' },
     description: {
       en: 'Quiet moves, x-rays, long combinations and the only defence.',
       uk: 'Тихі ходи, рентген, довгі комбінації та єдиний захист.',
+      ru: 'Тихие ходы, рентген, длинные комбинации и единственная защита.',
+      es: 'Jugadas tranquilas, rayos X, combinaciones largas y la única defensa.',
     },
     color: '#cbbfae',
     piece: 'queen',
@@ -103,10 +109,12 @@ const META: CourseMeta[] = [
   },
   {
     id: 'endgames',
-    title: { en: 'Endgames', uk: 'Ендшпіль' },
+    title: { en: 'Endgames', uk: 'Ендшпіль', ru: 'Эндшпиль', es: 'Finales' },
     description: {
       en: 'Pawn, rook and minor-piece endings: promotion, zugzwang and exact technique.',
       uk: 'Пішакові, турні й легкофігурні закінчення: перетворення, цугцванг і точна техніка.',
+      ru: 'Пешечные, ладейные и легкофигурные окончания: превращение, цугцванг и точная техника.',
+      es: 'Finales de peones, de torres y de piezas menores: coronación, zugzwang y técnica precisa.',
     },
     color: '#94a58e',
     piece: 'king',

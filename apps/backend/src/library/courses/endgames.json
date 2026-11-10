@@ -1,22 +1,28 @@
 {
   "id": "endgames",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "endgames-pawn",
       "theme": "pawnEndgame",
       "title": {
         "en": "Pawn endings",
-        "uk": "Пішакові закінчення"
+        "uk": "Пішакові закінчення",
+        "ru": "Пешечные эндшпили",
+        "es": "Finales de peones"
       },
       "tip": {
         "en": "Count the moves to the queening square — for both sides.",
-        "uk": "Рахуй ходи до поля перетворення — за обидві сторони."
+        "uk": "Рахуй ходи до поля перетворення — за обидві сторони.",
+        "ru": "Считай ходы до поля превращения — за обе стороны.",
+        "es": "Cuenta las jugadas hasta la casilla de coronación, para ambos bandos."
       },
       "intro": {
         "text": {
           "en": "In pawn endings every tempo matters, and the king is a fighting piece. Opposition, the square of the pawn and pawn breakthroughs decide most of them. Count precisely: one move too slow is the difference between a win and a loss.",
-          "uk": "У пішакових закінченнях вирішує кожен темп, а король — повноцінна бойова фігура. Більшість із них вирішують опозиція, правило квадрата й пішаковий прорив. Рахуй точно: запізнення на один хід — це різниця між виграшем і поразкою."
+          "uk": "У пішакових закінченнях вирішує кожен темп, а король — повноцінна бойова фігура. Більшість із них вирішують опозиція, правило квадрата й пішаковий прорив. Рахуй точно: запізнення на один хід — це різниця між виграшем і поразкою.",
+          "ru": "В пешечных эндшпилях важен каждый темп, а король — боевая фигура. Оппозиция, правило квадрата и пешечные прорывы решают большинство из них. Считай точно: на один ход медленнее — и выигрыш превращается в проигрыш.",
+          "es": "En los finales de peones cada tiempo cuenta y el rey es una pieza de combate. La oposición, la regla del cuadrado y las rupturas de peones deciden la mayoría. Calcula con precisión: una jugada de retraso es la diferencia entre ganar y perder."
         },
         "fen": "7k/ppp5/8/PPP5/8/8/8/6K1 w - - 0 1",
         "arrows": [
@@ -38,7 +44,9 @@
         ],
         "caption": {
           "en": "b6! breaks through: whichever pawn takes, one of White’s pawns runs through to queen.",
-          "uk": "b6! — прорив: хоч би яким пішаком чорні взяли, один із білих пішаків пройде у ферзі."
+          "uk": "b6! — прорив: хоч би яким пішаком чорні взяли, один із білих пішаків пройде у ферзі.",
+          "ru": "b6! прорыв: какая бы пешка ни взяла, одна из белых пешек проходит в ферзи.",
+          "es": "¡b6! rompe: capture el peón que capture, uno de los peones blancos corona."
         }
       },
       "puzzles": [
@@ -324,16 +332,22 @@
       "theme": "rookEndgame",
       "title": {
         "en": "Rook endings",
-        "uk": "Турні закінчення"
+        "uk": "Турні закінчення",
+        "ru": "Ладейные эндшпили",
+        "es": "Finales de torres"
       },
       "tip": {
         "en": "Rooks belong behind passed pawns — and active.",
-        "uk": "Місце тури — позаду прохідного пішака, і вона має бути активною."
+        "uk": "Місце тури — позаду прохідного пішака, і вона має бути активною.",
+        "ru": "Ладьи — позади проходных пешек, и активные.",
+        "es": "Las torres van detrás de los peones pasados, y activas."
       },
       "intro": {
         "text": {
           "en": "Rook endings are the most common endings of all. Activity beats material here: an active rook, a king close to the pawns and well-timed checks decide most positions. Watch for skewers along ranks and files — they are everywhere in rook endings.",
-          "uk": "Турні закінчення трапляються найчастіше з усіх. Тут активність важить більше за матеріал: активна тура, король біля пішаків і вчасні шахи вирішують більшість позицій. Стеж за лінійними ударами по горизонталях і вертикалях — у турних закінченнях вони на кожному кроці."
+          "uk": "Турні закінчення трапляються найчастіше з усіх. Тут активність важить більше за матеріал: активна тура, король біля пішаків і вчасні шахи вирішують більшість позицій. Стеж за лінійними ударами по горизонталях і вертикалях — у турних закінченнях вони на кожному кроці.",
+          "ru": "Ладейные эндшпили — самые частые из всех. Активность здесь важнее материала: активная ладья, король рядом с пешками и вовремя данные шахи решают большинство позиций. Следи за сквозными ударами по горизонталям и вертикалям — в ладейных эндшпилях они повсюду.",
+          "es": "Los finales de torres son los más frecuentes de todos. Aquí la actividad vale más que el material: una torre activa, un rey cerca de los peones y jaques en el momento justo deciden la mayoría de las posiciones. Atento a las enfiladas por filas y columnas: en los finales de torres están por todas partes."
         },
         "fen": "R7/P3k3/8/8/8/6K1/8/r7 w - - 0 1",
         "arrows": [
@@ -350,7 +364,9 @@
         ],
         "caption": {
           "en": "Rh8 clears the way for the pawn; if the black rook takes a7, a check from h7 skewers it.",
-          "uk": "Rh8 звільняє шлях пішакові; якщо чорна тура візьме a7, шах з h7 лінійним ударом забере її."
+          "uk": "Rh8 звільняє шлях пішакові; якщо чорна тура візьме a7, шах з h7 лінійним ударом забере її.",
+          "ru": "Rh8 освобождает дорогу пешке; если черная ладья возьмет a7, шах с h7 — сквозной удар.",
+          "es": "Rh8 despeja el camino al peón; si la torre negra captura en a7, un jaque desde h7 la enfila."
         }
       },
       "puzzles": [
@@ -636,16 +652,22 @@
       "theme": "knightEndgame",
       "title": {
         "en": "Knight endings",
-        "uk": "Кінні закінчення"
+        "uk": "Кінні закінчення",
+        "ru": "Коневые эндшпили",
+        "es": "Finales de caballos"
       },
       "tip": {
         "en": "Knights are slow: count their jumps.",
-        "uk": "Кінь повільний: рахуй його стрибки."
+        "uk": "Кінь повільний: рахуй його стрибки.",
+        "ru": "Кони медленные: считай их прыжки.",
+        "es": "Los caballos son lentos: cuenta sus saltos."
       },
       "intro": {
         "text": {
           "en": "Knight endings play like pawn endings with an extra piece: the knight cannot lose a tempo and needs several jumps to change sides. Forks and deflections decide most of them. Check where each knight can get to in one and in two moves.",
-          "uk": "Кінні закінчення схожі на пішакові з додатковою фігурою: кінь не вміє втрачати темп і довго перебирається з флангу на фланг. Більшість із них вирішують вилки та відволікання. Перевіряй, куди кожен кінь дістанеться за один і за два ходи."
+          "uk": "Кінні закінчення схожі на пішакові з додатковою фігурою: кінь не вміє втрачати темп і довго перебирається з флангу на фланг. Більшість із них вирішують вилки та відволікання. Перевіряй, куди кожен кінь дістанеться за один і за два ходи.",
+          "ru": "Коневые эндшпили похожи на пешечные с лишней фигурой: конь не умеет терять темп, и ему нужно несколько прыжков, чтобы перейти на другой фланг. Большинство из них решают вилки и отвлечения. Проверь, куда каждый конь может попасть за один и за два хода.",
+          "es": "Los finales de caballos se juegan como finales de peones con una pieza más: el caballo no puede perder un tiempo y necesita varios saltos para cambiar de flanco. Los ataques dobles y las desviaciones deciden la mayoría. Comprueba adónde puede llegar cada caballo en una y en dos jugadas."
         },
         "fen": "2K5/1P6/n5k1/3N4/8/8/8/8 w - - 0 1",
         "arrows": [
@@ -667,7 +689,9 @@
         ],
         "caption": {
           "en": "Nc7 hits the only defender of b8 — whatever the black knight does, the pawn queens.",
-          "uk": "Nc7 нападає на єдиного захисника поля b8 — хоч що зробить чорний кінь, пішак стане ферзем."
+          "uk": "Nc7 нападає на єдиного захисника поля b8 — хоч що зробить чорний кінь, пішак стане ферзем.",
+          "ru": "Nc7 нападает на единственного защитника b8 — что бы ни сделал черный конь, пешка проходит в ферзи.",
+          "es": "Nc7 ataca al único defensor de b8: haga lo que haga el caballo negro, el peón corona."
         }
       },
       "puzzles": [
@@ -956,16 +980,22 @@
       "theme": "bishopEndgame",
       "title": {
         "en": "Bishop endings",
-        "uk": "Слонові закінчення"
+        "uk": "Слонові закінчення",
+        "ru": "Слоновые эндшпили",
+        "es": "Finales de alfiles"
       },
       "tip": {
         "en": "Watch the colour of the squares: a bishop sees only half the board.",
-        "uk": "Стеж за кольором полів: слон бачить лише половину дошки."
+        "uk": "Стеж за кольором полів: слон бачить лише половину дошки.",
+        "ru": "Следи за цветом полей: слон видит только половину доски.",
+        "es": "Fíjate en el color de las casillas: un alfil solo ve la mitad del tablero."
       },
       "intro": {
         "text": {
           "en": "A bishop controls only squares of its own colour, and that decides bishop endings. Put your pawns on the other colour, bring your king where the bishop cannot help, and look for ways to block its diagonal. With bishops of opposite colours, even two extra pawns may not be enough.",
-          "uk": "Слон контролює лише поля свого кольору, і це вирішує слонові закінчення. Став пішаків на поля іншого кольору, веди короля туди, де слон не допоможе, і шукай, як перекрити його діагональ. З різнопольними слонами навіть двох зайвих пішаків може не вистачити."
+          "uk": "Слон контролює лише поля свого кольору, і це вирішує слонові закінчення. Став пішаків на поля іншого кольору, веди короля туди, де слон не допоможе, і шукай, як перекрити його діагональ. З різнопольними слонами навіть двох зайвих пішаків може не вистачити.",
+          "ru": "Слон контролирует только поля своего цвета, и это решает слоновые эндшпили. Ставь пешки на поля другого цвета, веди короля туда, где слон не поможет, и ищи способы перекрыть его диагональ. С разноцветными слонами даже двух лишних пешек может не хватить.",
+          "es": "Un alfil solo controla casillas de su color, y eso decide los finales de alfiles. Pon tus peones en el otro color, lleva tu rey adonde el alfil no puede ayudar y busca la forma de bloquear su diagonal. Con alfiles de distinto color, ni siquiera dos peones de más pueden bastar."
         },
         "fen": "8/1P6/2K5/B3b2k/8/8/8/8 w - - 0 1",
         "arrows": [
@@ -982,7 +1012,9 @@
         ],
         "caption": {
           "en": "Bc7 blocks the black bishop’s diagonal; if it takes, the king takes back and the pawn queens.",
-          "uk": "Bc7 перекриває діагональ чорного слона; якщо він візьме, король відбере, і пішак стане ферзем."
+          "uk": "Bc7 перекриває діагональ чорного слона; якщо він візьме, король відбере, і пішак стане ферзем.",
+          "ru": "Bc7 перекрывает диагональ черного слона; если он возьмет, король берет назад, и пешка проходит в ферзи.",
+          "es": "Bc7 bloquea la diagonal del alfil negro; si captura, el rey recaptura y el peón corona."
         }
       },
       "puzzles": [
@@ -1266,16 +1298,22 @@
       "theme": "queenEndgame",
       "title": {
         "en": "Queen endings",
-        "uk": "Ферзеві закінчення"
+        "uk": "Ферзеві закінчення",
+        "ru": "Ферзевые эндшпили",
+        "es": "Finales de damas"
       },
       "tip": {
         "en": "Look for checks that win the queen or force mate.",
-        "uk": "Шукай шахи, що виграють ферзя або ведуть до мату."
+        "uk": "Шукай шахи, що виграють ферзя або ведуть до мату.",
+        "ru": "Ищи шахи, которые выигрывают ферзя или ведут к мату.",
+        "es": "Busca jaques que ganen la dama o fuercen el mate."
       },
       "intro": {
         "text": {
           "en": "With queens on the board every check matters: one careless king move, and a fork or a skewer wins the queen. Keep your own king sheltered, and look for checks that land on a line with the enemy queen. A far-advanced passed pawn is often worth more than any other material.",
-          "uk": "Коли на дошці ферзі, кожен шах важливий: один необережний хід королем — і вилка чи лінійний удар забирають ферзя. Тримай свого короля в укритті й шукай шахи, що потрапляють на одну лінію з ворожим ферзем. Далекий прохідний пішак тут часто вартий більше за будь-який інший матеріал."
+          "uk": "Коли на дошці ферзі, кожен шах важливий: один необережний хід королем — і вилка чи лінійний удар забирають ферзя. Тримай свого короля в укритті й шукай шахи, що потрапляють на одну лінію з ворожим ферзем. Далекий прохідний пішак тут часто вартий більше за будь-який інший матеріал.",
+          "ru": "Когда на доске ферзи, важен каждый шах: один неосторожный ход королем — и вилка или сквозной удар выигрывает ферзя. Держи своего короля в укрытии и ищи шахи, которые попадают на одну линию с ферзем соперника. Далеко продвинутая проходная пешка часто стоит больше любого другого материала.",
+          "es": "Con damas en el tablero cada jaque importa: una jugada de rey descuidada y un ataque doble o una enfilada gana la dama. Mantén a tu rey a cubierto y busca jaques que caigan en línea con la dama enemiga. Un peón pasado muy avanzado suele valer más que cualquier otro material."
         },
         "fen": "5Q2/8/2k5/6K1/8/8/8/7q w - - 0 1",
         "arrows": [
@@ -1292,7 +1330,9 @@
         ],
         "caption": {
           "en": "Qa8+ checks along the long diagonal: once the king steps aside, the queen on h1 is lost.",
-          "uk": "Qa8+ шахує по великій діагоналі: щойно король відійде, ферзь на h1 пропаде."
+          "uk": "Qa8+ шахує по великій діагоналі: щойно король відійде, ферзь на h1 пропаде.",
+          "ru": "Qa8+ шахует по длинной диагонали: как только король отойдет, ферзь на h1 пропадает.",
+          "es": "Qa8+ da jaque por la gran diagonal: en cuanto el rey se aparta, la dama de h1 se pierde."
         }
       },
       "puzzles": [
@@ -1585,16 +1625,22 @@
       "theme": "promotion",
       "title": {
         "en": "Promotion",
-        "uk": "Перетворення пішака"
+        "uk": "Перетворення пішака",
+        "ru": "Превращение",
+        "es": "Coronación"
       },
       "tip": {
         "en": "A passed pawn wants to run. Find what holds it back — and remove it.",
-        "uk": "Прохідний пішак рветься вперед. Знайди, що його тримає, — і прибери це."
+        "uk": "Прохідний пішак рветься вперед. Знайди, що його тримає, — і прибери це.",
+        "ru": "Проходная пешка рвется вперед. Найди, что ее держит, — и убери это.",
+        "es": "Un peón pasado quiere correr. Encuentra lo que lo frena y elimínalo."
       },
       "intro": {
         "text": {
           "en": "In the endgame a passed pawn is often the most valuable piece on the board. Promotion tactics remove the blocker, deflect the defender or win the race by a single tempo. Before you push, check what the opponent can do the moment the new queen appears.",
-          "uk": "У закінченні прохідний пішак часто найцінніша фігура на дошці. Тактика перетворення прибирає фігуру, що заступає дорогу, відволікає захисника або виграє перегони на один темп. Перш ніж просувати пішака, перевір, що зможе зробити суперник, щойно з’явиться новий ферзь."
+          "uk": "У закінченні прохідний пішак часто найцінніша фігура на дошці. Тактика перетворення прибирає фігуру, що заступає дорогу, відволікає захисника або виграє перегони на один темп. Перш ніж просувати пішака, перевір, що зможе зробити суперник, щойно з’явиться новий ферзь.",
+          "ru": "В эндшпиле проходная пешка часто самая ценная фигура на доске. Тактика превращения убирает блокера, отвлекает защитника или выигрывает гонку на один темп. Прежде чем двигать пешку, проверь, что сможет сделать соперник, как только появится новый ферзь.",
+          "es": "En el final, un peón pasado suele ser la pieza más valiosa del tablero. La táctica de coronación elimina al bloqueador, desvía al defensor o gana la carrera por un solo tiempo. Antes de avanzar, comprueba qué puede hacer el rival en cuanto aparezca la nueva dama."
         },
         "fen": "2r5/P7/4k3/3N4/8/6K1/5P1P/8 w - - 0 1",
         "arrows": [
@@ -1611,7 +1657,9 @@
         ],
         "caption": {
           "en": "a8=Q! If the rook takes, a knight check from c7 forks the king and the rook.",
-          "uk": "a8=Q! Якщо тура візьме, шах конем з c7 — вилка королю й турі."
+          "uk": "a8=Q! Якщо тура візьме, шах конем з c7 — вилка королю й турі.",
+          "ru": "a8=Q! Если ладья возьмет, шах конем с c7 — вилка королю и ладье.",
+          "es": "¡a8=Q! Si la torre captura, un jaque de caballo desde c7 hace un ataque doble al rey y a la torre."
         }
       },
       "puzzles": [
@@ -1923,16 +1971,22 @@
       "theme": "zugzwang",
       "title": {
         "en": "Zugzwang",
-        "uk": "Цугцванг"
+        "uk": "Цугцванг",
+        "ru": "Цугцванг",
+        "es": "Zugzwang"
       },
       "tip": {
         "en": "Sometimes the best move changes nothing — except whose turn it is.",
-        "uk": "Іноді найкращий хід нічого не змінює — крім того, чия черга ходити."
+        "uk": "Іноді найкращий хід нічого не змінює — крім того, чия черга ходити.",
+        "ru": "Иногда лучший ход ничего не меняет — кроме очереди хода.",
+        "es": "A veces la mejor jugada no cambia nada, salvo a quién le toca mover."
       },
       "intro": {
         "text": {
           "en": "Zugzwang means every move makes things worse, yet a move must be made. In endings it decides more games than anything else: when the kings stand face to face, the side to move often has to give way. A spare pawn move or a quiet king step that passes the turn can be the whole solution.",
-          "uk": "Цугцванг — це коли будь-який хід погіршує позицію, але ходити все одно треба. У закінченнях він вирішує більше партій, ніж будь-що інше: коли королі стоять один навпроти одного, той, хто ходить, часто мусить поступитися. Часто весь розв’язок — запасний хід пішаком чи тихий хід королем, який передає чергу суперникові."
+          "uk": "Цугцванг — це коли будь-який хід погіршує позицію, але ходити все одно треба. У закінченнях він вирішує більше партій, ніж будь-що інше: коли королі стоять один навпроти одного, той, хто ходить, часто мусить поступитися. Часто весь розв’язок — запасний хід пішаком чи тихий хід королем, який передає чергу суперникові.",
+          "ru": "Цугцванг — это когда любой ход ухудшает положение, но ходить все равно нужно. В эндшпилях он решает больше партий, чем что-либо другое: когда короли стоят лицом к лицу, стороне, чья очередь ходить, часто приходится уступить. Запасной ход пешкой или тихий ход королем, передающий очередь, может быть всем решением.",
+          "es": "Zugzwang significa que cualquier jugada empeora las cosas, pero hay que mover. En los finales decide más partidas que cualquier otra cosa: cuando los reyes están frente a frente, el bando al que le toca mover a menudo tiene que ceder. Una jugada de peón de reserva o un paso tranquilo de rey que cede el turno puede ser toda la solución."
         },
         "fen": "8/3k4/8/3K4/p2P4/8/P7/8 w - - 0 1",
         "arrows": [
@@ -1944,7 +1998,9 @@
         ],
         "caption": {
           "en": "a3! passes the move: the black pawn is stuck, so the king has to step aside and let White’s king through.",
-          "uk": "a3! передає хід: чорний пішак заблокований, тож король мусить поступитися й пропустити білого короля."
+          "uk": "a3! передає хід: чорний пішак заблокований, тож король мусить поступитися й пропустити білого короля.",
+          "ru": "a3! передает ход: черная пешка застряла, поэтому король должен отойти и пропустить белого короля.",
+          "es": "¡a3! cede el turno: el peón negro está bloqueado, así que el rey tiene que apartarse y dejar pasar al rey blanco."
         }
       },
       "puzzles": [

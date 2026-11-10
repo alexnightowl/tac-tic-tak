@@ -1,16 +1,20 @@
 {
   "id": "lasker",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "lasker-1",
       "title": {
         "en": "Tournaments and Matches",
-        "uk": "Турніри й матчі"
+        "uk": "Турніри й матчі",
+        "ru": "Турниры и матчи",
+        "es": "Torneos y matches"
       },
       "subtitle": {
         "en": "Emanuel Lasker, 1889–1925",
-        "uk": "Емануїл Ласкер, 1889–1925"
+        "uk": "Емануїл Ласкер, 1889–1925",
+        "ru": "Эмануил Ласкер, 1889–1925",
+        "es": "Emanuel Lasker, 1889–1925"
       },
       "puzzles": [
         {
@@ -38,7 +42,9 @@
           },
           "note": {
             "en": "London 1899, an Italian Game. Lasker won this tournament.",
-            "uk": "Лондон, 1899, італійська партія. Цей турнір виграв Ласкер."
+            "uk": "Лондон, 1899, італійська партія. Цей турнір виграв Ласкер.",
+            "ru": "Лондон, 1899 год, итальянская партия. Этот турнир выиграл Ласкер.",
+            "es": "Londres 1899, una Partida Italiana. Lasker ganó este torneo."
           }
         },
         {
@@ -65,7 +71,9 @@
           },
           "note": {
             "en": "London 1892, match game, a Centre Game.",
-            "uk": "Лондон, 1892, матчева партія, центральний дебют."
+            "uk": "Лондон, 1892, матчева партія, центральний дебют.",
+            "ru": "Лондон, 1892 год, партия матча, центральный дебют.",
+            "es": "Londres 1892, partida de match, una Apertura del Centro."
           }
         },
         {
@@ -92,7 +100,9 @@
           },
           "note": {
             "en": "Montreal 1894, world championship match, a French Defence. Lasker took the world title from Steinitz in this match.",
-            "uk": "Монреаль, 1894, матч за звання чемпіона світу, французький захист. У цьому матчі Ласкер відібрав у Стейніца звання чемпіона світу."
+            "uk": "Монреаль, 1894, матч за звання чемпіона світу, французький захист. У цьому матчі Ласкер відібрав у Стейніца звання чемпіона світу.",
+            "ru": "Монреаль, 1894 год, матч на первенство мира, французская защита. В этом матче Ласкер отнял звание чемпиона мира у Стейница.",
+            "es": "Montreal 1894, match por el campeonato del mundo, una Defensa Francesa. En este match Lasker le arrebató el título mundial a Steinitz."
           }
         },
         {
@@ -119,7 +129,9 @@
           },
           "note": {
             "en": "Munich 1908, world championship match, a Four Knights game. Lasker kept his world title in this match.",
-            "uk": "Мюнхен, 1908, матч за звання чемпіона світу, дебют чотирьох коней. У цьому матчі Ласкер зберіг звання чемпіона світу."
+            "uk": "Мюнхен, 1908, матч за звання чемпіона світу, дебют чотирьох коней. У цьому матчі Ласкер зберіг звання чемпіона світу.",
+            "ru": "Мюнхен, 1908 год, матч на первенство мира, дебют четырех коней. В этом матче Ласкер сохранил звание чемпиона мира.",
+            "es": "Múnich 1908, match por el campeonato del mundo, una Partida de los Cuatro Caballos. En este match Lasker conservó el título mundial."
           }
         },
         {
@@ -147,7 +159,9 @@
           },
           "note": {
             "en": "St. Petersburg 1909, a Queen's Gambit Accepted. Lasker and Rubinstein shared first place.",
-            "uk": "Санкт-Петербург, 1909, прийнятий ферзевий гамбіт. Ласкер і Рубінштейн поділили перше місце."
+            "uk": "Санкт-Петербург, 1909, прийнятий ферзевий гамбіт. Ласкер і Рубінштейн поділили перше місце.",
+            "ru": "Санкт-Петербург, 1909 год, принятый ферзевый гамбит. Ласкер и Рубинштейн поделили первое место.",
+            "es": "San Petersburgo 1909, un Gambito de Dama Aceptado. Lasker y Rubinstein compartieron el primer puesto."
           }
         },
         {
@@ -175,7 +189,9 @@
           },
           "note": {
             "en": "Berlin 1910, world championship match, a Queen's Pawn opening. Lasker kept his world title in this match.",
-            "uk": "Берлін, 1910, матч за звання чемпіона світу, дебют ферзевого пішака. У цьому матчі Ласкер зберіг звання чемпіона світу."
+            "uk": "Берлін, 1910, матч за звання чемпіона світу, дебют ферзевого пішака. У цьому матчі Ласкер зберіг звання чемпіона світу.",
+            "ru": "Берлин, 1910 год, матч на первенство мира, дебют ферзевой пешки. В этом матче Ласкер сохранил звание чемпиона мира.",
+            "es": "Berlín 1910, match por el campeonato del mundo, una apertura de peón de dama. En este match Lasker conservó el título mundial."
           }
         },
         {
@@ -202,7 +218,9 @@
           },
           "note": {
             "en": "New York 1924, a French Defence. Lasker won this tournament, ahead of Capablanca.",
-            "uk": "Нью-Йорк, 1924, французький захист. Цей турнір виграв Ласкер, випередивши Капабланку."
+            "uk": "Нью-Йорк, 1924, французький захист. Цей турнір виграв Ласкер, випередивши Капабланку.",
+            "ru": "Нью-Йорк, 1924 год, французская защита. Ласкер выиграл этот турнир, опередив Капабланку.",
+            "es": "Nueva York 1924, una Defensa Francesa. Lasker ganó este torneo por delante de Capablanca."
           }
         },
         {
@@ -229,7 +247,9 @@
           },
           "note": {
             "en": "New York 1892, from a series of match games, an irregular opening.",
-            "uk": "Нью-Йорк, 1892, із серії матчевих партій, нерегулярний дебют."
+            "uk": "Нью-Йорк, 1892, із серії матчевих партій, нерегулярний дебют.",
+            "ru": "Нью-Йорк, 1892 год, из серии матчевых партий, неправильный дебют.",
+            "es": "Nueva York 1892, de una serie de partidas de match, una apertura irregular."
           }
         },
         {
@@ -256,7 +276,9 @@
           },
           "note": {
             "en": "Havana 1893, match game, a 1.Nf3 opening.",
-            "uk": "Гавана, 1893, матчева партія, дебют 1.Nf3."
+            "uk": "Гавана, 1893, матчева партія, дебют 1.Nf3.",
+            "ru": "Гавана, 1893 год, партия матча, дебют 1.Nf3.",
+            "es": "La Habana 1893, partida de match, una apertura 1.Nf3."
           }
         },
         {
@@ -283,7 +305,9 @@
           },
           "note": {
             "en": "Amsterdam 1889, a Ruy Lopez.",
-            "uk": "Амстердам, 1889, іспанська партія."
+            "uk": "Амстердам, 1889, іспанська партія.",
+            "ru": "Амстердам, 1889 год, испанская партия.",
+            "es": "Ámsterdam 1889, una Apertura Española."
           }
         },
         {
@@ -310,7 +334,9 @@
           },
           "note": {
             "en": "Nuremberg 1896, a French Defence. Lasker won this tournament.",
-            "uk": "Нюрнберг, 1896, французький захист. Цей турнір виграв Ласкер."
+            "uk": "Нюрнберг, 1896, французький захист. Цей турнір виграв Ласкер.",
+            "ru": "Нюрнберг, 1896 год, французская защита. Этот турнир выиграл Ласкер.",
+            "es": "Núremberg 1896, una Defensa Francesa. Lasker ganó este torneo."
           }
         },
         {
@@ -338,7 +364,9 @@
           },
           "note": {
             "en": "St. Petersburg 1897, an Evans Gambit.",
-            "uk": "Санкт-Петербург, 1897, гамбіт Еванса."
+            "uk": "Санкт-Петербург, 1897, гамбіт Еванса.",
+            "ru": "Санкт-Петербург, 1897 год, гамбит Эванса.",
+            "es": "San Petersburgo 1897, un Gambito Evans."
           }
         },
         {
@@ -366,7 +394,9 @@
           },
           "note": {
             "en": "St. Petersburg 1914, a Scotch Game. Lasker won this tournament, ahead of Capablanca.",
-            "uk": "Санкт-Петербург, 1914, шотландська партія. Цей турнір виграв Ласкер, випередивши Капабланку."
+            "uk": "Санкт-Петербург, 1914, шотландська партія. Цей турнір виграв Ласкер, випередивши Капабланку.",
+            "ru": "Санкт-Петербург, 1914 год, шотландская партия. Ласкер выиграл этот турнир, опередив Капабланку.",
+            "es": "San Petersburgo 1914, una Partida Escocesa. Lasker ganó este torneo por delante de Capablanca."
           }
         },
         {
@@ -393,7 +423,9 @@
           },
           "note": {
             "en": "Berlin 1890, a Scotch Game. Lasker also earned a doctorate in mathematics.",
-            "uk": "Берлін, 1890, шотландська партія. Ласкер також здобув докторський ступінь з математики."
+            "uk": "Берлін, 1890, шотландська партія. Ласкер також здобув докторський ступінь з математики.",
+            "ru": "Берлин, 1890 год, шотландская партия. Ласкер также защитил докторскую диссертацию по математике.",
+            "es": "Berlín 1890, una Partida Escocesa. Lasker también se doctoró en matemáticas."
           }
         },
         {
@@ -420,7 +452,9 @@
           },
           "note": {
             "en": "St. Petersburg 1896, a Ruy Lopez. Lasker won this four-player tournament.",
-            "uk": "Санкт-Петербург, 1896, іспанська партія. Цей турнір чотирьох виграв Ласкер."
+            "uk": "Санкт-Петербург, 1896, іспанська партія. Цей турнір чотирьох виграв Ласкер.",
+            "ru": "Санкт-Петербург, 1896 год, испанская партия. Ласкер выиграл этот турнир четырех участников.",
+            "es": "San Petersburgo 1896, una Apertura Española. Lasker ganó este torneo de cuatro jugadores."
           }
         },
         {
@@ -447,7 +481,9 @@
           },
           "note": {
             "en": "Cambridge Springs 1904, a Queen's Gambit Declined. Marshall won; Lasker shared second place.",
-            "uk": "Кембридж-Спрінгс, 1904, відхилений ферзевий гамбіт. Переміг Маршалл; Ласкер поділив друге місце."
+            "uk": "Кембридж-Спрінгс, 1904, відхилений ферзевий гамбіт. Переміг Маршалл; Ласкер поділив друге місце.",
+            "ru": "Кембридж-Спрингс, 1904 год, отказанный ферзевый гамбит. Победил Маршалл; Ласкер поделил второе место.",
+            "es": "Cambridge Springs 1904, un Gambito de Dama Rehusado. Ganó Marshall; Lasker compartió el segundo puesto."
           }
         },
         {
@@ -475,7 +511,9 @@
           },
           "note": {
             "en": "Graz 1890, a Ruy Lopez.",
-            "uk": "Грац, 1890, іспанська партія."
+            "uk": "Грац, 1890, іспанська партія.",
+            "ru": "Грац, 1890 год, испанская партия.",
+            "es": "Graz 1890, una Apertura Española."
           }
         },
         {
@@ -502,7 +540,9 @@
           },
           "note": {
             "en": "New York 1892, from a series of match games, a Ruy Lopez.",
-            "uk": "Нью-Йорк, 1892, із серії матчевих партій, іспанська партія."
+            "uk": "Нью-Йорк, 1892, із серії матчевих партій, іспанська партія.",
+            "ru": "Нью-Йорк, 1892 год, из серии матчевых партий, испанская партия.",
+            "es": "Nueva York 1892, de una serie de partidas de match, una Apertura Española."
           }
         },
         {
@@ -530,7 +570,9 @@
           },
           "note": {
             "en": "St. Petersburg 1896, a Queen's Gambit Declined. Lasker won this four-player tournament.",
-            "uk": "Санкт-Петербург, 1896, відхилений ферзевий гамбіт. Цей турнір чотирьох виграв Ласкер."
+            "uk": "Санкт-Петербург, 1896, відхилений ферзевий гамбіт. Цей турнір чотирьох виграв Ласкер.",
+            "ru": "Санкт-Петербург, 1896 год, отказанный ферзевый гамбит. Ласкер выиграл этот турнир четырех участников.",
+            "es": "San Petersburgo 1896, un Gambito de Dama Rehusado. Lasker ganó este torneo de cuatro jugadores."
           }
         },
         {
@@ -557,7 +599,9 @@
           },
           "note": {
             "en": "Paris 1900, a Ruy Lopez. Lasker won this tournament.",
-            "uk": "Париж, 1900, іспанська партія. Цей турнір виграв Ласкер."
+            "uk": "Париж, 1900, іспанська партія. Цей турнір виграв Ласкер.",
+            "ru": "Париж, 1900 год, испанская партия. Этот турнир выиграл Ласкер.",
+            "es": "París 1900, una Apertura Española. Lasker ganó este torneo."
           }
         },
         {
@@ -585,7 +629,9 @@
           },
           "note": {
             "en": "Moscow 1925, a Queen's Gambit Declined. Bogoljubov won; Lasker was second.",
-            "uk": "Москва, 1925, відхилений ферзевий гамбіт. Переміг Боголюбов; Ласкер став другим."
+            "uk": "Москва, 1925, відхилений ферзевий гамбіт. Переміг Боголюбов; Ласкер став другим.",
+            "ru": "Москва, 1925 год, отказанный ферзевый гамбит. Победил Боголюбов; Ласкер был вторым.",
+            "es": "Moscú 1925, un Gambito de Dama Rehusado. Ganó Bogoljubov; Lasker fue segundo."
           }
         },
         {
@@ -613,7 +659,9 @@
           },
           "note": {
             "en": "Newcastle 1892, match game, Bird's Opening.",
-            "uk": "Ньюкасл, 1892, матчева партія, дебют Берда."
+            "uk": "Ньюкасл, 1892, матчева партія, дебют Берда.",
+            "ru": "Ньюкасл, 1892 год, партия матча, дебют Берда.",
+            "es": "Newcastle 1892, partida de match, la Apertura Bird."
           }
         },
         {
@@ -642,7 +690,9 @@
           },
           "note": {
             "en": "1907, world championship match, a Chigorin Defence. Lasker kept his title without losing a game.",
-            "uk": "1907, матч за звання чемпіона світу, захист Чигоріна. Ласкер зберіг звання, не програвши жодної партії."
+            "uk": "1907, матч за звання чемпіона світу, захист Чигоріна. Ласкер зберіг звання, не програвши жодної партії.",
+            "ru": "1907 год, матч на первенство мира, защита Чигорина. Ласкер сохранил титул, не проиграв ни одной партии.",
+            "es": "1907, match por el campeonato del mundo, una Defensa Chigorin. Lasker conservó el título sin perder ni una partida."
           }
         },
         {
@@ -670,7 +720,9 @@
           },
           "note": {
             "en": "Næstved 1919, clock game, a Caro-Kann Defence.",
-            "uk": "Нествед, 1919, партія з годинником, захист Каро-Канн."
+            "uk": "Нествед, 1919, партія з годинником, захист Каро-Канн.",
+            "ru": "Нествед, 1919 год, партия с часами, защита Каро — Канн.",
+            "es": "Næstved 1919, partida con reloj, una Defensa Caro-Kann."
           }
         },
         {
@@ -697,7 +749,9 @@
           },
           "note": {
             "en": "St. Petersburg 1909, a Scotch Game. Lasker and Rubinstein shared first place.",
-            "uk": "Санкт-Петербург, 1909, шотландська партія. Ласкер і Рубінштейн поділили перше місце."
+            "uk": "Санкт-Петербург, 1909, шотландська партія. Ласкер і Рубінштейн поділили перше місце.",
+            "ru": "Санкт-Петербург, 1909 год, шотландская партия. Ласкер и Рубинштейн поделили первое место.",
+            "es": "San Petersburgo 1909, una Partida Escocesa. Lasker y Rubinstein compartieron el primer puesto."
           }
         }
       ]
@@ -706,11 +760,15 @@
       "id": "lasker-2",
       "title": {
         "en": "Lasker on Tour",
-        "uk": "Ласкер у мандрах"
+        "uk": "Ласкер у мандрах",
+        "ru": "Ласкер в турне",
+        "es": "Lasker de gira"
       },
       "subtitle": {
         "en": "Simuls and exhibitions, 1892–1928",
-        "uk": "Сеанси й показові партії, 1892–1928"
+        "uk": "Сеанси й показові партії, 1892–1928",
+        "ru": "Сеансы и показательные партии, 1892–1928",
+        "es": "Simultáneas y exhibiciones, 1892–1928"
       },
       "puzzles": [
         {
@@ -739,7 +797,9 @@
           },
           "note": {
             "en": "Colwyn Bay 1908, simultaneous display on 19 boards, a Bishop's Opening.",
-            "uk": "Колвін-Бей, 1908, сеанс одночасної гри на 19 дошках, дебют слона."
+            "uk": "Колвін-Бей, 1908, сеанс одночасної гри на 19 дошках, дебют слона.",
+            "ru": "Колвин-Бей, 1908 год, сеанс одновременной игры на 19 досках, дебют слона.",
+            "es": "Colwyn Bay 1908, sesión simultánea en 19 tableros, una Apertura de Alfil."
           }
         },
         {
@@ -768,7 +828,9 @@
           },
           "note": {
             "en": "Davenport 1926, simultaneous display on 33 boards, a Ruy Lopez.",
-            "uk": "Девенпорт, 1926, сеанс одночасної гри на 33 дошках, іспанська партія."
+            "uk": "Девенпорт, 1926, сеанс одночасної гри на 33 дошках, іспанська партія.",
+            "ru": "Девенпорт, 1926 год, сеанс одновременной игры на 33 досках, испанская партия.",
+            "es": "Davenport 1926, sesión simultánea en 33 tableros, una Apertura Española."
           }
         },
         {
@@ -797,7 +859,9 @@
           },
           "note": {
             "en": "Chicago 1902, simultaneous display on 23 boards, a King's Gambit.",
-            "uk": "Чикаго, 1902, сеанс одночасної гри на 23 дошках, королівський гамбіт."
+            "uk": "Чикаго, 1902, сеанс одночасної гри на 23 дошках, королівський гамбіт.",
+            "ru": "Чикаго, 1902 год, сеанс одновременной игры на 23 досках, королевский гамбит.",
+            "es": "Chicago 1902, sesión simultánea en 23 tableros, un Gambito de Rey."
           }
         },
         {
@@ -825,7 +889,9 @@
           },
           "note": {
             "en": "Zurich 1900, casual game, an English Opening.",
-            "uk": "Цюрих, 1900, товариська партія, англійський початок."
+            "uk": "Цюрих, 1900, товариська партія, англійський початок.",
+            "ru": "Цюрих, 1900 год, товарищеская партия, английское начало.",
+            "es": "Zúrich 1900, partida amistosa, una Apertura Inglesa."
           }
         },
         {
@@ -853,7 +919,9 @@
           },
           "note": {
             "en": "Newcastle 1895, simultaneous display on 17 boards, an Evans Gambit.",
-            "uk": "Ньюкасл, 1895, сеанс одночасної гри на 17 дошках, гамбіт Еванса."
+            "uk": "Ньюкасл, 1895, сеанс одночасної гри на 17 дошках, гамбіт Еванса.",
+            "ru": "Ньюкасл, 1895 год, сеанс одновременной игры на 17 досках, гамбит Эванса.",
+            "es": "Newcastle 1895, sesión simultánea en 17 tableros, un Gambito Evans."
           }
         },
         {
@@ -881,7 +949,9 @@
           },
           "note": {
             "en": "Hamburg 1904, simultaneous display on 31 boards, a King's Knight opening.",
-            "uk": "Гамбург, 1904, сеанс одночасної гри на 31 дошці, дебют королівського коня."
+            "uk": "Гамбург, 1904, сеанс одночасної гри на 31 дошці, дебют королівського коня.",
+            "ru": "Гамбург, 1904 год, сеанс одновременной игры на 31 доске, дебют королевского коня.",
+            "es": "Hamburgo 1904, sesión simultánea en 31 tableros, una apertura de caballo de rey."
           }
         },
         {
@@ -908,7 +978,9 @@
           },
           "note": {
             "en": "Neuchâtel 1919, simultaneous display, a Ruy Lopez.",
-            "uk": "Невшатель, 1919, сеанс одночасної гри, іспанська партія."
+            "uk": "Невшатель, 1919, сеанс одночасної гри, іспанська партія.",
+            "ru": "Невшатель, 1919 год, сеанс одновременной игры, испанская партия.",
+            "es": "Neuchâtel 1919, sesión simultánea, una Apertura Española."
           }
         },
         {
@@ -935,7 +1007,9 @@
           },
           "note": {
             "en": "Manchester 1898, simultaneous display on 25 boards, a Ruy Lopez.",
-            "uk": "Манчестер, 1898, сеанс одночасної гри на 25 дошках, іспанська партія."
+            "uk": "Манчестер, 1898, сеанс одночасної гри на 25 дошках, іспанська партія.",
+            "ru": "Манчестер, 1898 год, сеанс одновременной игры на 25 досках, испанская партия.",
+            "es": "Mánchester 1898, sesión simultánea en 25 tableros, una Apertura Española."
           }
         },
         {
@@ -963,7 +1037,9 @@
           },
           "note": {
             "en": "Brooklyn 1892, simultaneous display on 14 boards, a King's Gambit Declined.",
-            "uk": "Бруклін, 1892, сеанс одночасної гри на 14 дошках, відхилений королівський гамбіт."
+            "uk": "Бруклін, 1892, сеанс одночасної гри на 14 дошках, відхилений королівський гамбіт.",
+            "ru": "Бруклин, 1892 год, сеанс одновременной игры на 14 досках, отказанный королевский гамбит.",
+            "es": "Brooklyn 1892, sesión simultánea en 14 tableros, un Gambito de Rey Rehusado."
           }
         },
         {
@@ -991,7 +1067,9 @@
           },
           "note": {
             "en": "Hereford 1897, simultaneous display on 25 boards, a Ruy Lopez.",
-            "uk": "Герефорд, 1897, сеанс одночасної гри на 25 дошках, іспанська партія."
+            "uk": "Герефорд, 1897, сеанс одночасної гри на 25 дошках, іспанська партія.",
+            "ru": "Херефорд, 1897 год, сеанс одновременной игры на 25 досках, испанская партия.",
+            "es": "Hereford 1897, sesión simultánea en 25 tableros, una Apertura Española."
           }
         },
         {
@@ -1019,7 +1097,9 @@
           },
           "note": {
             "en": "Philadelphia 1907, consultation game, a Giuoco Piano.",
-            "uk": "Філадельфія, 1907, консультаційна партія, італійська партія."
+            "uk": "Філадельфія, 1907, консультаційна партія, італійська партія.",
+            "ru": "Филадельфия, 1907 год, консультационная партия, итальянская партия (джуоко пиано).",
+            "es": "Filadelfia 1907, partida en consulta, un Giuoco Piano."
           }
         },
         {
@@ -1047,7 +1127,9 @@
           },
           "note": {
             "en": "Stafford 1908, simultaneous display on 18 boards, a Ruy Lopez.",
-            "uk": "Стаффорд, 1908, сеанс одночасної гри на 18 дошках, іспанська партія."
+            "uk": "Стаффорд, 1908, сеанс одночасної гри на 18 дошках, іспанська партія.",
+            "ru": "Стаффорд, 1908 год, сеанс одновременной игры на 18 досках, испанская партия.",
+            "es": "Stafford 1908, sesión simultánea en 18 tableros, una Apertura Española."
           }
         },
         {
@@ -1074,7 +1156,9 @@
           },
           "note": {
             "en": "Berlin 1894, blindfold display on 4 boards, a 1.Nf3 opening.",
-            "uk": "Берлін, 1894, сеанс наосліп на 4 дошках, дебют 1.Nf3."
+            "uk": "Берлін, 1894, сеанс наосліп на 4 дошках, дебют 1.Nf3.",
+            "ru": "Берлин, 1894 год, сеанс вслепую на 4 досках, дебют 1.Nf3.",
+            "es": "Berlín 1894, sesión a ciegas en 4 tableros, una apertura 1.Nf3."
           }
         },
         {
@@ -1101,7 +1185,9 @@
           },
           "note": {
             "en": "Buenos Aires 1910, simultaneous display on 12 boards, a Ruy Lopez.",
-            "uk": "Буенос-Айрес, 1910, сеанс одночасної гри на 12 дошках, іспанська партія."
+            "uk": "Буенос-Айрес, 1910, сеанс одночасної гри на 12 дошках, іспанська партія.",
+            "ru": "Буэнос-Айрес, 1910 год, сеанс одновременной игры на 12 досках, испанская партия.",
+            "es": "Buenos Aires 1910, sesión simultánea en 12 tableros, una Apertura Española."
           }
         },
         {
@@ -1131,7 +1217,9 @@
           },
           "note": {
             "en": "Rotterdam 1908, simultaneous display on 25 boards, a Ruy Lopez.",
-            "uk": "Роттердам, 1908, сеанс одночасної гри на 25 дошках, іспанська партія."
+            "uk": "Роттердам, 1908, сеанс одночасної гри на 25 дошках, іспанська партія.",
+            "ru": "Роттердам, 1908 год, сеанс одновременной игры на 25 досках, испанская партия.",
+            "es": "Róterdam 1908, sesión simultánea en 25 tableros, una Apertura Española."
           }
         },
         {
@@ -1158,7 +1246,9 @@
           },
           "note": {
             "en": "Hanley 1898, simultaneous display on 32 boards, a Ruy Lopez.",
-            "uk": "Генлі, 1898, сеанс одночасної гри на 32 дошках, іспанська партія."
+            "uk": "Генлі, 1898, сеанс одночасної гри на 32 дошках, іспанська партія.",
+            "ru": "Хэнли, 1898 год, сеанс одновременной игры на 32 досках, испанская партия.",
+            "es": "Hanley 1898, sesión simultánea en 32 tableros, una Apertura Española."
           }
         },
         {
@@ -1185,7 +1275,9 @@
           },
           "note": {
             "en": "Milwaukee 1901, simultaneous display on 36 boards, a French Defence.",
-            "uk": "Мілуокі, 1901, сеанс одночасної гри на 36 дошках, французький захист."
+            "uk": "Мілуокі, 1901, сеанс одночасної гри на 36 дошках, французький захист.",
+            "ru": "Милуоки, 1901 год, сеанс одновременной игры на 36 досках, французская защита.",
+            "es": "Milwaukee 1901, sesión simultánea en 36 tableros, una Defensa Francesa."
           }
         },
         {
@@ -1212,7 +1304,9 @@
           },
           "note": {
             "en": "Frankfurt 1908, simultaneous display on 26 boards, a Two Knights Defence.",
-            "uk": "Франкфурт, 1908, сеанс одночасної гри на 26 дошках, захист двох коней."
+            "uk": "Франкфурт, 1908, сеанс одночасної гри на 26 дошках, захист двох коней.",
+            "ru": "Франкфурт, 1908 год, сеанс одновременной игры на 26 досках, защита двух коней.",
+            "es": "Fráncfort 1908, sesión simultánea en 26 tableros, una Defensa de los Dos Caballos."
           }
         },
         {
@@ -1239,7 +1333,9 @@
           },
           "note": {
             "en": "New York 1902, exhibition game, a Dutch Defence.",
-            "uk": "Нью-Йорк, 1902, показова партія, голландський захист."
+            "uk": "Нью-Йорк, 1902, показова партія, голландський захист.",
+            "ru": "Нью-Йорк, 1902 год, показательная партия, голландская защита.",
+            "es": "Nueva York 1902, partida de exhibición, una Defensa Holandesa."
           }
         },
         {
@@ -1267,7 +1363,9 @@
           },
           "note": {
             "en": "Stirling 1899, simultaneous display on 22 boards, a Scandinavian Defence.",
-            "uk": "Стерлінг, 1899, сеанс одночасної гри на 22 дошках, скандинавський захист."
+            "uk": "Стерлінг, 1899, сеанс одночасної гри на 22 дошках, скандинавський захист.",
+            "ru": "Стерлинг, 1899 год, сеанс одновременной игры на 22 досках, скандинавская защита.",
+            "es": "Stirling 1899, sesión simultánea en 22 tableros, una Defensa Escandinava."
           }
         },
         {
@@ -1294,7 +1392,9 @@
           },
           "note": {
             "en": "Havana 1906, offhand game, a Ruy Lopez.",
-            "uk": "Гавана, 1906, товариська партія, іспанська партія."
+            "uk": "Гавана, 1906, товариська партія, іспанська партія.",
+            "ru": "Гавана, 1906 год, товарищеская партия, испанская партия.",
+            "es": "La Habana 1906, partida informal, una Apertura Española."
           }
         },
         {
@@ -1322,7 +1422,9 @@
           },
           "note": {
             "en": "Leiden 1923, simultaneous display on 31 boards, a Scandinavian Defence.",
-            "uk": "Лейден, 1923, сеанс одночасної гри на 31 дошці, скандинавський захист."
+            "uk": "Лейден, 1923, сеанс одночасної гри на 31 дошці, скандинавський захист.",
+            "ru": "Лейден, 1923 год, сеанс одновременной игры на 31 доске, скандинавская защита.",
+            "es": "Leiden 1923, sesión simultánea en 31 tableros, una Defensa Escandinava."
           }
         },
         {
@@ -1350,7 +1452,9 @@
           },
           "note": {
             "en": "New York 1928, clock simultaneous on 10 boards, a Ruy Lopez.",
-            "uk": "Нью-Йорк, 1928, сеанс із годинником на 10 дошках, іспанська партія."
+            "uk": "Нью-Йорк, 1928, сеанс із годинником на 10 дошках, іспанська партія.",
+            "ru": "Нью-Йорк, 1928 год, сеанс с часами на 10 досках, испанская партия.",
+            "es": "Nueva York 1928, simultánea con reloj en 10 tableros, una Apertura Española."
           }
         },
         {
@@ -1379,7 +1483,9 @@
           },
           "note": {
             "en": "Winnipeg 1907, simultaneous display, a Two Knights Defence.",
-            "uk": "Вінніпег, 1907, сеанс одночасної гри, захист двох коней."
+            "uk": "Вінніпег, 1907, сеанс одночасної гри, захист двох коней.",
+            "ru": "Виннипег, 1907 год, сеанс одновременной игры, защита двух коней.",
+            "es": "Winnipeg 1907, sesión simultánea, una Defensa de los Dos Caballos."
           }
         },
         {
@@ -1406,7 +1512,9 @@
           },
           "note": {
             "en": "New York 1926, simultaneous display on 30 boards, a Ruy Lopez.",
-            "uk": "Нью-Йорк, 1926, сеанс одночасної гри на 30 дошках, іспанська партія."
+            "uk": "Нью-Йорк, 1926, сеанс одночасної гри на 30 дошках, іспанська партія.",
+            "ru": "Нью-Йорк, 1926 год, сеанс одновременной игры на 30 досках, испанская партия.",
+            "es": "Nueva York 1926, sesión simultánea en 30 tableros, una Apertura Española."
           }
         }
       ]

@@ -13,7 +13,7 @@ class UpdateSettingsDto {
   @IsOptional() @IsString() pieceSet?: string;
   @IsOptional() @IsBoolean() soundEnabled?: boolean;
   @IsOptional() @IsString() soundPack?: string;
-  @IsOptional() @IsIn(['en', 'uk']) language?: string;
+  @IsOptional() @IsIn(['en', 'uk', 'ru', 'es']) language?: string;
   @IsOptional() @IsIn(['auto', 'white', 'black']) fixedColor?: string;
   @IsOptional() @IsIn(['instant', 'fast', 'normal', 'slow']) animationSpeed?: string;
   @IsOptional() @IsIn(['bent', 'straight']) knightArrow?: string;

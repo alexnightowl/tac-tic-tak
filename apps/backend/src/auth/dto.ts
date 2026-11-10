@@ -19,8 +19,8 @@ export class RegisterDto {
 
   // Seed the new account's UI language from whatever the visitor picked
   // on the landing page (optional — defaults to English).
-  @IsOptional() @IsIn(['en', 'uk'])
-  language?: 'en' | 'uk';
+  @IsOptional() @IsIn(['en', 'uk', 'ru', 'es'])
+  language?: 'en' | 'uk' | 'ru' | 'es';
 }
 
 export class LoginDto {

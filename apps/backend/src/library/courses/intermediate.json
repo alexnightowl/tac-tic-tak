@@ -1,22 +1,28 @@
 {
   "id": "intermediate",
-  "version": 1,
+  "version": 2,
   "chapters": [
     {
       "id": "intermediate-attraction",
       "theme": "attraction",
       "title": {
         "en": "Attraction",
-        "uk": "Заманювання"
+        "uk": "Заманювання",
+        "ru": "Завлечение",
+        "es": "Atracción"
       },
       "tip": {
         "en": "Give something to pull a piece onto the wrong square.",
-        "uk": "Пожертвуй, щоб заманити фігуру на погане поле."
+        "uk": "Пожертвуй, щоб заманити фігуру на погане поле.",
+        "ru": "Отдай что-нибудь, чтобы заманить фигуру на плохое поле.",
+        "es": "Entrega algo para atraer una pieza a la casilla equivocada."
       },
       "intro": {
         "text": {
           "en": "Attraction is a sacrifice that forces an enemy piece — often the king — onto a square where a fork, a pin or a mate is waiting. The opponent has to take, and that is exactly the point. Ask which square you would like their piece to stand on.",
-          "uk": "Заманювання — це жертва, яка змушує фігуру суперника, часто короля, стати на поле, де на неї чекає вилка, зв’язка чи мат. Суперник мусить брати — у цьому й задум. Подумай, на якому полі тобі хотілося б бачити його фігуру."
+          "uk": "Заманювання — це жертва, яка змушує фігуру суперника, часто короля, стати на поле, де на неї чекає вилка, зв’язка чи мат. Суперник мусить брати — у цьому й задум. Подумай, на якому полі тобі хотілося б бачити його фігуру.",
+          "ru": "Завлечение — это жертва, которая заставляет фигуру соперника, часто короля, встать на поле, где ее ждет вилка, связка или мат. Соперник вынужден взять — в этом весь смысл. Спроси себя, на каком поле ты хотел бы видеть его фигуру.",
+          "es": "La atracción es un sacrificio que obliga a una pieza enemiga, a menudo el rey, a ir a una casilla donde le espera un ataque doble, una clavada o un mate. El rival tiene que capturar, y esa es justo la idea. Pregúntate en qué casilla te gustaría que estuviera su pieza."
         },
         "fen": "3q2k1/5p1p/6p1/3N4/8/8/1B3PPP/4R1K1 w - - 0 1",
         "arrows": [
@@ -33,7 +39,9 @@
         ],
         "caption": {
           "en": "Re8+ drags the queen to e8, where a knight fork from f6 is waiting.",
-          "uk": "Re8+ заманює ферзя на e8 — а там на нього чекає вилка конем з f6."
+          "uk": "Re8+ заманює ферзя на e8 — а там на нього чекає вилка конем з f6.",
+          "ru": "Re8+ завлекает ферзя на e8, где его ждет вилка конем с f6.",
+          "es": "Re8+ atrae a la dama a e8, donde le espera un ataque doble de caballo desde f6."
         }
       },
       "puzzles": [
@@ -322,16 +330,22 @@
       "theme": "deflection",
       "title": {
         "en": "Deflection",
-        "uk": "Відволікання"
+        "uk": "Відволікання",
+        "ru": "Отвлечение",
+        "es": "Desviación"
       },
       "tip": {
         "en": "Find the defender, then give it a reason to leave.",
-        "uk": "Знайди захисника — і дай йому привід піти."
+        "uk": "Знайди захисника — і дай йому привід піти.",
+        "ru": "Найди защитника, а потом дай ему причину уйти.",
+        "es": "Encuentra al defensor y dale un motivo para irse."
       },
       "intro": {
         "text": {
           "en": "Deflection drives a defender away from the square or piece it must guard. Offer it a capture or hit it with a threat; once it leaves, whatever it was holding collapses. Typical targets: the piece that guards the back rank or a key square near the king.",
-          "uk": "Відволікання змушує захисника покинути поле чи фігуру, яку він мусить охороняти. Запропонуй йому взяття або нападай на нього — щойно він піде, захист розвалиться. Типові цілі: фігура, що тримає останню горизонталь, або важливе поле біля короля."
+          "uk": "Відволікання змушує захисника покинути поле чи фігуру, яку він мусить охороняти. Запропонуй йому взяття або нападай на нього — щойно він піде, захист розвалиться. Типові цілі: фігура, що тримає останню горизонталь, або важливе поле біля короля.",
+          "ru": "Отвлечение уводит защитника с поля или от фигуры, которую он должен охранять. Предложи ему взятие или нападай с угрозой; как только он уйдет, все, что он держал, рушится. Типичные цели — фигура, охраняющая последнюю горизонталь или ключевое поле у короля.",
+          "es": "La desviación aleja a un defensor de la casilla o la pieza que debe proteger. Ofrécele una captura o atácalo con una amenaza; en cuanto se va, todo lo que sostenía se derrumba. Objetivos típicos: la pieza que protege la última fila o una casilla clave junto al rey."
         },
         "fen": "3q1rk1/ppp2ppp/5n2/6N1/4P3/7Q/PPP2PPP/4R1K1 w - - 0 1",
         "arrows": [
@@ -353,7 +367,9 @@
         ],
         "caption": {
           "en": "e5 hits the knight that guards h7: once it moves, the queen mates on h7.",
-          "uk": "e5 нападає на коня, що захищає h7: щойно він піде, ферзь поставить мат на h7."
+          "uk": "e5 нападає на коня, що захищає h7: щойно він піде, ферзь поставить мат на h7.",
+          "ru": "e5 нападает на коня, защищающего h7: как только он уйдет, ферзь ставит мат на h7.",
+          "es": "e5 ataca al caballo que defiende h7: en cuanto se mueve, la dama da mate en h7."
         }
       },
       "puzzles": [
@@ -639,16 +655,22 @@
       "theme": "doubleCheck",
       "title": {
         "en": "Double check",
-        "uk": "Подвійний шах"
+        "uk": "Подвійний шах",
+        "ru": "Двойной шах",
+        "es": "Jaque doble"
       },
       "tip": {
         "en": "Two checks at once: only the king can move.",
-        "uk": "Два шахи разом — рятуватися може лише король."
+        "uk": "Два шахи разом — рятуватися може лише король.",
+        "ru": "Два шаха сразу: ходить может только король.",
+        "es": "Dos jaques a la vez: solo el rey puede moverse."
       },
       "intro": {
         "text": {
           "en": "A double check is a discovered check in which the moving piece gives check too. No block or capture can answer two checks at once, so the king must move — and if it has no square, it is mate. The checking pieces may even stand where they can be taken.",
-          "uk": "Подвійний шах — це відкритий шах, коли фігура, що ходить, теж шахує. Закритися чи побити від двох шахів одночасно не можна, тож король мусить піти, а якщо нікуди — це мат. Фігури, що дають шах, можуть навіть стояти під боєм."
+          "uk": "Подвійний шах — це відкритий шах, коли фігура, що ходить, теж шахує. Закритися чи побити від двох шахів одночасно не можна, тож король мусить піти, а якщо нікуди — це мат. Фігури, що дають шах, можуть навіть стояти під боєм.",
+          "ru": "Двойной шах — это вскрытый шах, при котором шах дает и ушедшая фигура. Ни закрыться, ни взять нельзя против двух шахов сразу, поэтому король должен уйти — а если ему некуда, это мат. Шахующие фигуры могут даже стоять под боем.",
+          "es": "Un jaque doble es un jaque a la descubierta en el que la pieza que se mueve también da jaque. Ni tapar ni capturar responde a dos jaques a la vez, así que el rey tiene que moverse, y si no tiene casilla, es mate. Las piezas que dan jaque pueden incluso quedar donde se las puede capturar."
         },
         "fen": "3qkb2/p2p1ppp/8/8/4N3/8/5PPP/4R1K1 w - - 0 1",
         "arrows": [
@@ -670,7 +692,9 @@
         ],
         "caption": {
           "en": "Nd6#: knight and rook both give check; the king cannot move, and no one can capture two checkers.",
-          "uk": "Nd6#: шахують і кінь, і тура; королю нікуди піти, а побити обидві фігури, що шахують, неможливо."
+          "uk": "Nd6#: шахують і кінь, і тура; королю нікуди піти, а побити обидві фігури, що шахують, неможливо.",
+          "ru": "Nd6#: шах дают и конь, и ладья; король не может уйти, а взять двух шахующих нельзя.",
+          "es": "Nd6#: el caballo y la torre dan jaque; el rey no puede moverse y nadie puede capturar a dos piezas que dan jaque."
         }
       },
       "puzzles": [
@@ -965,16 +989,22 @@
       "theme": "intermezzo",
       "title": {
         "en": "In-between move",
-        "uk": "Проміжний хід"
+        "uk": "Проміжний хід",
+        "ru": "Промежуточный ход",
+        "es": "Jugada intermedia"
       },
       "tip": {
         "en": "Before the obvious recapture, look for a stronger move.",
-        "uk": "Перш ніж брати назад, пошукай сильніший хід."
+        "uk": "Перш ніж брати назад, пошукай сильніший хід.",
+        "ru": "Перед очевидным взятием назад поищи ход сильнее.",
+        "es": "Antes de la recaptura obvia, busca una jugada más fuerte."
       },
       "intro": {
         "text": {
           "en": "An in-between move is played instead of the move everyone expects, usually a recapture. A check or a bigger threat comes first; the recapture can wait, because it is not going anywhere. Before taking back, always ask: is there a check first?",
-          "uk": "Проміжний хід робиться замість очевидного, найчастіше замість взяття у відповідь. Спершу шах або сильніша загроза, а відбити фігуру можна й потім — вона нікуди не дінеться. Перш ніж брати назад, спитай себе: а чи немає спершу шаху?"
+          "uk": "Проміжний хід робиться замість очевидного, найчастіше замість взяття у відповідь. Спершу шах або сильніша загроза, а відбити фігуру можна й потім — вона нікуди не дінеться. Перш ніж брати назад, спитай себе: а чи немає спершу шаху?",
+          "ru": "Промежуточный ход делают вместо хода, которого все ждут, — обычно взятия назад. Сначала шах или более серьезная угроза; взятие может подождать, оно никуда не денется. Прежде чем брать назад, всегда спрашивай: нет ли сначала шаха?",
+          "es": "Una jugada intermedia se hace en lugar de la que todos esperan, normalmente una recaptura. Primero va un jaque o una amenaza mayor; la recaptura puede esperar, porque no se va a ir a ninguna parte. Antes de recapturar, pregúntate siempre: ¿hay antes un jaque?"
         },
         "fen": "3r2k1/5pp1/7p/8/8/8/4qPPP/3RR1K1 w - - 0 1",
         "arrows": [
@@ -991,7 +1021,9 @@
         ],
         "caption": {
           "en": "Rxd8+ first: after the king steps away, the rook on e1 takes the queen and White is a rook up.",
-          "uk": "Спершу Rxd8+: король відходить, тура з e1 забирає ферзя — і в білих зайва тура."
+          "uk": "Спершу Rxd8+: король відходить, тура з e1 забирає ферзя — і в білих зайва тура.",
+          "ru": "Сначала Rxd8+: после отхода короля ладья e1 берет ферзя, и у белых лишняя ладья.",
+          "es": "Primero Rxd8+: tras apartarse el rey, la torre de e1 captura la dama y las blancas quedan con una torre de más."
         }
       },
       "puzzles": [
@@ -1278,16 +1310,22 @@
       "theme": "clearance",
       "title": {
         "en": "Clearance",
-        "uk": "Звільнення лінії"
+        "uk": "Звільнення лінії",
+        "ru": "Освобождение линии",
+        "es": "Despeje"
       },
       "tip": {
         "en": "Your own piece is in the way? Move it with a threat.",
-        "uk": "Власна фігура заважає? Прибери її із загрозою."
+        "uk": "Власна фігура заважає? Прибери її із загрозою.",
+        "ru": "Своя фигура мешает? Убери ее с угрозой.",
+        "es": "¿Tu propia pieza estorba? Muévela con una amenaza."
       },
       "intro": {
         "text": {
           "en": "Sometimes your own piece blocks the line or square another piece needs. Clearance moves it out of the way, ideally with a check or a threat, so the opponent has no time to react. The square it leaves is often more important than the one it goes to.",
-          "uk": "Буває, що власна фігура перекриває лінію чи поле, потрібне іншій. Звільнення лінії прибирає її з дороги, найкраще з шахом або загрозою, щоб суперник не встиг відреагувати. Поле, яке вона звільняє, часто важливіше за те, куди вона йде."
+          "uk": "Буває, що власна фігура перекриває лінію чи поле, потрібне іншій. Звільнення лінії прибирає її з дороги, найкраще з шахом або загрозою, щоб суперник не встиг відреагувати. Поле, яке вона звільняє, часто важливіше за те, куди вона йде.",
+          "ru": "Иногда твоя же фигура загораживает линию или поле, нужное другой фигуре. Освобождение убирает ее с дороги, лучше всего с шахом или угрозой, чтобы у соперника не было времени отреагировать. Поле, которое она освобождает, часто важнее того, куда она идет.",
+          "es": "A veces tu propia pieza bloquea la línea o la casilla que necesita otra. El despeje la quita de en medio, a ser posible con jaque o con una amenaza, para que el rival no tenga tiempo de reaccionar. La casilla que deja libre suele importar más que la casilla a la que va."
         },
         "fen": "6k1/pp3ppp/8/3N4/8/8/P4PPP/3Q2K1 w - - 0 1",
         "arrows": [
@@ -1309,7 +1347,9 @@
         ],
         "caption": {
           "en": "Ne7+ clears the d-file with check — next the queen mates on d8.",
-          "uk": "Ne7+ звільняє вертикаль d із шахом — далі ферзь ставить мат на d8."
+          "uk": "Ne7+ звільняє вертикаль d із шахом — далі ферзь ставить мат на d8.",
+          "ru": "Ne7+ освобождает вертикаль d с шахом — следом ферзь ставит мат на d8.",
+          "es": "Ne7+ despeja la columna d con jaque; a continuación, la dama da mate en d8."
         }
       },
       "puzzles": [
@@ -1594,16 +1634,22 @@
       "theme": "interference",
       "title": {
         "en": "Interference",
-        "uk": "Перекриття"
+        "uk": "Перекриття",
+        "ru": "Перекрытие",
+        "es": "Interferencia"
       },
       "tip": {
         "en": "Drop a piece between a defender and what it guards.",
-        "uk": "Постав фігуру між захисником і тим, що він охороняє."
+        "uk": "Постав фігуру між захисником і тим, що він охороняє.",
+        "ru": "Поставь фигуру между защитником и тем, что он охраняет.",
+        "es": "Interpón una pieza entre un defensor y lo que protege."
       },
       "intro": {
         "text": {
           "en": "Interference cuts a line of defence. You place a piece on the path between an enemy defender and the square it protects; even if it can be captured, taking it costs the defence. Look for the lines that hold the opponent’s position together.",
-          "uk": "Перекриття розриває лінію захисту. Ти ставиш фігуру на шляху між захисником суперника й полем, яке він охороняє; навіть якщо її можна побити, взяття руйнує захист. Шукай лінії, на яких тримається позиція суперника."
+          "uk": "Перекриття розриває лінію захисту. Ти ставиш фігуру на шляху між захисником суперника й полем, яке він охороняє; навіть якщо її можна побити, взяття руйнує захист. Шукай лінії, на яких тримається позиція суперника.",
+          "ru": "Перекрытие разрывает линию защиты. Ты ставишь фигуру на путь между защитником соперника и полем, которое он охраняет; даже если ее можно взять, взятие разрушает защиту. Ищи линии, на которых держится позиция соперника.",
+          "es": "La interferencia corta una línea de defensa. Colocas una pieza en el camino entre un defensor enemigo y la casilla que protege; aunque se pueda capturar, capturarla le cuesta la defensa. Busca las líneas que sostienen la posición del rival."
         },
         "fen": "r7/4P1kp/6p1/8/8/8/5PPP/3R2K1 w - - 0 1",
         "arrows": [
@@ -1620,7 +1666,9 @@
         ],
         "caption": {
           "en": "Rd8 cuts the rook on a8 off from e8 — the pawn queens whatever Black does.",
-          "uk": "Rd8 перекриває турі a8 шлях до e8 — пішак у будь-якому разі стане ферзем."
+          "uk": "Rd8 перекриває турі a8 шлях до e8 — пішак у будь-якому разі стане ферзем.",
+          "ru": "Rd8 отрезает ладью a8 от e8 — пешка проходит в ферзи, что бы ни делали черные.",
+          "es": "Rd8 corta la torre de a8 de e8: el peón corona hagan lo que hagan las negras."
         }
       },
       "puzzles": [
@@ -1905,16 +1953,22 @@
       "theme": "attackingF2F7",
       "title": {
         "en": "Attacking f2 and f7",
-        "uk": "Удар на f2 і f7"
+        "uk": "Удар на f2 і f7",
+        "ru": "Атака на f2 и f7",
+        "es": "Ataque a f2 y f7"
       },
       "tip": {
         "en": "Early in the game, f7 and f2 are guarded only by the king.",
-        "uk": "На початку партії f7 і f2 захищає лише король."
+        "uk": "На початку партії f7 і f2 захищає лише король.",
+        "ru": "В начале партии f7 и f2 защищает только король.",
+        "es": "Al principio de la partida, f7 y f2 solo los defiende el rey."
       },
       "intro": {
         "text": {
           "en": "In the opening, f7 (and f2 for White) is the weakest square: only the king defends it. A bishop on c4 and a queen or knight joining in can strike there, often with check. Keep an eye on it from both sides of the board.",
-          "uk": "У дебюті f7 (а для білих f2) — найслабше поле: його захищає лише король. Слон із c4 разом із ферзем чи конем можуть ударити туди, часто з шахом. Стеж за цим полем з обох боків дошки."
+          "uk": "У дебюті f7 (а для білих f2) — найслабше поле: його захищає лише король. Слон із c4 разом із ферзем чи конем можуть ударити туди, часто з шахом. Стеж за цим полем з обох боків дошки.",
+          "ru": "В дебюте f7 (и f2 у белых) — самое слабое поле: его защищает только король. Слон на c4 вместе с ферзем или конем может ударить туда, часто с шахом. Следи за этим полем с обеих сторон доски.",
+          "es": "En la apertura, f7 (y f2 para las blancas) es la casilla más débil: solo la defiende el rey. Un alfil en c4 junto con la dama o un caballo pueden golpear ahí, a menudo con jaque. Vigílala desde los dos lados del tablero."
         },
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w - - 0 4",
         "arrows": [
@@ -1931,7 +1985,9 @@
         ],
         "caption": {
           "en": "Qxf7#: f7 was guarded only by the king, and the bishop backs up the queen.",
-          "uk": "Qxf7#: поле f7 захищав лише король, а слон підтримує ферзя."
+          "uk": "Qxf7#: поле f7 захищав лише король, а слон підтримує ферзя.",
+          "ru": "Qxf7#: f7 защищал только король, а слон поддерживает ферзя.",
+          "es": "Qxf7#: f7 solo lo defendía el rey, y el alfil respalda a la dama."
         }
       },
       "puzzles": [
@@ -2227,16 +2283,22 @@
       "theme": "promotion",
       "title": {
         "en": "Promotion",
-        "uk": "Перетворення пішака"
+        "uk": "Перетворення пішака",
+        "ru": "Превращение",
+        "es": "Coronación"
       },
       "tip": {
         "en": "One step from queening? Find the move that clears the way.",
-        "uk": "Пішакові лишився крок? Знайди хід, що розчистить йому шлях."
+        "uk": "Пішакові лишився крок? Знайди хід, що розчистить йому шлях.",
+        "ru": "Один шаг до ферзя? Найди ход, который освобождает дорогу.",
+        "es": "¿A un paso de coronar? Busca la jugada que despeja el camino."
       },
       "intro": {
         "text": {
           "en": "A pawn on the seventh rank is worth almost a queen, and the opponent knows it. The tactics here clear the promotion square: deflect the blocker, cut off the defender or promote with check. Count what happens once the new queen appears.",
-          "uk": "Пішак на сьомій горизонталі вартий майже ферзя, і суперник це знає. Тактика тут розчищає поле перетворення: відволічи фігуру, що заступає дорогу, відріж захисника або перетвори пішака з шахом. Порахуй, що буде, коли з’явиться новий ферзь."
+          "uk": "Пішак на сьомій горизонталі вартий майже ферзя, і суперник це знає. Тактика тут розчищає поле перетворення: відволічи фігуру, що заступає дорогу, відріж захисника або перетвори пішака з шахом. Порахуй, що буде, коли з’явиться новий ферзь.",
+          "ru": "Пешка на седьмой горизонтали стоит почти ферзя, и соперник это знает. Тактика здесь освобождает поле превращения: отвлеки блокера, отрежь защитника или превратись с шахом. Посчитай, что будет, когда появится новый ферзь.",
+          "es": "Un peón en séptima vale casi una dama, y el rival lo sabe. Aquí la táctica despeja la casilla de coronación: desvía al bloqueador, corta al defensor o corona con jaque. Calcula qué pasa cuando aparezca la nueva dama."
         },
         "fen": "2r5/2P2pk1/1P5p/8/8/8/6PP/3R2K1 w - - 0 1",
         "arrows": [
@@ -2258,7 +2320,9 @@
         ],
         "caption": {
           "en": "Rd8 attacks the rook in the pawn’s way: if it takes, the pawn recaptures on d8 and becomes a queen.",
-          "uk": "Rd8 нападає на туру, що стоїть на шляху пішака: якщо вона візьме, пішак б’є на d8 і стає ферзем."
+          "uk": "Rd8 нападає на туру, що стоїть на шляху пішака: якщо вона візьме, пішак б’є на d8 і стає ферзем.",
+          "ru": "Rd8 нападает на ладью, стоящую на пути пешки: если она возьмет, пешка берет на d8 и становится ферзем.",
+          "es": "Rd8 ataca a la torre que estorba al peón: si captura, el peón recaptura en d8 y se convierte en dama."
         }
       },
       "puzzles": [
@@ -2561,16 +2625,22 @@
       "theme": "defensiveMove",
       "title": {
         "en": "Defence",
-        "uk": "Захист"
+        "uk": "Захист",
+        "ru": "Защита",
+        "es": "Defensa"
       },
       "tip": {
         "en": "First ask what your opponent is threatening.",
-        "uk": "Спершу спитай себе, чим загрожує суперник."
+        "uk": "Спершу спитай себе, чим загрожує суперник.",
+        "ru": "Сначала спроси себя, чем угрожает соперник.",
+        "es": "Primero pregúntate qué amenaza el rival."
       },
       "intro": {
         "text": {
           "en": "Not every puzzle is an attack. Here your opponent has a threat, and you must find the move that holds — often the only one that does not lose. Before looking for your own ideas, ask what the opponent wants to do next.",
-          "uk": "Не кожна задача — атака. Тут у суперника є загроза, і треба знайти хід, що втримає позицію, — часто єдиний, що не програє. Перш ніж шукати власні ідеї, спитай себе, що суперник хоче зробити далі."
+          "uk": "Не кожна задача — атака. Тут у суперника є загроза, і треба знайти хід, що втримає позицію, — часто єдиний, що не програє. Перш ніж шукати власні ідеї, спитай себе, що суперник хоче зробити далі.",
+          "ru": "Не каждая задача — это атака. Здесь у соперника есть угроза, и тебе нужно найти ход, который держит, — часто единственный, который не проигрывает. Прежде чем искать свои идеи, спроси, что соперник хочет сделать дальше.",
+          "es": "No todos los problemas son de ataque. Aquí el rival tiene una amenaza y debes encontrar la jugada que aguanta, a menudo la única que no pierde. Antes de buscar tus propias ideas, pregúntate qué quiere hacer el rival a continuación."
         },
         "fen": "3r2k1/1R3ppp/8/8/P7/1p6/5PPP/6K1 w - - 0 1",
         "arrows": [
@@ -2582,7 +2652,9 @@
         ],
         "caption": {
           "en": "h3 gives the king a square: a rook check on the back rank is no longer mate.",
-          "uk": "h3 дає королю вільне поле: шах турою по першій горизонталі вже не мат."
+          "uk": "h3 дає королю вільне поле: шах турою по першій горизонталі вже не мат.",
+          "ru": "h3 дает королю поле: шах ладьей по последней горизонтали больше не мат.",
+          "es": "h3 le da una casilla al rey: un jaque de torre en la última fila ya no es mate."
         }
       },
       "puzzles": [
@@ -2864,16 +2936,22 @@
       "theme": "smotheredMate",
       "title": {
         "en": "Mating patterns",
-        "uk": "Матові візерунки"
+        "uk": "Матові візерунки",
+        "ru": "Типовые маты",
+        "es": "Patrones de mate"
       },
       "tip": {
         "en": "Learn the picture: the same mating net turns up again and again.",
-        "uk": "Запам’ятай малюнок: ця матова сітка повторюється знову й знову."
+        "uk": "Запам’ятай малюнок: ця матова сітка повторюється знову й знову.",
+        "ru": "Запомни картинку: одна и та же матовая сеть встречается снова и снова.",
+        "es": "Aprende la imagen: la misma red de mate aparece una y otra vez."
       },
       "intro": {
         "text": {
           "en": "Some mates have names because they keep coming back: the smothered mate, Anastasia’s, the Arabian, Boden’s and more. Each is a picture — a few pieces in a fixed arrangement around the king. Once you know the picture, you will spot it in your own games.",
-          "uk": "Деякі мати мають назви, бо трапляються знову й знову: спертий мат, мат Анастасії, арабський, мат Бодена та інші. Кожен із них — це малюнок: кілька фігур у певному розташуванні навколо короля. Знаючи малюнок, ти помітиш його й у своїх партіях."
+          "uk": "Деякі мати мають назви, бо трапляються знову й знову: спертий мат, мат Анастасії, арабський, мат Бодена та інші. Кожен із них — це малюнок: кілька фігур у певному розташуванні навколо короля. Знаючи малюнок, ти помітиш його й у своїх партіях.",
+          "ru": "У некоторых матов есть названия, потому что они встречаются снова и снова: спертый мат, мат Анастасии, арабский, мат Бодена и другие. Каждый из них — картинка: несколько фигур в определенном расположении вокруг короля. Зная картинку, ты заметишь ее и в своих партиях.",
+          "es": "Algunos mates tienen nombre porque aparecen una y otra vez: el mate de la coz, el de Anastasia, el árabe, el de Boden y otros. Cada uno es una imagen: unas pocas piezas en una disposición fija alrededor del rey. Cuando conoces la imagen, la verás en tus propias partidas."
         },
         "fen": "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
         "arrows": [
@@ -2890,7 +2968,9 @@
         ],
         "caption": {
           "en": "Nf7#: the king is walled in by its own pieces — a smothered mate.",
-          "uk": "Nf7#: король замурований власними фігурами — спертий мат."
+          "uk": "Nf7#: король замурований власними фігурами — спертий мат.",
+          "ru": "Nf7#: король замурован собственными фигурами — спертый мат.",
+          "es": "Nf7#: el rey está emparedado por sus propias piezas; es un mate de la coz."
         }
       },
       "puzzles": [
@@ -3189,16 +3269,22 @@
       "theme": "mateIn3",
       "title": {
         "en": "Mate in 3",
-        "uk": "Мат у 3 ходи"
+        "uk": "Мат у 3 ходи",
+        "ru": "Мат в 3 хода",
+        "es": "Mate en 3"
       },
       "tip": {
         "en": "Forcing moves first: checks, captures, threats.",
-        "uk": "Спершу форсовані ходи: шахи, взяття, загрози."
+        "uk": "Спершу форсовані ходи: шахи, взяття, загрози.",
+        "ru": "Сначала форсированные ходы: шахи, взятия, угрозы.",
+        "es": "Primero las jugadas forzadas: jaques, capturas, amenazas."
       },
       "intro": {
         "text": {
           "en": "Mate in three asks you to see a little further: three of your moves, with the opponent’s replies in between. Start with the most forcing moves — checks and sacrifices — because they leave the fewest replies to calculate.",
-          "uk": "Мат у 3 ходи вимагає бачити трохи далі: три твої ходи й відповіді суперника між ними. Починай із найбільш форсованих — шахів і жертв, — бо після них найменше відповідей треба прорахувати."
+          "uk": "Мат у 3 ходи вимагає бачити трохи далі: три твої ходи й відповіді суперника між ними. Починай із найбільш форсованих — шахів і жертв, — бо після них найменше відповідей треба прорахувати.",
+          "ru": "Мат в три хода требует смотреть чуть дальше: три твоих хода и ответы соперника между ними. Начинай с самых форсированных ходов — шахов и жертв, — ведь после них остается меньше всего ответов для расчета.",
+          "es": "El mate en tres te pide ver un poco más lejos: tres jugadas tuyas, con las respuestas del rival entre medias. Empieza por las jugadas más forzadas, jaques y sacrificios, porque dejan menos respuestas que calcular."
         },
         "fen": "5rk1/pp3ppp/8/3N3Q/8/4R3/5PPP/6K1 w - - 0 1",
         "arrows": [
@@ -3220,7 +3306,9 @@
         ],
         "caption": {
           "en": "Ne7+ drives the king to h8; then a queen sacrifice on h7, and the rook mates on the h-file.",
-          "uk": "Ne7+ заганяє короля на h8; далі жертва ферзя на h7 — і тура ставить мат по вертикалі h."
+          "uk": "Ne7+ заганяє короля на h8; далі жертва ферзя на h7 — і тура ставить мат по вертикалі h.",
+          "ru": "Ne7+ загоняет короля на h8; затем жертва ферзя на h7, и ладья ставит мат по вертикали h.",
+          "es": "Ne7+ lleva al rey a h8; luego un sacrificio de dama en h7, y la torre da mate por la columna h."
         }
       },
       "puzzles": [
