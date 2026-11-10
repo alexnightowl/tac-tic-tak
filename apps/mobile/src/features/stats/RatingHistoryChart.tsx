@@ -37,7 +37,8 @@ import { StyleIcon } from './StyleIcon';
 // gutter, grid lines from x 40 to the right edge less 12, the plot from
 // x 44. Laid out in real pixels from onLayout. Native additions: a
 // left-to-right draw-in on mount and a press-and-drag crosshair (tap also
-// picks a session) with a tick per point.
+// picks a session) with a tick per point. The x axis is time, with date
+// labels under the plot (owner, 2026-11-10: "like chess.com").
 
 const H = 200;
 /** Grid lines start here; the y labels sit left of it. */
@@ -49,6 +50,10 @@ const TIP_W = 168;
 const LONG_PRESS_MS = 150;
 /** Tooltip lane above the plot. */
 const TIP_LANE = 30;
+/** Date labels under the plot. */
+const AXIS_LANE = 20;
+/** A date label's centre keeps this far from the plot's edges. */
+const TICK_EDGE = 22;
 const GRID = semantic.borderSoft;
 
 const AnimatedRect = Animated.createAnimatedComponent(Rect);
@@ -71,7 +76,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
 
   const layout =
     width > 0
-      ? ratingChartLayout(data, { width, height: H, padL: PLOT_X, padR: PAD_R, padT: 6, padB: 6, curve: 'linear' })
+      ? ratingChartLayout(data, { width, height: H, padL: PLOT_X, padR: PAD_R, padT: 6, padB: 6, curve: 'linear', xAxis: 'time' })
       : null;
 
   // Draw in once the first layout with data exists.
@@ -190,6 +195,12 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
 
   const latest = (layout?.series ?? []).map((s) => `${t(`style.${s.style}.name`)} ${s.last}`).join(', ');
   const labelFont = fontFamily(lang, 'body', 500);
+  const ticks = (layout?.xTicks ?? []).filter((tk) => tk.x >= PLOT_X + TICK_EDGE && tk.x <= width - TICK_EDGE);
+  const tickLabel = (at: number, unit: 'day' | 'month') =>
+    new Date(at).toLocaleDateString(
+      locale,
+      unit === 'day' ? { day: 'numeric', month: 'short' } : { month: 'short', year: 'numeric' },
+    );
 
   return (
     <View testID={testID}>
@@ -206,7 +217,7 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
             testID={`${testID}-plot`}
           >
             {layout ? (
-              <Svg width={width} height={H}>
+              <Svg width={width} height={H + AXIS_LANE}>
                 <Defs>
                   {layout.series.map((s) => (
                     <LinearGradient key={s.style} id={`rh-${s.style}`} x1="0" y1="0" x2="0" y2="1">
@@ -223,6 +234,21 @@ export function RatingHistoryChart({ data, highlightStyle = null, testID }: Prop
                     <Line x1={GRID_X} x2={width - PAD_R} y1={g.y} y2={g.y} stroke={GRID} strokeWidth={1} />
                     <SvgText x={0} y={g.y + 4} fontSize={11} fill={eos.ash} fontFamily={labelFont}>
                       {String(g.value)}
+                    </SvgText>
+                  </G>
+                ))}
+                {ticks.map((tk) => (
+                  <G key={tk.at}>
+                    <Line x1={tk.x} x2={tk.x} y1={6} y2={layout.baseY} stroke={GRID} strokeWidth={1} strokeDasharray="2 4" />
+                    <SvgText
+                      x={tk.x}
+                      y={H + 14}
+                      fontSize={11}
+                      fill={eos.ash}
+                      fontFamily={labelFont}
+                      textAnchor="middle"
+                    >
+                      {tickLabel(tk.at, tk.unit)}
                     </SvgText>
                   </G>
                 ))}
@@ -297,9 +323,9 @@ function Series({
 }
 
 const styles = StyleSheet.create({
-  plotWrap: { height: H + TIP_LANE },
-  plot: { height: H + TIP_LANE, paddingTop: TIP_LANE },
-  empty: { height: 230, alignItems: 'center', justifyContent: 'center' },
+  plotWrap: { height: H + TIP_LANE + AXIS_LANE },
+  plot: { height: H + TIP_LANE + AXIS_LANE, paddingTop: TIP_LANE },
+  empty: { height: H + TIP_LANE + AXIS_LANE, alignItems: 'center', justifyContent: 'center' },
   cross: {
     position: 'absolute',
     top: TIP_LANE,
