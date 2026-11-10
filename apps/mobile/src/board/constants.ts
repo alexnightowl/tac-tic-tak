@@ -4,7 +4,7 @@
 
 /** Finger travel that turns a press into a drag (pt). Tap maxDistance. */
 export const DRAG_THRESHOLD = 4;
-/** Dragged piece sits this many squares above the finger. */
+/** Dragged piece sits this many squares above the finger (a mouse drags it under the pointer). */
 export const DRAG_LIFT_SQ = 0.6;
 /** Spring scale of the lifted piece. */
 export const DRAG_SCALE = 1.1;

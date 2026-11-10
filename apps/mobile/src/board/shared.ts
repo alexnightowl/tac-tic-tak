@@ -1,6 +1,7 @@
 import type { Orientation } from '@tac/core/board';
 import { useSharedValue, type SharedValue } from 'react-native-reanimated';
 import type { PieceCode } from './assets';
+import { DRAG_LIFT_SQ } from './constants';
 
 /**
  * One mounted piece view's UI-thread state. The board's plans write it on the
@@ -80,6 +81,8 @@ export type BoardShared = {
   fingerY: SharedValue<number>;
   offX: SharedValue<number>;
   offY: SharedValue<number>;
+  /** Squares the dragged piece rides above the pointer: DRAG_LIFT_SQ for a finger, 0 for a mouse (web). */
+  liftSq: SharedValue<number>;
   // gesture bookkeeping
   downSq: SharedValue<number>;
   prevSel: SharedValue<number>;
@@ -157,6 +160,7 @@ export function useBoardShared(
     fingerY: useSharedValue(0),
     offX: useSharedValue(0),
     offY: useSharedValue(0),
+    liftSq: useSharedValue(DRAG_LIFT_SQ),
     downSq: useSharedValue(-1),
     prevSel: useSharedValue(-1),
     dragging: useSharedValue(false),

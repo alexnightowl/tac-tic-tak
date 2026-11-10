@@ -25,7 +25,7 @@ import { DEFAULT_LABELS, squareLabel, type BoardLabels } from './a11y';
 import { BOARD_IMAGE, PIECE_CODES, type PieceCode } from './assets';
 import { Chess } from './chess';
 import {
-  CAPTURE_END_SCALE, CAPTURE_FADE_MS, DRAG_LIFT_SQ, DRAG_SCALE, DRAG_THRESHOLD, DROP_SETTLE_MS, HOVER_THROTTLE_MS,
+  CAPTURE_END_SCALE, CAPTURE_FADE_MS, DRAG_SCALE, DRAG_THRESHOLD, DROP_SETTLE_MS, HOVER_THROTTLE_MS,
   LIFT_SPRING, RECONCILE_IDLE_MS, SECONDARY_MOVE_MS, SNAP_BACK_SPRING, TAP_MOVE_MS,
 } from './constants';
 import { createDrawing, UserArrows, UserMarks } from './drawing';
@@ -38,6 +38,7 @@ import {
 import { PromotionPicker } from './PromotionPicker';
 import { useBoardShared, type PieceHandle, type PieceRegistry } from './shared';
 import { useMouseDrawing } from './useMouseDrawing';
+import { usePointerLift } from './usePointerLift';
 
 export type LastMove = { from: Square; to: Square };
 
@@ -752,7 +753,7 @@ function BoardImpl({
       sv.offX.set(c.x - e.x);
       sv.offY.set(c.y - e.y);
       sv.offX.set(withSpring(0, LIFT_SPRING));
-      sv.offY.set(withSpring(-DRAG_LIFT_SQ * s, LIFT_SPRING));
+      sv.offY.set(withSpring(-sv.liftSq.get() * s, LIFT_SPRING));
       sv.dragScale.set(1);
       sv.dragScale.set(withSpring(DRAG_SCALE, LIFT_SPRING));
       sv.dragVisible.set(1);
@@ -1000,6 +1001,7 @@ function BoardImpl({
   const g = { size, orientation, mirror };
   const allArrows = hintArrow ? [...arrows, hintArrow] : arrows;
   useMouseDrawing(innerRef, drawing, g);
+  usePointerLift(innerRef, sv.liftSq);
 
   return (
     <View style={[styles.root, style]} onLayout={onLayout}>
