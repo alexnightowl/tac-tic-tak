@@ -34,4 +34,6 @@ export const shellEn: Dict = {
   // Language switch labels (also used by the settings stream).
   'shell.lang.en': 'EN',
   'shell.lang.uk': 'УКР',
+  'shell.lang.ru': 'РУС',
+  'shell.lang.es': 'ES',
 };

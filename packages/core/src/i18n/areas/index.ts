@@ -64,6 +64,66 @@ import { planEn } from './plan.en';
 import { planUk } from './plan.uk';
 import { woodpeckerEn } from './woodpecker.en';
 import { woodpeckerUk } from './woodpecker.uk';
+import { commonRu } from './common.ru';
+import { commonEs } from './common.es';
+import { authRu } from './auth.ru';
+import { authEs } from './auth.es';
+import { homeRu } from './home.ru';
+import { homeEs } from './home.es';
+import { playRu } from './play.ru';
+import { playEs } from './play.es';
+import { reviewRu } from './review.ru';
+import { reviewEs } from './review.es';
+import { sessionsRu } from './sessions.ru';
+import { sessionsEs } from './sessions.es';
+import { statsRu } from './stats.ru';
+import { statsEs } from './stats.es';
+import { achievementsRu } from './achievements.ru';
+import { achievementsEs } from './achievements.es';
+import { socialRu } from './social.ru';
+import { socialEs } from './social.es';
+import { profileRu } from './profile.ru';
+import { profileEs } from './profile.es';
+import { settingsRu } from './settings.ru';
+import { settingsEs } from './settings.es';
+import { onboardingRu } from './onboarding.ru';
+import { onboardingEs } from './onboarding.es';
+import { shellRu } from './shell.ru';
+import { shellEs } from './shell.es';
+import { offlineRu } from './offline.ru';
+import { offlineEs } from './offline.es';
+import { libraryRu } from './library.ru';
+import { libraryEs } from './library.es';
+import { learnRu } from './learn.ru';
+import { learnEs } from './learn.es';
+import { coursesRu } from './courses.ru';
+import { coursesEs } from './courses.es';
+import { challengeRu } from './challenge.ru';
+import { challengeEs } from './challenge.es';
+import { stormRu } from './storm.ru';
+import { stormEs } from './storm.es';
+import { dxshellRu } from './dxshell.ru';
+import { dxshellEs } from './dxshell.es';
+import { dxauthRu } from './dxauth.ru';
+import { dxauthEs } from './dxauth.es';
+import { dxhomeRu } from './dxhome.ru';
+import { dxhomeEs } from './dxhome.es';
+import { dxboardRu } from './dxboard.ru';
+import { dxboardEs } from './dxboard.es';
+import { dxlearnRu } from './dxlearn.ru';
+import { dxlearnEs } from './dxlearn.es';
+import { dxrivalsRu } from './dxrivals.ru';
+import { dxrivalsEs } from './dxrivals.es';
+import { dxaccountRu } from './dxaccount.ru';
+import { dxaccountEs } from './dxaccount.es';
+import { blindRu } from './blind.ru';
+import { blindEs } from './blind.es';
+import { hasteRu } from './haste.ru';
+import { hasteEs } from './haste.es';
+import { planRu } from './plan.ru';
+import { planEs } from './plan.es';
+import { woodpeckerRu } from './woodpecker.ru';
+import { woodpeckerEs } from './woodpecker.es';
 
 export const AREAS = [
   'common',
@@ -101,36 +161,36 @@ export const AREAS = [
 export type Area = (typeof AREAS)[number];
 
 export const AREA_DICTS: Record<Area, Record<Language, Dict>> = {
-  common: { en: commonEn, uk: commonUk },
-  auth: { en: authEn, uk: authUk },
-  home: { en: homeEn, uk: homeUk },
-  play: { en: playEn, uk: playUk },
-  review: { en: reviewEn, uk: reviewUk },
-  sessions: { en: sessionsEn, uk: sessionsUk },
-  stats: { en: statsEn, uk: statsUk },
-  achievements: { en: achievementsEn, uk: achievementsUk },
-  social: { en: socialEn, uk: socialUk },
-  profile: { en: profileEn, uk: profileUk },
-  settings: { en: settingsEn, uk: settingsUk },
-  onboarding: { en: onboardingEn, uk: onboardingUk },
-  shell: { en: shellEn, uk: shellUk },
-  offline: { en: offlineEn, uk: offlineUk },
-  library: { en: libraryEn, uk: libraryUk },
-  learn: { en: learnEn, uk: learnUk },
-  courses: { en: coursesEn, uk: coursesUk },
-  challenge: { en: challengeEn, uk: challengeUk },
-  storm: { en: stormEn, uk: stormUk },
-  dxshell: { en: dxshellEn, uk: dxshellUk },
-  dxauth: { en: dxauthEn, uk: dxauthUk },
-  dxhome: { en: dxhomeEn, uk: dxhomeUk },
-  dxboard: { en: dxboardEn, uk: dxboardUk },
-  dxlearn: { en: dxlearnEn, uk: dxlearnUk },
-  dxrivals: { en: dxrivalsEn, uk: dxrivalsUk },
-  dxaccount: { en: dxaccountEn, uk: dxaccountUk },
-  blind: { en: blindEn, uk: blindUk },
-  haste: { en: hasteEn, uk: hasteUk },
-  plan: { en: planEn, uk: planUk },
-  woodpecker: { en: woodpeckerEn, uk: woodpeckerUk },
+  common: { en: commonEn, uk: commonUk, ru: commonRu, es: commonEs },
+  auth: { en: authEn, uk: authUk, ru: authRu, es: authEs },
+  home: { en: homeEn, uk: homeUk, ru: homeRu, es: homeEs },
+  play: { en: playEn, uk: playUk, ru: playRu, es: playEs },
+  review: { en: reviewEn, uk: reviewUk, ru: reviewRu, es: reviewEs },
+  sessions: { en: sessionsEn, uk: sessionsUk, ru: sessionsRu, es: sessionsEs },
+  stats: { en: statsEn, uk: statsUk, ru: statsRu, es: statsEs },
+  achievements: { en: achievementsEn, uk: achievementsUk, ru: achievementsRu, es: achievementsEs },
+  social: { en: socialEn, uk: socialUk, ru: socialRu, es: socialEs },
+  profile: { en: profileEn, uk: profileUk, ru: profileRu, es: profileEs },
+  settings: { en: settingsEn, uk: settingsUk, ru: settingsRu, es: settingsEs },
+  onboarding: { en: onboardingEn, uk: onboardingUk, ru: onboardingRu, es: onboardingEs },
+  shell: { en: shellEn, uk: shellUk, ru: shellRu, es: shellEs },
+  offline: { en: offlineEn, uk: offlineUk, ru: offlineRu, es: offlineEs },
+  library: { en: libraryEn, uk: libraryUk, ru: libraryRu, es: libraryEs },
+  learn: { en: learnEn, uk: learnUk, ru: learnRu, es: learnEs },
+  courses: { en: coursesEn, uk: coursesUk, ru: coursesRu, es: coursesEs },
+  challenge: { en: challengeEn, uk: challengeUk, ru: challengeRu, es: challengeEs },
+  storm: { en: stormEn, uk: stormUk, ru: stormRu, es: stormEs },
+  dxshell: { en: dxshellEn, uk: dxshellUk, ru: dxshellRu, es: dxshellEs },
+  dxauth: { en: dxauthEn, uk: dxauthUk, ru: dxauthRu, es: dxauthEs },
+  dxhome: { en: dxhomeEn, uk: dxhomeUk, ru: dxhomeRu, es: dxhomeEs },
+  dxboard: { en: dxboardEn, uk: dxboardUk, ru: dxboardRu, es: dxboardEs },
+  dxlearn: { en: dxlearnEn, uk: dxlearnUk, ru: dxlearnRu, es: dxlearnEs },
+  dxrivals: { en: dxrivalsEn, uk: dxrivalsUk, ru: dxrivalsRu, es: dxrivalsEs },
+  dxaccount: { en: dxaccountEn, uk: dxaccountUk, ru: dxaccountRu, es: dxaccountEs },
+  blind: { en: blindEn, uk: blindUk, ru: blindRu, es: blindEs },
+  haste: { en: hasteEn, uk: hasteUk, ru: hasteRu, es: hasteEs },
+  plan: { en: planEn, uk: planUk, ru: planRu, es: planEs },
+  woodpecker: { en: woodpeckerEn, uk: woodpeckerUk, ru: woodpeckerRu, es: woodpeckerEs },
 };
 
 /** All areas of one language merged into a flat dict (the web shape). */

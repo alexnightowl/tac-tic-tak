@@ -74,6 +74,8 @@ export const settingsEn: Dict = {
   // Mobile-only (Phase 9 settings): index, sections, rows.
   'settings.lang.en': 'English',
   'settings.lang.uk': 'Українська',
+  'settings.lang.ru': 'Русский',
+  'settings.lang.es': 'Español',
   'settings.sound_haptics': 'Sound & haptics',
   'settings.sound_haptics_hint': 'Volume, sounds, vibration',
   'settings.gameplay_hint': 'Pieces, animation, board',

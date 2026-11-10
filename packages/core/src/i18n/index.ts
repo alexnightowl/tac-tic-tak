@@ -3,18 +3,23 @@
 // this is the lookup logic they wrap.
 import { en } from './en';
 import { uk } from './uk';
+import { ru } from './ru';
+import { es } from './es';
 import { landingEn } from './landing.en';
 import { landingUk } from './landing.uk';
+import { landingRu } from './landing.ru';
+import { landingEs } from './landing.es';
 import type { Dict, Language, PluralForm } from './types';
 
 export type { Dict, Language, PluralForm } from './types';
-export { en, uk, landingEn, landingUk };
+export { en, uk, ru, es, landingEn, landingUk, landingRu, landingEs };
 export { AREAS, AREA_DICTS, mergeAreas, type Area } from './areas';
 
-export const LANGUAGES: readonly Language[] = ['en', 'uk'];
+/** In the order the language pickers show them. */
+export const LANGUAGES: readonly Language[] = ['en', 'uk', 'ru', 'es'];
 
-export const DICTS: Record<Language, Dict> = { en, uk };
-export const LANDING_DICTS: Record<Language, Dict> = { en: landingEn, uk: landingUk };
+export const DICTS: Record<Language, Dict> = { en, uk, ru, es };
+export const LANDING_DICTS: Record<Language, Dict> = { en: landingEn, uk: landingUk, ru: landingRu, es: landingEs };
 
 export type TVars = Record<string, string | number>;
 
@@ -50,13 +55,15 @@ export function pluralizeEn(n: number): PluralForm {
 }
 
 function makePluralSelect(lang: Language): (n: number) => PluralForm {
-  const fallback = lang === 'uk' ? pluralizeUk : pluralizeEn;
+  // Russian has the Ukrainian one / few / many rule; Spanish the English one / other.
+  const slavic = lang === 'uk' || lang === 'ru';
+  const fallback = slavic ? pluralizeUk : pluralizeEn;
   try {
     if (typeof Intl !== 'undefined' && typeof Intl.PluralRules === 'function') {
       const pr = new Intl.PluralRules(lang);
-      // Hermes builds without ICU data can resolve 'uk' to a root locale
-      // that only knows 'other'; trust Intl only if it agrees on a probe.
-      if (lang !== 'uk' || pr.select(2) === 'few') {
+      // Hermes builds without ICU data can resolve a locale to the root
+      // one that only knows 'other'; trust Intl only if it agrees on a probe.
+      if (pr.select(1) === 'one' && (!slavic || pr.select(2) === 'few')) {
         return (n) => pr.select(n) as PluralForm;
       }
     }

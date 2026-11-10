@@ -2,7 +2,7 @@
 // lib/theme-icons.ts (glyph lookup, returned as a key instead of a component).
 
 /**
- * Human labels for Lichess puzzle theme slugs, in EN + UK. Also owns
+ * Human labels for Lichess puzzle theme slugs, in EN, UK, RU and ES. Also owns
  * the list of "meta" slugs that the Lichess dataset tags along with
  * real tactics — game phase, puzzle length, game source, outcome
  * category — so the analytics surfaces can hide them.
@@ -169,6 +169,164 @@ const UK_EXTRA: Record<string, string> = {
   triangleMate: "Трикутний мат",
 };
 
+const RU: Record<string, string> = {
+  advancedPawn: "Продвинутая пешка",
+  advantage: "Преимущество",
+  anastasiaMate: "Мат Анастасии",
+  arabianMate: "Арабский мат",
+  attackingF2F7: "Атака на f2/f7",
+  attraction: "Завлечение",
+  backRankMate: "Мат на последней горизонтали",
+  bishopEndgame: "Слоновый эндшпиль",
+  bodenMate: "Мат Бодена",
+  castling: "Рокировка",
+  capturingDefender: "Уничтожение защитника",
+  crushing: "Разгром",
+  defensiveMove: "Защитный ход",
+  deflection: "Отвлечение",
+  discoveredAttack: "Вскрытое нападение",
+  doubleBishopMate: "Мат двумя слонами",
+  doubleCheck: "Двойной шах",
+  dovetailMate: "Мат «ласточкин хвост»",
+  equality: "Уравнение",
+  endgame: "Эндшпиль",
+  enPassant: "Взятие на проходе",
+  exposedKing: "Открытый король",
+  fork: "Вилка",
+  hangingPiece: "Висячая фигура",
+  hookMate: "Мат крюком",
+  interference: "Перекрытие",
+  intermezzo: "Промежуточный ход",
+  killBoxMate: "Мат «коробочкой»",
+  kingsideAttack: "Атака на королевском фланге",
+  knightEndgame: "Коневой эндшпиль",
+  long: "Длинная задача",
+  master: "Партия мастера",
+  masterVsMaster: "Мастер против мастера",
+  mate: "Мат",
+  mateIn1: "Мат в 1 ход",
+  mateIn2: "Мат в 2 хода",
+  mateIn3: "Мат в 3 хода",
+  mateIn4: "Мат в 4 хода",
+  mateIn5: "Мат в 5+ ходов",
+  middlegame: "Миттельшпиль",
+  oneMove: "Один ход",
+  opening: "Дебют",
+  pawnEndgame: "Пешечный эндшпиль",
+  pin: "Связка",
+  promotion: "Превращение",
+  queenEndgame: "Ферзевый эндшпиль",
+  queenRookEndgame: "Эндшпиль ферзь+ладья",
+  queensideAttack: "Атака на ферзевом фланге",
+  quietMove: "Тихий ход",
+  rookEndgame: "Ладейный эндшпиль",
+  sacrifice: "Жертва",
+  short: "Короткая задача",
+  skewer: "Сквозной удар",
+  smotheredMate: "Спертый мат",
+  superGM: "Партия супер-ГМ",
+  trappedPiece: "Пойманная фигура",
+  underPromotion: "Слабое превращение",
+  veryLong: "Очень длинная задача",
+  vukovicMate: "Мат Вуковича",
+  xRayAttack: "Рентген",
+  zugzwang: "Цугцванг",
+};
+
+const RU_EXTRA: Record<string, string> = {
+  balestraMate: "Мат Балестры",
+  blindSwineMate: "Мат «слепые свиньи»",
+  clearance: "Освобождение",
+  collinearMove: "Коллинеарный ход",
+  cornerMate: "Угловой мат",
+  discoveredCheck: "Вскрытый шах",
+  epauletteMate: "Эполетный мат",
+  morphysMate: "Мат Морфи",
+  operaMate: "Оперный мат",
+  pillsburysMate: "Мат Пиллсбери",
+  swallowstailMate: "Мат «хвост ласточки»",
+  triangleMate: "Треугольный мат",
+};
+
+const ES: Record<string, string> = {
+  advancedPawn: "Peón avanzado",
+  advantage: "Ventaja",
+  anastasiaMate: "Mate de Anastasia",
+  arabianMate: "Mate árabe",
+  attackingF2F7: "Ataque a f2/f7",
+  attraction: "Atracción",
+  backRankMate: "Mate del pasillo",
+  bishopEndgame: "Final de alfiles",
+  bodenMate: "Mate de Boden",
+  castling: "Enroque",
+  capturingDefender: "Eliminación del defensor",
+  crushing: "Aplastante",
+  defensiveMove: "Jugada defensiva",
+  deflection: "Desviación",
+  discoveredAttack: "Ataque a la descubierta",
+  doubleBishopMate: "Mate con dos alfiles",
+  doubleCheck: "Jaque doble",
+  dovetailMate: "Mate de la cola de paloma",
+  equality: "Igualdad",
+  endgame: "Final",
+  enPassant: "Captura al paso",
+  exposedKing: "Rey expuesto",
+  fork: "Ataque doble",
+  hangingPiece: "Pieza colgada",
+  hookMate: "Mate del gancho",
+  interference: "Interferencia",
+  intermezzo: "Jugada intermedia",
+  killBoxMate: "Mate de la caja",
+  kingsideAttack: "Ataque en el flanco de rey",
+  knightEndgame: "Final de caballos",
+  long: "Problema largo",
+  master: "Partida de maestro",
+  masterVsMaster: "Maestro contra maestro",
+  mate: "Jaque mate",
+  mateIn1: "Mate en 1",
+  mateIn2: "Mate en 2",
+  mateIn3: "Mate en 3",
+  mateIn4: "Mate en 4",
+  mateIn5: "Mate en 5 o más",
+  middlegame: "Medio juego",
+  oneMove: "Problema de una jugada",
+  opening: "Apertura",
+  pawnEndgame: "Final de peones",
+  pin: "Clavada",
+  promotion: "Coronación",
+  queenEndgame: "Final de damas",
+  queenRookEndgame: "Final de dama y torre",
+  queensideAttack: "Ataque en el flanco de dama",
+  quietMove: "Jugada tranquila",
+  rookEndgame: "Final de torres",
+  sacrifice: "Sacrificio",
+  short: "Problema corto",
+  skewer: "Enfilada",
+  smotheredMate: "Mate de la coz",
+  superGM: "Partida de súper GM",
+  trappedPiece: "Pieza atrapada",
+  underPromotion: "Subpromoción",
+  veryLong: "Problema muy largo",
+  vukovicMate: "Mate de Vuković",
+  xRayAttack: "Rayos X",
+  zugzwang: "Zugzwang",
+};
+
+const ES_EXTRA: Record<string, string> = {
+  balestraMate: "Mate de la ballesta",
+  blindSwineMate: "Mate de los cerdos ciegos",
+  clearance: "Despeje",
+  collinearMove: "Jugada colineal",
+  cornerMate: "Mate en la esquina",
+  discoveredCheck: "Jaque a la descubierta",
+  epauletteMate: "Mate de las charreteras",
+  morphysMate: "Mate de Morphy",
+  operaMate: "Mate de la ópera",
+  pillsburysMate: "Mate de Pillsbury",
+  swallowstailMate: "Mate de la cola de golondrina",
+  triangleMate: "Mate del triángulo",
+};
+
 /**
  * "Meta" themes — tagged on every Lichess puzzle but not actually
  * describing a tactic. Hide them from the analytics radar, the theme
@@ -202,12 +360,23 @@ export function isMetaTheme(slug: string): boolean {
   return META_THEME_SLUGS.has(slug);
 }
 
-export function themeLabel(slug: string, lang: "en" | "uk" = "en") {
-  const dict = lang === "uk" ? UK : EN;
+export type ThemeLabelLang = "en" | "uk" | "ru" | "es";
+
+const LABELS: Record<ThemeLabelLang, Record<string, string>> = { en: EN, uk: UK, ru: RU, es: ES };
+const LABELS_EXTRA: Record<ThemeLabelLang, Record<string, string>> = {
+  en: EN_EXTRA,
+  uk: UK_EXTRA,
+  ru: RU_EXTRA,
+  es: ES_EXTRA,
+};
+
+export function themeLabel(slug: string, lang: ThemeLabelLang = "en") {
+  const dict = LABELS[lang] ?? EN;
   if (dict[slug]) return dict[slug];
   if (EN[slug]) return EN[slug];
-  const extra = lang === "uk" ? UK_EXTRA : EN_EXTRA;
+  const extra = LABELS_EXTRA[lang] ?? EN_EXTRA;
   if (extra[slug]) return extra[slug];
+  if (EN_EXTRA[slug]) return EN_EXTRA[slug];
   // Fallback: camelCase → spaced + capitalised.
   const spaced = slug
     .replace(/([A-Z])/g, " $1")

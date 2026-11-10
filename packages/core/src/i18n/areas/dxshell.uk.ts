@@ -19,6 +19,8 @@ export const dxshellUk: Dict = {
   'dx.shell.language': 'Мова',
   'dx.shell.lang_en': 'EN',
   'dx.shell.lang_uk': 'УКР',
+  'dx.shell.lang_ru': 'РУС',
+  'dx.shell.lang_es': 'ES',
   'dx.shell.key.start': 'Почати сесію',
   'dx.shell.key.skip': 'Пропустити',
   'dx.shell.key.pause': 'Пауза',

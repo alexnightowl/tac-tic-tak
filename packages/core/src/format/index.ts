@@ -2,12 +2,21 @@
 // components/SessionList.tsx. `now` is a parameter wherever the web read
 // the clock, so screens and tests can pin it.
 
-export type AppLanguage = 'en' | 'uk';
+export type AppLanguage = 'en' | 'uk' | 'ru' | 'es';
 
-/** BCP-47 locale the web passes to toLocale*String for each app language. */
-export function localeFor(language: string): 'uk-UA' | 'en-US' {
-  return language === 'uk' ? 'uk-UA' : 'en-US';
+const LOCALES = { en: 'en-US', uk: 'uk-UA', ru: 'ru-RU', es: 'es-ES' } as const;
+
+/** BCP-47 locale passed to toLocale*String for each app language (en for anything else). */
+export function localeFor(language: string): (typeof LOCALES)[AppLanguage] {
+  return LOCALES[language as AppLanguage] ?? LOCALES.en;
 }
+
+const TODAY: Record<AppLanguage, [today: string, yesterday: string]> = {
+  en: ['Today', 'Yesterday'],
+  uk: ['Сьогодні', 'Вчора'],
+  ru: ['Сегодня', 'Вчера'],
+  es: ['Hoy', 'Ayer'],
+};
 
 /**
  * Format a response time for end-user display. Always in seconds with
@@ -111,8 +120,9 @@ export function groupSessionsByDay<T extends { startedAt: string }>(
   for (const s of sessions) {
     const d = startOfDay(new Date(s.startedAt));
     let label: string;
-    if (d.getTime() === today.getTime()) label = language === 'uk' ? 'Сьогодні' : 'Today';
-    else if (d.getTime() === yesterday.getTime()) label = language === 'uk' ? 'Вчора' : 'Yesterday';
+    const [todayLabel, yesterdayLabel] = TODAY[language as AppLanguage] ?? TODAY.en;
+    if (d.getTime() === today.getTime()) label = todayLabel;
+    else if (d.getTime() === yesterday.getTime()) label = yesterdayLabel;
     else if (now.getTime() - d.getTime() < 7 * DAY_MS) {
       label = d.toLocaleDateString(locale, { weekday: 'long' });
     } else {

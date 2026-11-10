@@ -1,0 +1,48 @@
+// home area, ru. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const homeRu: Dict = {
+  'dashboard.welcome': 'С возвращением',
+  'dashboard.ready': 'Готов к тренировке?',
+  'dashboard.start': 'Начать сессию',
+  'dashboard.current_rating': 'Текущий уровень',
+  'dashboard.unlocked_start': 'Норма',
+  'dashboard.peak': 'Пик сложности',
+  'dashboard.sessions': 'Сессий',
+  'dashboard.recent': 'Последние сессии',
+  'dashboard.empty': 'Сессий пока нет. Начни первую!',
+  'streak.secured': 'Сегодня засчитано',
+  'streak.at_risk': 'Сыграй сегодня, чтобы не потерять',
+
+  // Phase 5 mobile-only copy: quick start, resume card, recent list, streak sheet.
+  'home.quick_start': 'Быстрый старт',
+  'home.quick_start_aria': 'Быстрый старт: {setup}',
+  'home.resume_title': 'Незавершенная сессия',
+  'home.resume_hint': 'Осталось {time} · решено {solved} · ошибок {failed}',
+  'home.resume': 'Продолжить',
+  'home.finish': 'Завершить',
+  'home.discard': 'Отбросить',
+  'home.discard_title': 'Отбросить эту сессию?',
+  'home.discard_body': 'Попытки будут удалены, уровень не изменится.',
+  'home.discard_failed': 'Не удалось отбросить сессию. Попробуй еще раз.',
+  'home.all_sessions': 'Все сессии',
+  'home.solved': 'решено',
+  'home.error': 'Не удалось загрузить сессии.',
+  'home.retry': 'Попробовать еще',
+  'home.rating_delta_aria': '{delta} с последнего визита',
+  'home.open_streak': 'Подробнее о ежедневной серии',
+  'streak.title': 'Ежедневная серия',
+  'streak.state_secured': 'Сегодняшний день засчитан. Возвращайся завтра, чтобы продолжить серию.',
+  'streak.state_at_risk': 'Ты играл вчера — заверши сессию сегодня, чтобы не потерять серию.',
+  'streak.state_broken': 'Серия прервалась. Следующая сессия начнет новую.',
+  'streak.state_none': 'Серии пока нет. Заверши сессию сегодня, чтобы ее начать.',
+  'streak.freeze_ready': 'Заморозка готова: она автоматически прикроет один пропущенный день.',
+  'streak.freeze_used': 'Заморозка использована. Она вернется {date}.',
+  'streak.rules': 'Засчитывается любая сохраненная сессия — рейтинговая, вольная, по теме или завершенная досрочно. Дни считаются по календарю телефона.',
+  'streak.outcome_started': 'Серия начата',
+  'streak.outcome_continued': 'Серия продлена',
+  'streak.outcome_frozen': 'Заморозка спасла серию',
+  'streak.outcome_frozen_hint': 'Ты пропустил день, поэтому сработала заморозка. Она вернется через 7 дней.',
+  'streak.outcome_reset': 'Начата новая серия',
+};

@@ -21,7 +21,7 @@ export const dxaccountEn: Dict = {
   'dx.account.your_friends': 'Your friends · {n}',
   'dx.account.online': 'online',
   'dx.account.ui_language': 'Interface language',
-  'dx.account.ui_language_hint': 'English and Ukrainian',
+  'dx.account.ui_language_hint': 'English, Ukrainian, Russian, Spanish',
   'dx.account.account_line': 'Account @{nickname} · created {date}',
   'dx.account.logout_title': 'Log out of your account',
   'dx.account.logout_hint': 'On this device',

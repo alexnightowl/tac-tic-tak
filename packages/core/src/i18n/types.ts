@@ -1,4 +1,4 @@
-export type Language = 'en' | 'uk';
+export type Language = 'en' | 'uk' | 'ru' | 'es';
 
 export type Dict = Record<string, string>;
 

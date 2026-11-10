@@ -12,17 +12,25 @@ export type HeatmapGrid = { weeks: Array<Array<HeatmapCell | null>> };
 export const HEATMAP_DAY_LABELS = {
   en: ['', 'Mon', '', 'Wed', '', 'Fri', ''],
   uk: ['', 'Пн', '', 'Ср', '', 'Пт', ''],
+  ru: ['', 'Пн', '', 'Ср', '', 'Пт', ''],
+  es: ['', 'Lun', '', 'Mié', '', 'Vie', ''],
 };
 
 export const HEATMAP_MONTH_LABELS = {
   en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   uk: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру'],
+  ru: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+  es: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
 };
+
+type HeatmapLanguage = keyof typeof HEATMAP_MONTH_LABELS;
 
 // Hardcoded on the web too (not in the i18n dicts).
 export const HEATMAP_LEGEND = {
   en: { less: 'Less', more: 'More' },
   uk: { less: 'Менше', more: 'Більше' },
+  ru: { less: 'Меньше', more: 'Больше' },
+  es: { less: 'Menos', more: 'Más' },
 };
 
 /** Sessions per local calendar day, for the heatmap. Note the day is the
@@ -86,7 +94,7 @@ export function levelFor(count: number): number {
 
 /** Month label above the first column whose first day (a Sunday) falls in
  *  a new month's first week. */
-export function monthMarkers(grid: HeatmapGrid, language: 'en' | 'uk' = 'en'): Array<{ col: number; label: string }> {
+export function monthMarkers(grid: HeatmapGrid, language: HeatmapLanguage = 'en'): Array<{ col: number; label: string }> {
   const monthLabels = HEATMAP_MONTH_LABELS[language] ?? HEATMAP_MONTH_LABELS.en;
   const marks: Array<{ col: number; label: string }> = [];
   let lastMonth = -1;
@@ -102,11 +110,20 @@ export function monthMarkers(grid: HeatmapGrid, language: 'en' | 'uk' = 'en'): A
   return marks;
 }
 
-export function heatmapTooltip(date: string, count: number, language: 'en' | 'uk' = 'en'): string {
+export function heatmapTooltip(date: string, count: number, language: HeatmapLanguage = 'en'): string {
   if (language === 'uk') {
     return count === 0
       ? `${date} — без сесій`
       : `${date} — ${count} ${pluralizeUk(count, ['сесія', 'сесії', 'сесій'])}`;
+  }
+  if (language === 'ru') {
+    // Russian shares the Ukrainian one / few / many rule.
+    return count === 0
+      ? `${date} — нет сессий`
+      : `${date} — ${count} ${pluralizeUk(count, ['сессия', 'сессии', 'сессий'])}`;
+  }
+  if (language === 'es') {
+    return count === 0 ? `${date} — sin sesiones` : `${date} — ${count} ${count === 1 ? 'sesión' : 'sesiones'}`;
   }
   return count === 0
     ? `${date} — no sessions`

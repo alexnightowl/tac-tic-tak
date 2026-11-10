@@ -1,0 +1,48 @@
+// home area, es. Keys from the web dict (apps/frontend/src/lib/i18n.ts) keep
+// their web text verbatim; mobile-only keys follow. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const homeEs: Dict = {
+  'dashboard.welcome': 'Hola de nuevo',
+  'dashboard.ready': '¿Listo para entrenar?',
+  'dashboard.start': 'Empezar sesión',
+  'dashboard.current_rating': 'Nivel actual',
+  'dashboard.unlocked_start': 'Norma',
+  'dashboard.peak': 'Dificultad máx.',
+  'dashboard.sessions': 'Sesiones',
+  'dashboard.recent': 'Sesiones recientes',
+  'dashboard.empty': 'Aún no hay sesiones. ¡Empieza la primera!',
+  'streak.secured': 'Hoy ya cuenta',
+  'streak.at_risk': 'Juega hoy para mantenerla',
+
+  // Phase 5 mobile-only copy: quick start, resume card, recent list, streak sheet.
+  'home.quick_start': 'Inicio rápido',
+  'home.quick_start_aria': 'Inicio rápido: {setup}',
+  'home.resume_title': 'Sesión en curso',
+  'home.resume_hint': 'Quedan {time} · {solved} resueltos · {failed} fallados',
+  'home.resume': 'Reanudar',
+  'home.finish': 'Terminar',
+  'home.discard': 'Descartar',
+  'home.discard_title': '¿Descartar esta sesión?',
+  'home.discard_body': 'Sus intentos se borran; tu nivel no cambia.',
+  'home.discard_failed': 'No se pudo descartar la sesión. Inténtalo de nuevo.',
+  'home.all_sessions': 'Todas las sesiones',
+  'home.solved': 'resueltos',
+  'home.error': 'No se pudieron cargar tus sesiones.',
+  'home.retry': 'Reintentar',
+  'home.rating_delta_aria': '{delta} desde tu última visita',
+  'home.open_streak': 'Detalles de la racha diaria',
+  'streak.title': 'Racha diaria',
+  'streak.state_secured': 'Hoy ya cuenta. Vuelve mañana para seguir con la racha.',
+  'streak.state_at_risk': 'Jugaste ayer: termina una sesión hoy para mantener la racha.',
+  'streak.state_broken': 'La racha se rompió. Tu próxima sesión empieza una nueva.',
+  'streak.state_none': 'Aún no tienes racha. Termina una sesión hoy para empezarla.',
+  'streak.freeze_ready': 'Protector listo: cubre automáticamente un día perdido.',
+  'streak.freeze_used': 'Protector usado. Vuelve el {date}.',
+  'streak.rules': 'Cuenta cualquier sesión guardada: puntuada, libre, por tema o terminada antes de tiempo. Los días siguen el calendario de tu teléfono.',
+  'streak.outcome_started': 'Racha iniciada',
+  'streak.outcome_continued': 'Racha ampliada',
+  'streak.outcome_frozen': 'El protector salvó tu racha',
+  'streak.outcome_frozen_hint': 'Faltaste un día, así que se activó tu protector. Vuelve en 7 días.',
+  'streak.outcome_reset': 'Nueva racha iniciada',
+};

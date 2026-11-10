@@ -5,7 +5,8 @@
 import type { XpAward } from '../api/types';
 import type { CourseExamRecord, CoursePendingExam } from './courses';
 
-export type Localized = { en: string; uk: string };
+/** Library copy per language; ru / es arrived later (absent on older content: en stands in). */
+export type Localized = { en: string; uk: string; ru?: string; es?: string };
 
 export type LibraryCover = 'parchment' | 'oxblood' | 'navy' | 'crimson' | 'graphite' | 'olive' | 'teal' | 'plum' | 'umber';
 export type LibraryResult = 'clean' | 'hint' | 'missed';
@@ -110,7 +111,8 @@ export const LIBRARY_SYNC_BATCH = 500;
 /** Server cap on one puzzle's time. */
 export const LIBRARY_MAX_TIME_MS = 30 * 60 * 1000;
 
-export const localized = (l: Localized, lang: string) => (lang === 'uk' ? l.uk : l.en);
+export const localized = (l: Localized, lang: string): string =>
+  (lang === 'uk' || lang === 'ru' || lang === 'es' ? l[lang] : undefined) ?? l.en;
 
 // ─── Results ─────────────────────────────────────────────────────────────
 

@@ -1,0 +1,35 @@
+// sessions area, es. Same keys and order as sessions.en.ts; translated from en with
+// sessions.uk.ts as the reference for meaning and tone. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const sessionsEs: Dict = {
+  'sessions.title': 'Historial',
+  'sessions.detail_title': 'Sesión',
+  'sessions.mixed': 'Mixta',
+  'sessions.minutes': '{n} min',
+  'sessions.start': 'Inicio',
+  'sessions.peak': 'Pico',
+  'sessions.accuracy': 'Precisión',
+  'sessions.avg_response': 'Resp. media',
+  'sessions.solved': 'Resueltos',
+  'sessions.failed': 'Fallados',
+  'sessions.attempts': 'Intentos',
+  'sessions.no_attempts': 'Sin intentos',
+  'sessions.attempt_correct': 'resuelto',
+  'sessions.attempt_wrong': 'fallado',
+  'sessions.attempt_a11y': 'Problema {n}, {result}, dificultad {rating}, {time}',
+  'sessions.not_found': 'Sesión no encontrada',
+  'sessions.error': 'No se pudo cargar esta sesión.',
+  'sessions.retry': 'Reintentar',
+  'sessions.row_solved': 'resueltos',
+  'sessions.row_a11y': '{time}, {solved} resueltos, dificultad de {start} a {peak}',
+  'sessions.delete': 'Eliminar',
+  'sessions.delete_a11y': 'Eliminar sesión',
+  'sessions.deleted': 'Sesión eliminada',
+  'sessions.undo': 'Deshacer',
+  'sessions.delete_failed': 'No se pudo eliminar la sesión.',
+  'sessions.empty': 'Aún no hay sesiones. ¡Empieza la primera!',
+  'sessions.empty_cta': 'Empezar una sesión',
+  'sessions.recent_note': 'Tus últimas {n} sesiones',
+  'sessions.list_error': 'No se pudieron cargar tus sesiones.',
+};

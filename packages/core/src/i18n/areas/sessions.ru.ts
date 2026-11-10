@@ -1,0 +1,35 @@
+// sessions area, ru. Same keys and order as sessions.en.ts; translated from en with
+// sessions.uk.ts as the reference for meaning and tone. Edit only your area's files.
+import type { Dict } from '../types';
+
+export const sessionsRu: Dict = {
+  'sessions.title': 'История',
+  'sessions.detail_title': 'Сессия',
+  'sessions.mixed': 'Смешанная',
+  'sessions.minutes': '{n} мин',
+  'sessions.start': 'Старт',
+  'sessions.peak': 'Пик',
+  'sessions.accuracy': 'Точность',
+  'sessions.avg_response': 'Ср. ответ',
+  'sessions.solved': 'Решено',
+  'sessions.failed': 'Ошибки',
+  'sessions.attempts': 'Попытки',
+  'sessions.no_attempts': 'Нет попыток',
+  'sessions.attempt_correct': 'решено',
+  'sessions.attempt_wrong': 'ошибка',
+  'sessions.attempt_a11y': 'Задача {n}, {result}, сложность {rating}, {time}',
+  'sessions.not_found': 'Сессия не найдена',
+  'sessions.error': 'Не удалось загрузить сессию.',
+  'sessions.retry': 'Попробовать еще',
+  'sessions.row_solved': 'решено',
+  'sessions.row_a11y': '{time}, решено {solved}, сложность от {start} до {peak}',
+  'sessions.delete': 'Удалить',
+  'sessions.delete_a11y': 'Удалить сессию',
+  'sessions.deleted': 'Сессия удалена',
+  'sessions.undo': 'Отменить',
+  'sessions.delete_failed': 'Не удалось удалить сессию.',
+  'sessions.empty': 'Сессий пока нет. Начни первую!',
+  'sessions.empty_cta': 'Начать сессию',
+  'sessions.recent_note': 'Твои последние сессии: {n}',
+  'sessions.list_error': 'Не удалось загрузить сессии.',
+};

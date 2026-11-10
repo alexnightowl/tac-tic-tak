@@ -129,7 +129,7 @@ export function radarGeometry(
  *  shown alphabetically by slug. The web hides the chart below 3. */
 export function selectRadarThemes(
   themes: Array<{ slug: string; rating: number; attempts: number }>,
-  lang: 'en' | 'uk' = 'en',
+  lang: 'en' | 'uk' | 'ru' | 'es' = 'en',
 ): RadarDatum[] {
   return themes
     .filter((t) => t.rating > 0 && !isMetaTheme(t.slug))

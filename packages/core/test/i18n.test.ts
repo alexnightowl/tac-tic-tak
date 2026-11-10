@@ -78,6 +78,64 @@ describe('dictionary parity', () => {
   });
 });
 
+describe('ru / es dictionaries', () => {
+  const plural = (k: string) => /\.(zero|one|two|few|many|other)$/.test(k);
+  const base = (k: string) => k.replace(/\.(zero|one|two|few|many|other)$/, '');
+  const tokens = (s: string) => (s.match(/\{[a-z_]+\}/gi) ?? []).sort();
+
+  for (const lang of ['ru', 'es'] as const) {
+    it(`${lang}: every area has the en keys (plural forms aside), no extras`, () => {
+      for (const a of AREAS) {
+        const { en } = AREA_DICTS[a];
+        const d = AREA_DICTS[a][lang];
+        expect(missing(en, d).filter((k) => !plural(k)), `${a}: en keys missing in ${lang}`).toEqual([]);
+        const enBases = new Set(Object.keys(en).map(base));
+        expect(Object.keys(d).filter((k) => !enBases.has(base(k))), `${a}: ${lang} keys not in en`).toEqual([]);
+      }
+    });
+
+    it(`${lang}: plural keys have their forms`, () => {
+      const need = lang === 'ru' ? ['few', 'many', 'one', 'other'] : ['few', 'many', 'one', 'other'];
+      const enBases = new Set(Object.keys(DICTS.en).filter(plural).map(base));
+      for (const b of enBases) {
+        for (const f of need) expect(`${b}.${f}` in DICTS[lang], `${lang} ${b}.${f}`).toBe(true);
+      }
+    });
+
+    it(`${lang}: tokens match en and never repeat`, () => {
+      for (const [k, v] of Object.entries(DICTS[lang])) {
+        const enV = DICTS.en[k] ?? DICTS.en[`${base(k)}.other`];
+        if (enV != null) expect(tokens(v), `${lang} ${k}`).toEqual(tokens(enV));
+        const toks = v.match(/\{[a-z_]+\}/gi) ?? [];
+        expect(new Set(toks).size, `${lang} ${k}`).toBe(toks.length);
+      }
+      for (const [k, v] of Object.entries(LANDING_DICTS[lang])) expect(tokens(v), `${lang} landing ${k}`).toEqual(tokens(LANDING_DICTS.en[k] ?? ''));
+    });
+
+    it(`${lang}: landing keys match en`, () => {
+      expect(missing(LANDING_DICTS.en, LANDING_DICTS[lang])).toEqual([]);
+      expect(missing(LANDING_DICTS[lang], LANDING_DICTS.en)).toEqual([]);
+    });
+
+    it(`${lang}: no key is defined in two areas`, () => {
+      const seen = new Map<string, string>();
+      for (const a of AREAS) {
+        for (const k of Object.keys(AREA_DICTS[a][lang])) {
+          expect(seen.get(k), `${lang} '${k}' in ${seen.get(k)} and ${a}`).toBeUndefined();
+          seen.set(k, a);
+        }
+      }
+    });
+  }
+
+  it('picks ru one/few/many and es one/other', () => {
+    const ru = createTranslator('ru').tn;
+    const es = createTranslator('es').tn;
+    expect([1, 3, 5, 21].map((n) => ru('woodpecker.days', n))).toEqual(['{n} день', '{n} дня', '{n} дней', '{n} день']);
+    expect([1, 2].map((n) => es('woodpecker.days', n))).toEqual(['{n} día', '{n} días']);
+  });
+});
+
 describe('createTranslator', () => {
   it('looks up, falls back to en, then to the key', () => {
     const t = createTranslator('uk').t;
