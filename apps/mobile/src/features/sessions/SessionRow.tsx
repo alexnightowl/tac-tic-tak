@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { formatSessionTime, type SessionRow as Row } from '@tac/core/format';
 import { isTrainingStyle } from '@tac/core/rules';
 import { eos, radii, shadows, space, surface, tone } from '@tac/core/tokens';
@@ -36,7 +37,7 @@ const STYLE_ICONS = {
  * users' profiles, so the swipe showed there and did nothing. The drag
  * runs on SharedValues only; JS hears the threshold tick and the delete.
  */
-export function SessionRow({ row, lang, t, onDelete }: { row: Row; lang: 'en' | 'uk'; t: TFn; onDelete?: (id: string) => void }) {
+export function SessionRow({ row, lang, t, onDelete }: { row: Row; lang: Language; t: TFn; onDelete?: (id: string) => void }) {
   const x = useSharedValue(0);
   const start = useSharedValue(0);
   const past = useSharedValue(false);

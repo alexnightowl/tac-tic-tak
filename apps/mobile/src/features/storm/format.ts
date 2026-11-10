@@ -13,9 +13,10 @@ export function shortDate(iso: string, lang: Language): string {
   return new Date(iso).toLocaleDateString(localeFor(lang), { day: 'numeric', month: 'short' });
 }
 
-/** "2nd" / "2-е" for "{rank} among friends". */
+/** "2nd" / "2-е" / "2.º" for "{rank} among friends". */
 export function ordinal(n: number, lang: Language): string {
-  if (lang === 'uk') return `${n}-е`;
+  if (lang === 'uk' || lang === 'ru') return `${n}-е`;
+  if (lang === 'es') return `${n}.º`;
   const tens = n % 100;
   if (tens >= 11 && tens <= 13) return `${n}th`;
   return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;

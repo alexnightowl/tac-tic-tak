@@ -55,18 +55,17 @@ export const DEFAULT_PROGRESSIONS: Progressions = {
 export const EMPTY_STREAK: Streak = { days: 0, freezes: 1, lastDay: null, freezeRegenAt: null };
 
 function isLang(v: unknown): v is Language {
-  return v === 'en' || v === 'uk';
+  return v === 'en' || v === 'uk' || v === 'ru' || v === 'es';
 }
 
 /**
- * First-launch language from the device (PLAN Phase 4): uk and ru map to
- * uk (the web's audience reads Ukrainian), everything else to en. Only
- * used until the user or the account picks one.
+ * First-launch language from the device: uk, ru and es as they are,
+ * everything else en. Only used until the user or the account picks one.
  */
 export function deviceLanguage(): Language {
   try {
     for (const l of getLocales()) {
-      if (l.languageCode === 'uk' || l.languageCode === 'ru') return 'uk';
+      if (isLang(l.languageCode)) return l.languageCode;
       if (l.languageCode) return 'en';
     }
   } catch {

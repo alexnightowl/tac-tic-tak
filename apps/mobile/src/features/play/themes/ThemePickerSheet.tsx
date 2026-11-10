@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { queryKeys } from '@tac/core/api';
 import { KNOWN_THEME_SLUGS, isMetaTheme, themeLabel } from '@tac/core/themes';
 import { control, eos, layout, radii, rank, semantic, space, surface } from '@tac/core/tokens';
@@ -45,7 +46,7 @@ type Item = ThemeItem;
  * weakness or by volume, or every known theme A–Z; filtered by the
  * localised label. Shared with the desktop Play page's theme grid.
  */
-export function pickerItems(rows: ThemeStatRow[] | undefined, tab: ThemeTab, query: string, lang: 'en' | 'uk'): { items: ThemeItem[]; tactical: ThemeStatRow[] } {
+export function pickerItems(rows: ThemeStatRow[] | undefined, tab: ThemeTab, query: string, lang: Language): { items: ThemeItem[]; tactical: ThemeStatRow[] } {
   const tactical = (rows ?? []).filter((r) => !isMetaTheme(r.slug));
   const bySlug = new Map(tactical.map((r) => [r.slug, r]));
   let items: ThemeItem[];
@@ -53,7 +54,7 @@ export function pickerItems(rows: ThemeStatRow[] | undefined, tab: ThemeTab, que
   else if (tab === 'popular') items = [...tactical].sort((a, b) => b.attempts - a.attempts).map((r) => ({ slug: r.slug, row: r }));
   else {
     items = KNOWN_THEME_SLUGS.map((slug) => ({ slug, row: bySlug.get(slug) })).sort((a, b) =>
-      themeLabel(a.slug, lang).localeCompare(themeLabel(b.slug, lang), lang === 'uk' ? 'uk' : 'en'),
+      themeLabel(a.slug, lang).localeCompare(themeLabel(b.slug, lang), lang),
     );
   }
   const q = query.trim().toLowerCase();
@@ -193,7 +194,7 @@ function ThemeRowView({
   item: Item;
   tab: Tab;
   active: boolean;
-  lang: 'en' | 'uk';
+  lang: Language;
   t: ReturnType<typeof usePlayT>;
   onPick: (slug: string) => void;
 }) {

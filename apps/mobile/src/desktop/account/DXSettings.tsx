@@ -1,4 +1,4 @@
-import type { Language } from '@tac/core/i18n';
+import { LANGUAGES, type Language } from '@tac/core/i18n';
 import { tone } from '@tac/core/tokens';
 import { useQuery } from '@tanstack/react-query';
 import { router, type Href } from 'expo-router';
@@ -154,10 +154,7 @@ export function DxSettings() {
         <LinkRow icon={UserRound} title={t('settings.profile.view')} testID="settings-profile-view" onPress={() => router.push(profileHref)} />
         <SettingRow title={t('dx.account.ui_language')} hint={t('dx.account.ui_language_hint')}>
           <Seg
-            options={[
-              { value: 'en', label: t('settings.lang.en') },
-              { value: 'uk', label: t('settings.lang.uk') },
-            ]}
+            options={LANGUAGES.map((l) => ({ value: l, label: t(`settings.lang.${l}`) }))}
             value={lang}
             onChange={(v: Language) => {
               feel.emit('segmented');
@@ -200,6 +197,6 @@ const styles = StyleSheet.create({
   pane: { flex: 1, minWidth: 0 },
   mt14: { marginTop: 14 },
   mt28: { marginTop: 28 },
-  langSeg: { width: 260 },
+  langSeg: { width: 420 },
   keys: { marginTop: 14, paddingVertical: 16, paddingHorizontal: 22 },
 });

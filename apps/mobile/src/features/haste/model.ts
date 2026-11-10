@@ -20,7 +20,7 @@ export const hasteQuery = () =>
 export function fmtSecs(ms: number, lang: Language, t: (k: string, v?: Record<string, string | number>) => string): string {
   const s = ms / 1000;
   const n = s >= 10 || Number.isInteger(s) ? String(Math.round(s)) : s.toFixed(1);
-  return t('haste.secs', { n: lang === 'uk' ? n.replace('.', ',') : n });
+  return t('haste.secs', { n: lang === 'en' ? n : n.replace('.', ',') });
 }
 
 export const pct = (share: number) => Math.round(share * 100);

@@ -1,11 +1,10 @@
 'use client';
 
 import { keyframes, keyframeStops } from '@tac/core/tokens';
-import type { Language } from '@tac/core/i18n';
 import { useCallback, useRef, type ReactNode } from 'react';
 
 import { useT } from '@/lib/i18n';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, type Language } from '@/lib/store';
 import { AppText, BrandLogo, Press, Segmented } from '@/v2/ui';
 import './auth.css';
 

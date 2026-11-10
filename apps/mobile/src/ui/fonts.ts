@@ -40,7 +40,8 @@ export function fontFamily(
 ): string {
   if (role === 'display' || role === 'serif') {
     const w = serifWeight(weight);
-    return lang === 'uk' ? UK_DISPLAY_CANDIDATES[ukDisplay].faces[w] : fontFamilies.serif[w];
+    // Cinzel has no Cyrillic: uk and ru take the Cyrillic display face.
+    return lang === 'uk' || lang === 'ru' ? UK_DISPLAY_CANDIDATES[ukDisplay].faces[w] : fontFamilies.serif[w];
   }
   return fontFamilies.sans[weight];
 }

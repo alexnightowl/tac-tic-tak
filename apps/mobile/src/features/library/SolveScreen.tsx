@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import {
   bookProgress,
   cycleTargetSec,
@@ -377,7 +378,7 @@ function Runner({ book, chapterIndex, cycle }: { book: LibraryBook; chapterIndex
   );
 }
 
-function GameCard({ puzzle, lang }: { puzzle: LibraryPuzzle; lang: 'en' | 'uk' }) {
+function GameCard({ puzzle, lang }: { puzzle: LibraryPuzzle; lang: Language }) {
   const t = useT();
   const g = puzzle.game;
   const place = g.site || g.event;

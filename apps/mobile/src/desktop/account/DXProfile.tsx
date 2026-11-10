@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { achievementNameKey } from '@tac/core/catalogs';
 import { queryKeys } from '@tac/core/api';
 import { bucketByLocalDay, RADAR_MIN_THEMES, selectRadarThemes } from '@tac/core/charts';
@@ -44,11 +45,11 @@ import { DxSessionRow } from './SessionRow';
 
 const DASH = '—';
 
-/** "October 2026" / "жовтня 2026" (uk wants the genitive after "з"). */
-function monthYear(iso: string, lang: 'en' | 'uk'): string {
+/** "October 2026" / "жовтня 2026" (uk / ru want the genitive after "з" / "с"). */
+function monthYear(iso: string, lang: Language): string {
   const d = new Date(iso);
   const locale = localeFor(lang);
-  if (lang !== 'uk') return d.toLocaleDateString(locale, { year: 'numeric', month: 'long' });
+  if (lang !== 'uk' && lang !== 'ru') return d.toLocaleDateString(locale, { year: 'numeric', month: 'long' });
   const month = d.toLocaleDateString(locale, { day: 'numeric', month: 'long' }).replace(/^\d+\s*/, '');
   return `${month} ${d.getFullYear()}`;
 }

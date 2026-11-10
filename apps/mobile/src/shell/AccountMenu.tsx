@@ -1,4 +1,4 @@
-import type { Language } from '@tac/core/i18n';
+import { LANGUAGES, type Language } from '@tac/core/i18n';
 import { control, eos, fontSize, layout, radii, space } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { ChevronRight, LogOut, Settings, Terminal, User, Users, type LucideIcon } from 'lucide-react-native';
@@ -42,10 +42,7 @@ export function AccountMenu() {
     router.push(href);
   };
 
-  const langOptions = [
-    { value: 'en', label: t('shell.lang.en') },
-    { value: 'uk', label: t('shell.lang.uk') },
-  ] as const;
+  const langOptions = LANGUAGES.map((l) => ({ value: l, label: t(`shell.lang.${l}`) }));
 
   return (
     <View style={[styles.root, { paddingBottom: Math.max(0, PAD_BOTTOM - insets.bottom) }]} testID="account-menu">

@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import type { SessionDetail } from '@tac/core/api';
 import { normalizePieceSet } from '@tac/core/board';
 import { fmtResponseTime } from '@tac/core/format';
@@ -366,7 +367,7 @@ function XpCard({
   after: NonNullable<FinishResponse['xp']>['after'];
   rankBefore: string;
   t: TFn;
-  lang: 'en' | 'uk';
+  lang: Language;
 }) {
   const ratio = (after.xp - after.levelXp) / Math.max(1, after.nextLevelXp - after.levelXp);
   const rankUp = after.rank !== rankBefore;
@@ -410,7 +411,7 @@ function PuzzlesCard({
   /** Boards per row: the card is exactly that wide. */
   cols: number;
   t: TFn;
-  lang: 'en' | 'uk';
+  lang: Language;
 }) {
   const [filter, setFilter] = useState<Filter>('all');
   const pieceSet = useAppStore((s) => normalizePieceSet(s.settings.pieceSet));

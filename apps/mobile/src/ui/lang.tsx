@@ -13,6 +13,8 @@ type LangValue = { lang: Language; ukDisplay: UkDisplayCandidate; tr: Translator
 const translators: Record<Language, Translator> = {
   en: createTranslator('en'),
   uk: createTranslator('uk'),
+  ru: createTranslator('ru'),
+  es: createTranslator('es'),
 };
 
 export function translatorFor(lang: Language): Translator {

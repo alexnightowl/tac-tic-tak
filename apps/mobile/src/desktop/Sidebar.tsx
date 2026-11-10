@@ -1,4 +1,4 @@
-import type { Language } from '@tac/core/i18n';
+import { LANGUAGES, type Language } from '@tac/core/i18n';
 import { queryKeys } from '@tac/core/api';
 import { streakState } from '@tac/core/format';
 import { levelFor } from '@tac/core/runner';
@@ -280,10 +280,7 @@ function AccountPopover({ compact, onClose, onKeys }: { compact: boolean; onClos
           </DText>
           <Seg<Language>
             small
-            options={[
-              { value: 'en', label: t('dx.shell.lang_en') },
-              { value: 'uk', label: t('dx.shell.lang_uk') },
-            ]}
+            options={LANGUAGES.map((l) => ({ value: l, label: t(`dx.shell.lang_${l}`) }))}
             value={lang}
             onChange={(v) => void patchSettings({ language: v })}
             testID="dx-menu-lang"
@@ -391,7 +388,7 @@ const styles = StyleSheet.create({
     ...fixed,
     left: 14,
     bottom: 76,
-    width: 214,
+    width: 284,
     zIndex: 21,
     padding: 6,
     borderRadius: 12,
@@ -405,7 +402,7 @@ const styles = StyleSheet.create({
   popHead: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 8, paddingBottom: 10 },
   popRule: { height: 1, marginVertical: 4, backgroundColor: dx.rowRule },
   popLang: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 8, paddingVertical: 4 },
-  langSeg: { width: 104 },
+  langSeg: { width: 204 },
   menuRow: { flexDirection: 'row', alignItems: 'center', gap: 10, height: 36, paddingHorizontal: 8, borderRadius: 8 },
   menuHover: { backgroundColor: dx.card2 },
 });

@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { formatSessionTime, groupSessionsByDay, type SessionRow as Row } from '@tac/core/format';
 import { isTrainingStyle } from '@tac/core/rules';
 import { eos } from '@tac/core/tokens';
@@ -133,7 +134,7 @@ function cols(compact: boolean) {
     : { row: styles.row, time: styles.cTime, num: styles.cNum, rating: styles.cRating };
 }
 
-function SessionLine({ row, lang, t, compact, onDelete }: { row: Row; lang: 'en' | 'uk'; t: TFn; compact: boolean; onDelete: (id: string) => void }) {
+function SessionLine({ row, lang, t, compact, onDelete }: { row: Row; lang: Language; t: TFn; compact: boolean; onDelete: (id: string) => void }) {
   const time = formatSessionTime(row.startedAt, lang);
   const style = row.style && isTrainingStyle(row.style) ? row.style : null;
   const delta = row.peakRating - row.startRating;

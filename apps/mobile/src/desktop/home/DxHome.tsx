@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { localeFor, streakState, type SessionRow } from '@tac/core/format';
 import { localized, suggestedCourse, type CourseSummary } from '@tac/core/library';
 import { CALIBRATION_SESSIONS, LEVEL_STEP, UI_STYLE_ORDER, isTrainingStyle } from '@tac/core/rules';
@@ -211,7 +212,7 @@ export function DxHome() {
 // ── Data rich ───────────────────────────────────────────────────────────
 
 /** The quick start's plate label and its one-line setup (the phone's "Blitz · 5 min · Fork"). */
-function describeSetup(t: TFn, lang: 'en' | 'uk', setup: SessionSetup, prog: Progression) {
+function describeSetup(t: TFn, lang: Language, setup: SessionSetup, prog: Progression) {
   const themeName = setup.mode === 'theme' && setup.theme ? themeLabel(setup.theme, lang) : null;
   // Casual and theme drills repeat their picked difficulty (the phone's repeatStartRating).
   const startRating = setup.mode === 'mixed' ? null : repeatStartRating(setup, prog);
@@ -824,7 +825,7 @@ function greeting(t: TFn, name: string): string {
 }
 
 /** "Сьогодні, 09:12" / "Вчора, 21:40" / "7 лист., 20:05". */
-function whenLabel(iso: string, lang: 'en' | 'uk', t: TFn): string {
+function whenLabel(iso: string, lang: Language, t: TFn): string {
   const d = new Date(iso);
   const locale = localeFor(lang);
   const time = d.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });

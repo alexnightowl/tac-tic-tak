@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { formatSessionTime, groupSessionsByDay, type SessionRow } from '@tac/core/format';
 import { isTrainingStyle } from '@tac/core/rules';
 import { themeLabel } from '@tac/core/themes';
@@ -197,7 +198,7 @@ function StateBlock({
   );
 }
 
-function ThemeCard({ row, width, opening, onPress, lang }: { row: ThemeRow; width: number; opening: boolean; onPress: () => void; lang: 'en' | 'uk' }) {
+function ThemeCard({ row, width, opening, onPress, lang }: { row: ThemeRow; width: number; opening: boolean; onPress: () => void; lang: Language }) {
   const t = useT();
   const tn = useTn();
   const label = themeLabel(row.slug, lang);
@@ -272,7 +273,7 @@ function History({ q }: { q: UseQueryResult<Awaited<ReturnType<typeof sessionApi
   );
 }
 
-function HistoryRow({ row, lang, t, tn }: { row: SessionRow; lang: 'en' | 'uk'; t: ReturnType<typeof useT>; tn: ReturnType<typeof useTn> }) {
+function HistoryRow({ row, lang, t, tn }: { row: SessionRow; lang: Language; t: ReturnType<typeof useT>; tn: ReturnType<typeof useTn> }) {
   const style = row.style && isTrainingStyle(row.style) ? t(`style.${row.style}.name`) : null;
   const title = [style, sessionKindLabel(row, lang, t)].filter(Boolean).join(' · ');
   const day = groupSessionsByDay([row], lang)[0]?.[0] ?? '';

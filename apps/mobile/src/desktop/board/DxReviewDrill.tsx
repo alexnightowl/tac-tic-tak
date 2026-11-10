@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { isApiError } from '@tac/core/api';
 import { localeFor, formatSessionTime } from '@tac/core/format';
 import { browseOf, canHint, drillCounterOf, mistakesProgressOf, practiceTitleOf, tacticalThemes, type PracticeState, type PracticeTitle } from '@tac/core/runner';
@@ -200,7 +201,7 @@ function DrillStage({
   note: string | null;
   retry: (() => void) | null;
   t: TFn;
-  lang: 'en' | 'uk';
+  lang: Language;
 }) {
   const { controller, s, onMove, boardRef } = runner;
   const title = practiceTitleOf(s);

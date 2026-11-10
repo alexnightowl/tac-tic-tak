@@ -12,7 +12,7 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 export function groupInt(n: number, lang: Language): string {
   'worklet';
   const s = String(Math.round(Math.abs(n)));
-  const sep = lang === 'uk' ? ' ' : ',';
+  const sep = lang === 'en' ? ',' : lang === 'es' ? '.' : ' ';
   let out = '';
   for (let i = 0; i < s.length; i++) {
     if (i > 0 && (s.length - i) % 3 === 0) out += sep;

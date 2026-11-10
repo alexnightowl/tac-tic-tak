@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import type { AppPieceSet } from '@tac/core/board';
 import { browseOf, type PracticeState, type PracticeTitle } from '@tac/core/runner';
 import { themeLabel } from '@tac/core/themes';
@@ -97,7 +98,7 @@ export function PracticeTurnCard({
 }
 
 /** Fixed-height themes line (web 18 px slot: up to 3 non-meta labels, or the retry note). */
-export function ThemesLine({ slugs, lang, note, noteColor }: { slugs: string[]; lang: 'en' | 'uk'; note?: string | null; noteColor?: string }) {
+export function ThemesLine({ slugs, lang, note, noteColor }: { slugs: string[]; lang: Language; note?: string | null; noteColor?: string }) {
   return (
     <View style={styles.themes}>
       <AppText variant="caption" numberOfLines={1} color={note ? (noteColor ?? eos.rose) : eos.ash} testID="practice-themes">

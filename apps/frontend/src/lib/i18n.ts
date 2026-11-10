@@ -1,6 +1,6 @@
 'use client';
 
-import { createTranslator, DICTS, type Dict, type Translator } from '@tac/core/i18n';
+import { createTranslator, DICTS, type Dict, type Language as CoreLanguage, type Translator } from '@tac/core/i18n';
 
 import { useAppStore, Language } from './store';
 
@@ -41,9 +41,12 @@ const dicts: Record<Language, Dict> = {
   uk: { ...DICTS.uk, ...LEGACY.uk },
 };
 
+// The core's Language also has ru / es (the app's); this web stays en / uk
+// (createTranslator falls back to en for a language it has no dict for).
+const coreDicts = dicts as Record<CoreLanguage, Dict>;
 const translators: Record<Language, Translator> = {
-  en: createTranslator('en', dicts),
-  uk: createTranslator('uk', dicts),
+  en: createTranslator('en', coreDicts),
+  uk: createTranslator('uk', coreDicts),
 };
 
 /** The translator for a language outside render (async callbacks that outlive a language switch). */

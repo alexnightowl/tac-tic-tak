@@ -4,7 +4,8 @@ import { useLang } from '../lang';
 
 // Dev-route-only copy (section headers, state names). Kept out of
 // @tac/core/i18n on purpose: none of it ships in a product screen.
-const DEV: Record<Language, Record<string, string>> = {
+// Dev routes stay en / uk; ru and es read en.
+const DEV: Record<'en' | 'uk', Record<string, string>> = {
   en: {
     plates: 'Plate buttons',
     surfaces: 'Surfaces',
@@ -122,5 +123,5 @@ const DEV: Record<Language, Record<string, string>> = {
 
 export function useDevT(): (key: keyof (typeof DEV)['en']) => string {
   const { lang } = useLang();
-  return (key) => DEV[lang][key] ?? DEV.en[key];
+  return (key) => (lang === 'uk' ? DEV.uk : DEV.en)[key] ?? DEV.en[key];
 }

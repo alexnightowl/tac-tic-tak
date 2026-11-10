@@ -1,14 +1,13 @@
 'use client';
 
 import * as Dialog from '@radix-ui/react-dialog';
-import type { Language } from '@tac/core/i18n';
 import { useQueryClient } from '@tanstack/react-query';
 import { BookOpen, LogOut, Settings, Shield, User, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { http, setToken } from '@/lib/api';
 import { tFor, useT } from '@/lib/i18n';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, type Language } from '@/lib/store';
 import { useToastStore } from '@/lib/toast';
 import { AppText, Avatar, GroupedList, Press, Row, Segmented, SectionLabel, Sheet } from '@/v2/ui';
 import { useIncomingRequestCount } from './useShellData';

@@ -1,3 +1,4 @@
+import type { Language } from '@tac/core/i18n';
 import { fmtResponseTime, localeFor } from '@tac/core/format';
 import { themeLabel } from '@tac/core/themes';
 
@@ -8,7 +9,7 @@ import { themeLabel } from '@tac/core/themes';
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** 'Sunday, October 25, 14:47' / 'Неділя, 25 жовтня, 14:47' (web: first letter capitalised). */
-export function formatSessionTitle(startedAt: string, lang: 'en' | 'uk'): string {
+export function formatSessionTitle(startedAt: string, lang: Language): string {
   const d = new Date(startedAt);
   const locale = localeFor(lang);
   const date = d.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
@@ -17,14 +18,14 @@ export function formatSessionTitle(startedAt: string, lang: 'en' | 'uk'): string
 }
 
 /** fix: the web row showed the raw theme slug (or 'theme'/'mixed'); labels now, as in the detail. */
-export function sessionThemeLabel(theme: string | null | undefined, lang: 'en' | 'uk', mixed: string): string {
+export function sessionThemeLabel(theme: string | null | undefined, lang: Language, mixed: string): string {
   return theme ? themeLabel(theme, lang) : mixed;
 }
 
 /** The theme label, or the daily plan's name, or "Blind · <theme>" (D40). */
 export function sessionKindLabel(
   row: { theme: string | null; variant?: string | null },
-  lang: 'en' | 'uk',
+  lang: Language,
   t: (key: string) => string,
 ): string {
   if (row.variant === 'plan') return t('plan.title');

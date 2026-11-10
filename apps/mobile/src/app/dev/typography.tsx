@@ -1,4 +1,4 @@
-import { createTranslator, LANDING_DICTS, type Language } from '@tac/core/i18n';
+import { createTranslator, LANDING_DICTS, LANGUAGES, type Language } from '@tac/core/i18n';
 import { eos, layout, space, text } from '@tac/core/tokens';
 import { Stack } from 'expo-router';
 import type { ReactNode } from 'react';
@@ -22,8 +22,8 @@ import { useDevT } from '@/ui/dev/devStrings';
 // line in each Cyrillic candidate beside Cinzel (en) for the owner's pick
 // (PLAN §8 #2). The switch only changes the chrome language.
 
-const tr = { en: createTranslator('en'), uk: createTranslator('uk') };
-const landing = { en: createTranslator('en', LANDING_DICTS), uk: createTranslator('uk', LANDING_DICTS) };
+const tr = Object.fromEntries(LANGUAGES.map((l) => [l, createTranslator(l)])) as Record<Language, ReturnType<typeof createTranslator>>;
+const landing = Object.fromEntries(LANGUAGES.map((l) => [l, createTranslator(l, LANDING_DICTS)])) as Record<Language, ReturnType<typeof createTranslator>>;
 
 /** Sample copy per variant, from real i18n keys. */
 function sample(v: TextVariantName, lang: Language): string {

@@ -1,4 +1,4 @@
-import type { Language } from '@tac/core/i18n';
+import { LANGUAGES, type Language } from '@tac/core/i18n';
 import { control, eos, space, tone } from '@tac/core/tokens';
 import { router } from 'expo-router';
 import { AlertTriangle, Bell, ChevronRight, Gamepad2, Info, KeyRound, RotateCcw, Volume2 } from 'lucide-react-native';
@@ -85,10 +85,9 @@ export function SettingsIndexScreen() {
       <ListSection title={t('settings.tab.app')}>
         <ControlBlock label={t('settings.language')}>
           <Segmented
-            options={[
-              { value: 'en', label: t('settings.lang.en') },
-              { value: 'uk', label: t('settings.lang.uk') },
-            ]}
+            options={LANGUAGES.map((l) => ({ value: l, label: t(`settings.lang.${l}`) }))}
+            // Four native names: the small label keeps "Українська" whole at 390 pt.
+            size="sm"
             value={lang}
             onChange={(v: Language) => void saveSettings({ language: v })}
             tone="soft"
