@@ -121,7 +121,7 @@ export class WoodpeckerService {
     if (set.size != null) return this.full(set);
     const { prefix } = await this.firstCycle(set);
     if (prefix < MIN_SET) throw new BadRequestException(`the first cycle needs ${MIN_SET} puzzles`);
-    return this.full(await this.prisma.woodpeckerSet.update({ where: { id }, data: { size: prefix, closedAt: new Date() } }));
+    return this.full(await this.write(id, { size: null }, { size: prefix, closedAt: new Date() }));
   }
 
   async archive(userId: string, id: string) {
@@ -144,7 +144,7 @@ export class WoodpeckerService {
     const { prefix, results, firstAt } = await this.firstCycle(set);
     const due = firstAt != null && Date.now() - firstAt.getTime() >= FIRST_CYCLE_MS && prefix >= MIN_SET;
     if (prefix >= set.puzzleIds.length || due) {
-      return this.prisma.woodpeckerSet.update({ where: { id: set.id }, data: { size: prefix, closedAt: new Date() } });
+      return this.write(set.id, { size: null }, { size: prefix, closedAt: new Date() });
     }
     if (set.calibratedAt || results.length < CALIBRATE_AT) return set;
 
@@ -159,7 +159,21 @@ export class WoodpeckerService {
       // Short of puzzles at the new level: keep the old tail.
       if (tail.length >= set.puzzleIds.length - keep.length) puzzleIds = [...keep, ...tail];
     }
-    return this.prisma.woodpeckerSet.update({ where: { id: set.id }, data: { puzzleIds, calibratedAt: new Date() } });
+    return this.write(set.id, { calibratedAt: null, size: null }, { puzzleIds, calibratedAt: new Date() });
+  }
+
+  /**
+   * Writes only while `when` still holds: the list and the set page read
+   * (and so maintain) at the same time, and the first write wins; the
+   * other returns the row as it now is.
+   */
+  private async write(
+    id: string,
+    when: { size?: null; calibratedAt?: null },
+    data: { size?: number; closedAt?: Date; puzzleIds?: string[]; calibratedAt?: Date },
+  ): Promise<SetRow> {
+    await this.prisma.woodpeckerSet.updateMany({ where: { id, ...when }, data });
+    return this.prisma.woodpeckerSet.findUniqueOrThrow({ where: { id } });
   }
 
   /** The first cycle so far: results in time order, the solved run from the start, the first result's time. */
