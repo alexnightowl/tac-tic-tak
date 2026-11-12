@@ -1,4 +1,5 @@
 import type { Language } from '@tac/core/i18n';
+import { openPlayerSearch } from '../PlayerSearch';
 import { localeFor, streakState, type SessionRow } from '@tac/core/format';
 import { localized, suggestedCourse, type CourseSummary } from '@tac/core/library';
 import { CALIBRATION_SESSIONS, LEVEL_STEP, UI_STYLE_ORDER, isTrainingStyle } from '@tac/core/rules';
@@ -772,7 +773,7 @@ function Checklist() {
     { key: 'onboarding', done: onboarded, go: openOnboarding },
     { key: 'session', done: sessions > 0, go: () => router.navigate('/play' as Href) },
     { key: 'review', done: sessions > 0 && waiting === 0, go: () => router.push('/review' as Href) },
-    { key: 'friend', done: (friends.data?.length ?? 0) > 0, go: () => router.push('/friends/search' as Href) },
+    { key: 'friend', done: (friends.data?.length ?? 0) > 0, go: openPlayerSearch },
   ];
   return (
     <Card style={styles.checklist} testID="dx-home-checklist">

@@ -25,6 +25,7 @@ import { CountBadge } from '@/ui/Buttons';
 import { BrandLogo, type LogoGlow } from '@/ui/BrandLogo';
 import { useT, useTn } from '@/ui/lang';
 import { HotkeysDialog } from './HotkeysDialog';
+import { openPlayerSearch } from './PlayerSearch';
 import { useHotkeys } from './hotkeys';
 import { DText, Hover, Kbd, Label, Seg } from './kit';
 import { dx, dxSize } from './tokens';
@@ -73,7 +74,7 @@ export function Sidebar({ compact = false }: { compact?: boolean }) {
     p: () => router.push(`/profile/${encodeURIComponent(nickname)}` as Href),
     ',': () => router.push('/settings' as Href),
     '?': () => setKeys(true),
-    'mod+k': () => router.push('/friends/search' as Href),
+    'mod+k': openPlayerSearch,
   });
 
   return (

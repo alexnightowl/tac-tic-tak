@@ -28,28 +28,7 @@ export function UserSearchSheet() {
   const t = useT();
   const { lang } = useLang();
   const insets = useSafeAreaInsets();
-  const [q, setQ] = useState('');
-  const [dq, setDq] = useState('');
-  const [states, setStates] = useState<Record<string, FriendshipStatus>>({});
-  const [busy, setBusy] = useState<string | null>(null);
-
-  useEffect(() => {
-    const id = setTimeout(() => setDq(q.trim()), DEBOUNCE_MS);
-    return () => clearTimeout(id);
-  }, [q]);
-
-  const res = useQuery(searchQuery(dq));
-  const typing = q.trim() !== dq;
-  const active = dq.length >= 2;
-  const loading = q.trim().length >= 2 && (typing || res.isFetching);
-  const rows = active ? (res.data ?? []) : [];
-
-  const act = async (row: SearchResult) => {
-    setBusy(row.id);
-    const next = await sendRequest(row);
-    setBusy(null);
-    if (next) setStates((s) => ({ ...s, [row.id]: next }));
-  };
+  const { q, setQ, loading, rows, empty, states, busy, act } = useUserSearch();
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]} testID="screen-friend-search">
@@ -87,7 +66,7 @@ export function UserSearchSheet() {
         </Tap>
       </View>
 
-      {active && !loading && res.data && rows.length === 0 ? (
+      {empty ? (
         <AppText variant="caption" color={eos.dust} style={styles.none} testID="search-empty">
           {t('friends.no_matches')}
         </AppText>
@@ -109,6 +88,40 @@ export function UserSearchSheet() {
   );
 }
 
+/**
+ * The player search state (the phone sheet, the desktop header dropdown):
+ * the typed query, its 250 ms debounce, the results, and the friend actions
+ * with the server's answer kept per row. `empty` = a settled search found
+ * nobody.
+ */
+export function useUserSearch() {
+  const [q, setQ] = useState('');
+  const [dq, setDq] = useState('');
+  const [states, setStates] = useState<Record<string, FriendshipStatus>>({});
+  const [busy, setBusy] = useState<string | null>(null);
+
+  useEffect(() => {
+    const id = setTimeout(() => setDq(q.trim()), DEBOUNCE_MS);
+    return () => clearTimeout(id);
+  }, [q]);
+
+  const res = useQuery(searchQuery(dq));
+  const typing = q.trim() !== dq;
+  const active = dq.length >= 2;
+  const loading = q.trim().length >= 2 && (typing || res.isFetching);
+  const rows = active ? (res.data ?? []) : [];
+  const empty = active && !loading && !!res.data && rows.length === 0;
+
+  const act = async (row: SearchResult) => {
+    setBusy(row.id);
+    const next = await sendRequest(row);
+    setBusy(null);
+    if (next) setStates((s) => ({ ...s, [row.id]: next }));
+  };
+
+  return { q, setQ, active, loading, rows, empty, states, busy, act };
+}
+
 function Gap() {
   return <View style={styles.gap} />;
 }
@@ -124,6 +137,29 @@ function ResultRow({
   busy: boolean;
   onAct: () => void;
 }) {
+  const t = useT();
+  const id = row.nickname;
+  return (
+    <View style={styles.row} testID={`search-row-${id}`}>
+      <Tap
+        testID={`search-open-${id}`}
+        accessibilityRole="link"
+        accessibilityLabel={`${row.nickname}, ${t('shell.menu.profile')}`}
+        onPress={() => {
+          router.back();
+          openProfile(row.nickname);
+        }}
+        style={styles.open}
+      >
+        <UserIdentity user={row} />
+      </Tap>
+      <SearchAction row={row} state={state} busy={busy} onAct={onAct} />
+    </View>
+  );
+}
+
+/** The row's friend control: Add, Accept, or the settled Requested / Friends. */
+export function SearchAction({ row, state, busy, onAct }: { row: SearchResult; state: FriendshipStatus; busy: boolean; onAct: () => void }) {
   const t = useT();
   const id = row.nickname;
   let action = null;
@@ -158,23 +194,7 @@ function ResultRow({
     default:
       action = <MiniButton testID={`search-add-${id}`} label={t('friends.add')} icon={UserPlus} busy={busy} onPress={onAct} />;
   }
-  return (
-    <View style={styles.row} testID={`search-row-${id}`}>
-      <Tap
-        testID={`search-open-${id}`}
-        accessibilityRole="link"
-        accessibilityLabel={`${row.nickname}, ${t('shell.menu.profile')}`}
-        onPress={() => {
-          router.back();
-          openProfile(row.nickname);
-        }}
-        style={styles.open}
-      >
-        <UserIdentity user={row} />
-      </Tap>
-      {action}
-    </View>
-  );
+  return action;
 }
 
 const styles = StyleSheet.create({

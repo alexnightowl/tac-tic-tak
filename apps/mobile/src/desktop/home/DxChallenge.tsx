@@ -1,4 +1,5 @@
 import { STORM_FORMATS, STORM_NOTE_MAX } from '@tac/core/storm';
+import { openPlayerSearch } from '../PlayerSearch';
 import { alpha, eos, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Check, Search, Send } from 'lucide-react-native';
@@ -100,7 +101,7 @@ export function DxChallenge(params: CreateParams) {
               <DText size={14} color={dx.ash}>
                 {t('challenge.no_friends')}
               </DText>
-              <TextButton testID="dx-challenge-find-friends" accessibilityLabel={t('challenge.find_friends')} label={t('challenge.find_friends')} color={tone.rose} onPress={() => router.push('/friends/search' as Href)} />
+              <TextButton testID="dx-challenge-find-friends" accessibilityLabel={t('challenge.find_friends')} label={t('challenge.find_friends')} color={tone.rose} onPress={openPlayerSearch} />
             </View>
           ) : c.rows.length === 0 ? (
             <DText size={14} color={dx.ash} style={styles.state}>

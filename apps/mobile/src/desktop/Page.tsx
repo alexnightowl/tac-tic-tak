@@ -1,13 +1,13 @@
 import { alpha, eos } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
-import { Bell, Search } from 'lucide-react-native';
+import { Bell } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useIncomingRequestCount } from '@/features/social/badge';
 import { useT } from '@/ui/lang';
-import { MOD_KEY } from './hotkeys';
-import { DText, Hover, Kbd } from './kit';
+import { DText, Hover } from './kit';
+import { PlayerSearch } from './PlayerSearch';
 import { dx, dxSize } from './tokens';
 
 export type PageBack = { label: string; onPress?: () => void };
@@ -51,27 +51,13 @@ export function PageHeader({ title, titleAfter, subtitle, back, right }: { title
   );
 }
 
-/** Search players (⌘K, the friends search dialog) + the bell (incoming requests → Friends). */
+/** Search players (⌘K, a dropdown under the field) + the bell (incoming requests → Friends). */
 export function HeaderTools() {
   const t = useT();
   const incoming = useIncomingRequestCount();
   return (
     <View style={styles.tools}>
-      <Hover
-        testID="dx-search"
-        accessibilityLabel={t('dx.shell.search')}
-        onPress={() => router.push('/friends/search' as Href)}
-        style={styles.search}
-        hoverStyle={styles.searchHover}
-      >
-        <Search size={13} color={dx.ash} strokeWidth={2} />
-        <DText size={12.5} weight={700} color={dx.ash} numberOfLines={1}>
-          {t('dx.shell.search')}
-        </DText>
-        <View style={styles.kbd}>
-          <Kbd>{`${MOD_KEY}K`}</Kbd>
-        </View>
-      </Hover>
+      <PlayerSearch />
       <Hover
         testID="dx-bell"
         accessibilityLabel={incoming ? `${t('dx.shell.notifications')}, ${incoming}` : t('dx.shell.notifications')}
@@ -160,19 +146,6 @@ const styles = StyleSheet.create({
   back: { alignSelf: 'flex-start', marginTop: 2, borderRadius: 6 },
   backHover: { opacity: 0.8 },
   tools: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  search: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    height: 30,
-    paddingLeft: 12,
-    paddingRight: 6,
-    borderRadius: 999,
-    backgroundColor: dx.card2,
-    boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: 1, color: alpha(eos.bone, 0.05), inset: true }],
-  },
-  searchHover: { backgroundColor: dx.chipHover },
-  kbd: { marginLeft: 12 },
   bell: {
     width: 40,
     height: 40,

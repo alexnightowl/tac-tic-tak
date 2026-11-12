@@ -9,12 +9,13 @@ const { createPortal } = require('react-dom') as { createPortal: (node: ReactNod
  * stacking context: an overlay left inside the page could never rise above
  * the sidebar, whatever its z-index. Context still flows through the portal.
  * Opening one drops the focus left on the control that opened it (its ring
- * would otherwise glow through the scrim).
+ * would otherwise glow through the scrim), unless `keepFocus` (a dropdown
+ * under the field the player is typing in).
  */
-export function Portal({ children }: { children: ReactNode }) {
+export function Portal({ children, keepFocus }: { children: ReactNode; keepFocus?: boolean }) {
   useEffect(() => {
-    (document.activeElement as HTMLElement | null)?.blur?.();
-  }, []);
+    if (!keepFocus) (document.activeElement as HTMLElement | null)?.blur?.();
+  }, [keepFocus]);
   if (typeof document === 'undefined') return children;
   return createPortal(children, document.body);
 }

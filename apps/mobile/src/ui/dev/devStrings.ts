@@ -1,5 +1,3 @@
-import type { Language } from '@tac/core/i18n';
-
 import { useLang } from '../lang';
 
 // Dev-route-only copy (section headers, state names). Kept out of
