@@ -46,6 +46,29 @@ export function fontFamily(
   return fontFamilies.sans[weight];
 }
 
+/** Cinzel's line box (hhea ascent + descent, 0.976 + 0.372 em). */
+const SERIF_LINE = 1.348;
+/**
+ * Forum against Cinzel: caps 0.66 vs 0.70 em, lowercase 0.42 em vs Cinzel's
+ * 0.60 em small caps, line box 1.104 vs 1.348 em. Set 10% larger it meets
+ * Cinzel's caps and reads as the same size.
+ */
+const CYRILLIC_DISPLAY_SCALE = 1.1;
+
+/**
+ * Size and line height for the serif face, so a language switch does not
+ * move the layout: the Cyrillic face is scaled up to Cinzel's visual size,
+ * and every serif line gets Cinzel's line box unless the style sets one
+ * (Forum's natural box is 18% shorter, so titles and plates would jump).
+ */
+export function displayMetrics(lang: Language, fontSize: number, lineHeight?: number): { fontSize: number; lineHeight: number } {
+  const cyrillic = lang === 'uk' || lang === 'ru';
+  return {
+    fontSize: cyrillic ? Math.round(fontSize * CYRILLIC_DISPLAY_SCALE * 2) / 2 : fontSize,
+    lineHeight: lineHeight ?? Math.round(fontSize * SERIF_LINE),
+  };
+}
+
 const CYRILLIC = /[Ѐ-ӿ]/;
 
 /**

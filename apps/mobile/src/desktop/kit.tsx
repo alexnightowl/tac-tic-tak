@@ -16,7 +16,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { fontFamily } from '@/ui/fonts';
+import { displayMetrics, fontFamily } from '@/ui/fonts';
 import { useLang } from '@/ui/lang';
 import { dx } from './tokens';
 
@@ -60,6 +60,7 @@ export function DText({ size = 14, weight = 400, serif, color = dx.bone, lh, ls,
           fontSize: size,
           color,
           ...(lh ? { lineHeight: lh } : null),
+          ...(serif ? displayMetrics(lang, size, lh) : null),
           ...(ls != null ? { letterSpacing: ls } : null),
           ...(upper ? { textTransform: 'uppercase' as const } : null),
           ...(tabular ? { fontVariant: ['tabular-nums' as const] } : null),

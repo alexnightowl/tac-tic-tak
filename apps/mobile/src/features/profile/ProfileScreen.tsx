@@ -32,7 +32,7 @@ import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { AppText } from '@/ui/AppText';
 import { IconButton } from '@/ui/Buttons';
-import { fontFamily, scriptLang } from '@/ui/fonts';
+import { displayMetrics, fontFamily, scriptLang } from '@/ui/fonts';
 import { useLang, useT, type TFn } from '@/ui/lang';
 import { stackHeader } from '@/ui/NavHeader';
 import { PlateButton } from '@/ui/PlateButton';
@@ -235,7 +235,7 @@ function HeaderTitle({ y, text }: { y: SharedValue<number>; text: string }) {
   return (
     <Animated.Text
       numberOfLines={1}
-      style={[{ fontFamily: fontFamily(lang, 'display', 700), fontSize: fontSize.lg[0], color: eos.bone, maxWidth: 220 }, style]}
+      style={[{ fontFamily: fontFamily(lang, 'display', 700), ...displayMetrics(lang, fontSize.lg[0]), color: eos.bone, maxWidth: 220 }, style]}
       testID="profile-header-title"
     >
       {text}

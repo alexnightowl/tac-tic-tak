@@ -1,9 +1,9 @@
 import type { Language } from '@tac/core/i18n';
 import { eos, text, tone, type TextVariant } from '@tac/core/tokens';
 import type { ColorValue, TextProps, TextStyle } from 'react-native';
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
-import { fontFamily, type UkDisplayCandidate } from './fonts';
+import { displayMetrics, fontFamily, type UkDisplayCandidate } from './fonts';
 import { useLang } from './lang';
 
 export type TextVariantName = keyof typeof text;
@@ -41,6 +41,7 @@ export function textStyle(
       letterSpacing: v.letterSpacing,
       color: DEFAULT_COLOR[variant] ?? eos.bone,
       ...(v.lineHeight ? { lineHeight: v.lineHeight } : null),
+      ...(v.role === 'serif' ? displayMetrics(lang, v.fontSize, v.lineHeight) : null),
       ...(v.uppercase ? { textTransform: 'uppercase' as const } : null),
       ...(v.tabular ? { fontVariant: ['tabular-nums' as const] } : null),
     };
@@ -64,12 +65,16 @@ export type AppTextProps = TextProps & {
 
 export function AppText({ variant = 'body', color, lang, ukDisplay, style, ...rest }: AppTextProps) {
   const ctx = useLang();
-  const base = textStyle(variant, lang ?? ctx.lang, ukDisplay ?? ctx.ukDisplay);
+  const l = lang ?? ctx.lang;
+  const base = textStyle(variant, l, ukDisplay ?? ctx.ukDisplay);
+  // A serif size set in `style` gets the same per-language metrics as the variant's own.
+  const flat = text[variant].role === 'serif' && style ? StyleSheet.flatten(style) : null;
+  const sized = flat?.fontSize != null ? displayMetrics(l, flat.fontSize, flat.lineHeight) : null;
   return (
     <Text
       maxFontSizeMultiplier={maxScale(variant)}
       {...rest}
-      style={[base, color ? { color } : null, style]}
+      style={[base, color ? { color } : null, style, sized]}
     />
   );
 }
