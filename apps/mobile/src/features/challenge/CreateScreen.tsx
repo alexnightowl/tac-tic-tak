@@ -2,7 +2,8 @@ import { STORM_FORMATS, STORM_NOTE_MAX } from '@tac/core/storm';
 import { alpha, eos, layout, radii, space, surface, tone } from '@tac/core/tokens';
 import { router, type Href } from 'expo-router';
 import { Search, Send, Users, Zap } from 'lucide-react-native';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BackLink } from '@/features/courses/parts';
@@ -44,161 +45,164 @@ export function CreateScreen({
       <View style={styles.header}>
         <BackLink testID="challenge-back" label={t('challenge.back')} onPress={() => (router.canGoBack() ? router.back() : router.replace('/play' as Href))} />
       </View>
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle={[styles.scroll, { paddingBottom: dock }]} keyboardShouldPersistTaps="handled">
-          <AppText variant="heading" accessibilityRole="header">
-            {t('challenge.create.title')}
-          </AppText>
+      {/* The send dock rides on the keyboard; the focused field stays above it. */}
+      <KeyboardAwareScrollView
+        contentContainerStyle={[styles.scroll, { paddingBottom: dock }]}
+        keyboardShouldPersistTaps="handled"
+        bottomOffset={space[4] + layout.plateHeight.lg + space[6]}
+      >
+        <AppText variant="heading" accessibilityRole="header">
+          {t('challenge.create.title')}
+        </AppText>
 
-          {/* WHO */}
-          <View>
-            <AppText variant="sectionLabel" accessibilityRole="header">
-              {t('challenge.who')}
+        {/* WHO */}
+        <View>
+          <AppText variant="sectionLabel" accessibilityRole="header">
+            {t('challenge.who')}
+          </AppText>
+          <View style={styles.gap8} />
+          <Input
+            testID="challenge-search"
+            accessibilityLabel={t('challenge.search_a11y')}
+            placeholder={t('challenge.search')}
+            value={query}
+            onChangeText={setQuery}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="search"
+            leading={<Search size={16} strokeWidth={1.8} color={eos.dust} />}
+          />
+          {friends.isPending ? (
+            <ActivityIndicator color={eos.ash} style={styles.friendsLoading} />
+          ) : (friends.data ?? []).length === 0 ? (
+            <View style={styles.noFriends} testID="challenge-no-friends">
+              <AppText variant="body" color={eos.ash}>
+                {t('challenge.no_friends')}
+              </AppText>
+              <TextLink testID="challenge-find-friends" label={t('challenge.find_friends')} onPress={() => router.push('/friends/search' as Href)} />
+            </View>
+          ) : rows.length === 0 ? (
+            <AppText variant="body" color={eos.ash} style={styles.noMatch}>
+              {t('challenge.no_match', { q: query.trim() })}
             </AppText>
-            <View style={styles.gap8} />
-            <Input
-              testID="challenge-search"
-              accessibilityLabel={t('challenge.search_a11y')}
-              placeholder={t('challenge.search')}
-              value={query}
-              onChangeText={setQuery}
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType="search"
-              leading={<Search size={16} strokeWidth={1.8} color={eos.dust} />}
+          ) : (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.friends} keyboardShouldPersistTaps="handled">
+              {rows.map((f) => {
+                const on = f.user.id === picked;
+                const n = displayNameOf(f.user);
+                return (
+                  <Tap
+                    key={f.user.id}
+                    testID={`challenge-friend-${f.user.nickname}`}
+                    accessibilityRole="button"
+                    accessibilityLabel={t(f.online ? 'challenge.friend_online_a11y' : 'challenge.friend_a11y', { name: n })}
+                    accessibilityState={{ selected: on }}
+                    onPress={() => pick(f.user.id)}
+                    style={styles.friend}
+                  >
+                    <PresenceAvatar nickname={f.user.nickname} avatarUrl={f.user.avatarUrl} size={52} online={f.online} ring={on ? eos.ember : undefined} />
+                    <AppText variant="captionStrong" color={on ? eos.bone : eos.ash} numberOfLines={1} style={styles.friendName}>
+                      {n}
+                    </AppText>
+                  </Tap>
+                );
+              })}
+            </ScrollView>
+          )}
+        </View>
+
+        {/* HOW */}
+        <View>
+          <AppText variant="sectionLabel" accessibilityRole="header">
+            {t('challenge.how')}
+          </AppText>
+          <View style={styles.modes}>
+            <ModeCard
+              testID="challenge-mode-race"
+              title={t('challenge.mode.race')}
+              sub={t('challenge.mode.race_sub')}
+              icon={<Zap size={20} strokeWidth={1.8} color={tone.rose} />}
+              on
             />
-            {friends.isPending ? (
-              <ActivityIndicator color={eos.ash} style={styles.friendsLoading} />
-            ) : (friends.data ?? []).length === 0 ? (
-              <View style={styles.noFriends} testID="challenge-no-friends">
-                <AppText variant="body" color={eos.ash}>
-                  {t('challenge.no_friends')}
-                </AppText>
-                <TextLink testID="challenge-find-friends" label={t('challenge.find_friends')} onPress={() => router.push('/friends/search' as Href)} />
-              </View>
-            ) : rows.length === 0 ? (
-              <AppText variant="body" color={eos.ash} style={styles.noMatch}>
-                {t('challenge.no_match', { q: query.trim() })}
+            <ModeCard
+              testID="challenge-mode-together"
+              title={t('challenge.mode.together')}
+              sub={t('challenge.mode.together_sub')}
+              icon={<Users size={20} strokeWidth={1.8} color={tone.rose} />}
+              soon={t('challenge.soon')}
+            />
+          </View>
+        </View>
+
+        {/* FORMAT · DIFFICULTY · WHEN */}
+        <View style={styles.facts}>
+          <View style={styles.factRow}>
+            <AppText variant="bodyStrong">{t('challenge.format')}</AppText>
+            {dare ? (
+              <AppText variant="bodyStrong" color={eos.ash} testID="challenge-format-fixed">
+                {t('challenge.format.time3')}
               </AppText>
             ) : (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.friends} keyboardShouldPersistTaps="handled">
-                {rows.map((f) => {
-                  const on = f.user.id === picked;
-                  const n = displayNameOf(f.user);
-                  return (
-                    <Tap
-                      key={f.user.id}
-                      testID={`challenge-friend-${f.user.nickname}`}
-                      accessibilityRole="button"
-                      accessibilityLabel={t(f.online ? 'challenge.friend_online_a11y' : 'challenge.friend_a11y', { name: n })}
-                      accessibilityState={{ selected: on }}
-                      onPress={() => pick(f.user.id)}
-                      style={styles.friend}
-                    >
-                      <PresenceAvatar nickname={f.user.nickname} avatarUrl={f.user.avatarUrl} size={52} online={f.online} ring={on ? eos.ember : undefined} />
-                      <AppText variant="captionStrong" color={on ? eos.bone : eos.ash} numberOfLines={1} style={styles.friendName}>
-                        {n}
-                      </AppText>
-                    </Tap>
-                  );
-                })}
-              </ScrollView>
+              <Segmented
+                options={STORM_FORMATS.map((f) => ({ value: f, label: t(`challenge.format.${f}`) }))}
+                value={format}
+                onChange={setFormat}
+                size="sm"
+                testID="challenge-format"
+                accessibilityLabel={t('challenge.format')}
+                style={styles.segmented}
+              />
             )}
           </View>
-
-          {/* HOW */}
-          <View>
-            <AppText variant="sectionLabel" accessibilityRole="header">
-              {t('challenge.how')}
+          <AppText variant="caption" color={eos.dust} style={styles.hint} testID="challenge-format-hint">
+            {hint}
+          </AppText>
+          <View style={styles.factRow}>
+            <AppText variant="bodyStrong">{t('challenge.difficulty')}</AppText>
+            <AppText variant="captionStrong" color={eos.ash} style={styles.factValue} testID="challenge-difficulty">
+              {avg != null ? t('challenge.between', { avg }) : t('challenge.between_plain')}
             </AppText>
-            <View style={styles.modes}>
-              <ModeCard
-                testID="challenge-mode-race"
-                title={t('challenge.mode.race')}
-                sub={t('challenge.mode.race_sub')}
-                icon={<Zap size={20} strokeWidth={1.8} color={tone.rose} />}
-                on
-              />
-              <ModeCard
-                testID="challenge-mode-together"
-                title={t('challenge.mode.together')}
-                sub={t('challenge.mode.together_sub')}
-                icon={<Users size={20} strokeWidth={1.8} color={tone.rose} />}
-                soon={t('challenge.soon')}
-              />
-            </View>
           </View>
-
-          {/* FORMAT · DIFFICULTY · WHEN */}
-          <View style={styles.facts}>
-            <View style={styles.factRow}>
-              <AppText variant="bodyStrong">{t('challenge.format')}</AppText>
-              {dare ? (
-                <AppText variant="bodyStrong" color={eos.ash} testID="challenge-format-fixed">
-                  {t('challenge.format.time3')}
-                </AppText>
-              ) : (
-                <Segmented
-                  options={STORM_FORMATS.map((f) => ({ value: f, label: t(`challenge.format.${f}`) }))}
-                  value={format}
-                  onChange={setFormat}
-                  size="sm"
-                  testID="challenge-format"
-                  accessibilityLabel={t('challenge.format')}
-                  style={styles.segmented}
-                />
-              )}
-            </View>
-            <AppText variant="caption" color={eos.dust} style={styles.hint} testID="challenge-format-hint">
-              {hint}
+          <View style={styles.factRow}>
+            <AppText variant="bodyStrong">{t('challenge.when')}</AppText>
+            <AppText variant="captionStrong" color={eos.ash} style={styles.factValue}>
+              {t('challenge.within')}
             </AppText>
-            <View style={styles.factRow}>
-              <AppText variant="bodyStrong">{t('challenge.difficulty')}</AppText>
-              <AppText variant="captionStrong" color={eos.ash} style={styles.factValue} testID="challenge-difficulty">
-                {avg != null ? t('challenge.between', { avg }) : t('challenge.between_plain')}
-              </AppText>
-            </View>
-            <View style={styles.factRow}>
-              <AppText variant="bodyStrong">{t('challenge.when')}</AppText>
-              <AppText variant="captionStrong" color={eos.ash} style={styles.factValue}>
-                {t('challenge.within')}
-              </AppText>
-            </View>
           </View>
-
-          {/* NOTE (app-only) */}
-          <Input
-            testID="challenge-note"
-            accessibilityLabel={t('challenge.note')}
-            label={t('challenge.note')}
-            labelRight={`${note.length}/${STORM_NOTE_MAX}`}
-            placeholder={t('challenge.note_placeholder')}
-            value={note}
-            onChangeText={(v) => setNote(v.replace(/\n/g, ' '))}
-            maxLength={STORM_NOTE_MAX}
-            returnKeyType="done"
-            submitBehavior="blurAndSubmit"
-          />
-
-          {error ? (
-            <AppText variant="body" color={tone.danger} testID="challenge-error" accessibilityLiveRegion="polite">
-              {error}
-            </AppText>
-          ) : null}
-        </ScrollView>
-        <View style={[styles.dock, { paddingBottom: Math.max(insets.bottom, space[4]) + space[2] }]}>
-          <PlateButton
-            testID="challenge-send"
-            label={selected ? t('challenge.send', { name }) : t('challenge.send_pick')}
-            size="lg"
-            block
-            disabled={!selected}
-            loading={sending}
-            icon={<Send size={18} strokeWidth={1.8} color={tone.plateInk} />}
-            onPress={send}
-          />
         </View>
-      </KeyboardAvoidingView>
+
+        {/* NOTE (app-only) */}
+        <Input
+          testID="challenge-note"
+          accessibilityLabel={t('challenge.note')}
+          label={t('challenge.note')}
+          labelRight={`${note.length}/${STORM_NOTE_MAX}`}
+          placeholder={t('challenge.note_placeholder')}
+          value={note}
+          onChangeText={(v) => setNote(v.replace(/\n/g, ' '))}
+          maxLength={STORM_NOTE_MAX}
+          returnKeyType="done"
+          submitBehavior="blurAndSubmit"
+        />
+
+        {error ? (
+          <AppText variant="body" color={tone.danger} testID="challenge-error" accessibilityLiveRegion="polite">
+            {error}
+          </AppText>
+        ) : null}
+      </KeyboardAwareScrollView>
+      <KeyboardStickyView offset={{ opened: Math.max(insets.bottom, space[4]) }} style={[styles.dock, { paddingBottom: Math.max(insets.bottom, space[4]) + space[2] }]}>
+        <PlateButton
+          testID="challenge-send"
+          label={selected ? t('challenge.send', { name }) : t('challenge.send_pick')}
+          size="lg"
+          block
+          disabled={!selected}
+          loading={sending}
+          icon={<Send size={18} strokeWidth={1.8} color={tone.plateInk} />}
+          onPress={send}
+        />
+      </KeyboardStickyView>
     </View>
   );
 }
@@ -254,7 +258,6 @@ function ModeCard({
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
-  flex: { flex: 1 },
   header: { height: layout.shellHeaderHeight, paddingHorizontal: space[2], flexDirection: 'row', alignItems: 'center' },
   scroll: { paddingHorizontal: layout.gutter, gap: 18 },
   gap8: { height: space[2] },

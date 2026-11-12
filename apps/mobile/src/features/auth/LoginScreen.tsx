@@ -1,10 +1,11 @@
 import { eos, layout, space } from '@tac/core/tokens';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton } from '@/ui';
+import { AppText, BrandLogo, Card, Input, NEXT_FIELD_OFFSET, PasswordInput, PlateButton } from '@/ui';
 import { AuthSwitch } from './AuthSwitch';
 import { DevMenuButton } from './DevMenuButton';
 import { useLoginForm } from './useLoginForm';
@@ -23,71 +24,68 @@ export function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.root} testID="login-screen">
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <View style={styles.brand} testID="login-brand">
-            <BrandLogo size={128} />
-            {/* The wordmark is Latin in both languages: always Cinzel. */}
-            <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
-              {t('brand.name')}
-            </AppText>
-            <AppText variant="body" color={eos.ash} style={styles.center}>
-              {t('auth.login')}
-            </AppText>
-          </View>
-          <Animated.View style={shakeStyle}>
-            <Card style={styles.form}>
-              <Input
-                testID="login-nickname"
-                accessibilityLabel={t('auth.nickname')}
-                label={t('auth.nickname')}
-                value={nickname}
-                onChangeText={setNickname}
-                textContentType="username"
-                autoComplete="username"
-                autoCapitalize="none"
-                autoCorrect={false}
-                spellCheck={false}
-                returnKeyType="next"
-                submitBehavior="submit"
-                onSubmitEditing={() => passwordRef.current?.focus()}
-                editable={!loading}
-              />
-              <PasswordInput
-                {...passwordRefProp}
-                testID="login-password"
-                accessibilityLabel={t('auth.password')}
-                label={t('auth.password')}
-                value={password}
-                onChangeText={setPassword}
-                returnKeyType="go"
-                onSubmitEditing={() => void submit()}
-                error={error}
-                editable={!loading}
-              />
-              <PlateButton
-                testID="login-submit"
-                label={loading ? t('auth.logging_in') : t('auth.login')}
-                accessibilityLabel={t('auth.login')}
-                onPress={() => void submit()}
-                // MobLogin "loading": the plate keeps its look and reads
-                // "Logging in…" (no spinner); submit() ignores repeat taps.
-                size="lg"
-                block
-              />
-            </Card>
-          </Animated.View>
-          <AuthSwitch prompt={t('auth.no_account')} action={t('auth.create_account')} to="/register" testID="login-to-register" />
-        </ScrollView>
-      </KeyboardAvoidingView>
-      <DevMenuButton />
+      <KeyboardAwareScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" bottomOffset={NEXT_FIELD_OFFSET}>
+        <View style={styles.brand} testID="login-brand">
+          <BrandLogo size={128} />
+          {/* The wordmark is Latin in both languages: always Cinzel. */}
+          <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
+            {t('brand.name')}
+          </AppText>
+          <AppText variant="body" color={eos.ash} style={styles.center}>
+            {t('auth.login')}
+          </AppText>
+        </View>
+        <Animated.View style={shakeStyle}>
+          <Card style={styles.form}>
+            <Input
+              testID="login-nickname"
+              accessibilityLabel={t('auth.nickname')}
+              label={t('auth.nickname')}
+              value={nickname}
+              onChangeText={setNickname}
+              textContentType="username"
+              autoComplete="username"
+              autoCapitalize="none"
+              autoCorrect={false}
+              spellCheck={false}
+              returnKeyType="next"
+              submitBehavior="submit"
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              editable={!loading}
+            />
+            <PasswordInput
+              {...passwordRefProp}
+              testID="login-password"
+              accessibilityLabel={t('auth.password')}
+              label={t('auth.password')}
+              value={password}
+              onChangeText={setPassword}
+              returnKeyType="go"
+              onSubmitEditing={() => void submit()}
+              error={error}
+              editable={!loading}
+            />
+            <PlateButton
+              testID="login-submit"
+              label={loading ? t('auth.logging_in') : t('auth.login')}
+              accessibilityLabel={t('auth.login')}
+              onPress={() => void submit()}
+              // MobLogin "loading": the plate keeps its look and reads
+              // "Logging in…" (no spinner); submit() ignores repeat taps.
+              size="lg"
+              block
+            />
+          </Card>
+        </Animated.View>
+        <AuthSwitch prompt={t('auth.no_account')} action={t('auth.create_account')} to="/register" testID="login-to-register" />
+      </KeyboardAwareScrollView>
+            <DevMenuButton />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
-  flex: { flex: 1 },
   scroll: {
     flexGrow: 1,
     justifyContent: 'center',

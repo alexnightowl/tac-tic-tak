@@ -9,6 +9,13 @@ import { AppText, textStyle } from './AppText';
 import { useLang } from './lang';
 import { colorsTiming } from './motion';
 import { useUiT } from './strings';
+
+/**
+ * Room a keyboard-aware form keeps under the focused field (its
+ * `bottomOffset`): the gap, the next field's label and well, and a margin,
+ * so "next" is still in view above the keyboard.
+ */
+export const NEXT_FIELD_OFFSET = space[4] + space[6] + layout.inputHeight + space[4];
 import { Tap } from './Tap';
 
 export type InputProps = Omit<TextInputProps, 'style'> & {

@@ -1,11 +1,12 @@
 import type { RuleRow } from '@tac/core/validation';
 import { eos, layout, space } from '@tac/core/tokens';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
-import { AppText, BrandLogo, Card, Input, PasswordInput, PlateButton } from '@/ui';
+import { AppText, BrandLogo, Card, Input, NEXT_FIELD_OFFSET, PasswordInput, PlateButton } from '@/ui';
 import { AuthSwitch } from './AuthSwitch';
 import { DevMenuButton } from './DevMenuButton';
 import { useRegisterForm } from './useRegisterForm';
@@ -21,79 +22,77 @@ export function RegisterScreen() {
 
   return (
     <SafeAreaView style={styles.root} testID="register-screen">
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <View style={styles.brand} testID="register-brand">
-            <BrandLogo size={96} />
-            {/* The wordmark is Latin in both languages: always Cinzel. */}
-            <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
-              {t('brand.name')}
-            </AppText>
-            <AppText variant="body" color={eos.ash} style={styles.center}>
-              {t('auth.create_account')}
-            </AppText>
-          </View>
-          <Animated.View style={shakeStyle}>
-            <Card style={styles.form}>
-              <Input
-                testID="register-nickname"
-                accessibilityLabel={t('auth.nickname')}
-                label={t('auth.nickname')}
-                value={nickname}
-                onChangeText={setNickname}
-                textContentType="username"
-                autoComplete="username-new"
-                autoCapitalize="none"
-                autoCorrect={false}
-                spellCheck={false}
-                returnKeyType="next"
-                submitBehavior="submit"
-                onSubmitEditing={() => passwordRef.current?.focus()}
-                editable={!loading}
-              />
-              <Rules rows={nickRows} t={t} testID="register-nick-rules" />
-              <PasswordInput
-                {...({ ref: passwordRef } as object)}
-                testID="register-password"
-                accessibilityLabel={t('auth.password')}
-                label={t('auth.password')}
-                value={password}
-                onChangeText={setPassword}
-                kind="new"
-                returnKeyType="next"
-                onSubmitEditing={() => repeatRef.current?.focus()}
-                editable={!loading}
-              />
-              <PasswordInput
-                {...({ ref: repeatRef } as object)}
-                testID="register-repeat"
-                accessibilityLabel={t('auth.repeat')}
-                label={t('auth.repeat')}
-                value={repeat}
-                onChangeText={setRepeat}
-                kind="new"
-                returnKeyType="go"
-                onSubmitEditing={() => void submit()}
-                error={error}
-                editable={!loading}
-              />
-              <Rules rows={pwRows} t={t} testID="register-pw-rules" />
-              <PlateButton
-                testID="register-submit"
-                label={loading ? t('auth.creating') : t('auth.register')}
-                accessibilityLabel={t('auth.register')}
-                onPress={() => void submit()}
-                // Like MobLogin "loading": the label changes, no spinner.
-                disabled={!valid}
-                size="lg"
-                block
-              />
-            </Card>
-          </Animated.View>
-          <AuthSwitch prompt={t('auth.have_account')} action={t('auth.login')} to="/login" testID="register-to-login" />
-        </ScrollView>
-      </KeyboardAvoidingView>
-      <DevMenuButton />
+      <KeyboardAwareScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" bottomOffset={NEXT_FIELD_OFFSET}>
+        <View style={styles.brand} testID="register-brand">
+          <BrandLogo size={96} />
+          {/* The wordmark is Latin in both languages: always Cinzel. */}
+          <AppText variant="sectionTitle" lang="en" style={styles.center} accessibilityRole="header">
+            {t('brand.name')}
+          </AppText>
+          <AppText variant="body" color={eos.ash} style={styles.center}>
+            {t('auth.create_account')}
+          </AppText>
+        </View>
+        <Animated.View style={shakeStyle}>
+          <Card style={styles.form}>
+            <Input
+              testID="register-nickname"
+              accessibilityLabel={t('auth.nickname')}
+              label={t('auth.nickname')}
+              value={nickname}
+              onChangeText={setNickname}
+              textContentType="username"
+              autoComplete="username-new"
+              autoCapitalize="none"
+              autoCorrect={false}
+              spellCheck={false}
+              returnKeyType="next"
+              submitBehavior="submit"
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              editable={!loading}
+            />
+            <Rules rows={nickRows} t={t} testID="register-nick-rules" />
+            <PasswordInput
+              {...({ ref: passwordRef } as object)}
+              testID="register-password"
+              accessibilityLabel={t('auth.password')}
+              label={t('auth.password')}
+              value={password}
+              onChangeText={setPassword}
+              kind="new"
+              returnKeyType="next"
+              onSubmitEditing={() => repeatRef.current?.focus()}
+              editable={!loading}
+            />
+            <PasswordInput
+              {...({ ref: repeatRef } as object)}
+              testID="register-repeat"
+              accessibilityLabel={t('auth.repeat')}
+              label={t('auth.repeat')}
+              value={repeat}
+              onChangeText={setRepeat}
+              kind="new"
+              returnKeyType="go"
+              onSubmitEditing={() => void submit()}
+              error={error}
+              editable={!loading}
+            />
+            <Rules rows={pwRows} t={t} testID="register-pw-rules" />
+            <PlateButton
+              testID="register-submit"
+              label={loading ? t('auth.creating') : t('auth.register')}
+              accessibilityLabel={t('auth.register')}
+              onPress={() => void submit()}
+              // Like MobLogin "loading": the label changes, no spinner.
+              disabled={!valid}
+              size="lg"
+              block
+            />
+          </Card>
+        </Animated.View>
+        <AuthSwitch prompt={t('auth.have_account')} action={t('auth.login')} to="/login" testID="register-to-login" />
+      </KeyboardAwareScrollView>
+            <DevMenuButton />
     </SafeAreaView>
   );
 }
@@ -127,7 +126,6 @@ function Rules({ rows, t, testID }: { rows: RuleRow<string>[]; t: (k: string) =>
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: eos.ink },
-  flex: { flex: 1 },
   scroll: {
     flexGrow: 1,
     justifyContent: 'center',

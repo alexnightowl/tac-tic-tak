@@ -20,7 +20,7 @@ export { confirm, ConfirmHost, type ConfirmRequest } from './ConfirmSheet';
 export { fontFamily, UK_DISPLAY_CANDIDATES, UK_DISPLAY_DEFAULT, type UkDisplayCandidate } from './fonts';
 export { ControlBlock, GroupedList, InfoRow, ListSection, Row, Seam, ToggleRow, type RowProps } from './GroupedList';
 export { IconTile, ProgressBar, TintIcon } from './IconTile';
-export { Input, PasswordInput, type InputProps, type PasswordInputProps } from './Input';
+export { Input, NEXT_FIELD_OFFSET, PasswordInput, type InputProps, type PasswordInputProps } from './Input';
 export { LangProvider, useLang, useT } from './lang';
 export { BackButton, NavHeader, stackHeader, type BackVariant } from './NavHeader';
 export { PlateButton, type PlateButtonProps, type PlateSize, type PlateVariant } from './PlateButton';

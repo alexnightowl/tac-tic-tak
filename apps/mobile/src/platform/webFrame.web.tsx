@@ -66,6 +66,31 @@ if (typeof document !== 'undefined') {
   el.textContent = CSS;
 }
 
+// A phone browser's keyboard covers the lower screen but the app's scroll
+// views do not follow the caret. Android Chrome is asked to shrink the
+// layout to the space above the keyboard (interactive-widget), and once the
+// keyboard settles (visualViewport resize, or a beat after focus) a focused
+// field outside the visible area is scrolled to the middle of it.
+const kb = globalThis as { __ttKeyboardReveal?: boolean };
+if (typeof window !== 'undefined' && !kb.__ttKeyboardReveal && window.matchMedia?.('(pointer: coarse)').matches) {
+  kb.__ttKeyboardReveal = true;
+  const meta = document.querySelector('meta[name="viewport"]');
+  const vp = meta?.getAttribute('content') ?? '';
+  if (meta && !vp.includes('interactive-widget')) meta.setAttribute('content', `${vp}, interactive-widget=resizes-content`);
+  const reveal = () => {
+    const el = document.activeElement as HTMLElement | null;
+    if (!el || !(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
+    const vv = window.visualViewport;
+    const top = vv?.offsetTop ?? 0;
+    const bottom = top + (vv?.height ?? window.innerHeight);
+    const r = el.getBoundingClientRect();
+    if (r.top >= top + 8 && r.bottom <= bottom - 8) return;
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+  window.visualViewport?.addEventListener('resize', reveal);
+  document.addEventListener('focusin', () => setTimeout(reveal, 350));
+}
+
 /** From this real window width the web is a desktop app (sidebar, desktop pages). */
 const WIDE_MIN = 1024;
 

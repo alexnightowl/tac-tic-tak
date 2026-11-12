@@ -5,6 +5,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { NEXT_FIELD_OFFSET } from '@/ui/Input';
+
 // Page shell of the settings screens (design v2 MobSettings* artboards:
 // `main` padding 16/16/32, sections 24 apart). The rows, groups, toggles,
 // blocks and sheets come from @/ui (ListSection, Row, ToggleRow,
@@ -37,7 +39,7 @@ export function SettingsPage({
         <KeyboardAwareScrollView
           contentContainerStyle={content}
           keyboardShouldPersistTaps="handled"
-          bottomOffset={space[6]}
+          bottomOffset={NEXT_FIELD_OFFSET}
           testID={`${testID}-scroll`}
         >
           {children}

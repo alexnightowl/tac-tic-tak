@@ -7,7 +7,7 @@ import { X } from 'lucide-react-native';
 
 import { useAuthStore } from '@/stores/authStore';
 import { AppText, textStyle } from '@/ui/AppText';
-import { Input } from '@/ui/Input';
+import { Input, NEXT_FIELD_OFFSET } from '@/ui/Input';
 import { useLang, useT } from '@/ui/lang';
 import { PlateButton } from '@/ui/PlateButton';
 import { Tap } from '@/ui/Tap';
@@ -108,7 +108,7 @@ function EditorBody({
       </View>
       <KeyboardAwareScrollView
         contentContainerStyle={[styles.scroll, { paddingBottom: insets.bottom + space[8] }]}
-        bottomOffset={space[6]}
+        bottomOffset={NEXT_FIELD_OFFSET}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.avatarRow}>
